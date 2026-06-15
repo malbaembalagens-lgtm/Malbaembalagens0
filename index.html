@@ -60,9 +60,15 @@ svg { width: 1em; height: 1em; display: block; }
   radial-gradient(500px 460px at 85% 90%, rgba(139,92,246,.07), transparent 55%); }
 .screen::before { content: ''; position: absolute; inset: 0; background: radial-gradient(60% 50% at 20% 10%, rgba(99,102,241,.10), transparent 70%), radial-gradient(50% 50% at 90% 30%, rgba(59,111,247,.10), transparent 70%); pointer-events: none; }
 .screen-inner { position: relative; z-index: 1; width: 100%; max-width: 880px; display: flex; flex-direction: column; align-items: center; }
-.brand-mark { display: flex; align-items: baseline; gap: 10px; font-family: var(--u-font-display); }
-.brand-1 { font-size: 34px; font-weight: 800; letter-spacing: -1px; color: var(--u-text); }
-.brand-2 { font-size: 16px; font-weight: 700; color: #fff; letter-spacing: -.2px; background: var(--u-grad-blue); padding: 4px 12px; border-radius: 999px; box-shadow: var(--u-glow-blue); }
+.brand-mark { display: inline-flex; align-items: center; gap: 11px; font-family: var(--u-font-display); }
+.brand-1 { font-size: 38px; font-weight: 800; letter-spacing: -1.5px; color: var(--u-text); line-height: 1; }
+.brand-2 { font-size: 17px; font-weight: 800; color: #0B1220; letter-spacing: -.2px; background: linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%); padding: 7px 16px; border-radius: 999px; line-height: 1; box-shadow: 0 6px 18px rgba(79,124,255,.35); }
+.brand-mark-sm .brand-1 { font-size: 19px; letter-spacing: -.8px; }
+.brand-mark-sm .brand-2 { font-size: 10px; padding: 4px 9px; box-shadow: 0 4px 10px rgba(79,124,255,.3); }
+.brand-mark-sm { gap: 8px; }
+.brand-mark-lg .brand-1 { font-size: 44px; }
+.brand-mark-lg .brand-2 { font-size: 19px; padding: 8px 18px; }
+html.dark .brand-2 { color: #0B1220; }
 .screen-title { margin: 30px 0 28px; font-family: var(--u-font-display); font-size: 20px; font-weight: 700; color: var(--u-text2); }
 .sector-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; width: 100%; }
 .sector-card { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 30px 16px; border-radius: 24px; background: var(--u-card); border: 1px solid var(--u-border); box-shadow: var(--u-shadow); transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, border-color .25s; }
@@ -97,11 +103,10 @@ svg { width: 1em; height: 1em; display: block; }
 
 .app-shell { display: flex; min-height: 100vh; }
 .side { width: 248px; flex-shrink: 0; background: var(--u-card); border-right: 1px solid var(--u-border); padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; position: sticky; top: 0; height: 100vh; }
-.side-brand { display: flex; align-items: center; gap: 11px; padding: 6px 8px 14px; }
-.side-brand-ico { width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--c); color: #fff; font-size: 20px; box-shadow: 0 6px 16px color-mix(in srgb, var(--c) 35%, transparent); }
-.side-brand-txt { display: flex; flex-direction: column; line-height: 1.25; }
-.side-brand-txt b { font-family: var(--u-font-display); font-size: 14px; font-weight: 800; }
-.side-brand-txt i { font-style: normal; font-size: 11px; color: var(--u-text3); font-weight: 600; }
+.side-brand { display: flex; flex-direction: column; gap: 10px; padding: 6px 8px 16px; }
+.side-brand-logo { display: flex; }
+.side-brand-sec { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; color: var(--u-text3); letter-spacing: .3px; text-transform: uppercase; }
+.side-brand-sec svg { font-size: 14px; color: var(--c); }
 .side-user { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: var(--radius-sm); background: var(--u-bg2); margin-bottom: 6px; width: 100%; text-align: left; transition: background .12s; }
 .side-user:hover { background: var(--u-border); }
 .avatar { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 13px; }
@@ -903,20 +908,24 @@ function toast(msg, type){
   setTimeout(function(){ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },300); }, 2400);
 }
 
+function brandMark(size){
+  var cls = size ? (' brand-mark-'+size) : '';
+  return '<div class="brand-mark'+cls+'"><span class="brand-1">MALBA</span><span class="brand-2">Work OS</span></div>';
+}
 function renderSectorScreen() {
   var cards='';
   Object.keys(SECTORS).forEach(function(key){
     var s=SECTORS[key];
     cards += '<button class="sector-card" data-sector="'+key+'"><span class="sector-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><span class="sector-name">'+esc(s.label)+'</span><span class="sector-sub">'+esc(s.sub)+'</span></button>';
   });
-  render('<div class="screen"><div class="screen-inner"><div class="brand-mark"><span class="brand-1">MALBA</span><span class="brand-2">Work OS</span></div><p class="screen-title">Quem está acessando?</p><div class="sector-grid">'+cards+'</div></div></div>');
+  render('<div class="screen"><div class="screen-inner">'+brandMark('lg')+'<p class="screen-title">Quem está acessando?</p><div class="sector-grid">'+cards+'</div></div></div>');
   var btns=app.querySelectorAll('.sector-card');
   for (var i=0;i<btns.length;i++) btns[i].addEventListener('click', function(){ renderLogin(this.getAttribute('data-sector')); });
 }
 
 function renderLogin(sector) {
   var s=SECTORS[sector];
-  render('<div class="screen"><div class="screen-inner login-inner"><div class="login-card"><span class="login-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><h1 class="login-h">'+esc(s.label)+'</h1><p class="login-sub">Entre com seu acesso</p><label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="username" placeholder="voce@malba.com.br"></label><label class="field"><span>Senha</span><input id="senha" type="password" autocomplete="current-password" placeholder="••••••••"></label><p class="login-err" id="err"></p><button class="btn btn-primary" id="btnEntrar">Entrar</button><button class="btn-link" id="btnVoltar">← Trocar de setor</button></div><p class="version">MALBA Work OS · v2</p></div></div>');
+  render('<div class="screen"><div class="screen-inner login-inner">'+brandMark('')+'<div class="login-card" style="margin-top:22px"><span class="login-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><h1 class="login-h">'+esc(s.label)+'</h1><p class="login-sub">Entre com seu acesso</p><label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="username" placeholder="voce@malba.com.br"></label><label class="field"><span>Senha</span><input id="senha" type="password" autocomplete="current-password" placeholder="••••••••"></label><p class="login-err" id="err"></p><button class="btn btn-primary" id="btnEntrar">Entrar</button><button class="btn-link" id="btnVoltar">← Trocar de setor</button></div><p class="version">MALBA Work OS · v13</p></div></div>');
   var emailEl=document.getElementById('email'), senhaEl=document.getElementById('senha'), errEl=document.getElementById('err'), btn=document.getElementById('btnEntrar');
   function entrar(){
     errEl.textContent=''; btn.disabled=true; btn.textContent='Entrando...';
@@ -954,7 +963,7 @@ function renderShell(innerHTML, title) {
   });
   render(
     '<div class="app-shell"><aside class="side">'+
-      '<div class="side-brand"><span class="side-brand-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><span class="side-brand-txt"><b>MALBA Work OS</b><i>'+esc(s.label)+'</i></span></div>'+
+      '<div class="side-brand"><div class="side-brand-logo">'+brandMark('sm')+'</div><span class="side-brand-sec" style="--c:'+s.color+'">'+icon(s.icon)+esc(s.label)+'</span></div>'+
       '<button class="side-user" id="sideUser">'+(u.avatar?'<span class="avatar" style="background:center/cover url(\''+u.avatar+'\')"></span>':'<span class="avatar" style="background:'+(u.color||s.color)+'">'+esc(u.initials)+'</span>')+'<span class="side-user-txt"><b>'+esc(u.name.split(' ')[0])+'</b><i>'+roleLabel+'</i></span></button>'+
       '<nav class="nav">'+nav+'</nav>'+
       '<button class="btn-logout" id="btnSair">'+icon('logout')+'<span>Sair</span></button>'+
