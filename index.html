@@ -124,6 +124,7 @@ svg { width: 1em; height: 1em; display: block; }
 .top { height: 64px; flex-shrink: 0; display: flex; align-items: center; gap: 14px; padding: 0 24px; border-bottom: 1px solid var(--u-border); background: var(--u-card); }
 .top-title { font-family: var(--u-font-display); font-size: 18px; font-weight: 800; }
 .top-search { position: relative; max-width: 320px; display: flex; align-items: center; gap: 9px; padding: 9px 14px; border-radius: var(--radius-sm); background: var(--u-bg2); color: var(--u-text3); transition: box-shadow .15s; }
+.top-store { padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--u-border); background: var(--u-card); color: var(--u-text); font-size: 13px; font-weight: 700; font-family: var(--u-font-body); cursor: pointer; max-width: 180px; }
 .top-search:focus-within { box-shadow: 0 0 0 3px var(--u-accent-soft); }
 .top-search .ts-ico { display: flex; }
 .top-search svg { font-size: 17px; flex-shrink: 0; }
@@ -382,6 +383,7 @@ svg { width: 1em; height: 1em; display: block; }
 .crm-seg-hint { display: flex; align-items: center; gap: 10px; margin: -4px 0 14px; flex-wrap: wrap; }
 .crm-seg-badge { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 20px; }
 .crm-seg-x { font-size: 12px; color: var(--u-text3); }
+.pills-ro { opacity: .55; pointer-events: none; }
 
 /* ===== Projetos ===== */
 .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
@@ -817,13 +819,22 @@ function isSuper(s) { if(!s||!s.user) return false; var u=s.user; return u.role=
 // admin = super admin OU admin do setor. Só admin gerencia equipe/metas/config.
 // Resiliente: o banco pode marcar admin de setor via role, access_level ou sector_role.
 function isAdmin(s) { if(!s||!s.user) return false; if(isSuper(s)) return true; var u=s.user; return u.access_level==='sector_admin' || u.role==='sector_admin' || u.sector_role==='admin'; }
+// só admin (super OU admin de setor) cria/edita/exclui registros. Usuário comum: criar e concluir tarefas.
+function canManage(){ return isAdmin(ST.session); }
+function blockManage(){ toast('Somente administradores podem criar, editar ou excluir.','error'); }
 
 /* ========== [5] ROTAS ========== */
 function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return h?h.split('/').filter(Boolean):[]; }
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, page:'tarefas', taskView:'kanban', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+// loja "em foco": usuário-loja vê só a sua; admin escolhe pelo filtro do topo (null = todas)
+function scopeStore(){
+  if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) return ST.store.id;
+  if (isSuper(ST.session) && ST.sector==='lojas') return ST.viewStore || null;
+  return null;
+}
 
 function loadData() {
   var sector = ST.sector;
@@ -871,9 +882,8 @@ function loadData() {
 }
 
 function visibleTasks() {
-  if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) {
-    return ST.tasks.filter(function(t){ return t.store_unit_id === ST.store.id; });
-  }
+  var sid = scopeStore();
+  if (sid) return ST.tasks.filter(function(t){ return String(t.store_unit_id) === String(sid); });
   return ST.tasks;
 }
 
@@ -926,6 +936,8 @@ function renderShell(innerHTML, title) {
   var u=ST.session.user;
   var roleLabel = isSuper(ST.session) ? 'Super Admin' : (u.role==='sector_admin'?'Administrador':'Usuário');
   var pages=PAGES[ST.sector]||PAGES.lojas;
+  var ADMIN_ONLY={ config:1, gestao:1 };
+  if (!canManage()) pages = pages.filter(function(pg){ return !ADMIN_ONLY[pg.id]; });
   var nav='';
   GROUP_ORDER.forEach(function(gname){
     var items=pages.filter(function(pg){ return (pg.group||'OPERAÇÃO')===gname; });
@@ -946,6 +958,11 @@ function renderShell(innerHTML, title) {
       '<button class="btn-logout" id="btnSair">'+icon('logout')+'<span>Sair</span></button>'+
     '</aside><main class="main">'+
       '<header class="top"><span class="top-title">'+esc(title||'')+'</span><div class="top-spacer"></div>'+
+        (function(){
+          if (!(isSuper(ST.session) && ST.sector==='lojas' && (ST.storeUnits||[]).length)) return '';
+          var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(su){ return '<option value="'+esc(su.id)+'"'+(String(ST.viewStore)===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+su.store_number))+'</option>'; }).join('');
+          return '<select class="top-store" id="topStore" title="Loja em foco">'+op+'</select>';
+        })()+
         '<span class="top-online" id="topOnline"><i></i><span>Online</span></span>'+
         '<div class="top-search"><span class="ts-ico">'+icon('search')+'</span><input id="topSearch" placeholder="Buscar..." autocomplete="off"><span class="ts-kbd" id="tsKbd">Ctrl K</span><div class="ts-results" id="topResults"></div></div>'+
         '<button class="top-theme" id="themeToggle" title="'+(getTheme()==='dark'?'Modo claro':'Modo escuro')+'">'+icon(getTheme()==='dark'?'sun':'moon')+'</button>'+
@@ -972,6 +989,7 @@ function setOnlineState() {
   var txt=el.querySelector('span'); if(txt) txt.textContent = on?'Online':'Offline';
 }
 function novoContextual() {
+  if (!canManage()) { return openTaskModal(null); } // usuário comum só cria tarefa
   var pg=ST.page;
   if (pg==='campanhas') return openCampaignModal(null);
   if (pg==='crm') return openClientModal(null);
@@ -1000,6 +1018,7 @@ function bindTopbar() {
   setOnlineState();
   var kbd=document.getElementById('tsKbd'); if(kbd) kbd.addEventListener('click', openCommandPalette);
   var tt=document.getElementById('themeToggle'); if(tt) tt.addEventListener('click', toggleTheme);
+  var ts2=document.getElementById('topStore'); if(ts2) ts2.addEventListener('change', function(){ ST.viewStore=this.value||null; renderPage(); });
   var novo=document.getElementById('topNovo');
   if (novo) novo.addEventListener('click', novoContextual);
   var inp=document.getElementById('topSearch'), box=document.getElementById('topResults');
@@ -1143,7 +1162,7 @@ function sectorStatCards(c) {
   var pctHoje = hojeTasks.length?Math.round(hojeDone/hojeTasks.length*100):0;
   // Faturamento de hoje (Bling) — soma das lojas visíveis
   var fatRows=(ST.blingFat||[]).filter(function(f){ return (f.ref_date||'').slice(0,10)===hojeStr; });
-  if (ST.sector==='lojas' && ST.store) fatRows=fatRows.filter(function(f){ return String(f.store_unit_id)===String(ST.store.id); });
+  var _scp=scopeStore(); if (_scp) fatRows=fatRows.filter(function(f){ return String(f.store_unit_id)===String(_scp); });
   var fatHoje=fatRows.reduce(function(s,f){ return s+(Number(f.total)||0); },0);
   var temFat=fatRows.length>0;
   var fatConn=(ST.bling||[]).some(function(b){ return b.connected; });
@@ -1229,11 +1248,8 @@ function kpiRange(){
   if (ST.kpiPeriod==='semana'){ var b=new Date(fim+'T00:00:00'); b.setDate(b.getDate()-6); return { ini:kpiIso(b), fim:fim }; }
   return { ini: fim.slice(0,8)+'01', fim:fim }; // mês corrente
 }
-// loja logada vê só a sua; admin pode filtrar por loja (null = todas)
-function kpiStoreId(){
-  if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) return ST.store.id;
-  return ST.kpiStore || null;
-}
+// usa o filtro de loja global do topo (scopeStore)
+function kpiStoreId(){ return scopeStore(); }
 function kpiFatRows(){
   var r=kpiRange(); var sid=kpiStoreId();
   return (ST.blingFat||[]).filter(function(f){
@@ -1326,13 +1342,7 @@ function kpisHTML(){
     return '<button class="kpi-seg-b'+(ST.kpiPeriod===p?' on':'')+'" data-kpiper="'+p+'">'+lb+'</button>';
   }).join('');
   var storeSel='';
-  if (admin && !(ST.sector==='lojas' && ST.store && !isSuper(ST.session))){
-    var opts='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(s){
-      return '<option value="'+esc(s.id)+'"'+(String(ST.kpiStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';
-    }).join('');
-    storeSel='<select class="kpi-store" id="kpiStoreSel">'+opts+'</select>';
-  }
-  var sub = (sid && !( ST.sector==='lojas' && ST.store)) ? ('Loja: '+esc(storeName(sid))) : (ST.sector==='lojas'&&ST.store?('Loja '+esc(ST.store.name||ST.store.store_number)) : 'Visão consolidada');
+  var sub = sid ? ('Loja: '+esc(storeName(sid))) : 'Visão consolidada (todas as lojas)';
 
   return '<div class="tasks-head"><div><h2>KPIs</h2><div class="sub">'+sub+'</div></div>'+
     '<div class="kpi-controls">'+storeSel+'<div class="kpi-seg">'+seg+'</div></div></div>'+
@@ -1342,8 +1352,6 @@ function kpisHTML(){
 function bindKPIs(){
   var segs=document.querySelectorAll('[data-kpiper]');
   for (var i=0;i<segs.length;i++) segs[i].addEventListener('click', function(){ ST.kpiPeriod=this.getAttribute('data-kpiper'); renderPage(); });
-  var sel=document.getElementById('kpiStoreSel');
-  if (sel) sel.addEventListener('change', function(){ ST.kpiStore=this.value||null; renderPage(); });
 }
 
 /* ========== [10] TAREFAS ========== */
@@ -1459,31 +1467,37 @@ function bindTarefas() {
 function openTaskModal(task) {
   var isEdit=!!task;
   var t=task||{ title:'', description:'', priority:'media', status:'todo', due_date:today(), area:'', assignee_id:'' };
+  var canMng=canManage();
+  var ro = isEdit && !canMng; // usuário comum editando tarefa existente: só status
+  var dis = ro?' disabled':'';
   var stPills=STATUS_ORDER.map(function(k){ return '<button type="button" class="pill st-pill'+(t.status===k?' on':'')+'" data-st="'+k+'" style="color:'+STATUS[k].color+'"><span class="pdot" style="background:'+STATUS[k].color+'"></span>'+STATUS[k].label+'</button>'; }).join('');
   var prPills=['alta','media','baixa'].map(function(k){ return '<button type="button" class="pill pr-pill'+(t.priority===k?' on':'')+'" data-pr="'+k+'" style="color:'+PRIO[k].color+'"><span class="pdot" style="background:'+PRIO[k].color+'"></span>'+PRIO[k].label+'</button>'; }).join('');
   var recPills=REC_ORDER.map(function(k){ return '<button type="button" class="pill rec-pill'+((t.recurrence||'none')===k?' on':'')+'" data-rec="'+k+'">'+REC[k].label+'</button>'; }).join('');
   var userOpts='<option value="">— Ninguém —</option>';
   ST.users.forEach(function(u){ userOpts += '<option value="'+esc(u.id)+'"'+(t.assignee_id===u.id?' selected':'')+'>'+esc(u.name)+'</option>'; });
-  var delBtn=isEdit?'<button class="btn btn-danger btn-del-wrap" id="taskDel">Excluir</button>':'';
+  var delBtn=(isEdit && canMng)?'<button class="btn btn-danger btn-del-wrap" id="taskDel">Excluir</button>':'';
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
     '<div class="modal" id="taskModal">'+
-      '<input class="modal-title-input" id="tTitle" placeholder="Título da tarefa..." value="'+esc(t.title)+'">'+
+      '<input class="modal-title-input" id="tTitle" placeholder="Título da tarefa..." value="'+esc(t.title)+'"'+dis+'>'+
+      (ro?'<div class="crm-seg-hint"><span class="crm-seg-x">Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
       '<div class="modal-row"><label class="modal-label">Status</label><div class="pills" id="tStatus">'+stPills+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills" id="tPrio">'+prPills+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills" id="tRec">'+recPills+'</div></div>'+
-      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"></div></div>'+
-      '<div class="modal-row"><label class="modal-label">Responsável</label><select id="tAssignee">'+userOpts+'</select></div>'+
-      '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="tDesc" placeholder="Detalhes da tarefa...">'+esc(t.description||'')+'</textarea></div>'+
-      '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?'Salvar':'Criar tarefa')+'</button></div>'+
+      '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
+      '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
+      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div></div>'+
+      '<div class="modal-row"><label class="modal-label">Responsável</label><select id="tAssignee"'+dis+'>'+userOpts+'</select></div>'+
+      '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="tDesc" placeholder="Detalhes da tarefa..."'+dis+'>'+esc(t.description||'')+'</textarea></div>'+
+      '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?(ro?'Salvar status':'Salvar'):'Criar tarefa')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
 
   var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none';
   bindPills(modal, '#tStatus .st-pill', 'st', function(v){ stPick=v; });
-  bindPills(modal, '#tPrio .pr-pill', 'pr', function(v){ prPick=v; });
-  bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; });
+  if (!ro) {
+    bindPills(modal, '#tPrio .pr-pill', 'pr', function(v){ prPick=v; });
+    bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; });
+  }
 
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -1491,10 +1505,21 @@ function openTaskModal(task) {
   modal.querySelector('#tTitle').focus();
 
   modal.querySelector('#taskSave').addEventListener('click', function(){
+    var saveBtn=modal.querySelector('#taskSave');
+    if (ro) {
+      // usuário comum: salva apenas o status
+      saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+      sb.from('malba_vl_tasks').update({ status:stPick }).eq('id', t.id).then(function(r){
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar status'; return; }
+        for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i].status=stPick; break; }
+        close(); toast('Status atualizado','success'); renderPage();
+      });
+      return;
+    }
     var title=(modal.querySelector('#tTitle').value||'').trim();
     if (!title) { toast('Informe o título da tarefa','error'); return; }
-    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), assignee_id:modal.querySelector('#tAssignee').value||null, sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:null };
-    var saveBtn=modal.querySelector('#taskSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), assignee_id:modal.querySelector('#tAssignee').value||null, sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:scopeStore() };
+    saveBtn.disabled=true; saveBtn.textContent='Salvando...';
     if (isEdit) {
       sb.from('malba_vl_tasks').update(payload).eq('id', t.id).then(function(r){
         if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
@@ -1510,7 +1535,7 @@ function openTaskModal(task) {
     }
   });
 
-  if (isEdit) {
+  if (isEdit && canMng) {
     modal.querySelector('#taskDel').addEventListener('click', function(){
       if (!confirm('Excluir a tarefa "'+(t.title||'sem título')+'"?')) return;
       sb.from('malba_vl_tasks').delete().eq('id', t.id).then(function(r){
@@ -1592,6 +1617,7 @@ function bindEquipe() {
 }
 
 function openMemberModal(member) {
+  if(!canManage()){ blockManage(); return; }
   var isNew = !member;
   var m = member || { name:'', role:'', phone:'', color:'#3B6FF7', is_active:true };
   var admin = isAdmin(ST.session);
@@ -1703,9 +1729,8 @@ function fmtBRL(v) {
 
 // metas visíveis: loja vê as da própria loja (e as do setor inteiro); admin vê todas.
 function visibleGoals() {
-  if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) {
-    return ST.goals.filter(function(g){ return g.store_unit_id===ST.store.id || !g.store_unit_id; });
-  }
+  var sid = scopeStore();
+  if (sid) return ST.goals.filter(function(g){ return String(g.store_unit_id)===String(sid) || !g.store_unit_id; });
   return ST.goals;
 }
 
@@ -1760,6 +1785,7 @@ function bindMetas() {
 }
 
 function openGoalModal(goal) {
+  if(!canManage()){ blockManage(); return; }
   var isNew = !goal;
   var now = new Date();
   var g = goal || { month:now.getMonth()+1, year:now.getFullYear(), goal_value:'', actual_value:0, store_unit_id:null };
@@ -1881,9 +1907,15 @@ function crmRecencia(c){
 var crmBusca = '';
 var crmSeg = 'todos';
 
+function crmPertenceSetor(c){
+  if (ST.sector==='lojas') return (c.sector==='lojas' || !c.sector || !!c.store_unit_id);
+  return c.sector===ST.sector;
+}
 function crmHTML() {
   var q = crmBusca.toLowerCase();
-  var all = ST.clients || [];
+  var sid = scopeStore();
+  var all = (ST.clients || []).filter(crmPertenceSetor);
+  if (sid) all = all.filter(function(c){ return String(c.store_unit_id)===String(sid); });
 
   // contagem por segmento
   var counts={ todos:all.length, ativo:0, esfriando:0, inativo:0, novo:0, prospecto:0 };
@@ -1939,8 +1971,9 @@ function crmHTML() {
   }
 
   var importBtn = isAdmin(ST.session) ? '<button class="btn-sync" id="btnImportBling">'+icon('trend')+'Importar do Bling</button>' : '';
+  var foco = sid ? esc(storeName(sid)) : (ST.sector==='lojas' ? 'Todas as lojas' : esc(SECTORS[ST.sector].label));
   return ''+
-    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · classificação automática por recência</div></div><div class="cfg-head-btns">'+importBtn+'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button></div></div>'+
+    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+importBtn+(canManage()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
     summary+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
@@ -1967,7 +2000,7 @@ function crmContactRow(c){
     '<div class="crm-cp-main"><b>'+esc(c.name)+'</b><i>'+esc(crmRecencia(c))+hist+(c.company?' · '+esc(c.company):'')+'</i></div>'+
     '<span class="crm-cp-seg" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span>'+
     waBtn+
-    '<button class="crm-mini buy" data-buy="'+esc(c.id)+'" data-stop="1">'+icon('dollar')+'Comprou</button>'+
+    (canManage()?'<button class="crm-mini buy" data-buy="'+esc(c.id)+'" data-stop="1">'+icon('dollar')+'Comprou</button>':'')+
   '</div>';
 }
 function crmRowHTML(c) {
@@ -2031,6 +2064,7 @@ function bindCRM() {
   }
 }
 function crmRegistrarCompra(id){
+  if(!canManage()){ blockManage(); return; }
   var c=null; for (var k=0;k<ST.clients.length;k++) if (String(ST.clients[k].id)===String(id)) { c=ST.clients[k]; break; }
   if (!c) return;
   var rec={ last_purchase:today(), last_contact:today(), updated_at:new Date().toISOString() };
@@ -2041,12 +2075,16 @@ function crmRegistrarCompra(id){
 }
 
 function openClientModal(client) {
+  if(!canManage()){ blockManage(); return; }
   var isNew = !client;
   var c = client || { name:'', company:'', phone:'', email:'', notes:'', status:'ativo', last_purchase:'', purchase_cycle_days:'' };
 
   var tipoVal = (c.status==='prospecto') ? 'prospecto' : 'ativo';
   var stOpts = '<option value="ativo"'+(tipoVal==='ativo'?' selected':'')+'>Cliente</option>'+
                '<option value="prospecto"'+(tipoVal==='prospecto'?' selected':'')+'>Prospecto</option>';
+  var superAdm = isSuper(ST.session) && ST.sector==='lojas';
+  var curStore = (c.store_unit_id || scopeStore() || '');
+  var lojaRow = superAdm ? ('<div class="modal-row"><label class="modal-label">Loja</label><select id="cStore"><option value="">— sem loja específica</option>'+(ST.storeUnits||[]).map(function(s){ return '<option value="'+esc(s.id)+'"'+(String(curStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>'; }).join('')+'</select></div>') : '';
 
   var delBtn = isNew ? '' : '<button class="btn btn-danger btn-del-wrap" id="cliDel">Excluir</button>';
   var taskBtn = isNew ? '' : '<button class="btn btn-ghost" id="cliTask">+ Tarefa</button>';
@@ -2058,6 +2096,7 @@ function openClientModal(client) {
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Empresa</label><input type="text" id="cCompany" value="'+esc(c.company||'')+'"></div><div class="modal-row"><label class="modal-label">Telefone</label><input type="text" id="cPhone" value="'+esc(c.phone||'')+'"></div></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">E-mail</label><input type="text" id="cEmail" value="'+esc(c.email||'')+'"></div><div class="modal-row"><label class="modal-label">Tipo</label><select id="cStatus">'+stOpts+'</select></div></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Última compra</label><input type="date" id="cLastBuy" value="'+esc((c.last_purchase||'').slice(0,10))+'"></div><div class="modal-row"><label class="modal-label">Ciclo de recompra (dias)</label><input type="number" id="cCycle" min="1" placeholder="30" value="'+esc(c.purchase_cycle_days||'')+'"></div></div>'+
+      lojaRow+
       '<div class="crm-seg-hint" id="cSegHint"></div>'+
       '<div class="modal-row"><label class="modal-label">Observações</label><textarea id="cNotes" placeholder="Anotações sobre o cliente...">'+esc(c.notes||'')+'</textarea></div>'+
       '<div class="modal-foot">'+delBtn+taskBtn+'<button class="btn btn-ghost" id="cliCancel">Cancelar</button><button class="btn btn-primary" id="cliSave">'+(isNew?'Criar':'Salvar')+'</button></div>'+
@@ -2086,6 +2125,8 @@ function openClientModal(client) {
     var name=(modal.querySelector('#cName').value||'').trim();
     if (!name) { toast('Informe o nome','error'); return; }
     var cycleVal = parseInt(modal.querySelector('#cCycle').value,10);
+    var storeEl = modal.querySelector('#cStore');
+    var lojaId = storeEl ? (storeEl.value||null) : (ST.store ? ST.store.id : (scopeStore()||null));
     var rec = {
       name:name,
       company:(modal.querySelector('#cCompany').value||'').trim(),
@@ -2095,6 +2136,7 @@ function openClientModal(client) {
       notes:(modal.querySelector('#cNotes').value||'').trim(),
       last_purchase:(modal.querySelector('#cLastBuy').value||null),
       purchase_cycle_days:(cycleVal>0?cycleVal:30),
+      sector:ST.sector, store_unit_id:lojaId,
       last_contact:today(), updated_at:new Date().toISOString()
     };
     var saveBtn=modal.querySelector('#cliSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
@@ -2157,7 +2199,7 @@ function projetosHTML() {
   } else {
     ps.forEach(function(pr){ cards += projectCardHTML(pr); });
   }
-  return '<div class="tasks-head"><div><h2>Projetos</h2><div class="sub">'+ps.length+' projeto(s)</div></div><button class="btn-new" id="btnNovoProjeto">'+icon('plus')+'Novo projeto</button></div><div class="proj-grid">'+cards+'</div>';
+  return '<div class="tasks-head"><div><h2>Projetos</h2><div class="sub">'+ps.length+' projeto(s)</div></div>'+(canManage()?'<button class="btn-new" id="btnNovoProjeto">'+icon('plus')+'Novo projeto</button>':'')+'</div><div class="proj-grid">'+cards+'</div>';
 }
 
 function projectCardHTML(pr) {
@@ -2234,11 +2276,11 @@ function projetoDetalheHTML(pid) {
     '<button class="btn-back" id="projBack">← Voltar aos projetos</button>'+
     '<div class="proj-detail-head" style="border-left:4px solid '+cor+'">'+
       '<div><h2>'+esc(pr.name)+'</h2>'+(pr.description?'<p>'+esc(pr.description)+'</p>':'')+'</div>'+
-      '<button class="btn btn-ghost" id="projEdit">Editar projeto</button>'+
+      (canManage()?'<button class="btn btn-ghost" id="projEdit">Editar projeto</button>':'')+
     '</div>'+
     '<div class="proj-prog big"><div class="proj-prog-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div><small>'+pct+'% concluído · '+ms.length+' etapa(s)</small></div>'+
     '<div class="ms-sec"><div class="ms-sec-h">Etapas</div>'+rows+'</div>'+
-    '<div class="ms-add"><input id="msName" placeholder="Nova etapa..."><input type="date" id="msDate"><select id="msResp"><option value="">Responsável</option>'+ST.users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>';}).join('')+'</select><button class="btn btn-primary" id="msAdd">Adicionar</button></div>';
+    (canManage()?'<div class="ms-add"><input id="msName" placeholder="Nova etapa..."><input type="date" id="msDate"><select id="msResp"><option value="">Responsável</option>'+ST.users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>';}).join('')+'</select><button class="btn btn-primary" id="msAdd">Adicionar</button></div>':'');
 }
 
 function bindProjetoDetalhe() {
@@ -2249,7 +2291,8 @@ function bindProjetoDetalhe() {
     var pr=null; for (var i=0;i<ST.projects.length;i++) if (String(ST.projects[i].id)===String(ST.openProject)) { pr=ST.projects[i]; break; }
     if (pr) openProjectModal(pr);
   });
-  // marcar etapa como feita/refazer (alterna feito <-> todo)
+  // marcar etapa como feita/refazer (alterna feito <-> todo) — só admin
+  if (canManage()) {
   var checks=app.querySelectorAll('[data-mscheck]');
   for (var i=0;i<checks.length;i++) {
     checks[i].addEventListener('click', function(e){
@@ -2274,6 +2317,7 @@ function bindProjetoDetalhe() {
       renderPage();
     });
   }
+  } // fim mutações de etapa (admin)
   // expandir/recolher painel de passos
   var exps=app.querySelectorAll('[data-msexp]');
   for (var e=0;e<exps.length;e++) {
@@ -2283,7 +2327,8 @@ function bindProjetoDetalhe() {
       renderPage();
     });
   }
-  // marcar passo (subtarefa)
+  // marcar passo (subtarefa) — só admin
+  if (canManage()) {
   var subToggles=app.querySelectorAll('[data-subtoggle]');
   for (var s=0;s<subToggles.length;s++) {
     subToggles[s].addEventListener('change', function(){
@@ -2334,10 +2379,12 @@ function bindProjetoDetalhe() {
       ST.milestones.push(r.data); toast('Etapa adicionada','success'); renderPage();
     });
   });
+  } // fim mutações de passos/etapa (admin)
 }
 
 /* ----- Modal de criar/editar projeto ----- */
 function openProjectModal(project) {
+  if(!canManage()){ blockManage(); return; }
   var isNew=!project;
   var pr=project||{ name:'', description:'', start_date:'', end_date:'', status:'andamento', color:'#3B6FF7', members:[] };
   var membros=pr.members||[];
@@ -2456,10 +2503,11 @@ function usuariosHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' usuário(s)</span><button class="btn-new" id="btnNovoUser">'+icon('plus')+'Novo usuário</button></div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' usuário(s)</span>'+(canManage()?'<button class="btn-new" id="btnNovoUser">'+icon('plus')+'Novo usuário</button>':'')+'</div>'+rows;
 }
 
 function openUserModal(user) {
+  if(!canManage()){ blockManage(); return; }
   var isNew = !user;
   var u = user || { name:'', email:'', sector:ST.sector, color:'#3B6FF7' };
   var nivel = isNew ? 'user' : nivelDe(u);
@@ -2563,7 +2611,7 @@ function lojasHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' loja(s)</span><div class="cfg-head-btns"><button class="btn-sync" id="btnSyncBling">'+icon('trend')+'Sincronizar Bling</button><button class="btn-new" id="btnNovaLoja">'+icon('plus')+'Nova loja</button></div></div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' loja(s)</span><div class="cfg-head-btns">'+(canManage()?'<button class="btn-sync" id="btnSyncBling">'+icon('trend')+'Sincronizar Bling</button><button class="btn-new" id="btnNovaLoja">'+icon('plus')+'Nova loja</button>':'')+'</div></div>'+rows;
 }
 function userByIdAll(id){ for(var i=0;i<ST.allUsers.length;i++) if(ST.allUsers[i].id===id) return ST.allUsers[i]; return null; }
 function blingDaLoja(id){ var b=ST.bling||[]; for(var i=0;i<b.length;i++) if(String(b[i].store_unit_id)===String(id)) return b[i]; return null; }
@@ -2606,6 +2654,7 @@ function openBlingModal(store) {
 }
 
 function openStoreModal(store) {
+  if(!canManage()){ blockManage(); return; }
   var isNew = !store;
   var s = store || { name:'', store_number:(ST.storeUnits.length+1), district:'', address:'', phone:'', whatsapp:'', email:'', user_id:null };
 
@@ -2700,10 +2749,11 @@ function bannersAdminHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' banner(s)</span><button class="btn-new" id="btnNovoBanner">'+icon('plus')+'Novo banner</button></div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' banner(s)</span>'+(canManage()?'<button class="btn-new" id="btnNovoBanner">'+icon('plus')+'Novo banner</button>':'')+'</div>'+rows;
 }
 
 function openBannerModal(banner) {
+  if(!canManage()){ blockManage(); return; }
   var isNew = !banner;
   var b = banner || { title:'', description:'', bg_gradient:BANNER_GRADS[0], image_url_desktop:null, link_url:'', sectors:[], is_active:true, store_unit_id:null };
   var imgData = b.image_url_desktop || null;
@@ -2909,6 +2959,7 @@ function bindCampanhas() {
 }
 
 function openCampaignModal(camp) {
+  if(!canManage()){ blockManage(); return; }
   var isNew=!camp;
   var t=today(); var wl=new Date(); wl.setDate(wl.getDate()+7);
   var c = camp || { name:'', description:'', start_date:t, end_date:wl.getFullYear()+'-'+pad(wl.getMonth()+1)+'-'+pad(wl.getDate()), color:'#3B6FF7', area:'', user_ids:[], tasks:[] };
@@ -3098,10 +3149,11 @@ function comissoesHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' lançamento(s)</span><button class="btn-new" id="btnNovaComissao">'+icon('plus')+'Lançar comissões</button></div>'+summary+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' lançamento(s)</span>'+(canManage()?'<button class="btn-new" id="btnNovaComissao">'+icon('plus')+'Lançar comissões</button>':'')+'</div>'+summary+rows;
 }
 
 function openComissaoModal() {
+  if(!canManage()){ blockManage(); return; }
   var ls = lojasGestao();
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var mode='individual';
@@ -3221,6 +3273,7 @@ function openComissaoModal() {
 }
 
 function comissaoDetalhe(c) {
+  if(!canManage()){ blockManage(); return; }
   var loja=storeName(c.store_unit_id)||'Loja';
   var periodo=c.periodo_label||((c.periodo_inicio?fmtDate(c.periodo_inicio):'')+(c.periodo_fim?(' a '+fmtDate(c.periodo_fim)):''));
   var rows=(c.rateio||[]).map(function(r){
@@ -3271,7 +3324,7 @@ function avaliacoesHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' avaliação(ões)</span><button class="btn-new" id="btnNovaAvaliacao">'+icon('plus')+'Nova avaliação</button></div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' avaliação(ões)</span>'+(canManage()?'<button class="btn-new" id="btnNovaAvaliacao">'+icon('plus')+'Nova avaliação</button>':'')+'</div>'+rows;
 }
 function renderStarsRO(nota) {
   var n=Math.round(Number(nota)||0); var s='';
@@ -3280,6 +3333,7 @@ function renderStarsRO(nota) {
 }
 
 function openAvaliacaoModal() {
+  if(!canManage()){ blockManage(); return; }
   var ls = lojasGestao();
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var tipo='membro';
@@ -3574,17 +3628,20 @@ function goToPage(id){ ST.page=id; ST.openProject=null; navigate(ST.sector+'/'+i
 function buildCommands() {
   var cmds=[]; var admin=isAdmin(ST.session);
   var pages=PAGES[ST.sector]||PAGES.lojas;
+  if (!admin) pages = pages.filter(function(pg){ return pg.id!=='config' && pg.id!=='gestao'; });
   pages.forEach(function(pg){ if(pg.enabled) cmds.push({ cat:'Ir para', label:pg.label, icon:pg.icon, run:function(){ goToPage(pg.id); } }); });
   cmds.push({ cat:'Ir para', label:'Meu Perfil', icon:'users', run:function(){ ST.page='perfil'; navigate(ST.sector+'/perfil'); renderPage(); } });
   // ações de criação
   cmds.push({ cat:'Criar', label:'Nova tarefa', icon:'plus', run:function(){ openTaskModal(null); } });
-  if (ST.sector==='marketing') cmds.push({ cat:'Criar', label:'Nova campanha', icon:'plus', run:function(){ openCampaignModal(null); } });
-  cmds.push({ cat:'Criar', label:'Novo cliente', icon:'plus', run:function(){ openClientModal(null); } });
-  cmds.push({ cat:'Criar', label:'Novo projeto', icon:'plus', run:function(){ openProjectModal(null); } });
-  if (admin) cmds.push({ cat:'Criar', label:'Nova meta', icon:'plus', run:function(){ openGoalModal(null); } });
-  if (admin && ST.sector==='lojas') {
-    cmds.push({ cat:'Criar', label:'Cadastrar funcionário', icon:'plus', run:function(){ openMemberModal(null); } });
-    cmds.push({ cat:'Criar', label:'Lançar comissão', icon:'dollar', run:function(){ ST.page='gestao'; ST.gestaoTab='comissoes'; navigate(ST.sector+'/gestao'); renderPage(); setTimeout(openComissaoModal,60); } });
+  if (admin) {
+    if (ST.sector==='marketing') cmds.push({ cat:'Criar', label:'Nova campanha', icon:'plus', run:function(){ openCampaignModal(null); } });
+    cmds.push({ cat:'Criar', label:'Novo cliente', icon:'plus', run:function(){ openClientModal(null); } });
+    cmds.push({ cat:'Criar', label:'Novo projeto', icon:'plus', run:function(){ openProjectModal(null); } });
+    cmds.push({ cat:'Criar', label:'Nova meta', icon:'plus', run:function(){ openGoalModal(null); } });
+    if (ST.sector==='lojas') {
+      cmds.push({ cat:'Criar', label:'Cadastrar funcionário', icon:'plus', run:function(){ openMemberModal(null); } });
+      cmds.push({ cat:'Criar', label:'Lançar comissão', icon:'dollar', run:function(){ ST.page='gestao'; ST.gestaoTab='comissoes'; navigate(ST.sector+'/gestao'); renderPage(); setTimeout(openComissaoModal,60); } });
+    }
   }
   cmds.push({ cat:'Ajuda', label:'Atalhos de teclado', icon:'search', run:openShortcutsHelp });
   cmds.push({ cat:'Conta', label:'Sair da conta', icon:'logout', run:logout });
@@ -3657,6 +3714,7 @@ function openShortcutsHelp() {
 /* ========== [11] ROTEAMENTO DE PÁGINAS ========== */
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
+  if (!canManage() && (ST.page==='config' || ST.page==='gestao')) { ST.page='inicio'; }
   // Perfil é uma página especial, fora do menu de setores
   if (ST.page==='perfil') { renderShell(perfilHTML(), 'Meu Perfil'); bindPerfil(); return; }
   var pages=PAGES[ST.sector]||PAGES.lojas; var pg=null;
