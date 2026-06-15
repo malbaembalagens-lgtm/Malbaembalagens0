@@ -149,6 +149,11 @@ svg { width: 1em; height: 1em; display: block; }
 .bling-help { font-size: 12px; color: var(--u-text3); line-height: 1.45; margin: 4px 0 10px; }
 .bling-ok-note { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--u-green); background: var(--u-green-soft); padding: 10px 13px; border-radius: 10px; margin-bottom: 12px; }
 .bling-ok-note svg { font-size: 16px; }
+.cfg-head-btns { display: flex; gap: 10px; align-items: center; }
+.btn-sync { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 11px; font-size: 13.5px; font-weight: 700; background: var(--u-green-soft); color: var(--u-green); transition: transform .1s; }
+.btn-sync:hover { transform: translateY(-1px); }
+.btn-sync svg { font-size: 16px; }
+.btn-sync:disabled { opacity: .6; cursor: default; }
 .top-theme:hover { color: var(--u-accent); background: var(--u-accent-soft); }
 .top-novo { padding: 9px 18px; }
 .ts-kbd { font-size: 10.5px; font-weight: 700; color: var(--u-text3); background: var(--u-card); border: 1px solid var(--u-border2); border-radius: 6px; padding: 2px 7px; flex-shrink: 0; cursor: pointer; }
@@ -1082,9 +1087,15 @@ function sectorStatCards(c) {
   var campAtivas=(ST.campaigns||[]).filter(function(x){ var s=(x.start_date||'').split('T')[0], e=(x.end_date||'').split('T')[0]; return s && (!e ? s===hojeStr : (hojeStr>=s && hojeStr<=e)); }).length;
   var projAtivos=(ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).length;
   var pctHoje = hojeTasks.length?Math.round(hojeDone/hojeTasks.length*100):0;
+  // Faturamento de hoje (Bling) — soma das lojas visíveis
+  var fatRows=(ST.blingFat||[]).filter(function(f){ return (f.ref_date||'').slice(0,10)===hojeStr; });
+  if (ST.sector==='lojas' && ST.store) fatRows=fatRows.filter(function(f){ return String(f.store_unit_id)===String(ST.store.id); });
+  var fatHoje=fatRows.reduce(function(s,f){ return s+(Number(f.total)||0); },0);
+  var temFat=fatRows.length>0;
+  var fatConn=(ST.bling||[]).some(function(b){ return b.connected; });
 
   if (ST.sector==='lojas') return [
-    { label:'Faturamento hoje', val:'—',           sub:'Sincroniza com o Bling', subColor:'var(--u-text3)', color:'#3B6FF7', icon:'dollar', viz:'spark' },
+    { label:'Faturamento hoje', val:(temFat?brlShort(fatHoje):'—'), sub:(temFat?'atualizado pelo Bling':(fatConn?'Aguardando 1ª sincronização':'Conecte o Bling')), subColor:(temFat?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark' },
     { label:'Meta do mês',      val:metaPct+'%',    sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'Defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
     { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
     { label:'Clientes ativos',  val:clientesAtivos.toLocaleString('pt-BR'), sub:(ST.clients||[]).length+' no CRM', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
@@ -2226,7 +2237,7 @@ function lojasHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' loja(s)</span><button class="btn-new" id="btnNovaLoja">'+icon('plus')+'Nova loja</button></div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' loja(s)</span><div class="cfg-head-btns"><button class="btn-sync" id="btnSyncBling">'+icon('trend')+'Sincronizar Bling</button><button class="btn-new" id="btnNovaLoja">'+icon('plus')+'Nova loja</button></div></div>'+rows;
 }
 function userByIdAll(id){ for(var i=0;i<ST.allUsers.length;i++) if(ST.allUsers[i].id===id) return ST.allUsers[i]; return null; }
 function blingDaLoja(id){ var b=ST.bling||[]; for(var i=0;i<b.length;i++) if(String(b[i].store_unit_id)===String(id)) return b[i]; return null; }
@@ -2478,6 +2489,24 @@ function bindConfig() {
 
   var nl = document.getElementById('btnNovaLoja');
   if (nl) nl.addEventListener('click', function(){ openStoreModal(null); });
+  var bs = document.getElementById('btnSyncBling');
+  if (bs) bs.addEventListener('click', function(){
+    var old=bs.innerHTML; bs.disabled=true; bs.textContent='Sincronizando...';
+    toast('Buscando vendas no Bling...','success');
+    fetch(SUPABASE_URL+'/functions/v1/bling-sync', {
+      method:'POST',
+      headers:{ 'Authorization':'Bearer '+SUPABASE_ANON_KEY, 'apikey':SUPABASE_ANON_KEY, 'Content-Type':'application/json' },
+      body:'{}'
+    }).then(function(res){ return res.json().catch(function(){ return { httpStatus:res.status }; }); }).then(function(d){
+      bs.disabled=false; bs.innerHTML=old;
+      console.log('[bling-sync]', d);
+      if (!d || d.ok!==true) { toast('Sincronização: '+((d&&(d.message||d.error))||('falha HTTP '+(d&&d.httpStatus||'')) ),'error'); return; }
+      var rs=d.results||[]; var erros=rs.filter(function(x){ return x.erro; });
+      if (erros.length) { toast('Sincronizou, mas '+erros.length+' loja(s) com aviso (veja o console)','error'); }
+      else { toast('Bling sincronizado! '+rs.length+' loja(s)','success'); }
+      loadData().then(function(){ renderPage(); });
+    }).catch(function(e){ bs.disabled=false; bs.innerHTML=old; console.error(e); toast('Erro ao sincronizar: '+e.message,'error'); });
+  });
   var sRows = app.querySelectorAll('.cfg-row[data-sid]');
   for (var k=0;k<sRows.length;k++) sRows[k].addEventListener('click', function(){
     var id=this.getAttribute('data-sid'); var st=null;
