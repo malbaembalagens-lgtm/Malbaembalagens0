@@ -263,6 +263,23 @@ svg { width: 1em; height: 1em; display: block; }
 .stat-card .stat-dot { width: 9px; height: 9px; border-radius: 50%; }
 .stat-card .stat-num { font-family: var(--u-font-display); font-size: 30px; font-weight: 800; }
 
+/* KPIs */
+.kpi-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.kpi-store { padding: 8px 12px; border-radius: 11px; border: 1px solid var(--u-border); background: var(--u-card); color: var(--u-text); font-size: 13px; font-weight: 600; font-family: var(--u-font-body); cursor: pointer; }
+.kpi-seg { display: inline-flex; background: var(--u-bg2); border: 1px solid var(--u-border); border-radius: 11px; padding: 3px; gap: 2px; }
+.kpi-seg-b { padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--u-text2); transition: all .12s; }
+.kpi-seg-b.on { background: var(--u-card); color: var(--u-accent); box-shadow: var(--u-shadow); }
+.kpi-bars { display: flex; align-items: flex-end; gap: 6px; height: 200px; padding: 8px 2px 0; overflow-x: auto; }
+.kpi-bar { flex: 1; min-width: 22px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 6px; }
+.kpi-bar-fill { width: 70%; max-width: 34px; min-height: 2px; background: linear-gradient(180deg, #6E9BFF, #3B6FF7); border-radius: 6px 6px 3px 3px; transition: height .3s; }
+.kpi-bar-fill.today { background: linear-gradient(180deg, #34D399, #16A34A); }
+.kpi-bar-x { font-size: 10px; color: var(--u-text3); font-weight: 600; white-space: nowrap; }
+.kpi-srow { display: flex; align-items: center; gap: 10px; padding: 11px 4px; border-bottom: 1px solid var(--u-border); }
+.kpi-srow:last-child { border-bottom: none; }
+.kpi-srow-n { font-weight: 700; font-size: 14px; flex: 1; }
+.kpi-srow-v { font-family: var(--u-font-display); font-weight: 800; font-size: 16px; color: var(--u-accent); }
+.kpi-srow-s { font-size: 12px; color: var(--u-text3); min-width: 160px; text-align: right; }
+
 .tasks-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
 .tasks-head h2 { font-family: var(--u-font-display); font-size: 20px; font-weight: 800; }
 .tasks-head .sub { color: var(--u-text2); font-size: 13px; margin-top: 2px; }
@@ -688,7 +705,7 @@ var SECTORS = {
 function p(id,label,ic,enabled,group){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'OPERAÇÃO' }; }
 var GROUP_ORDER = ['OPERAÇÃO','PLANEJAMENTO','COMUNICAÇÃO','GESTÃO'];
 var PAGES = {
-  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',false,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
@@ -770,7 +787,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, page:'tarefas', taskView:'kanban', configTab:'usuarios', gestaoTab:'comissoes', cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+var ST = { session:null, sector:null, store:null, page:'tarefas', taskView:'kanban', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
 
 function loadData() {
   var sector = ST.sector;
@@ -1167,6 +1184,131 @@ function bannerHeroHTML(b) {
   return '<div class="dash-hero banner" style="background:'+bg+'">'+overlay+inner+'</div>';
 }
 function statCard(label,num,color){ return '<div class="stat-card"><div class="stat-top"><span class="stat-dot" style="background:'+color+'"></span>'+esc(label)+'</div><div class="stat-num">'+num+'</div></div>'; }
+
+/* ========== [9b] KPIs ========== */
+function kpiIso(dt){ var y=dt.getFullYear(), m=('0'+(dt.getMonth()+1)).slice(-2), d=('0'+dt.getDate()).slice(-2); return y+'-'+m+'-'+d; }
+function kpiRange(){
+  var fim = today();
+  if (ST.kpiPeriod==='dia') return { ini:fim, fim:fim };
+  if (ST.kpiPeriod==='semana'){ var b=new Date(fim+'T00:00:00'); b.setDate(b.getDate()-6); return { ini:kpiIso(b), fim:fim }; }
+  return { ini: fim.slice(0,8)+'01', fim:fim }; // mês corrente
+}
+// loja logada vê só a sua; admin pode filtrar por loja (null = todas)
+function kpiStoreId(){
+  if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) return ST.store.id;
+  return ST.kpiStore || null;
+}
+function kpiFatRows(){
+  var r=kpiRange(); var sid=kpiStoreId();
+  return (ST.blingFat||[]).filter(function(f){
+    var d=(f.ref_date||'').slice(0,10);
+    if (d<r.ini || d>r.fim) return false;
+    if (sid && String(f.store_unit_id)!==String(sid)) return false;
+    return true;
+  });
+}
+function kpiSeries(){
+  var sid=kpiStoreId(); var fim=today();
+  var count = ST.kpiPeriod==='mes' ? Number(fim.slice(8,10)) : 7;
+  if (count<1) count=1;
+  var base=new Date(fim+'T00:00:00'); var out=[];
+  for (var i=count-1;i>=0;i--){ var d=new Date(base); d.setDate(d.getDate()-i); var ds=kpiIso(d);
+    var tot=(ST.blingFat||[]).filter(function(f){ return (f.ref_date||'').slice(0,10)===ds && (!sid||String(f.store_unit_id)===String(sid)); }).reduce(function(s,f){ return s+(Number(f.total)||0); },0);
+    out.push({ date:ds, total:tot });
+  }
+  return out;
+}
+function kpisHTML(){
+  var admin = isAdmin(ST.session);
+  var sid = kpiStoreId();
+  var r = kpiRange();
+  var rows = kpiFatRows();
+  var fat = rows.reduce(function(s,f){ return s+(Number(f.total)||0); },0);
+  var ped = rows.reduce(function(s,f){ return s+(Number(f.orders_count)||0); },0);
+  var ticket = ped>0 ? fat/ped : 0;
+  // meta (sempre do mês corrente — metas são mensais)
+  var now=new Date(), y=now.getFullYear(), m=now.getMonth()+1;
+  var gs=visibleGoals().filter(function(g){ return g.month===m && g.year===y && (!sid || String(g.store_unit_id)===String(sid)); });
+  var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
+  var real=gs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
+  var metaPct = meta>0 ? Math.min(100, Math.round(real/meta*100)) : 0;
+  // tarefas do período
+  var ts=visibleTasks().filter(function(t){ var d=(t.due_date||'').slice(0,10); return d>=r.ini && d<=r.fim; });
+  var tsFeito=ts.filter(function(t){ return t.status==='feito'; }).length;
+  var tsPct = ts.length ? Math.round(tsFeito/ts.length*100) : 0;
+  // comissões do período
+  var com=(ST.comissoes||[]).filter(function(c){
+    if (sid && String(c.store_unit_id)!==String(sid)) return false;
+    var d=(c.periodo_inicio||c.created_at||'').slice(0,10); return d>=r.ini && d<=r.fim;
+  }).reduce(function(s,c){ return s+(Number(c.total_comissao)||0); },0);
+
+  var perLabel = ST.kpiPeriod==='dia'?'hoje':(ST.kpiPeriod==='semana'?'últimos 7 dias':'mês atual');
+
+  var cards = [
+    { label:'Faturamento ('+perLabel+')', val:brlShort(fat), sub:rows.length?'fonte: Bling':'sem dados ainda', subColor:rows.length?'var(--u-green)':'var(--u-text3)', color:'#3B6FF7', icon:'dollar', viz:'spark' },
+    { label:'Pedidos ('+perLabel+')', val:ped.toLocaleString('pt-BR'), sub:rows.length?'via Bling':'—', subColor:'var(--u-text3)', color:'#0EA5E9', icon:'trend', viz:'spark' },
+    { label:'Ticket médio', val:brlShort(ticket), sub:ped?(ped+' pedido(s)'):'—', subColor:'var(--u-text3)', color:'#8B5CF6', icon:'dollar', viz:'spark' },
+    { label:'Meta do mês', val:metaPct+'%', sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
+    { label:'Tarefas ('+perLabel+')', val:ts.length.toLocaleString('pt-BR'), sub:tsFeito+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:tsPct },
+    { label:'Comissões ('+perLabel+')', val:brlShort(com), sub:com>0?'pagas no período':'sem lançamentos', subColor:com>0?'var(--u-green)':'var(--u-text3)', color:'#EC4899', icon:'dollar', viz:'spark' }
+  ];
+  var cardsHTML = cards.map(statCardPro).join('');
+
+  // gráfico de barras por dia
+  var serie=kpiSeries(); var maxV=Math.max.apply(null, serie.map(function(x){ return x.total; }).concat([1]));
+  var bars = serie.map(function(x){
+    var h = maxV>0 ? Math.max(2, Math.round(x.total/maxV*100)) : 2;
+    var dd = x.date.slice(8,10)+'/'+x.date.slice(5,7);
+    var hoje = x.date===today();
+    return '<div class="kpi-bar" title="'+dd+': '+brlShort(x.total)+'">'+
+      '<div class="kpi-bar-fill'+(hoje?' today':'')+'" style="height:'+h+'%"></div>'+
+      '<span class="kpi-bar-x">'+dd+'</span></div>';
+  }).join('');
+  var chartBody = serie.some(function(x){ return x.total>0; })
+    ? '<div class="kpi-bars">'+bars+'</div>'
+    : '<div class="dash-empty">Sem faturamento registrado ainda. Os dados aparecem conforme o Bling sincroniza (a cada hora) e as vendas acontecem.</div>';
+  var chart = dashPanel('Faturamento por dia', icon('trend'), chartBody);
+
+  // quebra por loja (admin, sem filtro de loja única)
+  var breakdown='';
+  if (admin && !sid){
+    var byStore={};
+    rows.forEach(function(f){ var k=f.store_unit_id; if(!byStore[k]) byStore[k]={fat:0,ped:0}; byStore[k].fat+=(Number(f.total)||0); byStore[k].ped+=(Number(f.orders_count)||0); });
+    var keys=Object.keys(byStore).sort(function(a,b){ return byStore[b].fat-byStore[a].fat; });
+    var brows = keys.length ? keys.map(function(k){
+      var d=byStore[k]; var tk=d.ped>0?d.fat/d.ped:0;
+      return '<div class="kpi-srow"><span class="kpi-srow-n">'+esc(storeName(k)||'Loja')+'</span>'+
+        '<span class="kpi-srow-v">'+brlShort(d.fat)+'</span>'+
+        '<span class="kpi-srow-s">'+d.ped+' ped · ticket '+brlShort(tk)+'</span></div>';
+    }).join('') : '<div class="dash-empty">Sem dados por loja no período.</div>';
+    breakdown = dashPanel('Faturamento por loja ('+perLabel+')', icon('store'), brows);
+  }
+
+  // controles: período + (admin) seletor de loja
+  var seg = ['dia','semana','mes'].map(function(p){
+    var lb = p==='dia'?'Dia':(p==='semana'?'Semana':'Mês');
+    return '<button class="kpi-seg-b'+(ST.kpiPeriod===p?' on':'')+'" data-kpiper="'+p+'">'+lb+'</button>';
+  }).join('');
+  var storeSel='';
+  if (admin && !(ST.sector==='lojas' && ST.store && !isSuper(ST.session))){
+    var opts='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(s){
+      return '<option value="'+esc(s.id)+'"'+(String(ST.kpiStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';
+    }).join('');
+    storeSel='<select class="kpi-store" id="kpiStoreSel">'+opts+'</select>';
+  }
+  var sub = (sid && !( ST.sector==='lojas' && ST.store)) ? ('Loja: '+esc(storeName(sid))) : (ST.sector==='lojas'&&ST.store?('Loja '+esc(ST.store.name||ST.store.store_number)) : 'Visão consolidada');
+
+  return '<div class="tasks-head"><div><h2>KPIs</h2><div class="sub">'+sub+'</div></div>'+
+    '<div class="kpi-controls">'+storeSel+'<div class="kpi-seg">'+seg+'</div></div></div>'+
+    '<div class="dash-cards">'+cardsHTML+'</div>'+
+    chart + breakdown;
+}
+function bindKPIs(){
+  var segs=document.querySelectorAll('[data-kpiper]');
+  for (var i=0;i<segs.length;i++) segs[i].addEventListener('click', function(){ ST.kpiPeriod=this.getAttribute('data-kpiper'); renderPage(); });
+  var sel=document.getElementById('kpiStoreSel');
+  if (sel) sel.addEventListener('change', function(){ ST.kpiStore=this.value||null; renderPage(); });
+}
 
 /* ========== [10] TAREFAS ========== */
 function tarefasHTML() {
@@ -3361,6 +3503,8 @@ function renderPage() {
     renderShell(calendarioHTML(), 'Calendário'); bindCalendario();
   } else if (pg.id==='ranking') {
     renderShell(rankingHTML(), 'Ranking');
+  } else if (pg.id==='kpis') {
+    renderShell(kpisHTML(), 'KPIs'); bindKPIs();
   } else if (pg.id==='gestao') {
     renderShell(gestaoHTML(), 'Gestão'); bindGestao();
   } else if (pg.id==='chat') {
