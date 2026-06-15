@@ -349,6 +349,40 @@ svg { width: 1em; height: 1em; display: block; }
 .crm-main i { font-style: normal; font-size: 12px; color: var(--u-text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .crm-status { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 20px; flex-shrink: 0; }
 
+/* CRM inteligente */
+.crm-summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+.crm-stat { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius-sm); padding: 12px 14px; box-shadow: var(--u-shadow); cursor: pointer; transition: transform .1s, border-color .1s; text-align: left; }
+.crm-stat:hover { transform: translateY(-1px); }
+.crm-stat.on { border-color: var(--u-accent); box-shadow: 0 0 0 1px var(--u-accent); }
+.crm-stat-dot { width: 9px; height: 9px; border-radius: 50%; margin-bottom: 4px; }
+.crm-stat-n { font-family: var(--u-font-display); font-size: 24px; font-weight: 800; line-height: 1; }
+.crm-stat-l { font-size: 12px; color: var(--u-text2); font-weight: 600; }
+.crm-contact-panel { background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); box-shadow: var(--u-shadow); padding: 14px 16px; margin-bottom: 16px; }
+.crm-cp-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+.crm-cp-head svg { font-size: 17px; color: var(--u-amber); }
+.crm-cp-head b { font-family: var(--u-font-display); font-size: 15px; font-weight: 800; }
+.crm-cp-head span { margin-left: auto; font-size: 12px; color: var(--u-text3); font-weight: 600; }
+.crm-cp-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--u-border); }
+.crm-cp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.crm-cp-main { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.crm-cp-main b { font-size: 13.5px; font-weight: 700; }
+.crm-cp-main i { font-style: normal; font-size: 11.5px; color: var(--u-text3); }
+.crm-cp-seg { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+.crm-mini { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 9px; flex-shrink: 0; cursor: pointer; }
+.crm-mini svg { font-size: 14px; }
+.crm-mini.wa { background: #16A34A18; color: #16A34A; }
+.crm-mini.wa:hover { background: #16A34A; color: #fff; }
+.crm-mini.buy { background: var(--u-accent-soft); color: var(--u-accent); }
+.crm-mini.buy:hover { background: var(--u-accent); color: #fff; }
+.crm-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.crm-chip { font-size: 12.5px; font-weight: 700; padding: 7px 13px; border-radius: 20px; background: var(--u-bg2); color: var(--u-text2); border: 1px solid var(--u-border); transition: all .12s; }
+.crm-chip i { font-style: normal; opacity: .6; margin-left: 3px; }
+.crm-chip.on { background: var(--u-accent); color: #fff; border-color: var(--u-accent); }
+.crm-chip.on i { opacity: .85; }
+.crm-seg-hint { display: flex; align-items: center; gap: 10px; margin: -4px 0 14px; flex-wrap: wrap; }
+.crm-seg-badge { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 20px; }
+.crm-seg-x { font-size: 12px; color: var(--u-text3); }
+
 /* ===== Projetos ===== */
 .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
 .proj-card { display: flex; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); box-shadow: var(--u-shadow); cursor: pointer; overflow: hidden; transition: transform .12s, box-shadow .12s; }
@@ -668,6 +702,8 @@ svg { width: 1em; height: 1em; display: block; }
   .side { position: fixed; z-index: 50; transform: translateX(-100%); transition: transform .25s; }
   .content { padding: 16px; }
   .modal-grid2 { grid-template-columns: 1fr; }
+  .crm-summary { grid-template-columns: repeat(3, 1fr); }
+  .crm-cp-seg { display: none; }
 }
 @media (max-width: 420px) { .sector-grid { grid-template-columns: 1fr; } }
 </style>
@@ -1814,11 +1850,48 @@ var CRM_STATUS = {
   prospecto: { label:'Prospecto', color:'#3B6FF7' },
   inativo:   { label:'Inativo',   color:'#9aa1ad' }
 };
+// Segmentos calculados por recência (pesquisa de mercado: RFM com foco em recência)
+var CRM_SEG = {
+  ativo:     { label:'Ativo',     color:'#16A34A', dot:'#16A34A' },
+  esfriando: { label:'Esfriando', color:'#F59E0B', dot:'#F59E0B' },
+  inativo:   { label:'Inativo',   color:'#EF4444', dot:'#EF4444' },
+  novo:      { label:'Novo',      color:'#0EA5E9', dot:'#0EA5E9' },
+  prospecto: { label:'Prospecto', color:'#8B5CF6', dot:'#8B5CF6' }
+};
+function crmDaysSince(d){ if(!d) return null; var t=new Date((''+d).slice(0,10)+'T00:00:00'); var n=new Date(today()+'T00:00:00'); return Math.round((n-t)/86400000); }
+function crmCycle(c){ var n=Number(c.purchase_cycle_days); return (n&&n>0)?n:30; }
+// classifica o cliente: prospecto (lead) > novo (sem compra) > ativo/esfriando/inativo (por recência)
+function crmSegment(c){
+  if (c.status==='prospecto') return 'prospecto';
+  var d=crmDaysSince(c.last_purchase);
+  if (d===null) return 'novo';
+  var cyc=crmCycle(c);
+  if (d<=cyc) return 'ativo';
+  if (d<=cyc*2) return 'esfriando';
+  return 'inativo';
+}
+// nota de recência legível
+function crmRecencia(c){
+  var d=crmDaysSince(c.last_purchase);
+  if (d===null) return 'sem compra registrada';
+  if (d===0) return 'comprou hoje';
+  if (d===1) return 'comprou ontem';
+  return 'última compra há '+d+' dias';
+}
 var crmBusca = '';
+var crmSeg = 'todos';
 
 function crmHTML() {
   var q = crmBusca.toLowerCase();
-  var list = ST.clients.filter(function(c){
+  var all = ST.clients || [];
+
+  // contagem por segmento
+  var counts={ todos:all.length, ativo:0, esfriando:0, inativo:0, novo:0, prospecto:0 };
+  all.forEach(function(c){ var s=crmSegment(c); if(counts[s]!==undefined) counts[s]++; });
+
+  // lista filtrada por busca + segmento
+  var list = all.filter(function(c){
+    if (crmSeg!=='todos' && crmSegment(c)!==crmSeg) return false;
     if (!q) return true;
     return (c.name||'').toLowerCase().indexOf(q)!==-1 ||
            (c.company||'').toLowerCase().indexOf(q)!==-1 ||
@@ -1826,29 +1899,83 @@ function crmHTML() {
            (c.email||'').toLowerCase().indexOf(q)!==-1;
   });
 
+  // cards de resumo
+  var summary = '<div class="crm-summary">'+
+    crmStat('Total', counts.todos, '#3B6FF7', 'todos')+
+    crmStat('Ativos', counts.ativo, CRM_SEG.ativo.color, 'ativo')+
+    crmStat('Esfriando', counts.esfriando, CRM_SEG.esfriando.color, 'esfriando')+
+    crmStat('Inativos', counts.inativo, CRM_SEG.inativo.color, 'inativo')+
+    crmStat('Prospectos', counts.prospecto, CRM_SEG.prospecto.color, 'prospecto')+
+  '</div>';
+
+  // painel "para contatar": esfriando (mais dias = mais urgente) + inativo (recém-perdido converte melhor)
+  var esf = all.filter(function(c){ return crmSegment(c)==='esfriando'; })
+               .sort(function(a,b){ return (crmDaysSince(b.last_purchase)||0)-(crmDaysSince(a.last_purchase)||0); });
+  var ina = all.filter(function(c){ return crmSegment(c)==='inativo'; })
+               .sort(function(a,b){ return (crmDaysSince(a.last_purchase)||0)-(crmDaysSince(b.last_purchase)||0); });
+  var contatar = esf.concat(ina).slice(0,8);
+  var contatarPanel='';
+  if (contatar.length) {
+    var crows = contatar.map(crmContactRow).join('');
+    contatarPanel = '<div class="crm-contact-panel"><div class="crm-cp-head">'+icon('megaphone')+'<b>Para contatar agora</b><span>'+esf.length+' esfriando · '+ina.length+' inativos</span></div>'+crows+'</div>';
+  }
+
+  // chips de filtro
+  var chips = ['todos','ativo','esfriando','inativo','novo','prospecto'].map(function(s){
+    var lb = s==='todos'?'Todos':CRM_SEG[s].label;
+    var n = counts[s]!==undefined?counts[s]:0;
+    return '<button class="crm-chip'+(crmSeg===s?' on':'')+'" data-seg="'+s+'">'+lb+' <i>'+n+'</i></button>';
+  }).join('');
+
+  // lista
   var rows = '';
   if (list.length === 0) {
-    var msg = ST.clients.length===0 ? 'Cadastre o primeiro cliente pelo botão acima.' : 'Nenhum cliente encontrado para essa busca.';
+    var msg = all.length===0 ? 'Cadastre o primeiro cliente pelo botão acima.' : 'Nenhum cliente nesse filtro/busca.';
     rows = '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem clientes</h3><p>'+msg+'</p></div>';
   } else {
     rows = '<div class="crm-list">';
     list.forEach(function(c){ rows += crmRowHTML(c); });
     rows += '</div>';
   }
+
   return ''+
-    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+ST.clients.length+' cliente(s)</div></div><button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button></div>'+
+    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · classificação automática por recência</div></div><button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button></div>'+
+    summary+
+    contatarPanel+
+    '<div class="crm-chips">'+chips+'</div>'+
     '<div class="crm-search">'+icon('search')+'<input id="crmSearch" placeholder="Buscar por nome, empresa, telefone ou e-mail..." value="'+esc(crmBusca)+'"></div>'+
     rows;
 }
-
+function crmStat(label, n, color, seg){
+  return '<button class="crm-stat'+(crmSeg===seg?' on':'')+'" data-seg="'+seg+'"><span class="crm-stat-dot" style="background:'+color+'"></span><span class="crm-stat-n">'+n+'</span><span class="crm-stat-l">'+esc(label)+'</span></button>';
+}
+function crmWhatsLink(c){
+  var ph=(c.phone||'').replace(/\D/g,'');
+  if (!ph) return null;
+  if (ph.length<=11) ph='55'+ph; // assume Brasil se faltar DDI
+  var msg=encodeURIComponent('Olá '+(c.name||'').split(' ')[0]+'! Tudo bem? Aqui é da MALBA Embalagens.');
+  return 'https://wa.me/'+ph+'?text='+msg;
+}
+function crmContactRow(c){
+  var seg=crmSegment(c); var sg=CRM_SEG[seg];
+  var wa=crmWhatsLink(c);
+  var waBtn = wa ? '<a class="crm-mini wa" href="'+wa+'" target="_blank" rel="noopener" data-stop="1">'+icon('chat')+'WhatsApp</a>' : '';
+  return '<div class="crm-cp-row">'+
+    '<span class="crm-cp-dot" style="background:'+sg.dot+'"></span>'+
+    '<div class="crm-cp-main"><b>'+esc(c.name)+'</b><i>'+esc(crmRecencia(c))+(c.company?' · '+esc(c.company):'')+'</i></div>'+
+    '<span class="crm-cp-seg" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span>'+
+    waBtn+
+    '<button class="crm-mini buy" data-buy="'+esc(c.id)+'" data-stop="1">'+icon('dollar')+'Comprou</button>'+
+  '</div>';
+}
 function crmRowHTML(c) {
-  var st = CRM_STATUS[c.status] || CRM_STATUS.ativo;
+  var seg=crmSegment(c); var sg=CRM_SEG[seg];
   var ini = iniciais(c.name);
   var sub = [c.company, c.phone].filter(Boolean).join(' · ');
   return '<div class="crm-row" data-id="'+esc(c.id)+'">'+
     '<span class="crm-av">'+esc(ini)+'</span>'+
-    '<div class="crm-main"><b>'+esc(c.name)+'</b>'+(sub?'<i>'+esc(sub)+'</i>':'')+'</div>'+
-    '<span class="crm-status" style="color:'+st.color+';background:'+st.color+'18">'+st.label+'</span>'+
+    '<div class="crm-main"><b>'+esc(c.name)+'</b><i>'+esc(crmRecencia(c))+(sub?' · '+esc(sub):'')+'</i></div>'+
+    '<span class="crm-status" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span>'+
   '</div>';
 }
 
@@ -1859,13 +1986,22 @@ function bindCRM() {
   if (search) {
     search.addEventListener('input', function(){
       crmBusca = this.value;
-      // re-renderiza só a lista, mantendo o foco no campo
       var pos = this.selectionStart;
       renderPage();
       var s2 = document.getElementById('crmSearch');
       if (s2) { s2.focus(); try { s2.setSelectionRange(pos,pos); } catch(e){} }
     });
   }
+  // filtros por segmento (cards de resumo + chips)
+  var segBtns = app.querySelectorAll('[data-seg]');
+  for (var s=0;s<segBtns.length;s++) segBtns[s].addEventListener('click', function(){ crmSeg=this.getAttribute('data-seg'); renderPage(); });
+  // botão "Comprou" (registrar compra hoje) no painel de contato
+  var buyBtns = app.querySelectorAll('[data-buy]');
+  for (var b=0;b<buyBtns.length;b++) buyBtns[b].addEventListener('click', function(e){ e.stopPropagation(); crmRegistrarCompra(this.getAttribute('data-buy')); });
+  // links de WhatsApp não devem abrir o cliente
+  var stops = app.querySelectorAll('[data-stop]');
+  for (var z=0;z<stops.length;z++) stops[z].addEventListener('click', function(e){ e.stopPropagation(); });
+  // abrir cliente
   var rows = app.querySelectorAll('.crm-row');
   for (var i=0;i<rows.length;i++) {
     rows[i].addEventListener('click', function(){
@@ -1875,14 +2011,23 @@ function bindCRM() {
     });
   }
 }
+function crmRegistrarCompra(id){
+  var c=null; for (var k=0;k<ST.clients.length;k++) if (String(ST.clients[k].id)===String(id)) { c=ST.clients[k]; break; }
+  if (!c) return;
+  var rec={ last_purchase:today(), last_contact:today(), updated_at:new Date().toISOString() };
+  sb.from('malba_crm_clients').update(rec).eq('id', c.id).then(function(r){
+    if (r.error) { toast('Erro ao registrar compra','error'); console.error(r.error); return; }
+    Object.assign(c, rec); toast('Compra registrada — '+c.name+' voltou a Ativo','success'); renderPage();
+  });
+}
 
 function openClientModal(client) {
   var isNew = !client;
-  var c = client || { name:'', company:'', phone:'', email:'', notes:'', status:'ativo' };
+  var c = client || { name:'', company:'', phone:'', email:'', notes:'', status:'ativo', last_purchase:'', purchase_cycle_days:'' };
 
-  var stOpts = Object.keys(CRM_STATUS).map(function(k){
-    return '<option value="'+k+'"'+(c.status===k?' selected':'')+'>'+CRM_STATUS[k].label+'</option>';
-  }).join('');
+  var tipoVal = (c.status==='prospecto') ? 'prospecto' : 'ativo';
+  var stOpts = '<option value="ativo"'+(tipoVal==='ativo'?' selected':'')+'>Cliente</option>'+
+               '<option value="prospecto"'+(tipoVal==='prospecto'?' selected':'')+'>Prospecto</option>';
 
   var delBtn = isNew ? '' : '<button class="btn btn-danger btn-del-wrap" id="cliDel">Excluir</button>';
   var taskBtn = isNew ? '' : '<button class="btn btn-ghost" id="cliTask">+ Tarefa</button>';
@@ -1892,7 +2037,9 @@ function openClientModal(client) {
     '<div class="modal">'+
       '<input class="modal-title-input" id="cName" placeholder="Nome do cliente..." value="'+esc(c.name)+'">'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Empresa</label><input type="text" id="cCompany" value="'+esc(c.company||'')+'"></div><div class="modal-row"><label class="modal-label">Telefone</label><input type="text" id="cPhone" value="'+esc(c.phone||'')+'"></div></div>'+
-      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">E-mail</label><input type="text" id="cEmail" value="'+esc(c.email||'')+'"></div><div class="modal-row"><label class="modal-label">Status</label><select id="cStatus">'+stOpts+'</select></div></div>'+
+      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">E-mail</label><input type="text" id="cEmail" value="'+esc(c.email||'')+'"></div><div class="modal-row"><label class="modal-label">Tipo</label><select id="cStatus">'+stOpts+'</select></div></div>'+
+      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Última compra</label><input type="date" id="cLastBuy" value="'+esc((c.last_purchase||'').slice(0,10))+'"></div><div class="modal-row"><label class="modal-label">Ciclo de recompra (dias)</label><input type="number" id="cCycle" min="1" placeholder="30" value="'+esc(c.purchase_cycle_days||'')+'"></div></div>'+
+      '<div class="crm-seg-hint" id="cSegHint"></div>'+
       '<div class="modal-row"><label class="modal-label">Observações</label><textarea id="cNotes" placeholder="Anotações sobre o cliente...">'+esc(c.notes||'')+'</textarea></div>'+
       '<div class="modal-foot">'+delBtn+taskBtn+'<button class="btn btn-ghost" id="cliCancel">Cancelar</button><button class="btn btn-primary" id="cliSave">'+(isNew?'Criar':'Salvar')+'</button></div>'+
     '</div>';
@@ -1903,9 +2050,23 @@ function openClientModal(client) {
   modal.querySelector('#cliCancel').addEventListener('click', close);
   modal.querySelector('#cName').focus();
 
+  function updSegHint(){
+    var tipo=modal.querySelector('#cStatus').value;
+    var lb=modal.querySelector('#cLastBuy').value;
+    var cy=parseInt(modal.querySelector('#cCycle').value,10)||30;
+    var seg=crmSegment({ status:tipo, last_purchase:lb||null, purchase_cycle_days:cy });
+    var sg=CRM_SEG[seg];
+    var extra=(seg==='esfriando')?' — boa hora de entrar em contato':((seg==='inativo')?' — candidato a reativação (win-back)':'');
+    var info = lb ? (esc(crmRecencia({last_purchase:lb}))+extra) : ('defina a última compra para classificar automaticamente'+(tipo==='prospecto'?' (ou mantenha como Prospecto)':''));
+    modal.querySelector('#cSegHint').innerHTML='<span class="crm-seg-badge" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span><span class="crm-seg-x">'+info+'</span>';
+  }
+  updSegHint();
+  ['#cStatus','#cLastBuy','#cCycle'].forEach(function(sel){ var el=modal.querySelector(sel); if(el){ el.addEventListener('input', updSegHint); el.addEventListener('change', updSegHint); } });
+
   modal.querySelector('#cliSave').addEventListener('click', function(){
     var name=(modal.querySelector('#cName').value||'').trim();
     if (!name) { toast('Informe o nome','error'); return; }
+    var cycleVal = parseInt(modal.querySelector('#cCycle').value,10);
     var rec = {
       name:name,
       company:(modal.querySelector('#cCompany').value||'').trim(),
@@ -1913,6 +2074,8 @@ function openClientModal(client) {
       email:(modal.querySelector('#cEmail').value||'').trim(),
       status:modal.querySelector('#cStatus').value,
       notes:(modal.querySelector('#cNotes').value||'').trim(),
+      last_purchase:(modal.querySelector('#cLastBuy').value||null),
+      purchase_cycle_days:(cycleVal>0?cycleVal:30),
       last_contact:today(), updated_at:new Date().toISOString()
     };
     var saveBtn=modal.querySelector('#cliSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
