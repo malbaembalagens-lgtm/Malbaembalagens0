@@ -829,10 +829,12 @@ function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,'
 
 /* ========== [6] ESTADO + DADOS ========== */
 var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
-// loja "em foco": usuário-loja vê só a sua; admin escolhe pelo filtro do topo (null = todas)
+// loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
+// admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
-  if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) return ST.store.id;
-  if (isSuper(ST.session) && ST.sector==='lojas') return ST.viewStore || null;
+  if (ST.sector!=='lojas') return null;
+  if (ST.store) return ST.store.id;
+  if (isSuper(ST.session)) return ST.viewStore || null;
   return null;
 }
 
@@ -959,7 +961,7 @@ function renderShell(innerHTML, title) {
     '</aside><main class="main">'+
       '<header class="top"><span class="top-title">'+esc(title||'')+'</span><div class="top-spacer"></div>'+
         (function(){
-          if (!(isSuper(ST.session) && ST.sector==='lojas' && (ST.storeUnits||[]).length)) return '';
+          if (!(isSuper(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length)) return '';
           var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(su){ return '<option value="'+esc(su.id)+'"'+(String(ST.viewStore)===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+su.store_number))+'</option>'; }).join('');
           return '<select class="top-store" id="topStore" title="Loja em foco">'+op+'</select>';
         })()+
