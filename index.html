@@ -1938,8 +1938,9 @@ function crmHTML() {
     rows += '</div>';
   }
 
+  var importBtn = isAdmin(ST.session) ? '<button class="btn-sync" id="btnImportBling">'+icon('trend')+'Importar do Bling</button>' : '';
   return ''+
-    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · classificação automática por recência</div></div><button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button></div>'+
+    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · classificação automática por recência</div></div><div class="cfg-head-btns">'+importBtn+'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button></div></div>'+
     summary+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
@@ -1960,9 +1961,10 @@ function crmContactRow(c){
   var seg=crmSegment(c); var sg=CRM_SEG[seg];
   var wa=crmWhatsLink(c);
   var waBtn = wa ? '<a class="crm-mini wa" href="'+wa+'" target="_blank" rel="noopener" data-stop="1">'+icon('chat')+'WhatsApp</a>' : '';
+  var hist = (c.total_spent>0||c.orders_count>0) ? (' · '+brlShort(c.total_spent||0)+(c.orders_count?' em '+c.orders_count+' compra(s)':'')) : '';
   return '<div class="crm-cp-row">'+
     '<span class="crm-cp-dot" style="background:'+sg.dot+'"></span>'+
-    '<div class="crm-cp-main"><b>'+esc(c.name)+'</b><i>'+esc(crmRecencia(c))+(c.company?' · '+esc(c.company):'')+'</i></div>'+
+    '<div class="crm-cp-main"><b>'+esc(c.name)+'</b><i>'+esc(crmRecencia(c))+hist+(c.company?' · '+esc(c.company):'')+'</i></div>'+
     '<span class="crm-cp-seg" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span>'+
     waBtn+
     '<button class="crm-mini buy" data-buy="'+esc(c.id)+'" data-stop="1">'+icon('dollar')+'Comprou</button>'+
@@ -1982,6 +1984,23 @@ function crmRowHTML(c) {
 function bindCRM() {
   var novo = document.getElementById('btnNovoCliente');
   if (novo) novo.addEventListener('click', function(){ openClientModal(null); });
+  var imp = document.getElementById('btnImportBling');
+  if (imp) imp.addEventListener('click', function(){
+    var old=imp.innerHTML; imp.disabled=true; imp.textContent='Importando...';
+    toast('Buscando clientes e compras no Bling... pode levar 1-2 min','success');
+    fetch(SUPABASE_URL+'/functions/v1/bling-clientes', {
+      method:'POST', headers:{ 'Authorization':'Bearer '+SUPABASE_ANON_KEY, 'apikey':SUPABASE_ANON_KEY, 'Content-Type':'application/json' }, body:'{}'
+    }).then(function(res){ return res.json().catch(function(){ return { httpStatus:res.status }; }); }).then(function(d){
+      imp.disabled=false; imp.innerHTML=old;
+      console.log('[bling-clientes]', d);
+      if (!d || d.ok!==true) { toast('Importação: '+((d&&(d.message||d.error))||('falha HTTP '+(d&&d.httpStatus||''))),'error'); return; }
+      var tot=(d.results||[]).reduce(function(s,x){ return s+(x.clientes||0); },0);
+      var erros=(d.results||[]).filter(function(x){ return x.erro; });
+      if (erros.length) toast('Importou '+tot+' cliente(s), mas '+erros.length+' loja(s) com aviso (veja o console)','error');
+      else toast('Importados/atualizados '+tot+' cliente(s) do Bling!','success');
+      loadData().then(function(){ renderPage(); });
+    }).catch(function(e){ imp.disabled=false; imp.innerHTML=old; console.error(e); toast('Erro ao importar: '+e.message,'error'); });
+  });
   var search = document.getElementById('crmSearch');
   if (search) {
     search.addEventListener('input', function(){
