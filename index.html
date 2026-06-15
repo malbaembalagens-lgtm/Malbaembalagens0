@@ -1027,7 +1027,7 @@ function panelSetor() {
   }
   if (s==='vendas') {
     var y=new Date().getFullYear(), m=new Date().getMonth()+1;
-    var gs=ST.goals.filter(function(g){ return g.month===m && g.year===y; }).slice(0,5);
+    var gs=visibleGoals().filter(function(g){ return g.month===m && g.year===y; }).slice(0,5);
     var body=gs.length ? gs.map(function(g){ var u=g.user_id?userById(g.user_id):null; var nm=u?u.name:'Meta do setor'; var pct=g.goal_value>0?Math.min(100,Math.round((Number(g.actual_value)||0)/g.goal_value*100)):0; return '<div class="dash-goal"><div class="dg-top"><span>'+esc(nm)+'</span><b>'+pct+'%</b></div><div class="dg-bar"><span style="width:'+pct+'%"></span></div></div>'; }).join('') : '<div class="dash-empty">Sem metas definidas neste mês.</div>';
     return dashPanel('Metas do mês', icon('target'), body);
   }
@@ -1080,7 +1080,7 @@ function sectorStatCards(c) {
   var hojeDone=hojeTasks.filter(function(t){ return t.status==='feito'; }).length;
   var totalT=c.todo+c.faz+c.feito;
   var y=new Date().getFullYear(), m=new Date().getMonth()+1;
-  var gs=(ST.goals||[]).filter(function(g){ return g.month===m && g.year===y; });
+  var gs=(visibleGoals()||[]).filter(function(g){ return g.month===m && g.year===y; });
   var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
   var real=gs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
   var metaPct=meta>0?Math.min(100,Math.round(real/meta*100)):0;
