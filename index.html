@@ -154,6 +154,7 @@ svg { width: 1em; height: 1em; display: block; }
 .btn-sync:hover { transform: translateY(-1px); }
 .btn-sync svg { font-size: 16px; }
 .btn-sync:disabled { opacity: .6; cursor: default; }
+.bling-err { margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--u-red); background: var(--u-red-soft); padding: 5px 9px; border-radius: 8px; display: inline-block; max-width: 520px; line-height: 1.35; }
 .top-theme:hover { color: var(--u-accent); background: var(--u-accent-soft); }
 .top-novo { padding: 9px 18px; }
 .ts-kbd { font-size: 10.5px; font-weight: 700; color: var(--u-text3); background: var(--u-card); border: 1px solid var(--u-border2); border-radius: 6px; padding: 2px 7px; flex-shrink: 0; cursor: pointer; }
@@ -2228,9 +2229,10 @@ function lojasHTML() {
       var blConn = bl && bl.connected;
       var blLabel = blConn ? 'Bling conectado' : ((bl && bl.client_id) ? 'Conectar Bling' : 'Configurar Bling');
       var blBtn = '<button class="bling-btn'+(blConn?' on':'')+'" data-bling="'+esc(s.id)+'">'+icon(blConn?'trend':'plus')+blLabel+'</button>';
+      var errLine = (bl && bl.last_error) ? '<div class="bling-err">⚠️ Último erro: '+esc(String(bl.last_error))+'</div>' : '';
       rows += '<div class="cfg-row bling-row" data-sid="'+esc(s.id)+'">'+
         '<span class="crm-av" style="background:var(--u-accent-soft);color:var(--u-accent)">'+icon('store')+'</span>'+
-        '<div class="crm-main"><b>'+esc(s.name||('Loja '+s.store_number))+'</b><i>'+(s.district?esc(s.district)+' · ':'')+'<span style="color:'+vincCor+'">'+vinc+'</span></i></div>'+
+        '<div class="crm-main"><b>'+esc(s.name||('Loja '+s.store_number))+'</b><i>'+(s.district?esc(s.district)+' · ':'')+'<span style="color:'+vincCor+'">'+vinc+'</span></i>'+errLine+'</div>'+
         blBtn+
         '<span class="crm-status" style="color:var(--u-text2);background:var(--u-bg2)">#'+esc(s.store_number||'?')+'</span>'+
       '</div>';
