@@ -350,6 +350,27 @@ html.dark .brand-2 { color: #0B1220; }
 .tc-done:hover { background: var(--u-green); color: #fff; }
 .col-empty { text-align: center; color: var(--u-text3); font-size: 12.5px; padding: 24px 8px; }
 
+/* drag & drop */
+.task-card[draggable="true"] { cursor: grab; }
+.task-card[draggable="true"]:active { cursor: grabbing; }
+.task-card.dragging { opacity: .45; transform: rotate(1.5deg) scale(.98); }
+.col.drag-over { outline: 2px dashed var(--u-accent); outline-offset: -4px; background: var(--u-accent-soft); }
+.col-body { min-height: 60px; }
+/* grupos por data dentro de "A fazer" */
+.grp { display: flex; align-items: center; gap: 8px; margin: 16px 4px 8px; }
+.grp:first-child { margin-top: 2px; }
+.grp-l { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--u-text3); }
+.grp-n { font-size: 10px; font-weight: 800; color: var(--u-text3); background: var(--u-card); border: 1px solid var(--u-border); border-radius: 20px; padding: 1px 7px; }
+.grp-late .grp-l, .grp-late .grp-n { color: var(--u-red); }
+/* etiqueta de origem (projeto / campanha) */
+.tc-src { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 7px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-src-proj { background: rgba(251,140,0,.14); color: #C2410C; }
+.tc-src-camp { background: rgba(139,92,246,.14); color: #7C3AED; }
+html.dark .tc-src-proj { color: #FDBA74; }
+html.dark .tc-src-camp { color: #C4B5FD; }
+/* filtro de responsável */
+.task-filter { height: 36px; border: 1px solid var(--u-border); border-radius: var(--radius-sm); background: var(--u-card); color: var(--u-text); font-size: 13px; font-weight: 600; padding: 0 12px; cursor: pointer; }
+
 /* ===== Equipe ===== */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; }
 .member-card { display: flex; align-items: center; gap: 13px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--u-shadow); cursor: pointer; transition: transform .12s, box-shadow .12s; }
@@ -869,7 +890,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -924,11 +945,24 @@ function loadData() {
   }).catch(function(e){ console.error('[load]', e); ST.loaded = true; });
 }
 
-function visibleTasks() {
+function visibleTasks(opts) {
+  opts = opts || {};
+  var list = ST.tasks.slice();
   var sid = scopeStore();
-  if (sid) return ST.tasks.filter(function(t){ return String(t.store_unit_id) === String(sid); });
-  return ST.tasks;
+  if (sid) list = list.filter(function(t){ return String(t.store_unit_id) === String(sid); });
+  if (!isAdmin(ST.session)) {
+    var me = String(ST.session.user.id);
+    list = list.filter(function(t){ return String(t.assignee_id)===me || String(t.created_by)===me; });
+  } else if (opts.assignee) {
+    list = list.filter(function(t){ return String(t.assignee_id)===String(opts.assignee); });
+  }
+  return list;
 }
+function taskById(id){ for(var i=0;i<ST.tasks.length;i++) if(String(ST.tasks[i].id)===String(id)) return ST.tasks[i]; return null; }
+function campById(id){ for(var i=0;i<ST.campaigns.length;i++) if(String(ST.campaigns[i].id)===String(id)) return ST.campaigns[i]; return null; }
+function projName(id){ for(var i=0;i<ST.projects.length;i++) if(String(ST.projects[i].id)===String(id)) return ST.projects[i].name||'Projeto'; return 'Projeto'; }
+function projStore(id){ for(var i=0;i<ST.projects.length;i++) if(String(ST.projects[i].id)===String(id)) return ST.projects[i].store_unit_id; return null; }
+function addDays(ds,n){ var p=String(ds).split('-'); var d=new Date(+p[0],+p[1]-1,+p[2]); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 
 /* ========== [7] UTIL + TELAS DE ENTRADA ========== */
 var app = document.getElementById('app');
@@ -1425,22 +1459,84 @@ function bindKPIs(){
 /* ========== [10] TAREFAS ========== */
 function tarefasHTML() {
   var view = ST.taskView || 'kanban';
-  var sub = (ST.sector==='lojas' && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc(SECTORS[ST.sector].label));
+  var admin = isAdmin(ST.session);
+  var sub = admin
+    ? ((ST.sector==='lojas' && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc(SECTORS[ST.sector].label)))
+    : 'Minhas tarefas';
   var toggle = '<div class="view-toggle"><button class="vt-btn'+(view==='kanban'?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Quadro</button><button class="vt-btn'+(view==='matriz'?' on':'')+'" data-view="matriz">'+icon('target')+'Prioridades</button></div>';
-  var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+toggle+'<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button></div></div>';
+  var filter = '';
+  if (admin) {
+    var opts = '<option value="">Todos da equipe</option>' + ST.users.map(function(u){
+      return '<option value="'+esc(u.id)+'"'+(String(ST.taskAssignee)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>';
+    }).join('');
+    filter = '<select class="task-filter" id="taskAssignee" title="Ver tarefas de">'+opts+'</select>';
+  }
+  var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
+  var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+filter+toggle+nova+'</div></div>';
   return head + (view==='matriz' ? matrizHTML() : kanbanHTML());
 }
+// Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
+function boardItems() {
+  var admin = isAdmin(ST.session);
+  var me = String(ST.session.user.id);
+  var assignee = admin ? (ST.taskAssignee||'') : me;
+  var sid = scopeStore();
+  var items = [];
+  // 1) Tarefas normais
+  visibleTasks({ assignee: admin?assignee:undefined }).forEach(function(t){
+    items.push({ kind:'task', id:t.id, title:t.title, status:t.status||'todo', due:(t.due_date||'').slice(0,10), assignee_id:t.assignee_id, priority:t.priority, rec:t.recurrence, area:t.area, draggable:true });
+  });
+  // 2) Marcos de projeto (têm data, responsável e status)
+  (ST.milestones||[]).forEach(function(m){
+    if (sid && String(projStore(m.project_id))!==String(sid)) return;
+    if (admin) { if (assignee && String(m.assignee_id)!==String(assignee)) return; }
+    else { if (String(m.assignee_id)!==me) return; }
+    items.push({ kind:'milestone', id:m.id, title:m.name, status:m.status||'todo', due:(m.date||'').slice(0,10), assignee_id:m.assignee_id, priority:'media', source:{type:'Projeto', name:projName(m.project_id), pid:m.project_id}, draggable:true });
+  });
+  // 3) Tarefas de campanha (sem status próprio -> entram em "A fazer")
+  (ST.campaigns||[]).forEach(function(c){
+    if (sid && c.store_unit_id && String(c.store_unit_id)!==String(sid)) return;
+    var parts = c.user_ids||[];
+    if (admin) { if (assignee && parts.indexOf(assignee)===-1) return; }
+    else { if (parts.indexOf(me)===-1) return; }
+    (c.tasks||[]).forEach(function(tk){
+      items.push({ kind:'camptask', id:String(c.id)+'__'+String(tk.id), title:tk.title, status:'todo', due:(c.end_date||'').slice(0,10), assignee_id:null, priority:tk.priority||'media', source:{type:'Campanha', name:c.name, cid:c.id}, draggable:false });
+    });
+  });
+  return items;
+}
 function kanbanHTML() {
-  var ts=visibleTasks(); var cols='';
+  var items = boardItems(); var cols='';
   STATUS_ORDER.forEach(function(key){
     var st=STATUS[key];
-    var inCol=ts.filter(function(t){ return (t.status||'todo')===key; });
-    var cards='';
-    if (inCol.length===0) cards='<div class="col-empty">Nenhuma tarefa</div>';
-    else inCol.forEach(function(t){ cards+=taskCardHTML(t); });
-    cols += '<div class="col"><div class="col-head"><span class="col-dot" style="background:'+st.color+'"></span><span class="col-title">'+st.label+'</span><span class="col-count">'+inCol.length+'</span></div>'+cards+'</div>';
+    var inCol=items.filter(function(it){ return (it.status||'todo')===key; });
+    var body;
+    if (inCol.length===0) body='<div class="col-empty">Nenhuma tarefa</div>';
+    else if (key==='todo') body=groupedByDate(inCol);
+    else { inCol.sort(function(a,b){ return key==='feito' ? (b.due||'').localeCompare(a.due||'') : (a.due||'9999').localeCompare(b.due||'9999'); }); body=inCol.map(taskCardHTML).join(''); }
+    cols += '<div class="col" data-status="'+key+'"><div class="col-head"><span class="col-dot" style="background:'+st.color+'"></span><span class="col-title">'+st.label+'</span><span class="col-count">'+inCol.length+'</span></div><div class="col-body">'+body+'</div></div>';
   });
   return '<div class="board">'+cols+'</div>';
+}
+// Agrupa por data: Atrasadas / Hoje / Amanhã / Esta semana / Mais pra frente / Sem data
+function groupedByDate(items) {
+  var hoje=today(), t1=addDays(hoje,1), w=addDays(hoje,7);
+  var buckets=[
+    {k:'atras',  l:'Atrasadas',       late:true, f:function(d){ return d && d<hoje; }},
+    {k:'hoje',   l:'Hoje',                       f:function(d){ return d===hoje; }},
+    {k:'amanha', l:'Amanhã',                     f:function(d){ return d===t1; }},
+    {k:'semana', l:'Esta semana',                f:function(d){ return d>t1 && d<=w; }},
+    {k:'depois', l:'Mais pra frente',            f:function(d){ return d>w; }},
+    {k:'semdata',l:'Sem data',                   f:function(d){ return !d; }}
+  ];
+  items.sort(function(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); });
+  var html='';
+  buckets.forEach(function(bk){
+    var sub=items.filter(function(it){ return bk.f(it.due); });
+    if (!sub.length) return;
+    html += '<div class="grp'+(bk.late?' grp-late':'')+'"><span class="grp-l">'+bk.l+'</span><span class="grp-n">'+sub.length+'</span></div>'+sub.map(taskCardHTML).join('');
+  });
+  return html;
 }
 // Matriz de Eisenhower (importância = prioridade alta; urgência = vence hoje/atrasada)
 function eisenQuadrant(t) {
@@ -1484,27 +1580,46 @@ function nextDate(rec) {
 }
 function isRecurring(t){ return t.recurrence && t.recurrence!=='none'; }
 
-function taskCardHTML(t) {
-  var pr=PRIO[t.priority]||PRIO.media;
-  var u=t.assignee_id?userById(t.assignee_id):null;
+function taskCardHTML(it) {
+  var pr=PRIO[it.priority]||PRIO.media;
+  var u=it.assignee_id?userById(it.assignee_id):null;
   var av=u?'<span class="tc-av" style="background:'+(u.color||'#3B6FF7')+'" title="'+esc(u.name)+'">'+esc(iniciais(u.name))+'</span>':'';
-  var hoje=today(); var late=t.due_date && t.due_date<hoje && t.status!=='feito';
-  var dateChip=t.due_date?'<span class="tc-date'+(late?' late':'')+'">'+icon('cal')+fmtDate(t.due_date)+'</span>':'';
-  var areaChip=t.area?'<span class="tc-chip">'+esc(t.area)+'</span>':'';
-  var recBadge = isRecurring(t) ? '<span class="tc-rec">↻ '+(REC[t.recurrence]?REC[t.recurrence].label:'Repete')+'</span>' : '';
-  var quick = isRecurring(t) ? '<button class="tc-done" data-done="'+esc(t.id)+'">✓ feito hoje</button>' : '';
-  return '<div class="task-card" data-id="'+esc(t.id)+'"><div class="tc-top"><span class="tc-prio" style="background:'+pr.color+'" title="Prioridade '+pr.label+'"></span><span class="tc-title">'+esc(t.title)+'</span></div><div class="tc-meta">'+areaChip+recBadge+dateChip+av+'</div>'+quick+'</div>';
+  var hoje=today(); var late=it.due && it.due<hoje && it.status!=='feito';
+  var dateChip=it.due?'<span class="tc-date'+(late?' late':'')+'">'+icon('cal')+fmtDate(it.due)+'</span>':'';
+  var srcChip = it.source
+    ? '<span class="tc-src tc-src-'+(it.source.type==='Projeto'?'proj':'camp')+'">'+esc(it.source.type)+' · '+esc(it.source.name)+'</span>'
+    : (it.area?'<span class="tc-chip">'+esc(it.area)+'</span>':'');
+  var recBadge = (it.kind==='task' && it.rec && it.rec!=='none') ? '<span class="tc-rec">↻ '+(REC[it.rec]?REC[it.rec].label:'Repete')+'</span>' : '';
+  var quick = (it.kind==='task' && it.rec && it.rec!=='none') ? '<button class="tc-done" data-done="'+esc(it.id)+'">✓ feito hoje</button>' : '';
+  var drag = it.draggable ? ' draggable="true"' : '';
+  return '<div class="task-card" data-kind="'+it.kind+'" data-id="'+esc(it.id)+'"'+drag+'><div class="tc-top"><span class="tc-prio" style="background:'+pr.color+'" title="Prioridade '+pr.label+'"></span><span class="tc-title">'+esc(it.title)+'</span></div><div class="tc-meta">'+srcChip+recBadge+dateChip+av+'</div>'+quick+'</div>';
+}
+// move um item do quadro entre colunas (status) e persiste
+function moveBoardItem(kind, id, ns) {
+  if (kind==='task') {
+    var t=taskById(id); if (!t || t.status===ns) return;
+    t.status=ns;
+    sb.from('malba_vl_tasks').update({ status:ns }).eq('id', id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
+    renderPage();
+  } else if (kind==='milestone') {
+    var m=msById(id); if (!m || m.status===ns) return;
+    m.status=ns;
+    sb.from('malba_vl_milestones').update({ status:ns }).eq('id', id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
+    renderPage();
+  }
 }
 function bindTarefas() {
   var nova=document.getElementById('btnNovaTarefa');
   if (nova) nova.addEventListener('click', function(){ openTaskModal(null); });
+  // filtro de responsável (admin)
+  var af=document.getElementById('taskAssignee');
+  if (af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
   // botão "feito hoje" das recorrentes — reagenda para a próxima ocorrência
   var dones=app.querySelectorAll('[data-done]');
   for (var d=0;d<dones.length;d++) {
     dones[d].addEventListener('click', function(e){
       e.stopPropagation();
-      var id=this.getAttribute('data-done'); var t=null;
-      for (var k=0;k<ST.tasks.length;k++) if (String(ST.tasks[k].id)===String(id)) { t=ST.tasks[k]; break; }
+      var id=this.getAttribute('data-done'); var t=taskById(id);
       if (!t) return;
       var nd=nextDate(t.recurrence);
       t.due_date=nd; t.status='todo';
@@ -1513,12 +1628,41 @@ function bindTarefas() {
       renderPage();
     });
   }
+  // clique nos cards (depende do tipo)
+  var admin=isAdmin(ST.session);
   var cards=app.querySelectorAll('.task-card');
   for (var i=0;i<cards.length;i++) {
     cards[i].addEventListener('click', function(){
-      var id=this.getAttribute('data-id'); var t=null;
-      for (var k=0;k<ST.tasks.length;k++) if (String(ST.tasks[k].id)===String(id)) { t=ST.tasks[k]; break; }
-      if (t) openTaskModal(t);
+      if (this.classList.contains('dragging')) return;
+      var kind=this.getAttribute('data-kind'), id=this.getAttribute('data-id');
+      if (kind==='task') { var t=taskById(id); if(t) openTaskModal(t); }
+      else if (kind==='milestone') { var m=msById(id); if(m){ ST.openProject=m.project_id; ST.page='projetos'; navigate(ST.sector+'/projetos'); renderPage(); } }
+      else if (kind==='camptask') { var c=campById(String(id).split('__')[0]); if(c){ if(admin) openCampaignModal(c); else toast('Tarefa da campanha "'+(c.name||'')+'"','info'); } }
+    });
+  }
+  // DRAG & DROP entre colunas
+  var dragData=null;
+  var dgs=app.querySelectorAll('.task-card[draggable="true"]');
+  for (var g=0;g<dgs.length;g++) {
+    dgs[g].addEventListener('dragstart', function(e){
+      dragData={ kind:this.getAttribute('data-kind'), id:this.getAttribute('data-id') };
+      this.classList.add('dragging');
+      if (e.dataTransfer){ e.dataTransfer.effectAllowed='move'; try{ e.dataTransfer.setData('text/plain', this.getAttribute('data-id')); }catch(_){} }
+    });
+    dgs[g].addEventListener('dragend', function(){
+      this.classList.remove('dragging'); dragData=null;
+      var ov=app.querySelectorAll('.col.drag-over'); for(var k=0;k<ov.length;k++) ov[k].classList.remove('drag-over');
+    });
+  }
+  var colsEl=app.querySelectorAll('.col');
+  for (var c2=0;c2<colsEl.length;c2++) {
+    colsEl[c2].addEventListener('dragover', function(e){ if(!dragData) return; e.preventDefault(); if(e.dataTransfer) e.dataTransfer.dropEffect='move'; this.classList.add('drag-over'); });
+    colsEl[c2].addEventListener('dragleave', function(e){ if(e.target===this) this.classList.remove('drag-over'); });
+    colsEl[c2].addEventListener('drop', function(e){
+      e.preventDefault(); this.classList.remove('drag-over');
+      if(!dragData) return;
+      var ns=this.getAttribute('data-status');
+      moveBoardItem(dragData.kind, dragData.id, ns);
     });
   }
   // alternar Quadro / Prioridades
@@ -1527,8 +1671,7 @@ function bindTarefas() {
   // clique nas tarefas da matriz
   var mzs=app.querySelectorAll('.mz-task');
   for (var z=0;z<mzs.length;z++) mzs[z].addEventListener('click', function(){
-    var id=this.getAttribute('data-id'); var t=null;
-    for (var k=0;k<ST.tasks.length;k++) if (String(ST.tasks[k].id)===String(id)) { t=ST.tasks[k]; break; }
+    var id=this.getAttribute('data-id'); var t=taskById(id);
     if (t) openTaskModal(t);
   });
 }
