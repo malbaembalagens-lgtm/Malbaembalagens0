@@ -375,9 +375,45 @@ html.dark .brand-2 { color: #0B1220; }
 .kpi-bar-x { font-size: 10px; color: var(--u-text3); font-weight: 600; white-space: nowrap; }
 .kpi-srow { display: flex; align-items: center; gap: 10px; padding: 11px 4px; border-bottom: 1px solid var(--u-border); }
 .kpi-srow:last-child { border-bottom: none; }
+button.kpi-srow { width: 100%; background: transparent; border-top: none; border-left: none; border-right: none; cursor: pointer; text-align: left; transition: background .12s; border-radius: 8px; }
+button.kpi-srow:hover { background: var(--u-bg2); }
+.kpi-medal { width: 24px; height: 24px; flex-shrink: 0; border-radius: 50%; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.kpi-pos { width: 24px; flex-shrink: 0; text-align: center; font-size: 12px; font-weight: 800; color: var(--u-text3); }
 .kpi-srow-n { font-weight: 700; font-size: 14px; flex: 1; }
+.kpi-srow-mid { display: flex; flex-direction: column; align-items: flex-end; min-width: 150px; }
 .kpi-srow-v { font-family: var(--u-font-display); font-weight: 800; font-size: 16px; color: var(--u-accent); }
-.kpi-srow-s { font-size: 12px; color: var(--u-text3); min-width: 160px; text-align: right; }
+.kpi-srow-s { font-size: 11.5px; color: var(--u-text3); }
+.kpi-srow-meta { display: flex; align-items: center; gap: 8px; min-width: 130px; justify-content: flex-end; }
+.kpi-meta-bar { width: 70px; height: 7px; background: var(--u-bg2); border-radius: 20px; overflow: hidden; }
+.kpi-meta-bar span { display: block; height: 100%; background: var(--u-green); border-radius: 20px; }
+.kpi-meta-pct { font-size: 12px; font-weight: 800; color: var(--u-green); min-width: 34px; text-align: right; }
+.kpi-meta-none { font-size: 11px; color: var(--u-text3); font-weight: 600; }
+.metas-resumo { background: var(--u-card); border: 1px solid var(--u-border); border-radius: 16px; padding: 18px 20px; margin-bottom: 16px; }
+.mr-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.mr-top span { font-size: 14px; font-weight: 700; color: var(--u-text2); }
+.mr-top b { font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 800; color: var(--u-green); }
+.mr-bar { height: 12px; background: var(--u-bg2); border-radius: 20px; overflow: hidden; }
+.mr-bar span { display: block; height: 100%; background: linear-gradient(90deg,#16A34A,#22C55E); border-radius: 20px; }
+.mr-sub { margin-top: 8px; font-size: 12.5px; color: var(--u-text3); font-weight: 600; }
+/* Mural de avisos */
+.mural { background: linear-gradient(135deg, var(--u-accent-soft), var(--u-card)); border: 1px solid var(--u-border); border-radius: 16px; padding: 16px 18px; margin-bottom: 16px; }
+.mural-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.mural-title { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 800; color: var(--u-text); }
+.mural-title svg { font-size: 17px; color: var(--u-accent); }
+.mural-add { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 10px; background: var(--u-accent); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; border: none; }
+.mural-add svg { font-size: 15px; }
+.mural-add:hover { filter: brightness(1.05); }
+.mural-list { display: flex; flex-direction: column; gap: 8px; }
+.mural-item { display: flex; align-items: flex-start; gap: 11px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: 12px; padding: 11px 13px; }
+.mural-ic { width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: var(--u-accent-soft); color: var(--u-accent); display: flex; align-items: center; justify-content: center; }
+.mural-ic svg { font-size: 15px; }
+.mural-body { flex: 1; }
+.mural-msg { font-size: 13.5px; color: var(--u-text); font-weight: 600; line-height: 1.4; white-space: pre-wrap; }
+.mural-meta { margin-top: 3px; font-size: 11.5px; color: var(--u-text3); font-weight: 600; }
+.mural-del { width: 24px; height: 24px; flex-shrink: 0; border-radius: 7px; background: transparent; color: var(--u-text3); font-size: 12px; cursor: pointer; border: none; }
+.mural-del:hover { background: var(--u-red-soft); color: var(--u-red); }
+.mural-empty { font-size: 12.5px; color: var(--u-text2); padding: 4px 2px; }
+@media (max-width: 700px){ .kpi-srow-mid, .kpi-srow-s { min-width: 0; } .kpi-srow-meta { min-width: 0; } .kpi-meta-bar { width: 44px; } }
 
 .tasks-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
 .tasks-head h2 { font-family: var(--u-font-display); font-size: 20px; font-weight: 800; }
@@ -913,7 +949,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v23 · 18/06 (Meu Espaço do colaborador)';
+var APP_BUILD = 'v26 · 18/06 (mural de avisos)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1342,6 +1378,7 @@ function dashboardHTML() {
   var cards = sectorStatCards(counts).map(statCardPro).join('');
   return ''+
     hero+
+    muralHTML()+
     '<div class="dash-sec-h"><h3>Resumo de hoje</h3><span>'+esc(dataExtenso())+' · Setor '+esc(setorLabel)+'</span></div>'+
     '<div class="dash-cards">'+cards+'</div>'+
     dashPanels();
@@ -1397,6 +1434,7 @@ function dashPanels() {
   return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+panelProjetos();
 }
 function bindDashboard() {
+  bindMural();
   var g=document.getElementById('dashGoTasks');
   if (g) g.addEventListener('click', function(){ ST.page='tarefas'; navigate(ST.sector+'/tarefas'); renderPage(); });
   var tr=app.querySelectorAll('[data-dtask]');
@@ -1521,8 +1559,8 @@ function kpiRange(){
   if (ST.kpiPeriod==='semana'){ var b=new Date(fim+'T00:00:00'); b.setDate(b.getDate()-6); return { ini:kpiIso(b), fim:fim }; }
   return { ini: fim.slice(0,8)+'01', fim:fim }; // mês corrente
 }
-// usa o filtro de loja global do topo (scopeStore)
-function kpiStoreId(){ return scopeStore(); }
+// usa o filtro de loja do admin (ou a loja da conta, se for conta de loja)
+function kpiStoreId(){ return boardStore(); }
 function kpiFatRows(){
   var r=kpiRange(); var sid=kpiStoreId();
   return (ST.blingFat||[]).filter(function(f){
@@ -1542,6 +1580,11 @@ function kpiSeries(){
     out.push({ date:ds, total:tot });
   }
   return out;
+}
+function lojaMetaMes(storeId){
+  var now=new Date(), yy=now.getFullYear(), mm=now.getMonth()+1, meta=0, real=0;
+  (ST.goals||[]).forEach(function(g){ if(g.month===mm && g.year===yy && String(g.store_unit_id)===String(storeId)){ meta+=Number(g.goal_value)||0; real+=Number(g.actual_value)||0; } });
+  return { meta:meta, real:real, pct: meta>0?Math.min(100,Math.round(real/meta*100)):0 };
 }
 function kpisHTML(){
   var admin = isAdmin(ST.session);
@@ -1594,19 +1637,23 @@ function kpisHTML(){
     : '<div class="dash-empty">Sem faturamento registrado ainda. Os dados aparecem conforme o Bling sincroniza (a cada hora) e as vendas acontecem.</div>';
   var chart = dashPanel('Faturamento por dia', icon('trend'), chartBody);
 
-  // quebra por loja (admin, sem filtro de loja única)
+  // RANKING de lojas (admin, visão consolidada)
   var breakdown='';
   if (admin && !sid){
     var byStore={};
-    rows.forEach(function(f){ var k=f.store_unit_id; if(!byStore[k]) byStore[k]={fat:0,ped:0}; byStore[k].fat+=(Number(f.total)||0); byStore[k].ped+=(Number(f.orders_count)||0); });
-    var keys=Object.keys(byStore).sort(function(a,b){ return byStore[b].fat-byStore[a].fat; });
-    var brows = keys.length ? keys.map(function(k){
-      var d=byStore[k]; var tk=d.ped>0?d.fat/d.ped:0;
-      return '<div class="kpi-srow"><span class="kpi-srow-n">'+esc(storeName(k)||'Loja')+'</span>'+
-        '<span class="kpi-srow-v">'+brlShort(d.fat)+'</span>'+
-        '<span class="kpi-srow-s">'+d.ped+' ped · ticket '+brlShort(tk)+'</span></div>';
-    }).join('') : '<div class="dash-empty">Sem dados por loja no período.</div>';
-    breakdown = dashPanel('Faturamento por loja ('+perLabel+')', icon('store'), brows);
+    rows.forEach(function(f){ var k=String(f.store_unit_id); if(!byStore[k]) byStore[k]={fat:0,ped:0}; byStore[k].fat+=(Number(f.total)||0); byStore[k].ped+=(Number(f.orders_count)||0); });
+    var ls=lojasGestao();
+    var ranked=ls.map(function(s){ var d=byStore[String(s.id)]||{fat:0,ped:0}; var mt=lojaMetaMes(s.id); return { id:s.id, name:(s.name||('Loja '+s.store_number)), fat:d.fat, ped:d.ped, tk:(d.ped>0?d.fat/d.ped:0), metaPct:mt.pct, meta:mt.meta }; }).sort(function(a,b){ return b.fat-a.fat; });
+    var medalC=['#F59E0B','#9CA3AF','#B45309'];
+    var brows = ranked.length ? ranked.map(function(d,i){
+      var badge = i<3 ? '<span class="kpi-medal" style="background:'+medalC[i]+'">'+(i+1)+'</span>' : '<span class="kpi-pos">'+(i+1)+'</span>';
+      return '<button class="kpi-srow" data-rkstore="'+esc(d.id)+'">'+badge+
+        '<span class="kpi-srow-n">'+esc(d.name)+'</span>'+
+        '<span class="kpi-srow-mid"><span class="kpi-srow-v">'+brlShort(d.fat)+'</span><span class="kpi-srow-s">'+d.ped+' ped · ticket '+brlShort(d.tk)+'</span></span>'+
+        (d.meta>0?'<span class="kpi-srow-meta"><span class="kpi-meta-bar"><span style="width:'+d.metaPct+'%"></span></span><span class="kpi-meta-pct">'+d.metaPct+'%</span></span>':'<span class="kpi-srow-meta"><span class="kpi-meta-none">sem meta</span></span>')+
+      '</button>';
+    }).join('') : '<div class="dash-empty">Sem lojas para ranquear.</div>';
+    breakdown = dashPanel('Ranking de lojas ('+perLabel+')', icon('trend'), brows);
   }
 
   // controles: período + (admin) seletor de loja
@@ -1615,6 +1662,10 @@ function kpisHTML(){
     return '<button class="kpi-seg-b'+(ST.kpiPeriod===p?' on':'')+'" data-kpiper="'+p+'">'+lb+'</button>';
   }).join('');
   var storeSel='';
+  if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
+    var so='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
+    storeSel='<select class="task-filter" id="kpiStore" title="Ver loja">'+so+'</select>';
+  }
   var sub = sid ? ('Loja: '+esc(storeName(sid))) : 'Visão consolidada (todas as lojas)';
 
   return '<div class="tasks-head"><div><h2>KPIs</h2><div class="sub">'+sub+'</div></div>'+
@@ -1625,6 +1676,10 @@ function kpisHTML(){
 function bindKPIs(){
   var segs=document.querySelectorAll('[data-kpiper]');
   for (var i=0;i<segs.length;i++) segs[i].addEventListener('click', function(){ ST.kpiPeriod=this.getAttribute('data-kpiper'); renderPage(); });
+  var ks=document.getElementById('kpiStore');
+  if (ks) ks.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
+  var rk=document.querySelectorAll('.kpi-srow[data-rkstore]');
+  for (var z=0;z<rk.length;z++) rk[z].addEventListener('click', function(){ ST.taskStore=this.getAttribute('data-rkstore'); renderPage(); });
 }
 
 /* ========== [10] TAREFAS ========== */
@@ -2201,7 +2256,7 @@ function fmtBRL(v) {
 
 // metas visíveis: loja vê as da própria loja (e as do setor inteiro); admin vê todas.
 function visibleGoals() {
-  var sid = scopeStore();
+  var sid = boardStore();
   if (sid) return ST.goals.filter(function(g){ return String(g.store_unit_id)===String(sid) || !g.store_unit_id; });
   return ST.goals;
 }
@@ -2212,8 +2267,20 @@ function metasHTML() {
     if (b.year!==a.year) return b.year-a.year;
     return b.month-a.month;
   });
-  var sub = (ST.sector==='lojas' && ST.store && !admin) ? ('Metas de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Metas mensais';
+  var sub = (ST.sector==='lojas' && ST.store && !admin) ? ('Metas de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Metas mensais por loja e por vendedor';
   var btn = admin ? '<button class="btn-new" id="btnNovaMeta">'+icon('plus')+'Nova meta</button>' : '';
+  var storeFilter='';
+  if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
+    var so='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
+    storeFilter='<select class="task-filter" id="metaStore" title="Ver loja">'+so+'</select>';
+  }
+  // resumo do mês corrente (acompanhamento)
+  var now2=new Date(), ym=now2.getFullYear(), mm2=now2.getMonth()+1;
+  var curGs=gs.filter(function(g){ return g.month===mm2 && g.year===ym; });
+  var tMeta=curGs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
+  var tReal=curGs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
+  var tPct=tMeta>0?Math.min(100,Math.round(tReal/tMeta*100)):0;
+  var resumo = curGs.length ? ('<div class="metas-resumo"><div class="mr-top"><span>Acompanhamento de '+MESES[mm2-1]+'</span><b>'+tPct+'% da meta</b></div><div class="mr-bar"><span style="width:'+tPct+'%"></span></div><div class="mr-sub">'+fmtBRL(tReal)+' de '+fmtBRL(tMeta)+'</div></div>') : '';
 
   var cards = '';
   if (gs.length === 0) {
@@ -2222,20 +2289,21 @@ function metasHTML() {
   } else {
     gs.forEach(function(g){ cards += goalCardHTML(g); });
   }
-  return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">'+sub+'</div></div>'+btn+'</div><div class="goals-grid">'+cards+'</div>';
+  return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+btn+'</div></div>'+resumo+'<div class="goals-grid">'+cards+'</div>';
 }
 
 function goalCardHTML(g) {
   var meta = Number(g.goal_value)||0;
   var real = Number(g.actual_value)||0;
   var pct = meta>0 ? Math.min(100, Math.round((real/meta)*100)) : 0;
-  var alvo = (g.store_unit_id) ? storeName(g.store_unit_id) : 'Todo o setor';
+  var who = g.user_id ? userById(g.user_id) : null;
+  var alvo = who ? (esc(who.name)+(g.store_unit_id?(' · '+esc(storeName(g.store_unit_id))):'')) : ((g.store_unit_id) ? esc(storeName(g.store_unit_id)) : 'Todo o setor');
   var cor = pct>=100 ? '#16A34A' : (pct>=60 ? '#3B6FF7' : (pct>=30 ? '#F59E0B' : '#EF4444'));
   // anel SVG
   var R=42, C=2*Math.PI*R, off=C*(1-pct/100);
   var ring = '<svg class="goal-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="'+R+'" fill="none" stroke="var(--u-bg2)" stroke-width="9"/><circle cx="50" cy="50" r="'+R+'" fill="none" stroke="'+cor+'" stroke-width="9" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="22" font-weight="800" fill="var(--u-text)" font-family="Sora">'+pct+'%</text></svg>';
   return '<div class="goal-card" data-id="'+esc(g.id)+'">'+
-    '<div class="goal-head"><div><b>'+esc(MESES[(g.month||1)-1])+' '+esc(g.year||'')+'</b><i>'+esc(alvo)+'</i></div></div>'+
+    '<div class="goal-head"><div><b>'+esc(MESES[(g.month||1)-1])+' '+esc(g.year||'')+'</b><i>'+alvo+'</i></div></div>'+
     ring+
     '<div class="goal-vals"><div class="gv"><small>Realizado</small><span style="color:'+cor+'">'+fmtBRL(real)+'</span></div><div class="gv"><small>Meta</small><span>'+fmtBRL(meta)+'</span></div></div>'+
   '</div>';
@@ -2245,6 +2313,8 @@ function bindMetas() {
   var admin = isAdmin(ST.session);
   var nova = document.getElementById('btnNovaMeta');
   if (nova && admin) nova.addEventListener('click', function(){ openGoalModal(null); });
+  var ms=document.getElementById('metaStore');
+  if (ms) ms.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   if (!admin) return;
   var cards = app.querySelectorAll('.goal-card');
   for (var i=0;i<cards.length;i++) {
@@ -2265,7 +2335,7 @@ function openGoalModal(goal) {
   var monthOpts='';
   for (var mo=1;mo<=12;mo++) monthOpts += '<option value="'+mo+'"'+(g.month===mo?' selected':'')+'>'+MESES[mo-1]+'</option>';
 
-  // seletor de alvo: lojas -> loja; vendas -> vendedor
+  // seletor de alvo: lojas -> loja + vendedor; vendas -> vendedor
   var lojaSelectHTML='';
   if (ST.sector==='lojas') {
     var opts='<option value="">Todo o setor</option>';
@@ -2273,7 +2343,9 @@ function openGoalModal(goal) {
       var nm=s.name||('Loja '+s.store_number);
       opts += '<option value="'+esc(s.id)+'"'+(g.store_unit_id===s.id?' selected':'')+'>'+esc(nm)+'</option>';
     });
-    lojaSelectHTML='<div class="modal-row"><label class="modal-label">Aplicar a</label><select id="gStore">'+opts+'</select></div>';
+    var luopts='<option value="">Loja inteira</option>';
+    ST.users.forEach(function(u){ luopts += '<option value="'+esc(u.id)+'"'+(g.user_id===u.id?' selected':'')+'>'+esc(u.name)+'</option>'; });
+    lojaSelectHTML='<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Loja</label><select id="gStore">'+opts+'</select></div><div class="modal-row"><label class="modal-label">Vendedor (opcional)</label><select id="gUser">'+luopts+'</select></div></div>';
   } else if (ST.sector==='vendas') {
     var uopts='<option value="">Meta geral do setor</option>';
     ST.users.forEach(function(u){ uopts += '<option value="'+esc(u.id)+'"'+(g.user_id===u.id?' selected':'')+'>'+esc(u.name)+'</option>'; });
@@ -4190,6 +4262,7 @@ function calDayItems(ds) {
   }
   // eventos do calendário: equipe (todos do setor) ou pessoal (só o criador)
   (ST.events||[]).forEach(function(ev){
+    if (ev.kind==='aviso') return;
     if ((ev.date||'').slice(0,10)!==ds) return;
     if (String(ev.sector||'')!==String(ST.sector)) return;
     if (ev.scope==='me' && String(ev.created_by)!==me) return;
@@ -4587,6 +4660,7 @@ function meuEspacoHTML(){
   (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
   var comHTML = coms.length ? coms.slice(0,8).map(function(c){ return '<div class="me-com"><span class="me-com-l">'+esc(c.label||'Período')+(c.loja?' · '+esc(c.loja):'')+'</span><span class="me-com-v">'+fmtBRL(c.valor)+'</span></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
   return '<div class="tasks-head"><div><h2>Olá, '+esc((u.name||'').split(' ')[0])+'</h2><div class="sub">Seu espaço: tarefas, agenda, avaliações e comissões — só o que é seu</div></div></div>'+
+    muralHTML()+
     '<div class="vg-kpis me-kpis">'+vk('Minhas abertas',st.abertas,'var(--u-accent)')+vk('Atrasadas',st.atrasadas,'var(--u-red)')+vk('Concluídas',st.concluidas,'var(--u-green)')+'</div>'+
     '<div class="me-grid">'+
       '<div class="me-col"><div class="cfg-sec-head"><span>Para hoje e atrasadas</span></div><div class="me-tasks">'+focoHTML+'</div></div>'+
@@ -4599,6 +4673,7 @@ function meuEspacoHTML(){
 }
 function bindMeuEspaco(){
   var admin=isAdmin(ST.session);
+  bindMural();
   var ts=app.querySelectorAll('.me-task[data-tid]');
   for (var i=0;i<ts.length;i++) ts[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-tid')); if(t) openTaskModal(t); });
   var ags=app.querySelectorAll('.me-ag[data-agk]');
@@ -4607,6 +4682,57 @@ function bindMeuEspaco(){
     if(k==='task'){ var t=taskById(id); if(t) openTaskModal(t); }
     else if(k==='ev'){ var ev=evById(id); if(ev){ if(admin||String(ev.created_by)===String(ST.session.user.id)) openEventModal(ev,null); else toast((ev.hora?ev.hora+' · ':'')+(ev.title||'Evento'),'info'); } }
   });
+}
+/* ===== Mural de avisos (comunicação com a equipe) — reaproveita malba_events ===== */
+function avisosAtivos(){
+  var lim=addDays(today(),-21);
+  return (ST.events||[]).filter(function(ev){ return ev.kind==='aviso' && ev.scope==='team' && String(ev.sector||'')===String(ST.sector) && (ev.date||'')>=lim; })
+    .sort(function(a,b){ return (String(b.date)+(b.created_at||'')).localeCompare(String(a.date)+(a.created_at||'')); });
+}
+function muralHTML(){
+  var avisos=avisosAtivos();
+  var canPost=canManage();
+  if (avisos.length===0 && !canPost) return '';
+  var btn = canPost ? '<button class="mural-add" id="btnNovoAviso">'+icon('plus')+'Aviso à equipe</button>' : '';
+  var items = avisos.length ? avisos.slice(0,4).map(function(ev){
+    var del = (canPost||String(ev.created_by)===String(ST.session.user.id)) ? '<button class="mural-del" data-avdel="'+esc(ev.id)+'" title="Remover">✕</button>' : '';
+    return '<div class="mural-item"><span class="mural-ic">'+icon('bell')+'</span><div class="mural-body"><div class="mural-msg">'+esc(ev.title)+'</div><div class="mural-meta">'+esc(ev.created_by_name||'Equipe')+' · '+fmtDate(ev.date)+'</div></div>'+del+'</div>';
+  }).join('') : '<div class="mural-empty">Nenhum aviso agora. Use "Aviso à equipe" para comunicar algo importante a todos.</div>';
+  return '<div class="mural"><div class="mural-head"><span class="mural-title">'+icon('bell')+'Mural de avisos</span>'+btn+'</div><div class="mural-list">'+items+'</div></div>';
+}
+function bindMural(){
+  var b=document.getElementById('btnNovoAviso');
+  if (b) b.addEventListener('click', postAvisoModal);
+  var dels=app.querySelectorAll('[data-avdel]');
+  for (var i=0;i<dels.length;i++) dels[i].addEventListener('click', function(e){
+    e.stopPropagation();
+    var id=this.getAttribute('data-avdel');
+    if(!confirm('Remover este aviso?')) return;
+    sb.from('malba_events').delete().eq('id', id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.events=ST.events.filter(function(x){return String(x.id)!==String(id);}); auditLog('Removeu aviso'); toast('Aviso removido','success'); renderPage(); });
+  });
+}
+function postAvisoModal(){
+  if(!canManage()){ blockManage(); return; }
+  var me=ST.session.user;
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Aviso à equipe</div>'+
+    '<div class="modal-row"><label class="modal-label">Mensagem</label><textarea id="avMsg" placeholder="Ex: Amanhã reunião às 9h. Cheguem 10 min antes." maxlength="280"></textarea></div>'+
+    '<div class="modal-note">Aparece no Mural de avisos para toda a equipe do setor (fica 21 dias).</div>'+
+    '<div class="modal-foot"><button class="btn btn-ghost" id="avCancel">Cancelar</button><button class="btn btn-primary" id="avPost">Publicar</button></div></div>';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  modal.querySelector('#avCancel').addEventListener('click', close);
+  modal.querySelector('#avPost').addEventListener('click', function(){
+    var msg=(modal.querySelector('#avMsg').value||'').trim(); if(!msg){ toast('Escreva a mensagem','error'); return; }
+    var rec={ sector:ST.sector, title:msg, date:today(), hora:null, kind:'aviso', scope:'team', color:'#3B6FF7', store_unit_id:null, created_by:me.id, created_by_name:me.name };
+    var btn=this; btn.disabled=true; btn.textContent='Publicando...';
+    sb.from('malba_events').insert(rec).select().single().then(function(r){
+      if(r.error||!r.data){ toast('Erro ao publicar (rodou o SQL de eventos?)','error'); console.error(r.error); btn.disabled=false; btn.textContent='Publicar'; return; }
+      ST.events.push(r.data); auditLog('Publicou aviso', msg.slice(0,40)); close(); toast('Aviso publicado','success'); renderPage();
+    });
+  });
+  document.body.appendChild(modal);
+  modal.querySelector('#avMsg').focus();
 }
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
