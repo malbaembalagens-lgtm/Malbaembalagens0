@@ -797,6 +797,39 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .cal-chip i { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 .cal-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cal-chip:hover { filter: brightness(.96); }
+.cal-chip-event { font-weight: 700; border: 1px solid currentColor; }
+.cal-chip-event.me { border-style: dashed; opacity: .92; }
+.cal-chip-event i { border-radius: 2px; }
+.cal-evt-btn { background: linear-gradient(135deg,#0EA5E9,#3B6FF7) !important; }
+.modal-note { font-size: 12.5px; color: var(--u-text2); background: var(--u-bg2); border-radius: 10px; padding: 9px 12px; }
+.crm-tools { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+.crm-tools .crm-search { flex: 1; margin-bottom: 0; }
+.crm-tools .task-filter { flex-shrink: 0; }
+/* Meu Espaço */
+.me-kpis { grid-template-columns: repeat(3, 1fr); max-width: 560px; }
+.me-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+.me-col { background: var(--u-card); border: 1px solid var(--u-border); border-radius: 16px; padding: 16px; }
+.me-tasks, .me-agenda, .me-avals, .me-coms { display: flex; flex-direction: column; gap: 6px; }
+.me-task { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border-radius: 10px; background: var(--u-card2); border: 1px solid var(--u-border); cursor: pointer; text-align: left; transition: all .12s; }
+.me-task:hover { border-color: var(--u-accent); }
+.me-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.me-task-t { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--u-text); }
+.me-task-d { font-size: 11.5px; font-weight: 700; color: var(--u-text3); white-space: nowrap; }
+.me-task-d.late { color: var(--u-red); }
+.me-ag { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 9px; cursor: pointer; transition: background .12s; }
+.me-ag:hover { background: var(--u-bg2); }
+.me-ag-date { font-size: 11.5px; font-weight: 700; color: var(--u-text2); min-width: 86px; }
+.me-ag-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.me-ag-l { flex: 1; font-size: 13px; color: var(--u-text); }
+.me-aval { padding: 11px; border-radius: 11px; background: var(--u-card2); border: 1px solid var(--u-border); }
+.me-aval-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.me-aval-h b { font-size: 13.5px; color: var(--u-text); }
+.me-aval-nota { font-size: 13px; font-weight: 800; color: var(--u-text2); white-space: nowrap; }
+.me-aval-obs { margin-top: 6px; font-size: 12.5px; color: var(--u-text2); line-height: 1.4; }
+.me-com { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 10px; background: var(--u-card2); border: 1px solid var(--u-border); }
+.me-com-l { font-size: 13px; color: var(--u-text2); font-weight: 600; }
+.me-com-v { font-size: 14px; font-weight: 800; color: var(--u-green); white-space: nowrap; }
+@media (max-width: 760px){ .me-grid { grid-template-columns: 1fr; } .me-kpis { grid-template-columns: repeat(3, 1fr); } }
 .cal-more { font-size: 10px; color: var(--u-text3); font-weight: 700; padding-left: 4px; }
 .cal-top-r { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .cal-today-btn { height: 34px; padding: 0 14px; border-radius: 10px; background: var(--u-card); border: 1px solid var(--u-border); font-size: 13px; font-weight: 700; color: var(--u-text2); box-shadow: var(--u-shadow); }
@@ -880,7 +913,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v21 · 18/06 (painel gestão lojas)';
+var APP_BUILD = 'v23 · 18/06 (Meu Espaço do colaborador)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -895,10 +928,10 @@ var SECTORS = {
 function p(id,label,ic,enabled,group){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'OPERAÇÃO' }; }
 var GROUP_ORDER = ['OPERAÇÃO','PLANEJAMENTO','COMUNICAÇÃO','GESTÃO'];
 var PAGES = {
-  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
+  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
 };
 
 // Valores EXATOS aceitos pela tabela malba_vl_tasks.
@@ -1008,7 +1041,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -1061,6 +1094,9 @@ function loadData() {
       }
     }
     ST.loaded = true;
+    // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
+    ST.events = [];
+    try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario') renderPage(); } }, function(){}); } catch(e){}
   }).catch(function(e){ console.error('[load]', e); ST.loaded = true; });
 }
 
@@ -1150,7 +1186,9 @@ function renderLogin(sector) {
     login(emailEl.value, senhaEl.value, sector).then(function(r){
       btn.disabled=false; btn.textContent='Entrar';
       if(!r.ok){ errEl.textContent=r.msg; return; }
-      ST.loaded=false; startSplash(); navigate(sector+'/tarefas'); boot();
+      var _lvl=nivelDe(r.session.user); var _rank=(NIVEIS[_lvl]||NIVEIS.user).rank;
+      var _landing = _rank<=1 ? 'meuespaco' : 'tarefas';
+      ST.loaded=false; startSplash(); navigate(sector+'/'+_landing); boot();
     });
   }
   btn.addEventListener('click', entrar);
@@ -2347,7 +2385,7 @@ function crmPertenceSetor(c){
 }
 function crmHTML() {
   var q = crmBusca.toLowerCase();
-  var sid = scopeStore();
+  var sid = boardStore();
   var all = (ST.clients || []).filter(crmPertenceSetor);
   if (sid) all = all.filter(function(c){ return String(c.store_unit_id)===String(sid); });
 
@@ -2406,12 +2444,17 @@ function crmHTML() {
 
   var importBtn = isAdmin(ST.session) ? '<button class="btn-sync" id="btnImportBling">'+icon('trend')+'Importar do Bling</button>' : '';
   var foco = sid ? esc(storeName(sid)) : (ST.sector==='lojas' ? 'Todas as lojas' : esc(SECTORS[ST.sector].label));
+  var crmStoreFilter = '';
+  if (isAdmin(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
+    var so='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
+    crmStoreFilter='<select class="task-filter" id="crmStore" title="Ver loja">'+so+'</select>';
+  }
   return ''+
     '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+importBtn+(canManage()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
     summary+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
-    '<div class="crm-search">'+icon('search')+'<input id="crmSearch" placeholder="Buscar por nome, empresa, telefone ou e-mail..." value="'+esc(crmBusca)+'"></div>'+
+    '<div class="crm-tools"><div class="crm-search">'+icon('search')+'<input id="crmSearch" placeholder="Buscar por nome, empresa, telefone ou e-mail..." value="'+esc(crmBusca)+'"></div>'+crmStoreFilter+'</div>'+
     rows;
 }
 function crmStat(label, n, color, seg){
@@ -2451,6 +2494,8 @@ function crmRowHTML(c) {
 function bindCRM() {
   var novo = document.getElementById('btnNovoCliente');
   if (novo) novo.addEventListener('click', function(){ openClientModal(null); });
+  var crmStore = document.getElementById('crmStore');
+  if (crmStore) crmStore.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   var imp = document.getElementById('btnImportBling');
   if (imp) imp.addEventListener('click', function(){
     var old=imp.innerHTML; imp.disabled=true; imp.textContent='Importando...';
@@ -4143,10 +4188,20 @@ function calDayItems(ds) {
       out.push({ k:'camp', id:c.id, label:c.name, color:c.color||'#8B5CF6', drag:false, edge:(ds===s?'start':(ds===e?'end':'mid')) });
     });
   }
+  // eventos do calendário: equipe (todos do setor) ou pessoal (só o criador)
+  (ST.events||[]).forEach(function(ev){
+    if ((ev.date||'').slice(0,10)!==ds) return;
+    if (String(ev.sector||'')!==String(ST.sector)) return;
+    if (ev.scope==='me' && String(ev.created_by)!==me) return;
+    if (ev.store_unit_id && sid && String(ev.store_unit_id)!==String(sid)) return;
+    out.push({ k:'event', id:ev.id, label:ev.title, scope:ev.scope, kind:ev.kind, color:ev.color||'#8B5CF6', hora:ev.hora, drag:admin });
+  });
   return out;
 }
-
 function calChipHTML(it) {
+  if (it.k==='event') {
+    return '<button class="cal-chip cal-chip-event'+(it.scope==='me'?' me':'')+'" data-ck="event" data-cid="'+esc(it.id)+'"'+(it.drag?' draggable="true"':'')+' title="'+(it.scope==='me'?'Só para você':'Toda a equipe')+'" style="background:'+it.color+'1f;color:'+it.color+'"><i style="background:'+it.color+'"></i><span>'+(it.hora?esc(it.hora)+' ':'')+esc(it.label)+'</span></button>';
+  }
   if (it.k==='camp') {
     return '<button class="cal-chip cal-chip-camp" data-ck="camp" data-cid="'+esc(it.id)+'" style="background:'+it.color+'18;color:'+it.color+'"><i style="background:'+it.color+'"></i><span>'+esc(it.label)+'</span></button>';
   }
@@ -4173,10 +4228,11 @@ function calendarioHTML() {
     var opts='<option value="'+esc(meIdC)+'"'+mineSelC+'>Minhas tarefas</option><option value="">Todos da equipe</option>'+othersC;
     filter='<select class="task-filter" id="calAssignee" title="Ver tarefas de">'+opts+'</select>';
   }
-  var sub = admin ? 'Clique num dia para criar uma tarefa · arraste para mudar a data' : 'Suas tarefas, marcos e campanhas do mês';
+  var sub = admin ? 'Monte o mês: clique num dia para criar tarefa, ou use "+ Evento" para reuniões e lembretes' : 'Suas tarefas e a agenda da equipe · você também pode criar lembretes só seus';
+  var addEvtBtn = '<button class="btn-new cal-evt-btn" id="btnNovoEvento">'+icon('plus')+'Evento</button>';
   var top='<div class="cal-top"><div><h2>Calendário</h2><div class="sub">'+sub+'</div></div>'+
-    '<div class="cal-top-r">'+filter+'<div class="cal-nav-wrap"><button class="cal-nav" id="calPrev">‹</button><span class="cal-month">'+MESES[m]+' '+y+'</span><button class="cal-nav" id="calNext">›</button><button class="cal-today-btn" id="calToday">Hoje</button></div></div></div>';
-  var legend='<div class="cal-legend"><span class="cal-lg"><i style="background:#9aa1ad"></i>A fazer</span><span class="cal-lg"><i style="background:#3B6FF7"></i>Em andamento</span><span class="cal-lg"><i style="background:#16A34A"></i>Concluída</span><span class="cal-lg"><i style="background:#8B5CF6"></i>Campanha</span></div>';
+    '<div class="cal-top-r">'+filter+addEvtBtn+'<div class="cal-nav-wrap"><button class="cal-nav" id="calPrev">‹</button><span class="cal-month">'+MESES[m]+' '+y+'</span><button class="cal-nav" id="calNext">›</button><button class="cal-today-btn" id="calToday">Hoje</button></div></div></div>';
+  var legend='<div class="cal-legend"><span class="cal-lg"><i style="background:#9aa1ad"></i>A fazer</span><span class="cal-lg"><i style="background:#3B6FF7"></i>Em andamento</span><span class="cal-lg"><i style="background:#16A34A"></i>Concluída</span><span class="cal-lg"><i style="background:#8B5CF6"></i>Campanha</span><span class="cal-lg"><i style="background:#0EA5E9"></i>Evento/Reunião</span></div>';
 
   var grid='<div class="cal-grid">';
   dow.forEach(function(d){ grid+='<div class="cal-dow">'+d+'</div>'; });
@@ -4203,13 +4259,18 @@ function bindCalendario() {
   if (af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
   var admin=isAdmin(ST.session);
 
+  // botão "+ Evento" (todos podem; não-admin só cria pessoal)
+  var evtBtn=document.getElementById('btnNovoEvento');
+  if (evtBtn) evtBtn.addEventListener('click', function(){ openEventModal(null, null); });
+
   // abrir item ao clicar no chip
   var chips=app.querySelectorAll('.cal-chip');
   for (var i=0;i<chips.length;i++) chips[i].addEventListener('click', function(e){
     e.stopPropagation();
     if (this.classList.contains('dragging')) return;
     var k=this.getAttribute('data-ck'), id=this.getAttribute('data-cid');
-    if (k==='camp') { var c=campById(id); if (c) { if(admin) openCampaignModal(c); else toast('Campanha "'+(c.name||'')+'"','info'); } }
+    if (k==='event') { var ev=evById(id); if(ev){ if (admin || String(ev.created_by)===String(ST.session.user.id)) openEventModal(ev, null); else toast((ev.hora?ev.hora+' · ':'')+(ev.title||'Evento'),'info'); } }
+    else if (k==='camp') { var c=campById(id); if (c) { if(admin) openCampaignModal(c); else toast('Campanha "'+(c.name||'')+'"','info'); } }
     else if (k==='task') { var t=taskById(id); if (t) openTaskModal(t); }
     else if (k==='ms') { var mm=msById(id); if (mm) { ST.openProject=mm.project_id; ST.page='projetos'; navigate(ST.sector+'/projetos'); renderPage(); } }
     else if (k==='camptask') { var cc=campById(String(id).split('__')[0]); if (cc) { if(admin) openCampaignModal(cc); else toast('Tarefa de campanha','info'); } }
@@ -4243,6 +4304,67 @@ function calMove(k, id, ds) {
   if (k==='task') { var t=taskById(id); if(!t||((t.due_date||'').slice(0,10)===ds)) return; t.due_date=ds; sb.from('malba_vl_tasks').update({ due_date:ds }).eq('id', id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Tarefa movida para '+fmtDate(ds),'success'); renderPage(); }
   else if (k==='ms') { var m=msById(id); if(!m||((m.date||'').slice(0,10)===ds)) return; m.date=ds; sb.from('malba_vl_milestones').update({ date:ds }).eq('id', id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Marco movido para '+fmtDate(ds),'success'); renderPage(); }
   else if (k==='camptask') { var parts=String(id).split('__'); var c=campById(parts[0]); if(!c) return; var tk=null; (c.tasks||[]).forEach(function(x){ if(String(x.id)===String(parts[1])) tk=x; }); if(!tk||((tk.due||'').slice(0,10)===ds)) return; tk.due=ds; sb.from('malba_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Tarefa movida para '+fmtDate(ds),'success'); renderPage(); }
+  else if (k==='event') { var ev=evById(id); if(!ev||((ev.date||'').slice(0,10)===ds)) return; ev.date=ds; sb.from('malba_events').update({ date:ds }).eq('id', id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Evento movido para '+fmtDate(ds),'success'); renderPage(); }
+}
+function evById(id){ for(var i=0;i<ST.events.length;i++) if(String(ST.events[i].id)===String(id)) return ST.events[i]; return null; }
+function openEventModal(ev, presetDate){
+  var admin=isAdmin(ST.session);
+  var me=ST.session.user;
+  var editing=!!ev;
+  var canEdit = !editing || admin || String(ev.created_by)===String(me.id);
+  if (editing && !canEdit){ toast('Você não pode editar este evento','error'); return; }
+  var EK={ evento:{label:'Evento',color:'#0EA5E9'}, reuniao:{label:'Reunião',color:'#8B5CF6'}, lembrete:{label:'Lembrete',color:'#F59E0B'} };
+  var kind = editing ? (ev.kind||'evento') : 'evento';
+  var scope = admin ? (editing ? (ev.scope||'team') : 'team') : 'me';
+  var lojas = (ST.sector==='lojas') ? lojasGestao() : [];
+  var curStore = editing ? (ev.store_unit_id||'') : '';
+  var dateVal = editing ? (ev.date||'').slice(0,10) : (presetDate || today());
+  var kindPills = Object.keys(EK).map(function(k){ return '<button type="button" class="pill ev-kind'+(kind===k?' on':'')+'" data-k="'+k+'" style="color:'+EK[k].color+'"><span class="pdot" style="background:'+EK[k].color+'"></span>'+EK[k].label+'</button>'; }).join('');
+  var scopeRow = admin ? ('<div class="modal-row"><label class="modal-label">Quem vê</label><div class="pills" id="evScope"><button type="button" class="pill ev-scope'+(scope==='team'?' on':'')+'" data-s="team" style="color:var(--u-accent)"><span class="pdot" style="background:var(--u-accent)"></span>Toda a equipe</button><button type="button" class="pill ev-scope'+(scope==='me'?' on':'')+'" data-s="me" style="color:var(--u-purple)"><span class="pdot" style="background:var(--u-purple)"></span>Só para mim</button></div></div>') : '<div class="modal-note">Este lembrete fica visível só para você.</div>';
+  var storeRow = (admin && lojas.length) ? ('<div class="modal-row"><label class="modal-label">Loja (opcional)</label><select id="evStore"><option value="">Todas / nenhuma</option>'+lojas.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(curStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('')+'</select></div>') : '';
+  var delBtn = (editing && canEdit) ? '<button class="btn btn-danger btn-del-wrap" id="evDel">Excluir</button>' : '';
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  modal.innerHTML='<div class="modal">'+
+    '<div class="modal-title-input" style="cursor:default">'+(editing?'Editar evento':'Novo no calendário')+'</div>'+
+    '<div class="modal-row"><label class="modal-label">Título</label><input type="text" id="evTitle" placeholder="ex: Reunião de equipe" value="'+esc(editing?(ev.title||''):'')+'" maxlength="120"></div>'+
+    '<div class="modal-row"><label class="modal-label">Tipo</label><div class="pills" id="evKind">'+kindPills+'</div></div>'+
+    '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="evDate" value="'+esc(dateVal)+'"></div><div class="modal-row"><label class="modal-label">Hora (opcional)</label><input type="time" id="evHora" value="'+esc(editing?(ev.hora||''):'')+'"></div></div>'+
+    scopeRow+ storeRow+
+    '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="evCancel">Cancelar</button><button class="btn btn-primary" id="evSave">'+(editing?'Salvar':'Adicionar')+'</button></div>'+
+  '</div>';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.querySelectorAll('.ev-kind').forEach(function(b){ b.addEventListener('click', function(){ kind=this.getAttribute('data-k'); modal.querySelectorAll('.ev-kind').forEach(function(x){x.classList.remove('on');}); this.classList.add('on'); }); });
+  modal.querySelectorAll('.ev-scope').forEach(function(b){ b.addEventListener('click', function(){ scope=this.getAttribute('data-s'); modal.querySelectorAll('.ev-scope').forEach(function(x){x.classList.remove('on');}); this.classList.add('on'); }); });
+  modal.querySelector('#evCancel').addEventListener('click', close);
+  var del=modal.querySelector('#evDel');
+  if (del) del.addEventListener('click', function(){
+    if(!confirm('Excluir este evento?')) return;
+    sb.from('malba_events').delete().eq('id', ev.id).then(function(r){
+      if(r.error){ toast('Erro ao excluir','error'); return; }
+      ST.events=ST.events.filter(function(x){return x.id!==ev.id;});
+      auditLog('Excluiu evento', ev.title||''); close(); toast('Evento excluído','success'); renderPage();
+    });
+  });
+  modal.querySelector('#evSave').addEventListener('click', function(){
+    var title=(modal.querySelector('#evTitle').value||'').trim();
+    if(!title){ toast('Dê um título','error'); return; }
+    var rec={ sector:ST.sector, title:title, date:modal.querySelector('#evDate').value||today(), hora:(modal.querySelector('#evHora').value||'')||null, kind:kind, scope:(admin?scope:'me'), color:EK[kind].color, store_unit_id:(modal.querySelector('#evStore')?(modal.querySelector('#evStore').value||null):null), created_by:(editing?(ev.created_by||me.id):me.id), created_by_name:(editing?(ev.created_by_name||me.name):me.name) };
+    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
+    if (editing){
+      sb.from('malba_events').update(rec).eq('id', ev.id).then(function(r){
+        if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; }
+        for(var i=0;i<ST.events.length;i++) if(ST.events[i].id===ev.id){ ST.events[i]=Object.assign(ST.events[i],rec); break; }
+        auditLog('Editou evento', title); close(); toast('Evento atualizado','success'); renderPage();
+      });
+    } else {
+      sb.from('malba_events').insert(rec).select().single().then(function(r){
+        if(r.error||!r.data){ toast('Erro ao adicionar (rodou o SQL de eventos?)','error'); console.error(r.error); btn.disabled=false; btn.textContent='Adicionar'; return; }
+        ST.events.push(r.data); auditLog('Criou evento', title); close(); toast('Adicionado ao calendário','success'); renderPage();
+      });
+    }
+  });
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  document.body.appendChild(modal);
 }
 
 /* ========== [10l] CHAT EFÊMERO (Realtime broadcast — nada é salvo) ========== */
@@ -4441,6 +4563,51 @@ function openShortcutsHelp() {
 }
 
 /* ========== [11] ROTEAMENTO DE PÁGINAS ========== */
+function meusMemberIds(){
+  var nome=((ST.session.user.name)||'').trim().toLowerCase(); var ids=[];
+  (ST.members||[]).forEach(function(m){ if((m.name||'').trim().toLowerCase()===nome) ids.push(String(m.id)); });
+  return ids;
+}
+function meuEspacoHTML(){
+  var u=ST.session.user, me=String(u.id), hoje=today();
+  function vk(l,v,c){ return '<div class="vg-kpi"><div class="vg-kpi-v" style="color:'+c+'">'+v+'</div><div class="vg-kpi-l">'+l+'</div></div>'; }
+  var mine=ST.tasks.filter(function(t){ return String(t.assignee_id)===me; });
+  var st={abertas:0,atrasadas:0,concluidas:0}; mine.forEach(function(t){ var d=(t.due_date||'').slice(0,10); if(t.status==='feito')st.concluidas++; else { st.abertas++; if(d&&d<hoje)st.atrasadas++; } });
+  var foco=mine.filter(function(t){ var d=(t.due_date||'').slice(0,10); return t.status!=='feito'&&d&&d<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
+  var focoHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada atrasado ou para hoje.</div>';
+  var ate=addDays(hoje,7), agenda=[];
+  (ST.events||[]).forEach(function(ev){ var d=(ev.date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; if(String(ev.sector||'')!==ST.sector)return; if(ev.scope==='me'&&String(ev.created_by)!==me)return; agenda.push({d:d,hora:ev.hora||'',label:ev.title,color:ev.color||'#0EA5E9',kind:'ev',scope:ev.scope,id:ev.id}); });
+  mine.forEach(function(t){ if(t.status==='feito')return; var d=(t.due_date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; agenda.push({d:d,hora:'',label:t.title,color:(STATUS[t.status]||STATUS.todo).color,kind:'task',id:t.id}); });
+  agenda.sort(function(a,b){ return (a.d+a.hora).localeCompare(b.d+b.hora); });
+  var agendaHTML = agenda.length ? agenda.slice(0,12).map(function(it){ return '<div class="me-ag" data-agk="'+it.kind+'" data-agid="'+esc(it.id)+'"><span class="me-ag-date">'+fmtDate(it.d)+(it.hora?' · '+esc(it.hora):'')+'</span><span class="me-ag-dot" style="background:'+it.color+'"></span><span class="me-ag-l">'+esc(it.label)+(it.kind==='ev'?(it.scope==='me'?' · pessoal':' · equipe'):'')+'</span></div>'; }).join('') : '<div class="col-empty">Nada nos próximos 7 dias.</div>';
+  var mids=meusMemberIds();
+  var avals=ST.avaliacoes.filter(function(a){ return a.tipo==='membro' && mids.indexOf(String(a.member_id))!==-1; }).sort(function(a,b){return (b.data_avaliacao||'').localeCompare(a.data_avaliacao||'');});
+  var avalHTML = avals.length ? avals.slice(0,8).map(function(a){ var nota=Number(a.nota_final)||0; var stars=''; for(var i=1;i<=5;i++) stars+= '<span style="color:'+(i<=Math.round(nota)?'#F59E0B':'var(--u-border2)')+'">★</span>'; return '<div class="me-aval"><div class="me-aval-h"><b>'+(a.periodo_label?esc(a.periodo_label):fmtDate(a.data_avaliacao))+'</b><span class="me-aval-nota">'+stars+' '+nota.toFixed(1)+'</span></div>'+(a.observacao?'<div class="me-aval-obs">'+esc(a.observacao)+'</div>':'')+'</div>'; }).join('') : '<div class="col-empty">Você ainda não tem avaliações.</div>';
+  var coms=[];
+  (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
+  var comHTML = coms.length ? coms.slice(0,8).map(function(c){ return '<div class="me-com"><span class="me-com-l">'+esc(c.label||'Período')+(c.loja?' · '+esc(c.loja):'')+'</span><span class="me-com-v">'+fmtBRL(c.valor)+'</span></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
+  return '<div class="tasks-head"><div><h2>Olá, '+esc((u.name||'').split(' ')[0])+'</h2><div class="sub">Seu espaço: tarefas, agenda, avaliações e comissões — só o que é seu</div></div></div>'+
+    '<div class="vg-kpis me-kpis">'+vk('Minhas abertas',st.abertas,'var(--u-accent)')+vk('Atrasadas',st.atrasadas,'var(--u-red)')+vk('Concluídas',st.concluidas,'var(--u-green)')+'</div>'+
+    '<div class="me-grid">'+
+      '<div class="me-col"><div class="cfg-sec-head"><span>Para hoje e atrasadas</span></div><div class="me-tasks">'+focoHTML+'</div></div>'+
+      '<div class="me-col"><div class="cfg-sec-head"><span>Minha agenda · 7 dias</span></div><div class="me-agenda">'+agendaHTML+'</div></div>'+
+    '</div>'+
+    '<div class="me-grid">'+
+      '<div class="me-col"><div class="cfg-sec-head"><span>Minhas avaliações</span></div><div class="me-avals">'+avalHTML+'</div></div>'+
+      '<div class="me-col"><div class="cfg-sec-head"><span>Minhas comissões</span></div><div class="me-coms">'+comHTML+'</div></div>'+
+    '</div>';
+}
+function bindMeuEspaco(){
+  var admin=isAdmin(ST.session);
+  var ts=app.querySelectorAll('.me-task[data-tid]');
+  for (var i=0;i<ts.length;i++) ts[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-tid')); if(t) openTaskModal(t); });
+  var ags=app.querySelectorAll('.me-ag[data-agk]');
+  for (var j=0;j<ags.length;j++) ags[j].addEventListener('click', function(){
+    var k=this.getAttribute('data-agk'), id=this.getAttribute('data-agid');
+    if(k==='task'){ var t=taskById(id); if(t) openTaskModal(t); }
+    else if(k==='ev'){ var ev=evById(id); if(ev){ if(admin||String(ev.created_by)===String(ST.session.user.id)) openEventModal(ev,null); else toast((ev.hora?ev.hora+' · ':'')+(ev.title||'Evento'),'info'); } }
+  });
+}
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
   if (ST.page==='config' && !isTopAdmin(ST.session)) { ST.page='inicio'; }
@@ -4457,6 +4624,8 @@ function renderPage() {
   }
   if (pg.id==='tarefas') {
     renderShell(tarefasHTML(), 'Tarefas'); bindTarefas();
+  } else if (pg.id==='meuespaco') {
+    renderShell(meuEspacoHTML(), 'Meu Espaço'); bindMeuEspaco();
   } else if (pg.id==='equipe') {
     renderShell(equipeHTML(), 'Equipe'); bindEquipe();
   } else if (pg.id==='metas') {
