@@ -192,6 +192,32 @@ html.dark .brand-2 { color: #0B1220; }
 .btn-logout { margin-top: 10px; display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: var(--radius-sm); color: var(--u-text2); font-size: 13.5px; font-weight: 600; }
 .btn-logout svg { font-size: 18px; }
 .btn-logout:hover { background: var(--u-red-soft); color: var(--u-red); }
+.side-version { margin-top: 8px; text-align: center; font-size: 10.5px; font-weight: 700; letter-spacing: .3px; color: var(--u-text3); opacity: .8; }
+/* Gestão · Visão geral */
+.vg-filterbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.vg-fl { font-size: 13px; font-weight: 700; color: var(--u-text2); }
+.vg-kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 8px; }
+.vg-kpi { background: var(--u-card); border: 1px solid var(--u-border); border-radius: 14px; padding: 16px; text-align: center; }
+.vg-kpi-v { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800; line-height: 1; }
+.vg-kpi-l { margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--u-text3); }
+.vg-lojas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-bottom: 8px; }
+.vg-loja { text-align: left; background: var(--u-card); border: 1px solid var(--u-border); border-radius: 14px; padding: 15px; cursor: pointer; transition: all .12s; }
+.vg-loja:hover { border-color: var(--u-accent); box-shadow: var(--u-shadow-md); transform: translateY(-2px); }
+.vg-loja-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.vg-loja-h b { font-size: 15px; color: var(--u-text); }
+.vg-stars { font-size: 12px; font-weight: 800; color: var(--u-amber); background: var(--u-amber-soft, #FEF3C7); padding: 2px 8px; border-radius: 20px; }
+.vg-loja-stats { display: flex; gap: 14px; }
+.vg-loja-stats span { display: flex; flex-direction: column; font-size: 11px; color: var(--u-text3); font-weight: 600; }
+.vg-loja-stats i { font-style: normal; font-size: 20px; font-weight: 800; font-family: 'Sora', sans-serif; line-height: 1.1; }
+.vg-loja-foot { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--u-border); font-size: 11.5px; color: var(--u-text3); font-weight: 600; }
+.vg-colabs { display: flex; flex-direction: column; gap: 4px; }
+.vg-colab { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: 12px; background: transparent; border: none; cursor: pointer; text-align: left; transition: background .12s; }
+.vg-colab:hover { background: var(--u-bg2); }
+.vg-colab-av { width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.vg-colab-name { flex: 1; font-size: 14px; font-weight: 700; color: var(--u-text); }
+.vg-colab-st { font-size: 12px; color: var(--u-text3); font-weight: 600; }
+.vg-colab-st i { font-style: normal; font-weight: 800; }
+@media (max-width: 700px){ .vg-kpis { grid-template-columns: repeat(2, 1fr); } .vg-colab-st { font-size: 10.5px; } }
 .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .top { height: 64px; flex-shrink: 0; display: flex; align-items: center; gap: 14px; padding: 0 24px; border-bottom: 1px solid var(--u-border); background: var(--u-card); }
 .top-title { font-family: var(--u-font-display); font-size: 18px; font-weight: 800; }
@@ -854,6 +880,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
+var APP_BUILD = 'v21 · 18/06 (painel gestão lojas)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -981,7 +1008,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', configTab:'usuarios', gestaoTab:'comissoes', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -1020,6 +1047,7 @@ function loadData() {
     ST.clients    = (r[5]&&r[5].data) || [];
     ST.projects   = (r[6]&&r[6].data) || [];
     ST.milestones = (r[7]&&r[7].data) || [];
+    (function(){ var pmap={}; ST.projects.forEach(function(p){ pmap[String(p.id)]=1; }); ST.milestones = ST.milestones.filter(function(m){ return pmap[String(m.project_id)]; }); })();
     ST.banners    = (r[8]&&r[8].data) || [];
     ST.campaigns  = (r[9]&&r[9].data) || [];
     ST.comissoes  = (r[10]&&r[10].data) || [];
@@ -1039,7 +1067,7 @@ function loadData() {
 function visibleTasks(opts) {
   opts = opts || {};
   var list = ST.tasks.slice();
-  var sid = scopeStore();
+  var sid = boardStore();
   if (sid) list = list.filter(function(t){ return String(t.store_unit_id) === String(sid); });
   if (!isAdmin(ST.session)) {
     var me = String(ST.session.user.id);
@@ -1049,6 +1077,8 @@ function visibleTasks(opts) {
   }
   return list;
 }
+// escopo de loja do quadro/calendário: conta de loja vê só a sua; admin pode filtrar por loja
+function boardStore(){ var sid=scopeStore(); if(sid) return sid; return ST.taskStore ? String(ST.taskStore) : null; }
 function taskById(id){ for(var i=0;i<ST.tasks.length;i++) if(String(ST.tasks[i].id)===String(id)) return ST.tasks[i]; return null; }
 function campById(id){ for(var i=0;i<ST.campaigns.length;i++) if(String(ST.campaigns[i].id)===String(id)) return ST.campaigns[i]; return null; }
 function projName(id){ for(var i=0;i<ST.projects.length;i++) if(String(ST.projects[i].id)===String(id)) return ST.projects[i].name||'Projeto'; return 'Projeto'; }
@@ -1113,7 +1143,7 @@ function renderSectorScreen() {
 
 function renderLogin(sector) {
   var s=SECTORS[sector];
-  render('<div class="screen"><div class="screen-inner login-inner">'+brandMark('')+'<div class="login-card" style="margin-top:22px"><span class="login-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><h1 class="login-h">'+esc(s.label)+'</h1><p class="login-sub">Entre com seu acesso</p><label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="username" placeholder="voce@malba.com.br"></label><label class="field"><span>Senha</span><input id="senha" type="password" autocomplete="current-password" placeholder="••••••••"></label><p class="login-err" id="err"></p><button class="btn btn-primary" id="btnEntrar">Entrar</button><button class="btn-link" id="btnVoltar">← Trocar de setor</button></div><p class="version">MALBA Work OS · v13</p></div></div>');
+  render('<div class="screen"><div class="screen-inner login-inner">'+brandMark('')+'<div class="login-card" style="margin-top:22px"><span class="login-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><h1 class="login-h">'+esc(s.label)+'</h1><p class="login-sub">Entre com seu acesso</p><label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="username" placeholder="voce@malba.com.br"></label><label class="field"><span>Senha</span><input id="senha" type="password" autocomplete="current-password" placeholder="••••••••"></label><p class="login-err" id="err"></p><button class="btn btn-primary" id="btnEntrar">Entrar</button><button class="btn-link" id="btnVoltar">← Trocar de setor</button></div><p class="version">MALBA Work OS · '+APP_BUILD+'</p></div></div>');
   var emailEl=document.getElementById('email'), senhaEl=document.getElementById('senha'), errEl=document.getElementById('err'), btn=document.getElementById('btnEntrar');
   function entrar(){
     errEl.textContent=''; btn.disabled=true; btn.textContent='Entrando...';
@@ -1160,6 +1190,7 @@ function renderShell(innerHTML, title) {
       '<button class="side-user" id="sideUser">'+(u.avatar?'<span class="avatar" style="background:center/cover url(\''+u.avatar+'\')"></span>':'<span class="avatar" style="background:'+(u.color||s.color)+'">'+esc(u.initials)+'</span>')+'<span class="side-user-txt"><b>'+esc(u.name.split(' ')[0])+'</b><i>'+roleLabel+'</i></span></button>'+
       '<nav class="nav">'+nav+'</nav>'+
       '<button class="btn-logout" id="btnSair">'+icon('logout')+'<span>Sair</span></button>'+
+      '<div class="side-version" title="Versão no ar">'+esc(APP_BUILD)+'</div>'+
     '</aside><main class="main">'+
       '<header class="top"><span class="top-title">'+esc(title||'')+'</span><div class="top-spacer"></div>'+
         (function(){
@@ -1576,41 +1607,50 @@ function tarefasHTML() {
     var opts = '<option value="'+esc(meId)+'"'+mineSel+'>Minhas tarefas</option><option value="">Todos da equipe</option>' + others;
     filter = '<select class="task-filter" id="taskAssignee" title="Ver tarefas de">'+opts+'</select>';
   }
+  var storeFilter = '';
+  if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
+    var sopts = '<option value="">Todas as lojas</option>' + ST.storeUnits.map(function(s){
+      return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';
+    }).join('');
+    storeFilter = '<select class="task-filter" id="taskStore" title="Ver loja">'+sopts+'</select>';
+  }
   var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
-  var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+filter+toggle+nova+'</div></div>';
+  var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
   return head + (view==='matriz' ? matrizHTML() : kanbanHTML());
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
 function boardItems() {
   var admin = isAdmin(ST.session);
   var me = String(ST.session.user.id);
-  var assignee = admin ? (ST.taskAssignee||'') : me;
-  var sid = scopeStore();
+  var sid = boardStore();
   var items = [];
-  // 1) Tarefas normais
-  visibleTasks({ assignee: admin?assignee:undefined }).forEach(function(t){
+  // "who" = filtro de pessoa. Não-admin: só as minhas. Admin: a pessoa escolhida (ou null = toda a equipe).
+  var who = admin ? (ST.taskAssignee?String(ST.taskAssignee):null) : me;
+  // projetos do SETOR atual (ST.projects já vem filtrado por setor no loadData)
+  var projIds = {}; (ST.projects||[]).forEach(function(p){ projIds[String(p.id)]=1; });
+  // 1) Tarefas normais (já vêm do setor atual)
+  visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined }).forEach(function(t){
     var src = t.project_id ? { type:'Projeto', name:projName(t.project_id), pid:t.project_id } : null;
     items.push({ kind:'task', id:t.id, title:t.title, status:t.status||'todo', due:(t.due_date||'').slice(0,10), assignee_id:t.assignee_id, priority:t.priority, rec:t.recurrence, area:t.area, source:src, sub:subProgress(t.subtasks), draggable:true });
   });
-  // 2) Marcos de projeto (têm data, responsável e status)
+  // 2) Marcos de projeto — APENAS de projetos deste setor + respeita responsável
   (ST.milestones||[]).forEach(function(m){
+    if (!projIds[String(m.project_id)]) return;                 // só marcos de projetos DESTE setor
     if (sid && String(projStore(m.project_id))!==String(sid)) return;
-    if (admin) { if (assignee && String(m.assignee_id)!==String(assignee)) return; }
-    else { if (String(m.assignee_id)!==me) return; }
+    if (who && String(m.assignee_id||'')!==who) return;         // filtro de pessoa (exclui sem responsável)
     items.push({ kind:'milestone', id:m.id, title:m.name, status:m.status||'todo', due:(m.date||'').slice(0,10), assignee_id:m.assignee_id, priority:'media', source:{type:'Projeto', name:projName(m.project_id), pid:m.project_id}, draggable:true });
   });
-  // 3) Tarefas de campanha (sem status próprio -> entram em "A fazer")
-  (ST.campaigns||[]).forEach(function(c){
-    if (sid && c.store_unit_id && String(c.store_unit_id)!==String(sid)) return;
-    var parts = c.user_ids||[];
-    if (admin) { if (assignee && parts.indexOf(assignee)===-1) return; }
-    else { if (parts.indexOf(me)===-1) return; }
-    (c.tasks||[]).forEach(function(tk){
-      if (!admin && tk.assignee_id && String(tk.assignee_id)!==me) return;
-      if (admin && assignee && tk.assignee_id && String(tk.assignee_id)!==String(assignee)) return;
-      items.push({ kind:'camptask', id:String(c.id)+'__'+String(tk.id), title:tk.title, status:(tk.done?'feito':'todo'), due:(tk.due||c.end_date||'').slice(0,10), assignee_id:tk.assignee_id||null, priority:tk.priority||'media', source:{type:'Campanha', name:c.name, cid:c.id}, draggable:true });
-    });
+  // 3) Tarefas de campanha — campanhas existem só no Marketing, então só aparecem no quadro do Marketing
+  if (ST.sector==='marketing') {
+    (ST.campaigns||[]).forEach(function(c){
+      if (sid && c.store_unit_id && String(c.store_unit_id)!==String(sid)) return;
+      (c.tasks||[]).forEach(function(tk){
+        var aid = tk.assignee_id?String(tk.assignee_id):null;
+        if (who && aid!==who) return;                           // filtro de pessoa (exclui sem responsável)
+        items.push({ kind:'camptask', id:String(c.id)+'__'+String(tk.id), title:tk.title, status:(tk.done?'feito':'todo'), due:(tk.due||c.end_date||'').slice(0,10), assignee_id:aid, priority:tk.priority||'media', source:{type:'Campanha', name:c.name, cid:c.id}, draggable:true });
+      });
   });
+  }
   return items;
 }
 function kanbanHTML() {
@@ -1734,7 +1774,7 @@ function moveBoardItem(kind, id, ns) {
     var done = (ns==='feito');
     if (tk.done===done) return;
     tk.done=done;
-    sb.from('malba_vl_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
+    sb.from('malba_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
     renderPage();
   }
 }
@@ -1760,6 +1800,9 @@ function bindTarefas() {
   // filtro de responsável (admin)
   var af=document.getElementById('taskAssignee');
   if (af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
+  // filtro de loja (admin de setor de Lojas)
+  var sf=document.getElementById('taskStore');
+  if (sf) sf.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   // botão "feito hoje" das recorrentes — reagenda para a próxima ocorrência
   var dones=app.querySelectorAll('[data-done]');
   for (var d=0;d<dones.length;d++) {
@@ -3527,14 +3570,72 @@ function gestaoHTML() {
   if (!canManage()) {
     return '<div class="empty-page"><div class="ep-ico">'+icon('target')+'</div><h3>Acesso restrito</h3><p>Esta área é para administradores e gestores.</p></div>';
   }
-  var tab = ST.gestaoTab || 'comissoes';
+  var tab = ST.gestaoTab || 'visao';
   var tabs = '<div class="cfg-tabs">'+
+    '<button class="cfg-tab'+(tab==='visao'?' on':'')+'" data-gtab="visao">'+icon('dashboard')+'Visão geral</button>'+
     '<button class="cfg-tab'+(tab==='comissoes'?' on':'')+'" data-gtab="comissoes">'+icon('dollar')+'Comissões</button>'+
     '<button class="cfg-tab'+(tab==='avaliacoes'?' on':'')+'" data-gtab="avaliacoes">'+icon('target')+'Avaliações</button>'+
     '<button class="cfg-tab'+(tab==='atividade'?' on':'')+'" data-gtab="atividade">'+icon('search')+'Atividade</button>'+
   '</div>';
-  var body = tab==='avaliacoes' ? avaliacoesHTML() : (tab==='atividade' ? atividadeHTML() : comissoesHTML());
-  return '<div class="tasks-head"><div><h2>Gestão</h2><div class="sub">Comissões, avaliações e histórico da equipe</div></div></div>'+tabs+'<div id="gestaoBody">'+body+'</div>';
+  var body = tab==='avaliacoes' ? avaliacoesHTML() : (tab==='atividade' ? atividadeHTML() : (tab==='comissoes' ? comissoesHTML() : visaoGeralHTML()));
+  return '<div class="tasks-head"><div><h2>Gestão do setor</h2><div class="sub">Visão de lojas, equipe, comissões e avaliações</div></div></div>'+tabs+'<div id="gestaoBody">'+body+'</div>';
+}
+function gestaoStats(filterFn){
+  var hoje=today(); var o={abertas:0,atrasadas:0,concluidas:0,total:0};
+  ST.tasks.forEach(function(t){
+    if(!filterFn(t)) return;
+    o.total++;
+    var d=(t.due_date||'').slice(0,10);
+    if(t.status==='feito') o.concluidas++;
+    else { o.abertas++; if(d && d<hoje) o.atrasadas++; }
+  });
+  return o;
+}
+function lojaAvalMedia(lojaId){
+  var soma=0,n=0;
+  ST.avaliacoes.forEach(function(a){ if(String(a.store_unit_id)===String(lojaId) && a.nota_final!=null){ soma+=Number(a.nota_final); n++; } });
+  return n? (soma/n):null;
+}
+function visaoGeralHTML(){
+  function vgk(l,v,c){ return '<div class="vg-kpi"><div class="vg-kpi-v" style="color:'+c+'">'+v+'</div><div class="vg-kpi-l">'+l+'</div></div>'; }
+  var lojas = lojasGestao();
+  var selLoja = ST.gestaoStore||'';
+  var lojaFilter = function(t){ return selLoja ? String(t.store_unit_id)===String(selLoja) : true; };
+  var k = gestaoStats(lojaFilter);
+  var sopts='<option value="">Todas as lojas</option>'+lojas.map(function(s){ return '<option value="'+esc(s.id)+'"'+(String(selLoja)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>'; }).join('');
+  var kpis = '<div class="vg-kpis">'+
+    vgk('Tarefas abertas', k.abertas, 'var(--u-accent)')+
+    vgk('Atrasadas', k.atrasadas, 'var(--u-red)')+
+    vgk('Concluídas', k.concluidas, 'var(--u-green)')+
+    vgk('Colaboradores', ST.users.length, 'var(--u-purple)')+
+    vgk('Lojas', lojas.length, 'var(--u-text2)')+
+  '</div>';
+  var lojasShow = selLoja ? lojas.filter(function(s){return String(s.id)===String(selLoja);}) : lojas;
+  var lojaCards = lojasShow.map(function(s){
+    var st=gestaoStats(function(t){ return String(t.store_unit_id)===String(s.id); });
+    var media=lojaAvalMedia(s.id);
+    var nf=membrosDaLoja(s.id).length;
+    var ncom=ST.comissoes.filter(function(c){return String(c.store_unit_id)===String(s.id);}).length;
+    return '<button class="vg-loja" data-vgloja="'+esc(s.id)+'">'+
+      '<div class="vg-loja-h"><b>'+esc(s.name||('Loja '+s.store_number))+'</b>'+(media!=null?'<span class="vg-stars">★ '+media.toFixed(1)+'</span>':'')+'</div>'+
+      '<div class="vg-loja-stats"><span><i style="color:var(--u-accent)">'+st.abertas+'</i>abertas</span><span><i style="color:var(--u-red)">'+st.atrasadas+'</i>atrasadas</span><span><i style="color:var(--u-green)">'+st.concluidas+'</i>feitas</span></div>'+
+      '<div class="vg-loja-foot">'+nf+' funcionários · '+ncom+' comissões · ver tarefas →</div>'+
+    '</button>';
+  }).join('') || '<div class="col-empty">Nenhuma loja cadastrada.</div>';
+  var colabRows = ST.users.map(function(u){
+    return { u:u, st:gestaoStats(function(t){ return String(t.assignee_id)===String(u.id) && lojaFilter(t); }) };
+  }).filter(function(r){ return r.st.total>0; }).sort(function(a,b){ return b.st.atrasadas-a.st.atrasadas || b.st.abertas-a.st.abertas; });
+  var colabHTML = colabRows.length ? colabRows.map(function(r){
+    return '<button class="vg-colab" data-vgcolab="'+esc(r.u.id)+'">'+
+      '<span class="vg-colab-av" style="background:'+(r.u.color||'#3B6FF7')+'">'+esc(iniciais(r.u.name||'?'))+'</span>'+
+      '<span class="vg-colab-name">'+esc(r.u.name||'')+'</span>'+
+      '<span class="vg-colab-st"><i style="color:var(--u-red)">'+r.st.atrasadas+'</i> atrasadas · <i style="color:var(--u-accent)">'+r.st.abertas+'</i> abertas · <i style="color:var(--u-green)">'+r.st.concluidas+'</i> feitas</span>'+
+    '</button>';
+  }).join('') : '<div class="col-empty">Sem tarefas atribuídas ainda.</div>';
+  return '<div class="vg-filterbar"><label class="vg-fl">Filtrar loja</label><select class="task-filter" id="vgLoja">'+sopts+'</select></div>'+
+    kpis+
+    '<div class="cfg-sec-head"><span>Por loja</span><span style="font-size:12px;color:var(--u-text3)">clique para ver as tarefas</span></div><div class="vg-lojas">'+lojaCards+'</div>'+
+    '<div class="cfg-sec-head"><span>Por colaborador</span><span style="font-size:12px;color:var(--u-text3)">ordenado por atrasadas</span></div><div class="vg-colabs">'+colabHTML+'</div>';
 }
 function atividadeHTML() {
   var escopo = isTopAdmin(ST.session) ? 'Todas as ações registradas no sistema' : ('Ações do setor '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:''));
@@ -3881,6 +3982,17 @@ function bindGestao() {
     if (a) openAvaliacaoModal(a);
   });
   if ((ST.gestaoTab||'')==='atividade') loadAtividade();
+  // Visão geral: filtro de loja + drill
+  var vgl=document.getElementById('vgLoja');
+  if (vgl) vgl.addEventListener('change', function(){ ST.gestaoStore=this.value; renderPage(); });
+  var vgLojas=app.querySelectorAll('.vg-loja[data-vgloja]');
+  for (var li=0;li<vgLojas.length;li++) vgLojas[li].addEventListener('click', function(){
+    ST.taskStore=this.getAttribute('data-vgloja'); ST.taskAssignee=''; ST.page='tarefas'; renderPage();
+  });
+  var vgColabs=app.querySelectorAll('.vg-colab[data-vgcolab]');
+  for (var ci=0;ci<vgColabs.length;ci++) vgColabs[ci].addEventListener('click', function(){
+    ST.taskAssignee=this.getAttribute('data-vgcolab'); ST.taskStore=ST.gestaoStore||''; ST.page='tarefas'; renderPage();
+  });
 }
 function timeAgo(ts){
   try{
@@ -3996,40 +4108,41 @@ function bindPerfil() {
 
 /* ========== [10k] CALENDÁRIO EDITORIAL (Marketing) ========== */
 function calDayItems(ds) {
-  var admin=isAdmin(ST.session), me=String(ST.session.user.id), sid=scopeStore();
-  var assignee=admin?(ST.taskAssignee||''):me;
+  var admin=isAdmin(ST.session), me=String(ST.session.user.id), sid=boardStore();
+  var who = admin ? (ST.taskAssignee?String(ST.taskAssignee):null) : me;
+  var projIds={}; (ST.projects||[]).forEach(function(p){ projIds[String(p.id)]=1; });
   var out=[];
   ST.tasks.forEach(function(t){
     if ((t.due_date||'').slice(0,10)!==ds) return;
     if (sid && String(t.store_unit_id)!==String(sid)) return;
     if (!admin) { if (String(t.assignee_id)!==me && String(t.created_by)!==me) return; }
-    else if (assignee && String(t.assignee_id)!==String(assignee)) return;
+    else if (who && String(t.assignee_id||'')!==who) return;
     out.push({ k:'task', id:t.id, label:t.title, status:t.status||'todo', priority:t.priority, assignee_id:t.assignee_id, drag:admin });
   });
   ST.milestones.forEach(function(m){
     if ((m.date||'').slice(0,10)!==ds) return;
+    if (!projIds[String(m.project_id)]) return;                 // só marcos de projetos DESTE setor
     if (sid && String(projStore(m.project_id))!==String(sid)) return;
-    if (!admin) { if (String(m.assignee_id)!==me) return; }
-    else if (assignee && String(m.assignee_id)!==String(assignee)) return;
+    if (who && String(m.assignee_id||'')!==who) return;
     out.push({ k:'ms', id:m.id, label:m.name, status:m.status||'todo', priority:'media', assignee_id:m.assignee_id, drag:admin, src:'Projeto' });
   });
-  ST.campaigns.forEach(function(c){
-    (c.tasks||[]).forEach(function(tk){
-      if ((tk.due||'').slice(0,10)!==ds) return;
-      if (!admin && tk.assignee_id && String(tk.assignee_id)!==me) return;
-      if (admin && assignee && tk.assignee_id && String(tk.assignee_id)!==String(assignee)) return;
-      out.push({ k:'camptask', id:String(c.id)+'__'+String(tk.id), label:tk.title, status:(tk.done?'feito':'todo'), priority:tk.priority||'media', assignee_id:tk.assignee_id, drag:admin, src:'Campanha' });
+  // campanhas só no Marketing (é onde elas existem)
+  if (ST.sector==='marketing') {
+    ST.campaigns.forEach(function(c){
+      (c.tasks||[]).forEach(function(tk){
+        if ((tk.due||'').slice(0,10)!==ds) return;
+        var aid=tk.assignee_id?String(tk.assignee_id):null;
+        if (who && aid!==who) return;
+        out.push({ k:'camptask', id:String(c.id)+'__'+String(tk.id), label:tk.title, status:(tk.done?'feito':'todo'), priority:tk.priority||'media', assignee_id:aid, drag:admin, src:'Campanha' });
+      });
     });
-  });
-  ST.campaigns.forEach(function(c){
-    var s=(c.start_date||'').slice(0,10), e=(c.end_date||'').slice(0,10)||s;
-    if (!(s && ds>=s && ds<=e)) return;
-    if (sid && c.store_unit_id && String(c.store_unit_id)!==String(sid)) return;
-    var parts=c.user_ids||[];
-    if (!admin && parts.indexOf(me)===-1) return;
-    if (admin && assignee && parts.indexOf(assignee)===-1) return;
-    out.push({ k:'camp', id:c.id, label:c.name, color:c.color||'#8B5CF6', drag:false, edge:(ds===s?'start':(ds===e?'end':'mid')) });
-  });
+    ST.campaigns.forEach(function(c){
+      var s=(c.start_date||'').slice(0,10), e=(c.end_date||'').slice(0,10)||s;
+      if (!(s && ds>=s && ds<=e)) return;
+      if (sid && c.store_unit_id && String(c.store_unit_id)!==String(sid)) return;
+      out.push({ k:'camp', id:c.id, label:c.name, color:c.color||'#8B5CF6', drag:false, edge:(ds===s?'start':(ds===e?'end':'mid')) });
+    });
+  }
   return out;
 }
 
@@ -4129,7 +4242,7 @@ function bindCalendario() {
 function calMove(k, id, ds) {
   if (k==='task') { var t=taskById(id); if(!t||((t.due_date||'').slice(0,10)===ds)) return; t.due_date=ds; sb.from('malba_vl_tasks').update({ due_date:ds }).eq('id', id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Tarefa movida para '+fmtDate(ds),'success'); renderPage(); }
   else if (k==='ms') { var m=msById(id); if(!m||((m.date||'').slice(0,10)===ds)) return; m.date=ds; sb.from('malba_vl_milestones').update({ date:ds }).eq('id', id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Marco movido para '+fmtDate(ds),'success'); renderPage(); }
-  else if (k==='camptask') { var parts=String(id).split('__'); var c=campById(parts[0]); if(!c) return; var tk=null; (c.tasks||[]).forEach(function(x){ if(String(x.id)===String(parts[1])) tk=x; }); if(!tk||((tk.due||'').slice(0,10)===ds)) return; tk.due=ds; sb.from('malba_vl_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Tarefa movida para '+fmtDate(ds),'success'); renderPage(); }
+  else if (k==='camptask') { var parts=String(id).split('__'); var c=campById(parts[0]); if(!c) return; var tk=null; (c.tasks||[]).forEach(function(x){ if(String(x.id)===String(parts[1])) tk=x; }); if(!tk||((tk.due||'').slice(0,10)===ds)) return; tk.due=ds; sb.from('malba_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){ if(r.error) toast('Erro ao mover','error'); }); toast('Tarefa movida para '+fmtDate(ds),'success'); renderPage(); }
 }
 
 /* ========== [10l] CHAT EFÊMERO (Realtime broadcast — nada é salvo) ========== */
