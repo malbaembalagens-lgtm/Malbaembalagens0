@@ -312,6 +312,8 @@ html.dark .brand-2 { color: #0B1220; }
 .dash-sec-h { display: flex; align-items: baseline; gap: 12px; margin: 4px 0 14px; }
 .dash-sec-h h3 { font-family: var(--u-font-display); font-size: 22px; font-weight: 800; }
 .dash-sec-h span { font-size: 13px; color: var(--u-text3); font-weight: 600; text-transform: capitalize; }
+.dash-sec-spacer { flex: 1; }
+.dash-sec-h .task-filter { text-transform: none; }
 .stat-pro { background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); box-shadow: var(--u-shadow); padding: 18px 18px 0; overflow: hidden; position: relative; transition: transform .12s, box-shadow .12s; }
 .stat-pro:hover { transform: translateY(-2px); box-shadow: var(--u-shadow-md); }
 .stat-pro-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
@@ -949,7 +951,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v26 · 18/06 (mural de avisos)';
+var APP_BUILD = 'v28 · 18/06 (filtro loja no Início + fix arrastar)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -964,10 +966,10 @@ var SECTORS = {
 function p(id,label,ic,enabled,group){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'OPERAÇÃO' }; }
 var GROUP_ORDER = ['OPERAÇÃO','PLANEJAMENTO','COMUNICAÇÃO','GESTÃO'];
 var PAGES = {
-  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('meuespaco','Meu Espaço','bell',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
+  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
 };
 
 // Valores EXATOS aceitos pela tabela malba_vl_tasks.
@@ -1222,9 +1224,7 @@ function renderLogin(sector) {
     login(emailEl.value, senhaEl.value, sector).then(function(r){
       btn.disabled=false; btn.textContent='Entrar';
       if(!r.ok){ errEl.textContent=r.msg; return; }
-      var _lvl=nivelDe(r.session.user); var _rank=(NIVEIS[_lvl]||NIVEIS.user).rank;
-      var _landing = _rank<=1 ? 'meuespaco' : 'tarefas';
-      ST.loaded=false; startSplash(); navigate(sector+'/'+_landing); boot();
+      ST.loaded=false; startSplash(); navigate(sector+'/tarefas'); boot();
     });
   }
   btn.addEventListener('click', entrar);
@@ -1376,10 +1376,15 @@ function dashboardHTML() {
   }
   var counts={ todo:cTodo, faz:cFaz, feito:cFeito, hoje:cHoje, atras:cAtras };
   var cards = sectorStatCards(counts).map(statCardPro).join('');
+  var dashStoreSel='';
+  if (isAdmin(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
+    var dso='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
+    dashStoreSel='<select class="task-filter" id="dashStore" title="Ver loja">'+dso+'</select>';
+  }
   return ''+
     hero+
     muralHTML()+
-    '<div class="dash-sec-h"><h3>Resumo de hoje</h3><span>'+esc(dataExtenso())+' · Setor '+esc(setorLabel)+'</span></div>'+
+    '<div class="dash-sec-h"><h3>Resumo de hoje</h3><span>'+esc(dataExtenso())+' · Setor '+esc(setorLabel)+'</span>'+(dashStoreSel?'<span class="dash-sec-spacer"></span>'+dashStoreSel:'')+'</div>'+
     '<div class="dash-cards">'+cards+'</div>'+
     dashPanels();
 }
@@ -1435,6 +1440,8 @@ function dashPanels() {
 }
 function bindDashboard() {
   bindMural();
+  var dst=document.getElementById('dashStore');
+  if (dst) dst.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   var g=document.getElementById('dashGoTasks');
   if (g) g.addEventListener('click', function(){ ST.page='tarefas'; navigate(ST.sector+'/tarefas'); renderPage(); });
   var tr=app.querySelectorAll('[data-dtask]');
@@ -1467,13 +1474,15 @@ function sectorStatCards(c) {
   var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
   var real=gs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
   var metaPct=meta>0?Math.min(100,Math.round(real/meta*100)):0;
-  var clientesAtivos=(ST.clients||[]).filter(function(x){ return !x.status || x.status==='ativo'; }).length;
+  var _ds=boardStore();
+  var clientList=(ST.clients||[]).filter(function(x){ return !_ds || String(x.store_unit_id)===String(_ds); });
+  var clientesAtivos=clientList.filter(function(x){ return !x.status || x.status==='ativo'; }).length;
   var campAtivas=(ST.campaigns||[]).filter(function(x){ var s=(x.start_date||'').split('T')[0], e=(x.end_date||'').split('T')[0]; return s && (!e ? s===hojeStr : (hojeStr>=s && hojeStr<=e)); }).length;
   var projAtivos=(ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).length;
   var pctHoje = hojeTasks.length?Math.round(hojeDone/hojeTasks.length*100):0;
   // Faturamento de hoje (Bling) — soma das lojas visíveis
   var fatRows=(ST.blingFat||[]).filter(function(f){ return (f.ref_date||'').slice(0,10)===hojeStr; });
-  var _scp=scopeStore(); if (_scp) fatRows=fatRows.filter(function(f){ return String(f.store_unit_id)===String(_scp); });
+  var _scp=boardStore(); if (_scp) fatRows=fatRows.filter(function(f){ return String(f.store_unit_id)===String(_scp); });
   var fatHoje=fatRows.reduce(function(s,f){ return s+(Number(f.total)||0); },0);
   var temFat=fatRows.length>0;
   var fatConn=(ST.bling||[]).some(function(b){ return b.connected; });
@@ -1482,13 +1491,13 @@ function sectorStatCards(c) {
     { label:'Faturamento hoje', val:(temFat?brlShort(fatHoje):'—'), sub:(temFat?'atualizado pelo Bling':(fatConn?'Aguardando 1ª sincronização':'Conecte o Bling')), subColor:(temFat?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark' },
     { label:'Meta do mês',      val:metaPct+'%',    sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'Defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
     { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
-    { label:'Clientes ativos',  val:clientesAtivos.toLocaleString('pt-BR'), sub:(ST.clients||[]).length+' no CRM', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
+    { label:'Clientes ativos',  val:clientesAtivos.toLocaleString('pt-BR'), sub:clientList.length+' no CRM', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
   ];
   if (ST.sector==='vendas') return [
     { label:'Vendas do mês',  val:(real>0?brlShort(real):'—'), sub:(real>0?'meta '+brlShort(meta):'via Bling / metas'), subColor:(real>0?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark' },
     { label:'Meta do mês',    val:metaPct+'%', sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'Defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
     { label:'Tarefas do dia', val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
-    { label:'Clientes',       val:(ST.clients||[]).length.toLocaleString('pt-BR'), sub:clientesAtivos+' ativos', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
+    { label:'Clientes',       val:clientList.length.toLocaleString('pt-BR'), sub:clientesAtivos+' ativos', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
   ];
   if (ST.sector==='marketing') return [
     { label:'Campanhas ativas', val:campAtivas, sub:(ST.campaigns||[]).length+' no total', subColor:'#8B5CF6', color:'#8B5CF6', icon:'megaphone', viz:'spark' },
@@ -1709,7 +1718,7 @@ function tarefasHTML() {
   }
   var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
   var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
-  return head + (view==='matriz' ? matrizHTML() : kanbanHTML());
+  return head + muralHTML() + (view==='matriz' ? matrizHTML() : kanbanHTML());
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
 function boardItems() {
@@ -1759,9 +1768,11 @@ function kanbanHTML() {
       var qa='<div class="quick-add"><input type="text" id="qaInput" placeholder="+ Tarefa rápida para hoje (Enter)" maxlength="140" autocomplete="off"></div>';
       body = qa + (focus.length ? groupedByDate(focus) : '<div class="col-empty">Nada atrasado ou para hoje. Planeje no Calendário.</div>');
     } else if (key==='feito') {
-      inCol.sort(function(a,b){ return (b.due||'').localeCompare(a.due||''); });
-      count=inCol.length;
-      body = inCol.length ? inCol.slice(0,40).map(taskCardHTML).join('') : '<div class="col-empty">Nenhuma tarefa</div>';
+      // só o que foi concluído para hoje (não acumula histórico antigo)
+      var doneHoje=inCol.filter(function(it){ return it.due===hoje; });
+      doneHoje.sort(function(a,b){ return (b.due||'').localeCompare(a.due||''); });
+      count=doneHoje.length;
+      body = doneHoje.length ? doneHoje.map(taskCardHTML).join('') : '<div class="col-empty">Nada concluído hoje ainda.</div>';
     } else {
       inCol.sort(function(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); });
       count=inCol.length;
@@ -1852,28 +1863,32 @@ function taskCardHTML(it) {
 function moveBoardItem(kind, id, ns) {
   if (kind==='task') {
     var t=taskById(id); if (!t || t.status===ns) return;
-    t.status=ns;
-    sb.from('malba_vl_tasks').update({ status:ns }).eq('id', id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
-    renderPage();
+    var prev=t.status; t.status=ns; renderPage();
+    sb.from('malba_vl_tasks').update({ status:ns }).eq('id', id).then(function(r){
+      if(r.error){ t.status=prev; console.error('mover tarefa:', r.error); toast('Não consegui mover: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); }
+    });
   } else if (kind==='milestone') {
     var m=msById(id); if (!m || m.status===ns) return;
-    m.status=ns;
-    sb.from('malba_vl_milestones').update({ status:ns }).eq('id', id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
-    renderPage();
+    var pms=m.status; m.status=ns; renderPage();
+    sb.from('malba_vl_milestones').update({ status:ns }).eq('id', id).then(function(r){
+      if(r.error){ m.status=pms; console.error('mover marco:', r.error); toast('Não consegui mover: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); }
+    });
   } else if (kind==='camptask') {
     var parts=String(id).split('__'); var c=campById(parts[0]); if(!c) return;
     var tk=null; (c.tasks||[]).forEach(function(x){ if(String(x.id)===String(parts[1])) tk=x; });
     if(!tk) return;
     var done = (ns==='feito');
     if (tk.done===done) return;
-    tk.done=done;
-    sb.from('malba_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){ if(r.error){ toast('Erro ao mover','error'); } });
-    renderPage();
+    var pdone=tk.done; tk.done=done; renderPage();
+    sb.from('malba_campaigns').update({ tasks:c.tasks }).eq('id', c.id).then(function(r){
+      if(r.error){ tk.done=pdone; console.error('mover tarefa de campanha:', r.error); toast('Não consegui mover: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); }
+    });
   }
 }
 function bindTarefas() {
   var nova=document.getElementById('btnNovaTarefa');
   if (nova) nova.addEventListener('click', function(){ openTaskModal(null); });
+  bindMural();
   // captura rápida (quick-add) — cria tarefa de hoje atribuída a mim
   var qa=document.getElementById('qaInput');
   if (qa) qa.addEventListener('keydown', function(e){
@@ -2522,11 +2537,11 @@ function crmHTML() {
     crmStoreFilter='<select class="task-filter" id="crmStore" title="Ver loja">'+so+'</select>';
   }
   return ''+
-    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+importBtn+(canManage()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
+    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+crmStoreFilter+importBtn+(canManage()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
     summary+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
-    '<div class="crm-tools"><div class="crm-search">'+icon('search')+'<input id="crmSearch" placeholder="Buscar por nome, empresa, telefone ou e-mail..." value="'+esc(crmBusca)+'"></div>'+crmStoreFilter+'</div>'+
+    '<div class="crm-search">'+icon('search')+'<input id="crmSearch" placeholder="Buscar por nome, empresa, telefone ou e-mail..." value="'+esc(crmBusca)+'"></div>'+
     rows;
 }
 function crmStat(label, n, color, seg){
@@ -4143,6 +4158,16 @@ function loadAtividade(){
 }
 
 /* ========== [10j] PERFIL ========== */
+function perfilDesempenhoHTML(){
+  var mids=meusMemberIds();
+  var avals=ST.avaliacoes.filter(function(a){ return a.tipo==='membro' && mids.indexOf(String(a.member_id))!==-1; }).sort(function(a,b){return (b.data_avaliacao||'').localeCompare(a.data_avaliacao||'');});
+  var avalHTML = avals.length ? avals.slice(0,8).map(function(a){ var nota=Number(a.nota_final)||0; var stars=''; for(var i=1;i<=5;i++) stars+= '<span style="color:'+(i<=Math.round(nota)?'#F59E0B':'var(--u-border2)')+'">★</span>'; return '<div class="me-aval"><div class="me-aval-h"><b>'+(a.periodo_label?esc(a.periodo_label):fmtDate(a.data_avaliacao))+'</b><span class="me-aval-nota">'+stars+' '+nota.toFixed(1)+'</span></div>'+(a.observacao?'<div class="me-aval-obs">'+esc(a.observacao)+'</div>':'')+'</div>'; }).join('') : '<div class="col-empty">Você ainda não tem avaliações.</div>';
+  var coms=[];
+  (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
+  var comHTML = coms.length ? coms.slice(0,8).map(function(c){ return '<div class="me-com"><span class="me-com-l">'+esc(c.label||'Período')+(c.loja?' · '+esc(c.loja):'')+'</span><span class="me-com-v">'+fmtBRL(c.valor)+'</span></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
+  return '<div class="profile-card"><h3 class="profile-sec-h">Minhas avaliações</h3><div class="me-avals">'+avalHTML+'</div></div>'+
+         '<div class="profile-card"><h3 class="profile-sec-h">Minhas comissões</h3><div class="me-coms">'+comHTML+'</div></div>';
+}
 function perfilHTML() {
   var u=ST.session.user;
   var setor = SECTORS[u.sector] ? SECTORS[u.sector].label : (u.sector||'');
@@ -4165,6 +4190,7 @@ function perfilHTML() {
         '<div class="prf-field"><label>Nova senha</label><input type="password" id="prfPass" placeholder="mínimo 4 caracteres"></div>'+
         '<button class="btn btn-primary" id="prfPassSave">Alterar senha</button>'+
       '</div>'+
+      perfilDesempenhoHTML()+
       '<div class="profile-card">'+
         '<h3 class="profile-sec-h">Conta</h3>'+
         '<p style="font-size:13px;color:var(--u-text2);margin-bottom:12px">Encerrar a sessão neste dispositivo.</p>'+
@@ -4750,8 +4776,6 @@ function renderPage() {
   }
   if (pg.id==='tarefas') {
     renderShell(tarefasHTML(), 'Tarefas'); bindTarefas();
-  } else if (pg.id==='meuespaco') {
-    renderShell(meuEspacoHTML(), 'Meu Espaço'); bindMeuEspaco();
   } else if (pg.id==='equipe') {
     renderShell(equipeHTML(), 'Equipe'); bindEquipe();
   } else if (pg.id==='metas') {
