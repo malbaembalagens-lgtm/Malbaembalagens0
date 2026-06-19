@@ -719,14 +719,28 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .aval-stars { display: flex; align-items: center; gap: 6px; flex-shrink: 0; font-size: 13px; }
 .star-ro { color: var(--u-border2); font-size: 14px; }
 .star-ro.on { color: #F59E0B; }
-.aval-crits { display: flex; flex-direction: column; gap: 4px; }
-.aval-crit { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; }
-.aval-crit > span { font-size: 13px; color: var(--u-text2); }
+.aval-crits { display: flex; flex-direction: column; gap: 6px; }
+.aval-crit { display: flex; align-items: center; gap: 10px; padding: 6px 0; flex-wrap: wrap; }
+.aval-crit-name { flex: 1; min-width: 150px; height: 34px; border: 1px solid transparent; border-radius: 9px; padding: 0 10px; font-family: var(--u-font); font-size: 13px; color: var(--u-text); background: var(--u-bg2); transition: border-color .12s, background .12s; }
+.aval-crit-name:hover { border-color: var(--u-border); }
+.aval-crit-name:focus { outline: none; border-color: var(--u-accent); background: var(--u-card); }
+.aval-crit-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.aval-crit-tools { display: flex; align-items: center; gap: 2px; }
+.aval-crit-mv { width: 24px; height: 24px; border-radius: 7px; font-size: 13px; color: var(--u-text3); cursor: pointer; border: none; background: transparent; line-height: 1; }
+.aval-crit-mv:hover { background: var(--u-accent-soft); color: var(--u-accent); }
+.aval-crit-mv:disabled { opacity: .3; cursor: default; }
 .aval-stars-pick { display: flex; gap: 3px; }
 .star-pick { font-size: 22px; color: var(--u-border2); line-height: 1; transition: color .1s, transform .1s; }
 .star-pick:hover { transform: scale(1.15); }
 .star-pick.on { color: #F59E0B; }
 .aval-media { font-size: 13px; font-weight: 700; color: var(--u-accent); margin-top: 8px; text-align: right; }
+.aval-crit-del { font-size: 13px; color: var(--u-text3); width: 22px; height: 22px; border-radius: 6px; margin-left: 4px; line-height: 1; transition: background .12s, color .12s; flex-shrink: 0; }
+.aval-crit-del:hover { background: var(--u-red-soft); color: var(--u-red); }
+.aval-add { display: flex; gap: 8px; margin-top: 10px; }
+.aval-add input { flex: 1; height: 36px; border: 1px dashed var(--u-border2); border-radius: 10px; padding: 0 12px; font-family: var(--u-font); font-size: 13px; background: var(--u-bg2); color: var(--u-text); }
+.aval-add input:focus { outline: none; border-color: var(--u-accent); border-style: solid; }
+.btn-add-crit { height: 36px; padding: 0 14px; border-radius: 10px; background: var(--u-accent-soft); color: var(--u-accent); font-size: 13px; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; }
+.btn-add-crit:hover { background: var(--u-accent); color: #fff; }
 
 .modal-bg { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; animation: fade .15s; }
 @keyframes fade { from { opacity: 0; } }
@@ -951,7 +965,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v28 · 18/06 (filtro loja no Início + fix arrastar)';
+var APP_BUILD = 'v30 · 18/06 (avaliação: renomear e reordenar critérios)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3998,14 +4012,29 @@ function openAvaliacaoModal(aval) {
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var editing = !!aval;
   var tipo = editing ? (aval.tipo||'membro') : 'membro';
-  var notas = editing ? Object.assign({}, aval.notas||{}) : {};
+  var pendingCrit = '';
   var form = { periodo: editing ? (aval.periodo_label||'') : '', obs: editing ? (aval.observacao||'') : '' };
   var curLoja = editing ? (aval.store_unit_id||ls[0].id) : ls[0].id;
   var curMem = editing ? (aval.member_id||null) : null;
 
+  function defaultsFor(tp){ return (tp==='loja'?CRIT_LOJA:CRIT_MEMBRO).map(function(c){ return {id:c.id,label:c.label,nota:0}; }); }
+  // critList = lista ORDENADA de {id,label,nota}. Aceita formato novo (array) e antigo (objeto).
+  function parseCrit(){
+    if (editing) {
+      var sn=aval.notas;
+      if (Array.isArray(sn)) { var a=[]; sn.forEach(function(it){ if(it&&it.id!=null) a.push({id:String(it.id),label:it.label||'Critério',nota:Number(it.nota)||0}); }); if(a.length) return a; }
+      else if (sn && typeof sn==='object') {
+        var labels=sn._labels||{}; var list=defaultsFor(tipo); var seen={};
+        list.forEach(function(c){ seen[c.id]=1; c.label=labels[c.id]||c.label; c.nota=Number(sn[c.id])||0; });
+        Object.keys(sn).forEach(function(k){ if(k==='_labels'||seen[k]) return; list.push({id:String(k),label:labels[k]||'Critério',nota:Number(sn[k])||0}); });
+        return list;
+      }
+    }
+    return defaultsFor(tipo);
+  }
+  var critList = parseCrit();
+
   function build() {
-    var crits = tipo==='loja' ? CRIT_LOJA : CRIT_MEMBRO;
-    crits.forEach(function(c){ if(notas[c.id]==null) notas[c.id]=0; });
     var lojaOpts = ls.map(function(l){ return '<option value="'+esc(l.id)+'"'+(String(curLoja)===String(l.id)?' selected':'')+'>'+esc(l.name||('Loja '+l.store_number))+'</option>'; }).join('');
 
     var membroBlock='';
@@ -4014,13 +4043,23 @@ function openAvaliacaoModal(aval) {
       var memOpts = mem.length ? mem.map(function(m){ return '<option value="'+esc(m.id)+'"'+(String(curMem)===String(m.id)?' selected':'')+'>'+esc(m.name)+'</option>'; }).join('') : '<option value="">Sem funcionários nesta loja</option>';
       membroBlock = '<div class="modal-row"><label class="modal-label">Funcionário</label><select id="avMembro">'+memOpts+'</select></div>';
     }
-    var critHTML = crits.map(function(c){
-      var nota=notas[c.id]||0; var stars='';
-      for (var i=1;i<=5;i++) stars += '<button type="button" class="star-pick'+(i<=nota?' on':'')+'" data-crit="'+c.id+'" data-val="'+i+'">★</button>';
-      return '<div class="aval-crit"><span>'+esc(c.label)+'</span><div class="aval-stars-pick">'+stars+'</div></div>';
+    var critHTML = critList.map(function(c,idx){
+      var stars='';
+      for (var i=1;i<=5;i++) stars += '<button type="button" class="star-pick'+(i<=c.nota?' on':'')+'" data-cidx="'+idx+'" data-val="'+i+'">★</button>';
+      return '<div class="aval-crit">'+
+        '<input type="text" class="aval-crit-name" data-cidx="'+idx+'" value="'+esc(c.label)+'" maxlength="60" placeholder="Nome do critério">'+
+        '<div class="aval-crit-right">'+
+          '<div class="aval-stars-pick">'+stars+'</div>'+
+          '<div class="aval-crit-tools">'+
+            '<button type="button" class="aval-crit-mv" data-mvup="'+idx+'" title="Subir"'+(idx===0?' disabled':'')+'>↑</button>'+
+            '<button type="button" class="aval-crit-mv" data-mvdn="'+idx+'" title="Descer"'+(idx===critList.length-1?' disabled':'')+'>↓</button>'+
+            '<button type="button" class="aval-crit-del" data-rmcrit="'+idx+'" title="Remover critério">✕</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
     }).join('');
-    var soma=0,n=0; crits.forEach(function(c){ if(notas[c.id]>0){ soma+=notas[c.id]; n++; } });
-    var media = n>0 ? (soma/crits.length) : 0;
+    var soma=0,n=0; critList.forEach(function(c){ if(c.nota>0){ soma+=c.nota; n++; } });
+    var media = n>0 ? (soma/n) : 0;
     var delBtn = editing ? '<button class="btn btn-danger btn-del-wrap" id="avDel">Excluir</button>' : '';
 
     return '<div class="modal">'+
@@ -4029,7 +4068,9 @@ function openAvaliacaoModal(aval) {
       '<div class="modal-row"><label class="modal-label">Loja</label><select id="avLoja">'+lojaOpts+'</select></div>'+
       membroBlock+
       '<div class="modal-row"><label class="modal-label">Período (opcional)</label><input type="text" id="avPeriodo" placeholder="ex: Junho/2026" value="'+esc(form.periodo)+'"></div>'+
-      '<div class="modal-row"><label class="modal-label">Critérios</label><div class="aval-crits">'+critHTML+'</div><div class="aval-media" id="avMedia">'+(n>0?('Média: '+media.toFixed(1)+' de 5'):'Média: —')+'</div></div>'+
+      '<div class="modal-row"><label class="modal-label">Critérios</label><div class="aval-crits">'+critHTML+'</div>'+
+      '<div class="aval-add"><input type="text" id="avNewCrit" placeholder="Adicionar critério (ex: Apresentação pessoal)" maxlength="60" value="'+esc(pendingCrit)+'"><button type="button" class="btn-add-crit" id="avAddCrit">+ Adicionar</button></div>'+
+      '<div class="aval-media" id="avMedia">'+(n>0?('Média: '+media.toFixed(1)+' de 5'):'Média: —')+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Observação (opcional)</label><textarea id="avObs" placeholder="Comentários...">'+esc(form.obs)+'</textarea></div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="avCancel">Cancelar</button><button class="btn btn-primary" id="avSave">'+(editing?'Salvar':'Salvar avaliação')+'</button></div>'+
     '</div>';
@@ -4041,15 +4082,36 @@ function openAvaliacaoModal(aval) {
     var m=modal.querySelector('#avMembro'); if(m) curMem=m.value;
     var p=modal.querySelector('#avPeriodo'); if(p) form.periodo=p.value;
     var o=modal.querySelector('#avObs'); if(o) form.obs=o.value;
+    var nc=modal.querySelector('#avNewCrit'); if(nc) pendingCrit=nc.value;
+    var names=modal.querySelectorAll('.aval-crit-name');
+    for (var i=0;i<names.length;i++){ var idx=parseInt(names[i].getAttribute('data-cidx'),10); if(critList[idx]) critList[idx].label=names[i].value; }
+  }
+  function addCrit(){
+    captura();
+    var v=(pendingCrit||'').trim();
+    if(!v){ var el=modal.querySelector('#avNewCrit'); if(el) el.focus(); return; }
+    critList.push({ id:'c_'+Date.now().toString(36)+Math.floor(Math.random()*900+100), label:v, nota:0 }); pendingCrit='';
+    rerender(false);
+    setTimeout(function(){ var n2=modal.querySelector('#avNewCrit'); if(n2) n2.focus(); },20);
   }
   function rerender(keep){ if(keep) captura(); modal.innerHTML = build(); bindAll(); }
   function bindAll() {
     var tps=modal.querySelectorAll('.av-tp');
-    for (var i=0;i<tps.length;i++) tps[i].addEventListener('click', function(){ captura(); tipo=this.getAttribute('data-tp'); notas={}; rerender(false); });
+    for (var i=0;i<tps.length;i++) tps[i].addEventListener('click', function(){ captura(); tipo=this.getAttribute('data-tp'); critList=defaultsFor(tipo); pendingCrit=''; rerender(false); });
     var lojaSel=modal.querySelector('#avLoja');
     if (lojaSel) lojaSel.addEventListener('change', function(){ captura(); curMem=null; rerender(false); });
     var stars=modal.querySelectorAll('.star-pick');
-    for (var s=0;s<stars.length;s++) stars[s].addEventListener('click', function(){ captura(); notas[this.getAttribute('data-crit')]=parseInt(this.getAttribute('data-val'),10); rerender(false); });
+    for (var s=0;s<stars.length;s++) stars[s].addEventListener('click', function(){ captura(); var idx=parseInt(this.getAttribute('data-cidx'),10); if(critList[idx]) critList[idx].nota=parseInt(this.getAttribute('data-val'),10); rerender(false); });
+    var ups=modal.querySelectorAll('[data-mvup]');
+    for (var u=0;u<ups.length;u++) ups[u].addEventListener('click', function(){ captura(); var idx=parseInt(this.getAttribute('data-mvup'),10); if(idx>0){ var t=critList[idx-1]; critList[idx-1]=critList[idx]; critList[idx]=t; } rerender(false); });
+    var dns=modal.querySelectorAll('[data-mvdn]');
+    for (var d2=0;d2<dns.length;d2++) dns[d2].addEventListener('click', function(){ captura(); var idx=parseInt(this.getAttribute('data-mvdn'),10); if(idx<critList.length-1){ var t=critList[idx+1]; critList[idx+1]=critList[idx]; critList[idx]=t; } rerender(false); });
+    var addc=modal.querySelector('#avAddCrit');
+    if (addc) addc.addEventListener('click', addCrit);
+    var ncEl=modal.querySelector('#avNewCrit');
+    if (ncEl) ncEl.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); addCrit(); } });
+    var rms=modal.querySelectorAll('[data-rmcrit]');
+    for (var r=0;r<rms.length;r++) rms[r].addEventListener('click', function(){ captura(); var idx=parseInt(this.getAttribute('data-rmcrit'),10); critList.splice(idx,1); rerender(false); });
     var cancel=modal.querySelector('#avCancel'); if(cancel) cancel.addEventListener('click', close);
     var save=modal.querySelector('#avSave'); if(save) save.addEventListener('click', salvar);
     var del=modal.querySelector('#avDel'); if(del) del.addEventListener('click', excluir);
@@ -4069,13 +4131,14 @@ function openAvaliacaoModal(aval) {
   }
   function salvar() {
     captura();
-    var crits = tipo==='loja' ? CRIT_LOJA : CRIT_MEMBRO;
     var memberId = (tipo==='membro') ? curMem : null;
     if (tipo==='membro' && !memberId) { toast('Selecione um funcionário','error'); return; }
-    var soma=0,n=0; crits.forEach(function(c){ if(notas[c.id]>0){ soma+=notas[c.id]; n++; } });
-    if (n===0) { toast('Dê pelo menos uma nota','error'); return; }
-    var media=soma/crits.length;
-    var rec={ sector:'lojas', tipo:tipo, store_unit_id:curLoja, member_id:memberId, periodo_label:(form.periodo||'').trim()||null, data_avaliacao: editing?(aval.data_avaliacao||today()):today(), notas:notas, nota_final:Math.round(media*10)/10, observacao:(form.obs||'').trim()||null, created_by: editing?(aval.created_by||ST.session.user.id):ST.session.user.id };
+    var clean = critList.filter(function(c){ return (c.label||'').trim()!==''; });
+    var soma=0,n=0; clean.forEach(function(c){ if(c.nota>0){ soma+=c.nota; n++; } });
+    if (n===0) { toast('Dê nota a pelo menos um critério','error'); return; }
+    var media=soma/n;
+    var notasToSave = clean.map(function(c){ return { id:c.id, label:(c.label||'').trim(), nota:c.nota||0 }; });
+    var rec={ sector:'lojas', tipo:tipo, store_unit_id:curLoja, member_id:memberId, periodo_label:(form.periodo||'').trim()||null, data_avaliacao: editing?(aval.data_avaliacao||today()):today(), notas:notasToSave, nota_final:Math.round(media*10)/10, observacao:(form.obs||'').trim()||null, created_by: editing?(aval.created_by||ST.session.user.id):ST.session.user.id };
     var saveBtn=modal.querySelector('#avSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
     if (editing) {
       sb.from('malba_avaliacoes').update(rec).eq('id', aval.id).then(function(r){
