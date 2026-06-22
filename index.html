@@ -806,6 +806,11 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .goal-reg b { color:var(--u-green); }
 .tab-badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; border-radius:20px; background:var(--u-red); color:#fff; font-size:11px; font-weight:800; margin-left:3px; }
 .site-badge { display:inline-flex; align-items:center; gap:3px; font-size:10.5px; font-weight:800; color:#0EA5E9; background:rgba(14,165,233,.12); padding:2px 8px; border-radius:20px; vertical-align:middle; margin-left:6px; }
+.goal-real-ro { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:11px 13px; background:var(--u-bg2); border:1px solid var(--u-border); border-radius:10px; }
+.goal-real-ro .grr-val { font-family:var(--u-font-display); font-weight:800; font-size:16px; color:var(--u-text); }
+.goal-real-ro .grr-tag { font-size:11px; font-weight:700; color:var(--u-green); background:var(--u-green-soft); padding:3px 9px; border-radius:20px; }
+.goal-real-ro .grr-clear { margin-left:auto; font-size:12px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:6px 11px; cursor:pointer; }
+.goal-real-ro .grr-clear:hover { background:var(--u-accent); color:#fff; }
 @media (max-width:700px){ .cab-actions, .cab-grid2 { grid-template-columns:1fr; } }
 
 .modal-bg { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; animation: fade .15s; }
@@ -1031,7 +1036,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v35 · 19/06 (metas: realizado = valor do Bling)';
+var APP_BUILD = 'v36 · 19/06 (metas: realizado protegido contra digitação)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2545,6 +2550,12 @@ function openGoalModal(goal) {
     lojaSelectHTML='<div class="modal-row"><label class="modal-label">Vendedor (entra no ranking)</label><select id="gUser">'+uopts+'</select></div>';
   }
 
+  function storeBlingConnected(sid){ if(!sid) return false; var b=blingDaLoja(sid); return !!(b && b.connected); }
+  var initBlConn = storeBlingConnected(g.store_unit_id);
+  var realizadoField = (!isNew && initBlConn)
+    ? '<div class="modal-row"><label class="modal-label">Realizado (R$)</label><div class="goal-real-ro"><span class="grr-val">'+fmtBRL(Number(g.actual_value)||0)+'</span><span class="grr-tag">atualizado pelo Bling</span><button type="button" class="grr-clear" id="gClearReal">Limpar e usar o Bling</button></div><div style="font-size:11px;color:var(--u-text3);margin-top:6px">Esta loja tem o Bling conectado — o realizado é sincronizado automaticamente. Se este número estiver errado, clique em "Limpar e usar o Bling" e depois em <b>Sincronizar Bling</b>.</div></div>'
+    : '<div class="modal-row"><label class="modal-label">Realizado (R$) <span style="font-weight:600;color:var(--u-text3);text-transform:none;letter-spacing:0">• opcional</span></label><input type="text" id="gActual" inputmode="decimal" placeholder="0,00" value="'+(g.actual_value?esc(g.actual_value):'')+'"><div style="font-size:11px;color:var(--u-text3);margin-top:5px">Use vírgula nos centavos (ex.: 40155,08). Se a loja tiver Bling conectado, este valor passa a vir do Bling automaticamente.</div></div>';
+
   var delBtn = isNew ? '' : '<button class="btn btn-danger btn-del-wrap" id="goalDel">Excluir</button>';
 
   var modal=document.createElement('div'); modal.className='modal-bg';
@@ -2554,7 +2565,7 @@ function openGoalModal(goal) {
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Mês</label><select id="gMonth">'+monthOpts+'</select></div><div class="modal-row"><label class="modal-label">Ano</label><input type="text" id="gYear" value="'+esc(g.year||now.getFullYear())+'"></div></div>'+
       lojaSelectHTML+
       '<div class="modal-row"><label class="modal-label">Valor da meta (R$) *</label><input type="text" id="gValue" inputmode="decimal" placeholder="0,00" value="'+(g.goal_value!=null && g.goal_value!==''?esc(g.goal_value):'')+'"></div>'+
-      '<div class="modal-row"><label class="modal-label">Realizado (R$) <span style="font-weight:600;color:var(--u-text3);text-transform:none;letter-spacing:0">• será atualizado pelo Bling</span></label><input type="text" id="gActual" inputmode="decimal" placeholder="0,00" value="'+(g.actual_value?esc(g.actual_value):'')+'"><div style="font-size:11px;color:var(--u-text3);margin-top:5px">Por enquanto pode ser preenchido manualmente. Quando a integração com o Bling estiver ativa, este valor passa a ser sincronizado automaticamente.</div></div>'+
+      realizadoField+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="goalCancel">Cancelar</button><button class="btn btn-primary" id="goalSave">'+(isNew?'Criar meta':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
@@ -2562,6 +2573,16 @@ function openGoalModal(goal) {
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   modal.querySelector('#goalCancel').addEventListener('click', close);
+  var clearBtn = modal.querySelector('#gClearReal');
+  if (clearBtn) clearBtn.addEventListener('click', function(){
+    if(!isAdmin(ST.session)) return;
+    var bt=this; bt.disabled=true; bt.textContent='Limpando...';
+    sb.from('malba_sales_goals').update({ actual_value:null }).eq('id', g.id).then(function(r){
+      if(r.error){ toast('Erro ao limpar','error'); bt.disabled=false; bt.textContent='Limpar e usar o Bling'; return; }
+      for (var i=0;i<ST.goals.length;i++) if (ST.goals[i].id===g.id) { ST.goals[i].actual_value=null; break; }
+      auditLog('Limpou realizado da meta (usar Bling)'); close(); toast('Pronto! Agora clique em Sincronizar Bling.','success'); renderPage();
+    });
+  });
 
   function parseNum(s){ return parseFloat(String(s||'').replace(/\./g,'').replace(',', '.')) || 0; }
 
@@ -2571,15 +2592,17 @@ function openGoalModal(goal) {
     if (!val || val<=0) { toast('Informe o valor da meta','error'); return; }
     var lojaEl = modal.querySelector('#gStore');
     var userEl = modal.querySelector('#gUser');
+    var selStore = (lojaEl && lojaEl.value) ? lojaEl.value : null;
     var rec = {
       sector: ST.sector,
       month: parseInt(modal.querySelector('#gMonth').value,10),
       year: parseInt(modal.querySelector('#gYear').value,10) || now.getFullYear(),
       goal_value: val,
-      actual_value: parseNum(modal.querySelector('#gActual').value),
-      store_unit_id: (lojaEl && lojaEl.value) ? lojaEl.value : null,
+      store_unit_id: selStore,
       user_id: (userEl && userEl.value) ? userEl.value : null
     };
+    var gActualEl = modal.querySelector('#gActual');
+    if (gActualEl && !storeBlingConnected(selStore)) rec.actual_value = parseNum(gActualEl.value);
     var saveBtn=modal.querySelector('#goalSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
     if (isNew) {
       sb.from('malba_sales_goals').insert(rec).select().single().then(function(r){
