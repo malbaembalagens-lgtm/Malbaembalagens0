@@ -805,6 +805,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .goal-reg { margin-top:10px; padding-top:10px; border-top:1px dashed var(--u-border); font-size:12px; color:var(--u-text2); text-align:center; }
 .goal-reg b { color:var(--u-green); }
 .tab-badge { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; border-radius:20px; background:var(--u-red); color:#fff; font-size:11px; font-weight:800; margin-left:3px; }
+.site-badge { display:inline-flex; align-items:center; gap:3px; font-size:10.5px; font-weight:800; color:#0EA5E9; background:rgba(14,165,233,.12); padding:2px 8px; border-radius:20px; vertical-align:middle; margin-left:6px; }
 @media (max-width:700px){ .cab-actions, .cab-grid2 { grid-template-columns:1fr; } }
 
 .modal-bg { position: fixed; inset: 0; background: rgba(15,23,42,.45); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1000; animation: fade .15s; }
@@ -1030,7 +1031,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v32 · 19/06 (colaborador: vendas, solicitações, Meu Dia)';
+var APP_BUILD = 'v34 · 19/06 (Bling do site no Marketing)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1499,7 +1500,7 @@ function panelSetor() {
   if (s==='vendas') {
     var y=new Date().getFullYear(), m=new Date().getMonth()+1;
     var gs=visibleGoals().filter(function(g){ return g.month===m && g.year===y; }).slice(0,5);
-    var body=gs.length ? gs.map(function(g){ var u=g.user_id?userById(g.user_id):null; var nm=u?u.name:'Meta do setor'; var pct=g.goal_value>0?Math.min(100,Math.round((Number(g.actual_value)||0)/g.goal_value*100)):0; return '<div class="dash-goal"><div class="dg-top"><span>'+esc(nm)+'</span><b>'+pct+'%</b></div><div class="dg-bar"><span style="width:'+pct+'%"></span></div></div>'; }).join('') : '<div class="dash-empty">Sem metas definidas neste mês.</div>';
+    var body=gs.length ? gs.map(function(g){ var u=g.user_id?userById(g.user_id):null; var nm=u?u.name:'Meta do setor'; var pct=g.goal_value>0?Math.min(100,Math.round(realizadoMeta(g)/g.goal_value*100)):0; return '<div class="dash-goal"><div class="dg-top"><span>'+esc(nm)+'</span><b>'+pct+'%</b></div><div class="dg-bar"><span style="width:'+pct+'%"></span></div></div>'; }).join('') : '<div class="dash-empty">Sem metas definidas neste mês.</div>';
     return dashPanel('Metas do mês', icon('target'), body);
   }
   if (s==='lojas') {
@@ -1556,7 +1557,7 @@ function sectorStatCards(c) {
   var y=new Date().getFullYear(), m=new Date().getMonth()+1;
   var gs=(visibleGoals()||[]).filter(function(g){ return g.month===m && g.year===y; });
   var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
-  var real=gs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
+  var real=gs.reduce(function(s,g){ return s+realizadoMeta(g); },0);
   var metaPct=meta>0?Math.min(100,Math.round(real/meta*100)):0;
   var _ds=boardStore();
   var clientList=(ST.clients||[]).filter(function(x){ return !_ds || String(x.store_unit_id)===String(_ds); });
@@ -1583,12 +1584,18 @@ function sectorStatCards(c) {
     { label:'Tarefas do dia', val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
     { label:'Clientes',       val:clientList.length.toLocaleString('pt-BR'), sub:clientesAtivos+' ativos', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
   ];
-  if (ST.sector==='marketing') return [
-    { label:'Campanhas ativas', val:campAtivas, sub:(ST.campaigns||[]).length+' no total', subColor:'#8B5CF6', color:'#8B5CF6', icon:'megaphone', viz:'spark' },
-    { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#3B6FF7', icon:'tasks', viz:'bar', barPct:pctHoje },
-    { label:'Projetos ativos',  val:projAtivos, sub:(ST.projects||[]).length+' no total', subColor:'#FB8C00', color:'#FB8C00', icon:'folder', viz:'bar', barPct:((ST.projects||[]).length?Math.round(projAtivos/(ST.projects||[]).length*100):0) },
-    { label:'Concluídas',       val:c.feito, sub:'tarefas feitas', subColor:'var(--u-green)', color:'#16A34A', icon:'dashboard', viz:'spark' }
-  ];
+  if (ST.sector==='marketing') {
+    var mkArr=[
+      { label:'Campanhas ativas', val:campAtivas, sub:(ST.campaigns||[]).length+' no total', subColor:'#8B5CF6', color:'#8B5CF6', icon:'megaphone', viz:'spark' },
+      { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#3B6FF7', icon:'tasks', viz:'bar', barPct:pctHoje },
+      { label:'Projetos ativos',  val:projAtivos, sub:(ST.projects||[]).length+' no total', subColor:'#FB8C00', color:'#FB8C00', icon:'folder', viz:'bar', barPct:((ST.projects||[]).length?Math.round(projAtivos/(ST.projects||[]).length*100):0) },
+      { label:'Concluídas',       val:c.feito, sub:'tarefas feitas', subColor:'var(--u-green)', color:'#16A34A', icon:'dashboard', viz:'spark' }
+    ];
+    if (siteUnits().length) {
+      mkArr.unshift({ label:'Faturamento do site (mês)', val:brlShort(siteFatMes()), sub:'site · via Bling', subColor:'var(--u-green)', color:'#16A34A', icon:'dollar', viz:'spark' });
+    }
+    return mkArr;
+  }
   // financeiro
   return [
     { label:'Tarefas do dia', val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#3B6FF7', icon:'tasks', viz:'bar', barPct:pctHoje },
@@ -1674,9 +1681,37 @@ function kpiSeries(){
   }
   return out;
 }
+function blingFatStoreMonth(storeId, month, year){
+  var s=0;
+  (ST.blingFat||[]).forEach(function(f){
+    if(String(f.store_unit_id)!==String(storeId)) return;
+    var d=(f.ref_date||'').slice(0,10); if(!d) return;
+    var p=d.split('-'); if(Number(p[0])===Number(year) && Number(p[1])===Number(month)) s+=Number(f.total)||0;
+  });
+  return s;
+}
+// "Realizado" de uma meta: meta de vendedor -> vendas registradas dele no mês;
+// meta de loja -> faturamento do Bling da loja no mês; senão, o valor manual digitado.
+function realizadoMeta(g){
+  if(!g) return 0;
+  if(g.user_id){
+    var sv=0; (ST.salesEntries||[]).forEach(function(e){ if(String(e.user_id)===String(g.user_id)){ var d=(e.sale_date||'').slice(0,10); var p=d.split('-'); if(Number(p[0])===Number(g.year) && Number(p[1])===Number(g.month)) sv+=Number(e.value)||0; } });
+    return sv>0 ? sv : (Number(g.actual_value)||0);
+  }
+  if(g.store_unit_id){
+    var b=blingFatStoreMonth(g.store_unit_id, g.month, g.year);
+    if(b>0) return b;
+  }
+  return Number(g.actual_value)||0;
+}
+function siteUnits(){ return (ST.storeUnits||[]).filter(function(u){ return u.is_site; }); }
+function siteFatRange(ini, fim){ var ids={}; siteUnits().forEach(function(u){ ids[String(u.id)]=1; }); var s=0; (ST.blingFat||[]).forEach(function(f){ if(!ids[String(f.store_unit_id)]) return; var d=(f.ref_date||'').slice(0,10); if(d>=ini && d<=fim) s+=Number(f.total)||0; }); return s; }
+function _firstDayMonth(){ var n=new Date(); var mm=n.getMonth()+1; return n.getFullYear()+'-'+(mm<10?'0':'')+mm+'-01'; }
+function siteFatMes(){ return siteFatRange(_firstDayMonth(), today()); }
+function siteFatHoje(){ var t=today(); return siteFatRange(t,t); }
 function lojaMetaMes(storeId){
   var now=new Date(), yy=now.getFullYear(), mm=now.getMonth()+1, meta=0, real=0;
-  (ST.goals||[]).forEach(function(g){ if(g.month===mm && g.year===yy && String(g.store_unit_id)===String(storeId)){ meta+=Number(g.goal_value)||0; real+=Number(g.actual_value)||0; } });
+  (ST.goals||[]).forEach(function(g){ if(g.month===mm && g.year===yy && String(g.store_unit_id)===String(storeId)){ meta+=Number(g.goal_value)||0; real+=realizadoMeta(g); } });
   return { meta:meta, real:real, pct: meta>0?Math.min(100,Math.round(real/meta*100)):0 };
 }
 function kpisHTML(){
@@ -1691,7 +1726,7 @@ function kpisHTML(){
   var now=new Date(), y=now.getFullYear(), m=now.getMonth()+1;
   var gs=visibleGoals().filter(function(g){ return g.month===m && g.year===y && (!sid || String(g.store_unit_id)===String(sid)); });
   var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
-  var real=gs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
+  var real=gs.reduce(function(s,g){ return s+realizadoMeta(g); },0);
   var metaPct = meta>0 ? Math.min(100, Math.round(real/meta*100)) : 0;
   // tarefas do período
   var ts=visibleTasks().filter(function(t){ var d=(t.due_date||'').slice(0,10); return d>=r.ini && d<=r.fim; });
@@ -2435,7 +2470,7 @@ function metasHTML() {
   var now2=new Date(), ym=now2.getFullYear(), mm2=now2.getMonth()+1;
   var curGs=gs.filter(function(g){ return g.month===mm2 && g.year===ym; });
   var tMeta=curGs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
-  var tReal=curGs.reduce(function(s,g){ return s+(Number(g.actual_value)||0); },0);
+  var tReal=curGs.reduce(function(s,g){ return s+realizadoMeta(g); },0);
   var tPct=tMeta>0?Math.min(100,Math.round(tReal/tMeta*100)):0;
   var resumo = curGs.length ? ('<div class="metas-resumo"><div class="mr-top"><span>Acompanhamento de '+MESES[mm2-1]+'</span><b>'+tPct+'% da meta</b></div><div class="mr-bar"><span style="width:'+tPct+'%"></span></div><div class="mr-sub">'+fmtBRL(tReal)+' de '+fmtBRL(tMeta)+'</div></div>') : '';
 
@@ -2451,7 +2486,7 @@ function metasHTML() {
 
 function goalCardHTML(g) {
   var meta = Number(g.goal_value)||0;
-  var real = Number(g.actual_value)||0;
+  var real = realizadoMeta(g);
   var pct = meta>0 ? Math.min(100, Math.round((real/meta)*100)) : 0;
   var who = g.user_id ? userById(g.user_id) : null;
   var alvo = who ? (esc(who.name)+(g.store_unit_id?(' · '+esc(storeName(g.store_unit_id))):'')) : ((g.store_unit_id) ? esc(storeName(g.store_unit_id)) : 'Todo o setor');
@@ -3320,7 +3355,7 @@ function lojasHTML() {
       var errLine = (bl && bl.last_error) ? '<div class="bling-err">⚠️ Último erro: '+esc(String(bl.last_error))+'</div>' : '';
       rows += '<div class="cfg-row bling-row" data-sid="'+esc(s.id)+'">'+
         '<span class="crm-av" style="background:var(--u-accent-soft);color:var(--u-accent)">'+icon('store')+'</span>'+
-        '<div class="crm-main"><b>'+esc(s.name||('Loja '+s.store_number))+'</b><i>'+(s.district?esc(s.district)+' · ':'')+'<span style="color:'+vincCor+'">'+vinc+'</span></i>'+errLine+'</div>'+
+        '<div class="crm-main"><b>'+esc(s.name||('Loja '+s.store_number))+(s.is_site?' <span class="site-badge">🌐 Site</span>':'')+'</b><i>'+(s.district?esc(s.district)+' · ':'')+'<span style="color:'+vincCor+'">'+vinc+'</span></i>'+errLine+'</div>'+
         blBtn+
         '<span class="crm-status" style="color:var(--u-text2);background:var(--u-bg2)">#'+esc(s.store_number||'?')+'</span>'+
       '</div>';
@@ -3389,6 +3424,7 @@ function openStoreModal(store) {
       '<div class="modal-row"><label class="modal-label">Endereço</label><input type="text" id="sAddress" value="'+esc(s.address||'')+'"></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Telefone</label><input type="text" id="sPhone" value="'+esc(s.phone||'')+'"></div><div class="modal-row"><label class="modal-label">E-mail</label><input type="text" id="sEmail" value="'+esc(s.email||'')+'"></div></div>'+
       '<div class="modal-row"><label class="modal-label">Conta de acesso (login da loja)</label><select id="sUser">'+userOpts+'</select><div style="font-size:11px;color:var(--u-text3);margin-top:5px">Liga a loja ao usuário que faz login por ela. É o que faz tarefas, equipe e metas aparecerem certo para a loja.</div></div>'+
+      '<label class="acc-toggle" style="border:1px solid var(--u-border);border-radius:12px;padding:12px 14px;background:var(--u-bg2);margin-top:2px"><input type="checkbox" id="sSite"'+(s.is_site?' checked':'')+'><span class="acc-txt"><b>Esta é a conta do site (e-commerce)</b><i>O faturamento dela também aparece no painel de Marketing.</i></span></label>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="storeCancel">Cancelar</button><button class="btn btn-primary" id="storeSave">'+(isNew?'Criar loja':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
@@ -3411,16 +3447,21 @@ function openStoreModal(store) {
       user_id: modal.querySelector('#sUser').value || null
     };
     var saveBtn=modal.querySelector('#storeSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var siteChecked = !!(modal.querySelector('#sSite') && modal.querySelector('#sSite').checked);
+    function aplicarSite(id){
+      // best-effort: ignora se a coluna is_site ainda não existir
+      sb.from('malba_store_units').update({ is_site:siteChecked }).eq('id', id).then(function(rl){ if(!rl.error){ for(var i=0;i<ST.storeUnits.length;i++) if(String(ST.storeUnits[i].id)===String(id)) ST.storeUnits[i].is_site=siteChecked; } });
+    }
     if (isNew) {
       sb.from('malba_store_units').insert(rec).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao criar loja','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar loja'; return; }
-        ST.storeUnits.push(r.data); close(); toast('Loja criada','success'); renderPage();
+        ST.storeUnits.push(r.data); aplicarSite(r.data.id); close(); toast('Loja criada','success'); renderPage();
       });
     } else {
       sb.from('malba_store_units').update(rec).eq('id', s.id).then(function(r){
         if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.storeUnits.length;i++) if (ST.storeUnits[i].id===s.id) { ST.storeUnits[i]=Object.assign(ST.storeUnits[i],rec); break; }
-        close(); toast('Loja atualizada','success'); renderPage();
+        aplicarSite(s.id); close(); toast('Loja atualizada','success'); renderPage();
       });
     }
   });
@@ -3792,7 +3833,7 @@ function rankingHTML() {
   var y=new Date().getFullYear(), m=new Date().getMonth()+1;
   var rows = ST.users.map(function(u){
     var g = ST.goals.filter(function(x){ return x.user_id===u.id && x.month===m && x.year===y; })[0];
-    return { name:u.name, color:u.color||'#3B6FF7', val:(g?Number(g.actual_value)||0:0), goal:(g?Number(g.goal_value)||0:0) };
+    return { name:u.name, color:u.color||'#3B6FF7', val:(g?realizadoMeta(g):0), goal:(g?Number(g.goal_value)||0:0) };
   });
   rows.sort(function(a,b){ return b.val-a.val; });
   var max = rows.length ? Math.max(rows[0].val,1) : 1;
