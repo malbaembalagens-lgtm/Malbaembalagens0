@@ -1031,7 +1031,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v34 · 19/06 (Bling do site no Marketing)';
+var APP_BUILD = 'v35 · 19/06 (metas: realizado = valor do Bling)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1690,19 +1690,17 @@ function blingFatStoreMonth(storeId, month, year){
   });
   return s;
 }
-// "Realizado" de uma meta: meta de vendedor -> vendas registradas dele no mês;
-// meta de loja -> faturamento do Bling da loja no mês; senão, o valor manual digitado.
+// "Realizado" de uma meta = o valor gravado (sincronizado pelo Bling ou digitado).
+// Para meta de vendedor sem valor gravado, usa as vendas que ele registrou no mês.
 function realizadoMeta(g){
   if(!g) return 0;
-  if(g.user_id){
+  var manual = Number(g.actual_value)||0;
+  if (manual > 0) return manual;
+  if (g.user_id){
     var sv=0; (ST.salesEntries||[]).forEach(function(e){ if(String(e.user_id)===String(g.user_id)){ var d=(e.sale_date||'').slice(0,10); var p=d.split('-'); if(Number(p[0])===Number(g.year) && Number(p[1])===Number(g.month)) sv+=Number(e.value)||0; } });
-    return sv>0 ? sv : (Number(g.actual_value)||0);
+    return sv;
   }
-  if(g.store_unit_id){
-    var b=blingFatStoreMonth(g.store_unit_id, g.month, g.year);
-    if(b>0) return b;
-  }
-  return Number(g.actual_value)||0;
+  return 0;
 }
 function siteUnits(){ return (ST.storeUnits||[]).filter(function(u){ return u.is_site; }); }
 function siteFatRange(ini, fim){ var ids={}; siteUnits().forEach(function(u){ ids[String(u.id)]=1; }); var s=0; (ST.blingFat||[]).forEach(function(f){ if(!ids[String(f.store_unit_id)]) return; var d=(f.ref_date||'').slice(0,10); if(d>=ini && d<=fim) s+=Number(f.total)||0; }); return s; }
