@@ -1151,7 +1151,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v39 · 20/06 (layout mobile: gaveta + responsivo)';
+var APP_BUILD = 'v40 · 20/06 (criar acesso: vincula se e-mail já existe)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2522,16 +2522,40 @@ function openMemberModal(member) {
     }
 
     var saveBtn=modal.querySelector('#memberSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
-    function finalize(){ close(); toast('Funcionário '+(isNew?'adicionado':'atualizado')+(makeUser?' com acesso':''),'success'); renderPage(); }
-    function criarConta(memberId){
+    function finalize(msg, kind){ close(); toast(msg || ('Funcionário '+(isNew?'adicionado':'atualizado')), kind||'success'); renderPage(); }
+    function vincularMembro(memberId, userId){
+      if(!memberId) return;
+      sb.from('malba_store_members').update({ user_id:userId }).eq('id', memberId).then(function(rl){ if(!rl.error){ for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(memberId)) ST.members[i].user_id=userId; } });
+    }
+    function inserirConta(memberId){
       var ehAdminSetor=(accLvl==='sector_admin'||accLvl==='admin_geral'||accLvl==='super');
       var urec={ name:name, sector:'lojas', access_level:accLvl, sector_role:(ehAdminSetor?'admin':'user'), role:(accLvl==='super'?'admin':'user'), email:accEmail, password:accPass, color:colorPick, initials:iniciais(name) };
       sb.from('malba_users').insert(urec).select().single().then(function(ru){
-        if (ru.error || !ru.data) { toast('Funcionário salvo, mas o acesso falhou (e-mail já existe?)','error'); console.error(ru.error); finalize(); return; }
-        ST.allUsers.push(ru.data); auditLog('Criou acesso', name+' · '+(NIVEIS[accLvl]?NIVEIS[accLvl].label:accLvl));
-        // vincular (best-effort: ignora se a coluna user_id ainda não existir)
-        if (memberId) sb.from('malba_store_members').update({ user_id: ru.data.id }).eq('id', memberId).then(function(rl){ if(!rl.error){ for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(memberId)) ST.members[i].user_id=ru.data.id; } });
-        finalize();
+        if (ru.error || !ru.data) {
+          var em=(ru.error&&ru.error.message)?ru.error.message:'erro desconhecido';
+          console.error('criar acesso:', ru.error);
+          finalize('Funcionário salvo, mas o acesso não foi criado: '+em, 'error');
+          return;
+        }
+        if(ST.allUsers) ST.allUsers.push(ru.data);
+        auditLog('Criou acesso', name+' · '+(NIVEIS[accLvl]?NIVEIS[accLvl].label:accLvl));
+        vincularMembro(memberId, ru.data.id);
+        finalize('Funcionário '+(isNew?'adicionado':'atualizado')+' com acesso','success');
+      });
+    }
+    function criarConta(memberId){
+      // evita duplicar: se o e-mail já tem conta, vincula a ela em vez de falhar
+      sb.from('malba_users').select('id,name,email').eq('email', accEmail).limit(1).then(function(ex){
+        if (!ex.error && ex.data && ex.data.length){
+          var existing=ex.data[0];
+          var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(existing.id)) jaTem=true;
+          if(!jaTem && ST.allUsers) ST.allUsers.push(existing);
+          vincularMembro(memberId, existing.id);
+          auditLog('Vinculou acesso existente', name+' · '+accEmail);
+          finalize('Esse e-mail já tinha acesso — vinculei o funcionário a essa conta.','success');
+          return;
+        }
+        inserirConta(memberId);
       });
     }
     if (isNew) {
