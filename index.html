@@ -547,6 +547,44 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .fi-req { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--u-bg2); border-radius:10px; }
 .fi-req-main { display:flex; flex-direction:column; gap:2px; min-width:0; } .fi-req-main b { font-size:13px; } .fi-req-main span { font-size:12px; color:var(--u-text2); }
 .fi-req-act { display:flex; gap:6px; flex-shrink:0; }
+/* abas da ficha */
+.fi-tabs { display:flex; gap:4px; background:var(--u-bg2); border-radius:11px; padding:4px; margin-bottom:16px; }
+.fi-tab { flex:1; padding:9px 12px; border-radius:8px; font-size:13px; font-weight:700; color:var(--u-text2); cursor:pointer; border:none; background:none; }
+.fi-tab.on { background:var(--u-card); color:var(--u-accent); box-shadow:var(--u-shadow); }
+.fi-sec.first { border-top:none; padding-top:0; margin-top:0; }
+.fi-badge { font-size:11px; font-weight:700; color:var(--u-text2); background:var(--u-bg2); padding:4px 10px; border-radius:20px; }
+/* acompanhamento: presença / notas / kudos */
+.fi-checkins { display:flex; flex-direction:column; gap:6px; }
+.fi-ck { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 12px; background:var(--u-bg2); border-radius:10px; }
+.fi-ck-d { font-size:12.5px; font-weight:700; }
+.fi-ck-t { font-size:12px; color:var(--u-text2); }
+.fi-add { display:flex; gap:8px; align-items:flex-start; margin-bottom:12px; }
+.fi-add textarea { flex:1; min-height:52px; }
+.fi-add input[type=text] { flex:1; }
+.fi-add .btn { flex-shrink:0; align-self:stretch; }
+.fi-notas { display:flex; flex-direction:column; gap:8px; }
+.fi-nota { background:var(--u-bg2); border-radius:10px; padding:11px 13px; border-left:3px solid var(--u-accent); }
+.fi-nota-h { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px; }
+.fi-nota-h b { font-size:12.5px; } .fi-nota-h span { font-size:11px; color:var(--u-text3); }
+.fi-nota p { margin:0; font-size:13px; color:var(--u-text); line-height:1.5; white-space:pre-wrap; }
+.fi-kudos { display:flex; flex-direction:column; gap:8px; }
+.fi-kudo { background:linear-gradient(135deg, rgba(245,158,11,.1), rgba(139,92,246,.08)); border-radius:10px; padding:11px 13px; }
+.fi-kudo .fk-msg { display:block; font-size:13.5px; color:var(--u-text); font-weight:600; }
+.fi-kudo .fk-from { display:block; font-size:11.5px; color:var(--u-text3); margin-top:4px; }
+/* Meu Dia: check-in */
+.cab-checkin { display:flex; align-items:center; gap:14px; padding:16px 18px; border-radius:16px; margin-bottom:16px; background:var(--u-card); border:1px solid var(--u-border); box-shadow:0 10px 24px -16px rgba(15,23,42,.3); }
+.cab-checkin.on { background:linear-gradient(135deg, rgba(59,111,247,.1), rgba(22,163,74,.08)); border-color:rgba(59,111,247,.25); }
+.cab-checkin.done { background:var(--u-green-soft); border-color:rgba(22,163,74,.25); }
+.cci-info { flex:1; min-width:0; } .cci-info b { font-family:var(--u-font-display); font-size:16px; display:block; } .cci-info i { font-style:normal; font-size:12.5px; color:var(--u-text3); }
+.cci-btn { flex-shrink:0; height:44px; padding:0 22px; border-radius:12px; font-size:14px; font-weight:800; cursor:pointer; border:none; color:#fff; }
+.cci-btn.in { background:var(--u-accent); } .cci-btn.in:hover { filter:brightness(1.05); }
+.cci-btn.out { background:var(--u-green); } .cci-btn.out:hover { filter:brightness(1.05); }
+.cci-check { width:44px; height:44px; border-radius:12px; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; } .cci-check svg { width:22px; height:22px; color:var(--u-green); }
+/* Meu Dia: kudos */
+.cab-kudos { display:flex; flex-direction:column; gap:8px; }
+.cab-kudo { background:linear-gradient(135deg, rgba(245,158,11,.12), rgba(139,92,246,.08)); border-radius:12px; padding:12px 14px; }
+.cab-kudo .ck-msg { display:block; font-size:14px; font-weight:600; color:var(--u-text); }
+.cab-kudo .ck-from { display:block; font-size:12px; color:var(--u-text3); margin-top:4px; }
 .color-row { display: flex; gap: 7px; align-items: center; padding-top: 4px; }
 .color-dot { width: 28px; height: 28px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: transform .1s; }
 .color-dot:hover { transform: scale(1.1); }
@@ -1225,7 +1263,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v44 · 20/06 (Equipe: ficha 360 + gestão da equipe)';
+var APP_BUILD = 'v45 · 20/06 (acompanhamento: check-in, 1:1 e kudos)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1362,7 +1400,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -1423,6 +1461,12 @@ function loadData() {
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
     ST.requests = [];
     try { sb.from('malba_requests').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.requests=re.data; if(ST.page==='inicio'||ST.page==='gestao') renderPage(); } }, function(){}); } catch(e){}
+    ST.checkins = [];
+    try { sb.from('malba_checkins').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.checkins=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
+    ST.notes1on1 = [];
+    try { sb.from('malba_notes').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.notes1on1=re.data; } }, function(){}); } catch(e){}
+    ST.kudos = [];
+    try { sb.from('malba_kudos').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.kudos=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
   }).catch(function(e){ console.error('[load]', e); ST.loaded = true; });
 }
 
@@ -2766,7 +2810,7 @@ function rankVendasMembro(member){
 
 function openFichaColaborador(member){
   if(!canManage()){ blockManage(); return; }
-  var m = member; var showReset=false;
+  var m = member; var showReset=false; var fiTab='resumo';
   var modal=document.createElement('div'); modal.className='modal-bg';
   function refreshMember(){ for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(m.id)){ m=ST.members[i]; break; } }
   function fiKpi(label,val,color,sub){ return '<div class="fi-kpi"><span class="fi-kpi-v" style="color:'+color+'">'+val+'</span><span class="fi-kpi-l">'+esc(label)+'</span><span class="fi-kpi-s">'+esc(sub)+'</span></div>'; }
@@ -2815,16 +2859,46 @@ function openFichaColaborador(member){
     var reqs=reqsDoMembro(m);
     var reqSec = reqs.length?('<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('bell')+'Solicitações</span></div><div class="fi-reqs">'+reqs.slice(0,6).map(function(r){ var st=r.status||'pendente'; var act=st==='pendente'?'<div class="fi-req-act"><button class="req-btn ok" data-fireqok="'+esc(r.id)+'">Aprovar</button><button class="req-btn no" data-fireqno="'+esc(r.id)+'">Negar</button></div>':reqStatusChip(st); return '<div class="fi-req"><div class="fi-req-main"><b>'+esc(r.kind||'')+'</b>'+(r.title?'<span>'+esc(r.title)+'</span>':'')+'</div>'+act+'</div>'; }).join('')+'</div></div>'):'';
 
+    var tabs='<div class="fi-tabs"><button class="fi-tab'+(fiTab==='resumo'?' on':'')+'" data-fitab="resumo">Resumo</button><button class="fi-tab'+(fiTab==='acompanhamento'?' on':'')+'" data-fitab="acompanhamento">Acompanhamento</button></div>';
+    var body;
+    if (fiTab==='acompanhamento') { body = acompanhamentoHTML(); }
+    else {
+      body = kpis +
+        '<div class="fi-sec first"><div class="fi-sec-h"><span>'+icon('users')+'Acesso ao sistema</span></div>'+acesso+'</div>'+
+        metaSec+perfSec+comSec+reqSec;
+    }
     return '<div class="modal fi-modal">'+
       '<div class="fi-head"><span class="fi-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
         '<div class="fi-id"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+' · '+esc(loja)+'</i></div>'+
         '<span class="fi-sit '+(inativo?'off':'on')+'">'+(inativo?'Inativo':'Ativo')+'</span>'+
         '<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
-      '</div>'+ kpis+
-      '<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('users')+'Acesso ao sistema</span></div>'+acesso+'</div>'+
-      metaSec+perfSec+comSec+reqSec+
+      '</div>'+ tabs + body +
       '<div class="modal-foot"><button class="btn btn-ghost" id="fiClose">Fechar</button></div>'+
     '</div>';
+  }
+  function acompanhamentoHTML(){
+    var cks=checkinsDoMembro(m, 8); var pm=presencaMes(m);
+    var presBody = cks.length ? '<div class="fi-checkins">'+cks.map(function(c){ return '<div class="fi-ck"><span class="fi-ck-d">'+fmtDate(c.work_date)+'</span><span class="fi-ck-t">'+(c.entrada?('entrada '+hhmm(c.entrada)):'sem entrada')+(c.saida?(' · saída '+hhmm(c.saida)):'')+'</span></div>'; }).join('')+'</div>' : '<div class="fi-empty">Sem registros de turno ainda. Aparecem quando a pessoa faz check-in no "Meu Dia".</div>';
+    var presSec='<div class="fi-sec first"><div class="fi-sec-h"><span>'+icon('cal')+'Presença</span><span class="fi-badge">'+pm+' dia(s) no mês</span></div>'+presBody+'</div>';
+    var notas=notasDoMembro(m);
+    var notasList = notas.length ? '<div class="fi-notas">'+notas.slice(0,8).map(function(n){ return '<div class="fi-nota"><div class="fi-nota-h"><b>'+esc(n.author_name||'Gestor')+'</b><span>'+fmtDate(n.note_date||n.created_at)+'</span></div><p>'+esc(n.text||'')+'</p></div>'; }).join('')+'</div>' : '<div class="fi-empty">Nenhuma nota ainda.</div>';
+    var notasSec='<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('chat')+'Notas de 1:1</span></div><div class="fi-add"><textarea id="fiNota" placeholder="Anote o que foi conversado na conversa de acompanhamento..."></textarea><button class="btn btn-primary" id="fiAddNota">Salvar nota</button></div>'+notasList+'</div>';
+    var kds=kudosDoMembro(m);
+    var kdList = kds.length ? '<div class="fi-kudos">'+kds.slice(0,8).map(function(k){ return '<div class="fi-kudo"><span class="fk-msg">'+esc(k.message||'')+'</span><span class="fk-from">— '+esc(k.from_name||'Gestão')+' · '+fmtDate(k.created_at)+'</span></div>'; }).join('')+'</div>' : '<div class="fi-empty">Nenhum reconhecimento ainda. Que tal o primeiro?</div>';
+    var kdSec='<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('target')+'Reconhecimento (kudos)</span></div><div class="fi-add"><input type="text" id="fiKudo" placeholder="Ex: Mandou muito bem no atendimento de hoje!"><button class="btn btn-primary" id="fiSendKudo">Enviar</button></div>'+kdList+'</div>';
+    return presSec+notasSec+kdSec;
+  }
+  function addNota1on1(){
+    var el=modal.querySelector('#fiNota'); var txt=(el.value||'').trim(); if(!txt){ toast('Escreva a nota','error'); return; }
+    var btn=modal.querySelector('#fiAddNota'); btn.disabled=true; btn.textContent='Salvando...';
+    var rec={ sector:ST.sector, member_id:m.id, author_id:ST.session.user.id, author_name:ST.session.user.name, note_date:today(), text:txt };
+    sb.from('malba_notes').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar nota'; return; } ST.notes1on1.unshift(r.data); auditLog('Nota 1:1', m.name); toast('Nota salva','success'); draw(); });
+  }
+  function enviarKudos(){
+    var el=modal.querySelector('#fiKudo'); var msg=(el.value||'').trim(); if(!msg){ toast('Escreva o reconhecimento','error'); return; }
+    var btn=modal.querySelector('#fiSendKudo'); btn.disabled=true; btn.textContent='Enviando...';
+    var rec={ sector:ST.sector, member_id:m.id, from_user_id:ST.session.user.id, from_name:ST.session.user.name, message:msg };
+    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado 🎉','success'); draw(); });
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   function draw(){ modal.innerHTML=fichaHTML(); bind(); }
@@ -2854,6 +2928,9 @@ function openFichaColaborador(member){
   }
   function bind(){
     modal.querySelector('#fiClose').addEventListener('click', close);
+    var tb=modal.querySelectorAll('[data-fitab]'); for(var k=0;k<tb.length;k++) tb[k].addEventListener('click', function(){ fiTab=this.getAttribute('data-fitab'); draw(); });
+    var an=modal.querySelector('#fiAddNota'); if(an) an.addEventListener('click', addNota1on1);
+    var sk=modal.querySelector('#fiSendKudo'); if(sk) sk.addEventListener('click', enviarKudos);
     var ed=modal.querySelector('#fiEdit'); if(ed) ed.addEventListener('click', function(){ close(); openMemberModal(m); });
     var mt=modal.querySelector('#fiMeta'); if(mt) mt.addEventListener('click', function(){ var u=userDoMembro(m); var g=metaMembroMes(m); close(); if(g) openGoalModal(g); else openGoalModal(null, { store_unit_id:m.store_unit_id, user_id:u?u.id:null }); });
     var av=modal.querySelector('#fiAval'); if(av) av.addEventListener('click', function(){ close(); openAvaliacaoModal(null, { tipo:'membro', store_unit_id:m.store_unit_id, member_id:m.id }); });
@@ -5093,6 +5170,24 @@ function solicitacoesHTML(){
   }).join('');
   return head+'<div class="req-list">'+rows+'</div>';
 }
+function hhmm(ts){ if(!ts) return '—'; try{ var d=new Date(ts); var h=d.getHours(), m=d.getMinutes(); return (h<10?'0':'')+h+':'+(m<10?'0':'')+m; }catch(e){ return '—'; } }
+function checkinHojeDoUser(){ var me=String(ST.session.user.id); var t=today(); var found=null; (ST.checkins||[]).forEach(function(c){ if(String(c.user_id)===me && String(c.work_date).slice(0,10)===t) found=c; }); return found; }
+function checkinsDoMembro(member, n){ if(!member) return []; var u=userDoMembro(member); var uid=u?u.id:null; var mid=member.id; var arr=(ST.checkins||[]).filter(function(c){ return (uid&&String(c.user_id)===String(uid))||(mid&&String(c.member_id)===String(mid)); }); arr.sort(function(a,b){ return String(b.work_date).localeCompare(String(a.work_date)); }); return n?arr.slice(0,n):arr; }
+function presencaMes(member){ var c=0; checkinsDoMembro(member).forEach(function(x){ if(x.entrada && _inMonth(x.work_date)) c++; }); return c; }
+function notasDoMembro(member){ if(!member) return []; return (ST.notes1on1||[]).filter(function(x){ return String(x.member_id)===String(member.id); }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
+function kudosDoMembro(member){ if(!member) return []; return (ST.kudos||[]).filter(function(x){ return String(x.member_id)===String(member.id); }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
+function kudosDoUser(){ var mids=meusMemberIds(); return (ST.kudos||[]).filter(function(x){ return mids.indexOf(String(x.member_id))!==-1; }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
+function registrarCheckin(tipo){
+  var u=ST.session.user; var me=u.id; var t=today(); var existing=checkinHojeDoUser(); var nowIso=new Date().toISOString();
+  if(tipo==='entrada'){
+    if(existing && existing.entrada){ toast('Você já registrou entrada hoje','info'); return; }
+    if(existing){ sb.from('malba_checkins').update({ entrada:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.entrada=nowIso; toast('Entrada registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
+    else { var mid=meuMemberId(); var sid=meuStoreId(); sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }).select().single().then(function(r){ if(!r.error && r.data){ ST.checkins.push(r.data); auditLog('Check-in (entrada)'); toast('Bom trabalho! Entrada registrada 👋','success'); renderPage(); } else { toast('Não consegui registrar (peça ao admin para rodar o SQL de acompanhamento).','error'); console.error(r.error); } }); }
+  } else {
+    if(!existing){ toast('Registre a entrada primeiro','info'); return; }
+    sb.from('malba_checkins').update({ saida:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.saida=nowIso; auditLog('Check-in (saída)'); toast('Até amanhã! Saída registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); });
+  }
+}
 function colaboradorInicioHTML(){
   var u=ST.session.user, me=String(u.id), hoje=today();
   var nome=(u.name||'').split(' ')[0];
@@ -5111,17 +5206,27 @@ function colaboradorInicioHTML(){
   var tHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada para hoje. 👏</div>';
   var myReqs=(ST.requests||[]).filter(function(r){return String(r.user_id)===me;}).sort(function(a,b){return (b.created_at||'').localeCompare(a.created_at||'');}).slice(0,5);
   var rHTML = myReqs.length ? myReqs.map(function(r){ return '<div class="cab-req"><span class="cab-req-k">'+esc(r.kind||'')+(r.title?(' · '+esc(r.title)):'')+'</span>'+reqStatusChip(r.status||'pendente')+'</div>'; }).join('') : '<div class="col-empty">Nenhum pedido. Use "Pedir algo".</div>';
-  return hero + muralHTML() + actions +
+  // check-in do turno
+  var ci=checkinHojeDoUser(); var ciCard;
+  if(!ci || !ci.entrada){ ciCard='<div class="cab-checkin"><div class="cci-info"><b>Vamos começar o dia?</b><i>Registre sua entrada com um toque.</i></div><button class="cci-btn in" id="ciEntrada">Cheguei</button></div>'; }
+  else if(ci.entrada && !ci.saida){ ciCard='<div class="cab-checkin on"><div class="cci-info"><b>Entrada às '+hhmm(ci.entrada)+' ✓</b><i>Bom trabalho! Ao terminar, registre a saída.</i></div><button class="cci-btn out" id="ciSaida">Registrar saída</button></div>'; }
+  else { ciCard='<div class="cab-checkin done"><div class="cci-info"><b>Turno registrado ✓</b><i>Entrada '+hhmm(ci.entrada)+' · Saída '+hhmm(ci.saida)+'</i></div><span class="cci-check">'+icon('tasks')+'</span></div>'; }
+  // reconhecimentos recebidos
+  var kud=kudosDoUser().slice(0,4);
+  var kudCard = kud.length ? ('<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Reconhecimentos 🎉</span></div><div class="cab-kudos">'+kud.map(function(k){ return '<div class="cab-kudo"><span class="ck-msg">'+esc(k.message||'')+'</span><span class="ck-from">— '+esc(k.from_name||'Gestão')+'</span></div>'; }).join('')+'</div></div>') : '';
+  return hero + ciCard + muralHTML() + actions +
     '<div class="cab-grid2">'+
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Minha meta</span></div>'+metaCard+'</div>'+
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('tasks')+'<span>Minhas tarefas de hoje</span></div><div class="cab-tasks">'+tHTML+'</div></div>'+
-    '</div>'+
+    '</div>'+ kudCard +
     '<div class="cab-panel"><div class="cab-panel-h">'+icon('bell')+'<span>Minhas solicitações</span></div><div class="cab-reqs">'+rHTML+'</div></div>';
 }
 function bindColaboradorInicio(){
   bindMural();
   var rv=document.getElementById('cRegVenda'); if(rv) rv.addEventListener('click', openVendaModal);
   var pd=document.getElementById('cPedir'); if(pd) pd.addEventListener('click', openRequestModal);
+  var ci1=document.getElementById('ciEntrada'); if(ci1) ci1.addEventListener('click', function(){ registrarCheckin('entrada'); });
+  var ci2=document.getElementById('ciSaida'); if(ci2) ci2.addEventListener('click', function(){ registrarCheckin('saida'); });
   var ts=app.querySelectorAll('.cab-tasks .me-task[data-tid]');
   for(var i=0;i<ts.length;i++) ts[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-tid')); if(t) openTaskModal(t); });
 }
