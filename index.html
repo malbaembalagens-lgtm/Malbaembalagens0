@@ -585,6 +585,23 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .cab-kudo { background:linear-gradient(135deg, rgba(245,158,11,.12), rgba(139,92,246,.08)); border-radius:12px; padding:12px 14px; }
 .cab-kudo .ck-msg { display:block; font-size:14px; font-weight:600; color:var(--u-text); }
 .cab-kudo .ck-from { display:block; font-size:12px; color:var(--u-text3); margin-top:4px; }
+/* comissões no painel pessoal */
+.cab-coms { display:flex; flex-direction:column; gap:7px; }
+.cab-com { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 12px; background:var(--u-bg2); border-radius:10px; font-size:13px; }
+.cab-com b { font-family:var(--u-font-display); }
+.cab-com-l { color:var(--u-text2); font-weight:600; }
+/* ===== Ponto (roster da loja) ===== */
+.ponto-list { display:flex; flex-direction:column; gap:10px; max-width:640px; }
+.ponto-row { display:flex; align-items:center; gap:13px; background:var(--u-card); border:1px solid var(--u-border); border-radius:14px; padding:12px 16px; box-shadow:var(--u-shadow); }
+.pt-av { width:44px; height:44px; border-radius:13px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:15px; }
+.pt-info { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.pt-info b { font-size:15px; }
+.pt-status { font-size:12.5px; font-weight:600; }
+.pt-status.none { color:var(--u-text3); } .pt-status.in { color:var(--u-accent); } .pt-status.done { color:#16A34A; }
+.pt-btn { flex-shrink:0; height:42px; padding:0 22px; border-radius:12px; font-size:14px; font-weight:800; cursor:pointer; border:none; color:#fff; }
+.pt-btn.in { background:var(--u-accent); } .pt-btn.in:hover { filter:brightness(1.06); }
+.pt-btn.out { background:var(--u-green); } .pt-btn.out:hover { filter:brightness(1.06); }
+.pt-done { width:42px; height:42px; border-radius:12px; background:var(--u-green-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; } .pt-done svg { width:20px; height:20px; color:var(--u-green); }
 .color-row { display: flex; gap: 7px; align-items: center; padding-top: 4px; }
 .color-dot { width: 28px; height: 28px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: transform .1s; }
 .color-dot:hover { transform: scale(1.1); }
@@ -1263,7 +1280,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v45 · 20/06 (acompanhamento: check-in, 1:1 e kudos)';
+var APP_BUILD = 'v46 · 20/06 (Lojas: acesso da loja + Ponto; pessoal só do colaborador)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1278,7 +1295,7 @@ var SECTORS = {
 function p(id,label,ic,enabled,group){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'OPERAÇÃO' }; }
 var GROUP_ORDER = ['OPERAÇÃO','PLANEJAMENTO','COMUNICAÇÃO','GESTÃO'];
 var PAGES = {
-  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('ponto','Ponto','clock',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
@@ -1316,7 +1333,8 @@ var ICON_PATHS = {
   cal:       '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
   chat:      '<path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>',
   moon:      '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>',
-  sun:       '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/>'
+  sun:       '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/>',
+  clock:     '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>'
 };
 function icon(name) {
   var body = ICON_PATHS[name] || ICON_PATHS.dashboard;
@@ -1362,12 +1380,20 @@ function isTopAdmin(s){ return roleRank(s) >= 4; } // Administrador ou Dono → 
 // canManage: Admin de Setor+ gerencia o setor; Gerente de Loja gerencia só dentro de Lojas
 function canManage(){ var rk=roleRank(ST.session); return rk>=3 || (rk>=2 && ST.sector==='lojas'); }
 function blockManage(){ toast('Você não tem permissão para criar, editar ou excluir aqui.','error'); }
-// que páginas cada pessoa pode acessar (config/gestão só gestores; colaborador só o essencial)
+// "Colaborador pessoal" = acesso individual (rank baixo) que NÃO é login de loja.
+// O login de loja (ST.store definido) é o acesso operacional da unidade.
+function isColaboradorPessoal(s){ s = s || ST.session; return roleRank(s) <= 1 && !ST.store; }
+// que páginas cada pessoa pode acessar
 function pageAllowed(pgId, s){
   s = s || ST.session;
   if (pgId==='config') return isTopAdmin(s);
   if (pgId==='gestao')  return canManage();
-  if (roleRank(s) <= 1) return COLAB_PAGES.indexOf(pgId) !== -1; // colaborador
+  if (pgId==='ponto')   return ST.sector==='lojas' && !isColaboradorPessoal(s); // ponto é do acesso da loja
+  if (isColaboradorPessoal(s)) {
+    // em Lojas, o acesso pessoal vê só o que é dele (sem operação/tarefas); em Vendas mantém o dia a dia
+    if (ST.sector==='lojas') return ['inicio','chat'].indexOf(pgId) !== -1;
+    return COLAB_PAGES.indexOf(pgId) !== -1;
+  }
   return true;
 }
 // permissões granulares por função
@@ -5188,10 +5214,46 @@ function registrarCheckin(tipo){
     sb.from('malba_checkins').update({ saida:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.saida=nowIso; auditLog('Check-in (saída)'); toast('Até amanhã! Saída registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); });
   }
 }
+function checkinHojeDoMembro(member){ if(!member) return null; var t=today(); var u=userDoMembro(member); var uid=u?u.id:null; var found=null; (ST.checkins||[]).forEach(function(c){ if(String(c.work_date).slice(0,10)!==t) return; if((String(c.member_id)===String(member.id)) || (uid&&String(c.user_id)===String(uid))) found=c; }); return found; }
+function togglePontoMembro(member){
+  var ci=checkinHojeDoMembro(member); var nowIso=new Date().toISOString(); var u=userDoMembro(member); var uid=u?u.id:null; var t=today(); var nome=(member.name||'').split(' ')[0];
+  if(!ci){ sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:member.store_unit_id, user_id:uid, member_id:member.id, work_date:t, entrada:nowIso }).select().single().then(function(r){ if(!r.error&&r.data){ ST.checkins.push(r.data); auditLog('Ponto entrada', member.name); toast(nome+' — entrada '+hhmm(nowIso),'success'); renderPage(); } else { toast('Não consegui registrar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); } }); }
+  else if(!ci.entrada){ sb.from('malba_checkins').update({ entrada:nowIso }).eq('id',ci.id).then(function(r){ if(!r.error){ ci.entrada=nowIso; toast(nome+' — entrada '+hhmm(nowIso),'success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
+  else if(ci.entrada && !ci.saida){ sb.from('malba_checkins').update({ saida:nowIso }).eq('id',ci.id).then(function(r){ if(!r.error){ ci.saida=nowIso; auditLog('Ponto saída', member.name); toast(nome+' — saída '+hhmm(nowIso),'success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
+}
+function pontoHTML(){
+  var lojas = lojasGestao();
+  var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
+  var selHTML='';
+  if(!ST.store && lojas.length>1){ var op='<option value="">Selecione a loja</option>'+lojas.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(storeId)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join(''); selHTML='<select class="task-filter" id="pontoLoja">'+op+'</select>'; }
+  else if(!ST.store && lojas.length===1){ storeId=lojas[0].id; }
+  var mems = storeId ? membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;}) : [];
+  var hoje = new Date(); var dataStr = hoje.getDate()+' de '+MESES[hoje.getMonth()]+' de '+hoje.getFullYear();
+  var rows;
+  if(!storeId){ rows='<div class="empty-page"><div class="ep-ico">'+icon('clock')+'</div><h3>Escolha a loja</h3><p>Selecione a loja para bater o ponto da equipe.</p></div>'; }
+  else if(!mems.length){ rows='<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem funcionários ativos</h3><p>Cadastre a equipe desta loja em Equipe.</p></div>'; }
+  else {
+    rows='<div class="ponto-list">'+mems.map(function(m){
+      var ci=checkinHojeDoMembro(m); var ini=iniciais(m.name); var statusHTML, btnHTML;
+      if(!ci || !ci.entrada){ statusHTML='<span class="pt-status none">ainda não chegou</span>'; btnHTML='<button class="pt-btn in" data-ponto="'+esc(m.id)+'">Cheguei</button>'; }
+      else if(ci.entrada && !ci.saida){ statusHTML='<span class="pt-status in">entrou '+hhmm(ci.entrada)+'</span>'; btnHTML='<button class="pt-btn out" data-ponto="'+esc(m.id)+'">Saída</button>'; }
+      else { statusHTML='<span class="pt-status done">'+hhmm(ci.entrada)+' → '+hhmm(ci.saida)+'</span>'; btnHTML='<span class="pt-done">'+icon('tasks')+'</span>'; }
+      return '<div class="ponto-row"><span class="pt-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span><div class="pt-info"><b>'+esc(m.name)+'</b>'+statusHTML+'</div>'+btnHTML+'</div>';
+    }).join('')+'</div>';
+  }
+  var presentes = storeId ? mems.filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; }).length : 0;
+  return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+esc(dataStr)+' · '+presentes+' presente(s)</div></div>'+selHTML+'</div>'+rows;
+}
+function bindPonto(){
+  var sel=document.getElementById('pontoLoja'); if(sel) sel.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
+  var btns=app.querySelectorAll('[data-ponto]');
+  for(var i=0;i<btns.length;i++) btns[i].addEventListener('click', function(){ var id=this.getAttribute('data-ponto'); var m=null; for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(id)){m=ST.members[k];break;} if(m) togglePontoMembro(m); });
+}
 function colaboradorInicioHTML(){
   var u=ST.session.user, me=String(u.id), hoje=today();
   var nome=(u.name||'').split(' ')[0];
-  var hero='<div class="cab-hero"><div class="cab-hero-badge"><span class="dot"></span> MEU PAINEL</div><h1 class="cab-hero-title">Bom te ver, <span>'+esc(nome)+'</span>! 👋</h1><p class="cab-hero-sub">Seu espaço: suas vendas, sua meta e suas tarefas do dia.</p></div>';
+  var heroSub = (ST.sector==='lojas') ? 'Seu espaço pessoal: sua meta, comissões, avaliações e pedidos.' : 'Seu espaço: suas vendas, sua meta e suas tarefas do dia.';
+  var hero='<div class="cab-hero"><div class="cab-hero-badge"><span class="dot"></span> MEU PAINEL</div><h1 class="cab-hero-title">Bom te ver, <span>'+esc(nome)+'</span>! 👋</h1><p class="cab-hero-sub">'+heroSub+'</p></div>';
   var actions='<div class="cab-actions">'+
     '<button class="cab-act venda" id="cRegVenda"><span class="cab-ic">'+icon('dollar')+'</span><span class="cab-tx"><b>Registrar venda</b><i>Soma na sua meta</i></span></button>'+
     '<button class="cab-act pedir" id="cPedir"><span class="cab-ic">'+icon('bell')+'</span><span class="cab-tx"><b>Pedir algo</b><i>Folga, troca, material…</i></span></button>'+
@@ -5214,6 +5276,25 @@ function colaboradorInicioHTML(){
   // reconhecimentos recebidos
   var kud=kudosDoUser().slice(0,4);
   var kudCard = kud.length ? ('<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Reconhecimentos 🎉</span></div><div class="cab-kudos">'+kud.map(function(k){ return '<div class="cab-kudo"><span class="ck-msg">'+esc(k.message||'')+'</span><span class="ck-from">— '+esc(k.from_name||'Gestão')+'</span></div>'; }).join('')+'</div></div>') : '';
+  // ===== LOJAS: painel pessoal (só o que é dele — sem tarefas e sem ponto) =====
+  if (ST.sector==='lojas') {
+    var mids=meusMemberIds();
+    var coms=[]; (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
+    var comHTML = coms.length ? coms.slice(0,6).map(function(c){ return '<div class="cab-com"><span class="cab-com-l">'+esc(c.label||'Período')+(c.loja?(' · '+esc(c.loja)):'')+'</span><b>'+fmtBRL(c.valor)+'</b></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
+    var avals=ST.avaliacoes.filter(function(a){ return a.tipo==='membro' && mids.indexOf(String(a.member_id))!==-1; }).sort(function(a,b){return (b.data_avaliacao||'').localeCompare(a.data_avaliacao||'');});
+    var latest=avals.length?avals[0]:null; var perfBlock='';
+    if(latest){ var ln=Number(latest.nota_final)||0; var ld=diagnostico(ln); var lArr=Array.isArray(latest.notas)?latest.notas:[]; var evo=avalEvolucaoRender(avals); perfBlock='<div class="aval-summary"><div class="asum-score" style="border-color:'+ld.color+'"><span class="asum-num" style="color:'+ld.color+'">'+ln.toFixed(1)+'</span><span class="asum-of">de 5</span></div><div class="asum-diag">'+diagBadge(ln)+'<p>'+esc(latest.periodo_label||fmtDate(latest.data_avaliacao))+'</p></div></div>'+critBarsHTML(lArr)+(evo?('<div style="margin-top:8px">'+evo+'</div>'):''); }
+    else perfBlock='<div class="col-empty">Você ainda não tem avaliação.</div>';
+    return hero + muralHTML() + actions +
+      '<div class="cab-grid2">'+
+        '<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Minha meta</span></div>'+metaCard+'</div>'+
+        '<div class="cab-panel"><div class="cab-panel-h">'+icon('dollar')+'<span>Minhas comissões</span></div><div class="cab-coms">'+comHTML+'</div></div>'+
+      '</div>'+
+      '<div class="cab-panel"><div class="cab-panel-h">'+icon('trend')+'<span>Meu desempenho</span></div>'+perfBlock+'</div>'+
+      kudCard +
+      '<div class="cab-panel"><div class="cab-panel-h">'+icon('bell')+'<span>Minhas solicitações</span></div><div class="cab-reqs">'+rHTML+'</div></div>';
+  }
+  // ===== VENDAS (e demais): dia a dia individual, com ponto e tarefas =====
   return hero + ciCard + muralHTML() + actions +
     '<div class="cab-grid2">'+
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Minha meta</span></div>'+metaCard+'</div>'+
@@ -5916,8 +5997,10 @@ function renderPage() {
     renderShell(gestaoHTML(), 'Gestão'); bindGestao();
   } else if (pg.id==='chat') {
     renderShell(chatHTML(), 'Chat'); bindChat();
+  } else if (pg.id==='ponto') {
+    renderShell(pontoHTML(), 'Ponto'); bindPonto();
   } else if (pg.id==='inicio') {
-    if (isColaborador(ST.session)) { renderShell(colaboradorInicioHTML(), 'Início'); bindColaboradorInicio(); }
+    if (isColaboradorPessoal(ST.session)) { renderShell(colaboradorInicioHTML(), 'Início'); bindColaboradorInicio(); }
     else { renderShell(dashboardHTML(), 'Início'); bindDashboard(); }
   }
 }
