@@ -477,6 +477,76 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .member-info b { font-size: 14.5px; font-weight: 700; }
 .member-info i { font-style: normal; font-size: 12px; color: var(--u-text2); }
 .member-info small { font-size: 11.5px; color: var(--u-text3); margin-top: 2px; }
+.member-card.has-alert { border-color: rgba(245,158,11,.4); }
+/* barra de filtros da equipe */
+.team-bar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.team-search { display:flex; align-items:center; gap:8px; background:var(--u-bg2); border:1px solid var(--u-border); border-radius:12px; padding:9px 13px; flex:1; min-width:180px; max-width:340px; color:var(--u-text3); }
+.team-search svg { width:17px; height:17px; flex-shrink:0; }
+.team-search input { border:none; background:none; outline:none; font-size:13.5px; color:var(--u-text); width:100%; }
+.team-seg { display:inline-flex; background:var(--u-bg2); border:1px solid var(--u-border); border-radius:10px; padding:3px; }
+.team-seg button { padding:6px 14px; border-radius:8px; font-size:12.5px; font-weight:700; color:var(--u-text2); cursor:pointer; border:none; background:none; }
+.team-seg button.on { background:var(--u-card); color:var(--u-accent); box-shadow:var(--u-shadow); }
+/* pendências */
+.team-pend { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:16px; padding:10px 12px; background:var(--u-bg2); border-radius:12px; }
+.team-pend-l { font-size:12px; font-weight:800; color:var(--u-text3); text-transform:uppercase; letter-spacing:.4px; margin-right:2px; }
+.team-pchip { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:var(--u-text); background:var(--u-card); border:1px solid var(--u-border); border-radius:20px; padding:6px 12px; cursor:pointer; transition:.12s; }
+.team-pchip .tpc-dot { width:8px; height:8px; border-radius:50%; background:var(--pc,#888); }
+.team-pchip b { color:var(--pc); }
+.team-pchip.on { border-color:var(--pc); box-shadow:0 0 0 2px color-mix(in srgb, var(--pc) 20%, transparent); }
+.team-pchip.clear { color:var(--u-text3); font-weight:600; }
+/* status nos cartões */
+.mc-status { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:7px; }
+.mc-status > span { display:inline-flex; align-items:center; gap:3px; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:20px; }
+.mc-status svg { width:11px; height:11px; }
+.mc-acc.on { color:#16A34A; background:rgba(22,163,74,.12); }
+.mc-acc.off { color:var(--u-text3); background:var(--u-bg2); }
+.mc-meta { background:var(--u-accent-soft); }
+.mc-alert { color:#EF4444; background:rgba(239,68,68,.12); }
+.mc-req { color:#3B6FF7; background:var(--u-accent-soft); }
+/* ===== Ficha 360 ===== */
+.fi-modal { max-width: 580px; }
+.fi-head { display:flex; align-items:center; gap:13px; margin-bottom:16px; }
+.fi-av { width:52px; height:52px; border-radius:15px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:19px; }
+.fi-id { flex:1; min-width:0; } .fi-id b { font-family:var(--u-font-display); font-size:19px; display:block; } .fi-id i { font-style:normal; font-size:13px; color:var(--u-text3); }
+.fi-sit { font-size:11px; font-weight:800; padding:4px 10px; border-radius:20px; }
+.fi-sit.on { color:#16A34A; background:rgba(22,163,74,.12); } .fi-sit.off { color:var(--u-text3); background:var(--u-bg2); }
+.fi-edit { width:36px; height:36px; border-radius:10px; background:var(--u-bg2); display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.fi-edit svg { width:17px; height:17px; color:var(--u-text2); }
+.fi-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:18px; }
+.fi-kpi { background:var(--u-bg2); border-radius:13px; padding:12px 10px; text-align:center; display:flex; flex-direction:column; gap:3px; }
+.fi-kpi-v { font-family:var(--u-font-display); font-size:21px; font-weight:800; line-height:1.1; }
+.fi-kpi-l { font-size:11px; font-weight:700; color:var(--u-text2); }
+.fi-kpi-s { font-size:10px; color:var(--u-text3); }
+.fi-sec { border-top:1px solid var(--u-border); padding-top:16px; margin-top:16px; }
+.fi-sec-h { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+.fi-sec-h > span { display:inline-flex; align-items:center; gap:8px; font-family:var(--u-font-display); font-size:14px; font-weight:700; }
+.fi-sec-h svg { width:17px; height:17px; color:var(--u-accent); }
+.fi-link { font-size:12.5px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:6px 12px; cursor:pointer; }
+.fi-link:hover { background:var(--u-accent); color:#fff; }
+.fi-link.danger { color:var(--u-red); background:var(--u-red-soft); }
+.fi-link.danger:hover { background:var(--u-red); color:#fff; }
+.fi-empty { font-size:13px; color:var(--u-text3); padding:6px 0; }
+.fi-acc { }
+.fi-acc-top { display:flex; align-items:flex-start; gap:11px; }
+.fi-acc-ic { width:38px; height:38px; border-radius:11px; background:var(--u-bg2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.fi-acc-ic svg { width:19px; height:19px; color:var(--u-text3); }
+.fi-acc-ic.ok { background:rgba(22,163,74,.12); } .fi-acc-ic.ok svg { color:#16A34A; }
+.fi-acc-tx b { font-size:14px; } .fi-acc-tx i { display:block; font-style:normal; font-size:12px; color:var(--u-text3); margin-top:1px; }
+.fi-acc-actions { display:flex; gap:8px; margin-top:12px; }
+.fi-acc-reset { display:flex; gap:8px; margin-top:12px; }
+.fi-acc-reset input { flex:1; }
+.fi-acc-form { margin-top:12px; }
+.fi-acc-form-row { display:flex; gap:8px; align-items:center; margin-top:2px; }
+.fi-acc-form-row select { flex:1; }
+.fi-meta-bar { height:12px; background:var(--u-bg2); border-radius:20px; overflow:hidden; }
+.fi-meta-bar span { display:block; height:100%; border-radius:20px; }
+.fi-meta-sub { margin-top:8px; font-size:12.5px; color:var(--u-text3); font-weight:600; }
+.fi-coms, .fi-reqs { display:flex; flex-direction:column; gap:7px; }
+.fi-com { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 12px; background:var(--u-bg2); border-radius:10px; font-size:13px; }
+.fi-com b { font-family:var(--u-font-display); }
+.fi-req { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--u-bg2); border-radius:10px; }
+.fi-req-main { display:flex; flex-direction:column; gap:2px; min-width:0; } .fi-req-main b { font-size:13px; } .fi-req-main span { font-size:12px; color:var(--u-text2); }
+.fi-req-act { display:flex; gap:6px; flex-shrink:0; }
 .color-row { display: flex; gap: 7px; align-items: center; padding-top: 4px; }
 .color-dot { width: 28px; height: 28px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: transform .1s; }
 .color-dot:hover { transform: scale(1.1); }
@@ -1133,6 +1203,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
   .vg-kpis, .crm-summary { grid-template-columns: repeat(2, 1fr); }
   h2 { font-size: 20px; }
 }
+@media (max-width: 620px){ .fi-kpis { grid-template-columns: repeat(2,1fr); } .fi-modal .fi-head { flex-wrap: wrap; } }
 </style>
 </head>
 <body>
@@ -1154,7 +1225,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v43 · 20/06 (acesso: senha grava em password_hash)';
+var APP_BUILD = 'v44 · 20/06 (Equipe: ficha 360 + gestão da equipe)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1291,7 +1362,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -2363,21 +2434,43 @@ function visibleMembers() {
 }
 
 function equipeHTML() {
-  var ms = visibleMembers();
-  var ativos = ms.filter(function(m){ return m.is_active !== false; });
-  var sub = (ST.sector==='lojas' && ST.store) ? ('Equipe de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Equipe (todas as lojas)';
   var admin = isAdmin(ST.session);
-  var cards = '';
-  if (ativos.length === 0) {
-    var msgVazio = admin ? 'Adicione o primeiro membro da equipe pelo botão acima.' : 'A equipe ainda não foi cadastrada pelo administrador.';
-    cards = '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('users')+'</div><h3>Nenhum funcionário ainda</h3><p>'+msgVazio+'</p></div>';
-  } else {
-    ms.sort(function(a,b){ return (a.is_active===false)-(b.is_active===false); });
-    ms.forEach(function(m){ cards += memberCardHTML(m, admin); });
+  var all = visibleMembers();
+  var t = ST.team || (ST.team = { q:'', sit:'ativos', pend:'', loja:'' });
+  var q = (t.q||'').trim().toLowerCase();
+  var list = all.filter(function(m){
+    if (t.sit==='ativos' && m.is_active===false) return false;
+    if (t.sit==='inativos' && m.is_active!==false) return false;
+    if (t.loja && String(m.store_unit_id)!==String(t.loja)) return false;
+    if (q && (m.name||'').toLowerCase().indexOf(q)===-1) return false;
+    if (t.pend==='acesso' && userDoMembro(m)) return false;
+    if (t.pend==='meta' && metaMembroMes(m)) return false;
+    if (t.pend==='solic' && !reqsDoMembro(m).some(function(r){return (r.status||'pendente')==='pendente';})) return false;
+    if (t.pend==='atraso' && tarefasMembroStats(m).atrasadas===0) return false;
+    return true;
+  });
+  list.sort(function(a,b){ return (a.is_active===false)-(b.is_active===false); });
+  var ativos = all.filter(function(m){ return m.is_active!==false; });
+  // pendências (só admin)
+  var pend='';
+  if (admin) {
+    var pAcc=0,pMeta=0,pSol=0,pAtr=0;
+    ativos.forEach(function(m){ if(!userDoMembro(m)) pAcc++; if(!metaMembroMes(m)) pMeta++; if(reqsDoMembro(m).some(function(r){return (r.status||'pendente')==='pendente';})) pSol++; if(tarefasMembroStats(m).atrasadas>0) pAtr++; });
+    function pchip(key,label,count,color){ if(!count) return ''; return '<button class="team-pchip'+(t.pend===key?' on':'')+'" data-pend="'+key+'" style="--pc:'+color+'"><span class="tpc-dot"></span>'+label+' <b>'+count+'</b></button>'; }
+    var chips = pchip('acesso','Sem acesso',pAcc,'#EF4444')+pchip('meta','Sem meta',pMeta,'#F59E0B')+pchip('solic','Solicitações',pSol,'#3B6FF7')+pchip('atraso','Com atraso',pAtr,'#8B5CF6');
+    if (chips) pend = '<div class="team-pend"><span class="team-pend-l">Precisa de atenção</span>'+chips+(t.pend?'<button class="team-pchip clear" data-pend="">limpar</button>':'')+'</div>';
   }
-  // botão de criar só para admin
+  // barra: busca + situação + loja
+  var searchBox='<div class="team-search">'+icon('search')+'<input id="teamQ" placeholder="Buscar por nome..." value="'+esc(t.q||'')+'"></div>';
+  var sitSeg='<div class="team-seg"><button class="'+(t.sit==='ativos'?'on':'')+'" data-sit="ativos">Ativos</button><button class="'+(t.sit==='todos'?'on':'')+'" data-sit="todos">Todos</button></div>';
+  var lojaSel='';
+  if (admin && !ST.store && (ST.storeUnits||[]).length>1) { var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(s){return '<option value="'+esc(s.id)+'"'+(String(t.loja)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join(''); lojaSel='<select class="task-filter" id="teamLoja">'+op+'</select>'; }
   var btn = admin ? '<button class="btn-new" id="btnNovoMembro">'+icon('plus')+'Novo funcionário</button>' : '';
-  return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">'+sub+' · '+ativos.length+' ativo(s)</div></div>'+btn+'</div><div class="team-grid">'+cards+'</div>';
+  var cards = list.length ? list.map(function(m){ return memberCardHTML(m, admin); }).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('users')+'</div><h3>Nada por aqui</h3><p>Ajuste a busca ou os filtros acima.</p></div>';
+  var sub = (ST.sector==='lojas' && ST.store) ? ('Equipe de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Equipe (todas as lojas)';
+  return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">'+sub+' · '+ativos.length+' ativo(s)</div></div>'+btn+'</div>'+
+    '<div class="team-bar">'+searchBox+sitSeg+lojaSel+'</div>'+ pend +
+    '<div class="team-grid">'+cards+'</div>';
 }
 
 function storeName(id) {
@@ -2387,24 +2480,42 @@ function storeName(id) {
 function memberCardHTML(m, showStore) {
   var inativo = m.is_active === false;
   var ini = iniciais(m.name);
-  var lojaChip = (showStore && m.store_unit_id) ? '<small>'+esc(storeName(m.store_unit_id))+'</small>' : (m.phone?'<small>'+esc(m.phone)+'</small>':'');
-  return '<div class="member-card'+(inativo?' off':'')+'" data-id="'+esc(m.id)+'">'+
+  var hasAcc = !!userDoMembro(m);
+  var g = metaMembroMes(m); var metaVal=g?Number(g.goal_value)||0:0; var real=g?realizadoMeta(g):0; var pct=metaVal>0?Math.min(100,Math.round(real/metaVal*100)):0;
+  var ts = tarefasMembroStats(m);
+  var temSolic = reqsDoMembro(m).some(function(r){ return (r.status||'pendente')==='pendente'; });
+  var alerta = (ts.atrasadas>0) || temSolic;
+  var status = '<div class="mc-status">'+
+    '<span class="mc-acc '+(hasAcc?'on':'off')+'">'+icon('users')+(hasAcc?'com acesso':'sem acesso')+'</span>'+
+    (metaVal>0?'<span class="mc-meta" style="color:'+(pct>=100?'#16A34A':'var(--u-accent)')+'">meta '+pct+'%</span>':'')+
+    (ts.atrasadas>0?'<span class="mc-alert">'+ts.atrasadas+' atras.</span>':'')+
+    (temSolic?'<span class="mc-req">pedido</span>':'')+
+  '</div>';
+  var subline = esc(m.role||'Sem função')+(showStore&&m.store_unit_id?(' · '+esc(storeName(m.store_unit_id))):'')+(inativo?' · inativo':'');
+  return '<div class="member-card'+(inativo?' off':'')+(alerta?' has-alert':'')+'" data-id="'+esc(m.id)+'" data-name="'+esc((m.name||'').toLowerCase())+'">'+
     '<span class="member-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
-    '<div class="member-info"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+(inativo?' · inativo':'')+'</i>'+
-    lojaChip+'</div></div>';
+    '<div class="member-info"><b>'+esc(m.name)+'</b><i>'+subline+'</i>'+status+'</div></div>';
 }
 
 function bindEquipe() {
   var admin = isAdmin(ST.session);
   var novo = document.getElementById('btnNovoMembro');
   if (novo && admin) novo.addEventListener('click', function(){ openMemberModal(null); });
-  if (!admin) return; // loja comum: somente visualização
+  var qEl = document.getElementById('teamQ');
+  if (qEl) qEl.addEventListener('input', function(){ var v=this.value.trim().toLowerCase(); ST.team.q=this.value; var cs=app.querySelectorAll('.member-card'); for(var i=0;i<cs.length;i++){ var nm=cs[i].getAttribute('data-name')||''; cs[i].style.display=(!v||nm.indexOf(v)!==-1)?'':'none'; } });
+  var segs = app.querySelectorAll('.team-seg [data-sit]');
+  for (var s=0;s<segs.length;s++) segs[s].addEventListener('click', function(){ ST.team.sit=this.getAttribute('data-sit'); renderPage(); });
+  var pl = document.getElementById('teamLoja');
+  if (pl) pl.addEventListener('change', function(){ ST.team.loja=this.value; renderPage(); });
+  var pch = app.querySelectorAll('[data-pend]');
+  for (var p=0;p<pch.length;p++) pch[p].addEventListener('click', function(){ var k=this.getAttribute('data-pend'); ST.team.pend=(ST.team.pend===k)?'':k; renderPage(); });
+  if (!admin) return;
   var cards = app.querySelectorAll('.member-card');
   for (var i=0;i<cards.length;i++) {
     cards[i].addEventListener('click', function(){
       var id=this.getAttribute('data-id'); var m=null;
       for (var k=0;k<ST.members.length;k++) if (String(ST.members[k].id)===String(id)) { m=ST.members[k]; break; }
-      if (m) openMemberModal(m);
+      if (m) openFichaColaborador(m);
     });
   }
 }
@@ -2618,6 +2729,146 @@ function openMemberModal(member) {
   }
 }
 
+/* ========== [10b2] FICHA 360 DO COLABORADOR (hub de gestão da equipe) ========== */
+function userDoMembro(member){
+  if(!member) return null;
+  var byId=null; (ST.allUsers||[]).forEach(function(u){ if(member.user_id && String(u.id)===String(member.user_id)) byId=u; });
+  if(byId) return byId;
+  var nm=(member.name||'').trim().toLowerCase(); if(!nm) return null; var found=null;
+  (ST.allUsers||[]).forEach(function(u){ if((u.name||'').trim().toLowerCase()===nm && u.sector==='lojas') found=u; });
+  return found;
+}
+function vendasMembroMes(member){
+  if(!member) return 0;
+  var mid=member.id; var u=userDoMembro(member); var uid=u?u.id:null; var s=0;
+  (ST.salesEntries||[]).forEach(function(e){ if(!_inMonth(e.sale_date)) return; if((mid&&String(e.member_id)===String(mid)) || (uid&&String(e.user_id)===String(uid))) s+=Number(e.value)||0; });
+  return s;
+}
+function metaMembroMes(member){
+  var u=userDoMembro(member); if(!u) return null; var n=_ymNow(); var g=null;
+  (ST.goals||[]).forEach(function(x){ if(x.month===n.m && x.year===n.y && String(x.user_id)===String(u.id)) g=x; });
+  return g;
+}
+function tarefasMembroStats(member){
+  var u=userDoMembro(member); if(!u) return {abertas:0,atrasadas:0,concluidas:0,total:0};
+  return gestaoStats(function(t){ return String(t.assignee_id)===String(u.id); });
+}
+function ultimaAvalMembro(memberId){ var arr=avalsDoMembro(memberId); return arr.length?arr[arr.length-1]:null; }
+function reqsDoMembro(member){
+  if(!member) return []; var mid=member.id; var u=userDoMembro(member); var uid=u?u.id:null;
+  return (ST.requests||[]).filter(function(r){ return (mid&&String(r.member_id)===String(mid))||(uid&&String(r.user_id)===String(uid)); }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); });
+}
+function rankVendasMembro(member){
+  var arr=(ST.members||[]).filter(function(m){ return m.is_active!==false; }).map(function(m){ return { id:m.id, v:vendasMembroMes(m) }; }).filter(function(x){ return x.v>0; }).sort(function(a,b){ return b.v-a.v; });
+  var pos=0; for(var i=0;i<arr.length;i++){ if(String(arr[i].id)===String(member.id)){ pos=i+1; break; } }
+  return { pos:pos, total:arr.length };
+}
+
+function openFichaColaborador(member){
+  if(!canManage()){ blockManage(); return; }
+  var m = member; var showReset=false;
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  function refreshMember(){ for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(m.id)){ m=ST.members[i]; break; } }
+  function fiKpi(label,val,color,sub){ return '<div class="fi-kpi"><span class="fi-kpi-v" style="color:'+color+'">'+val+'</span><span class="fi-kpi-l">'+esc(label)+'</span><span class="fi-kpi-s">'+esc(sub)+'</span></div>'; }
+  function fichaHTML(){
+    refreshMember();
+    var u=userDoMembro(m); var ini=iniciais(m.name); var inativo=m.is_active===false; var loja=storeName(m.store_unit_id)||'—';
+    var g=metaMembroMes(m); var metaVal=g?Number(g.goal_value)||0:0; var real=g?realizadoMeta(g):0; var metaPct=metaVal>0?Math.min(100,Math.round(real/metaVal*100)):0;
+    var vend=vendasMembroMes(m); var ts=tarefasMembroStats(m);
+    var ua=ultimaAvalMembro(m.id); var uaNota=ua?Number(ua.nota_final)||0:0; var uaDiag=ua?diagnostico(uaNota):null; var rk=rankVendasMembro(m);
+    var kpis='<div class="fi-kpis">'+
+      fiKpi('Meta do mês', metaVal>0?(metaPct+'%'):'—', metaVal>0?(metaPct>=100?'#16A34A':'var(--u-accent)'):'var(--u-text3)', metaVal>0?(fmtBRL(real)+' / '+fmtBRL(metaVal)):'sem meta')+
+      fiKpi('Vendas do mês', brlShort(vend), 'var(--u-green)', rk.pos?('#'+rk.pos+' de '+rk.total+' em vendas'):'sem vendas')+
+      fiKpi('Tarefas atrasadas', ts.atrasadas, ts.atrasadas>0?'var(--u-red)':'var(--u-text3)', ts.abertas+' abertas · '+ts.concluidas+' feitas')+
+      fiKpi('Última nota', ua?uaNota.toFixed(1):'—', uaDiag?uaDiag.color:'var(--u-text3)', ua?uaDiag.label:'sem avaliação')+
+    '</div>';
+    // Acesso
+    var acesso;
+    if(u){
+      var nvL=NIVEIS[nivelDe(u)]||NIVEIS.user;
+      acesso='<div class="fi-acc has"><div class="fi-acc-top"><span class="fi-acc-ic ok">'+icon('users')+'</span><div class="fi-acc-tx"><b>'+esc(u.email||u.name)+'</b><i>'+esc(nvL.label)+' · acesso ativo</i></div></div>'+
+        (showReset?'<div class="fi-acc-reset"><input type="text" id="fiNewPass" placeholder="Nova senha (mín. 4)"><button class="btn btn-primary" id="fiDoReset">Salvar senha</button></div>':'')+
+        '<div class="fi-acc-actions"><button class="fi-link" id="fiReset">'+(showReset?'Cancelar':'Redefinir senha')+'</button><button class="fi-link danger" id="fiRemove">Remover acesso</button></div>'+
+      '</div>';
+    } else {
+      var grantorRank=roleRank(ST.session); var NIV_ORDER=['user','store_manager','sector_admin','admin_geral','super'];
+      var nivelOpts=NIV_ORDER.filter(function(k){return NIVEIS[k].rank<=grantorRank;}).map(function(k){return '<option value="'+k+'"'+(k==='user'?' selected':'')+'>'+NIVEIS[k].label+'</option>';}).join('');
+      acesso='<div class="fi-acc none"><div class="fi-acc-top"><span class="fi-acc-ic">'+icon('bell')+'</span><div class="fi-acc-tx"><b>Sem acesso ao sistema</b><i>Crie um login para a pessoa ver o "Meu Dia", metas e avaliações.</i></div></div>'+
+        '<div class="fi-acc-form"><div class="modal-grid2"><div class="modal-row"><input type="text" id="fiEmail" placeholder="e-mail de acesso"></div><div class="modal-row"><input type="text" id="fiPass" placeholder="senha"></div></div>'+
+        '<div class="fi-acc-form-row"><select id="fiLevel">'+nivelOpts+'</select><button class="btn btn-primary" id="fiCreate">Criar acesso</button></div>'+
+        '<div class="acc-err" id="fiAccErr" style="display:none"></div></div>'+
+      '</div>';
+    }
+    // Meta
+    var metaSec='<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('target')+'Meta do mês</span><button class="fi-link" id="fiMeta">'+(g?'Editar meta':'Definir meta')+'</button></div>'+
+      (metaVal>0?'<div class="fi-meta"><div class="fi-meta-bar"><span style="width:'+metaPct+'%;background:'+(metaPct>=100?'#16A34A':'var(--u-accent)')+'"></span></div><div class="fi-meta-sub">'+fmtBRL(real)+' de '+fmtBRL(metaVal)+' · <b style="color:'+(metaPct>=100?'#16A34A':'var(--u-accent)')+'">'+metaPct+'%</b></div></div>':'<div class="fi-empty">Nenhuma meta definida para este mês.</div>')+
+    '</div>';
+    // Desempenho
+    var evo=avalEvolucaoRender(avalsDoMembro(m.id)); var perfBody='';
+    if(ua){ var notasArr=Array.isArray(ua.notas)?ua.notas:[]; perfBody='<div class="aval-summary"><div class="asum-score" style="border-color:'+uaDiag.color+'"><span class="asum-num" style="color:'+uaDiag.color+'">'+uaNota.toFixed(1)+'</span><span class="asum-of">de 5</span></div><div class="asum-diag">'+diagBadge(uaNota)+'<p>'+esc(ua.periodo_label||fmtDate(ua.data_avaliacao))+'</p></div></div>'+critBarsHTML(notasArr)+(evo?('<div style="margin-top:8px">'+evo+'</div>'):''); }
+    else perfBody='<div class="fi-empty">Ainda sem avaliação. Faça a primeira para acompanhar a evolução.</div>';
+    var perfSec='<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('trend')+'Desempenho</span><button class="fi-link" id="fiAval">Avaliar</button></div>'+perfBody+'</div>';
+    // Comissões
+    var coms=[]; (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(String(r.member_id)===String(m.id)) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor }); }); });
+    var comSec = coms.length?('<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('dollar')+'Comissões</span></div><div class="fi-coms">'+coms.slice(0,6).map(function(c){return '<div class="fi-com"><span>'+esc(c.label||'Período')+'</span><b>'+fmtBRL(c.valor)+'</b></div>';}).join('')+'</div></div>'):'';
+    // Solicitações
+    var reqs=reqsDoMembro(m);
+    var reqSec = reqs.length?('<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('bell')+'Solicitações</span></div><div class="fi-reqs">'+reqs.slice(0,6).map(function(r){ var st=r.status||'pendente'; var act=st==='pendente'?'<div class="fi-req-act"><button class="req-btn ok" data-fireqok="'+esc(r.id)+'">Aprovar</button><button class="req-btn no" data-fireqno="'+esc(r.id)+'">Negar</button></div>':reqStatusChip(st); return '<div class="fi-req"><div class="fi-req-main"><b>'+esc(r.kind||'')+'</b>'+(r.title?'<span>'+esc(r.title)+'</span>':'')+'</div>'+act+'</div>'; }).join('')+'</div></div>'):'';
+
+    return '<div class="modal fi-modal">'+
+      '<div class="fi-head"><span class="fi-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
+        '<div class="fi-id"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+' · '+esc(loja)+'</i></div>'+
+        '<span class="fi-sit '+(inativo?'off':'on')+'">'+(inativo?'Inativo':'Ativo')+'</span>'+
+        '<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
+      '</div>'+ kpis+
+      '<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('users')+'Acesso ao sistema</span></div>'+acesso+'</div>'+
+      metaSec+perfSec+comSec+reqSec+
+      '<div class="modal-foot"><button class="btn btn-ghost" id="fiClose">Fechar</button></div>'+
+    '</div>';
+  }
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  function draw(){ modal.innerHTML=fichaHTML(); bind(); }
+  function resetSenha(u, p, cb){
+    if(!u){ cb(false); return; }
+    function tryF(field, retry){ var payload={}; payload[field]=p; sb.from('malba_users').update(payload).eq('id',u.id).then(function(r){ if(r.error){ var msg=(r.error.message||'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryF(field==='password_hash'?'password':'password_hash', true); return; } toast('Erro ao redefinir senha','error'); cb(false); return; } auditLog('Redefiniu senha', m.name); cb(true); }); }
+    tryF('password_hash', false);
+  }
+  function removerAcesso(u, cb){
+    sb.from('malba_users').delete().eq('id',u.id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.allUsers=(ST.allUsers||[]).filter(function(x){return String(x.id)!==String(u.id);}); if(m.user_id){ sb.from('malba_store_members').update({user_id:null}).eq('id',m.id).then(function(){}); for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(m.id)) ST.members[i].user_id=null; } auditLog('Removeu acesso', m.name); cb(); });
+  }
+  function criarAcessoFicha(){
+    var email=(modal.querySelector('#fiEmail').value||'').trim().toLowerCase(); var pass=(modal.querySelector('#fiPass').value||'').trim(); var lvl=modal.querySelector('#fiLevel').value||'user';
+    var errBox=modal.querySelector('#fiAccErr'); if(errBox){ errBox.style.display='none'; errBox.innerHTML=''; }
+    if(!email){ toast('Informe o e-mail','error'); return; } if(!pass){ toast('Defina a senha','error'); return; }
+    var btn=modal.querySelector('#fiCreate'); btn.disabled=true; btn.textContent='Criando...';
+    function linkTo(userId){ sb.from('malba_store_members').update({user_id:userId}).eq('id',m.id).then(function(){}); for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(m.id)) ST.members[k].user_id=userId; }
+    sb.from('malba_users').select('id,name,email').ilike('email', email).limit(1).then(function(ex){
+      if(!ex.error && ex.data && ex.data.length){ var exu=ex.data[0]; var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(exu.id)) jaTem=true; if(!jaTem) ST.allUsers.push(exu); linkTo(exu.id); auditLog('Vinculou acesso existente', m.name); toast('Esse e-mail já tinha acesso — vinculei.','success'); draw(); return; }
+      var ehAdminSetor=(lvl==='sector_admin'||lvl==='admin_geral'||lvl==='super'); var baseU={ name:m.name, sector:'lojas', access_level:lvl, sector_role:(ehAdminSetor?'admin':'user'), role:(lvl==='super'?'admin':'user'), email:email, color:m.color||'#3B6FF7', initials:iniciais(m.name) };
+      function tryIns(field, retry){ var urec=Object.assign({},baseU); urec[field]=pass; sb.from('malba_users').insert(urec).select().single().then(function(ru){
+        if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } btn.disabled=false; btn.textContent='Criar acesso'; return; }
+        ST.allUsers.push(ru.data); linkTo(ru.data.id); auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
+      }); }
+      tryIns('password_hash', false);
+    });
+  }
+  function bind(){
+    modal.querySelector('#fiClose').addEventListener('click', close);
+    var ed=modal.querySelector('#fiEdit'); if(ed) ed.addEventListener('click', function(){ close(); openMemberModal(m); });
+    var mt=modal.querySelector('#fiMeta'); if(mt) mt.addEventListener('click', function(){ var u=userDoMembro(m); var g=metaMembroMes(m); close(); if(g) openGoalModal(g); else openGoalModal(null, { store_unit_id:m.store_unit_id, user_id:u?u.id:null }); });
+    var av=modal.querySelector('#fiAval'); if(av) av.addEventListener('click', function(){ close(); openAvaliacaoModal(null, { tipo:'membro', store_unit_id:m.store_unit_id, member_id:m.id }); });
+    var rs=modal.querySelector('#fiReset'); if(rs) rs.addEventListener('click', function(){ showReset=!showReset; draw(); });
+    var dr=modal.querySelector('#fiDoReset'); if(dr) dr.addEventListener('click', function(){ var btn=this; var u=userDoMembro(m); var p=(modal.querySelector('#fiNewPass').value||'').trim(); if(p.length<4){ toast('Senha muito curta (mín. 4)','error'); return; } btn.disabled=true; btn.textContent='Salvando...'; resetSenha(u, p, function(ok){ if(ok){ showReset=false; toast('Senha redefinida','success'); draw(); } else { btn.disabled=false; btn.textContent='Salvar senha'; } }); });
+    var rm=modal.querySelector('#fiRemove'); if(rm) rm.addEventListener('click', function(){ var u=userDoMembro(m); if(!u) return; if(!confirm('Remover o acesso de '+m.name+'? A pessoa não poderá mais entrar (você pode recriar depois).')) return; removerAcesso(u, function(){ toast('Acesso removido','success'); draw(); }); });
+    var cr=modal.querySelector('#fiCreate'); if(cr) cr.addEventListener('click', criarAcessoFicha);
+    var oks=modal.querySelectorAll('[data-fireqok]'); for(var i=0;i<oks.length;i++) oks[i].addEventListener('click', function(){ decidirReq(this.getAttribute('data-fireqok'),'aprovado'); setTimeout(draw,60); });
+    var nos=modal.querySelectorAll('[data-fireqno]'); for(var j=0;j<nos.length;j++) nos[j].addEventListener('click', function(){ decidirReq(this.getAttribute('data-fireqno'),'negado'); setTimeout(draw,60); });
+  }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  document.body.appendChild(modal);
+  draw();
+}
+
 /* ========== [10c] METAS (metas mensais por loja) ========== */
 var MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
@@ -2701,11 +2952,11 @@ function bindMetas() {
   }
 }
 
-function openGoalModal(goal) {
+function openGoalModal(goal, preset) {
   if(!canManage()){ blockManage(); return; }
   var isNew = !goal;
   var now = new Date();
-  var g = goal || { month:now.getMonth()+1, year:now.getFullYear(), goal_value:'', actual_value:0, store_unit_id:null };
+  var g = goal || { month:now.getMonth()+1, year:now.getFullYear(), goal_value:'', actual_value:0, store_unit_id:(preset&&preset.store_unit_id)||null, user_id:(preset&&preset.user_id)||null };
 
   var monthOpts='';
   for (var mo=1;mo<=12;mo++) monthOpts += '<option value="'+mo+'"'+(g.month===mo?' selected':'')+'>'+MESES[mo-1]+'</option>';
@@ -4429,16 +4680,16 @@ function renderStarsRO(nota) {
   return s;
 }
 
-function openAvaliacaoModal(aval) {
+function openAvaliacaoModal(aval, preset) {
   if(!canManage()){ blockManage(); return; }
   var ls = lojasGestao();
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var editing = !!aval;
-  var tipo = editing ? (aval.tipo||'membro') : 'membro';
+  var tipo = editing ? (aval.tipo||'membro') : ((preset&&preset.tipo)||'membro');
   var step = 1;
   var pendingCrit = '';
-  var curLoja = editing ? (aval.store_unit_id||ls[0].id) : ls[0].id;
-  var curMem = editing ? (aval.member_id||null) : null;
+  var curLoja = editing ? (aval.store_unit_id||ls[0].id) : ((preset&&preset.store_unit_id)||ls[0].id);
+  var curMem = editing ? (aval.member_id||null) : ((preset&&preset.member_id)||null);
   var now=new Date();
   var refM = now.getMonth()+1, refY = now.getFullYear();
   if (editing) {
