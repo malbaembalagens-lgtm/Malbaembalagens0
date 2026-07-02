@@ -1151,7 +1151,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v40 · 20/06 (criar acesso: vincula se e-mail já existe)';
+var APP_BUILD = 'v41 · 20/06 (acesso robusto + visão do colaborador)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1172,7 +1172,8 @@ var PAGES = {
   marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
 };
 
-// Valores EXATOS aceitos pela tabela malba_vl_tasks.
+// Colaborador (nível "Funcionário") vê só o essencial do dia a dia.
+var COLAB_PAGES = ['inicio','tarefas','calendario','chat'];
 var STATUS = { todo:{label:'A fazer',color:'#9aa1ad'}, fazendo:{label:'Em andamento',color:'#3B6FF7'}, feito:{label:'Concluída',color:'#16A34A'} };
 var STATUS_ORDER = ['todo','fazendo','feito'];
 var PRIO = { alta:{label:'Alta',color:'#EF4444'}, media:{label:'Média',color:'#F59E0B'}, baixa:{label:'Baixa',color:'#9aa1ad'} };
@@ -1249,6 +1250,14 @@ function isTopAdmin(s){ return roleRank(s) >= 4; } // Administrador ou Dono → 
 // canManage: Admin de Setor+ gerencia o setor; Gerente de Loja gerencia só dentro de Lojas
 function canManage(){ var rk=roleRank(ST.session); return rk>=3 || (rk>=2 && ST.sector==='lojas'); }
 function blockManage(){ toast('Você não tem permissão para criar, editar ou excluir aqui.','error'); }
+// que páginas cada pessoa pode acessar (config/gestão só gestores; colaborador só o essencial)
+function pageAllowed(pgId, s){
+  s = s || ST.session;
+  if (pgId==='config') return isTopAdmin(s);
+  if (pgId==='gestao')  return canManage();
+  if (roleRank(s) <= 1) return COLAB_PAGES.indexOf(pgId) !== -1; // colaborador
+  return true;
+}
 // permissões granulares por função
 function can(perm){
   var rk=roleRank(ST.session);
@@ -1429,7 +1438,8 @@ function renderLogin(sector) {
     login(emailEl.value, senhaEl.value, sector).then(function(r){
       btn.disabled=false; btn.textContent='Entrar';
       if(!r.ok){ errEl.textContent=r.msg; return; }
-      ST.loaded=false; startSplash(); navigate(sector+'/tarefas'); boot();
+      var landing = (roleRank(r.session) <= 1) ? 'inicio' : 'tarefas';
+      ST.loaded=false; startSplash(); navigate(sector+'/'+landing); boot();
     });
   }
   btn.addEventListener('click', entrar);
@@ -1444,11 +1454,7 @@ function renderShell(innerHTML, title) {
   var u=ST.session.user;
   var roleLabel = roleNivelLabel(ST.session);
   var pages=PAGES[ST.sector]||PAGES.lojas;
-  pages = pages.filter(function(pg){
-    if (pg.id==='config') return isTopAdmin(ST.session);   // só Administrador/Dono
-    if (pg.id==='gestao')  return canManage();              // gestores (Admin de Setor+, Gerente de Loja)
-    return true;
-  });
+  pages = pages.filter(function(pg){ return pageAllowed(pg.id, ST.session); });
   var nav='';
   var focoTarefas = navTaskCount();
   GROUP_ORDER.forEach(function(gname){
@@ -2545,7 +2551,7 @@ function openMemberModal(member) {
     }
     function criarConta(memberId){
       // evita duplicar: se o e-mail já tem conta, vincula a ela em vez de falhar
-      sb.from('malba_users').select('id,name,email').eq('email', accEmail).limit(1).then(function(ex){
+      sb.from('malba_users').select('id,name,email').ilike('email', accEmail).limit(1).then(function(ex){
         if (!ex.error && ex.data && ex.data.length){
           var existing=ex.data[0];
           var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(existing.id)) jaTem=true;
@@ -5304,11 +5310,7 @@ function goToPage(id){ ST.page=id; ST.openProject=null; navigate(ST.sector+'/'+i
 function buildCommands() {
   var cmds=[]; var admin=isAdmin(ST.session);
   var pages=PAGES[ST.sector]||PAGES.lojas;
-  pages = pages.filter(function(pg){
-    if (pg.id==='config') return isTopAdmin(ST.session);
-    if (pg.id==='gestao')  return canManage();
-    return true;
-  });
+  pages = pages.filter(function(pg){ return pageAllowed(pg.id, ST.session); });
   pages.forEach(function(pg){ if(pg.enabled) cmds.push({ cat:'Ir para', label:pg.label, icon:pg.icon, run:function(){ goToPage(pg.id); } }); });
   cmds.push({ cat:'Ir para', label:'Meu Perfil', icon:'users', run:function(){ ST.page='perfil'; navigate(ST.sector+'/perfil'); renderPage(); } });
   // ações de criação
@@ -5496,8 +5498,7 @@ function postAvisoModal(){
 }
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
-  if (ST.page==='config' && !isTopAdmin(ST.session)) { ST.page='inicio'; }
-  if (ST.page==='gestao' && !canManage()) { ST.page='inicio'; }
+  if (ST.page!=='perfil' && !pageAllowed(ST.page, ST.session)) { ST.page='inicio'; }
   // Perfil é uma página especial, fora do menu de setores
   if (ST.page==='perfil') { renderShell(perfilHTML(), 'Meu Perfil'); bindPerfil(); return; }
   var pages=PAGES[ST.sector]||PAGES.lojas; var pg=null;
