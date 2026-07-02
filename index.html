@@ -602,6 +602,50 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .pt-btn.in { background:var(--u-accent); } .pt-btn.in:hover { filter:brightness(1.06); }
 .pt-btn.out { background:var(--u-green); } .pt-btn.out:hover { filter:brightness(1.06); }
 .pt-done { width:42px; height:42px; border-radius:12px; background:var(--u-green-soft); display:flex; align-items:center; justify-content:center; flex-shrink:0; } .pt-done svg { width:20px; height:20px; color:var(--u-green); }
+/* ===== Painel da loja ===== */
+.loja-hero { background: radial-gradient(900px 320px at 88% -40%, #24406e 0%, #16233f 55%, #0E1A33 100%); color:#fff; border-radius:20px; padding:24px 28px; margin-bottom:16px; }
+.lh-badge { display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:800; letter-spacing:1.2px; color:#9DB4FF; background:rgba(123,160,255,.14); border:1px solid rgba(123,160,255,.28); padding:5px 11px; border-radius:30px; }
+.lh-badge .dot { width:7px; height:7px; border-radius:50%; background:#3BE38B; }
+.lh-title { font-family:var(--u-font-display); font-size:26px; font-weight:800; margin:12px 0 4px; }
+.lh-title span { background:linear-gradient(90deg,#7AA0FF,#C7B4FF); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.lh-sub { color:#b9c6e6; font-size:14px; margin:0; text-transform:capitalize; }
+.lp-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+.lp-kpi { background:var(--u-card); border:1px solid var(--u-border); border-radius:15px; padding:15px 14px; display:flex; flex-direction:column; gap:3px; box-shadow:var(--u-shadow); }
+.lp-kpi-v { font-family:var(--u-font-display); font-size:24px; font-weight:800; line-height:1.1; }
+.lp-kpi-l { font-size:12px; font-weight:700; color:var(--u-text2); }
+.lp-kpi-s { font-size:11px; color:var(--u-text3); }
+.lp-pres { display:flex; flex-wrap:wrap; gap:10px; }
+.lp-pres-av { position:relative; opacity:.4; filter:grayscale(.6); }
+.lp-pres-av span { width:44px; height:44px; border-radius:13px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:15px; }
+.lp-pres-av.on { opacity:1; filter:none; }
+.lp-pres-av.out { opacity:.7; }
+.lp-pres-av .lp-dot { position:absolute; right:-2px; bottom:-2px; width:13px; height:13px; border-radius:50%; background:#16A34A; border:2.5px solid var(--u-card); }
+.lp-meta-bar { height:14px; background:var(--u-bg2); border-radius:20px; overflow:hidden; }
+.lp-meta-bar span { display:block; height:100%; border-radius:20px; }
+.lp-meta-sub { margin-top:9px; font-size:13px; color:var(--u-text3); font-weight:600; }
+@media (max-width: 620px){ .lp-kpis { grid-template-columns:repeat(2,1fr); } }
+/* ===== Ficha do cliente (CRM) ===== */
+.clf-modal { max-width: 500px; }
+.clf-head { display:flex; align-items:center; gap:13px; margin-bottom:16px; }
+.clf-av { width:50px; height:50px; border-radius:14px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:var(--u-accent); color:#fff; font-weight:800; font-size:18px; }
+.clf-id { flex:1; min-width:0; } .clf-id b { font-family:var(--u-font-display); font-size:18px; display:block; } .clf-id i { font-style:normal; font-size:12.5px; color:var(--u-text3); }
+.clf-actions { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-bottom:16px; }
+.clf-act { display:inline-flex; align-items:center; justify-content:center; gap:7px; height:44px; border-radius:12px; font-size:13.5px; font-weight:700; cursor:pointer; border:none; text-decoration:none; }
+.clf-act svg { width:17px; height:17px; }
+.clf-act.wa { background:#25D366; color:#fff; }
+.clf-act.call { background:var(--u-accent-soft); color:var(--u-accent); }
+.clf-act.buy { background:var(--u-green-soft); color:var(--u-green); }
+.clf-act.wa:hover { filter:brightness(1.05); } .clf-act.call:hover { background:var(--u-accent); color:#fff; } .clf-act.buy:hover { background:var(--u-green); color:#fff; }
+.clf-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+.clf-kpi { background:var(--u-bg2); border-radius:12px; padding:13px 10px; text-align:center; }
+.clf-kpi-v { font-family:var(--u-font-display); font-size:19px; font-weight:800; display:block; }
+.clf-kpi-l { font-size:11px; font-weight:700; color:var(--u-text3); }
+.clf-info { display:flex; flex-direction:column; gap:2px; margin-bottom:14px; }
+.clf-ir { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--u-border); font-size:13px; }
+.clf-ir span { color:var(--u-text3); } .clf-ir b { color:var(--u-text); text-align:right; }
+.clf-notes { background:var(--u-bg2); border-radius:12px; padding:12px 14px; margin-bottom:6px; }
+.clf-notes h5 { margin:0 0 5px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--u-text3); }
+.clf-notes p { margin:0; font-size:13.5px; color:var(--u-text); line-height:1.5; white-space:pre-wrap; }
 .color-row { display: flex; gap: 7px; align-items: center; padding-top: 4px; }
 .color-dot { width: 28px; height: 28px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; transition: transform .1s; }
 .color-dot:hover { transform: scale(1.1); }
@@ -1280,7 +1324,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v46 · 20/06 (Lojas: acesso da loja + Ponto; pessoal só do colaborador)';
+var APP_BUILD = 'v47 · 20/06 (Painel da loja + ficha do cliente no CRM)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1797,6 +1841,38 @@ function panelProjetos() {
 }
 function dashPanels() {
   return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+panelProjetos();
+}
+/* ----- Painel da loja (posto de trabalho, dia a dia) ----- */
+function vendasHojeLoja(storeId){ var t=today(); var s=0; (ST.blingFat||[]).forEach(function(f){ if(String(f.store_unit_id)===String(storeId) && String(f.ref_date).slice(0,10)===t) s+=Number(f.total)||0; }); return s; }
+function lojaPainelHTML(){
+  var loja=ST.store; var lojaNome=loja.name||('Loja '+loja.store_number);
+  var hora=new Date().getHours(); var saud=hora<12?'Bom dia':(hora<18?'Boa tarde':'Boa noite');
+  var mems=membrosDaLoja(loja.id).filter(function(m){return m.is_active!==false;});
+  var presentes=mems.filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; });
+  var hoje=today();
+  var tarefasHoje=visibleTasks().filter(function(t){ return t.status!=='feito' && t.due_date && t.due_date.split('T')[0]<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
+  var mm=lojaMetaMes(loja.id); var vHoje=vendasHojeLoja(loja.id);
+  var hero='<div class="loja-hero"><div class="lh-badge"><span class="dot"></span> PAINEL DA LOJA</div><h1 class="lh-title">'+saud+', <span>'+esc(lojaNome)+'</span> 👋</h1><p class="lh-sub">'+esc(dataExtenso())+'</p></div>';
+  function pk(v,l,c,s){ return '<div class="lp-kpi"><span class="lp-kpi-v" style="color:'+c+'">'+v+'</span><span class="lp-kpi-l">'+esc(l)+'</span>'+(s?'<span class="lp-kpi-s">'+esc(s)+'</span>':'')+'</div>'; }
+  var kpis='<div class="lp-kpis">'+
+    pk(presentes.length+'/'+mems.length, 'Presentes hoje', 'var(--u-accent)', 'ponto do dia')+
+    pk(tarefasHoje.length, 'Tarefas de hoje', tarefasHoje.length?'#F59E0B':'#16A34A', tarefasHoje.length?'a fazer':'tudo em dia')+
+    pk(mm.meta>0?(mm.pct+'%'):'—', 'Meta do mês', mm.pct>=100?'#16A34A':'var(--u-accent)', mm.meta>0?fmtBRL(mm.real):'sem meta')+
+    pk(brlShort(vHoje), 'Vendas hoje', 'var(--u-green)', 'via Bling')+
+  '</div>';
+  var presAvatars = mems.length ? '<div class="lp-pres">'+mems.map(function(m){ var c=checkinHojeDoMembro(m); var on=c&&c.entrada; var out=c&&c.saida; return '<div class="lp-pres-av'+(on?' on':'')+(out?' out':'')+'" title="'+esc(m.name)+(on?(' · entrou '+hhmm(c.entrada)):' · não chegou')+'"><span style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+(on?'<i class="lp-dot"></i>':'')+'</div>'; }).join('')+'</div>' : '<div class="dash-empty">Nenhum funcionário nesta loja.</div>';
+  var presPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('users')+'<h3>Presença de hoje</h3><button class="dash-panel-act" id="lpGoPonto">bater ponto</button></div><div class="dash-panel-b">'+presAvatars+'</div></div>';
+  var tBody=tarefasHoje.length ? tarefasHoje.slice(0,7).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje. 🎉</div>';
+  var tPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('tasks')+'<h3>Tarefas de hoje</h3><button class="dash-panel-act" id="lpGoTasks">ver todas</button></div><div class="dash-panel-b">'+tBody+'</div></div>';
+  var metaPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('target')+'<h3>Meta do mês</h3><button class="dash-panel-act" id="lpGoMetas">detalhes</button></div><div class="dash-panel-b">'+(mm.meta>0?('<div class="lp-meta"><div class="lp-meta-bar"><span style="width:'+mm.pct+'%;background:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'"></span></div><div class="lp-meta-sub">'+fmtBRL(mm.real)+' de '+fmtBRL(mm.meta)+' · <b style="color:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'">'+mm.pct+'%</b></div></div>'):'<div class="dash-empty">Sem meta definida para este mês.</div>')+'</div></div>';
+  return hero + muralHTML() + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + metaPanel;
+}
+function bindLojaPainel(){
+  bindMural();
+  var gp=document.getElementById('lpGoPonto'); if(gp) gp.addEventListener('click', function(){ ST.page='ponto'; navigate(ST.sector+'/ponto'); renderPage(); });
+  var gt=document.getElementById('lpGoTasks'); if(gt) gt.addEventListener('click', function(){ ST.page='tarefas'; navigate(ST.sector+'/tarefas'); renderPage(); });
+  var gm=document.getElementById('lpGoMetas'); if(gm) gm.addEventListener('click', function(){ ST.page='metas'; navigate(ST.sector+'/metas'); renderPage(); });
+  var tr=app.querySelectorAll('[data-dtask]'); for(var i=0;i<tr.length;i++) tr[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-dtask')); if(t) openTaskModal(t); });
 }
 function bindDashboard() {
   bindMural();
@@ -3357,7 +3433,7 @@ function bindCRM() {
     rows[i].addEventListener('click', function(){
       var id=this.getAttribute('data-id'); var c=null;
       for (var k=0;k<ST.clients.length;k++) if (String(ST.clients[k].id)===String(id)) { c=ST.clients[k]; break; }
-      if (c) openClientModal(c);
+      if (c) openClienteFicha(c);
     });
   }
 }
@@ -3372,6 +3448,51 @@ function crmRegistrarCompra(id){
   });
 }
 
+function openClienteFicha(client){
+  var c=client; if(!c) return;
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  function refresh(){ for(var i=0;i<ST.clients.length;i++) if(String(ST.clients[i].id)===String(c.id)){ c=ST.clients[i]; break; } }
+  function fichaHTML(){
+    refresh();
+    var seg=crmSegment(c); var sg=CRM_SEG[seg]; var ini=iniciais(c.name); var wa=crmWhatsLink(c);
+    var phone=(c.phone||'').replace(/\s/g,'');
+    var total=Number(c.total_spent)||0; var orders=Number(c.orders_count)||0; var ticket=orders>0?(total/orders):0;
+    var actions='<div class="clf-actions">'+
+      (wa?'<a class="clf-act wa" href="'+wa+'" target="_blank" rel="noopener">'+icon('chat')+'WhatsApp</a>':'')+
+      (phone?'<a class="clf-act call" href="tel:'+esc(phone)+'">'+icon('bell')+'Ligar</a>':'')+
+      (canManage()?'<button class="clf-act buy" id="clfBuy">'+icon('dollar')+'Comprou hoje</button>':'')+
+    '</div>';
+    var resumo='<div class="clf-kpis">'+
+      '<div class="clf-kpi"><span class="clf-kpi-v">'+brlShort(total)+'</span><span class="clf-kpi-l">Total gasto</span></div>'+
+      '<div class="clf-kpi"><span class="clf-kpi-v">'+orders+'</span><span class="clf-kpi-l">Compras</span></div>'+
+      '<div class="clf-kpi"><span class="clf-kpi-v">'+brlShort(ticket)+'</span><span class="clf-kpi-l">Ticket médio</span></div>'+
+    '</div>';
+    var infoRows='<div class="clf-info">'+
+      '<div class="clf-ir"><span>Última compra</span><b>'+(c.last_purchase?(fmtDate(c.last_purchase)+' · '+esc(crmRecencia(c))):'—')+'</b></div>'+
+      (c.email?('<div class="clf-ir"><span>E-mail</span><b>'+esc(c.email)+'</b></div>'):'')+
+      (c.phone?('<div class="clf-ir"><span>Telefone</span><b>'+esc(c.phone)+'</b></div>'):'')+
+      (c.store_unit_id?('<div class="clf-ir"><span>Loja</span><b>'+esc(storeName(c.store_unit_id))+'</b></div>'):'')+
+      '<div class="clf-ir"><span>Ciclo de recompra</span><b>'+crmCycle(c)+' dias</b></div>'+
+    '</div>';
+    var notas = c.notes ? ('<div class="clf-notes"><h5>Observações</h5><p>'+esc(c.notes)+'</p></div>') : '';
+    return '<div class="modal clf-modal">'+
+      '<div class="clf-head"><span class="clf-av">'+esc(ini)+'</span><div class="clf-id"><b>'+esc(c.name)+'</b><i>'+(c.company?esc(c.company)+' · ':'')+esc(crmRecencia(c))+'</i></div><span class="crm-status" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span></div>'+
+      actions + resumo + infoRows + notas +
+      '<div class="modal-foot">'+(canManage()?'<button class="btn btn-danger btn-del-wrap" id="clfDel">Excluir</button>':'')+'<button class="btn btn-ghost" id="clfClose">Fechar</button>'+(canManage()?'<button class="btn btn-primary" id="clfEdit">Editar dados</button>':'')+'</div>'+
+    '</div>';
+  }
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  function draw(){ modal.innerHTML=fichaHTML(); bind(); }
+  function bind(){
+    modal.querySelector('#clfClose').addEventListener('click', close);
+    var ed=modal.querySelector('#clfEdit'); if(ed) ed.addEventListener('click', function(){ close(); openClientModal(c); });
+    var bt=modal.querySelector('#clfBuy'); if(bt) bt.addEventListener('click', function(){ crmRegistrarCompra(c.id); setTimeout(draw,80); });
+    var dl=modal.querySelector('#clfDel'); if(dl) dl.addEventListener('click', function(){ if(!confirm('Excluir o cliente "'+c.name+'"?')) return; sb.from('malba_crm_clients').delete().eq('id',c.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.clients=ST.clients.filter(function(x){return String(x.id)!==String(c.id);}); close(); toast('Cliente excluído','success'); renderPage(); }); });
+  }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  document.body.appendChild(modal);
+  draw();
+}
 function openClientModal(client) {
   if(!canManage()){ blockManage(); return; }
   var isNew = !client;
@@ -6001,6 +6122,7 @@ function renderPage() {
     renderShell(pontoHTML(), 'Ponto'); bindPonto();
   } else if (pg.id==='inicio') {
     if (isColaboradorPessoal(ST.session)) { renderShell(colaboradorInicioHTML(), 'Início'); bindColaboradorInicio(); }
+    else if (ST.sector==='lojas' && ST.store) { renderShell(lojaPainelHTML(), 'Início'); bindLojaPainel(); }
     else { renderShell(dashboardHTML(), 'Início'); bindDashboard(); }
   }
 }
