@@ -1154,7 +1154,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v42 · 20/06 (acesso: mostra o erro real na janela)';
+var APP_BUILD = 'v43 · 20/06 (acesso: senha grava em password_hash)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2557,14 +2557,24 @@ function openMemberModal(member) {
     }
     function inserirConta(memberId){
       var ehAdminSetor=(accLvl==='sector_admin'||accLvl==='admin_geral'||accLvl==='super');
-      var urec={ name:name, sector:'lojas', access_level:accLvl, sector_role:(ehAdminSetor?'admin':'user'), role:(accLvl==='super'?'admin':'user'), email:accEmail, password:accPass, color:colorPick, initials:iniciais(name) };
-      sb.from('malba_users').insert(urec).select().single().then(function(ru){
-        if (ru.error || !ru.data) { console.error('criar acesso:', ru.error); showAccErr(ru.error); return; }
-        if(ST.allUsers) ST.allUsers.push(ru.data);
-        auditLog('Criou acesso', name+' · '+(NIVEIS[accLvl]?NIVEIS[accLvl].label:accLvl));
-        vincularMembro(memberId, ru.data.id);
-        finalize('Funcionário '+(isNew?'adicionado':'atualizado')+' com acesso','success');
-      });
+      var baseU={ name:name, sector:'lojas', access_level:accLvl, sector_role:(ehAdminSetor?'admin':'user'), role:(accLvl==='super'?'admin':'user'), email:accEmail, color:colorPick, initials:iniciais(name) };
+      function tryInsert(pwField, isRetry){
+        var urec=Object.assign({}, baseU); urec[pwField]=accPass;
+        sb.from('malba_users').insert(urec).select().single().then(function(ru){
+          if (ru.error || !ru.data) {
+            var msg=(ru.error&&ru.error.message)?ru.error.message.toLowerCase():'';
+            if (!isRetry && msg.indexOf('column')!==-1 && (msg.indexOf('password_hash')!==-1 || msg.indexOf("'password'")!==-1 || msg.indexOf('password')!==-1)) {
+              tryInsert(pwField==='password_hash'?'password':'password_hash', true); return;
+            }
+            console.error('criar acesso:', ru.error); showAccErr(ru.error); return;
+          }
+          if(ST.allUsers) ST.allUsers.push(ru.data);
+          auditLog('Criou acesso', name+' · '+(NIVEIS[accLvl]?NIVEIS[accLvl].label:accLvl));
+          vincularMembro(memberId, ru.data.id);
+          finalize('Funcionário '+(isNew?'adicionado':'atualizado')+' com acesso','success');
+        });
+      }
+      tryInsert('password_hash', false);
     }
     function criarConta(memberId){
       // evita duplicar: se o e-mail já tem conta, vincula a ela em vez de falhar
@@ -3496,7 +3506,7 @@ function openUserModal(user) {
       role:(lvl==='super'?'admin':'user')
     };
     if (isNew) { rec.email=email; rec.color=u.color||'#3B6FF7'; rec.initials=iniciais(name); }
-    if (pass) rec.password = pass; // novo sistema padroniza na coluna `password`
+    if (pass) rec.password_hash = pass; // a tabela guarda a senha em password_hash
     var saveBtn=modal.querySelector('#userSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
     if (isNew) {
       sb.from('malba_users').insert(rec).select().single().then(function(r){
@@ -4992,7 +5002,7 @@ function bindPerfil() {
     if (!p) { toast('Digite a nova senha','error'); return; }
     if (p.length<4) { toast('Senha muito curta (mín. 4)','error'); return; }
     ps.disabled=true; ps.textContent='Salvando...';
-    sb.from('malba_users').update({ password:p }).eq('id', u.id).then(function(r){
+    sb.from('malba_users').update({ password_hash:p }).eq('id', u.id).then(function(r){
       ps.disabled=false; ps.textContent='Alterar senha';
       if (r.error) { toast('Erro ao alterar senha','error'); console.error(r.error); return; }
       document.getElementById('prfPass').value=''; toast('Senha alterada','success');
