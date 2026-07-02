@@ -741,6 +741,60 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .aval-add input:focus { outline: none; border-color: var(--u-accent); border-style: solid; }
 .btn-add-crit { height: 36px; padding: 0 14px; border-radius: 10px; background: var(--u-accent-soft); color: var(--u-accent); font-size: 13px; font-weight: 700; cursor: pointer; border: none; white-space: nowrap; }
 .btn-add-crit:hover { background: var(--u-accent); color: #fff; }
+/* ===== Assistente de avaliação por etapas ===== */
+.aval-wizard { max-width: 560px; }
+.aval-steps { display:flex; align-items:center; gap:2px; margin:2px 0 16px; }
+.aval-step { display:flex; align-items:center; gap:7px; opacity:.5; }
+.aval-step .as-num { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; background:var(--u-bg2); color:var(--u-text2); border:1.5px solid var(--u-border2); flex-shrink:0; }
+.aval-step .as-lb { font-size:12px; font-weight:700; color:var(--u-text2); white-space:nowrap; }
+.aval-step.on { opacity:1; } .aval-step.on .as-num { background:var(--u-accent); color:#fff; border-color:var(--u-accent); }
+.aval-step.done { opacity:1; } .aval-step.done .as-num { background:var(--u-green); color:#fff; border-color:var(--u-green); }
+.aval-steps .as-sep { flex:1; height:2px; background:var(--u-border); border-radius:2px; min-width:8px; }
+.aval-body { min-height:120px; }
+.ref-per { display:flex; gap:8px; }
+.ref-per select { flex:1; } .ref-per input { width:88px; text-align:center; }
+.aval-lock { display:flex; align-items:center; gap:12px; padding:13px 15px; border-radius:12px; background:var(--u-accent-soft); border:1px solid rgba(59,111,247,.2); }
+.aval-lock-ic { width:38px; height:38px; border-radius:10px; background:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; } .aval-lock-ic svg { width:20px; height:20px; color:var(--u-accent); }
+.aval-lock-tx { flex:1; display:flex; flex-direction:column; } .aval-lock-tx b { font-family:var(--u-font-display); font-size:15px; } .aval-lock-tx i { font-size:12px; color:var(--u-text3); font-style:normal; }
+.aval-lock-tag { font-size:10.5px; font-weight:800; color:var(--u-accent); background:#fff; padding:3px 9px; border-radius:20px; }
+.aval-scale-leg { font-size:11.5px; color:var(--u-text3); background:var(--u-bg2); border-radius:8px; padding:7px 11px; margin-bottom:10px; text-align:center; }
+.aval-crit-lb { width:100%; text-align:right; font-size:11px; font-weight:700; color:var(--u-text3); margin-top:-2px; }
+/* diagnóstico + barras */
+.diag-badge { display:inline-flex; align-items:center; font-size:12px; font-weight:800; padding:5px 12px; border-radius:20px; }
+.aval-summary { display:flex; align-items:center; gap:16px; padding:16px; background:var(--u-bg2); border-radius:14px; margin:4px 0 14px; }
+.asum-score { width:92px; height:92px; border-radius:50%; border:4px solid var(--u-accent); display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0; background:var(--u-card); }
+.asum-num { font-family:var(--u-font-display); font-size:30px; font-weight:800; line-height:1; }
+.asum-of { font-size:11px; color:var(--u-text3); font-weight:600; margin-top:2px; }
+.asum-diag { flex:1; } .asum-diag p { margin:8px 0 0; font-size:13px; color:var(--u-text2); line-height:1.5; }
+.crit-bars { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+.crit-bar .cb-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.crit-bar .cb-top span { font-size:13px; color:var(--u-text2); font-weight:600; }
+.crit-bar .cb-top b { font-size:12px; font-weight:800; }
+.crit-bar .cb-track { height:9px; background:var(--u-bg2); border-radius:20px; overflow:hidden; }
+.crit-bar .cb-track span { display:block; height:100%; border-radius:20px; transition:width .3s; }
+.asum-block { border-left:3px solid var(--u-border2); padding:2px 0 2px 12px; margin-bottom:12px; }
+.asum-block h5 { margin:0 0 4px; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--u-text3); }
+.asum-block p { margin:0; font-size:13.5px; color:var(--u-text); line-height:1.55; white-space:pre-wrap; }
+.asum-block.fortes { border-left-color:#16A34A; } .asum-block.desenv { border-left-color:#F59E0B; } .asum-block.plano { border-left-color:var(--u-accent); }
+.aval-sum-head, .aval-det-meta { margin-bottom:10px; }
+.aval-sum-head b { font-family:var(--u-font-display); font-size:16px; } .aval-sum-head i { display:block; font-size:12.5px; color:var(--u-text3); font-style:normal; margin-top:2px; }
+.aval-det-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:12.5px; color:var(--u-text3); }
+/* ===== Evolução mês a mês ===== */
+.aval-evo-sec { margin-top:6px; }
+.aval-evo-h { margin:0 0 8px; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--u-text3); }
+.evo-wrap { background:var(--u-bg2); border-radius:14px; padding:14px 16px; position:relative; }
+.evo-head { display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.evo-trend { font-size:14px; font-weight:800; }
+.evo-sub { font-size:12px; color:var(--u-text3); font-weight:600; }
+.evo-chart { display:flex; align-items:flex-end; gap:8px; height:132px; padding-left:2px; overflow-x:auto; }
+.evo-col { flex:1; min-width:44px; display:flex; flex-direction:column; align-items:center; height:100%; }
+.evo-bar-wrap { flex:1; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; position:relative; }
+.evo-bar-val { font-size:11px; font-weight:800; color:var(--u-text2); margin-bottom:3px; }
+.evo-bar { width:60%; max-width:34px; min-height:6px; border-radius:7px 7px 0 0; transition:height .35s ease; }
+.evo-delta { font-size:10.5px; font-weight:800; margin-top:6px; }
+.evo-delta.up { color:#16A34A; } .evo-delta.down { color:#EF4444; } .evo-delta.flat { color:var(--u-text3); }
+.evo-lbl { font-size:10.5px; font-weight:700; color:var(--u-text3); margin-top:4px; white-space:nowrap; }
+.evo-scale { position:absolute; top:44px; bottom:38px; left:4px; display:flex; flex-direction:column; justify-content:space-between; font-size:9px; color:var(--u-border2); font-weight:700; pointer-events:none; }
 /* bloco criar acesso no cadastro de funcionário */
 .acc-box { margin-top: 4px; border: 1px solid var(--u-border); border-radius: 12px; padding: 12px 14px; background: var(--u-bg2); }
 .acc-toggle { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
@@ -1015,6 +1069,67 @@ html.dark .tc-src-camp { color: #C4B5FD; }
   .crm-cp-seg { display: none; }
 }
 @media (max-width: 420px) { .sector-grid { grid-template-columns: 1fr; } }
+
+/* ================= MOBILE / RESPONSIVO (gaveta + empilhamento) ================= */
+.top-burger { display: none; }
+.side-overlay { display: none; }
+
+@media (max-width: 860px) {
+  /* --- Sidebar vira gaveta deslizante --- */
+  .app-shell { display: block; }
+  .side {
+    position: fixed; top: 0; left: 0; height: 100vh; height: 100dvh; width: 82vw; max-width: 300px;
+    z-index: 1200; transform: translateX(-100%); transition: transform .25s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 24px 70px -20px rgba(15,23,42,.55); overflow-y: auto;
+  }
+  .app-shell.side-open .side { transform: translateX(0); }
+  .side-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.5); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity .25s; display: block; }
+  .app-shell.side-open .side-overlay { opacity: 1; pointer-events: auto; }
+  .main { width: 100%; min-width: 0; }
+  /* --- Cabeçalho compacto com hambúrguer --- */
+  .top { position: sticky; top: 0; z-index: 900; height: 58px; padding: 0 12px; gap: 10px; }
+  .top-burger { display: flex; flex-direction: column; justify-content: center; gap: 4px; width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; background: var(--u-bg2); }
+  .top-burger span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--u-text); margin: 0 auto; }
+  .top-title { font-size: 17px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .top-search { display: none; }
+  .top-store { max-width: 128px; }
+  .content { padding: 16px 14px; }
+  /* --- Grades empilham --- */
+  .dash-grid2, .board, .goals-grid, .team-grid, .proj-grid, .camp-grid, .gestao-summary, .dash-cards, .sector-grid, .me-grid { grid-template-columns: 1fr; }
+  .vg-kpis, .crm-summary { grid-template-columns: repeat(2, 1fr); }
+  .modal-grid2 { grid-template-columns: 1fr; }
+  /* --- Cabeçalhos de página quebram linha --- */
+  .tasks-head, .cfg-sec-head, .cfg-head-btns, .metas-head, .crm-head { flex-wrap: wrap; gap: 10px; }
+  /* --- Abas roláveis na horizontal --- */
+  .cfg-tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .cfg-tabs::-webkit-scrollbar { height: 0; }
+  .cfg-tabs .cfg-tab { white-space: nowrap; flex-shrink: 0; }
+  /* --- Assistente de avaliação: etapas compactas --- */
+  .aval-wizard { max-width: 100%; }
+  .aval-steps { overflow-x: auto; gap: 4px; }
+  .aval-step .as-lb { display: none; }
+  .aval-step.on .as-lb { display: inline; }
+  .aval-summary { flex-direction: column; text-align: center; }
+  .evo-chart { min-width: 0; }
+  /* --- Modais viram folha inferior (bottom-sheet) --- */
+  .modal-bg { padding: 0; align-items: flex-end; }
+  .modal { max-width: 100%; width: 100%; max-height: 94vh; border-radius: 20px 20px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom)); animation: slideup .25s cubic-bezier(.4,0,.2,1); }
+  .modal-foot { flex-wrap: wrap; }
+  .modal-foot .btn { flex: 1; min-width: 116px; }
+  .btn-del-wrap { order: 3; flex-basis: 100%; }
+}
+@keyframes slideup { from { transform: translateY(28px); opacity: .6; } to { transform: translateY(0); opacity: 1; } }
+
+@media (max-width: 560px) {
+  .top-novo span { display: none; }
+  .top-novo { padding: 0; width: 38px; height: 38px; border-radius: 10px; justify-content: center; }
+  .top-online span { display: none; }
+  .content { padding: 14px 11px; }
+  .cal-grid { gap: 3px; }
+  .cal-cell { font-size: 11px; min-height: 46px; }
+  .vg-kpis, .crm-summary { grid-template-columns: repeat(2, 1fr); }
+  h2 { font-size: 20px; }
+}
 </style>
 </head>
 <body>
@@ -1036,7 +1151,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v36 · 19/06 (metas: realizado protegido contra digitação)';
+var APP_BUILD = 'v39 · 20/06 (layout mobile: gaveta + responsivo)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1355,8 +1470,8 @@ function renderShell(innerHTML, title) {
       '<nav class="nav">'+nav+'</nav>'+
       '<button class="btn-logout" id="btnSair">'+icon('logout')+'<span>Sair</span></button>'+
       '<div class="side-version" title="Versão no ar">'+esc(APP_BUILD)+'</div>'+
-    '</aside><main class="main">'+
-      '<header class="top"><span class="top-title">'+esc(title||'')+'</span><div class="top-spacer"></div>'+
+    '</aside><div class="side-overlay" id="sideOverlay"></div><main class="main">'+
+      '<header class="top"><button class="top-burger" id="topBurger" aria-label="Abrir menu"><span></span><span></span><span></span></button><span class="top-title">'+esc(title||'')+'</span><div class="top-spacer"></div>'+
         (function(){
           if (!(isSuper(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length)) return '';
           var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(su){ return '<option value="'+esc(su.id)+'"'+(String(ST.viewStore)===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+su.store_number))+'</option>'; }).join('');
@@ -1378,6 +1493,11 @@ function renderShell(innerHTML, title) {
     navBtns[i].addEventListener('click', function(){ ST.page=this.getAttribute('data-page'); ST.openProject=null; navigate(ST.sector+'/'+ST.page); renderPage(); });
   }
   bindTopbar();
+  var _burger=document.getElementById('topBurger');
+  var _shell=app.querySelector('.app-shell');
+  var _ovl=document.getElementById('sideOverlay');
+  if(_burger&&_shell) _burger.addEventListener('click', function(){ _shell.classList.toggle('side-open'); });
+  if(_ovl&&_shell) _ovl.addEventListener('click', function(){ _shell.classList.remove('side-open'); });
 }
 
 /* ----- Topbar: Online, busca e Novo ----- */
@@ -3896,6 +4016,55 @@ var CRIT_LOJA = [
   {id:'tarefas',     label:'Execução das tarefas'},
   {id:'equipe',      label:'Trabalho em equipe'}
 ];
+var SCALE_LABELS = ['', 'Insuficiente', 'Abaixo do esperado', 'Adequado', 'Bom', 'Excelente'];
+// Diagnóstico automático a partir da nota média (referências: Lattice, Leapsome, 9-box)
+function diagnostico(nota){
+  var n=Number(nota)||0;
+  if(n>=4.5) return {key:'exc',    label:'Desempenho excepcional', color:'#16A34A', soft:'rgba(22,163,74,.12)',  rec:'Reconhecer e reter. Ofereça novos desafios e um plano de crescimento.'};
+  if(n>=3.5) return {key:'acima',  label:'Acima do esperado',      color:'#0EA5E9', soft:'rgba(14,165,233,.12)', rec:'Bom desempenho consistente. Mantenha e amplie os pontos fortes.'};
+  if(n>=2.5) return {key:'ok',     label:'Dentro do esperado',     color:'#3B6FF7', soft:'rgba(59,111,247,.12)', rec:'Atende ao esperado. Combine 1–2 focos de evolução para o próximo ciclo.'};
+  if(n>=1.5) return {key:'abaixo', label:'Abaixo do esperado',     color:'#F59E0B', soft:'rgba(245,158,11,.13)', rec:'Requer acompanhamento próximo e um plano de melhoria (PDI) com prazos.'};
+  return               {key:'critico',label:'Crítico — ação imediata',color:'#EF4444', soft:'rgba(239,68,68,.12)',  rec:'Feedback formal e plano de recuperação com metas e prazo curto.'};
+}
+function diagBadge(nota){ var d=diagnostico(nota); return '<span class="diag-badge" style="color:'+d.color+';background:'+d.soft+'">'+d.label+'</span>'; }
+function critBarsHTML(notas){
+  var arr = Array.isArray(notas) ? notas : [];
+  if(!arr.length) return '';
+  return '<div class="crit-bars">'+arr.map(function(c){ var nota=Number(c.nota)||0; var pct=Math.round(nota/5*100); var col=nota>0?diagnostico(nota).color:'var(--u-border2)'; return '<div class="crit-bar"><div class="cb-top"><span>'+esc(c.label||'Critério')+'</span><b style="color:'+col+'">'+nota.toFixed(0)+'/5</b></div><div class="cb-track"><span style="width:'+pct+'%;background:'+col+'"></span></div></div>'; }).join('')+'</div>';
+}
+var MES_ABR = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+function periodoCurto(a){
+  var src = a.periodo_inicio || a.data_avaliacao;
+  if(src){ var p=String(src).slice(0,10).split('-'); var m=Number(p[1]); var y=String(p[0]).slice(2); if(m>=1&&m<=12) return MES_ABR[m-1]+'/'+y; }
+  return a.periodo_label||'—';
+}
+function avalsDoMembro(memberId){
+  return (ST.avaliacoes||[]).filter(function(a){ return a.tipo==='membro' && String(a.member_id)===String(memberId) && a.nota_final!=null; })
+    .sort(function(a,b){ return String(a.periodo_inicio||a.data_avaliacao||'').localeCompare(String(b.periodo_inicio||b.data_avaliacao||'')); });
+}
+// Gráfico de evolução da nota mês a mês (barras no tempo + tendência + variação)
+function avalEvolucaoRender(listRaw){
+  var arr = (listRaw||[]).filter(function(a){ return a.nota_final!=null; }).slice()
+    .sort(function(a,b){ return String(a.periodo_inicio||a.data_avaliacao||'').localeCompare(String(b.periodo_inicio||b.data_avaliacao||'')); });
+  if(arr.length < 2) return '';
+  var bars = arr.map(function(a, i){
+    var nota=Number(a.nota_final)||0; var d=diagnostico(nota); var pct=Math.max(8,Math.round(nota/5*100));
+    var prev = i>0 ? (Number(arr[i-1].nota_final)||0) : null;
+    var delta = prev!=null ? (nota - prev) : null;
+    var deltaHTML='';
+    if(delta!=null){ var cls=delta>0.049?'up':(delta<-0.049?'down':'flat'); var ic=delta>0.049?'▲':(delta<-0.049?'▼':'▬'); deltaHTML='<span class="evo-delta '+cls+'">'+ic+' '+(delta>0?'+':'')+delta.toFixed(1)+'</span>'; }
+    else deltaHTML='<span class="evo-delta flat">•</span>';
+    return '<div class="evo-col" title="'+esc((a.periodo_label||fmtDate(a.data_avaliacao)))+' · '+nota.toFixed(1)+' de 5">'+
+      '<div class="evo-bar-wrap"><span class="evo-bar-val">'+nota.toFixed(1)+'</span><div class="evo-bar" style="height:'+pct+'%;background:'+d.color+'"></div></div>'+
+      deltaHTML+
+      '<div class="evo-lbl">'+esc(periodoCurto(a))+'</div>'+
+    '</div>';
+  }).join('');
+  var first=Number(arr[0].nota_final)||0, last=Number(arr[arr.length-1].nota_final)||0; var diff=last-first;
+  var trend = diff>0.2?{t:'Melhorando', c:'#16A34A', ic:'▲'}:(diff<-0.2?{t:'Em queda', c:'#EF4444', ic:'▼'}:{t:'Estável', c:'var(--u-text2)', ic:'▬'});
+  var head='<div class="evo-head"><span class="evo-trend" style="color:'+trend.c+'">'+trend.ic+' '+trend.t+'</span><span class="evo-sub">'+arr.length+' avaliações · '+first.toFixed(1)+' → '+last.toFixed(1)+'</span></div>';
+  return '<div class="evo-wrap">'+head+'<div class="evo-chart">'+bars+'</div><div class="evo-scale"><span>5</span><span>0</span></div></div>';
+}
 function membrosDaLoja(lojaId) {
   return ST.members.filter(function(m){ return m.store_unit_id===lojaId && m.is_active!==false; });
 }
@@ -4209,13 +4378,26 @@ function openAvaliacaoModal(aval) {
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var editing = !!aval;
   var tipo = editing ? (aval.tipo||'membro') : 'membro';
+  var step = 1;
   var pendingCrit = '';
-  var form = { periodo: editing ? (aval.periodo_label||'') : '', obs: editing ? (aval.observacao||'') : '' };
   var curLoja = editing ? (aval.store_unit_id||ls[0].id) : ls[0].id;
   var curMem = editing ? (aval.member_id||null) : null;
+  var now=new Date();
+  var refM = now.getMonth()+1, refY = now.getFullYear();
+  if (editing) {
+    if (aval.periodo_inicio) { var pp=String(aval.periodo_inicio).slice(0,10).split('-'); refY=Number(pp[0])||refY; refM=Number(pp[1])||refM; }
+    else if (aval.data_avaliacao) { var dd=String(aval.data_avaliacao).slice(0,10).split('-'); refY=Number(dd[0])||refY; refM=Number(dd[1])||refM; }
+  }
+  var form = {
+    data_aval: editing ? (aval.data_avaliacao||today()) : today(),
+    ref_month: refM, ref_year: refY,
+    obs: editing?(aval.observacao||''):'',
+    fortes: editing?(aval.pontos_fortes||''):'',
+    desenvolver: editing?(aval.pontos_desenvolver||''):'',
+    plano: editing?(aval.plano_acao||''):''
+  };
 
   function defaultsFor(tp){ return (tp==='loja'?CRIT_LOJA:CRIT_MEMBRO).map(function(c){ return {id:c.id,label:c.label,nota:0}; }); }
-  // critList = lista ORDENADA de {id,label,nota}. Aceita formato novo (array) e antigo (objeto).
   function parseCrit(){
     if (editing) {
       var sn=aval.notas;
@@ -4230,19 +4412,43 @@ function openAvaliacaoModal(aval) {
     return defaultsFor(tipo);
   }
   var critList = parseCrit();
+  if(tipo==='membro' && !curMem){ var mm0=membrosDaLoja(curLoja); if(mm0.length) curMem=mm0[0].id; }
 
-  function build() {
+  function alvoLabel(){
+    if (tipo==='membro'){ var mm=null; for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(curMem)){mm=ST.members[i];break;} return mm?mm.name:'Funcionário'; }
+    return storeName(curLoja)||'Loja';
+  }
+  function mediaAtual(){ var soma=0,n=0; critList.forEach(function(c){ if(c.nota>0){ soma+=c.nota; n++; } }); return n>0?(soma/n):0; }
+
+  function stepperHTML(){
+    var steps=['Quem e quando','Competências','Feedback','Resumo'];
+    return '<div class="aval-steps">'+steps.map(function(s,i){ var n=i+1; var cls=n===step?'on':(n<step?'done':''); return '<div class="aval-step '+cls+'"><span class="as-num">'+(n<step?'✓':n)+'</span><span class="as-lb">'+s+'</span></div>'; }).join('<span class="as-sep"></span>')+'</div>';
+  }
+
+  function step1HTML(){
     var lojaOpts = ls.map(function(l){ return '<option value="'+esc(l.id)+'"'+(String(curLoja)===String(l.id)?' selected':'')+'>'+esc(l.name||('Loja '+l.store_number))+'</option>'; }).join('');
-
+    var moOpts=''; for(var mo=1;mo<=12;mo++) moOpts+='<option value="'+mo+'"'+(form.ref_month===mo?' selected':'')+'>'+MESES[mo-1]+'</option>';
+    var periodo = '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Período avaliado</label><div class="ref-per"><select id="avMonth">'+moOpts+'</select><input type="text" id="avYear" inputmode="numeric" value="'+esc(form.ref_year)+'"></div></div><div class="modal-row"><label class="modal-label">Data da avaliação</label><input type="date" id="avDate" value="'+esc(form.data_aval)+'"></div></div>';
+    if (editing) {
+      return '<div class="aval-lock"><span class="aval-lock-ic">'+icon('target')+'</span><div class="aval-lock-tx"><b>'+esc(alvoLabel())+'</b><i>'+(tipo==='membro'?('Funcionário · '+esc(storeName(curLoja)||'')):'Loja')+'</i></div><span class="aval-lock-tag">alvo fixo</span></div>'+
+        '<div class="modal-note">Para avaliar outra pessoa, feche e clique em "Nova avaliação". Assim nenhuma avaliação é sobrescrita.</div>'+
+        periodo;
+    }
+    var tipoPills='<div class="modal-row"><label class="modal-label">O que você vai avaliar?</label><div class="pills" id="avTipo"><button type="button" class="pill av-tp'+(tipo==='membro'?' on':'')+'" data-tp="membro" style="color:var(--u-accent)"><span class="pdot" style="background:var(--u-accent)"></span>Funcionário</button><button type="button" class="pill av-tp'+(tipo==='loja'?' on':'')+'" data-tp="loja" style="color:var(--u-green)"><span class="pdot" style="background:var(--u-green)"></span>Loja</button></div></div>';
+    var lojaRow='<div class="modal-row"><label class="modal-label">Loja</label><select id="avLoja">'+lojaOpts+'</select></div>';
     var membroBlock='';
     if (tipo==='membro') {
       var mem = membrosDaLoja(curLoja);
       var memOpts = mem.length ? mem.map(function(m){ return '<option value="'+esc(m.id)+'"'+(String(curMem)===String(m.id)?' selected':'')+'>'+esc(m.name)+'</option>'; }).join('') : '<option value="">Sem funcionários nesta loja</option>';
       membroBlock = '<div class="modal-row"><label class="modal-label">Funcionário</label><select id="avMembro">'+memOpts+'</select></div>';
     }
+    return tipoPills+lojaRow+membroBlock+periodo;
+  }
+
+  function step2HTML(){
     var critHTML = critList.map(function(c,idx){
       var stars='';
-      for (var i=1;i<=5;i++) stars += '<button type="button" class="star-pick'+(i<=c.nota?' on':'')+'" data-cidx="'+idx+'" data-val="'+i+'">★</button>';
+      for (var i=1;i<=5;i++) stars += '<button type="button" class="star-pick'+(i<=c.nota?' on':'')+'" data-cidx="'+idx+'" data-val="'+i+'" title="'+SCALE_LABELS[i]+'">★</button>';
       return '<div class="aval-crit">'+
         '<input type="text" class="aval-crit-name" data-cidx="'+idx+'" value="'+esc(c.label)+'" maxlength="60" placeholder="Nome do critério">'+
         '<div class="aval-crit-right">'+
@@ -4253,23 +4459,49 @@ function openAvaliacaoModal(aval) {
             '<button type="button" class="aval-crit-del" data-rmcrit="'+idx+'" title="Remover critério">✕</button>'+
           '</div>'+
         '</div>'+
+        (c.nota>0?'<div class="aval-crit-lb">'+SCALE_LABELS[c.nota]+'</div>':'')+
       '</div>';
     }).join('');
-    var soma=0,n=0; critList.forEach(function(c){ if(c.nota>0){ soma+=c.nota; n++; } });
-    var media = n>0 ? (soma/n) : 0;
-    var delBtn = editing ? '<button class="btn btn-danger btn-del-wrap" id="avDel">Excluir</button>' : '';
-
-    return '<div class="modal">'+
-      '<div class="modal-title-input" style="cursor:default">'+(editing?'Editar avaliação':'Nova avaliação')+'</div>'+
-      '<div class="modal-row"><label class="modal-label">Tipo</label><div class="pills" id="avTipo"><button type="button" class="pill av-tp'+(tipo==='membro'?' on':'')+'" data-tp="membro" style="color:var(--u-accent)"><span class="pdot" style="background:var(--u-accent)"></span>Funcionário</button><button type="button" class="pill av-tp'+(tipo==='loja'?' on':'')+'" data-tp="loja" style="color:var(--u-green)"><span class="pdot" style="background:var(--u-green)"></span>Loja</button></div></div>'+
-      '<div class="modal-row"><label class="modal-label">Loja</label><select id="avLoja">'+lojaOpts+'</select></div>'+
-      membroBlock+
-      '<div class="modal-row"><label class="modal-label">Período (opcional)</label><input type="text" id="avPeriodo" placeholder="ex: Junho/2026" value="'+esc(form.periodo)+'"></div>'+
-      '<div class="modal-row"><label class="modal-label">Critérios</label><div class="aval-crits">'+critHTML+'</div>'+
+    var n=0; critList.forEach(function(c){ if(c.nota>0) n++; }); var media=mediaAtual();
+    return '<div class="aval-scale-leg">1 Insuficiente · 2 Abaixo · 3 Adequado · 4 Bom · 5 Excelente</div>'+
+      '<div class="aval-crits">'+critHTML+'</div>'+
       '<div class="aval-add"><input type="text" id="avNewCrit" placeholder="Adicionar critério (ex: Apresentação pessoal)" maxlength="60" value="'+esc(pendingCrit)+'"><button type="button" class="btn-add-crit" id="avAddCrit">+ Adicionar</button></div>'+
-      '<div class="aval-media" id="avMedia">'+(n>0?('Média: '+media.toFixed(1)+' de 5'):'Média: —')+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Observação (opcional)</label><textarea id="avObs" placeholder="Comentários...">'+esc(form.obs)+'</textarea></div>'+
-      '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="avCancel">Cancelar</button><button class="btn btn-primary" id="avSave">'+(editing?'Salvar':'Salvar avaliação')+'</button></div>'+
+      '<div class="aval-media" id="avMedia">'+(n>0?('Média parcial: '+media.toFixed(1)+' de 5'):'Média: —')+'</div>';
+  }
+
+  function step3HTML(){
+    return '<div class="modal-row"><label class="modal-label">Pontos fortes</label><textarea id="avFortes" placeholder="O que a pessoa/loja faz muito bem...">'+esc(form.fortes)+'</textarea></div>'+
+      '<div class="modal-row"><label class="modal-label">Pontos a desenvolver</label><textarea id="avDesenv" placeholder="Onde precisa evoluir...">'+esc(form.desenvolver)+'</textarea></div>'+
+      '<div class="modal-row"><label class="modal-label">Plano de ação / próximos passos (PDI)</label><textarea id="avPlano" placeholder="Ações combinadas, com prazos...">'+esc(form.plano)+'</textarea></div>'+
+      '<div class="modal-row"><label class="modal-label">Observações gerais (opcional)</label><textarea id="avObs" placeholder="Comentários adicionais...">'+esc(form.obs)+'</textarea></div>';
+  }
+
+  function step4HTML(){
+    var clean = critList.filter(function(c){ return (c.label||'').trim()!=='' && c.nota>0; }).map(function(c){ return {id:c.id,label:(c.label||'').trim(),nota:c.nota}; });
+    var media=mediaAtual(); var diag=diagnostico(media);
+    var blocks='';
+    if((form.fortes||'').trim()) blocks+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(form.fortes)+'</p></div>';
+    if((form.desenvolver||'').trim()) blocks+='<div class="asum-block desenv"><h5>Pontos a desenvolver</h5><p>'+esc(form.desenvolver)+'</p></div>';
+    if((form.plano||'').trim()) blocks+='<div class="asum-block plano"><h5>Plano de ação (PDI)</h5><p>'+esc(form.plano)+'</p></div>';
+    return '<div class="aval-sum-head"><div><b>'+esc(alvoLabel())+'</b><i>'+MESES[form.ref_month-1]+' '+form.ref_year+' · avaliado em '+fmtDate(form.data_aval)+'</i></div></div>'+
+      '<div class="aval-summary">'+
+        '<div class="asum-score" style="border-color:'+diag.color+'"><span class="asum-num" style="color:'+diag.color+'">'+media.toFixed(1)+'</span><span class="asum-of">de 5</span></div>'+
+        '<div class="asum-diag">'+diagBadge(media)+'<p>'+diag.rec+'</p></div>'+
+      '</div>'+
+      critBarsHTML(clean)+
+      blocks;
+  }
+
+  function build() {
+    var bodyHTML = step===1?step1HTML():(step===2?step2HTML():(step===3?step3HTML():step4HTML()));
+    var nextLabel = step<4 ? 'Próximo →' : (editing?'Salvar avaliação':'Concluir e salvar');
+    var backBtn = step>1 ? '<button class="btn btn-ghost" id="avBack">← Voltar</button>' : '';
+    var delBtn = (editing && step===1) ? '<button class="btn btn-danger btn-del-wrap" id="avDel">Excluir</button>' : '';
+    return '<div class="modal aval-wizard">'+
+      '<div class="modal-title-input" style="cursor:default">'+(editing?'Editar avaliação':'Nova avaliação')+'</div>'+
+      stepperHTML()+
+      '<div class="aval-body">'+bodyHTML+'</div>'+
+      '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="avCancel">Cancelar</button>'+backBtn+'<button class="btn btn-primary" id="avNext">'+nextLabel+'</button></div>'+
     '</div>';
   }
 
@@ -4277,8 +4509,13 @@ function openAvaliacaoModal(aval) {
   function captura(){
     var l=modal.querySelector('#avLoja'); if(l) curLoja=l.value;
     var m=modal.querySelector('#avMembro'); if(m) curMem=m.value;
-    var p=modal.querySelector('#avPeriodo'); if(p) form.periodo=p.value;
+    var mo=modal.querySelector('#avMonth'); if(mo) form.ref_month=parseInt(mo.value,10)||form.ref_month;
+    var yr=modal.querySelector('#avYear'); if(yr) form.ref_year=parseInt(yr.value,10)||form.ref_year;
+    var dt=modal.querySelector('#avDate'); if(dt) form.data_aval=dt.value||form.data_aval;
     var o=modal.querySelector('#avObs'); if(o) form.obs=o.value;
+    var pf=modal.querySelector('#avFortes'); if(pf) form.fortes=pf.value;
+    var pd=modal.querySelector('#avDesenv'); if(pd) form.desenvolver=pd.value;
+    var pl=modal.querySelector('#avPlano'); if(pl) form.plano=pl.value;
     var nc=modal.querySelector('#avNewCrit'); if(nc) pendingCrit=nc.value;
     var names=modal.querySelectorAll('.aval-crit-name');
     for (var i=0;i<names.length;i++){ var idx=parseInt(names[i].getAttribute('data-cidx'),10); if(critList[idx]) critList[idx].label=names[i].value; }
@@ -4294,9 +4531,11 @@ function openAvaliacaoModal(aval) {
   function rerender(keep){ if(keep) captura(); modal.innerHTML = build(); bindAll(); }
   function bindAll() {
     var tps=modal.querySelectorAll('.av-tp');
-    for (var i=0;i<tps.length;i++) tps[i].addEventListener('click', function(){ captura(); tipo=this.getAttribute('data-tp'); critList=defaultsFor(tipo); pendingCrit=''; rerender(false); });
+    for (var i=0;i<tps.length;i++) tps[i].addEventListener('click', function(){ captura(); tipo=this.getAttribute('data-tp'); critList=defaultsFor(tipo); pendingCrit=''; if(tipo==='membro'){ var mm=membrosDaLoja(curLoja); curMem=mm.length?mm[0].id:null; } rerender(false); });
     var lojaSel=modal.querySelector('#avLoja');
-    if (lojaSel) lojaSel.addEventListener('change', function(){ captura(); curMem=null; rerender(false); });
+    if (lojaSel) lojaSel.addEventListener('change', function(){ captura(); var mm=membrosDaLoja(curLoja); curMem=(tipo==='membro'&&mm.length)?mm[0].id:null; rerender(false); });
+    var memSel=modal.querySelector('#avMembro');
+    if (memSel) memSel.addEventListener('change', function(){ curMem=this.value; });
     var stars=modal.querySelectorAll('.star-pick');
     for (var s=0;s<stars.length;s++) stars[s].addEventListener('click', function(){ captura(); var idx=parseInt(this.getAttribute('data-cidx'),10); if(critList[idx]) critList[idx].nota=parseInt(this.getAttribute('data-val'),10); rerender(false); });
     var ups=modal.querySelectorAll('[data-mvup]');
@@ -4310,13 +4549,17 @@ function openAvaliacaoModal(aval) {
     var rms=modal.querySelectorAll('[data-rmcrit]');
     for (var r=0;r<rms.length;r++) rms[r].addEventListener('click', function(){ captura(); var idx=parseInt(this.getAttribute('data-rmcrit'),10); critList.splice(idx,1); rerender(false); });
     var cancel=modal.querySelector('#avCancel'); if(cancel) cancel.addEventListener('click', close);
-    var save=modal.querySelector('#avSave'); if(save) save.addEventListener('click', salvar);
+    var back=modal.querySelector('#avBack'); if(back) back.addEventListener('click', function(){ captura(); if(step>1) step--; rerender(false); });
+    var nextB=modal.querySelector('#avNext'); if(nextB) nextB.addEventListener('click', next);
     var del=modal.querySelector('#avDel'); if(del) del.addEventListener('click', excluir);
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
-  function alvoLabel(){
-    if (tipo==='membro'){ var mm=null; for(var i=0;i<ST.members.length;i++) if(ST.members[i].id===curMem){mm=ST.members[i];break;} return mm?mm.name:'Funcionário'; }
-    return storeName(curLoja)||'Loja';
+  function next(){
+    captura();
+    if(step===1){ if(!editing && tipo==='membro' && !curMem){ toast('Selecione um funcionário','error'); return; } step=2; rerender(false); return; }
+    if(step===2){ var hasNota=critList.some(function(c){return c.nota>0;}); if(!hasNota){ toast('Dê nota a pelo menos um critério','error'); return; } step=3; rerender(false); return; }
+    if(step===3){ step=4; rerender(false); return; }
+    salvar();
   }
   function excluir(){
     if(!confirm('Excluir esta avaliação?')) return;
@@ -4329,30 +4572,83 @@ function openAvaliacaoModal(aval) {
   function salvar() {
     captura();
     var memberId = (tipo==='membro') ? curMem : null;
-    if (tipo==='membro' && !memberId) { toast('Selecione um funcionário','error'); return; }
+    if (tipo==='membro' && !memberId) { step=1; rerender(false); toast('Selecione um funcionário','error'); return; }
     var clean = critList.filter(function(c){ return (c.label||'').trim()!==''; });
     var soma=0,n=0; clean.forEach(function(c){ if(c.nota>0){ soma+=c.nota; n++; } });
-    if (n===0) { toast('Dê nota a pelo menos um critério','error'); return; }
+    if (n===0) { step=2; rerender(false); toast('Dê nota a pelo menos um critério','error'); return; }
     var media=soma/n;
     var notasToSave = clean.map(function(c){ return { id:c.id, label:(c.label||'').trim(), nota:c.nota||0 }; });
-    var rec={ sector:'lojas', tipo:tipo, store_unit_id:curLoja, member_id:memberId, periodo_label:(form.periodo||'').trim()||null, data_avaliacao: editing?(aval.data_avaliacao||today()):today(), notas:notasToSave, nota_final:Math.round(media*10)/10, observacao:(form.obs||'').trim()||null, created_by: editing?(aval.created_by||ST.session.user.id):ST.session.user.id };
-    var saveBtn=modal.querySelector('#avSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
-    if (editing) {
-      sb.from('malba_avaliacoes').update(rec).eq('id', aval.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
-        for (var i=0;i<ST.avaliacoes.length;i++) if (ST.avaliacoes[i].id===aval.id) { ST.avaliacoes[i]=Object.assign(ST.avaliacoes[i],rec); break; }
-        auditLog('Editou avaliação', alvoLabel()); close(); toast('Avaliação atualizada','success'); renderPage();
-      });
-    } else {
-      sb.from('malba_avaliacoes').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao salvar avaliação','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar avaliação'; return; }
-        ST.avaliacoes.unshift(r.data); auditLog('Criou avaliação', alvoLabel()); close(); toast('Avaliação salva','success'); renderPage();
-      });
+    var lastDay=new Date(form.ref_year, form.ref_month, 0).getDate();
+    var mm2=(form.ref_month<10?'0':'')+form.ref_month;
+    var pIni = form.ref_year+'-'+mm2+'-01';
+    var pFim = form.ref_year+'-'+mm2+'-'+(lastDay<10?'0':'')+lastDay;
+    var pLabel = MESES[form.ref_month-1]+' '+form.ref_year;
+    var base={ sector:'lojas', tipo:tipo, store_unit_id:curLoja, member_id:memberId, periodo_label:pLabel, data_avaliacao:form.data_aval||today(), notas:notasToSave, nota_final:Math.round(media*10)/10, observacao:(form.obs||'').trim()||null, created_by: editing?(aval.created_by||ST.session.user.id):ST.session.user.id };
+    var full=Object.assign({}, base, { periodo_inicio:pIni, periodo_fim:pFim, pontos_fortes:(form.fortes||'').trim()||null, pontos_desenvolver:(form.desenvolver||'').trim()||null, plano_acao:(form.plano||'').trim()||null });
+    var btn=modal.querySelector('#avNext'); if(btn){ btn.disabled=true; btn.textContent='Salvando...'; }
+    function done(row){
+      if(editing){ for(var i=0;i<ST.avaliacoes.length;i++) if(ST.avaliacoes[i].id===aval.id){ ST.avaliacoes[i]=Object.assign(ST.avaliacoes[i], row); break; } }
+      else if(row){ ST.avaliacoes.unshift(row); }
+      auditLog(editing?'Editou avaliação':'Criou avaliação', alvoLabel()); close(); toast(editing?'Avaliação atualizada':'Avaliação salva','success'); renderPage();
     }
+    function fail(err){ if(btn){ btn.disabled=false; btn.textContent=(editing?'Salvar avaliação':'Concluir e salvar'); } toast('Erro ao salvar','error'); console.error(err); }
+    function tryWith(rec, isRetry){
+      if(editing){
+        sb.from('malba_avaliacoes').update(rec).eq('id', aval.id).then(function(r){
+          if(r.error){ if(!isRetry){ toast('Salvando sem os campos novos (rode o SQL de avaliação).','info'); tryWith(base, true); } else fail(r.error); return; }
+          done(rec);
+        });
+      } else {
+        sb.from('malba_avaliacoes').insert(rec).select().single().then(function(r){
+          if(r.error||!r.data){ if(!isRetry){ tryWith(base, true); } else fail(r.error||{}); return; }
+          done(r.data);
+        });
+      }
+    }
+    tryWith(full, false);
   }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   document.body.appendChild(modal);
   rerender(false);
+}
+
+function avaliacaoDetalhe(a){
+  if(!a) return;
+  var alvo = a.tipo==='membro' ? (function(){ var mm=null; for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(a.member_id)){mm=ST.members[i];break;} return mm?mm.name:'Funcionário'; })() : (storeName(a.store_unit_id)||'Loja');
+  var nota=Number(a.nota_final)||0; var diag=diagnostico(nota);
+  var by=null; for(var i=0;i<ST.users.length;i++) if(String(ST.users[i].id)===String(a.created_by)){by=ST.users[i];break;}
+  var notasArr = Array.isArray(a.notas) ? a.notas : (a.notas && typeof a.notas==='object' ? Object.keys(a.notas).filter(function(k){return k!=='_labels';}).map(function(k){ var lbl=(a.notas._labels&&a.notas._labels[k])||k; return {id:k,label:lbl,nota:Number(a.notas[k])||0}; }) : []);
+  var blocks='';
+  if(a.pontos_fortes) blocks+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(a.pontos_fortes)+'</p></div>';
+  if(a.pontos_desenvolver) blocks+='<div class="asum-block desenv"><h5>Pontos a desenvolver</h5><p>'+esc(a.pontos_desenvolver)+'</p></div>';
+  if(a.plano_acao) blocks+='<div class="asum-block plano"><h5>Plano de ação (PDI)</h5><p>'+esc(a.plano_acao)+'</p></div>';
+  if(a.observacao) blocks+='<div class="asum-block"><h5>Observações</h5><p>'+esc(a.observacao)+'</p></div>';
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  modal.innerHTML='<div class="modal aval-wizard">'+
+    '<div class="modal-title-input" style="cursor:default">Avaliação · '+esc(alvo)+'</div>'+
+    '<div class="aval-det-meta"><span class="aval-tipo" style="background:'+(a.tipo==='membro'?'var(--u-accent-soft)':'var(--u-green-soft)')+';color:'+(a.tipo==='membro'?'var(--u-accent)':'var(--u-green)')+'">'+(a.tipo==='membro'?'Funcionário':'Loja')+'</span><span>'+(a.periodo_label?esc(a.periodo_label)+' · ':'')+'avaliado em '+fmtDate(a.data_avaliacao)+'</span>'+(by?'<span>· por '+esc(by.name)+'</span>':'')+'</div>'+
+    '<div class="aval-summary">'+
+      '<div class="asum-score" style="border-color:'+diag.color+'"><span class="asum-num" style="color:'+diag.color+'">'+nota.toFixed(1)+'</span><span class="asum-of">de 5</span></div>'+
+      '<div class="asum-diag">'+diagBadge(nota)+'<p>'+diag.rec+'</p></div>'+
+    '</div>'+
+    critBarsHTML(notasArr)+
+    blocks+
+    (a.tipo==='membro' ? (function(){ var evo=avalEvolucaoRender(avalsDoMembro(a.member_id)); return evo?('<div class="aval-evo-sec"><h5 class="aval-evo-h">Evolução mês a mês</h5>'+evo+'</div>'):''; })() : '')+
+    '<div class="modal-foot"><button class="btn btn-danger btn-del-wrap" id="adDel">Excluir</button><button class="btn btn-ghost" id="adClose">Fechar</button>'+(canManage()?'<button class="btn btn-primary" id="adEdit">Editar</button>':'')+'</div>'+
+  '</div>';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  modal.querySelector('#adClose').addEventListener('click', close);
+  var ed=modal.querySelector('#adEdit'); if(ed) ed.addEventListener('click', function(){ close(); openAvaliacaoModal(a); });
+  modal.querySelector('#adDel').addEventListener('click', function(){
+    if(!confirm('Excluir esta avaliação?')) return;
+    sb.from('malba_avaliacoes').delete().eq('id',a.id).then(function(r){
+      if(r.error){ toast('Erro ao excluir','error'); return; }
+      ST.avaliacoes=ST.avaliacoes.filter(function(x){return x.id!==a.id;});
+      auditLog('Excluiu avaliação', alvo); close(); toast('Avaliação excluída','success'); renderPage();
+    });
+  });
+  document.body.appendChild(modal);
 }
 
 function bindGestao() {
@@ -4371,7 +4667,7 @@ function bindGestao() {
   for (var y=0;y<arows.length;y++) arows[y].addEventListener('click', function(){
     var id=this.getAttribute('data-aid'); var a=null;
     for (var x=0;x<ST.avaliacoes.length;x++) if (String(ST.avaliacoes[x].id)===String(id)) { a=ST.avaliacoes[x]; break; }
-    if (a) openAvaliacaoModal(a);
+    if (a) avaliacaoDetalhe(a);
   });
   if ((ST.gestaoTab||'')==='atividade') loadAtividade();
   // Visão geral: filtro de loja + drill
@@ -4560,7 +4856,22 @@ function perfilDesempenhoHTML(){
   var coms=[];
   (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
   var comHTML = coms.length ? coms.slice(0,8).map(function(c){ return '<div class="me-com"><span class="me-com-l">'+esc(c.label||'Período')+(c.loja?' · '+esc(c.loja):'')+'</span><span class="me-com-v">'+fmtBRL(c.valor)+'</span></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
-  return '<div class="profile-card"><h3 class="profile-sec-h">Minhas avaliações</h3><div class="me-avals">'+avalHTML+'</div></div>'+
+  var latest = avals.length ? avals[0] : null;
+  var diagCard='';
+  if(latest){
+    var lnota=Number(latest.nota_final)||0; var ld=diagnostico(lnota);
+    var lArr = Array.isArray(latest.notas)?latest.notas:(latest.notas&&typeof latest.notas==='object'?Object.keys(latest.notas).filter(function(k){return k!=='_labels';}).map(function(k){var lb=(latest.notas._labels&&latest.notas._labels[k])||k;return {id:k,label:lb,nota:Number(latest.notas[k])||0};}):[]);
+    var fb='';
+    if(latest.pontos_fortes) fb+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(latest.pontos_fortes)+'</p></div>';
+    if(latest.pontos_desenvolver) fb+='<div class="asum-block desenv"><h5>A desenvolver</h5><p>'+esc(latest.pontos_desenvolver)+'</p></div>';
+    if(latest.plano_acao) fb+='<div class="asum-block plano"><h5>Plano de ação</h5><p>'+esc(latest.plano_acao)+'</p></div>';
+    diagCard='<div class="profile-card"><h3 class="profile-sec-h">Meu diagnóstico · '+(latest.periodo_label?esc(latest.periodo_label):fmtDate(latest.data_avaliacao))+'</h3>'+
+      '<div class="aval-summary"><div class="asum-score" style="border-color:'+ld.color+'"><span class="asum-num" style="color:'+ld.color+'">'+lnota.toFixed(1)+'</span><span class="asum-of">de 5</span></div><div class="asum-diag">'+diagBadge(lnota)+'<p>'+ld.rec+'</p></div></div>'+
+      critBarsHTML(lArr)+fb+'</div>';
+  }
+  var evoColab = avalEvolucaoRender(avals);
+  var evoCard = evoColab ? ('<div class="profile-card"><h3 class="profile-sec-h">Minha evolução</h3>'+evoColab+'</div>') : '';
+  return diagCard+evoCard+'<div class="profile-card"><h3 class="profile-sec-h">Minhas avaliações</h3><div class="me-avals">'+avalHTML+'</div></div>'+
          '<div class="profile-card"><h3 class="profile-sec-h">Minhas comissões</h3><div class="me-coms">'+comHTML+'</div></div>';
 }
 function perfilHTML() {
