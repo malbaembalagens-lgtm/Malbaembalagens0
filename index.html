@@ -1479,7 +1479,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v57 · 21/06 (Correção: login e sessão agora carregam as permissões)';
+var APP_BUILD = 'v58 · 21/06 (Correção: permissões persistem na navegação)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1596,6 +1596,8 @@ function permsHas(pgId, s){ return permLevel(pgId, s) !== 'none'; }        // po
 function canEdit(){ if(canManage()) return true; return permLevel(ST.page)==='fazer'; } // pode executar na página atual
 // páginas que o admin pode conceder a um colaborador (exclui início e as de administração)
 function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
+// mantém perms/nível do usuário logado atualizados a partir da lista de usuários já carregada
+function syncSessionPerms(){ if(!ST.session||!ST.session.user||!ST.allUsers||!ST.allUsers.length) return; for(var i=0;i<ST.allUsers.length;i++){ if(String(ST.allUsers[i].id)===String(ST.session.user.id)){ ST.session.user.perms=ST.allUsers[i].perms||{}; ST.session.user.access_level=ST.allUsers[i].access_level||ST.session.user.access_level; try{ saveSession(ST.session); }catch(e){} break; } } }
 // grava as permissões; avisa se a coluna 'perms' ainda não existir no banco
 function savePerms(id, map){ return sb.from('malba_users').update({ perms: map||{} }).eq('id', id).then(function(rr){
   if(rr.error){ var m=(rr.error.message||'').toLowerCase(); console.error('savePerms:', rr.error);
@@ -1704,8 +1706,7 @@ function loadData() {
     ST.tasks      = (r[1]&&r[1].data) || [];
     var allUsers  = (r[2]&&r[2].data) || [];
     ST.allUsers = allUsers;
-    // mantém o perms/nível do usuário logado sempre atualizado (sem precisar deslogar)
-    if (ST.session && ST.session.user) { for (var _u=0;_u<allUsers.length;_u++){ if (String(allUsers[_u].id)===String(ST.session.user.id)) { ST.session.user.perms = allUsers[_u].perms || {}; ST.session.user.access_level = allUsers[_u].access_level || ST.session.user.access_level; break; } } }
+    syncSessionPerms(); // mantém o perms do usuário logado atualizado
     ST.users = allUsers.filter(function(u){ return u.sector===sector || u.role==='admin'; });
     ST.members    = (r[3]&&r[3].data) || [];
     ST.goals      = ((r[4]&&r[4].data) || []).filter(function(g){ return g.sector===sector; });
@@ -6866,7 +6867,7 @@ function boot() {
   var route=currentRoute();
   ST.page = (route.length>=2) ? route[1] : 'inicio';
   if (!ST.loaded) { render('<div class="screen"><div class="spinner"></div></div>'); loadData().then(function(){ renderPage(); flushBlingMsg(); }); }
-  else { renderPage(); flushBlingMsg(); }
+  else { syncSessionPerms(); renderPage(); flushBlingMsg(); }
 }
 function flushBlingMsg(){ if (window._blingMsg) { var m=window._blingMsg; window._blingMsg=null; setTimeout(function(){ toast(m[0], m[1]); }, 300); } }
 function init() {
