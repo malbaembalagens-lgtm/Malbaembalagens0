@@ -1255,6 +1255,29 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .mt-adv { margin-top:6px; border-top:1px dashed var(--u-border); padding-top:12px; }
 .mt-adv-h { font-size:11px; font-weight:800; color:var(--u-text3); text-transform:uppercase; letter-spacing:.4px; margin-bottom:9px; }
 @media print { .lr-table th, .lr-table td { border-color:#ddd !important; } .rep-launch, .lr-hint { display:none !important; } }
+/* ===== Produtos mais vendidos por categoria ===== */
+.lp-cats { display:flex; flex-direction:column; gap:16px; }
+.lp-cat-h { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:7px; }
+.lp-cat-h b { font-family:var(--u-font-display); font-size:14px; }
+.lp-cat-h span { font-size:12px; color:var(--u-text3); font-weight:600; }
+.lp-cat-bar { height:7px; background:var(--u-bg2); border-radius:20px; overflow:hidden; margin-bottom:10px; }
+.lp-cat-bar span { display:block; height:100%; background:linear-gradient(90deg,#3B6FF7,#8B5CF6); border-radius:20px; }
+.lp-prods { display:flex; flex-direction:column; gap:6px; }
+.lp-prod { display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--u-bg2); border-radius:9px; font-size:13px; }
+.lp-prod-pos { font-family:var(--u-font-display); font-weight:800; font-size:12px; color:var(--u-text3); width:16px; text-align:center; flex-shrink:0; }
+.lp-prod-nm { flex:1; font-weight:600; }
+.lp-prod-q { font-size:12px; color:var(--u-text3); font-weight:600; flex-shrink:0; }
+.lp-prod b { font-family:var(--u-font-display); flex-shrink:0; min-width:64px; text-align:right; }
+/* gerenciador de produtos */
+.pd-form { background:var(--u-bg2); border-radius:12px; padding:14px; margin-bottom:14px; }
+.pd-form-btns { display:flex; gap:8px; align-items:center; margin-top:4px; }
+.pd-list { display:flex; flex-direction:column; gap:7px; }
+.pd-row { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--u-bg2); border:1px solid transparent; border-radius:10px; cursor:pointer; }
+.pd-row:hover { border-color:var(--u-accent); }
+.pd-row.editing { border-color:var(--u-accent); background:var(--u-accent-soft); }
+.pd-row-main { flex:1; min-width:0; } .pd-row-main b { font-size:13.5px; display:block; } .pd-row-main span { font-size:11.5px; color:var(--u-text3); }
+.pd-del { width:34px; height:34px; border-radius:8px; background:var(--u-red-soft); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.pd-del svg { width:14px; height:14px; color:var(--u-red); }
 @media (max-width:560px){ .perm-row { flex-direction:column; align-items:stretch; gap:8px; } .perm-seg { width:100%; } .perm-seg button { flex:1; } }
 @media (max-width: 700px){ .rep-kpis { grid-template-columns:repeat(2,1fr); } .rep-grid2 { grid-template-columns:1fr; } }
 @media print {
@@ -1563,7 +1586,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v61 · 21/06 (Lojas: relatório de indicadores + comparativo entre lojas)';
+var APP_BUILD = 'v62 · 21/06 (Relatório de Lojas: produtos mais vendidos por categoria)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1757,7 +1780,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -1841,6 +1864,8 @@ function loadData() {
     try { sb.from('malba_caixa').select('*').order('work_date', { ascending:false }).then(function(re){ if(!re.error && re.data){ ST.caixas=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
     ST.lojaMetricas = [];
     try { sb.from('malba_loja_metricas').select('*').then(function(re){ if(!re.error && re.data){ ST.lojaMetricas=re.data; if(ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
+    ST.lojaProdutos = [];
+    try { sb.from('malba_loja_produtos').select('*').then(function(re){ if(!re.error && re.data){ ST.lojaProdutos=re.data; if(ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
   }).catch(function(e){ console.error('[load]', e); ST.loaded = true; });
 }
 
@@ -4044,7 +4069,7 @@ function lojaReportSingle(sid, m, y){
   // ranking vendedores da loja
   var mems=(ST.members||[]).filter(function(x){ return x.is_active!==false && String(x.store_unit_id)===String(sid); }).map(function(x){ return { m:x, v:vendasMembroMesAno(x, m, y) }; }).filter(function(x){ return x.v>0; }).sort(function(a,b){ return b.v-a.v; }).slice(0,5);
   var rankSec = mems.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('users')+'<h3>Ranking de vendedores</h3></div><div class="lr-rank">'+mems.map(function(x,i){ return '<div class="lr-rank-row"><span class="lr-rank-pos">'+(i+1)+'º</span><span class="lr-rank-av" style="background:'+(x.m.color||'#3B6FF7')+'">'+esc(iniciais(x.m.name))+'</span><span class="lr-rank-nm">'+esc(x.m.name)+'</span><b>'+brlShort(x.v)+'</b></div>'; }).join('')+'</div></div>') : '';
-  return kpis + fatSec + '<div class="rep-grid2">'+metaSec+volSec+'</div>' + rankSec;
+  return kpis + fatSec + '<div class="rep-grid2">'+metaSec+volSec+'</div>' + produtoSecHTML(sid, m, y) + rankSec;
 }
 function lojaReportConsolidado(lojas, m, y){
   var pm=(m===1?12:m-1), py=(m===1?y-1:y);
@@ -4072,6 +4097,7 @@ function bindRelatorioLojas(){
   var pr=document.getElementById('lrPrint'); if(pr) pr.addEventListener('click', function(){ window.print(); });
   var r=lrMesRef();
   var lc=document.getElementById('lrLancar'); if(lc) lc.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openMetricasModal(sid, r.m, r.y); });
+  var lp=document.getElementById('lrProdutos'); if(lp) lp.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openProdutosModal(sid, r.m, r.y); });
   var trs=app.querySelectorAll('[data-lrstore]'); if(canManage()) for(var i=0;i<trs.length;i++) trs[i].addEventListener('click', function(){ openMetricasModal(this.getAttribute('data-lrstore'), r.m, r.y); });
 }
 function openMetricasModal(storeId, m, y){
@@ -4103,6 +4129,56 @@ function openMetricasModal(storeId, m, y){
     else { sb.from('malba_loja_metricas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de indicadores).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } ST.lojaMetricas.push(r.data); auditLog('Lançou indicadores', storeName(storeId)); close(); toast('Indicadores salvos','success'); renderPage(); }); }
   });
   document.body.appendChild(modal); modal.querySelector('#mtItens').focus();
+}
+
+/* ----- Produtos mais vendidos por categoria (relatório de lojas) ----- */
+function produtosLoja(storeId, m, y){ return (ST.lojaProdutos||[]).filter(function(x){ return String(x.store_unit_id)===String(storeId) && x.month===m && x.year===y; }); }
+function categoriasUsadas(){ var seen={}; (ST.lojaProdutos||[]).forEach(function(x){ var c=(x.categoria||'').trim(); if(c) seen[c]=1; }); return Object.keys(seen).sort(); }
+function produtoSecHTML(sid, m, y){
+  var manageBtn = canManage() ? '<button class="rep-launch" id="lrProdutos">'+icon('plus')+'Gerenciar produtos</button>' : '';
+  var prods = produtosLoja(sid, m, y);
+  if(!prods.length) return '<div class="rep-card"><div class="rep-card-h">'+icon('grid')+'<h3>Produtos mais vendidos por categoria</h3>'+manageBtn+'</div><div class="dash-empty">Nenhum produto lançado neste mês.'+(canManage()?' Use "Gerenciar produtos".':'')+'</div></div>';
+  var byCat={}; prods.forEach(function(p){ var c=p.categoria||'Sem categoria'; (byCat[c]=byCat[c]||{itens:[],fat:0,qtd:0}); byCat[c].itens.push(p); byCat[c].fat+=Number(p.faturamento)||0; byCat[c].qtd+=Number(p.quantidade)||0; });
+  var cats=Object.keys(byCat).sort(function(a,b){ return byCat[b].fat-byCat[a].fat; });
+  var maxFat=Math.max.apply(null,cats.map(function(c){return byCat[c].fat;}).concat([1]));
+  var blocks=cats.map(function(c){ var g=byCat[c]; var items=g.itens.slice().sort(function(a,b){ return (Number(b.quantidade)||0)-(Number(a.quantidade)||0); }).slice(0,6); var pct=Math.round(g.fat/maxFat*100); var rows=items.map(function(p,i){ return '<div class="lp-prod"><span class="lp-prod-pos">'+(i+1)+'</span><span class="lp-prod-nm">'+esc(p.produto)+'</span><span class="lp-prod-q">'+fmtNumBR(p.quantidade)+' un</span><b>'+brlShort(p.faturamento)+'</b></div>'; }).join(''); return '<div class="lp-cat"><div class="lp-cat-h"><b>'+esc(c)+'</b><span>'+fmtNumBR(g.qtd)+' un · '+brlShort(g.fat)+'</span></div><div class="lp-cat-bar"><span style="width:'+pct+'%"></span></div><div class="lp-prods">'+rows+'</div></div>'; }).join('');
+  return '<div class="rep-card"><div class="rep-card-h">'+icon('grid')+'<h3>Produtos mais vendidos por categoria</h3>'+manageBtn+'</div><div class="lp-cats">'+blocks+'</div></div>';
+}
+function openProdutosModal(storeId, m, y){
+  if(!canManage()){ blockManage(); return; }
+  var modal=document.createElement('div'); modal.className='modal-bg'; var editing=null;
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  function draw(){
+    var prods=produtosLoja(storeId,m,y).slice().sort(function(a,b){ return (Number(b.quantidade)||0)-(Number(a.quantidade)||0); });
+    var cats=categoriasUsadas(); var datalist='<datalist id="prodCats">'+cats.map(function(c){return '<option value="'+esc(c)+'">';}).join('')+'</datalist>';
+    var list = prods.length ? prods.map(function(p){ return '<div class="pd-row'+(editing&&String(editing.id)===String(p.id)?' editing':'')+'" data-editprod="'+esc(p.id)+'"><div class="pd-row-main"><b>'+esc(p.produto)+'</b><span>'+esc(p.categoria||'—')+' · '+fmtNumBR(p.quantidade)+' un · '+brlShort(p.faturamento)+'</span></div><button class="pd-del" data-delprod="'+esc(p.id)+'" title="Remover">'+icon('logout')+'</button></div>'; }).join('') : '<div class="col-empty">Nenhum produto ainda.</div>';
+    var f = editing || { produto:'', categoria:'', quantidade:'', faturamento:'' };
+    modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Produtos · '+esc(storeName(storeId)||'Loja')+'</div><div class="modal-note">'+MESES[m-1]+' '+y+' · lance os itens mais vendidos (do seu relatório do Bling).</div>'+
+      '<div class="pd-form"><div class="modal-grid2"><div class="modal-row"><label class="modal-label">Produto</label><input type="text" id="pdNome" value="'+esc(f.produto||'')+'" placeholder="ex: Sacola kraft M"></div><div class="modal-row"><label class="modal-label">Categoria</label><input type="text" id="pdCat" list="prodCats" value="'+esc(f.categoria||'')+'" placeholder="ex: Sacolas"></div></div>'+datalist+
+      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Quantidade</label><input type="text" id="pdQtd" inputmode="numeric" value="'+esc(f.quantidade!==''&&f.quantidade!=null?f.quantidade:'')+'" placeholder="0"></div><div class="modal-row"><label class="modal-label">Faturamento (R$)</label><input type="text" id="pdFat" inputmode="decimal" value="'+esc(f.faturamento!==''&&f.faturamento!=null?f.faturamento:'')+'" placeholder="0,00"></div></div>'+
+      '<div class="pd-form-btns"><button class="btn btn-primary" id="pdSave">'+(editing?'Salvar':'Adicionar produto')+'</button>'+(editing?'<button class="btn btn-ghost" id="pdCancelEdit">Cancelar edição</button>':'')+'</div></div>'+
+      '<div class="pd-list">'+list+'</div>'+
+      '<div class="modal-foot"><button class="btn btn-ghost" id="pdClose">Concluído</button></div>'+
+    '</div>';
+    bind();
+  }
+  function bind(){
+    modal.querySelector('#pdClose').addEventListener('click', close);
+    modal.querySelector('#pdSave').addEventListener('click', save);
+    var ce=modal.querySelector('#pdCancelEdit'); if(ce) ce.addEventListener('click', function(){ editing=null; draw(); });
+    var eds=modal.querySelectorAll('[data-editprod]'); for(var i=0;i<eds.length;i++) eds[i].addEventListener('click', function(e){ if(e.target.closest('[data-delprod]')) return; var id=this.getAttribute('data-editprod'); for(var k=0;k<ST.lojaProdutos.length;k++) if(String(ST.lojaProdutos[k].id)===String(id)){ editing=ST.lojaProdutos[k]; break; } draw(); });
+    var dels=modal.querySelectorAll('[data-delprod]'); for(var d=0;d<dels.length;d++) dels[d].addEventListener('click', function(e){ e.stopPropagation(); var id=this.getAttribute('data-delprod'); sb.from('malba_loja_produtos').delete().eq('id',id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.lojaProdutos=ST.lojaProdutos.filter(function(x){return String(x.id)!==String(id);}); if(editing&&String(editing.id)===String(id)) editing=null; draw(); renderPage(); }); });
+  }
+  function save(){
+    var nome=(modal.querySelector('#pdNome').value||'').trim(); if(!nome){ toast('Informe o produto','error'); return; }
+    var num=function(id){ var v=(modal.querySelector(id).value||'').replace(/\./g,'').replace(',','.').replace(/[^0-9.]/g,''); return v?Number(v):0; };
+    var rec={ store_unit_id:storeId, month:m, year:y, produto:nome, categoria:(modal.querySelector('#pdCat').value||'').trim()||'Sem categoria', quantidade:num('#pdQtd'), faturamento:_parseBRL(modal.querySelector('#pdFat').value) };
+    var btn=modal.querySelector('#pdSave'); btn.disabled=true; btn.textContent='Salvando...';
+    if(editing){ sb.from('malba_loja_produtos').update(rec).eq('id',editing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; return; } for(var i=0;i<ST.lojaProdutos.length;i++) if(String(ST.lojaProdutos[i].id)===String(editing.id)) ST.lojaProdutos[i]=Object.assign(ST.lojaProdutos[i],rec); editing=null; draw(); renderPage(); }); }
+    else { sb.from('malba_loja_produtos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de produtos).','error'); console.error(r.error); btn.disabled=false; return; } ST.lojaProdutos.push(r.data); draw(); renderPage(); }); }
+  }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  document.body.appendChild(modal); draw();
 }
 
 function goalCardHTML(g) {
