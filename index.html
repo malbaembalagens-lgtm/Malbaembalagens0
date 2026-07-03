@@ -1236,6 +1236,9 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 /* ===== Relatório de Lojas ===== */
 .rep-launch { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:5px 11px; cursor:pointer; margin-left:auto; }
 .rep-launch svg { width:13px; height:13px; } .rep-launch:hover { background:var(--u-accent); color:#fff; }
+.rep-card-btns { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+.rep-card-btns .rep-launch { margin-left:0; }
+.rep-launch.alt { color:var(--u-text2); background:var(--u-bg2); } .rep-launch.alt:hover { background:var(--u-border); color:var(--u-text); }
 .lr-table-wrap { overflow-x:auto; }
 .lr-table { width:100%; border-collapse:collapse; font-size:13px; }
 .lr-table th { text-align:right; font-size:11px; font-weight:800; color:var(--u-text3); text-transform:uppercase; letter-spacing:.4px; padding:8px 10px; border-bottom:2px solid var(--u-border); white-space:nowrap; }
@@ -1586,7 +1589,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v62 · 21/06 (Relatório de Lojas: produtos mais vendidos por categoria)';
+var APP_BUILD = 'v63 · 21/06 (Relatório de Lojas: importar produtos do Bling)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -4098,6 +4101,19 @@ function bindRelatorioLojas(){
   var r=lrMesRef();
   var lc=document.getElementById('lrLancar'); if(lc) lc.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openMetricasModal(sid, r.m, r.y); });
   var lp=document.getElementById('lrProdutos'); if(lp) lp.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openProdutosModal(sid, r.m, r.y); });
+  var ip=document.getElementById('lrImportProd'); if(ip) ip.addEventListener('click', function(){
+    var sid=ST.store?ST.store.id:ST.lrStore; if(!sid){ toast('Selecione uma loja','error'); return; }
+    var btn=this, old=btn.innerHTML; btn.disabled=true; btn.textContent='Importando...';
+    toast('Buscando produtos no Bling... pode levar 1-2 min','success');
+    fetch(SUPABASE_URL+'/functions/v1/bling-produtos', { method:'POST', headers:{ 'Authorization':'Bearer '+SUPABASE_ANON_KEY, 'apikey':SUPABASE_ANON_KEY, 'Content-Type':'application/json' }, body:JSON.stringify({ store_unit_id:sid, month:r.m, year:r.y }) })
+      .then(function(res){ return res.json().catch(function(){ return { httpStatus:res.status }; }); })
+      .then(function(d){ btn.disabled=false; btn.innerHTML=old; console.log('[bling-produtos]', d);
+        if(!d||d.ok!==true){ toast('Importação: '+((d&&(d.message||d.error))||('falha HTTP '+(d&&d.httpStatus||''))),'error'); return; }
+        var r0=(d.results||[])[0]||{}; if(r0.erro){ toast('Bling: '+r0.erro,'error'); return; }
+        toast('Importados '+(r0.produtos||0)+' produto(s) de '+(r0.pedidos||0)+' pedido(s)'+(r0.parcial?' — parcial (muitos pedidos), rode de novo':'')+'!','success');
+        loadData().then(function(){ renderPage(); });
+      }).catch(function(e){ btn.disabled=false; btn.innerHTML=old; console.error(e); toast('Erro ao importar: '+e.message,'error'); });
+  });
   var trs=app.querySelectorAll('[data-lrstore]'); if(canManage()) for(var i=0;i<trs.length;i++) trs[i].addEventListener('click', function(){ openMetricasModal(this.getAttribute('data-lrstore'), r.m, r.y); });
 }
 function openMetricasModal(storeId, m, y){
@@ -4135,7 +4151,7 @@ function openMetricasModal(storeId, m, y){
 function produtosLoja(storeId, m, y){ return (ST.lojaProdutos||[]).filter(function(x){ return String(x.store_unit_id)===String(storeId) && x.month===m && x.year===y; }); }
 function categoriasUsadas(){ var seen={}; (ST.lojaProdutos||[]).forEach(function(x){ var c=(x.categoria||'').trim(); if(c) seen[c]=1; }); return Object.keys(seen).sort(); }
 function produtoSecHTML(sid, m, y){
-  var manageBtn = canManage() ? '<button class="rep-launch" id="lrProdutos">'+icon('plus')+'Gerenciar produtos</button>' : '';
+  var manageBtn = canManage() ? ('<div class="rep-card-btns"><button class="rep-launch" id="lrImportProd">'+icon('trend')+'Importar do Bling</button><button class="rep-launch alt" id="lrProdutos">'+icon('plus')+'Gerenciar</button></div>') : '';
   var prods = produtosLoja(sid, m, y);
   if(!prods.length) return '<div class="rep-card"><div class="rep-card-h">'+icon('grid')+'<h3>Produtos mais vendidos por categoria</h3>'+manageBtn+'</div><div class="dash-empty">Nenhum produto lançado neste mês.'+(canManage()?' Use "Gerenciar produtos".':'')+'</div></div>';
   var byCat={}; prods.forEach(function(p){ var c=p.categoria||'Sem categoria'; (byCat[c]=byCat[c]||{itens:[],fat:0,qtd:0}); byCat[c].itens.push(p); byCat[c].fat+=Number(p.faturamento)||0; byCat[c].qtd+=Number(p.quantidade)||0; });
