@@ -1171,6 +1171,90 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .perm-seg button.on.ver { color:var(--u-accent); }
 .perm-seg button.on.fazer { color:#16A34A; }
 .perm-note-hier { font-size:12.5px; color:var(--u-text3); background:var(--u-bg2); border-radius:10px; padding:12px 14px; line-height:1.5; }
+/* ===== Rotina do dia (checklist) ===== */
+.rot-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+.rot-head-l { display:flex; align-items:center; gap:11px; }
+.rot-head-l svg { width:20px; height:20px; color:var(--u-accent); }
+.rot-head-l b { font-family:var(--u-font-display); font-size:17px; display:block; }
+.rot-head-l i { font-style:normal; font-size:12.5px; color:var(--u-text3); text-transform:capitalize; }
+.rot-edit { display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:10px; padding:8px 14px; cursor:pointer; }
+.rot-edit svg { width:15px; height:15px; } .rot-edit:hover { background:var(--u-accent); color:#fff; }
+.rot-blocks { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.rot-block { background:var(--u-card); border:1px solid var(--u-border); border-radius:16px; padding:16px 18px; box-shadow:var(--u-shadow); }
+.rot-block-h { display:flex; align-items:center; gap:9px; margin-bottom:12px; }
+.rot-block-h svg { width:18px; height:18px; color:var(--u-text3); }
+.rot-block-h b { font-family:var(--u-font-display); font-size:15px; flex:1; }
+.rot-prog { font-size:12px; font-weight:800; color:var(--u-text3); background:var(--u-bg2); border-radius:20px; padding:2px 10px; }
+.rot-prog.full { color:#16A34A; background:var(--u-green-soft); }
+.rot-bar { height:6px; background:var(--u-bg2); border-radius:20px; overflow:hidden; margin-bottom:12px; }
+.rot-bar span { display:block; height:100%; background:var(--u-green); border-radius:20px; transition:width .3s; }
+.rot-items { display:flex; flex-direction:column; gap:8px; }
+.rot-item { display:flex; align-items:center; gap:11px; width:100%; text-align:left; background:var(--u-bg2); border:1px solid transparent; border-radius:11px; padding:11px 13px; cursor:pointer; transition:.12s; }
+.rot-item:hover { border-color:var(--u-border2); }
+.rot-item.done { background:var(--u-green-soft); }
+.rot-box { width:22px; height:22px; border-radius:7px; border:2px solid var(--u-border2); background:var(--u-card); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.rot-box svg { width:14px; height:14px; color:#fff; }
+.rot-item.done .rot-box { background:var(--u-green); border-color:var(--u-green); }
+.rot-label { flex:1; font-size:13.5px; font-weight:600; color:var(--u-text); }
+.rot-item.done .rot-label { color:var(--u-text2); }
+.rot-who { font-size:11px; color:#16A34A; font-weight:700; flex-shrink:0; }
+/* editor da rotina */
+.rc-block { margin-bottom:16px; }
+.rc-block-h { display:flex; align-items:center; gap:8px; font-family:var(--u-font-display); font-size:14px; font-weight:700; margin-bottom:9px; }
+.rc-block-h svg { width:16px; height:16px; color:var(--u-text3); }
+.rc-items { display:flex; flex-direction:column; gap:7px; margin-bottom:9px; }
+.rc-item { display:flex; align-items:center; gap:8px; }
+.rc-input { flex:1; }
+.rc-del { width:38px; height:38px; border-radius:9px; background:var(--u-red-soft); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.rc-del svg { width:15px; height:15px; color:var(--u-red); }
+.rc-add { display:flex; gap:8px; }
+.rc-new { flex:1; }
+.rc-addbtn { flex-shrink:0; }
+@media (max-width: 700px){ .rot-blocks { grid-template-columns:1fr; } }
+/* ===== Fechamento de caixa ===== */
+.caixa-card { background:var(--u-card); border:1px solid var(--u-border); border-radius:16px; padding:18px 20px; margin-top:14px; box-shadow:var(--u-shadow); }
+.caixa-card.empty { text-align:center; }
+.caixa-h { display:flex; align-items:center; gap:9px; margin-bottom:13px; }
+.caixa-h svg { width:19px; height:19px; color:var(--u-green); }
+.caixa-h b { font-family:var(--u-font-display); font-size:15px; flex:1; text-align:left; }
+.caixa-edit { font-size:12px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:5px 11px; cursor:pointer; }
+.caixa-edit:hover { background:var(--u-accent); color:#fff; }
+.caixa-empty-txt { font-size:13px; color:var(--u-text3); margin:0 0 14px; }
+.caixa-vals { display:grid; grid-template-columns:1fr 1fr 1.3fr; gap:12px; }
+.cx-v { background:var(--u-bg2); border-radius:12px; padding:13px 14px; text-align:center; }
+.cx-v small { display:block; font-size:11px; font-weight:700; color:var(--u-text3); margin-bottom:3px; }
+.cx-v span { font-family:var(--u-font-display); font-size:18px; font-weight:800; }
+.cx-v.big { background:transparent; border:1.5px solid var(--u-border2); }
+.cx-v.big span { font-size:22px; }
+.cx-v.big i { display:block; font-style:normal; font-size:11px; font-weight:700; margin-top:2px; }
+.caixa-obs { display:flex; align-items:flex-start; gap:8px; margin-top:12px; font-size:13px; color:var(--u-text2); background:var(--u-bg2); border-radius:10px; padding:10px 12px; }
+.caixa-obs svg { width:15px; height:15px; color:var(--u-text3); flex-shrink:0; margin-top:2px; }
+.caixa-by { font-size:11.5px; color:var(--u-text3); margin-top:11px; }
+.cx-dif-box { text-align:center; font-size:13px; font-weight:600; color:var(--u-text3); background:var(--u-bg2); border:1.5px solid var(--u-border2); border-radius:12px; padding:11px; margin-bottom:2px; }
+.cx-dif-box b { font-family:var(--u-font-display); font-size:18px; margin-left:6px; }
+@media (max-width: 560px){ .caixa-vals { grid-template-columns:1fr; } }
+/* ===== Relatório de Lojas ===== */
+.rep-launch { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:5px 11px; cursor:pointer; margin-left:auto; }
+.rep-launch svg { width:13px; height:13px; } .rep-launch:hover { background:var(--u-accent); color:#fff; }
+.lr-table-wrap { overflow-x:auto; }
+.lr-table { width:100%; border-collapse:collapse; font-size:13px; }
+.lr-table th { text-align:right; font-size:11px; font-weight:800; color:var(--u-text3); text-transform:uppercase; letter-spacing:.4px; padding:8px 10px; border-bottom:2px solid var(--u-border); white-space:nowrap; }
+.lr-table th:first-child { text-align:left; }
+.lr-table td { text-align:right; padding:11px 10px; border-bottom:1px solid var(--u-border); font-weight:700; white-space:nowrap; }
+.lr-table td.lr-td-nm { text-align:left; font-family:var(--u-font-display); }
+.lr-table tbody tr { cursor:pointer; }
+.lr-table tbody tr:hover { background:var(--u-bg2); }
+.lr-meta-badge { font-weight:800; }
+.lr-hint { font-size:11.5px; color:var(--u-text3); margin-left:auto; font-weight:500; }
+.lr-rank { display:flex; flex-direction:column; gap:8px; }
+.lr-rank-row { display:flex; align-items:center; gap:11px; padding:9px 12px; background:var(--u-bg2); border-radius:10px; }
+.lr-rank-pos { font-family:var(--u-font-display); font-weight:800; font-size:14px; color:var(--u-text3); width:26px; }
+.lr-rank-av { width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:12px; flex-shrink:0; }
+.lr-rank-nm { flex:1; font-size:13.5px; font-weight:600; }
+.lr-rank-row b { font-family:var(--u-font-display); }
+.mt-adv { margin-top:6px; border-top:1px dashed var(--u-border); padding-top:12px; }
+.mt-adv-h { font-size:11px; font-weight:800; color:var(--u-text3); text-transform:uppercase; letter-spacing:.4px; margin-bottom:9px; }
+@media print { .lr-table th, .lr-table td { border-color:#ddd !important; } .rep-launch, .lr-hint { display:none !important; } }
 @media (max-width:560px){ .perm-row { flex-direction:column; align-items:stretch; gap:8px; } .perm-seg { width:100%; } .perm-seg button { flex:1; } }
 @media (max-width: 700px){ .rep-kpis { grid-template-columns:repeat(2,1fr); } .rep-grid2 { grid-template-columns:1fr; } }
 @media print {
@@ -1479,7 +1563,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v58 · 21/06 (Correção: permissões persistem na navegação)';
+var APP_BUILD = 'v61 · 21/06 (Lojas: relatório de indicadores + comparativo entre lojas)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1494,7 +1578,7 @@ var SECTORS = {
 function p(id,label,ic,enabled,group){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'OPERAÇÃO' }; }
 var GROUP_ORDER = ['OPERAÇÃO','PLANEJAMENTO','COMUNICAÇÃO','GESTÃO'];
 var PAGES = {
-  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('ponto','Ponto','clock',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
+  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('ponto','Ponto','clock',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('relatorio','Relatório','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('kpis','KPIs','trend',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
   marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('relatorio','Relatório','trend',true,'PLANEJAMENTO'), p('orcamento','Orçamento','dollar',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
@@ -1673,7 +1757,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -1749,6 +1833,14 @@ function loadData() {
     try { sb.from('malba_content').select('*').then(function(re){ if(!re.error && re.data){ ST.contentItems=re.data; if(ST.page==='conteudo') renderPage(); } }, function(){}); } catch(e){}
     ST.creativos = [];
     try { sb.from('malba_creativos').select('*').then(function(re){ if(!re.error && re.data){ ST.creativos=re.data; if(ST.page==='biblioteca') renderPage(); } }, function(){}); } catch(e){}
+    ST.checklistItems = [];
+    try { sb.from('malba_checklist_items').select('*').then(function(re){ if(!re.error && re.data){ ST.checklistItems=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
+    ST.checklistDone = [];
+    try { sb.from('malba_checklist_done').select('*').gte('work_date', _firstDayMonth()).then(function(re){ if(!re.error && re.data){ ST.checklistDone=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
+    ST.caixas = [];
+    try { sb.from('malba_caixa').select('*').order('work_date', { ascending:false }).then(function(re){ if(!re.error && re.data){ ST.caixas=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
+    ST.lojaMetricas = [];
+    try { sb.from('malba_loja_metricas').select('*').then(function(re){ if(!re.error && re.data){ ST.lojaMetricas=re.data; if(ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
   }).catch(function(e){ console.error('[load]', e); ST.loaded = true; });
 }
 
@@ -2378,7 +2470,8 @@ function tarefasHTML() {
   var sub = admin
     ? ((ST.sector==='lojas' && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc(SECTORS[ST.sector].label)))
     : 'Minhas tarefas';
-  var toggle = '<div class="view-toggle"><button class="vt-btn'+(view==='kanban'?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Quadro</button><button class="vt-btn'+(view==='matriz'?' on':'')+'" data-view="matriz">'+icon('target')+'Prioridades</button></div>';
+  var rotinaBtn = (ST.sector==='lojas') ? '<button class="vt-btn'+(view==='rotina'?' on':'')+'" data-view="rotina">'+icon('clock')+'Rotina do dia</button>' : '';
+  var toggle = '<div class="view-toggle">'+rotinaBtn+'<button class="vt-btn'+(view==='kanban'?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Quadro</button><button class="vt-btn'+(view==='matriz'?' on':'')+'" data-view="matriz">'+icon('target')+'Prioridades</button></div>';
   var filter = '';
   if (admin) {
     var meId = String(ST.session.user.id);
@@ -2398,7 +2491,7 @@ function tarefasHTML() {
   }
   var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
   var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
-  return head + muralHTML() + (view==='matriz' ? matrizHTML() : kanbanHTML());
+  return head + muralHTML() + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
 function boardItems() {
@@ -2566,6 +2659,7 @@ function moveBoardItem(kind, id, ns) {
   }
 }
 function bindTarefas() {
+  if ((ST.taskView||'kanban')==='rotina') { bindRotina(); bindMural(); var _af=document.getElementById('taskStore'); if(_af) _af.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); }); var _vts=app.querySelectorAll('[data-view]'); for(var _v=0;_v<_vts.length;_v++) _vts[_v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); renderPage(); }); return; }
   var nova=document.getElementById('btnNovaTarefa');
   if (nova) nova.addEventListener('click', function(){ openTaskModal(null); });
   bindMural();
@@ -3780,6 +3874,235 @@ function openUtmModal(){
   ['#utmBase','#utmSource','#utmMedium','#utmCampaign','#utmTerm','#utmContent'].forEach(function(sel){ var el=modal.querySelector(sel); if(el) el.addEventListener('input', recompute); });
   modal.querySelector('#utmCopy').addEventListener('click', function(){ var link=recompute(); if(!link){ toast('Preencha o link de destino','error'); return; } copyText(link, 'Link copiado!'); });
   document.body.appendChild(modal); modal.querySelector('#utmBase').focus(); recompute();
+}
+
+/* ----- Checklist de abertura/fechamento (rotina diária por loja, na aba Tarefas) ----- */
+var CHECK_TURNOS = [ { key:'abertura', label:'Abertura', icon:'sun' }, { key:'fechamento', label:'Fechamento', icon:'moon' } ];
+function checklistItemsDoTurno(turno){ return (ST.checklistItems||[]).filter(function(x){ return (x.sector||'lojas')==='lojas' && x.turno===turno && x.active!==false; }).sort(function(a,b){ return (a.ordem||0)-(b.ordem||0); }); }
+function checklistDoneFor(itemId, storeId, date){ var f=null; (ST.checklistDone||[]).forEach(function(r){ if(String(r.item_id)===String(itemId) && String(r.store_unit_id)===String(storeId) && String(r.work_date).slice(0,10)===date) f=r; }); return f; }
+function _nextOrdemChk(turno){ var mx=0; checklistItemsDoTurno(turno).forEach(function(it){ if((it.ordem||0)>mx) mx=it.ordem; }); return mx+1; }
+function toggleChecklistItem(item, storeId){
+  if(!storeId) return; var d=today(); var existing=checklistDoneFor(item.id, storeId, d); var u=ST.session.user; var nowIso=new Date().toISOString();
+  if(existing){ var nd=!existing.done; sb.from('malba_checklist_done').update({ done:nd, done_by:u.id, done_by_name:u.name, done_at:(nd?nowIso:null) }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.done=nd; existing.done_by=u.id; existing.done_by_name=u.name; existing.done_at=(nd?nowIso:null); renderPage(); } else toast('Erro ao marcar','error'); }); }
+  else { sb.from('malba_checklist_done').insert({ item_id:item.id, store_unit_id:storeId, work_date:d, done:true, done_by:u.id, done_by_name:u.name, done_at:nowIso }).select().single().then(function(r){ if(!r.error&&r.data){ ST.checklistDone.push(r.data); renderPage(); } else { toast('Não consegui marcar (peça para rodar o SQL do checklist).','error'); console.error(r.error); } }); }
+}
+function rotinaHTML(){
+  var sid = boardStore();
+  if (!sid) return '<div class="empty-page"><div class="ep-ico">'+icon('clock')+'</div><h3>Escolha a loja</h3><p>Selecione a loja no filtro acima para ver a rotina do dia.</p></div>';
+  var d = today();
+  var editBtn = canManage() ? '<button class="rot-edit" id="btnEditRotina">'+icon('gear')+'Editar rotina</button>' : '';
+  var blocks = CHECK_TURNOS.map(function(t){
+    var items = checklistItemsDoTurno(t.key);
+    var doneCount = items.filter(function(it){ var dr=checklistDoneFor(it.id, sid, d); return dr && dr.done; }).length;
+    var rows = items.length ? items.map(function(it){
+      var dr = checklistDoneFor(it.id, sid, d); var done = dr && dr.done;
+      var who = done ? ('<span class="rot-who">'+esc((dr.done_by_name||'').split(' ')[0])+' · '+hhmm(dr.done_at)+'</span>') : '';
+      return '<button class="rot-item'+(done?' done':'')+'" data-check="'+esc(it.id)+'"><span class="rot-box">'+(done?icon('tasks'):'')+'</span><span class="rot-label">'+esc(it.label)+'</span>'+who+'</button>';
+    }).join('') : '<div class="col-empty">Nenhum item neste turno.'+(canManage()?' Use "Editar rotina".':'')+'</div>';
+    var pct = items.length ? Math.round(doneCount/items.length*100) : 0;
+    return '<div class="rot-block"><div class="rot-block-h">'+icon(t.icon)+'<b>'+t.label+'</b><span class="rot-prog'+(items.length&&doneCount===items.length?' full':'')+'">'+doneCount+'/'+items.length+'</span></div><div class="rot-bar"><span style="width:'+pct+'%"></span></div><div class="rot-items">'+rows+'</div></div>';
+  }).join('');
+  var hoje = new Date(); var dataStr = hoje.getDate()+' de '+MESES[hoje.getMonth()]+' de '+hoje.getFullYear();
+  var lojaNome = storeName(sid) || '';
+  return '<div class="rot-head"><div class="rot-head-l">'+icon('clock')+'<div><b>Rotina do dia</b><i>'+esc(dataStr)+(lojaNome?(' · '+esc(lojaNome)):'')+'</i></div></div>'+editBtn+'</div><div class="rot-blocks">'+blocks+'</div>'+caixaCardHTML(sid, d);
+}
+function bindRotina(){
+  var sid=boardStore();
+  var eb=document.getElementById('btnEditRotina'); if(eb) eb.addEventListener('click', openRotinaConfig);
+  var cb=document.getElementById('btnCaixa'); if(cb) cb.addEventListener('click', function(){ openCaixaModal(sid, caixaDoDia(sid, today())); });
+  var items=app.querySelectorAll('.rot-item[data-check]');
+  for(var i=0;i<items.length;i++) items[i].addEventListener('click', function(){ var id=this.getAttribute('data-check'); var it=null; for(var k=0;k<ST.checklistItems.length;k++) if(String(ST.checklistItems[k].id)===String(id)){it=ST.checklistItems[k];break;} if(it && sid) toggleChecklistItem(it, sid); });
+}
+function openRotinaConfig(){
+  if(!canManage()){ blockManage(); return; }
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  function draw(){
+    var blocks=CHECK_TURNOS.map(function(t){
+      var items=checklistItemsDoTurno(t.key);
+      var rows=items.length ? items.map(function(it){ return '<div class="rc-item"><input type="text" class="rc-input" data-itemid="'+esc(it.id)+'" value="'+esc(it.label)+'"><button class="rc-del" data-delitem="'+esc(it.id)+'" title="Remover">'+icon('logout')+'</button></div>'; }).join('') : '<div class="col-empty" style="margin:4px 0">Sem itens ainda.</div>';
+      return '<div class="rc-block"><div class="rc-block-h">'+icon(t.icon)+t.label+'</div><div class="rc-items">'+rows+'</div><div class="rc-add"><input type="text" class="rc-new" id="rcNew_'+t.key+'" placeholder="Novo item de '+t.label.toLowerCase()+'..."><button class="btn btn-primary rc-addbtn" data-addturno="'+t.key+'">Adicionar</button></div></div>';
+    }).join('');
+    modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Editar rotina da loja</div><div class="modal-note">Estes itens valem para <b>todas as lojas</b>. A equipe marca o que foi feito a cada dia. Edite o texto direto no campo.</div>'+blocks+'<div class="modal-foot"><button class="btn btn-primary" id="rcClose">Concluído</button></div></div>';
+    bind();
+  }
+  function bind(){
+    modal.querySelector('#rcClose').addEventListener('click', close);
+    var adds=modal.querySelectorAll('[data-addturno]');
+    for(var a=0;a<adds.length;a++) adds[a].addEventListener('click', function(){ var turno=this.getAttribute('data-addturno'); var inp=modal.querySelector('#rcNew_'+turno); var label=(inp.value||'').trim(); if(!label){ inp.focus(); return; } var rec={ sector:'lojas', turno:turno, label:label, ordem:_nextOrdemChk(turno), active:true }; this.disabled=true; sb.from('malba_checklist_items').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL do checklist).','error'); console.error(r.error); draw(); return; } ST.checklistItems.push(r.data); draw(); }); });
+    var dels=modal.querySelectorAll('[data-delitem]');
+    for(var d=0;d<dels.length;d++) dels[d].addEventListener('click', function(){ var id=this.getAttribute('data-delitem'); if(!confirm('Remover este item da rotina?')) return; sb.from('malba_checklist_items').delete().eq('id',id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.checklistItems=ST.checklistItems.filter(function(x){return String(x.id)!==String(id);}); draw(); }); });
+    var inputs=modal.querySelectorAll('.rc-input');
+    for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('change', function(){ var id=this.getAttribute('data-itemid'); var label=(this.value||'').trim(); if(!label){ this.value=''; return; } sb.from('malba_checklist_items').update({ label:label }).eq('id',id).then(function(r){ if(!r.error){ for(var k=0;k<ST.checklistItems.length;k++) if(String(ST.checklistItems[k].id)===String(id)) ST.checklistItems[k].label=label; } else toast('Erro ao salvar','error'); }); });
+  }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  document.body.appendChild(modal); draw();
+}
+
+/* ----- Fechamento de caixa diário (por loja/dia) ----- */
+function caixaDoDia(storeId, date){ var f=null; (ST.caixas||[]).forEach(function(c){ if(String(c.store_unit_id)===String(storeId) && String(c.work_date).slice(0,10)===date) f=c; }); return f; }
+function caixaCardHTML(sid, d){
+  var c = caixaDoDia(sid, d);
+  if (c) {
+    var esp=Number(c.esperado||0), cont=Number(c.contado||0), dif=cont-esp;
+    var cor = dif===0 ? '#16A34A' : (dif>0 ? '#F59E0B' : '#EF4444');
+    var difLabel = dif===0 ? 'Bateu certinho' : (dif>0 ? 'Sobra no caixa' : 'Falta no caixa');
+    return '<div class="caixa-card done"><div class="caixa-h">'+icon('dollar')+'<b>Fechamento de caixa</b><button class="caixa-edit" id="btnCaixa">editar</button></div>'+
+      '<div class="caixa-vals"><div class="cx-v"><small>Esperado</small><span>'+fmtBRL(esp)+'</span></div><div class="cx-v"><small>Contado</small><span>'+fmtBRL(cont)+'</span></div><div class="cx-v big"><small>Diferença</small><span style="color:'+cor+'">'+(dif>0?'+':'')+fmtBRL(dif)+'</span><i style="color:'+cor+'">'+difLabel+'</i></div></div>'+
+      (c.obs?'<div class="caixa-obs">'+icon('chat')+'<span>'+esc(c.obs)+'</span></div>':'')+
+      '<div class="caixa-by">Fechado por '+esc((c.done_by_name||'—').split(' ')[0])+(c.closed_at?(' · '+hhmm(c.closed_at)):'')+'</div>'+
+    '</div>';
+  }
+  return '<div class="caixa-card empty"><div class="caixa-h">'+icon('dollar')+'<b>Fechamento de caixa</b></div><p class="caixa-empty-txt">Ainda não fechado hoje. Registre o valor esperado e o contado — o sistema calcula a diferença.</p><button class="btn btn-primary" id="btnCaixa">Fechar caixa do dia</button></div>';
+}
+function openCaixaModal(storeId, existing){
+  if(!storeId) return;
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  var esp = existing&&existing.esperado!=null ? existing.esperado : '';
+  var cont = existing&&existing.contado!=null ? existing.contado : '';
+  var obs = existing ? (existing.obs||'') : '';
+  var delBtn = existing ? '<button class="btn btn-danger btn-del-wrap" id="cxDel">Excluir</button>' : '';
+  modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Fechamento de caixa</div>'+
+    '<div class="modal-note">'+esc(storeName(storeId)||'Loja')+' · '+fmtDate(today())+'</div>'+
+    '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Valor esperado (R$)</label><input type="text" id="cxEsp" inputmode="decimal" placeholder="0,00" value="'+esc(esp!==''?esp:'')+'"></div><div class="modal-row"><label class="modal-label">Valor contado (R$)</label><input type="text" id="cxCont" inputmode="decimal" placeholder="0,00" value="'+esc(cont!==''?cont:'')+'"></div></div>'+
+    '<div class="cx-dif-box" id="cxDifBox">Diferença: <b id="cxDif">R$ 0,00</b></div>'+
+    '<div class="modal-row"><label class="modal-label">Observação</label><textarea id="cxObs" placeholder="Ex: sangria de R$ 200, troco inicial, etc.">'+esc(obs)+'</textarea></div>'+
+    '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="cxCancel">Cancelar</button><button class="btn btn-primary" id="cxSave">'+(existing?'Salvar':'Fechar caixa')+'</button></div>'+
+  '</div>';
+  function recompute(){ var e=_parseBRL(modal.querySelector('#cxEsp').value); var c=_parseBRL(modal.querySelector('#cxCont').value); var dif=c-e; var box=modal.querySelector('#cxDifBox'); var el=modal.querySelector('#cxDif'); el.textContent=(dif>0?'+':'')+fmtBRL(dif); var cor=dif===0?'#16A34A':(dif>0?'#F59E0B':'#EF4444'); el.style.color=cor; box.style.borderColor=cor; }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  modal.querySelector('#cxCancel').addEventListener('click', close);
+  modal.querySelector('#cxEsp').addEventListener('input', recompute);
+  modal.querySelector('#cxCont').addEventListener('input', recompute);
+  var del=modal.querySelector('#cxDel'); if(del) del.addEventListener('click', function(){ if(!confirm('Excluir o fechamento de caixa de hoje?')) return; sb.from('malba_caixa').delete().eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.caixas=ST.caixas.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Fechamento excluído','success'); renderPage(); }); });
+  modal.querySelector('#cxSave').addEventListener('click', function(){
+    var e=_parseBRL(modal.querySelector('#cxEsp').value); var c=_parseBRL(modal.querySelector('#cxCont').value);
+    var u=ST.session.user; var rec={ store_unit_id:storeId, work_date:today(), esperado:e, contado:c, diferenca:(c-e), obs:(modal.querySelector('#cxObs').value||'').trim()||null, done_by:u.id, done_by_name:u.name, closed_at:new Date().toISOString() };
+    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
+    if(existing){ sb.from('malba_caixa').update(rec).eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.caixas.length;i++) if(String(ST.caixas[i].id)===String(existing.id)) ST.caixas[i]=Object.assign(ST.caixas[i],rec); close(); toast('Caixa atualizado','success'); renderPage(); }); }
+    else { sb.from('malba_caixa').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL do caixa).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Fechar caixa'; return; } ST.caixas.push(r.data); auditLog('Fechou o caixa', storeName(storeId)); close(); toast('Caixa fechado','success'); renderPage(); }); }
+  });
+  document.body.appendChild(modal); recompute(); modal.querySelector('#cxEsp').focus();
+}
+
+/* ----- Relatório de Lojas (indicadores de qualidade da venda, para reunião) ----- */
+function blingOrdersStoreMonth(storeId, m, y){ var s=0; (ST.blingFat||[]).forEach(function(f){ if(String(f.store_unit_id)!==String(storeId)) return; var d=(f.ref_date||'').slice(0,10); var p=d.split('-'); if(Number(p[0])===Number(y)&&Number(p[1])===Number(m)) s+=Number(f.orders_count)||0; }); return s; }
+function metricasEntry(storeId, m, y){ var f=null; (ST.lojaMetricas||[]).forEach(function(x){ if(String(x.store_unit_id)===String(storeId) && x.month===m && x.year===y) f=x; }); return f; }
+function lojaMetaValorMes(storeId, m, y){ var meta=0, real=0; (ST.goals||[]).forEach(function(g){ if(g.month===m && g.year===y && String(g.store_unit_id)===String(storeId)){ meta+=Number(g.goal_value)||0; real+=realizadoMeta(g); } }); return { meta:meta, real:real, pct: meta>0?Math.min(100,Math.round(real/meta*100)):0 }; }
+function lojaMetricasMes(storeId, m, y){
+  var e=metricasEntry(storeId, m, y);
+  var fatBling=blingFatStoreMonth(storeId, m, y), vendasBling=blingOrdersStoreMonth(storeId, m, y);
+  var fat=(e&&Number(e.faturamento)>0)?Number(e.faturamento):fatBling;
+  var vendas=(e&&Number(e.num_vendas)>0)?Number(e.num_vendas):vendasBling;
+  var itens=e?Number(e.num_itens)||0:0, visitantes=e?Number(e.num_visitantes)||0:0;
+  return { fat:fat, vendas:vendas, itens:itens, visitantes:visitantes,
+    ticket: vendas>0?fat/vendas:0, itensPorVenda: vendas>0?itens/vendas:0, conversao: visitantes>0?(vendas/visitantes*100):0 };
+}
+function vendasMembroMesAno(member, m, y){ if(!member) return 0; var u=userDoMembro(member); var uid=u?u.id:null; var mid=member.id; var s=0; (ST.salesEntries||[]).forEach(function(e){ var d=(e.sale_date||'').slice(0,10); var p=d.split('-'); if(Number(p[0])!==Number(y)||Number(p[1])!==Number(m)) return; if((mid&&String(e.member_id)===String(mid))||(uid&&String(e.user_id)===String(uid))) s+=Number(e.value)||0; }); return s; }
+function lrMesRef(){ var d=new Date(); return { m: ST.lrM || (d.getMonth()+1), y: ST.lrY || d.getFullYear() }; }
+function lrSetMes(delta){ var r=lrMesRef(); var m=r.m+delta, y=r.y; while(m<1){m+=12;y--;} while(m>12){m-=12;y++;} var d=new Date(); if(y>d.getFullYear()||(y===d.getFullYear()&&m>d.getMonth()+1)) return; ST.lrM=m; ST.lrY=y; renderPage(); }
+function lrFmtItens(v){ return (Math.round(v*10)/10).toLocaleString('pt-BR'); }
+function lrFmtConv(v){ return (Math.round(v*10)/10).toLocaleString('pt-BR')+'%'; }
+
+function relatorioLojasHTML(){
+  var r=lrMesRef(); var m=r.m, y=r.y;
+  var lojas=(ST.storeUnits||[]).filter(function(s){ return !s.is_site; });
+  var storeFixed = ST.store ? ST.store.id : null;
+  var sid = storeFixed || ST.lrStore || '';
+  var d0=new Date(); var canNext=!(y>d0.getFullYear()||(y===d0.getFullYear()&&m>=d0.getMonth()+1));
+  var storeSel = storeFixed ? '' : ('<select class="task-filter" id="lrStore"><option value="">Todas as lojas</option>'+lojas.map(function(s){ return '<option value="'+esc(s.id)+'"'+(String(sid)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>'; }).join('')+'</select>');
+  var head='<div class="rep-head rep-noprint"><div><h2>Relatório de Lojas</h2><div class="sub">Indicadores de qualidade da venda · para reunião</div></div><div class="rep-tools">'+storeSel+'<button class="rep-nav" id="lrPrev">‹</button><span class="rep-month">'+MESES[m-1]+' '+y+'</span><button class="rep-nav" id="lrNext"'+(canNext?'':' disabled')+'>›</button><button class="btn-new" id="lrPrint">'+icon('folder')+'Imprimir / PDF</button></div></div>';
+  var focoNome = sid ? (storeName(sid)||'Loja') : 'Todas as lojas';
+  var printHead='<div class="rep-print-head"><h1>Relatório de Lojas — '+esc(focoNome)+' — '+MESES[m-1]+' '+y+'</h1><p>MALBA Embalagens · gerado em '+fmtDate(today())+'</p></div>';
+  var body = sid ? lojaReportSingle(sid, m, y) : lojaReportConsolidado(lojas, m, y);
+  return head + printHead + body;
+}
+function kpiCard(v,l,s,c){ return '<div class="rep-kpi"><span class="rep-kpi-v" style="color:'+(c||'var(--u-text)')+'">'+v+'</span><span class="rep-kpi-l">'+esc(l)+'</span>'+(s?'<span class="rep-kpi-s">'+s+'</span>':'')+'</div>'; }
+function lojaReportSingle(sid, m, y){
+  var pm=(m===1?12:m-1), py=(m===1?y-1:y);
+  var cur=lojaMetricasMes(sid, m, y); var ant=lojaMetricasMes(sid, pm, py);
+  var varPct = ant.fat>0 ? Math.round((cur.fat-ant.fat)/ant.fat*100) : (cur.fat>0?100:0);
+  var varTag = ant.fat>0 ? ('<span class="rep-var '+(varPct>=0?'up':'down')+'">'+(varPct>=0?'▲ +':'▼ ')+varPct+'%</span>') : '<span class="rep-var flat">sem base</span>';
+  var meta=lojaMetaValorMes(sid, m, y);
+  var kpis='<div class="rep-kpis">'+
+    kpiCard(brlShort(cur.fat),'Faturamento', varTag+' vs '+MES_ABR[pm-1], '#16A34A')+
+    kpiCard(fmtBRL(cur.ticket),'Ticket médio', cur.vendas+' vendas', '#3B6FF7')+
+    kpiCard(cur.itensPorVenda>0?lrFmtItens(cur.itensPorVenda):'—','Itens por venda', cur.itens+' itens', '#8B5CF6')+
+    kpiCard(cur.conversao>0?lrFmtConv(cur.conversao):'—','Conversão', cur.visitantes>0?(cur.visitantes+' visitantes'):'sem visitantes', '#F59E0B')+
+  '</div>';
+  // faturamento + tendência 3 meses
+  var t3=[]; for(var i=2;i>=0;i--){ var tm=m-i, ty=y; while(tm<1){tm+=12;ty--;} t3.push({ m:tm, y:ty, v:lojaMetricasMes(sid,tm,ty).fat }); }
+  var maxT=Math.max(1,t3[0].v,t3[1].v,t3[2].v);
+  var trend=t3.map(function(x){ var hh=Math.max(6,Math.round(x.v/maxT*100)); var isc=(x.m===m&&x.y===y); return '<div class="rep-tb"><span class="rep-tb-v">'+brlShort(x.v)+'</span><div class="rep-tb-track"><div class="rep-tb-bar" style="height:'+hh+'%;background:'+(isc?'#3B6FF7':'var(--u-border2)')+'"></div></div><span class="rep-tb-l">'+MES_ABR[x.m-1]+'</span></div>'; }).join('');
+  var fatSec='<div class="rep-card"><div class="rep-card-h">'+icon('dollar')+'<h3>Faturamento</h3></div><div class="rep-site"><div class="rep-site-big"><span class="rep-site-v">'+fmtBRL(cur.fat)+'</span>'+varTag+'<small>mês anterior: '+fmtBRL(ant.fat)+'</small></div><div class="rep-trend">'+trend+'</div></div></div>';
+  // meta
+  var metaSec='<div class="rep-card"><div class="rep-card-h">'+icon('target')+'<h3>Meta do mês</h3></div>'+(meta.meta>0?('<div class="rep-goal"><div class="rep-goal-top"><span>Atingimento</span><b style="color:'+(meta.pct>=100?'#16A34A':'#3B6FF7')+'">'+meta.pct+'%</b></div><div class="rep-goal-bar"><span style="width:'+meta.pct+'%;background:'+(meta.pct>=100?'#16A34A':'#3B6FF7')+'"></span></div><div class="rep-goal-sub">'+fmtBRL(meta.real)+' de '+fmtBRL(meta.meta)+'</div></div>'):'<div class="dash-empty">Sem meta definida para este mês.</div>')+'</div>';
+  // volume + lançar
+  var launch = canManage() ? '<button class="rep-launch" id="lrLancar">'+icon('plus')+'Lançar indicadores</button>' : '';
+  var volSec='<div class="rep-card"><div class="rep-card-h">'+icon('trend')+'<h3>Volume do mês</h3>'+launch+'</div><div class="rep-prod"><div class="rep-prod-i"><b>'+fmtNumBR(cur.vendas)+'</b><span>vendas</span></div><div class="rep-prod-i"><b>'+fmtNumBR(cur.itens)+'</b><span>itens vendidos</span></div><div class="rep-prod-i"><b>'+fmtNumBR(cur.visitantes)+'</b><span>visitantes</span></div></div></div>';
+  // ranking vendedores da loja
+  var mems=(ST.members||[]).filter(function(x){ return x.is_active!==false && String(x.store_unit_id)===String(sid); }).map(function(x){ return { m:x, v:vendasMembroMesAno(x, m, y) }; }).filter(function(x){ return x.v>0; }).sort(function(a,b){ return b.v-a.v; }).slice(0,5);
+  var rankSec = mems.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('users')+'<h3>Ranking de vendedores</h3></div><div class="lr-rank">'+mems.map(function(x,i){ return '<div class="lr-rank-row"><span class="lr-rank-pos">'+(i+1)+'º</span><span class="lr-rank-av" style="background:'+(x.m.color||'#3B6FF7')+'">'+esc(iniciais(x.m.name))+'</span><span class="lr-rank-nm">'+esc(x.m.name)+'</span><b>'+brlShort(x.v)+'</b></div>'; }).join('')+'</div></div>') : '';
+  return kpis + fatSec + '<div class="rep-grid2">'+metaSec+volSec+'</div>' + rankSec;
+}
+function lojaReportConsolidado(lojas, m, y){
+  var pm=(m===1?12:m-1), py=(m===1?y-1:y);
+  var tot={fat:0,vendas:0,itens:0,visitantes:0}, totAnt={fat:0};
+  var rows=lojas.map(function(s){ var c=lojaMetricasMes(s.id,m,y); var meta=lojaMetaValorMes(s.id,m,y); tot.fat+=c.fat; tot.vendas+=c.vendas; tot.itens+=c.itens; tot.visitantes+=c.visitantes; totAnt.fat+=lojaMetricasMes(s.id,pm,py).fat; return { s:s, c:c, meta:meta }; });
+  var ticket=tot.vendas>0?tot.fat/tot.vendas:0; var itensPV=tot.vendas>0?tot.itens/tot.vendas:0; var conv=tot.visitantes>0?(tot.vendas/tot.visitantes*100):0;
+  var varPct=totAnt.fat>0?Math.round((tot.fat-totAnt.fat)/totAnt.fat*100):(tot.fat>0?100:0);
+  var varTag=totAnt.fat>0?('<span class="rep-var '+(varPct>=0?'up':'down')+'">'+(varPct>=0?'▲ +':'▼ ')+varPct+'%</span>'):'<span class="rep-var flat">sem base</span>';
+  var metaTot=rows.reduce(function(a,x){ return a+x.meta.meta; },0), realTot=rows.reduce(function(a,x){ return a+x.meta.real; },0); var metaPct=metaTot>0?Math.min(100,Math.round(realTot/metaTot*100)):0;
+  var kpis='<div class="rep-kpis">'+
+    kpiCard(brlShort(tot.fat),'Faturamento total', varTag+' vs '+MES_ABR[pm-1], '#16A34A')+
+    kpiCard(fmtBRL(ticket),'Ticket médio', tot.vendas+' vendas', '#3B6FF7')+
+    kpiCard(conv>0?lrFmtConv(conv):'—','Conversão', tot.visitantes>0?(tot.visitantes+' visitantes'):'—', '#F59E0B')+
+    kpiCard(metaTot>0?(metaPct+'%'):'—','Meta atingida', 'consolidado', metaPct>=100?'#16A34A':'#8B5CF6')+
+  '</div>';
+  // comparativo entre lojas
+  var trows=rows.map(function(x){ var c=x.c; return '<tr data-lrstore="'+esc(x.s.id)+'"><td class="lr-td-nm">'+esc(x.s.name||('Loja '+x.s.store_number))+'</td><td>'+brlShort(c.fat)+'</td><td>'+fmtBRL(c.ticket)+'</td><td>'+(c.itensPorVenda>0?lrFmtItens(c.itensPorVenda):'—')+'</td><td>'+(c.conversao>0?lrFmtConv(c.conversao):'—')+'</td><td><span class="lr-meta-badge" style="color:'+(x.meta.pct>=100?'#16A34A':(x.meta.pct>=60?'#3B6FF7':'#EF4444'))+'">'+(x.meta.meta>0?(x.meta.pct+'%'):'—')+'</span></td></tr>'; }).join('');
+  var table='<div class="rep-card"><div class="rep-card-h">'+icon('store')+'<h3>Comparativo entre lojas</h3>'+(canManage()?'<span class="lr-hint">clique numa loja para lançar indicadores</span>':'')+'</div><div class="lr-table-wrap"><table class="lr-table"><thead><tr><th>Loja</th><th>Faturamento</th><th>Ticket médio</th><th>Itens/venda</th><th>Conversão</th><th>% Meta</th></tr></thead><tbody>'+trows+'</tbody></table></div></div>';
+  return kpis + table;
+}
+function bindRelatorioLojas(){
+  var ss=document.getElementById('lrStore'); if(ss) ss.addEventListener('change', function(){ ST.lrStore=this.value; renderPage(); });
+  var pv=document.getElementById('lrPrev'); if(pv) pv.addEventListener('click', function(){ lrSetMes(-1); });
+  var nx=document.getElementById('lrNext'); if(nx) nx.addEventListener('click', function(){ lrSetMes(1); });
+  var pr=document.getElementById('lrPrint'); if(pr) pr.addEventListener('click', function(){ window.print(); });
+  var r=lrMesRef();
+  var lc=document.getElementById('lrLancar'); if(lc) lc.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openMetricasModal(sid, r.m, r.y); });
+  var trs=app.querySelectorAll('[data-lrstore]'); if(canManage()) for(var i=0;i<trs.length;i++) trs[i].addEventListener('click', function(){ openMetricasModal(this.getAttribute('data-lrstore'), r.m, r.y); });
+}
+function openMetricasModal(storeId, m, y){
+  if(!canManage()){ blockManage(); return; }
+  var existing=metricasEntry(storeId, m, y);
+  var fatBling=blingFatStoreMonth(storeId, m, y), vendasBling=blingOrdersStoreMonth(storeId, m, y);
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  var itens=existing&&existing.num_itens!=null?existing.num_itens:'';
+  var vis=existing&&existing.num_visitantes!=null?existing.num_visitantes:'';
+  var ovVendas=existing&&Number(existing.num_vendas)>0?existing.num_vendas:'';
+  var ovFat=existing&&Number(existing.faturamento)>0?existing.faturamento:'';
+  var blingInfo = (fatBling>0||vendasBling>0) ? ('<div class="modal-note">Do Bling neste mês: <b>'+fmtBRL(fatBling)+'</b> em <b>'+vendasBling+'</b> venda(s). Você só precisa informar itens e visitantes.</div>') : '<div class="modal-note">Sem dados do Bling neste mês. Informe também vendas e faturamento abaixo.</div>';
+  var delBtn=existing?'<button class="btn btn-danger btn-del-wrap" id="mtDel">Excluir</button>':'';
+  modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Indicadores · '+esc(storeName(storeId)||'Loja')+'</div>'+
+    '<div class="modal-note">'+MESES[m-1]+' '+y+'</div>'+blingInfo+
+    '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Itens vendidos (total)</label><input type="text" id="mtItens" inputmode="numeric" placeholder="0" value="'+esc(itens!==''?itens:'')+'"></div><div class="modal-row"><label class="modal-label">Visitantes (total)</label><input type="text" id="mtVis" inputmode="numeric" placeholder="0" value="'+esc(vis!==''?vis:'')+'"></div></div>'+
+    '<div class="mt-adv"><div class="mt-adv-h">Opcional — se a loja não usa Bling</div><div class="modal-grid2"><div class="modal-row"><label class="modal-label">Nº de vendas</label><input type="text" id="mtVendas" inputmode="numeric" placeholder="(usa o Bling)" value="'+esc(ovVendas!==''?ovVendas:'')+'"></div><div class="modal-row"><label class="modal-label">Faturamento (R$)</label><input type="text" id="mtFat" inputmode="decimal" placeholder="(usa o Bling)" value="'+esc(ovFat!==''?ovFat:'')+'"></div></div></div>'+
+    '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="mtCancel">Cancelar</button><button class="btn btn-primary" id="mtSave">Salvar</button></div>'+
+  '</div>';
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  modal.querySelector('#mtCancel').addEventListener('click', close);
+  var del=modal.querySelector('#mtDel'); if(del) del.addEventListener('click', function(){ if(!confirm('Excluir os indicadores deste mês?')) return; sb.from('malba_loja_metricas').delete().eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.lojaMetricas=ST.lojaMetricas.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Indicadores excluídos','success'); renderPage(); }); });
+  modal.querySelector('#mtSave').addEventListener('click', function(){
+    var num=function(id){ var v=(modal.querySelector(id).value||'').replace(/\./g,'').replace(',','.').replace(/[^0-9.]/g,''); return v?Number(v):0; };
+    var rec={ store_unit_id:storeId, month:m, year:y, num_itens:num('#mtItens'), num_visitantes:num('#mtVis'), num_vendas:num('#mtVendas'), faturamento:_parseBRL(modal.querySelector('#mtFat').value) };
+    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
+    if(existing){ sb.from('malba_loja_metricas').update(rec).eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.lojaMetricas.length;i++) if(String(ST.lojaMetricas[i].id)===String(existing.id)) ST.lojaMetricas[i]=Object.assign(ST.lojaMetricas[i],rec); close(); toast('Indicadores atualizados','success'); renderPage(); }); }
+    else { sb.from('malba_loja_metricas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de indicadores).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } ST.lojaMetricas.push(r.data); auditLog('Lançou indicadores', storeName(storeId)); close(); toast('Indicadores salvos','success'); renderPage(); }); }
+  });
+  document.body.appendChild(modal); modal.querySelector('#mtItens').focus();
 }
 
 function goalCardHTML(g) {
@@ -6822,7 +7145,8 @@ function renderPage() {
   } else if (pg.id==='ponto') {
     renderShell(pontoHTML(), 'Ponto'); bindPonto();
   } else if (pg.id==='relatorio') {
-    renderShell(relatorioHTML(), 'Relatório'); bindRelatorio();
+    if (ST.sector==='lojas') { renderShell(relatorioLojasHTML(), 'Relatório'); bindRelatorioLojas(); }
+    else { renderShell(relatorioHTML(), 'Relatório'); bindRelatorio(); }
   } else if (pg.id==='orcamento') {
     renderShell(orcamentoHTML(), 'Orçamento'); bindOrcamento();
   } else if (pg.id==='conteudo') {
