@@ -1479,7 +1479,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v55 · 21/06 (Permissões Ver/Fazer em todos os cadastros)';
+var APP_BUILD = 'v56 · 21/06 (Permissões: aviso se faltar SQL + salvamento reforçado)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1596,8 +1596,16 @@ function permsHas(pgId, s){ return permLevel(pgId, s) !== 'none'; }        // po
 function canEdit(){ if(canManage()) return true; return permLevel(ST.page)==='fazer'; } // pode executar na página atual
 // páginas que o admin pode conceder a um colaborador (exclui início e as de administração)
 function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
-// grava as permissões (best-effort; se a coluna não existir, apenas ignora)
-function savePerms(id, map){ sb.from('malba_users').update({ perms: map||{} }).eq('id', id).then(function(rr){ if(!rr.error){ for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=(map||{}); } }); }
+// grava as permissões; avisa se a coluna 'perms' ainda não existir no banco
+function savePerms(id, map){ return sb.from('malba_users').update({ perms: map||{} }).eq('id', id).then(function(rr){
+  if(rr.error){ var m=(rr.error.message||'').toLowerCase(); console.error('savePerms:', rr.error);
+    if(m.indexOf('perms')!==-1 || m.indexOf('column')!==-1 || m.indexOf('schema')!==-1 || m.indexOf('does not exist')!==-1){ toast('Para salvar permissões, rode o SQL "SQL-permissoes-colaborador.sql" no Supabase.','error'); }
+    else { toast('Não consegui salvar as permissões: '+(rr.error.message||'erro'),'error'); }
+    return false;
+  }
+  for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=(map||{});
+  return true;
+}); }
 // que páginas cada pessoa pode acessar
 function pageAllowed(pgId, s){
   s = s || ST.session;
@@ -4651,7 +4659,7 @@ function openUserModal(user) {
   modal.querySelector('#uLevel').addEventListener('change', function(){ updatePerms(true); });
   modal.querySelector('#uSector').addEventListener('change', function(){ updatePerms(true); });
   updatePerms(false);
-  function aplicarPerms(id){ var lvl=modal.querySelector('#uLevel').value; var pr=(lvl==='user')?readPerms(modal):{}; sb.from('malba_users').update({ perms: pr }).eq('id', id).then(function(rr){ if(!rr.error){ for(var i=0;i<ST.allUsers.length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=pr; } }); }
+  function aplicarPerms(id){ var lvl=modal.querySelector('#uLevel').value; var pr=(lvl==='user')?readPerms(modal):{}; savePerms(id, pr); }
 
   modal.querySelector('#userSave').addEventListener('click', function(){
     var name=(modal.querySelector('#uName').value||'').trim();
