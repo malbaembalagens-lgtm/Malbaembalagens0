@@ -1152,6 +1152,17 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 /* ===== Gerador de UTM ===== */
 .utm-out-wrap { margin-top:4px; }
 .utm-out { margin-top:6px; background:var(--u-bg2); border:1px dashed var(--u-border2); border-radius:10px; padding:12px 14px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; color:var(--u-accent); word-break:break-all; line-height:1.5; }
+/* ===== Seletor de permissões do colaborador ===== */
+.perm-wrap { background:var(--u-bg2); border-radius:12px; padding:14px; margin-bottom:4px; }
+.perm-title { font-size:13px; font-weight:800; color:var(--u-text); }
+.perm-sub { font-size:11.5px; color:var(--u-text3); margin:2px 0 11px; }
+.perm-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
+.perm-box { display:flex; align-items:center; gap:8px; background:var(--u-card); border:1px solid var(--u-border); border-radius:10px; padding:9px 11px; cursor:pointer; transition:.12s; }
+.perm-box:hover { border-color:var(--u-accent); }
+.perm-box input { width:16px; height:16px; accent-color:var(--u-accent); flex-shrink:0; cursor:pointer; }
+.perm-box input:checked ~ .perm-lb { color:var(--u-accent); font-weight:700; }
+.perm-ic { display:flex; align-items:center; } .perm-ic svg { width:15px; height:15px; color:var(--u-text3); }
+.perm-lb { font-size:12.5px; color:var(--u-text2); font-weight:600; }
 @media (max-width: 700px){ .rep-kpis { grid-template-columns:repeat(2,1fr); } .rep-grid2 { grid-template-columns:1fr; } }
 @media print {
   .side, .top, .side-overlay, .rep-noprint, .btn-new { display:none !important; }
@@ -1459,7 +1470,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v52 · 21/06 (Marketing: biblioteca de criativos + gerador UTM)';
+var APP_BUILD = 'v53 · 21/06 (Permissões por colaborador no cadastro)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1564,19 +1575,34 @@ function blockManage(){ toast('Você não tem permissão para criar, editar ou e
 // "Colaborador pessoal" = acesso individual (rank baixo) que NÃO é login de loja.
 // O login de loja (ST.store definido) é o acesso operacional da unidade.
 function isColaboradorPessoal(s){ s = s || ST.session; return roleRank(s) <= 1 && !ST.store; }
+// permissões extras concedidas a uma pessoa (lista de páginas que ela pode acessar e usar)
+function userPerms(s){ s = s || ST.session; var u=s&&s.user; if(!u) return []; var p=u.perms; if(Array.isArray(p)) return p; if(typeof p==='string'){ try{ var a=JSON.parse(p); return Array.isArray(a)?a:[]; }catch(e){ return p.split(',').map(function(x){return x.trim();}).filter(Boolean); } } return []; }
+function permsHas(pgId, s){ return userPerms(s).indexOf(pgId) !== -1; }
+// canEdit: pode criar/editar na página atual (gestor OU colaborador com permissão para esta função)
+function canEdit(){ if(canManage()) return true; return permsHas(ST.page); }
+// páginas que o admin pode conceder a um colaborador (exclui início e as de administração)
+function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
 // que páginas cada pessoa pode acessar
 function pageAllowed(pgId, s){
   s = s || ST.session;
   if (pgId==='config') return isTopAdmin(s);
   if (pgId==='gestao')  return canManage();
-  if (pgId==='ponto')   return ST.sector==='lojas' && !isColaboradorPessoal(s); // ponto é do acesso da loja
+  if (pgId==='ponto')   return (ST.sector==='lojas' && !isColaboradorPessoal(s)) || permsHas(pgId, s);
   if (isColaboradorPessoal(s)) {
-    // em Lojas, o acesso pessoal vê só o que é dele (sem operação/tarefas); em Vendas mantém o dia a dia
-    if (ST.sector==='lojas') return ['inicio','chat'].indexOf(pgId) !== -1;
-    return COLAB_PAGES.indexOf(pgId) !== -1;
+    // base do colaborador + funções concedidas no cadastro
+    var base = (ST.sector==='lojas') ? ['inicio','chat'] : COLAB_PAGES;
+    return base.indexOf(pgId) !== -1 || permsHas(pgId, s);
   }
   return true;
 }
+// seletor reutilizável de permissões (marque as funções que o colaborador pode acessar/executar)
+function permsPickerHTML(sector, current){
+  current = current || [];
+  var pages = grantablePages(sector);
+  var boxes = pages.map(function(p){ var on=current.indexOf(p.id)!==-1; return '<label class="perm-box"><input type="checkbox" class="perm-ck" value="'+p.id+'"'+(on?' checked':'')+'><span class="perm-ic">'+icon(p.icon)+'</span><span class="perm-lb">'+esc(p.label)+'</span></label>'; }).join('');
+  return '<div class="perm-wrap" id="permWrap"><div class="perm-title">O que este colaborador pode acessar e executar</div><div class="perm-sub">Início fica sempre disponível. Marque as funções extras.</div><div class="perm-grid">'+boxes+'</div></div>';
+}
+function readPerms(modal){ var out=[]; var cks=modal.querySelectorAll('.perm-ck'); for(var i=0;i<cks.length;i++) if(cks[i].checked) out.push(cks[i].value); return out; }
 // permissões granulares por função
 function can(perm){
   var rk=roleRank(ST.session);
@@ -3500,12 +3526,12 @@ function contentSetMes(delta){ var r=contentMesRef(); var m=r.m+delta, y=r.y; wh
 function conteudoHTML(){
   var view=ST.contentView||'pipeline';
   var toggle='<div class="team-seg"><button class="'+(view==='pipeline'?'on':'')+'" data-cview="pipeline">Pipeline</button><button class="'+(view==='calendario'?'on':'')+'" data-cview="calendario">Calendário</button></div>';
-  var btn=canManage()?'<button class="btn-new" id="btnNovoConteudo">'+icon('plus')+'Novo conteúdo</button>':'';
+  var btn=canEdit()?'<button class="btn-new" id="btnNovoConteudo">'+icon('plus')+'Novo conteúdo</button>':'';
   var body = view==='calendario' ? contentCalendarHTML() : contentPipelineHTML();
   return '<div class="tasks-head"><div><h2>Conteúdo</h2><div class="sub">Planejamento editorial · o que publicar, quando e onde</div></div><div class="cfg-head-btns">'+toggle+btn+'</div></div>'+body;
 }
 function contentCardHTML(it){
-  var appr = (it.status==='aprovacao' && canManage()) ? '<div class="ck-appr"><button class="ck-appr-ok" data-approve="'+esc(it.id)+'">Aprovar</button><button class="ck-appr-no" data-reject="'+esc(it.id)+'">Ajustar</button></div>' : '';
+  var appr = (it.status==='aprovacao' && canEdit()) ? '<div class="ck-appr"><button class="ck-appr-ok" data-approve="'+esc(it.id)+'">Aprovar</button><button class="ck-appr-no" data-reject="'+esc(it.id)+'">Ajustar</button></div>' : '';
   return '<div class="ck-card" data-cid="'+esc(it.id)+'"><div class="ck-card-t">'+esc(it.title)+'</div><div class="ck-card-m"><span class="ck-chan" style="--cc:'+contentChanColor(it.channel)+'">'+esc(contentChanLabel(it.channel))+'</span>'+(it.ctype?'<span class="ck-type">'+esc(it.ctype)+'</span>':'')+(it.pub_date?'<span class="ck-date">'+fmtDate(it.pub_date)+'</span>':'')+'</div>'+(it.owner_name?'<div class="ck-owner">'+esc(it.owner_name)+'</div>':'')+appr+'</div>';
 }
 function contentPipelineHTML(){
@@ -3539,22 +3565,22 @@ function contentCalendarHTML(){
 }
 function bindConteudo(){
   var vw=app.querySelectorAll('[data-cview]'); for(var i=0;i<vw.length;i++) vw[i].addEventListener('click', function(){ ST.contentView=this.getAttribute('data-cview'); renderPage(); });
-  var nv=document.getElementById('btnNovoConteudo'); if(nv && canManage()) nv.addEventListener('click', function(){ openContentModal(null); });
+  var nv=document.getElementById('btnNovoConteudo'); if(nv && canEdit()) nv.addEventListener('click', function(){ openContentModal(null); });
   var pv=document.getElementById('ccPrev'); if(pv) pv.addEventListener('click', function(){ contentSetMes(-1); });
   var nx=document.getElementById('ccNext'); if(nx) nx.addEventListener('click', function(){ contentSetMes(1); });
   var ap=app.querySelectorAll('[data-approve]'); for(var a=0;a<ap.length;a++) ap[a].addEventListener('click', function(e){ e.stopPropagation(); mudarStatusConteudo(this.getAttribute('data-approve'),'agendado','Conteúdo aprovado'); });
   var rj=app.querySelectorAll('[data-reject]'); for(var r2=0;r2<rj.length;r2++) rj[r2].addEventListener('click', function(e){ e.stopPropagation(); mudarStatusConteudo(this.getAttribute('data-reject'),'producao','Enviado para ajuste'); });
   var cards=app.querySelectorAll('[data-cid]'); for(var c=0;c<cards.length;c++) cards[c].addEventListener('click', function(){ var id=this.getAttribute('data-cid'); var it=null; for(var k=0;k<ST.contentItems.length;k++) if(String(ST.contentItems[k].id)===String(id)){it=ST.contentItems[k];break;} if(it) openContentModal(it); });
-  var days=app.querySelectorAll('.cc-cell[data-cday]'); for(var d2=0;d2<days.length;d2++) days[d2].addEventListener('click', function(e){ if(e.target.closest('.cc-chip')) return; if(!canManage()) return; var r=contentMesRef(); var dd=parseInt(this.getAttribute('data-cday'),10); var mm=(r.m<10?'0':'')+r.m; var dstr=r.y+'-'+mm+'-'+((dd<10?'0':'')+dd); openContentModal(null, dstr); });
+  var days=app.querySelectorAll('.cc-cell[data-cday]'); for(var d2=0;d2<days.length;d2++) days[d2].addEventListener('click', function(e){ if(e.target.closest('.cc-chip')) return; if(!canEdit()) return; var r=contentMesRef(); var dd=parseInt(this.getAttribute('data-cday'),10); var mm=(r.m<10?'0':'')+r.m; var dstr=r.y+'-'+mm+'-'+((dd<10?'0':'')+dd); openContentModal(null, dstr); });
 }
 function mudarStatusConteudo(id, status, msg){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var it=null; for(var k=0;k<ST.contentItems.length;k++) if(String(ST.contentItems[k].id)===String(id)){it=ST.contentItems[k];break;} if(!it) return;
   it.status=status; sb.from('malba_content').update({ status:status }).eq('id',id).then(function(r){ if(r.error) toast('Erro ao atualizar','error'); });
   auditLog('Conteúdo → '+((CONTENT_STATUS[status]||{}).label||status), it.title); toast(msg||'Status atualizado','success'); renderPage();
 }
 function openContentModal(item, presetDate){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew=!item;
   var it=item||{ title:'', channel:'instagram', ctype:'Post', pub_date:(presetDate||today()), status:'ideia', owner_id:null, owner_name:'', caption:'', link:'', note:'' };
   var chanOpts=CONTENT_CHANS.map(function(c){ return '<option value="'+c.key+'"'+(it.channel===c.key?' selected':'')+'>'+c.label+'</option>'; }).join('');
@@ -3608,7 +3634,7 @@ function bibliotecaHTML(){
     return (x.title||'').toLowerCase().indexOf(q)!==-1 || (x.content||'').toLowerCase().indexOf(q)!==-1 || (x.tags||'').toLowerCase().indexOf(q)!==-1;
   });
   var chips=['todos','arte','legenda','texto','hashtags'].map(function(k){ var lb=k==='todos'?'Todos':CRIATIVO_KINDS[k].label; var n=(k==='todos')?items.length:items.filter(function(x){return (x.kind||'texto')===k;}).length; return '<button class="crm-chip'+(kind===k?' on':'')+'" data-bibkind="'+k+'">'+lb+' <i>'+n+'</i></button>'; }).join('');
-  var btns=(canManage()?'<button class="btn-new" id="btnNovoCriativo">'+icon('plus')+'Novo item</button>':'')+'<button class="btn-sync" id="btnUtm">'+icon('trend')+'Gerar link (UTM)</button>';
+  var btns=(canEdit()?'<button class="btn-new" id="btnNovoCriativo">'+icon('plus')+'Novo item</button>':'')+'<button class="btn-sync" id="btnUtm">'+icon('trend')+'Gerar link (UTM)</button>';
   var cards=list.length ? list.map(criativoCardHTML).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('image')+'</div><h3>Biblioteca vazia</h3><p>Guarde aqui artes, legendas, textos e hashtags que você reaproveita.</p></div>';
   return '<div class="tasks-head"><div><h2>Biblioteca</h2><div class="sub">Artes, legendas e textos reaproveitáveis</div></div><div class="cfg-head-btns">'+btns+'</div></div>'+
     '<div class="crm-chips">'+chips+'</div>'+
@@ -3625,15 +3651,15 @@ function criativoCardHTML(it){
 function bindBiblioteca(){
   var chips=app.querySelectorAll('[data-bibkind]'); for(var i=0;i<chips.length;i++) chips[i].addEventListener('click', function(){ ST.bibKind=this.getAttribute('data-bibkind'); renderPage(); });
   var s=document.getElementById('bibSearch'); if(s) s.addEventListener('input', function(){ var v=this.value.trim().toLowerCase(); ST.bibQ=this.value; var cs=app.querySelectorAll('.bib-card'); for(var j=0;j<cs.length;j++){ var t=(cs[j].textContent||'').toLowerCase(); cs[j].style.display=(!v||t.indexOf(v)!==-1)?'':'none'; } });
-  var nv=document.getElementById('btnNovoCriativo'); if(nv && canManage()) nv.addEventListener('click', function(){ openCriativoModal(null); });
+  var nv=document.getElementById('btnNovoCriativo'); if(nv && canEdit()) nv.addEventListener('click', function(){ openCriativoModal(null); });
   var ut=document.getElementById('btnUtm'); if(ut) ut.addEventListener('click', function(){ openUtmModal(); });
   var cps=app.querySelectorAll('[data-copy]'); for(var c=0;c<cps.length;c++) cps[c].addEventListener('click', function(e){ e.stopPropagation(); copyText(decodeURIComponent(this.getAttribute('data-copy')||''), 'Copiado!'); });
   var st=app.querySelectorAll('.bib-card [data-stop]'); for(var z=0;z<st.length;z++) st[z].addEventListener('click', function(e){ e.stopPropagation(); });
-  if(!canManage()) return;
+  if(!canEdit()) return;
   var cards=app.querySelectorAll('.bib-card[data-bibid]'); for(var k=0;k<cards.length;k++) cards[k].addEventListener('click', function(){ var id=this.getAttribute('data-bibid'); var it=null; for(var q=0;q<ST.creativos.length;q++) if(String(ST.creativos[q].id)===String(id)){it=ST.creativos[q];break;} if(it) openCriativoModal(it); });
 }
 function openCriativoModal(item){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew=!item; var it=item||{ title:'', kind:'legenda', channel:'', content:'', url:'', tags:'' };
   var modal=document.createElement('div'); modal.className='modal-bg';
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
@@ -4543,6 +4569,7 @@ function openUserModal(user) {
   var isNew = !user;
   var u = user || { name:'', email:'', sector:ST.sector, color:'#3B6FF7' };
   var nivel = isNew ? 'user' : nivelDe(u);
+  var seedPerms = userPerms({ user:u });
   var grantorRank = roleRank(ST.session); // só posso conceder níveis abaixo (ou igual) ao meu
   var NIV_ORDER = ['user','store_manager','sector_admin','admin_geral','super'];
   var nivelOpts = NIV_ORDER.filter(function(k){ return NIVEIS[k].rank <= grantorRank; }).map(function(k){
@@ -4564,6 +4591,7 @@ function openUserModal(user) {
       '<input class="modal-title-input" id="uName" placeholder="Nome do usuário..." value="'+esc(u.name||'')+'">'+
       emailField + passField +
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Setor</label><select id="uSector">'+sectorOpts+'</select></div><div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="uLevel">'+nivelOpts+'</select></div></div>'+
+      '<div id="permHolder">'+(nivel==='user'?permsPickerHTML(u.sector, seedPerms):'')+'</div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
@@ -4572,6 +4600,15 @@ function openUserModal(user) {
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   modal.querySelector('#userCancel').addEventListener('click', close);
   modal.querySelector('#uName').focus();
+  function updatePerms(preserve){
+    var lvl=modal.querySelector('#uLevel').value; var sec=modal.querySelector('#uSector').value; var holder=modal.querySelector('#permHolder');
+    if(lvl!=='user'){ holder.innerHTML=''; return; }
+    var cur = (preserve && holder.querySelector('.perm-ck')) ? readPerms(modal) : seedPerms;
+    holder.innerHTML = permsPickerHTML(sec, cur);
+  }
+  modal.querySelector('#uLevel').addEventListener('change', function(){ updatePerms(true); });
+  modal.querySelector('#uSector').addEventListener('change', function(){ updatePerms(true); });
+  function aplicarPerms(id){ var lvl=modal.querySelector('#uLevel').value; var pr=(lvl==='user')?readPerms(modal):[]; sb.from('malba_users').update({ perms: pr }).eq('id', id).then(function(rr){ if(!rr.error){ for(var i=0;i<ST.allUsers.length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=pr; } }); }
 
   modal.querySelector('#userSave').addEventListener('click', function(){
     var name=(modal.querySelector('#uName').value||'').trim();
@@ -4596,13 +4633,13 @@ function openUserModal(user) {
     if (isNew) {
       sb.from('malba_users').insert(rec).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao criar (e-mail já existe?)','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar usuário'; return; }
-        ST.allUsers.push(r.data); auditLog('Criou usuário', name+' · '+(NIVEIS[lvl]?NIVEIS[lvl].label:lvl)); close(); toast('Usuário criado','success'); renderPage();
+        ST.allUsers.push(r.data); auditLog('Criou usuário', name+' · '+(NIVEIS[lvl]?NIVEIS[lvl].label:lvl)); aplicarPerms(r.data.id); close(); toast('Usuário criado','success'); renderPage();
       });
     } else {
       sb.from('malba_users').update(rec).eq('id', u.id).then(function(r){
         if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.allUsers.length;i++) if (ST.allUsers[i].id===u.id) { ST.allUsers[i]=Object.assign(ST.allUsers[i],rec); break; }
-        close(); toast('Usuário atualizado','success'); renderPage();
+        aplicarPerms(u.id); close(); toast('Usuário atualizado','success'); renderPage();
       });
     }
   });
