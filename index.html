@@ -1152,17 +1152,26 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 /* ===== Gerador de UTM ===== */
 .utm-out-wrap { margin-top:4px; }
 .utm-out { margin-top:6px; background:var(--u-bg2); border:1px dashed var(--u-border2); border-radius:10px; padding:12px 14px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; color:var(--u-accent); word-break:break-all; line-height:1.5; }
-/* ===== Seletor de permissões do colaborador ===== */
+/* ===== Seletor de permissões do colaborador (Ver / Fazer) ===== */
 .perm-wrap { background:var(--u-bg2); border-radius:12px; padding:14px; margin-bottom:4px; }
+.perm-hd { margin-bottom:10px; }
 .perm-title { font-size:13px; font-weight:800; color:var(--u-text); }
-.perm-sub { font-size:11.5px; color:var(--u-text3); margin:2px 0 11px; }
-.perm-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
-.perm-box { display:flex; align-items:center; gap:8px; background:var(--u-card); border:1px solid var(--u-border); border-radius:10px; padding:9px 11px; cursor:pointer; transition:.12s; }
-.perm-box:hover { border-color:var(--u-accent); }
-.perm-box input { width:16px; height:16px; accent-color:var(--u-accent); flex-shrink:0; cursor:pointer; }
-.perm-box input:checked ~ .perm-lb { color:var(--u-accent); font-weight:700; }
-.perm-ic { display:flex; align-items:center; } .perm-ic svg { width:15px; height:15px; color:var(--u-text3); }
-.perm-lb { font-size:12.5px; color:var(--u-text2); font-weight:600; }
+.perm-sub { font-size:11.5px; color:var(--u-text3); margin-top:2px; }
+.perm-shortcuts { display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-bottom:12px; }
+.perm-shortcuts > span { font-size:11px; font-weight:700; color:var(--u-text3); }
+.perm-sc { font-size:11.5px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:5px 11px; cursor:pointer; }
+.perm-sc:hover { background:var(--u-accent); color:#fff; }
+.perm-rows { display:flex; flex-direction:column; gap:7px; }
+.perm-row { display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--u-card); border:1px solid var(--u-border); border-radius:10px; padding:8px 10px 8px 12px; }
+.perm-row-l { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:600; color:var(--u-text); min-width:0; }
+.perm-ic { display:flex; } .perm-ic svg { width:15px; height:15px; color:var(--u-text3); }
+.perm-seg { display:inline-flex; background:var(--u-bg2); border-radius:9px; padding:3px; flex-shrink:0; }
+.perm-seg button { font-size:11.5px; font-weight:700; color:var(--u-text3); background:none; border:none; border-radius:7px; padding:5px 10px; cursor:pointer; white-space:nowrap; }
+.perm-seg button.on { background:var(--u-card); box-shadow:var(--u-shadow); color:var(--u-text2); }
+.perm-seg button.on.ver { color:var(--u-accent); }
+.perm-seg button.on.fazer { color:#16A34A; }
+.perm-note-hier { font-size:12.5px; color:var(--u-text3); background:var(--u-bg2); border-radius:10px; padding:12px 14px; line-height:1.5; }
+@media (max-width:560px){ .perm-row { flex-direction:column; align-items:stretch; gap:8px; } .perm-seg { width:100%; } .perm-seg button { flex:1; } }
 @media (max-width: 700px){ .rep-kpis { grid-template-columns:repeat(2,1fr); } .rep-grid2 { grid-template-columns:1fr; } }
 @media print {
   .side, .top, .side-overlay, .rep-noprint, .btn-new { display:none !important; }
@@ -1470,7 +1479,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v53 · 21/06 (Permissões por colaborador no cadastro)';
+var APP_BUILD = 'v55 · 21/06 (Permissões Ver/Fazer em todos os cadastros)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1575,13 +1584,20 @@ function blockManage(){ toast('Você não tem permissão para criar, editar ou e
 // "Colaborador pessoal" = acesso individual (rank baixo) que NÃO é login de loja.
 // O login de loja (ST.store definido) é o acesso operacional da unidade.
 function isColaboradorPessoal(s){ s = s || ST.session; return roleRank(s) <= 1 && !ST.store; }
-// permissões extras concedidas a uma pessoa (lista de páginas que ela pode acessar e usar)
-function userPerms(s){ s = s || ST.session; var u=s&&s.user; if(!u) return []; var p=u.perms; if(Array.isArray(p)) return p; if(typeof p==='string'){ try{ var a=JSON.parse(p); return Array.isArray(a)?a:[]; }catch(e){ return p.split(',').map(function(x){return x.trim();}).filter(Boolean); } } return []; }
-function permsHas(pgId, s){ return userPerms(s).indexOf(pgId) !== -1; }
-// canEdit: pode criar/editar na página atual (gestor OU colaborador com permissão para esta função)
-function canEdit(){ if(canManage()) return true; return permsHas(ST.page); }
+// permissões por função concedidas a uma pessoa: mapa { pageId: 'ver' | 'fazer' }
+function userPermMap(s){ s = s || ST.session; var u=s&&s.user; if(!u) return {}; var p=u.perms;
+  if(typeof p==='string'){ try{ p=JSON.parse(p); }catch(e){ p=p.split(',').map(function(x){return x.trim();}).filter(Boolean); } }
+  if(Array.isArray(p)){ var m={}; p.forEach(function(id){ if(id) m[id]='fazer'; }); return m; } // compat: lista antiga = acesso total
+  if(p && typeof p==='object'){ return p; }
+  return {};
+}
+function permLevel(pgId, s){ var m=userPermMap(s); var v=m[pgId]; return (v==='ver'||v==='fazer')?v:'none'; }
+function permsHas(pgId, s){ return permLevel(pgId, s) !== 'none'; }        // pode ao menos visualizar
+function canEdit(){ if(canManage()) return true; return permLevel(ST.page)==='fazer'; } // pode executar na página atual
 // páginas que o admin pode conceder a um colaborador (exclui início e as de administração)
 function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
+// grava as permissões (best-effort; se a coluna não existir, apenas ignora)
+function savePerms(id, map){ sb.from('malba_users').update({ perms: map||{} }).eq('id', id).then(function(rr){ if(!rr.error){ for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=(map||{}); } }); }
 // que páginas cada pessoa pode acessar
 function pageAllowed(pgId, s){
   s = s || ST.session;
@@ -1595,14 +1611,28 @@ function pageAllowed(pgId, s){
   }
   return true;
 }
-// seletor reutilizável de permissões (marque as funções que o colaborador pode acessar/executar)
-function permsPickerHTML(sector, current){
-  current = current || [];
+// seletor reutilizável de permissões — nível por função (Sem acesso / Ver / Fazer)
+function permsPickerHTML(sector, currentMap){
+  currentMap = currentMap || {};
   var pages = grantablePages(sector);
-  var boxes = pages.map(function(p){ var on=current.indexOf(p.id)!==-1; return '<label class="perm-box"><input type="checkbox" class="perm-ck" value="'+p.id+'"'+(on?' checked':'')+'><span class="perm-ic">'+icon(p.icon)+'</span><span class="perm-lb">'+esc(p.label)+'</span></label>'; }).join('');
-  return '<div class="perm-wrap" id="permWrap"><div class="perm-title">O que este colaborador pode acessar e executar</div><div class="perm-sub">Início fica sempre disponível. Marque as funções extras.</div><div class="perm-grid">'+boxes+'</div></div>';
+  var rows = pages.map(function(p){
+    var lvl = (currentMap[p.id]==='ver'||currentMap[p.id]==='fazer') ? currentMap[p.id] : 'none';
+    return '<div class="perm-row"><span class="perm-row-l"><span class="perm-ic">'+icon(p.icon)+'</span>'+esc(p.label)+'</span>'+
+      '<div class="perm-seg" data-perm="'+p.id+'">'+
+        '<button type="button" class="'+(lvl==='none'?'on':'')+'" data-lvl="none">Sem acesso</button>'+
+        '<button type="button" class="'+(lvl==='ver'?'on ver':'')+'" data-lvl="ver">Ver</button>'+
+        '<button type="button" class="'+(lvl==='fazer'?'on fazer':'')+'" data-lvl="fazer">Fazer</button>'+
+      '</div></div>';
+  }).join('');
+  return '<div class="perm-wrap" id="permWrap"><div class="perm-hd"><div><div class="perm-title">Permissões por função</div><div class="perm-sub">Em cada função: nada, só visualizar, ou visualizar e executar. "Fazer" já inclui ver.</div></div></div>'+
+    '<div class="perm-shortcuts"><span>Atalhos:</span><button type="button" class="perm-sc" data-sc="ver">Só visualização</button><button type="button" class="perm-sc" data-sc="fazer">Acesso total</button><button type="button" class="perm-sc" data-sc="none">Limpar</button></div>'+
+    '<div class="perm-rows">'+rows+'</div></div>';
 }
-function readPerms(modal){ var out=[]; var cks=modal.querySelectorAll('.perm-ck'); for(var i=0;i<cks.length;i++) if(cks[i].checked) out.push(cks[i].value); return out; }
+function readPerms(modal){ var map={}; var segs=modal.querySelectorAll('.perm-seg'); for(var i=0;i<segs.length;i++){ var id=segs[i].getAttribute('data-perm'); var on=segs[i].querySelector('button.on'); var lvl=on?on.getAttribute('data-lvl'):'none'; if(lvl==='ver'||lvl==='fazer') map[id]=lvl; } return map; }
+function bindPermsPicker(modal){
+  var segBtns=modal.querySelectorAll('.perm-seg button'); for(var i=0;i<segBtns.length;i++) segBtns[i].addEventListener('click', function(){ var seg=this.parentNode; var bs=seg.querySelectorAll('button'); for(var j=0;j<bs.length;j++){ bs[j].classList.remove('on','ver','fazer'); } this.classList.add('on'); var lv=this.getAttribute('data-lvl'); if(lv==='ver') this.classList.add('ver'); if(lv==='fazer') this.classList.add('fazer'); });
+  var scs=modal.querySelectorAll('.perm-sc'); for(var s=0;s<scs.length;s++) scs[s].addEventListener('click', function(){ var lvl=this.getAttribute('data-sc'); var segs=modal.querySelectorAll('.perm-seg'); for(var k=0;k<segs.length;k++){ var bs=segs[k].querySelectorAll('button'); for(var b=0;b<bs.length;b++){ var match=bs[b].getAttribute('data-lvl')===lvl; bs[b].classList.remove('on','ver','fazer'); if(match){ bs[b].classList.add('on'); if(lvl==='ver') bs[b].classList.add('ver'); if(lvl==='fazer') bs[b].classList.add('fazer'); } } } });
+}
 // permissões granulares por função
 function can(perm){
   var rk=roleRank(ST.session);
@@ -1614,9 +1644,9 @@ function can(perm){
     case 'gerir_setor':        return rk>=3;                 // Admin de Setor +
     case 'gerir_loja':
     case 'editar_gestao':
-    case 'lancar_financeiro':  return canManage();           // gestores (inclui Gerente de Loja em Lojas)
+    case 'lancar_financeiro':  return canEdit();           // gestores (inclui Gerente de Loja em Lojas)
     case 'criar_tarefa':       return true;                  // todos criam a própria tarefa
-    default:                   return canManage();
+    default:                   return canEdit();
   }
 }
 // registro de auditoria (quem fez o quê) — melhor esforço, nunca quebra a UX
@@ -1873,7 +1903,7 @@ function setOnlineState() {
   var txt=el.querySelector('span'); if(txt) txt.textContent = on?'Online':'Offline';
 }
 function novoContextual() {
-  if (!canManage()) { return openTaskModal(null); } // usuário comum só cria tarefa
+  if (!canEdit()) { return openTaskModal(null); } // usuário comum só cria tarefa
   var pg=ST.page;
   if (pg==='campanhas') return openCampaignModal(null);
   if (pg==='crm') return openClientModal(null);
@@ -2615,7 +2645,7 @@ function openTaskModal(task, preset) {
   var isEdit=!!task;
   preset = preset || {};
   var t=task||{ title:'', description:'', priority:'media', status:'todo', due_date:(preset.due||today()), area:'', assignee_id:(preset.assignee||'') };
-  var canMng=canManage();
+  var canMng=canEdit();
   var ro = isEdit && !canMng; // usuário comum editando tarefa existente: só status (mas pode marcar checklist)
   var dis = ro?' disabled':'';
   var subList = (task && Array.isArray(task.subtasks)) ? task.subtasks.map(function(s){ return { id:s.id||uid(), text:s.text||'', done:!!s.done }; }) : [];
@@ -2838,7 +2868,7 @@ function bindEquipe() {
 }
 
 function openMemberModal(member) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew = !member;
   var m = member || { name:'', role:'', phone:'', color:'#3B6FF7', is_active:true };
   var admin = isAdmin(ST.session);
@@ -2896,6 +2926,7 @@ function openMemberModal(member) {
       '<div class="acc-fields" id="mAccessFields" style="display:none">'+
         '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">E-mail de acesso *</label><input type="text" id="mEmail" placeholder="pessoa@malba.com.br"></div><div class="modal-row"><label class="modal-label">Senha *</label><input type="text" id="mPass" placeholder="senha de acesso"></div></div>'+
         '<div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="mLevel">'+nivelOpts+'</select></div>'+
+        '<div id="mPermHolder"></div>'+
       '</div>'+
     '</div>';
   }
@@ -2926,10 +2957,13 @@ function openMemberModal(member) {
   if (!isNew) bindPills(modal, '#mStatus .ms-pill', 'act', function(v){ actPick = (v==='1'); });
 
   var mk=modal.querySelector('#mMakeUser');
+  var mPermDraw=function(){ var h=modal.querySelector('#mPermHolder'); if(!h) return; var lvEl=modal.querySelector('#mLevel'); var on=mk&&mk.checked; if(on && lvEl && lvEl.value==='user'){ h.innerHTML=permsPickerHTML('lojas', {}); bindPermsPicker(modal); } else if(on){ h.innerHTML='<div class="perm-note-hier">Este nível já tem acesso completo pela hierarquia.</div>'; } else { h.innerHTML=''; } };
   if (mk) mk.addEventListener('change', function(){
     var f=modal.querySelector('#mAccessFields'); if(f) f.style.display=this.checked?'block':'none';
     if(this.checked){ var em=modal.querySelector('#mEmail'); if(em) em.focus(); }
+    mPermDraw();
   });
+  var mLvEl=modal.querySelector('#mLevel'); if(mLvEl) mLvEl.addEventListener('change', mPermDraw);
 
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -2955,6 +2989,7 @@ function openMemberModal(member) {
     var accEmail = makeUser ? (modal.querySelector('#mEmail').value||'').trim().toLowerCase() : '';
     var accPass  = makeUser ? (modal.querySelector('#mPass').value||'').trim() : '';
     var accLvl   = makeUser ? (modal.querySelector('#mLevel').value||'user') : 'user';
+    var accPerms = (makeUser && accLvl==='user') ? readPerms(modal) : {};
     if (makeUser) {
       if (!accEmail) { toast('Informe o e-mail de acesso (ou desmarque "Criar acesso")','error'); return; }
       if (!accPass)  { toast('Defina a senha de acesso','error'); return; }
@@ -2998,7 +3033,7 @@ function openMemberModal(member) {
           }
           if(ST.allUsers) ST.allUsers.push(ru.data);
           auditLog('Criou acesso', name+' · '+(NIVEIS[accLvl]?NIVEIS[accLvl].label:accLvl));
-          vincularMembro(memberId, ru.data.id);
+          vincularMembro(memberId, ru.data.id); savePerms(ru.data.id, accPerms);
           finalize('Funcionário '+(isNew?'adicionado':'atualizado')+' com acesso','success');
         });
       }
@@ -3082,7 +3117,7 @@ function rankVendasMembro(member){
 }
 
 function openFichaColaborador(member){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var m = member; var showReset=false; var fiTab='resumo';
   var modal=document.createElement('div'); modal.className='modal-bg';
   function refreshMember(){ for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(m.id)){ m=ST.members[i]; break; } }
@@ -3113,6 +3148,7 @@ function openFichaColaborador(member){
       acesso='<div class="fi-acc none"><div class="fi-acc-top"><span class="fi-acc-ic">'+icon('bell')+'</span><div class="fi-acc-tx"><b>Sem acesso ao sistema</b><i>Crie um login para a pessoa ver o "Meu Dia", metas e avaliações.</i></div></div>'+
         '<div class="fi-acc-form"><div class="modal-grid2"><div class="modal-row"><input type="text" id="fiEmail" placeholder="e-mail de acesso"></div><div class="modal-row"><input type="text" id="fiPass" placeholder="senha"></div></div>'+
         '<div class="fi-acc-form-row"><select id="fiLevel">'+nivelOpts+'</select><button class="btn btn-primary" id="fiCreate">Criar acesso</button></div>'+
+        '<div id="fiPermHolder"></div>'+
         '<div class="acc-err" id="fiAccErr" style="display:none"></div></div>'+
       '</div>';
     }
@@ -3185,6 +3221,7 @@ function openFichaColaborador(member){
   }
   function criarAcessoFicha(){
     var email=(modal.querySelector('#fiEmail').value||'').trim().toLowerCase(); var pass=(modal.querySelector('#fiPass').value||'').trim(); var lvl=modal.querySelector('#fiLevel').value||'user';
+    var fiPerms=(lvl==='user')?readPerms(modal):{};
     var errBox=modal.querySelector('#fiAccErr'); if(errBox){ errBox.style.display='none'; errBox.innerHTML=''; }
     if(!email){ toast('Informe o e-mail','error'); return; } if(!pass){ toast('Defina a senha','error'); return; }
     var btn=modal.querySelector('#fiCreate'); btn.disabled=true; btn.textContent='Criando...';
@@ -3194,7 +3231,7 @@ function openFichaColaborador(member){
       var ehAdminSetor=(lvl==='sector_admin'||lvl==='admin_geral'||lvl==='super'); var baseU={ name:m.name, sector:'lojas', access_level:lvl, sector_role:(ehAdminSetor?'admin':'user'), role:(lvl==='super'?'admin':'user'), email:email, color:m.color||'#3B6FF7', initials:iniciais(m.name) };
       function tryIns(field, retry){ var urec=Object.assign({},baseU); urec[field]=pass; sb.from('malba_users').insert(urec).select().single().then(function(ru){
         if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } btn.disabled=false; btn.textContent='Criar acesso'; return; }
-        ST.allUsers.push(ru.data); linkTo(ru.data.id); auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
+        ST.allUsers.push(ru.data); linkTo(ru.data.id); savePerms(ru.data.id, fiPerms); auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
       }); }
       tryIns('password_hash', false);
     });
@@ -3211,6 +3248,11 @@ function openFichaColaborador(member){
     var dr=modal.querySelector('#fiDoReset'); if(dr) dr.addEventListener('click', function(){ var btn=this; var u=userDoMembro(m); var p=(modal.querySelector('#fiNewPass').value||'').trim(); if(p.length<4){ toast('Senha muito curta (mín. 4)','error'); return; } btn.disabled=true; btn.textContent='Salvando...'; resetSenha(u, p, function(ok){ if(ok){ showReset=false; toast('Senha redefinida','success'); draw(); } else { btn.disabled=false; btn.textContent='Salvar senha'; } }); });
     var rm=modal.querySelector('#fiRemove'); if(rm) rm.addEventListener('click', function(){ var u=userDoMembro(m); if(!u) return; if(!confirm('Remover o acesso de '+m.name+'? A pessoa não poderá mais entrar (você pode recriar depois).')) return; removerAcesso(u, function(){ toast('Acesso removido','success'); draw(); }); });
     var cr=modal.querySelector('#fiCreate'); if(cr) cr.addEventListener('click', criarAcessoFicha);
+    var fiLv=modal.querySelector('#fiLevel');
+    if(fiLv){ var fh=modal.querySelector('#fiPermHolder');
+      var drawFiPerms=function(){ if(!fh) return; if(fiLv.value==='user'){ fh.innerHTML=permsPickerHTML('lojas', {}); bindPermsPicker(modal); } else { fh.innerHTML='<div class="perm-note-hier">Este nível já tem acesso completo pela hierarquia.</div>'; } };
+      fiLv.addEventListener('change', drawFiPerms); drawFiPerms();
+    }
     var oks=modal.querySelectorAll('[data-fireqok]'); for(var i=0;i<oks.length;i++) oks[i].addEventListener('click', function(){ decidirReq(this.getAttribute('data-fireqok'),'aprovado'); setTimeout(draw,60); });
     var nos=modal.querySelectorAll('[data-fireqno]'); for(var j=0;j<nos.length;j++) nos[j].addEventListener('click', function(){ decidirReq(this.getAttribute('data-fireqno'),'negado'); setTimeout(draw,60); });
   }
@@ -3284,7 +3326,7 @@ function mktMetasHTML(){
   var n=_ymNow();
   var cur=(ST.mktMetas||[]).filter(function(g){ return (g.sector||'marketing')==='marketing' && g.month===n.m && g.year===n.y; });
   cur.sort(function(a,b){ return MKT_ORDER.indexOf(a.metric)-MKT_ORDER.indexOf(b.metric); });
-  var btn=canManage()?'<button class="btn-new" id="btnNovaMktMeta">'+icon('plus')+'Nova meta</button>':'';
+  var btn=canEdit()?'<button class="btn-new" id="btnNovaMktMeta">'+icon('plus')+'Nova meta</button>':'';
   var cards = cur.length ? cur.map(mktMetaCard).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('target')+'</div><h3>Sem metas neste mês</h3><p>Defina os alvos do marketing: faturamento do site, leads, seguidores e alcance.</p></div>';
   return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">Metas do marketing · '+MESES[n.m-1]+' '+n.y+'</div></div>'+btn+'</div><div class="goals-grid">'+cards+'</div>';
 }
@@ -3298,12 +3340,12 @@ function mktMetaCard(g){
   '</div>';
 }
 function bindMktMetas(){
-  var nova=document.getElementById('btnNovaMktMeta'); if(nova && canManage()) nova.addEventListener('click', function(){ openMktMetaModal(null); });
-  if(!canManage()) return;
+  var nova=document.getElementById('btnNovaMktMeta'); if(nova && canEdit()) nova.addEventListener('click', function(){ openMktMetaModal(null); });
+  if(!canEdit()) return;
   var cards=app.querySelectorAll('.goal-card.mkt'); for(var i=0;i<cards.length;i++) cards[i].addEventListener('click', function(){ var id=this.getAttribute('data-mktid'); var g=null; for(var k=0;k<ST.mktMetas.length;k++) if(String(ST.mktMetas[k].id)===String(id)){g=ST.mktMetas[k];break;} if(g) openMktMetaModal(g); });
 }
 function openMktMetaModal(goal){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew=!goal; var now=new Date();
   var g=goal ? Object.assign({}, goal) : { metric:'faturamento_site', label:'', target:'', actual:'', unit:'brl', month:now.getMonth()+1, year:now.getFullYear() };
   var modal=document.createElement('div'); modal.className='modal-bg';
@@ -3432,12 +3474,12 @@ function orcamentoHTML(){
   var pct=verba>0?Math.round(gasto/verba*100):(gasto>0?100:0); var over=gasto>verba && verba>0;
   var barColor = over?'#EF4444':(pct>=85?'#F59E0B':'#8B5CF6');
   var d0=new Date(); var canNext=!(y>d0.getFullYear() || (y===d0.getFullYear() && m>=d0.getMonth()+1));
-  var btn = canManage()?'<button class="btn-new" id="btnLancarGasto">'+icon('plus')+'Lançar gasto</button>':'';
+  var btn = canEdit()?'<button class="btn-new" id="btnLancarGasto">'+icon('plus')+'Lançar gasto</button>':'';
   var head='<div class="rep-head"><div><h2>Orçamento</h2><div class="sub">Verba planejada × gasto real, por canal</div></div><div class="rep-tools"><button class="rep-nav" id="orcPrev">‹</button><span class="rep-month">'+MESES[m-1]+' '+y+'</span><button class="rep-nav" id="orcNext"'+(canNext?'':' disabled')+'>›</button>'+btn+'</div></div>';
   var resumo='<div class="orc-resumo"><div class="orc-r-grid"><div><span class="orc-r-l">Verba do mês</span><b class="orc-r-v">'+fmtBRL(verba)+'</b></div><div><span class="orc-r-l">Gasto</span><b class="orc-r-v" style="color:'+(over?'#EF4444':'var(--u-text)')+'">'+fmtBRL(gasto)+'</b></div><div><span class="orc-r-l">Saldo</span><b class="orc-r-v" style="color:'+(saldo<0?'#EF4444':'#16A34A')+'">'+fmtBRL(saldo)+'</b></div></div><div class="orc-r-bar"><span style="width:'+Math.min(100,pct)+'%;background:'+barColor+'"></span></div><div class="orc-r-sub">'+pct+'% da verba usada'+(over?' · acima do previsto!':'')+'</div></div>';
   var canais = MKT_CANAIS.map(function(cn){
     var pl=mktPlano(cn.key,m,y); var ga=mktGastoCanal(cn.key,m,y); var sal=pl-ga; var cp=pl>0?Math.min(100,Math.round(ga/pl*100)):(ga>0?100:0); var ov=ga>pl&&pl>0;
-    return '<div class="orc-canal"><div class="orc-canal-h"><span class="orc-canal-dot" style="background:'+cn.color+'"></span><b>'+cn.label+'</b>'+(canManage()?'<button class="orc-set" data-setverba="'+cn.key+'">'+(pl>0?'editar verba':'definir verba')+'</button>':'')+'</div><div class="orc-canal-bar"><span style="width:'+cp+'%;background:'+(ov?'#EF4444':cn.color)+'"></span></div><div class="orc-canal-vals"><span>Gasto <b>'+fmtBRL(ga)+'</b></span><span>Verba <b>'+fmtBRL(pl)+'</b></span><span style="color:'+(sal<0?'#EF4444':'#16A34A')+'">Saldo '+fmtBRL(sal)+'</span></div></div>';
+    return '<div class="orc-canal"><div class="orc-canal-h"><span class="orc-canal-dot" style="background:'+cn.color+'"></span><b>'+cn.label+'</b>'+(canEdit()?'<button class="orc-set" data-setverba="'+cn.key+'">'+(pl>0?'editar verba':'definir verba')+'</button>':'')+'</div><div class="orc-canal-bar"><span style="width:'+cp+'%;background:'+(ov?'#EF4444':cn.color)+'"></span></div><div class="orc-canal-vals"><span>Gasto <b>'+fmtBRL(ga)+'</b></span><span>Verba <b>'+fmtBRL(pl)+'</b></span><span style="color:'+(sal<0?'#EF4444':'#16A34A')+'">Saldo '+fmtBRL(sal)+'</span></div></div>';
   }).join('');
   var gastos=gastosDoMes(m,y);
   var gBody = gastos.length ? gastos.map(function(e){ return '<button class="orc-exp" data-expid="'+esc(e.id)+'"><span class="orc-exp-dot" style="background:'+canalColor(e.channel)+'"></span><div class="orc-exp-main"><b>'+fmtBRL(e.value)+'</b><i>'+canalLabel(e.channel)+(e.note?(' · '+esc(e.note)):'')+'</i></div><span class="orc-exp-d">'+fmtDate(e.spend_date)+'</span></button>'; }).join('') : '<div class="dash-empty">Nenhum gasto lançado neste mês. Use "Lançar gasto".</div>';
@@ -3446,12 +3488,12 @@ function orcamentoHTML(){
 function bindOrcamento(){
   var pv=document.getElementById('orcPrev'); if(pv) pv.addEventListener('click', function(){ orcSetMes(-1); });
   var nx=document.getElementById('orcNext'); if(nx) nx.addEventListener('click', function(){ orcSetMes(1); });
-  var lg=document.getElementById('btnLancarGasto'); if(lg && canManage()) lg.addEventListener('click', function(){ openGastoModal(null); });
+  var lg=document.getElementById('btnLancarGasto'); if(lg && canEdit()) lg.addEventListener('click', function(){ openGastoModal(null); });
   var sv=app.querySelectorAll('[data-setverba]'); for(var i=0;i<sv.length;i++) sv[i].addEventListener('click', function(){ openVerbaModal(this.getAttribute('data-setverba')); });
   var ex=app.querySelectorAll('.orc-exp[data-expid]'); for(var j=0;j<ex.length;j++) ex[j].addEventListener('click', function(){ var id=this.getAttribute('data-expid'); var e=null; for(var k=0;k<ST.mktBudget.length;k++) if(String(ST.mktBudget[k].id)===String(id)){e=ST.mktBudget[k];break;} if(e) openGastoModal(e); });
 }
 function openVerbaModal(channel){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var r=orcMesRef(); var m=r.m, y=r.y; var existing=mktPlanoRow(channel,m,y);
   var modal=document.createElement('div'); modal.className='modal-bg';
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
@@ -3471,7 +3513,7 @@ function openVerbaModal(channel){
   document.body.appendChild(modal); modal.querySelector('#vbVal').focus();
 }
 function openGastoModal(expense){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew=!expense; var r=orcMesRef();
   var e=expense||{ channel:'meta', value:'', spend_date:today(), note:'', campaign_id:null };
   var canalOpts=MKT_CANAIS.map(function(cn){ return '<option value="'+cn.key+'"'+(e.channel===cn.key?' selected':'')+'>'+cn.label+'</option>'; }).join('');
@@ -3768,7 +3810,7 @@ function bindMetas() {
 }
 
 function openGoalModal(goal, preset) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew = !goal;
   var now = new Date();
   var g = goal || { month:now.getMonth()+1, year:now.getFullYear(), goal_value:'', actual_value:0, store_unit_id:(preset&&preset.store_unit_id)||null, user_id:(preset&&preset.user_id)||null };
@@ -3981,7 +4023,7 @@ function crmHTML() {
     crmStoreFilter='<select class="task-filter" id="crmStore" title="Ver loja">'+so+'</select>';
   }
   return ''+
-    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+crmStoreFilter+importBtn+(canManage()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
+    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+crmStoreFilter+importBtn+(canEdit()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
     summary+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
@@ -4008,7 +4050,7 @@ function crmContactRow(c){
     '<div class="crm-cp-main"><b>'+esc(c.name)+'</b><i>'+esc(crmRecencia(c))+hist+(c.company?' · '+esc(c.company):'')+'</i></div>'+
     '<span class="crm-cp-seg" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span>'+
     waBtn+
-    (canManage()?'<button class="crm-mini buy" data-buy="'+esc(c.id)+'" data-stop="1">'+icon('dollar')+'Comprou</button>':'')+
+    (canEdit()?'<button class="crm-mini buy" data-buy="'+esc(c.id)+'" data-stop="1">'+icon('dollar')+'Comprou</button>':'')+
   '</div>';
 }
 function crmRowHTML(c) {
@@ -4074,7 +4116,7 @@ function bindCRM() {
   }
 }
 function crmRegistrarCompra(id){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var c=null; for (var k=0;k<ST.clients.length;k++) if (String(ST.clients[k].id)===String(id)) { c=ST.clients[k]; break; }
   if (!c) return;
   var rec={ last_purchase:today(), last_contact:today(), updated_at:new Date().toISOString() };
@@ -4096,7 +4138,7 @@ function openClienteFicha(client){
     var actions='<div class="clf-actions">'+
       (wa?'<a class="clf-act wa" href="'+wa+'" target="_blank" rel="noopener">'+icon('chat')+'WhatsApp</a>':'')+
       (phone?'<a class="clf-act call" href="tel:'+esc(phone)+'">'+icon('bell')+'Ligar</a>':'')+
-      (canManage()?'<button class="clf-act buy" id="clfBuy">'+icon('dollar')+'Comprou hoje</button>':'')+
+      (canEdit()?'<button class="clf-act buy" id="clfBuy">'+icon('dollar')+'Comprou hoje</button>':'')+
     '</div>';
     var resumo='<div class="clf-kpis">'+
       '<div class="clf-kpi"><span class="clf-kpi-v">'+brlShort(total)+'</span><span class="clf-kpi-l">Total gasto</span></div>'+
@@ -4114,7 +4156,7 @@ function openClienteFicha(client){
     return '<div class="modal clf-modal">'+
       '<div class="clf-head"><span class="clf-av">'+esc(ini)+'</span><div class="clf-id"><b>'+esc(c.name)+'</b><i>'+(c.company?esc(c.company)+' · ':'')+esc(crmRecencia(c))+'</i></div><span class="crm-status" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span></div>'+
       actions + resumo + infoRows + notas +
-      '<div class="modal-foot">'+(canManage()?'<button class="btn btn-danger btn-del-wrap" id="clfDel">Excluir</button>':'')+'<button class="btn btn-ghost" id="clfClose">Fechar</button>'+(canManage()?'<button class="btn btn-primary" id="clfEdit">Editar dados</button>':'')+'</div>'+
+      '<div class="modal-foot">'+(canEdit()?'<button class="btn btn-danger btn-del-wrap" id="clfDel">Excluir</button>':'')+'<button class="btn btn-ghost" id="clfClose">Fechar</button>'+(canEdit()?'<button class="btn btn-primary" id="clfEdit">Editar dados</button>':'')+'</div>'+
     '</div>';
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
@@ -4130,7 +4172,7 @@ function openClienteFicha(client){
   draw();
 }
 function openClientModal(client) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew = !client;
   var c = client || { name:'', company:'', phone:'', email:'', notes:'', status:'ativo', last_purchase:'', purchase_cycle_days:'' };
 
@@ -4254,7 +4296,7 @@ function projetosHTML() {
   } else {
     ps.forEach(function(pr){ cards += projectCardHTML(pr); });
   }
-  return '<div class="tasks-head"><div><h2>Projetos</h2><div class="sub">'+ps.length+' projeto(s)</div></div>'+(canManage()?'<button class="btn-new" id="btnNovoProjeto">'+icon('plus')+'Novo projeto</button>':'')+'</div><div class="proj-grid">'+cards+'</div>';
+  return '<div class="tasks-head"><div><h2>Projetos</h2><div class="sub">'+ps.length+' projeto(s)</div></div>'+(canEdit()?'<button class="btn-new" id="btnNovoProjeto">'+icon('plus')+'Novo projeto</button>':'')+'</div><div class="proj-grid">'+cards+'</div>';
 }
 
 function projectCardHTML(pr) {
@@ -4331,11 +4373,11 @@ function projetoDetalheHTML(pid) {
     '<button class="btn-back" id="projBack">← Voltar aos projetos</button>'+
     '<div class="proj-detail-head" style="border-left:4px solid '+cor+'">'+
       '<div><h2>'+esc(pr.name)+'</h2>'+(pr.description?'<p>'+esc(pr.description)+'</p>':'')+'</div>'+
-      (canManage()?'<button class="btn btn-ghost" id="projEdit">Editar projeto</button>':'')+
+      (canEdit()?'<button class="btn btn-ghost" id="projEdit">Editar projeto</button>':'')+
     '</div>'+
     '<div class="proj-prog big"><div class="proj-prog-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div><small>'+pct+'% concluído · '+ms.length+' etapa(s)</small></div>'+
     '<div class="ms-sec"><div class="ms-sec-h">Etapas</div>'+rows+'</div>'+
-    (canManage()?'<div class="ms-add"><input id="msName" placeholder="Nova etapa..."><input type="date" id="msDate"><select id="msResp"><option value="">Responsável</option>'+ST.users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>';}).join('')+'</select><button class="btn btn-primary" id="msAdd">Adicionar</button></div>':'');
+    (canEdit()?'<div class="ms-add"><input id="msName" placeholder="Nova etapa..."><input type="date" id="msDate"><select id="msResp"><option value="">Responsável</option>'+ST.users.map(function(u){return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>';}).join('')+'</select><button class="btn btn-primary" id="msAdd">Adicionar</button></div>':'');
 }
 
 function bindProjetoDetalhe() {
@@ -4347,7 +4389,7 @@ function bindProjetoDetalhe() {
     if (pr) openProjectModal(pr);
   });
   // marcar etapa como feita/refazer (alterna feito <-> todo) — só admin
-  if (canManage()) {
+  if (canEdit()) {
   var checks=app.querySelectorAll('[data-mscheck]');
   for (var i=0;i<checks.length;i++) {
     checks[i].addEventListener('click', function(e){
@@ -4383,7 +4425,7 @@ function bindProjetoDetalhe() {
     });
   }
   // marcar passo (subtarefa) — só admin
-  if (canManage()) {
+  if (canEdit()) {
   var subToggles=app.querySelectorAll('[data-subtoggle]');
   for (var s=0;s<subToggles.length;s++) {
     subToggles[s].addEventListener('change', function(){
@@ -4439,7 +4481,7 @@ function bindProjetoDetalhe() {
 
 /* ----- Modal de criar/editar projeto ----- */
 function openProjectModal(project) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew=!project;
   var pr=project||{ name:'', description:'', start_date:'', end_date:'', status:'andamento', color:'#3B6FF7', members:[] };
   var membros=pr.members||[];
@@ -4561,15 +4603,15 @@ function usuariosHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' usuário(s)</span>'+(canManage()?'<button class="btn-new" id="btnNovoUser">'+icon('plus')+'Novo usuário</button>':'')+'</div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' usuário(s)</span>'+(canEdit()?'<button class="btn-new" id="btnNovoUser">'+icon('plus')+'Novo usuário</button>':'')+'</div>'+rows;
 }
 
 function openUserModal(user) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew = !user;
   var u = user || { name:'', email:'', sector:ST.sector, color:'#3B6FF7' };
   var nivel = isNew ? 'user' : nivelDe(u);
-  var seedPerms = userPerms({ user:u });
+  var seedPerms = userPermMap({ user:u });
   var grantorRank = roleRank(ST.session); // só posso conceder níveis abaixo (ou igual) ao meu
   var NIV_ORDER = ['user','store_manager','sector_admin','admin_geral','super'];
   var nivelOpts = NIV_ORDER.filter(function(k){ return NIVEIS[k].rank <= grantorRank; }).map(function(k){
@@ -4591,7 +4633,7 @@ function openUserModal(user) {
       '<input class="modal-title-input" id="uName" placeholder="Nome do usuário..." value="'+esc(u.name||'')+'">'+
       emailField + passField +
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Setor</label><select id="uSector">'+sectorOpts+'</select></div><div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="uLevel">'+nivelOpts+'</select></div></div>'+
-      '<div id="permHolder">'+(nivel==='user'?permsPickerHTML(u.sector, seedPerms):'')+'</div>'+
+      '<div id="permHolder"></div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
@@ -4602,13 +4644,14 @@ function openUserModal(user) {
   modal.querySelector('#uName').focus();
   function updatePerms(preserve){
     var lvl=modal.querySelector('#uLevel').value; var sec=modal.querySelector('#uSector').value; var holder=modal.querySelector('#permHolder');
-    if(lvl!=='user'){ holder.innerHTML=''; return; }
-    var cur = (preserve && holder.querySelector('.perm-ck')) ? readPerms(modal) : seedPerms;
-    holder.innerHTML = permsPickerHTML(sec, cur);
+    if(lvl!=='user'){ holder.innerHTML='<div class="perm-note-hier">Este nível já tem acesso completo pela hierarquia. As permissões por função valem para o nível <b>Colaborador</b>.</div>'; return; }
+    var cur = (preserve && holder.querySelector('.perm-seg')) ? readPerms(modal) : seedPerms;
+    holder.innerHTML = permsPickerHTML(sec, cur); bindPermsPicker(modal);
   }
   modal.querySelector('#uLevel').addEventListener('change', function(){ updatePerms(true); });
   modal.querySelector('#uSector').addEventListener('change', function(){ updatePerms(true); });
-  function aplicarPerms(id){ var lvl=modal.querySelector('#uLevel').value; var pr=(lvl==='user')?readPerms(modal):[]; sb.from('malba_users').update({ perms: pr }).eq('id', id).then(function(rr){ if(!rr.error){ for(var i=0;i<ST.allUsers.length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=pr; } }); }
+  updatePerms(false);
+  function aplicarPerms(id){ var lvl=modal.querySelector('#uLevel').value; var pr=(lvl==='user')?readPerms(modal):{}; sb.from('malba_users').update({ perms: pr }).eq('id', id).then(function(rr){ if(!rr.error){ for(var i=0;i<ST.allUsers.length;i++) if(String(ST.allUsers[i].id)===String(id)) ST.allUsers[i].perms=pr; } }); }
 
   modal.querySelector('#userSave').addEventListener('click', function(){
     var name=(modal.querySelector('#uName').value||'').trim();
@@ -4682,7 +4725,7 @@ function lojasHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' loja(s)</span><div class="cfg-head-btns">'+(canManage()?'<button class="btn-sync" id="btnSyncBling">'+icon('trend')+'Sincronizar Bling</button><button class="btn-new" id="btnNovaLoja">'+icon('plus')+'Nova loja</button>':'')+'</div></div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' loja(s)</span><div class="cfg-head-btns">'+(canEdit()?'<button class="btn-sync" id="btnSyncBling">'+icon('trend')+'Sincronizar Bling</button><button class="btn-new" id="btnNovaLoja">'+icon('plus')+'Nova loja</button>':'')+'</div></div>'+rows;
 }
 function userByIdAll(id){ for(var i=0;i<ST.allUsers.length;i++) if(ST.allUsers[i].id===id) return ST.allUsers[i]; return null; }
 function blingDaLoja(id){ var b=ST.bling||[]; for(var i=0;i<b.length;i++) if(String(b[i].store_unit_id)===String(id)) return b[i]; return null; }
@@ -4725,7 +4768,7 @@ function openBlingModal(store) {
 }
 
 function openStoreModal(store) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew = !store;
   var s = store || { name:'', store_number:(ST.storeUnits.length+1), district:'', address:'', phone:'', whatsapp:'', email:'', user_id:null };
 
@@ -4826,11 +4869,11 @@ function bannersAdminHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' banner(s)</span>'+(canManage()?'<button class="btn-new" id="btnNovoBanner">'+icon('plus')+'Novo banner</button>':'')+'</div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' banner(s)</span>'+(canEdit()?'<button class="btn-new" id="btnNovoBanner">'+icon('plus')+'Novo banner</button>':'')+'</div>'+rows;
 }
 
 function openBannerModal(banner) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew = !banner;
   var b = banner || { title:'', description:'', bg_gradient:BANNER_GRADS[0], image_url_desktop:null, link_url:'', sectors:[], is_active:true, store_unit_id:null };
   var imgData = b.image_url_desktop || null;
@@ -5040,7 +5083,7 @@ function bindCampanhas() {
 }
 
 function openCampaignModal(camp) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var isNew=!camp;
   var t=today(); var wl=new Date(); wl.setDate(wl.getDate()+7);
   var c = camp || { name:'', description:'', start_date:t, end_date:wl.getFullYear()+'-'+pad(wl.getMonth()+1)+'-'+pad(wl.getDate()), color:'#3B6FF7', area:'', user_ids:[], tasks:[] };
@@ -5254,7 +5297,7 @@ function lojasGestao() {
 }
 
 function gestaoHTML() {
-  if (!canManage()) {
+  if (!canEdit()) {
     return '<div class="empty-page"><div class="ep-ico">'+icon('target')+'</div><h3>Acesso restrito</h3><p>Esta área é para administradores e gestores.</p></div>';
   }
   var tab = ST.gestaoTab || 'visao';
@@ -5357,11 +5400,11 @@ function comissoesHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' lançamento(s)</span>'+(canManage()?'<button class="btn-new" id="btnNovaComissao">'+icon('plus')+'Lançar comissões</button>':'')+'</div>'+summary+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' lançamento(s)</span>'+(canEdit()?'<button class="btn-new" id="btnNovaComissao">'+icon('plus')+'Lançar comissões</button>':'')+'</div>'+summary+rows;
 }
 
 function openComissaoModal() {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var ls = lojasGestao();
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var mode='individual';
@@ -5481,7 +5524,7 @@ function openComissaoModal() {
 }
 
 function comissaoDetalhe(c) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var loja=storeName(c.store_unit_id)||'Loja';
   var periodo=c.periodo_label||((c.periodo_inicio?fmtDate(c.periodo_inicio):'')+(c.periodo_fim?(' a '+fmtDate(c.periodo_fim)):''));
   var rows=(c.rateio||[]).map(function(r){
@@ -5543,7 +5586,7 @@ function avaliacoesHTML() {
     });
     rows += '</div>';
   }
-  return '<div class="cfg-sec-head"><span>'+list.length+' avaliação(ões)</span>'+(canManage()?'<button class="btn-new" id="btnNovaAvaliacao">'+icon('plus')+'Nova avaliação</button>':'')+'</div>'+rows;
+  return '<div class="cfg-sec-head"><span>'+list.length+' avaliação(ões)</span>'+(canEdit()?'<button class="btn-new" id="btnNovaAvaliacao">'+icon('plus')+'Nova avaliação</button>':'')+'</div>'+rows;
 }
 function renderStarsRO(nota) {
   var n=Math.round(Number(nota)||0); var s='';
@@ -5552,7 +5595,7 @@ function renderStarsRO(nota) {
 }
 
 function openAvaliacaoModal(aval, preset) {
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var ls = lojasGestao();
   if (ls.length===0) { toast('Cadastre lojas primeiro','error'); return; }
   var editing = !!aval;
@@ -5813,7 +5856,7 @@ function avaliacaoDetalhe(a){
     critBarsHTML(notasArr)+
     blocks+
     (a.tipo==='membro' ? (function(){ var evo=avalEvolucaoRender(avalsDoMembro(a.member_id)); return evo?('<div class="aval-evo-sec"><h5 class="aval-evo-h">Evolução mês a mês</h5>'+evo+'</div>'):''; })() : '')+
-    '<div class="modal-foot"><button class="btn btn-danger btn-del-wrap" id="adDel">Excluir</button><button class="btn btn-ghost" id="adClose">Fechar</button>'+(canManage()?'<button class="btn btn-primary" id="adEdit">Editar</button>':'')+'</div>'+
+    '<div class="modal-foot"><button class="btn btn-danger btn-del-wrap" id="adDel">Excluir</button><button class="btn btn-ghost" id="adClose">Fechar</button>'+(canEdit()?'<button class="btn btn-primary" id="adEdit">Editar</button>':'')+'</div>'+
   '</div>';
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -5831,7 +5874,7 @@ function avaliacaoDetalhe(a){
 }
 
 function bindGestao() {
-  if (!canManage()) return;
+  if (!canEdit()) return;
   var tabs=app.querySelectorAll('.cfg-tab');
   for (var i=0;i<tabs.length;i++) tabs[i].addEventListener('click', function(){ ST.gestaoTab=this.getAttribute('data-gtab'); renderPage(); });
   var nc=document.getElementById('btnNovaComissao'); if(nc) nc.addEventListener('click', openComissaoModal);
@@ -6685,7 +6728,7 @@ function avisosAtivos(){
 }
 function muralHTML(){
   var avisos=avisosAtivos();
-  var canPost=canManage();
+  var canPost=canEdit();
   if (avisos.length===0 && !canPost) return '';
   var btn = canPost ? '<button class="mural-add" id="btnNovoAviso">'+icon('plus')+'Aviso à equipe</button>' : '';
   var items = avisos.length ? avisos.slice(0,4).map(function(ev){
@@ -6706,7 +6749,7 @@ function bindMural(){
   });
 }
 function postAvisoModal(){
-  if(!canManage()){ blockManage(); return; }
+  if(!canEdit()){ blockManage(); return; }
   var me=ST.session.user;
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Aviso à equipe</div>'+
