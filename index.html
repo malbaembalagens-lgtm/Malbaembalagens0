@@ -1235,6 +1235,32 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 @media (max-width: 560px){ .caixa-vals { grid-template-columns:1fr; } }
 /* ===== Relatório de Lojas ===== */
 .rep-launch { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); border:none; border-radius:8px; padding:5px 11px; cursor:pointer; margin-left:auto; }
+/* ===== Visão do dia (calendário) ===== */
+.dia-modal { max-width: 460px; }
+.dia-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.dia-title { font-family:var(--u-font-display); font-size:18px; font-weight:800; text-transform:capitalize; }
+.dia-sub { font-size:12.5px; color:var(--u-text3); margin-top:2px; }
+.dia-close { width:32px; height:32px; border-radius:9px; background:var(--u-bg2); border:none; font-size:15px; color:var(--u-text3); cursor:pointer; flex-shrink:0; }
+.dia-close:hover { background:var(--u-border); color:var(--u-text); }
+.dia-body { max-height:52vh; overflow-y:auto; margin:0 -4px; padding:0 4px; }
+.dia-sec-h { display:flex; align-items:center; gap:7px; font-size:11px; font-weight:800; color:var(--u-text3); text-transform:uppercase; letter-spacing:.4px; margin:14px 0 8px; }
+.dia-sec-h:first-child { margin-top:0; }
+.dia-sec-h svg { width:14px; height:14px; }
+.dia-sec-h i { font-style:normal; background:var(--u-bg2); border-radius:20px; padding:1px 8px; font-size:10.5px; }
+.dia-item { display:flex; align-items:center; gap:11px; padding:11px 12px; background:var(--u-bg2); border:1px solid transparent; border-radius:11px; margin-bottom:7px; cursor:pointer; transition:.12s; }
+.dia-item:hover { border-color:var(--u-accent); }
+.dia-item.done .dia-item-main b { text-decoration:line-through; color:var(--u-text3); }
+.dia-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; }
+.dia-check { width:24px; height:24px; border-radius:7px; border:2px solid var(--u-border2); background:var(--u-card); flex-shrink:0; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; }
+.dia-check svg { width:14px; height:14px; color:#fff; }
+.dia-check.on { background:var(--u-green); border-color:var(--u-green); }
+.dia-item-main { flex:1; min-width:0; } .dia-item-main b { font-size:13.5px; font-weight:600; display:block; }
+.dia-item-main span { font-size:11.5px; color:var(--u-text3); }
+.dia-arrow { color:var(--u-text3); font-size:18px; flex-shrink:0; }
+.dia-empty { text-align:center; padding:26px 0; color:var(--u-text3); }
+.dia-empty svg { width:30px; height:30px; opacity:.5; } .dia-empty p { margin:8px 0 0; font-size:13.5px; }
+.dia-actions { display:flex; gap:8px; margin-top:16px; }
+.dia-actions .btn { flex:1; }
 .rep-launch svg { width:13px; height:13px; } .rep-launch:hover { background:var(--u-accent); color:#fff; }
 .rep-card-btns { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
 .rep-card-btns .rep-launch { margin-left:0; }
@@ -1589,7 +1615,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v64 · 21/06 (Lojas: aba KPIs removida do menu)';
+var APP_BUILD = 'v65 · 22/06 (Calendário: visão do dia com itens + adicionar)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6747,6 +6773,55 @@ function calChipHTML(it) {
   var drag=it.drag?' draggable="true"':'';
   return '<button class="cal-chip'+(done?' done':'')+'" data-ck="'+it.k+'" data-cid="'+esc(it.id)+'"'+drag+' style="background:'+sc+'14;color:'+sc+'"><i style="background:'+pr.color+'"></i><span>'+esc(it.label)+'</span></button>';
 }
+function diaLabelCal(ds){ var p=ds.split('-'); var dt=new Date(Number(p[0]), Number(p[1])-1, Number(p[2]), 12,0,0); var dows=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado']; return dows[dt.getDay()]+', '+Number(p[2])+' de '+MESES[Number(p[1])-1]; }
+function calItemOpen(k, id){
+  var admin=isAdmin(ST.session);
+  if (k==='event'){ var ev=evById(id); if(ev){ if(admin||String(ev.created_by)===String(ST.session.user.id)) openEventModal(ev,null); else toast((ev.hora?ev.hora+' · ':'')+(ev.title||'Evento'),'info'); } }
+  else if (k==='camp'){ var c=campById(id); if(c){ if(admin) openCampaignModal(c); else toast('Campanha "'+(c.name||'')+'"','info'); } }
+  else if (k==='task'){ var t=taskById(id); if(t) openTaskModal(t); }
+  else if (k==='ms'){ var mm=msById(id); if(mm){ ST.openProject=mm.project_id; ST.page='projetos'; navigate(ST.sector+'/projetos'); renderPage(); } }
+  else if (k==='camptask'){ var cc=campById(String(id).split('__')[0]); if(cc){ if(admin) openCampaignModal(cc); else toast('Tarefa de campanha','info'); } }
+}
+function toggleTaskDoneCal(id, cb){ var t=taskById(id); if(!t) return; var nd=(t.status==='feito')?'todo':'feito'; t.status=nd; sb.from('malba_vl_tasks').update({ status:nd }).eq('id',id).then(function(r){ if(r.error) toast('Erro ao atualizar','error'); }); if(cb) cb(); renderPage(); }
+function openDiaModal(ds){
+  var admin=isAdmin(ST.session); var podeTarefa = admin || canEdit();
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  function row(it){
+    var color, meta='';
+    if(it.k==='event'){ color=it.color||'#0EA5E9'; meta=(it.hora?it.hora+' · ':'')+(it.scope==='me'?'Só você':'Equipe'); }
+    else if(it.k==='camp'){ color=it.color||'#8B5CF6'; meta='Campanha'; }
+    else { var sc=STATUS[it.status]||STATUS.todo; color=sc.color; var u=it.assignee_id?userByIdAll(it.assignee_id):null; meta=sc.label+(it.src?(' · '+it.src):'')+(u?(' · '+(u.name||'').split(' ')[0]):''); }
+    var isTask=(it.k==='task'); var done=it.status==='feito';
+    var lead = (isTask && podeTarefa) ? '<button class="dia-check'+(done?' on':'')+'" data-diatoggle="'+esc(it.id)+'">'+(done?icon('tasks'):'')+'</button>' : '<span class="dia-dot" style="background:'+color+'"></span>';
+    return '<div class="dia-item'+(done?' done':'')+'" data-diak="'+esc(it.k)+'" data-diaid="'+esc(it.id)+'">'+lead+'<div class="dia-item-main"><b>'+esc(it.label)+'</b>'+(meta?'<span>'+esc(meta)+'</span>':'')+'</div><span class="dia-arrow">›</span></div>';
+  }
+  function draw(){
+    var items=calDayItems(ds);
+    var tarefas=items.filter(function(x){ return x.k==='task'||x.k==='ms'||x.k==='camptask'; });
+    var eventos=items.filter(function(x){ return x.k==='event'; });
+    var camps=items.filter(function(x){ return x.k==='camp'; });
+    var body='';
+    if(!items.length){ body='<div class="dia-empty">'+icon('cal')+'<p>Nada neste dia ainda.</p></div>'; }
+    else {
+      if(tarefas.length){ body+='<div class="dia-sec-h">'+icon('tasks')+'<span>Tarefas</span><i>'+tarefas.length+'</i></div>'+tarefas.map(row).join(''); }
+      if(eventos.length){ body+='<div class="dia-sec-h">'+icon('cal')+'<span>Eventos</span><i>'+eventos.length+'</i></div>'+eventos.map(row).join(''); }
+      if(camps.length){ body+='<div class="dia-sec-h">'+icon('megaphone')+'<span>Campanhas</span><i>'+camps.length+'</i></div>'+camps.map(row).join(''); }
+    }
+    var addBtns='<div class="dia-actions">'+(podeTarefa?'<button class="btn btn-primary" id="diaAddTask">'+icon('plus')+'Tarefa</button>':'')+'<button class="btn '+(podeTarefa?'btn-ghost':'btn-primary')+'" id="diaAddEvt">'+icon('plus')+'Evento</button></div>';
+    modal.innerHTML='<div class="modal dia-modal"><div class="dia-head"><div><div class="dia-title">'+esc(diaLabelCal(ds))+'</div><div class="dia-sub">'+items.length+' item(ns) neste dia</div></div><button class="dia-close" id="diaClose">✕</button></div><div class="dia-body">'+body+'</div>'+addBtns+'</div>';
+    bind();
+  }
+  function bind(){
+    modal.querySelector('#diaClose').addEventListener('click', close);
+    var at=modal.querySelector('#diaAddTask'); if(at) at.addEventListener('click', function(){ close(); openTaskModal(null, { due:ds }); });
+    var ae=modal.querySelector('#diaAddEvt'); if(ae) ae.addEventListener('click', function(){ close(); openEventModal(null, ds); });
+    var tgs=modal.querySelectorAll('[data-diatoggle]'); for(var i=0;i<tgs.length;i++) tgs[i].addEventListener('click', function(e){ e.stopPropagation(); toggleTaskDoneCal(this.getAttribute('data-diatoggle'), draw); });
+    var rws=modal.querySelectorAll('.dia-item'); for(var j=0;j<rws.length;j++) rws[j].addEventListener('click', function(e){ if(e.target.closest('[data-diatoggle]')) return; var k=this.getAttribute('data-diak'), id=this.getAttribute('data-diaid'); close(); calItemOpen(k, id); });
+  }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  document.body.appendChild(modal); draw();
+}
 function calendarioHTML() {
   if (ST.cal.y==null) { var n=new Date(); ST.cal.y=n.getFullYear(); ST.cal.m=n.getMonth(); }
   var y=ST.cal.y, m=ST.cal.m;
@@ -6764,7 +6839,7 @@ function calendarioHTML() {
     var opts='<option value="'+esc(meIdC)+'"'+mineSelC+'>Minhas tarefas</option><option value="">Todos da equipe</option>'+othersC;
     filter='<select class="task-filter" id="calAssignee" title="Ver tarefas de">'+opts+'</select>';
   }
-  var sub = admin ? 'Monte o mês: clique num dia para criar tarefa, ou use "+ Evento" para reuniões e lembretes' : 'Suas tarefas e a agenda da equipe · você também pode criar lembretes só seus';
+  var sub = admin ? 'Clique num dia para ver tudo e adicionar tarefas ou eventos' : 'Clique num dia para ver seus itens · você também pode criar lembretes';
   var addEvtBtn = '<button class="btn-new cal-evt-btn" id="btnNovoEvento">'+icon('plus')+'Evento</button>';
   var top='<div class="cal-top"><div><h2>Calendário</h2><div class="sub">'+sub+'</div></div>'+
     '<div class="cal-top-r">'+filter+addEvtBtn+'<div class="cal-nav-wrap"><button class="cal-nav" id="calPrev">‹</button><span class="cal-month">'+MESES[m]+' '+y+'</span><button class="cal-nav" id="calNext">›</button><button class="cal-today-btn" id="calToday">Hoje</button></div></div></div>';
@@ -6812,16 +6887,18 @@ function bindCalendario() {
     else if (k==='camptask') { var cc=campById(String(id).split('__')[0]); if (cc) { if(admin) openCampaignModal(cc); else toast('Tarefa de campanha','info'); } }
   });
 
-  if (!admin) return; // gestão (criar/arrastar) só admin
-
-  // clique no dia (ou no +) cria tarefa naquele dia
-  var adds=app.querySelectorAll('[data-add]');
-  for (var a=0;a<adds.length;a++) adds[a].addEventListener('click', function(e){ e.stopPropagation(); openTaskModal(null, { due:this.getAttribute('data-add') }); });
+  // clique no dia abre a VISÃO DO DIA (todos podem ver; adicionar respeita a permissão)
   var cells=app.querySelectorAll('.cal-cell[data-date]');
   for (var z=0;z<cells.length;z++) cells[z].addEventListener('click', function(e){
-    if (e.target.closest('.cal-chip')) return;
-    openTaskModal(null, { due:this.getAttribute('data-date') });
+    if (e.target.closest('.cal-chip') || e.target.closest('[data-add]')) return;
+    openDiaModal(this.getAttribute('data-date'));
   });
+
+  if (!admin) return; // criar direto no grid / arrastar: só admin
+
+  // atalho "+" no canto do dia: nova tarefa direta
+  var adds=app.querySelectorAll('[data-add]');
+  for (var a=0;a<adds.length;a++) adds[a].addEventListener('click', function(e){ e.stopPropagation(); openTaskModal(null, { due:this.getAttribute('data-add') }); });
 
   // DRAG & DROP entre dias
   var dragData=null;
