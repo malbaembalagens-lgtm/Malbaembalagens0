@@ -1630,7 +1630,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v67 · 22/06 (Tarefas: recorrentes organizadas — só a de hoje no quadro)';
+var APP_BUILD = 'v68 · 22/06 (Tarefas: recorrentes organizadas no quadro, prioridades e Meu Dia)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6623,7 +6623,7 @@ function colaboradorInicioHTML(){
   var metaCard = metaVal>0
     ? '<div class="cab-meta"><div class="cab-meta-top"><span>Minha meta de '+MESES[_ymNow().m-1]+'</span><b style="color:'+corM+'">'+pct+'%</b></div><div class="cab-meta-bar"><span style="width:'+pct+'%;background:'+corM+'"></span></div><div class="cab-meta-sub">'+fmtBRL(vend)+' de '+fmtBRL(metaVal)+'</div></div>'
     : '<div class="cab-meta"><div class="cab-meta-top"><span>Vendas registradas em '+MESES[_ymNow().m-1]+'</span><b>'+fmtBRL(vend)+'</b></div><div class="cab-meta-sub">Seu gestor ainda não definiu uma meta sua.</div></div>';
-  var mine=ST.tasks.filter(function(t){ return String(t.assignee_id)===me; });
+  var mine=filtrarRecorrentesHoje(ST.tasks.filter(function(t){ return String(t.assignee_id)===me; }));
   var foco=mine.filter(function(t){ var d=(t.due_date||'').slice(0,10); return t.status!=='feito'&&d&&d<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
   var tHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada para hoje. 👏</div>';
   var myReqs=(ST.requests||[]).filter(function(r){return String(r.user_id)===me;}).sort(function(a,b){return (b.created_at||'').localeCompare(a.created_at||'');}).slice(0,5);
