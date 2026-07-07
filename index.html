@@ -1630,7 +1630,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v66 · 22/06 (Tarefas: repetição gera as tarefas — dias úteis, semana, repetir até)';
+var APP_BUILD = 'v67 · 22/06 (Tarefas: recorrentes organizadas — só a de hoje no quadro)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2563,6 +2563,13 @@ function tarefasHTML() {
   return head + muralHTML() + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
+function taskSeriesKey(t){ if(t.recur_group) return 'g:'+t.recur_group; if((t.recurrence||'none')!=='none') return 'a:'+((t.title||'').toLowerCase().trim())+'|'+t.recurrence; return ''; }
+// recorrentes aparecem só na ocorrência de HOJE (nas visões de gestão: quadro e prioridades)
+function filtrarRecorrentesHoje(tks){
+  var hoje=today(); var cnt={};
+  tks.forEach(function(t){ var k=taskSeriesKey(t); if(k) cnt[k]=(cnt[k]||0)+1; });
+  return tks.filter(function(t){ var k=taskSeriesKey(t); var isSer=k&&(k.charAt(0)==='g'||cnt[k]>=2); return !(isSer && (t.due_date||'').slice(0,10)!==hoje); });
+}
 function boardItems() {
   var admin = isAdmin(ST.session);
   var me = String(ST.session.user.id);
@@ -2572,8 +2579,8 @@ function boardItems() {
   var who = admin ? (ST.taskAssignee?String(ST.taskAssignee):null) : me;
   // projetos do SETOR atual (ST.projects já vem filtrado por setor no loadData)
   var projIds = {}; (ST.projects||[]).forEach(function(p){ projIds[String(p.id)]=1; });
-  // 1) Tarefas normais (já vêm do setor atual)
-  visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined }).forEach(function(t){
+  // 1) Tarefas normais — RECORRENTES aparecem só na ocorrência de HOJE (para não lotar o quadro)
+  filtrarRecorrentesHoje(visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined })).forEach(function(t){
     var src = t.project_id ? { type:'Projeto', name:projName(t.project_id), pid:t.project_id } : null;
     items.push({ kind:'task', id:t.id, title:t.title, status:t.status||'todo', due:(t.due_date||'').slice(0,10), assignee_id:t.assignee_id, priority:t.priority, rec:t.recurrence, area:t.area, source:src, sub:subProgress(t.subtasks), draggable:true });
   });
@@ -2654,7 +2661,7 @@ function eisenQuadrant(t) {
   return 'depois';
 }
 function matrizHTML() {
-  var ts=visibleTasks().filter(function(t){ return t.status!=='feito'; });
+  var ts=filtrarRecorrentesHoje(visibleTasks()).filter(function(t){ return t.status!=='feito'; });
   var Q={ fazer:[], planejar:[], delegar:[], depois:[] };
   ts.forEach(function(t){ Q[eisenQuadrant(t)].push(t); });
   var meta={
