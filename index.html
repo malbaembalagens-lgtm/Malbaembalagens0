@@ -1261,6 +1261,21 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .dia-empty svg { width:30px; height:30px; opacity:.5; } .dia-empty p { margin:8px 0 0; font-size:13.5px; }
 .dia-actions { display:flex; gap:8px; margin-top:16px; }
 .dia-actions .btn { flex:1; }
+/* ===== Opções de repetição (criar tarefas em série) ===== */
+.rec-opts { background:var(--u-accent-soft); border-radius:12px; padding:14px; margin:-4px 0 14px; }
+.rec-check { display:flex; align-items:center; gap:9px; font-size:13.5px; font-weight:600; color:var(--u-text); cursor:pointer; margin-bottom:12px; }
+.rec-check input { width:17px; height:17px; accent-color:var(--u-accent); cursor:pointer; }
+.rec-wd-label, .rec-until .modal-label { font-size:12px; font-weight:700; color:var(--u-text2); margin-bottom:7px; }
+.rec-wd { display:flex; gap:6px; margin-bottom:13px; flex-wrap:wrap; }
+.rec-wd-btn { width:38px; height:38px; border-radius:10px; border:1px solid var(--u-border); background:var(--u-card); font-weight:800; font-size:13px; color:var(--u-text3); cursor:pointer; }
+.rec-wd-btn.on { background:var(--u-accent); border-color:var(--u-accent); color:#fff; }
+.rec-note-inline { font-size:13px; color:var(--u-text2); margin-bottom:12px; }
+.rec-until-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.rec-until-row input[type=date] { flex:1; min-width:150px; }
+.rec-quick { font-size:12px; font-weight:700; color:var(--u-accent); background:var(--u-card); border:1px solid var(--u-border); border-radius:8px; padding:8px 12px; cursor:pointer; }
+.rec-quick:hover { background:var(--u-accent); color:#fff; border-color:var(--u-accent); }
+.rec-preview { margin-top:12px; padding-top:11px; border-top:1px dashed var(--u-border2); font-size:13px; color:var(--u-text2); }
+.rec-preview b { color:var(--u-accent); font-family:var(--u-font-display); }
 .rep-launch svg { width:13px; height:13px; } .rep-launch:hover { background:var(--u-accent); color:#fff; }
 .rep-card-btns { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
 .rep-card-btns .rep-launch { margin-left:0; }
@@ -1615,7 +1630,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v65 · 22/06 (Calendário: visão do dia com itens + adicionar)';
+var APP_BUILD = 'v66 · 22/06 (Tarefas: repetição gera as tarefas — dias úteis, semana, repetir até)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2800,6 +2815,32 @@ function bindTarefas() {
     if (t) openTaskModal(t);
   });
 }
+function _dParse(s){ var p=String(s||'').split('-'); return new Date(Number(p[0]), Number(p[1])-1, Number(p[2]), 12,0,0); }
+function _dFmt(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function fimDoMesDe(s){ var d=_dParse(s); var last=new Date(d.getFullYear(), d.getMonth()+1, 0).getDate(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(last); }
+function fimDoAnoDe(s){ var d=_dParse(s); return d.getFullYear()+'-12-31'; }
+function gerarDatasRec(startStr, rec, opts){
+  opts=opts||{}; var out=[]; if(!startStr) return out;
+  var start=_dParse(startStr), end=_dParse(opts.until||startStr); if(end<start) return out;
+  var MAX=400, cur=new Date(start);
+  if(rec==='diaria'){ while(cur<=end && out.length<MAX){ var wd=cur.getDay(); if(!(opts.diasUteis && (wd===0||wd===6))) out.push(_dFmt(cur)); cur.setDate(cur.getDate()+1); } }
+  else if(rec==='semanal'){ var wds=(opts.weekdays&&opts.weekdays.length)?opts.weekdays:[start.getDay()]; while(cur<=end && out.length<MAX){ if(wds.indexOf(cur.getDay())!==-1) out.push(_dFmt(cur)); cur.setDate(cur.getDate()+1); } }
+  else if(rec==='mensal'){ var dom=start.getDate(), d=new Date(start); while(d<=end && out.length<MAX){ out.push(_dFmt(d)); var mo=d.getMonth()+1, yr=d.getFullYear(); if(mo>11){mo=0;yr++;} var last=new Date(yr,mo+1,0).getDate(); d=new Date(yr,mo,Math.min(dom,last),12,0,0); } }
+  return out;
+}
+function insertRecorrencia(rows, cb){
+  sb.from('malba_vl_tasks').insert(rows).select().then(function(r){
+    if(r.error){ var m=(r.error.message||'').toLowerCase();
+      if(m.indexOf('recur_group')!==-1 || m.indexOf('column')!==-1 || m.indexOf('schema')!==-1){
+        var rows2=rows.map(function(x){ var y=Object.assign({},x); delete y.recur_group; return y; });
+        sb.from('malba_vl_tasks').insert(rows2).select().then(function(r2){ if(r2.error){ toast('Erro ao criar tarefas','error'); console.error(r2.error); cb(false); return; } if(r2.data) ST.tasks=r2.data.concat(ST.tasks); cb(true, (r2.data||rows).length); });
+        return;
+      }
+      toast('Erro ao criar tarefas','error'); console.error(r.error); cb(false); return;
+    }
+    if(r.data) ST.tasks=r.data.concat(ST.tasks); cb(true, (r.data||rows).length);
+  });
+}
 function openTaskModal(task, preset) {
   var isEdit=!!task;
   preset = preset || {};
@@ -2815,7 +2856,7 @@ function openTaskModal(task, preset) {
   ST.users.forEach(function(u){ userOpts += '<option value="'+esc(u.id)+'"'+(t.assignee_id===u.id?' selected':'')+'>'+esc(u.name)+'</option>'; });
   var projOpts='<option value="">— Nenhum —</option>';
   (ST.projects||[]).forEach(function(pr){ projOpts += '<option value="'+esc(pr.id)+'"'+(String(t.project_id||'')===String(pr.id)?' selected':'')+'>'+esc(pr.name||'Projeto')+'</option>'; });
-  var delBtn=(isEdit && canMng)?'<button class="btn btn-danger btn-del-wrap" id="taskDel">Excluir</button>':'';
+  var delBtn=(isEdit && canMng)?('<button class="btn btn-danger btn-del-wrap" id="taskDel">Excluir</button>'+((task&&task.recur_group)?'<button class="btn btn-ghost" id="taskDelSerie" style="color:var(--u-red)">Excluir série</button>':'')):'';
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
@@ -2825,6 +2866,7 @@ function openTaskModal(task, preset) {
       '<div class="modal-row"><label class="modal-label">Status</label><div class="pills" id="tStatus">'+stPills+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
+      '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Responsável</label><select id="tAssignee"'+dis+'>'+userOpts+'</select></div><div class="modal-row"><label class="modal-label">Projeto (opcional)</label><select id="tProj"'+dis+'>'+projOpts+'</select></div></div>'+
       '<div class="modal-row"><label class="modal-label">Checklist / Subtarefas <span id="tSubCount" class="sub-count"></span></label><div id="tSubs" class="sub-list"></div><div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div></div>'+
@@ -2834,11 +2876,39 @@ function openTaskModal(task, preset) {
   document.body.appendChild(modal);
 
   var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none';
+  var recUntil='', recDiasUteis=false, recWeekdays=[];
   bindPills(modal, '#tStatus .st-pill', 'st', function(v){ stPick=v; });
   if (!ro) {
     bindPills(modal, '#tPrio .pr-pill', 'pr', function(v){ prPick=v; });
-    bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; });
+    bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; renderRecOpts(); });
   }
+  function renderRecOpts(){
+    var box=modal.querySelector('#tRecOpts'); if(!box) return;
+    if(recPick==='none' || ro || isEdit){ box.style.display='none'; box.innerHTML=''; return; }
+    box.style.display='block';
+    var start=modal.querySelector('#tDate').value||today();
+    if(!recUntil || _dParse(recUntil)<_dParse(start)) recUntil=fimDoMesDe(start);
+    var extra='';
+    if(recPick==='diaria'){
+      extra='<label class="rec-check"><input type="checkbox" id="recUteis"'+(recDiasUteis?' checked':'')+'><span>Somente dias úteis (seg a sex)</span></label>';
+    } else if(recPick==='semanal'){
+      var wdN=['D','S','T','Q','Q','S','S'], wdF=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+      if(!recWeekdays.length) recWeekdays=[_dParse(start).getDay()];
+      extra='<div class="rec-wd-label">Repete nestes dias:</div><div class="rec-wd">'+wdN.map(function(n,i){ return '<button type="button" class="rec-wd-btn'+(recWeekdays.indexOf(i)!==-1?' on':'')+'" data-wd="'+i+'" title="'+wdF[i]+'">'+n+'</button>'; }).join('')+'</div>';
+    } else if(recPick==='mensal'){
+      extra='<div class="rec-note-inline">Repete todo dia '+_dParse(start).getDate()+' de cada mês.</div>';
+    }
+    var untilRow='<div class="rec-until"><label class="modal-label">Repetir até</label><div class="rec-until-row"><input type="date" id="recUntil" value="'+esc(recUntil)+'"><button type="button" class="rec-quick" data-until="mes">Fim do mês</button><button type="button" class="rec-quick" data-until="ano">Fim do ano</button></div></div>';
+    var datas=gerarDatasRec(start, recPick, { until:recUntil, diasUteis:recDiasUteis, weekdays:recWeekdays });
+    var preview='<div class="rec-preview">'+(datas.length?('Serão criadas <b>'+datas.length+'</b> tarefa'+(datas.length>1?'s':'')+', de '+fmtDate(datas[0])+' a '+fmtDate(datas[datas.length-1])+'.'+(datas.length>=400?' (máx. 400)':'')):'Nenhuma data no período — ajuste o "Repetir até".')+'</div>';
+    box.innerHTML=extra+untilRow+preview;
+    var u=box.querySelector('#recUteis'); if(u) u.addEventListener('change', function(){ recDiasUteis=this.checked; renderRecOpts(); });
+    var wbs=box.querySelectorAll('.rec-wd-btn'); for(var i=0;i<wbs.length;i++) wbs[i].addEventListener('click', function(){ var d=+this.getAttribute('data-wd'); var ix=recWeekdays.indexOf(d); if(ix===-1) recWeekdays.push(d); else if(recWeekdays.length>1) recWeekdays.splice(ix,1); renderRecOpts(); });
+    var ru=box.querySelector('#recUntil'); if(ru) ru.addEventListener('change', function(){ recUntil=this.value; renderRecOpts(); });
+    var qks=box.querySelectorAll('.rec-quick'); for(var q=0;q<qks.length;q++) qks[q].addEventListener('click', function(){ var st=modal.querySelector('#tDate').value||today(); recUntil=(this.getAttribute('data-until')==='ano')?fimDoAnoDe(st):fimDoMesDe(st); renderRecOpts(); });
+  }
+  var tDateEl=modal.querySelector('#tDate'); if(tDateEl) tDateEl.addEventListener('change', function(){ recUntil=''; renderRecOpts(); });
+  renderRecOpts();
   // ----- checklist / subtarefas -----
   function renderSubs(){
     var box=modal.querySelector('#tSubs'); if(!box) return;
@@ -2897,6 +2967,15 @@ function openTaskModal(task, preset) {
         auditLog('Editou tarefa', title); close(); toast('Tarefa atualizada','success'); renderPage();
       });
     } else {
+      if (recPick!=='none') {
+        var datas=gerarDatasRec(payload.due_date, recPick, { until:recUntil, diasUteis:recDiasUteis, weekdays:recWeekdays });
+        if (datas.length>1) {
+          var grupo=uid();
+          var rows=datas.map(function(ds){ var p=Object.assign({}, payload); p.due_date=ds; p.recur_group=grupo; return p; });
+          insertRecorrencia(rows, function(ok, n){ if(!ok){ saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; } auditLog('Criou tarefas recorrentes', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); renderPage(); });
+          return;
+        }
+      }
       sb.from('malba_vl_tasks').insert(payload).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; }
         ST.tasks.unshift(r.data);
@@ -2912,6 +2991,17 @@ function openTaskModal(task, preset) {
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.tasks=ST.tasks.filter(function(x){ return x.id!==t.id; });
         auditLog('Excluiu tarefa', t.title||''); close(); toast('Tarefa excluída','success'); renderPage();
+      });
+    });
+    var delSerie=modal.querySelector('#taskDelSerie');
+    if (delSerie) delSerie.addEventListener('click', function(){
+      var g=task.recur_group; if(!g) return;
+      var n=(ST.tasks||[]).filter(function(x){ return String(x.recur_group)===String(g); }).length;
+      if (!confirm('Excluir a SÉRIE inteira ('+n+' tarefas repetidas)?')) return;
+      sb.from('malba_vl_tasks').delete().eq('recur_group', g).then(function(r){
+        if (r.error) { toast('Erro ao excluir série','error'); return; }
+        ST.tasks=ST.tasks.filter(function(x){ return String(x.recur_group)!==String(g); });
+        auditLog('Excluiu série de tarefas', t.title||''); close(); toast('Série excluída','success'); renderPage();
       });
     });
   }
