@@ -440,6 +440,11 @@ button.kpi-srow:hover { background: var(--u-bg2); }
 .tc-date { font-size: 11.5px; color: var(--u-text3); font-weight: 600; display: flex; align-items: center; gap: 4px; }
 .tc-date svg { font-size: 13px; }
 .tc-date.late { color: var(--u-red); }
+.tc-late { font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 20px; background: var(--u-red-soft); color: var(--u-red); }
+.rec-manage { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; background: var(--u-accent-soft); border-radius: 12px; padding: 8px 12px; margin: 2px 0 6px; }
+.rec-manage-l { font-size: 12.5px; font-weight: 700; color: var(--u-accent); }
+.rec-manage-btns { display: flex; gap: 6px; }
+.rec-mini { padding: 5px 10px !important; font-size: 12px !important; }
 .tc-av { margin-left: auto; width: 24px; height: 24px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; }
 .tc-rec { font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 20px; background: var(--u-accent-soft); color: var(--u-accent); }
 .tc-done { margin-top: 10px; width: 100%; padding: 7px; border-radius: 8px; background: var(--u-green-soft); color: var(--u-green); font-size: 12px; font-weight: 700; transition: all .12s; }
@@ -458,6 +463,16 @@ button.kpi-srow:hover { background: var(--u-bg2); }
 .grp-l { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--u-text3); }
 .grp-n { font-size: 10px; font-weight: 800; color: var(--u-text3); background: var(--u-card); border: 1px solid var(--u-border); border-radius: 20px; padding: 1px 7px; }
 .grp-late .grp-l, .grp-late .grp-n { color: var(--u-red); }
+.grp-rot .grp-l, .grp-rot .grp-n { color: var(--u-accent); }
+.rh-card { background: var(--u-card); border: 1px solid var(--u-border); border-radius: 16px; padding: 14px 16px; margin: 14px 0 18px; box-shadow: var(--u-shadow); }
+.rh-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rh-title { font-family: var(--u-font-display); font-size: 16px; font-weight: 800; }
+.rh-btn { font-size: 12.5px; font-weight: 700; padding: 6px 12px; border-radius: 20px; background: var(--u-accent-soft); color: var(--u-accent); transition: all .12s; }
+.rh-btn:hover { background: var(--u-accent); color: #fff; transform: translateY(-1px); }
+.rh-stats { font-size: 13px; color: var(--u-text2); margin: 9px 0 8px; }
+.rh-bar { height: 9px; border-radius: 20px; background: var(--u-bg2); overflow: hidden; }
+.rh-bar span { display: block; height: 100%; border-radius: 20px; transition: width .3s ease; }
+.rh-done { margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--u-green); }
 /* etiqueta de origem (projeto / campanha) */
 .tc-src { font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 7px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tc-src-proj { background: rgba(251,140,0,.14); color: #C2410C; }
@@ -1366,6 +1381,27 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .modal-foot .btn { flex: 1; }
 .modal-foot .btn-del-wrap { flex: 0 0 auto; }
 
+/* v75: biblioteca de ações — diálogo de confirmação único */
+.confirm-bg { position: fixed; inset: 0; background: rgba(15,23,42,.5); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1100; animation: fade .12s; }
+.confirm-card { background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); box-shadow: var(--u-shadow-lg); width: 100%; max-width: 400px; padding: 22px; animation: pop .14s; }
+.confirm-ic { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 13px; }
+.confirm-ic svg { width: 22px; height: 22px; }
+.confirm-ic.danger { background: var(--u-red-soft); color: var(--u-red); }
+.confirm-ic.warn { background: var(--u-amber-soft); color: var(--u-amber); }
+.confirm-ic.info { background: var(--u-accent-soft); color: var(--u-accent); }
+.confirm-card h3 { font-size: 16px; margin: 0 0 6px; color: var(--u-text); font-weight: 700; }
+.confirm-card p { font-size: 13.5px; line-height: 1.5; color: var(--u-text2); margin: 0 0 18px; white-space: pre-line; }
+.confirm-foot { display: flex; gap: 10px; }
+.confirm-foot .btn { flex: 1; }
+/* botão de ação padrão (linhas e cartões): Editar / Excluir / Duplicar / Mover / Arquivar / Pausar / Concluir */
+.act-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 32px; padding: 0 11px; border-radius: var(--radius-sm); background: var(--u-bg2); color: var(--u-text2); font-size: 12.5px; font-weight: 600; border: 1px solid transparent; transition: background .15s, color .15s; }
+.act-btn svg { width: 15px; height: 15px; }
+.act-btn:hover { background: var(--u-border); color: var(--u-text); }
+.act-btn.danger:hover { background: var(--u-red); color: #fff; }
+.act-btn.icon-only { width: 32px; padding: 0; }
+.act-btn.icon-only span { display: none; }
+.act-row { display: inline-flex; gap: 6px; align-items: center; }
+
 .toast-wrap { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 8px; align-items: center; }
 .toast { padding: 12px 20px; border-radius: 12px; font-size: 13.5px; font-weight: 600; color: #fff; box-shadow: var(--u-shadow-lg); animation: toastIn .2s; }
 .toast.success { background: var(--u-green); }
@@ -1630,7 +1666,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v68 · 22/06 (Tarefas: recorrentes organizadas no quadro, prioridades e Meu Dia)';
+var APP_BUILD = 'v75 · 17/07 (Biblioteca de ações: diálogo de confirmação único substitui os 27 confirm() do navegador + vocabulário/componentes reutilizáveis)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1642,13 +1678,39 @@ var SECTORS = {
   financeiro: { label: 'Financeiro', sub: 'Rotinas & Controle',   icon: 'dollar',    color: '#F59E0B' }
 };
 
-function p(id,label,ic,enabled,group){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'OPERAÇÃO' }; }
-var GROUP_ORDER = ['OPERAÇÃO','PLANEJAMENTO','COMUNICAÇÃO','GESTÃO'];
+function p(id,label,ic,enabled,group,hidden){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'PRINCIPAL', hidden:!!hidden }; }
+// v74: navegação unificada — MESMO backbone em todos os setores, mesma ordem e mesmos grupos.
+var GROUP_ORDER = ['PRINCIPAL','OPERAÇÃO','GESTÃO','SISTEMA'];
+// Páginas de resultado (Metas/Relatório/Ranking/Orçamento) e Ponto ficam "hidden": seguem roteáveis (compat) mas
+// não aparecem no menu — abrem como ABAS dentro da Gestão / Equipe. Assim o menu fica enxuto e o padrão é único.
+var PAGE_PARENT   = { ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'gestao' };
+var GESTAO_CHILDREN = ['metas','relatorio','ranking','orcamento'];
 var PAGES = {
-  lojas:      [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('ponto','Ponto','clock',true,'OPERAÇÃO'), p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('relatorio','Relatório','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('gestao','Gestão','target',true,'GESTÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  vendas:     [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('ranking','Ranking','trend',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  financeiro: [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ],
-  marketing:  [ p('inicio','Início','dashboard',true,'OPERAÇÃO'), p('tarefas','Tarefas','tasks',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('calendario','Calendário','cal',true,'PLANEJAMENTO'), p('metas','Metas','target',true,'PLANEJAMENTO'), p('relatorio','Relatório','trend',true,'PLANEJAMENTO'), p('orcamento','Orçamento','dollar',true,'PLANEJAMENTO'), p('projetos','Projetos','folder',true,'PLANEJAMENTO'), p('chat','Chat','chat',true,'COMUNICAÇÃO'), p('config','Configurações','gear',true,'GESTÃO') ]
+  lojas: [
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'),
+    p('gestao','Gestão','target',true,'GESTÃO'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
+    p('ponto','Ponto','clock',true,'OPERAÇÃO',true), p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true)
+  ],
+  vendas: [
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('crm','CRM','users',true,'OPERAÇÃO'),
+    p('gestao','Gestão','target',true,'GESTÃO'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
+    p('metas','Metas','target',true,'GESTÃO',true), p('ranking','Ranking','trend',true,'GESTÃO',true)
+  ],
+  financeiro: [
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA')
+  ],
+  marketing: [
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'),
+    p('gestao','Gestão','target',true,'GESTÃO'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
+    p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true), p('orcamento','Orçamento','dollar',true,'GESTÃO',true)
+  ]
 };
 
 // Colaborador (nível "Funcionário") vê só o essencial do dia a dia.
@@ -1686,7 +1748,16 @@ var ICON_PATHS = {
   sun:       '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/>',
   clock:     '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/>',
   image:     '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.7"/><path d="M21 15l-5-5L5 21"/>',
-  grid:      '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'
+  grid:      '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  // v75: ícones do vocabulário de ações
+  trash:     '<polyline points="3 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>',
+  edit:      '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/>',
+  copy:      '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>',
+  move:      '<polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/>',
+  archive:   '<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a1 1 0 001 1h14a1 1 0 001-1V8"/><line x1="10" y1="12" x2="14" y2="12"/>',
+  pause:     '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+  play:      '<polygon points="6 4 20 12 6 20 6 4"/>',
+  check:     '<polyline points="20 6 9 17 4 12"/>'
 };
 function icon(name) {
   var body = ICON_PATHS[name] || ICON_PATHS.dashboard;
@@ -1746,7 +1817,7 @@ function permLevel(pgId, s){ var m=userPermMap(s); var v=m[pgId]; return (v==='v
 function permsHas(pgId, s){ return permLevel(pgId, s) !== 'none'; }        // pode ao menos visualizar
 function canEdit(){ if(canManage()) return true; return permLevel(ST.page)==='fazer'; } // pode executar na página atual
 // páginas que o admin pode conceder a um colaborador (exclui início e as de administração)
-function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
+function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return !p.hidden && ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
 // mantém perms/nível do usuário logado atualizados a partir da lista de usuários já carregada
 function syncSessionPerms(){ if(!ST.session||!ST.session.user||!ST.allUsers||!ST.allUsers.length) return; for(var i=0;i<ST.allUsers.length;i++){ if(String(ST.allUsers[i].id)===String(ST.session.user.id)){ ST.session.user.perms=ST.allUsers[i].perms||{}; ST.session.user.access_level=ST.allUsers[i].access_level||ST.session.user.access_level; try{ saveSession(ST.session); }catch(e){} break; } } }
 // grava as permissões; avisa se a coluna 'perms' ainda não existir no banco
@@ -1834,12 +1905,25 @@ function scopeStore(){
   return null;
 }
 
+// v69: busca paginada — quebra o teto de 1000 linhas do Supabase (sem isso, recorrentes antigas somem)
+function fetchAllTasks(sector){
+  var PAGE=1000, all=[], from=0;
+  function step(){
+    return sb.from('malba_vl_tasks').select('*').eq('sector', sector).order('created_at',{ascending:false}).range(from, from+PAGE-1).then(function(r){
+      if(r.error) return { data:all, error:r.error };
+      var rows=(r.data||[]); all=all.concat(rows);
+      if(rows.length<PAGE) return { data:all };
+      from+=PAGE; return step();
+    });
+  }
+  return step();
+}
 function loadData() {
   var sector = ST.sector;
   if (!sb) return Promise.resolve();
   return Promise.all([
     sb.from('malba_store_units').select('*').order('store_number'),
-    sb.from('malba_vl_tasks').select('*').eq('sector', sector).order('created_at', { ascending:false }),
+    fetchAllTasks(sector), // v69: paginado (antes cortava em 1000 e sumia recorrentes)
     sb.from('malba_users').select('*'),
     sb.from('malba_store_members').select('*').order('created_at'),
     sb.from('malba_sales_goals').select('*'),
@@ -1878,6 +1962,8 @@ function loadData() {
       }
     }
     ST.loaded = true;
+    // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
+    try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
     ST.events = [];
     try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario') renderPage(); } }, function(){}); } catch(e){}
@@ -1915,7 +2001,7 @@ function loadData() {
 
 function visibleTasks(opts) {
   opts = opts || {};
-  var list = ST.tasks.slice();
+  var list = ST.tasks.filter(function(t){ return !t.is_rule; }); // v70: esconde as regras de recorrência
   var sid = boardStore();
   if (sid) list = list.filter(function(t){ return String(t.store_unit_id) === String(sid); });
   if (!isAdmin(ST.session)) {
@@ -1953,6 +2039,66 @@ function toast(msg, type){
   el.className='toast '+(type||'info'); el.textContent=msg; w.appendChild(el);
   setTimeout(function(){ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },300); }, 2400);
 }
+
+/* ========== v75: BIBLIOTECA ÚNICA DE COMPONENTES DE AÇÃO ==========
+   Fonte única de verdade pra todas as ações do sistema. Sempre que uma
+   ação (Criar/Editar/Excluir/Duplicar/Mover/Arquivar/Pausar/Concluir)
+   aparecer em qualquer módulo, use estes componentes — mesmo rótulo,
+   mesmo ícone, mesmo visual, mesmo comportamento. */
+var ACTIONS = {
+  criar:    { label:'Criar',    icon:'plus',    cls:'btn-primary' },
+  editar:   { label:'Editar',   icon:'edit',    cls:'btn-ghost' },
+  excluir:  { label:'Excluir',  icon:'trash',   cls:'btn-danger', danger:true },
+  duplicar: { label:'Duplicar', icon:'copy',    cls:'btn-ghost' },
+  mover:    { label:'Mover',    icon:'move',    cls:'btn-ghost' },
+  arquivar: { label:'Arquivar', icon:'archive', cls:'btn-ghost' },
+  pausar:   { label:'Pausar',   icon:'pause',   cls:'btn-ghost' },
+  retomar:  { label:'Retomar',  icon:'play',    cls:'btn-ghost' },
+  concluir: { label:'Concluir', icon:'check',   cls:'btn-primary' }
+};
+// Diálogo de confirmação único (substitui o confirm() nativo do navegador).
+function confirmDialog(opts){
+  opts=opts||{};
+  var kind = opts.danger?'danger':(opts.warn?'warn':'info');
+  var confirmCls = opts.danger?'btn-danger':'btn-primary';
+  var confirmLabel = opts.confirmLabel || (opts.danger?'Excluir':'Confirmar');
+  var cancelLabel = opts.cancelLabel || 'Cancelar';
+  var icKey = opts.icon || (opts.danger?'trash':(opts.warn?'bell':'bell'));
+  var bg=document.createElement('div'); bg.className='confirm-bg';
+  bg.innerHTML='<div class="confirm-card" role="alertdialog" aria-modal="true">'+
+    '<div class="confirm-ic '+kind+'">'+icon(icKey)+'</div>'+
+    '<h3>'+esc(opts.title||(opts.danger?'Tem certeza?':'Confirmar'))+'</h3>'+
+    (opts.message?'<p>'+esc(opts.message)+'</p>':'')+
+    '<div class="confirm-foot"><button class="btn btn-ghost" id="cfCancel">'+esc(cancelLabel)+'</button><button class="btn '+confirmCls+'" id="cfOk">'+esc(confirmLabel)+'</button></div>'+
+  '</div>';
+  document.body.appendChild(bg);
+  function shut(){ if(bg.parentNode) bg.parentNode.removeChild(bg); document.removeEventListener('keydown', onKey, true); }
+  function onKey(e){ if(e.key==='Escape'){ e.preventDefault(); shut(); if(opts.onCancel) opts.onCancel(); } else if(e.key==='Enter'){ e.preventDefault(); shut(); if(opts.onConfirm) opts.onConfirm(); } }
+  document.addEventListener('keydown', onKey, true);
+  bg.addEventListener('click', function(e){ if(e.target===bg){ shut(); if(opts.onCancel) opts.onCancel(); } });
+  bg.querySelector('#cfCancel').addEventListener('click', function(){ shut(); if(opts.onCancel) opts.onCancel(); });
+  bg.querySelector('#cfOk').addEventListener('click', function(){ shut(); if(opts.onConfirm) opts.onConfirm(); });
+  setTimeout(function(){ var b=bg.querySelector('#cfOk'); if(b) b.focus(); }, 30);
+}
+// Atalho pra exclusões (o caso mais comum).
+function confirmDelete(message, onConfirm, opts){
+  opts=opts||{};
+  confirmDialog({ danger:true, title:opts.title||'Tem certeza?', message:message, confirmLabel:opts.confirmLabel||'Excluir', onConfirm:onConfirm });
+}
+// Rodapé de modal padrão: [Excluir] Cancelar [Salvar].
+function modalFoot(o){
+  o=o||{};
+  var del = o.del ? '<button class="btn btn-danger btn-del-wrap" id="'+(o.delId||'mDel')+'">'+esc(o.delLabel||'Excluir')+'</button>' : '';
+  var cancel = '<button class="btn btn-ghost" id="'+(o.cancelId||'mCancel')+'">'+esc(o.cancelLabel||'Cancelar')+'</button>';
+  var save = (o.saveId===null) ? '' : '<button class="btn btn-primary" id="'+(o.saveId||'mSave')+'">'+esc(o.saveLabel||'Salvar')+'</button>';
+  return '<div class="modal-foot">'+del+cancel+save+'</div>';
+}
+// Botão de ação padrão pra linhas/cartões (ícone + rótulo). type = chave de ACTIONS.
+function actionBtn(type, attrs, iconOnly){
+  var a=ACTIONS[type]||ACTIONS.editar; attrs=attrs||'';
+  return '<button class="act-btn'+(a.danger?' danger':'')+(iconOnly?' icon-only':'')+'" '+attrs+' title="'+esc(a.label)+'">'+icon(a.icon)+'<span>'+esc(a.label)+'</span></button>';
+}
+/* ================================================================= */
 
 function startSplash(){
   if (document.getElementById('splash')) return;
@@ -2015,7 +2161,7 @@ function renderShell(innerHTML, title) {
   var u=ST.session.user;
   var roleLabel = roleNivelLabel(ST.session);
   var pages=PAGES[ST.sector]||PAGES.lojas;
-  pages = pages.filter(function(pg){ return pageAllowed(pg.id, ST.session); });
+  pages = pages.filter(function(pg){ return !pg.hidden && pageAllowed(pg.id, ST.session); }); // v74: hidden fora do menu (segue na paleta Cmd+K)
   var nav='';
   var focoTarefas = navTaskCount();
   GROUP_ORDER.forEach(function(gname){
@@ -2023,7 +2169,7 @@ function renderShell(innerHTML, title) {
     if (items.length===0) return;
     nav += '<div class="nav-group">'+gname+'</div>';
     items.forEach(function(pg){
-      var active = pg.id===ST.page?' active':'';
+      var active = (pg.id===ST.page || PAGE_PARENT[ST.page]===pg.id)?' active':''; // v74: acende o pai quando numa aba filha
       var dis = pg.enabled?'':' disabled';
       var soon = pg.enabled?'':'<span class="nav-soon">em breve</span>';
       var badge = (pg.id==='tarefas' && focoTarefas>0) ? '<span class="nav-badge">'+focoTarefas+'</span>' : '';
@@ -2057,7 +2203,7 @@ function renderShell(innerHTML, title) {
   if (sideUser) sideUser.addEventListener('click', function(){ ST.page='perfil'; ST.openProject=null; navigate(ST.sector+'/perfil'); renderPage(); });
   var navBtns=app.querySelectorAll('.nav-item:not([disabled])');
   for (var i=0;i<navBtns.length;i++) {
-    navBtns[i].addEventListener('click', function(){ ST.page=this.getAttribute('data-page'); ST.openProject=null; navigate(ST.sector+'/'+ST.page); renderPage(); });
+    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
   }
   bindTopbar();
   var _burger=document.getElementById('topBurger');
@@ -2082,13 +2228,18 @@ function novoContextual() {
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='metas') return openGoalModal(null);
   if (pg==='equipe') return openMemberModal(null);
-  if (pg==='gestao') return (ST.gestaoTab==='avaliacoes'?openAvaliacaoModal():openComissaoModal());
+  if (pg==='gestao'){
+    var gt=ST.gestaoTab||'';
+    if (gt==='metas') return openGoalModal(null);
+    if (gt==='avaliacoes') return openAvaliacaoModal();
+    return openComissaoModal();
+  }
   return openTaskModal(null); // inicio, tarefas, calendario, ranking, etc.
 }
 function globalSearch(q) {
   q=(q||'').toLowerCase().trim(); if(!q) return [];
   var res=[];
-  (ST.tasks||[]).forEach(function(t){ if((t.title||'').toLowerCase().indexOf(q)>=0) res.push({k:'task',label:t.title,sub:'Tarefa',color:'#3B6FF7',ref:t}); });
+  (ST.tasks||[]).forEach(function(t){ if(t.is_rule) return; if((t.title||'').toLowerCase().indexOf(q)>=0) res.push({k:'task',label:t.title,sub:'Tarefa',color:'#3B6FF7',ref:t}); });
   (ST.clients||[]).forEach(function(c){ if((c.name||'').toLowerCase().indexOf(q)>=0||(c.company||'').toLowerCase().indexOf(q)>=0) res.push({k:'client',label:c.name,sub:'Cliente'+(c.company?' · '+c.company:''),color:'#00ACC1',ref:c}); });
   (ST.projects||[]).forEach(function(p){ if((p.name||'').toLowerCase().indexOf(q)>=0) res.push({k:'project',label:p.name,sub:'Projeto',color:'#FB8C00',ref:p}); });
   (ST.campaigns||[]).forEach(function(c){ if((c.name||'').toLowerCase().indexOf(q)>=0) res.push({k:'campaign',label:c.name,sub:'Campanha',color:'#8B5CF6',ref:c}); });
@@ -2560,15 +2711,23 @@ function tarefasHTML() {
   }
   var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
   var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
-  return head + muralHTML() + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
+  return head + muralHTML() + (view==='kanban' ? rotinaHojeCardHTML() : '') + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
 function taskSeriesKey(t){ if(t.recur_group) return 'g:'+t.recur_group; if((t.recurrence||'none')!=='none') return 'a:'+((t.title||'').toLowerCase().trim())+'|'+t.recurrence; return ''; }
 // recorrentes aparecem só na ocorrência de HOJE (nas visões de gestão: quadro e prioridades)
 function filtrarRecorrentesHoje(tks){
+  tks = tks.filter(function(t){ return !t.is_rule; }); // v70: a regra nunca aparece como tarefa
   var hoje=today(); var cnt={};
   tks.forEach(function(t){ var k=taskSeriesKey(t); if(k) cnt[k]=(cnt[k]||0)+1; });
-  return tks.filter(function(t){ var k=taskSeriesKey(t); var isSer=k&&(k.charAt(0)==='g'||cnt[k]>=2); return !(isSer && (t.due_date||'').slice(0,10)!==hoje); });
+  return tks.filter(function(t){
+    var k=taskSeriesKey(t); var isSer=k&&(k.charAt(0)==='g'||cnt[k]>=2);
+    if(!isSer) return true;
+    var due=(t.due_date||'').slice(0,10);
+    if(due>hoje) return false;                          // v71: futura da série some do quadro (segue no calendário)
+    if(due<hoje && t.status==='feito') return false;    // v71: passada já feita não precisa aparecer
+    return true;                                        // hoje, ou ATRASADA não-feita: aparece
+  });
 }
 function boardItems() {
   var admin = isAdmin(ST.session);
@@ -2615,7 +2774,7 @@ function kanbanHTML() {
       var focus=inCol.filter(function(it){ return !it.due || it.due<=hoje; });
       count=focus.length;
       var qa='<div class="quick-add"><input type="text" id="qaInput" placeholder="+ Tarefa rápida para hoje (Enter)" maxlength="140" autocomplete="off"></div>';
-      body = qa + (focus.length ? groupedByDate(focus) : '<div class="col-empty">Nada atrasado ou para hoje. Planeje no Calendário.</div>');
+      body = qa + groupedTodoFocus(focus); // v73: Atrasadas -> Rotina de Hoje -> Demais
     } else if (key==='feito') {
       // só o que foi concluído para hoje (não acumula histórico antigo)
       var doneHoje=inCol.filter(function(it){ return it.due===hoje; });
@@ -2650,6 +2809,55 @@ function groupedByDate(items) {
     html += '<div class="grp'+(bk.late?' grp-late':'')+'"><span class="grp-l">'+bk.l+'</span><span class="grp-n">'+sub.length+'</span></div>'+sub.map(taskCardHTML).join('');
   });
   return html;
+}
+// v73: agrupa a coluna "A Fazer" em Atrasadas -> Rotina de Hoje -> Demais (só divisores; cards intactos)
+function groupedTodoFocus(items){
+  var hoje=today();
+  var atras=[], rot=[], demais=[];
+  items.forEach(function(it){
+    var d=it.due;
+    if(d && d<hoje){ atras.push(it); return; }
+    if(it.kind==='task' && it.rec && it.rec!=='none' && d===hoje){ rot.push(it); return; }
+    demais.push(it);
+  });
+  var pr={alta:0,media:1,baixa:2};
+  atras.sort(function(a,b){ return (a.due||'').localeCompare(b.due||''); });
+  rot.sort(function(a,b){ return (pr[a.priority]||1)-(pr[b.priority]||1); });
+  demais.sort(function(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); });
+  var html='';
+  if(atras.length) html+='<div class="grp grp-late"><span class="grp-l">🔴 Atrasadas</span><span class="grp-n">'+atras.length+'</span></div>'+atras.map(taskCardHTML).join('');
+  if(rot.length)   html+='<div class="grp grp-rot" id="rotinaHojeAnchor"><span class="grp-l">🔵 Rotina de Hoje</span><span class="grp-n">'+rot.length+'</span></div>'+rot.map(taskCardHTML).join('');
+  if(demais.length)html+='<div class="grp"><span class="grp-l">⚪ Demais</span><span class="grp-n">'+demais.length+'</span></div>'+demais.map(taskCardHTML).join('');
+  return html || '<div class="col-empty">Nada atrasado ou para hoje. Planeje no Calendário.</div>';
+}
+// v73: estatística das recorrentes de HOJE (usa só dados em memória; não consulta o Supabase)
+function estMinTarefa(t){ var v=[t.est_min,t.estimate_min,t.tempo_min,t.duracao_min]; for(var i=0;i<v.length;i++){ var n=Number(v[i]); if(!isNaN(n)&&n>0) return n; } return 0; }
+function fmtDur(min){ min=Math.round(min); var h=Math.floor(min/60), m=min%60; if(h&&m) return h+'h '+m+'min'; if(h) return h+'h'; return m+'min'; }
+function rotinaHojeStats(){
+  var admin=isAdmin(ST.session);
+  var list=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined });
+  var hoje=today();
+  var rec=list.filter(function(t){ return isRecurring(t) && (t.due_date||'').slice(0,10)===hoje; });
+  var total=rec.length, done=0, pendMin=0, hasEst=false;
+  rec.forEach(function(t){ if(t.status==='feito') done++; else { var e=estMinTarefa(t); if(e>0){ hasEst=true; pendMin+=e; } } });
+  return { total:total, done:done, pend:total-done, pct: total?Math.round(done/total*100):0, pendMin:pendMin, hasEst:hasEst };
+}
+function rotinaHojeCardHTML(){
+  var s=rotinaHojeStats();
+  if(s.total===0) return ''; // sem rotina hoje: não polui a tela
+  var pct=s.pct, cor = pct>=100 ? 'var(--u-green)' : 'var(--u-accent)';
+  var tempo = (s.hasEst && s.pend>0) ? ' · <span class="rh-time">⏱ ~'+fmtDur(s.pendMin)+' restantes</span>' : '';
+  var doneMsg = pct>=100 ? '<div class="rh-done">Rotina de hoje concluída 🎉</div>' : '';
+  return '<div class="rh-card">'+
+    '<div class="rh-top"><div class="rh-title">🌅 Rotina de Hoje</div><button class="rh-btn" id="btnVerRotina">Ver rotina</button></div>'+
+    '<div class="rh-stats"><b style="color:'+cor+'">'+s.done+'</b> de <b>'+s.total+'</b> feitas · <b style="color:#F59E0B">'+s.pend+'</b> pendentes · <b>'+pct+'%</b>'+tempo+'</div>'+
+    '<div class="rh-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div>'+
+    doneMsg+
+  '</div>';
+}
+function scrollToRotinaHoje(){
+  var el=document.getElementById('rotinaHojeAnchor') || document.querySelector('.board');
+  if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 // Matriz de Eisenhower (importância = prioridade alta; urgência = vence hoje/atrasada)
 function eisenQuadrant(t) {
@@ -2698,15 +2906,16 @@ function taskCardHTML(it) {
   var u=it.assignee_id?userById(it.assignee_id):null;
   var av=u?'<span class="tc-av" style="background:'+(u.color||'#3B6FF7')+'" title="'+esc(u.name)+'">'+esc(iniciais(u.name))+'</span>':'';
   var hoje=today(); var late=it.due && it.due<hoje && it.status!=='feito';
+  var lateChip = late ? '<span class="tc-late">⚠ Atrasada</span>' : '';
   var dateChip=it.due?'<span class="tc-date'+(late?' late':'')+'">'+icon('cal')+fmtDate(it.due)+'</span>':'';
   var srcChip = it.source
     ? '<span class="tc-src tc-src-'+(it.source.type==='Projeto'?'proj':'camp')+'">'+esc(it.source.type)+' · '+esc(it.source.name)+'</span>'
     : (it.area?'<span class="tc-chip">'+esc(it.area)+'</span>':'');
-  var recBadge = (it.kind==='task' && it.rec && it.rec!=='none') ? '<span class="tc-rec">↻ '+(REC[it.rec]?REC[it.rec].label:'Repete')+'</span>' : '';
+  var recBadge = (it.kind==='task' && it.rec && it.rec!=='none') ? '<span class="tc-rec" title="Rotina · repete: '+(REC[it.rec]?REC[it.rec].label:'')+'">↻ Rotina</span>' : '';
   var subChip = it.sub ? '<span class="tc-sub'+(it.sub.done===it.sub.total?' done':'')+'">✓ '+it.sub.done+'/'+it.sub.total+'</span>' : '';
   var quick = (it.kind==='task' && it.rec && it.rec!=='none') ? '<button class="tc-done" data-done="'+esc(it.id)+'">✓ feito hoje</button>' : '';
   var drag = it.draggable ? ' draggable="true"' : '';
-  return '<div class="task-card" data-kind="'+it.kind+'" data-id="'+esc(it.id)+'"'+drag+'><div class="tc-top"><span class="tc-prio" style="background:'+pr.color+'" title="Prioridade '+pr.label+'"></span><span class="tc-title">'+esc(it.title)+'</span></div><div class="tc-meta">'+srcChip+recBadge+subChip+dateChip+av+'</div>'+quick+'</div>';
+  return '<div class="task-card" data-kind="'+it.kind+'" data-id="'+esc(it.id)+'"'+drag+'><div class="tc-top"><span class="tc-prio" style="background:'+pr.color+'" title="Prioridade '+pr.label+'"></span><span class="tc-title">'+esc(it.title)+'</span></div><div class="tc-meta">'+lateChip+srcChip+recBadge+subChip+dateChip+av+'</div>'+quick+'</div>';
 }
 // move um item do quadro entre colunas (status) e persiste
 function moveBoardItem(kind, id, ns) {
@@ -2738,6 +2947,8 @@ function bindTarefas() {
   if ((ST.taskView||'kanban')==='rotina') { bindRotina(); bindMural(); var _af=document.getElementById('taskStore'); if(_af) _af.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); }); var _vts=app.querySelectorAll('[data-view]'); for(var _v=0;_v<_vts.length;_v++) _vts[_v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); renderPage(); }); return; }
   var nova=document.getElementById('btnNovaTarefa');
   if (nova) nova.addEventListener('click', function(){ openTaskModal(null); });
+  var verRot=document.getElementById('btnVerRotina');
+  if (verRot) verRot.addEventListener('click', scrollToRotinaHoje); // v73
   bindMural();
   // captura rápida (quick-add) — cria tarefa de hoje atribuída a mim
   var qa=document.getElementById('qaInput');
@@ -2848,11 +3059,79 @@ function insertRecorrencia(rows, cb){
     if(r.data) ST.tasks=r.data.concat(ST.tasks); cb(true, (r.data||rows).length);
   });
 }
+// ===== v70: RECORRÊNCIA POR REGRA (a tarefa recorrente vira uma "regra"; o sistema gera a ocorrência de cada dia sozinho) =====
+var REC_HORIZON = 45; // quantos dias à frente o sistema já deixa prontos (cobre o mês atual + o próximo no calendário)
+var REC_CATCHUP = 3;  // v71: dias pra trás que o sistema recupera (rotina que ninguém abriu ontem não some — aparece como Atrasada)
+function parseWeekdaysStr(s){
+  if(Array.isArray(s)) return s.map(Number);
+  if(!s) return [];
+  try{ var a=JSON.parse(s); return Array.isArray(a)?a.map(Number):[]; }catch(e){ return []; }
+}
+// datas de uma regra dentro de uma janela [winStart..winEnd] (strings YYYY-MM-DD)
+function occDatesForRule(rule, winStart, winEnd){
+  var rec=rule.recurrence, anchor=(rule.rec_start||(rule.due_date||'').slice(0,10)||winStart);
+  if(rec==='mensal'){
+    var dom=_dParse(anchor).getDate(), out=[], d=_dParse(winStart), guard=0;
+    d=new Date(d.getFullYear(), d.getMonth(), 1, 12,0,0);
+    while(_dFmt(d)<=winEnd && guard<80){
+      guard++;
+      var last=new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+      var occ=_dFmt(new Date(d.getFullYear(), d.getMonth(), Math.min(dom,last), 12,0,0));
+      if(occ>=winStart && occ<=winEnd && occ>=anchor) out.push(occ);
+      d=new Date(d.getFullYear(), d.getMonth()+1, 1, 12,0,0);
+    }
+    return out;
+  }
+  return gerarDatasRec(winStart, rec, { until:winEnd, diasUteis:!!rule.rec_dias_uteis, weekdays:parseWeekdaysStr(rule.rec_weekdays) })
+         .filter(function(s){ return s>=anchor; });
+}
+// gera as ocorrências que faltam de HOJE até HOJE+REC_HORIZON para todas as regras ativas
+function materializarRecorrencias(){
+  if(!sb) return Promise.resolve(false);
+  var rules=(ST.tasks||[]).filter(function(t){ return t.is_rule; });
+  if(!rules.length) return Promise.resolve(false);
+  var hoje=today(), winEnd=addDays(hoje, REC_HORIZON), winStartBase=addDays(hoje, -REC_CATCHUP); // v71: começa alguns dias atrás
+  var existing={};
+  (ST.tasks||[]).forEach(function(t){ if(!t.is_rule && t.recur_group){ existing[t.recur_group+'|'+(t.due_date||'').slice(0,10)]=1; } });
+  var novos=[];
+  rules.forEach(function(rule){
+    if(!rule.recur_group) return;
+    if(rule.rec_paused) return; // v72: rotina pausada não gera novos dias
+    var winStart=winStartBase;
+    if(rule.rec_start && rule.rec_start>winStart) winStart=rule.rec_start; // regra que ainda vai começar / não recupera antes do início
+    var end=winEnd;
+    if(rule.rec_until && rule.rec_until<end) end=rule.rec_until;        // regra com data de término
+    if(end<winStart) return;
+    var skips=parseSkips(rule.rec_skips); // v72: dias pulados nunca voltam
+    occDatesForRule(rule, winStart, end).forEach(function(ds){
+      if(skips.indexOf(ds)!==-1) return;
+      var key=rule.recur_group+'|'+ds;
+      if(existing[key]) return;
+      existing[key]=1;
+      novos.push({
+        title:rule.title, description:rule.description||'', priority:rule.priority||'media',
+        status:'todo', due_date:ds, recurrence:rule.recurrence, area:rule.area||'',
+        assignee_id:rule.assignee_id||null, project_id:rule.project_id||null,
+        sector:rule.sector, created_by:rule.created_by||null, store_unit_id:(rule.store_unit_id||null),
+        recur_group:rule.recur_group, is_rule:false,
+        subtasks:(Array.isArray(rule.subtasks)&&rule.subtasks.length?rule.subtasks.map(function(s){ return { id:uid(), text:s.text, done:false }; }):null)
+      });
+    });
+  });
+  if(!novos.length) return Promise.resolve(false);
+  return sb.from('malba_vl_tasks').insert(novos).select().then(function(r){
+    if(r.error){ console.error('materializarRecorrencias', r.error); return false; }
+    if(r.data && r.data.length){ ST.tasks=r.data.concat(ST.tasks); return true; }
+    return false;
+  }, function(e){ console.error(e); return false; });
+}
 function openTaskModal(task, preset) {
   var isEdit=!!task;
   preset = preset || {};
   var t=task||{ title:'', description:'', priority:'media', status:'todo', due_date:(preset.due||today()), area:'', assignee_id:(preset.assignee||'') };
   var canMng=canEdit();
+  var occRule=(isEdit && task && task.recur_group && !task.is_rule && canMng) ? ruleForOccurrence(task) : null; // v72
+  var recManageRow = occRule ? ('<div class="rec-manage"><span class="rec-manage-l">↻ Faz parte de uma rotina'+(occRule.rec_paused?' · pausada':'')+'</span><div class="rec-manage-btns"><button type="button" class="btn btn-ghost rec-mini" id="recEdit">Editar rotina</button><button type="button" class="btn btn-ghost rec-mini" id="recSkip">Pular este dia</button></div></div>') : '';
   var ro = isEdit && !canMng; // usuário comum editando tarefa existente: só status (mas pode marcar checklist)
   var dis = ro?' disabled':'';
   var subList = (task && Array.isArray(task.subtasks)) ? task.subtasks.map(function(s){ return { id:s.id||uid(), text:s.text||'', done:!!s.done }; }) : [];
@@ -2874,6 +3153,7 @@ function openTaskModal(task, preset) {
       '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
       '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
+      recManageRow+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Responsável</label><select id="tAssignee"'+dis+'>'+userOpts+'</select></div><div class="modal-row"><label class="modal-label">Projeto (opcional)</label><select id="tProj"'+dis+'>'+projOpts+'</select></div></div>'+
       '<div class="modal-row"><label class="modal-label">Checklist / Subtarefas <span id="tSubCount" class="sub-count"></span></label><div id="tSubs" class="sub-list"></div><div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div></div>'+
@@ -2883,7 +3163,7 @@ function openTaskModal(task, preset) {
   document.body.appendChild(modal);
 
   var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none';
-  var recUntil='', recDiasUteis=false, recWeekdays=[];
+  var recUntil='', recDiasUteis=false, recWeekdays=[], recSemFim=true; // v70: por padrão a rotina roda pra sempre
   bindPills(modal, '#tStatus .st-pill', 'st', function(v){ stPick=v; });
   if (!ro) {
     bindPills(modal, '#tPrio .pr-pill', 'pr', function(v){ prPick=v; });
@@ -2894,7 +3174,7 @@ function openTaskModal(task, preset) {
     if(recPick==='none' || ro || isEdit){ box.style.display='none'; box.innerHTML=''; return; }
     box.style.display='block';
     var start=modal.querySelector('#tDate').value||today();
-    if(!recUntil || _dParse(recUntil)<_dParse(start)) recUntil=fimDoMesDe(start);
+    if(!recUntil || _dParse(recUntil)<_dParse(start)) recUntil=fimDoAnoDe(start); // v69: padrão fim do ANO (antes fim do mês, a série "acabava")
     var extra='';
     if(recPick==='diaria'){
       extra='<label class="rec-check"><input type="checkbox" id="recUteis"'+(recDiasUteis?' checked':'')+'><span>Somente dias úteis (seg a sex)</span></label>';
@@ -2905,10 +3185,17 @@ function openTaskModal(task, preset) {
     } else if(recPick==='mensal'){
       extra='<div class="rec-note-inline">Repete todo dia '+_dParse(start).getDate()+' de cada mês.</div>';
     }
-    var untilRow='<div class="rec-until"><label class="modal-label">Repetir até</label><div class="rec-until-row"><input type="date" id="recUntil" value="'+esc(recUntil)+'"><button type="button" class="rec-quick" data-until="mes">Fim do mês</button><button type="button" class="rec-quick" data-until="ano">Fim do ano</button></div></div>';
-    var datas=gerarDatasRec(start, recPick, { until:recUntil, diasUteis:recDiasUteis, weekdays:recWeekdays });
-    var preview='<div class="rec-preview">'+(datas.length?('Serão criadas <b>'+datas.length+'</b> tarefa'+(datas.length>1?'s':'')+', de '+fmtDate(datas[0])+' a '+fmtDate(datas[datas.length-1])+'.'+(datas.length>=400?' (máx. 400)':'')):'Nenhuma data no período — ajuste o "Repetir até".')+'</div>';
-    box.innerHTML=extra+untilRow+preview;
+    // v70: "sem data fim" = a rotina roda pra sempre (o sistema gera a tarefa de cada dia sozinho)
+    var semFimRow='<label class="rec-check"><input type="checkbox" id="recSemFim"'+(recSemFim?' checked':'')+'><span>Sem data fim (roda pra sempre)</span></label>';
+    var untilRow= recSemFim ? '' : '<div class="rec-until"><label class="modal-label">Repetir até</label><div class="rec-until-row"><input type="date" id="recUntil" value="'+esc(recUntil)+'"><button type="button" class="rec-quick" data-until="mes">Fim do mês</button><button type="button" class="rec-quick" data-until="ano">Fim do ano</button></div></div>';
+    var padrao='';
+    if(recPick==='diaria') padrao = recDiasUteis ? 'todo dia útil (seg a sex)' : 'todos os dias';
+    else if(recPick==='semanal'){ var nm=['dom','seg','ter','qua','qui','sex','sáb']; var sel=recWeekdays.slice().sort(function(a,b){return a-b;}).map(function(i){return nm[i];}); padrao='toda semana ('+(sel.join(', ')||'—')+')'; }
+    else if(recPick==='mensal') padrao='todo dia '+_dParse(start).getDate()+' do mês';
+    var ateTxt = recSemFim ? 'sem data fim — roda pra sempre' : ('até '+fmtDate(recUntil));
+    var preview='<div class="rec-preview">Repete <b>'+padrao+'</b>, a partir de '+fmtDate(start)+', '+ateTxt+'.<br><span style="opacity:.7">O sistema cria a tarefa de cada dia automaticamente — ninguém precisa recriar.</span></div>';
+    box.innerHTML=extra+semFimRow+untilRow+preview;
+    var sf=box.querySelector('#recSemFim'); if(sf) sf.addEventListener('change', function(){ recSemFim=this.checked; if(!recSemFim && (!recUntil||_dParse(recUntil)<_dParse(start))) recUntil=fimDoAnoDe(start); renderRecOpts(); });
     var u=box.querySelector('#recUteis'); if(u) u.addEventListener('change', function(){ recDiasUteis=this.checked; renderRecOpts(); });
     var wbs=box.querySelectorAll('.rec-wd-btn'); for(var i=0;i<wbs.length;i++) wbs[i].addEventListener('click', function(){ var d=+this.getAttribute('data-wd'); var ix=recWeekdays.indexOf(d); if(ix===-1) recWeekdays.push(d); else if(recWeekdays.length>1) recWeekdays.splice(ix,1); renderRecOpts(); });
     var ru=box.querySelector('#recUntil'); if(ru) ru.addEventListener('change', function(){ recUntil=this.value; renderRecOpts(); });
@@ -2975,13 +3262,36 @@ function openTaskModal(task, preset) {
       });
     } else {
       if (recPick!=='none') {
-        var datas=gerarDatasRec(payload.due_date, recPick, { until:recUntil, diasUteis:recDiasUteis, weekdays:recWeekdays });
-        if (datas.length>1) {
-          var grupo=uid();
-          var rows=datas.map(function(ds){ var p=Object.assign({}, payload); p.due_date=ds; p.recur_group=grupo; return p; });
-          insertRecorrencia(rows, function(ok, n){ if(!ok){ saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; } auditLog('Criou tarefas recorrentes', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); renderPage(); });
-          return;
-        }
+        // v70: cria uma REGRA (uma linha) e deixa o sistema gerar as tarefas de cada dia sozinho
+        var grupo=uid();
+        var rulePayload=Object.assign({}, payload);
+        rulePayload.is_rule=true;
+        rulePayload.recur_group=grupo;
+        rulePayload.rec_start=payload.due_date;
+        rulePayload.rec_dias_uteis=(recPick==='diaria')?!!recDiasUteis:false;
+        rulePayload.rec_weekdays=(recPick==='semanal')?JSON.stringify(recWeekdays.slice().sort(function(a,b){return a-b;})):null;
+        rulePayload.rec_until=recSemFim?null:(recUntil||null);
+        sb.from('malba_vl_tasks').insert(rulePayload).select().single().then(function(r){
+          if (r.error){
+            var m=(r.error.message||'').toLowerCase();
+            if (m.indexOf('is_rule')!==-1 || m.indexOf('rec_')!==-1 || m.indexOf('column')!==-1 || m.indexOf('schema')!==-1){
+              // FALLBACK: colunas da regra ainda não existem -> volta ao modo antigo (pré-geração até o fim do ano)
+              var until2=recSemFim?fimDoAnoDe(payload.due_date):(recUntil||fimDoAnoDe(payload.due_date));
+              var datas=gerarDatasRec(payload.due_date, recPick, { until:until2, diasUteis:recDiasUteis, weekdays:recWeekdays });
+              if (datas.length>1){
+                var rows=datas.map(function(ds){ var p=Object.assign({}, payload); p.due_date=ds; p.recur_group=grupo; return p; });
+                insertRecorrencia(rows, function(ok, n){ if(!ok){ saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; } auditLog('Criou tarefas recorrentes (compat)', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); toast('Dica: rode o SQL da Parte 2 p/ o modo automático','info'); renderPage(); });
+                return;
+              }
+            }
+            toast('Erro ao criar rotina','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return;
+          }
+          if (r.data) ST.tasks.unshift(r.data); // a regra em si (fica invisível nas telas)
+          materializarRecorrencias().then(function(){
+            auditLog('Criou rotina recorrente', title); close(); toast('Rotina criada — aparece todo dia ✓','success'); renderPage();
+          });
+        }, function(e){ toast('Erro ao criar rotina','error'); console.error(e); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; });
+        return;
       }
       sb.from('malba_vl_tasks').insert(payload).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; }
@@ -2992,26 +3302,119 @@ function openTaskModal(task, preset) {
   });
 
   if (isEdit && canMng) {
+    var recEditBtn=modal.querySelector('#recEdit');
+    if(recEditBtn) recEditBtn.addEventListener('click', function(){ close(); openRotinaModal(occRule); });
+    var recSkipBtn=modal.querySelector('#recSkip');
+    if(recSkipBtn) recSkipBtn.addEventListener('click', function(){
+      confirmDelete('Pular só o dia '+fmtDate(t.due_date)+' desta rotina?\nA rotina continua nos outros dias, e este dia não volta.', function(){ pularDiaRotina(occRule, t, function(ok){ if(ok){ close(); renderPage(); } }); });
+    });
     modal.querySelector('#taskDel').addEventListener('click', function(){
-      if (!confirm('Excluir a tarefa "'+(t.title||'sem título')+'"?')) return;
-      sb.from('malba_vl_tasks').delete().eq('id', t.id).then(function(r){
+      confirmDelete('Excluir a tarefa "'+(t.title||'sem título')+'"?', function(){ sb.from('malba_vl_tasks').delete().eq('id', t.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.tasks=ST.tasks.filter(function(x){ return x.id!==t.id; });
         auditLog('Excluiu tarefa', t.title||''); close(); toast('Tarefa excluída','success'); renderPage();
-      });
+      }); });
     });
     var delSerie=modal.querySelector('#taskDelSerie');
     if (delSerie) delSerie.addEventListener('click', function(){
       var g=task.recur_group; if(!g) return;
       var n=(ST.tasks||[]).filter(function(x){ return String(x.recur_group)===String(g); }).length;
-      if (!confirm('Excluir a SÉRIE inteira ('+n+' tarefas repetidas)?')) return;
-      sb.from('malba_vl_tasks').delete().eq('recur_group', g).then(function(r){
+      confirmDelete('Excluir a SÉRIE inteira ('+n+' tarefas repetidas)?', function(){ sb.from('malba_vl_tasks').delete().eq('recur_group', g).then(function(r){
         if (r.error) { toast('Erro ao excluir série','error'); return; }
         ST.tasks=ST.tasks.filter(function(x){ return String(x.recur_group)!==String(g); });
         auditLog('Excluiu série de tarefas', t.title||''); close(); toast('Série excluída','success'); renderPage();
-      });
+      }); });
     });
   }
+}
+// ===== v72: GESTÃO DA ROTINA (editar / pausar / pular um dia) =====
+function parseSkips(s){ if(Array.isArray(s)) return s.slice(); if(!s) return []; try{ var a=JSON.parse(s); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function ruleForOccurrence(t){ if(!t||!t.recur_group) return null; for(var i=0;i<ST.tasks.length;i++){ var x=ST.tasks[i]; if(x.is_rule && String(x.recur_group)===String(t.recur_group)) return x; } return null; }
+function descrevePadraoRegra(rule){
+  var rec=rule.recurrence;
+  if(rec==='diaria') return rule.rec_dias_uteis?'todo dia útil (seg a sex)':'todos os dias';
+  if(rec==='semanal'){ var nm=['dom','seg','ter','qua','qui','sex','sáb']; var w=parseWeekdaysStr(rule.rec_weekdays); return 'toda semana ('+(w.map(function(i){return nm[i];}).join(', ')||'—')+')'; }
+  if(rec==='mensal'){ var d=rule.rec_start?_dParse(rule.rec_start).getDate():''; return 'todo dia '+d+' do mês'; }
+  return 'recorrente';
+}
+function pularDiaRotina(rule, occ, cb){
+  if(!rule||!occ){ if(cb)cb(false); return; }
+  var ds=(occ.due_date||'').slice(0,10);
+  var skips=parseSkips(rule.rec_skips); if(skips.indexOf(ds)===-1) skips.push(ds);
+  sb.from('malba_vl_tasks').update({ rec_skips: JSON.stringify(skips) }).eq('id', rule.id).then(function(r1){
+    if(r1.error){ toast('Erro ao pular o dia','error'); console.error(r1.error); if(cb)cb(false); return; }
+    rule.rec_skips=JSON.stringify(skips);
+    sb.from('malba_vl_tasks').delete().eq('id', occ.id).then(function(r2){
+      if(r2.error){ toast('Erro ao remover o dia','error'); console.error(r2.error); if(cb)cb(false); return; }
+      ST.tasks=ST.tasks.filter(function(x){ return x.id!==occ.id; });
+      auditLog('Pulou dia da rotina', (rule.title||'')+' · '+ds); toast('Dia pulado ✓','success'); if(cb)cb(true);
+    });
+  }, function(e){ toast('Erro ao pular o dia','error'); console.error(e); if(cb)cb(false); });
+}
+function openRotinaModal(rule){
+  if(!rule) return;
+  var prPick=rule.priority||'media';
+  var prPills=['alta','media','baixa'].map(function(k){ return '<button type="button" class="pill pr-pill'+(prPick===k?' on':'')+'" data-pr="'+k+'" style="color:'+PRIO[k].color+'"><span class="pdot" style="background:'+PRIO[k].color+'"></span>'+PRIO[k].label+'</button>'; }).join('');
+  var userOpts='<option value="">— Ninguém —</option>';
+  ST.users.forEach(function(u){ userOpts += '<option value="'+esc(u.id)+'"'+(String(rule.assignee_id||'')===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>'; });
+  var pausado=!!rule.rec_paused;
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  modal.innerHTML='<div class="modal">'+
+    '<div class="modal-title-input" style="cursor:default">Editar rotina</div>'+
+    '<div class="modal-note">Repete <b>'+esc(descrevePadraoRegra(rule))+'</b>'+(pausado?' · <b style="color:var(--u-red)">pausada</b>':'')+'. As mudanças valem para <b>hoje e os próximos dias</b> (dias já feitos não mudam).</div>'+
+    '<input class="modal-title-input" id="roTitle" placeholder="Título da rotina..." value="'+esc(rule.title||'')+'">'+
+    '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills" id="roPrio">'+prPills+'</div></div>'+
+    '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Responsável</label><select id="roAssignee">'+userOpts+'</select></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="roArea" value="'+esc(rule.area||'')+'" placeholder="ex: Abertura"></div></div>'+
+    '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="roDesc" placeholder="Detalhes...">'+esc(rule.description||'')+'</textarea></div>'+
+    '<div class="modal-foot"><button class="btn btn-danger btn-del-wrap" id="roDelSerie">Excluir rotina</button><button class="btn btn-ghost" id="roPause" style="color:'+(pausado?'var(--u-green)':'#F59E0B')+'">'+(pausado?'Retomar rotina':'Pausar rotina')+'</button><button class="btn btn-ghost" id="roCancel">Cancelar</button><button class="btn btn-primary" id="roSave">Salvar</button></div>'+
+  '</div>';
+  document.body.appendChild(modal);
+  bindPills(modal, '#roPrio .pr-pill', 'pr', function(v){ prPick=v; });
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  modal.querySelector('#roCancel').addEventListener('click', close);
+  modal.querySelector('#roSave').addEventListener('click', function(){
+    var title=(modal.querySelector('#roTitle').value||'').trim(); if(!title){ toast('Informe o título','error'); return; }
+    var patch={ title:title, description:(modal.querySelector('#roDesc').value||'').trim(), priority:prPick, area:(modal.querySelector('#roArea').value||'').trim(), assignee_id:(modal.querySelector('#roAssignee').value||null) };
+    var btn=modal.querySelector('#roSave'); btn.disabled=true; btn.textContent='Salvando...';
+    sb.from('malba_vl_tasks').update(patch).eq('id', rule.id).then(function(r){
+      if(r.error){ toast('Erro ao salvar rotina','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; }
+      Object.assign(rule, patch);
+      // propaga para as próximas ocorrências ainda não feitas (de hoje pra frente)
+      sb.from('malba_vl_tasks').update(patch).eq('recur_group', rule.recur_group).eq('is_rule', false).gte('due_date', today()).neq('status','feito').then(function(){
+        ST.tasks.forEach(function(x){ if(!x.is_rule && String(x.recur_group)===String(rule.recur_group) && (x.due_date||'').slice(0,10)>=today() && x.status!=='feito'){ Object.assign(x, patch); } });
+        auditLog('Editou rotina', title); close(); toast('Rotina atualizada ✓','success'); renderPage();
+      }, function(){ close(); toast('Rotina atualizada ✓','success'); renderPage(); });
+    });
+  });
+  modal.querySelector('#roPause').addEventListener('click', function(){
+    var novo=!rule.rec_paused; var btn=this;
+     var _go=function(){
+    btn.disabled=true;
+    sb.from('malba_vl_tasks').update({ rec_paused: novo }).eq('id', rule.id).then(function(r){
+      if(r.error){ toast('Erro','error'); console.error(r.error); btn.disabled=false; return; }
+      rule.rec_paused=novo;
+      if(novo){
+        // ao pausar, limpa os dias FUTUROS ainda não feitos
+        sb.from('malba_vl_tasks').delete().eq('recur_group', rule.recur_group).eq('is_rule', false).gt('due_date', today()).neq('status','feito').then(function(){
+          ST.tasks=ST.tasks.filter(function(x){ return !(!x.is_rule && String(x.recur_group)===String(rule.recur_group) && (x.due_date||'').slice(0,10)>today() && x.status!=='feito'); });
+          auditLog('Pausou rotina', rule.title||''); close(); toast('Rotina pausada','success'); renderPage();
+        }, function(){ close(); toast('Rotina pausada','success'); renderPage(); });
+      } else {
+        auditLog('Retomou rotina', rule.title||'');
+        materializarRecorrencias().then(function(){ close(); toast('Rotina retomada ✓','success'); renderPage(); });
+      }
+    });
+   }; if(novo){ confirmDialog({ warn:true, title:'Pausar rotina?', message:'Pausar a rotina "'+(rule.title||'')+'"?\nEla para de gerar novos dias (os já criados continuam). Você pode retomar quando quiser.', confirmLabel:'Pausar', onConfirm:_go }); } else { _go(); }});
+  modal.querySelector('#roDelSerie').addEventListener('click', function(){
+    var g=rule.recur_group;
+    var n=(ST.tasks||[]).filter(function(x){ return String(x.recur_group)===String(g) && !x.is_rule; }).length;
+    confirmDelete('Excluir a rotina INTEIRA e suas '+n+' tarefas já criadas? Não dá para desfazer.', function(){ sb.from('malba_vl_tasks').delete().eq('recur_group', g).then(function(r){
+      if(r.error){ toast('Erro ao excluir','error'); return; }
+      ST.tasks=ST.tasks.filter(function(x){ return String(x.recur_group)!==String(g); });
+      auditLog('Excluiu rotina', rule.title||''); close(); toast('Rotina excluída','success'); renderPage();
+    }); });
+  });
 }
 function bindPills(root, selector, attr, cb) {
   var pills=root.querySelectorAll(selector);
@@ -3071,7 +3474,14 @@ function equipeHTML() {
   var btn = admin ? '<button class="btn-new" id="btnNovoMembro">'+icon('plus')+'Novo funcionário</button>' : '';
   var cards = list.length ? list.map(function(m){ return memberCardHTML(m, admin); }).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('users')+'</div><h3>Nada por aqui</h3><p>Ajuste a busca ou os filtros acima.</p></div>';
   var sub = (ST.sector==='lojas' && ST.store) ? ('Equipe de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Equipe (todas as lojas)';
-  return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">'+sub+' · '+ativos.length+' ativo(s)</div></div>'+btn+'</div>'+
+  // v74: Ponto vira aba da Equipe (some do menu, mesma navegação do hub Gestão)
+  var showPonto = (ST.sector==='lojas');
+  var etab = showPonto ? (ST.equipeTab||'equipe') : 'equipe';
+  var tabBar = showPonto ? ('<div class="cfg-tabs"><button class="cfg-tab'+(etab==='equipe'?' on':'')+'" data-etab="equipe">'+icon('users')+'Equipe</button><button class="cfg-tab'+(etab==='ponto'?' on':'')+'" data-etab="ponto">'+icon('clock')+'Ponto</button></div>') : '';
+  if (etab==='ponto') {
+    return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">Presença e ponto do dia</div></div></div>'+tabBar+pontoHTML();
+  }
+  return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">'+sub+' · '+ativos.length+' ativo(s)</div></div>'+btn+'</div>'+tabBar+
     '<div class="team-bar">'+searchBox+sitSeg+lojaSel+'</div>'+ pend +
     '<div class="team-grid">'+cards+'</div>';
 }
@@ -3102,6 +3512,10 @@ function memberCardHTML(m, showStore) {
 
 function bindEquipe() {
   var admin = isAdmin(ST.session);
+  // v74: abas Equipe/Ponto
+  var etabs=app.querySelectorAll('.cfg-tab[data-etab]');
+  for (var e=0;e<etabs.length;e++) etabs[e].addEventListener('click', function(){ ST.equipeTab=this.getAttribute('data-etab'); renderPage(); });
+  if ((ST.equipeTab||'')==='ponto' && ST.sector==='lojas'){ if(typeof bindPonto==='function') bindPonto(); return; }
   var novo = document.getElementById('btnNovoMembro');
   if (novo && admin) novo.addEventListener('click', function(){ openMemberModal(null); });
   var qEl = document.getElementById('teamQ');
@@ -3327,12 +3741,11 @@ function openMemberModal(member) {
 
   if (!isNew) {
     modal.querySelector('#memberDel').addEventListener('click', function(){
-      if (!confirm('Excluir o funcionário "'+(m.name||'')+'"?')) return;
-      sb.from('malba_store_members').delete().eq('id', m.id).then(function(r){
+      confirmDelete('Excluir o funcionário "'+(m.name||'')+'"?', function(){ sb.from('malba_store_members').delete().eq('id', m.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.members = ST.members.filter(function(x){ return x.id!==m.id; });
         close(); toast('Funcionário excluído','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -3502,7 +3915,7 @@ function openFichaColaborador(member){
     var av=modal.querySelector('#fiAval'); if(av) av.addEventListener('click', function(){ close(); openAvaliacaoModal(null, { tipo:'membro', store_unit_id:m.store_unit_id, member_id:m.id }); });
     var rs=modal.querySelector('#fiReset'); if(rs) rs.addEventListener('click', function(){ showReset=!showReset; draw(); });
     var dr=modal.querySelector('#fiDoReset'); if(dr) dr.addEventListener('click', function(){ var btn=this; var u=userDoMembro(m); var p=(modal.querySelector('#fiNewPass').value||'').trim(); if(p.length<4){ toast('Senha muito curta (mín. 4)','error'); return; } btn.disabled=true; btn.textContent='Salvando...'; resetSenha(u, p, function(ok){ if(ok){ showReset=false; toast('Senha redefinida','success'); draw(); } else { btn.disabled=false; btn.textContent='Salvar senha'; } }); });
-    var rm=modal.querySelector('#fiRemove'); if(rm) rm.addEventListener('click', function(){ var u=userDoMembro(m); if(!u) return; if(!confirm('Remover o acesso de '+m.name+'? A pessoa não poderá mais entrar (você pode recriar depois).')) return; removerAcesso(u, function(){ toast('Acesso removido','success'); draw(); }); });
+    var rm=modal.querySelector('#fiRemove'); if(rm) rm.addEventListener('click', function(){ var u=userDoMembro(m); if(!u) return; confirmDelete('Remover o acesso de '+m.name+'? A pessoa não poderá mais entrar (você pode recriar depois).', function(){ removerAcesso(u, function(){ toast('Acesso removido','success'); draw(); }); }); });
     var cr=modal.querySelector('#fiCreate'); if(cr) cr.addEventListener('click', criarAcessoFicha);
     var fiLv=modal.querySelector('#fiLevel');
     if(fiLv){ var fh=modal.querySelector('#fiPermHolder');
@@ -3642,7 +4055,7 @@ function openMktMetaModal(goal){
     if(isNew){ sb.from('malba_mkt_metas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de metas de marketing).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Criar meta'; return; } ST.mktMetas.push(r.data); auditLog('Criou meta de marketing', label); close(); toast('Meta criada','success'); renderPage(); }); }
     else { sb.from('malba_mkt_metas').update(rec).eq('id',goal.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.mktMetas.length;i++) if(String(ST.mktMetas[i].id)===String(goal.id)) ST.mktMetas[i]=Object.assign(ST.mktMetas[i],rec); auditLog('Editou meta de marketing', label); close(); toast('Meta atualizada','success'); renderPage(); }); }
   }
-  function del(){ if(!confirm('Excluir esta meta?')) return; sb.from('malba_mkt_metas').delete().eq('id',goal.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.mktMetas=ST.mktMetas.filter(function(x){return String(x.id)!==String(goal.id);}); close(); toast('Meta excluída','success'); renderPage(); }); }
+  function del(){ confirmDelete('Excluir esta meta?', function(){ sb.from('malba_mkt_metas').delete().eq('id',goal.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.mktMetas=ST.mktMetas.filter(function(x){return String(x.id)!==String(goal.id);}); close(); toast('Meta excluída','success'); renderPage(); }); }); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   document.body.appendChild(modal); draw();
 }
@@ -3661,7 +4074,7 @@ function relatorioHTML(){
   var batidas=metas.filter(function(g){ var t=Number(g.target)||0; return t>0 && mktMetaActual(g)>=t; }).length;
   var camps=(ST.campaigns||[]).filter(function(c){ var s=(c.start_date||'').slice(0,10), e=(c.end_date||'').slice(0,10); if(!s && !e) return false; return (!e || e>=mStart) && (!s || s<=mEnd); });
   var campAtivas=camps.filter(function(c){ return campStatus(c).label==='Ativa'; }).length;
-  var tasksFeito=(ST.tasks||[]).filter(function(t){ if(t.status!=='feito') return false; var d=(t.due_date||'').slice(0,10); return d>=mStart && d<=mEnd; }).length;
+  var tasksFeito=(ST.tasks||[]).filter(function(t){ if(t.is_rule) return false; if(t.status!=='feito') return false; var d=(t.due_date||'').slice(0,10); return d>=mStart && d<=mEnd; }).length;
   var projAtivos=(ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).length;
 
   var canPrev=true; var d0=new Date(); var canNext=!(y>d0.getFullYear() || (y===d0.getFullYear() && m>=d0.getMonth()+1));
@@ -3784,7 +4197,7 @@ function openGastoModal(expense){
     '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="gtCancel">Cancelar</button><button class="btn btn-primary" id="gtSave">'+(isNew?'Lançar':'Salvar')+'</button></div></div>';
   modal.addEventListener('click', function(ev){ if(ev.target===modal) close(); });
   modal.querySelector('#gtCancel').addEventListener('click', close);
-  var del=modal.querySelector('#gtDel'); if(del) del.addEventListener('click', function(){ if(!confirm('Excluir este gasto?')) return; sb.from('malba_mkt_budget').delete().eq('id',expense.id).then(function(rr){ if(rr.error){ toast('Erro ao excluir','error'); return; } ST.mktBudget=ST.mktBudget.filter(function(x){return String(x.id)!==String(expense.id);}); close(); toast('Gasto excluído','success'); renderPage(); }); });
+  var del=modal.querySelector('#gtDel'); if(del) del.addEventListener('click', function(){ confirmDelete('Excluir este gasto?', function(){ sb.from('malba_mkt_budget').delete().eq('id',expense.id).then(function(rr){ if(rr.error){ toast('Erro ao excluir','error'); return; } ST.mktBudget=ST.mktBudget.filter(function(x){return String(x.id)!==String(expense.id);}); close(); toast('Gasto excluído','success'); renderPage(); }); }); });
   modal.querySelector('#gtSave').addEventListener('click', function(){
     var val=_parseBRL(modal.querySelector('#gtVal').value); if(val<=0){ toast('Informe o valor do gasto','error'); return; }
     var dt=modal.querySelector('#gtDate').value||today(); var pp=dt.split('-');
@@ -3900,7 +4313,7 @@ function openContentModal(item, presetDate){
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   modal.querySelector('#ctCancel').addEventListener('click', close);
   modal.querySelector('#ctTitle').focus();
-  var del=modal.querySelector('#ctDel'); if(del) del.addEventListener('click', function(){ if(!confirm('Excluir este conteúdo?')) return; sb.from('malba_content').delete().eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.contentItems=ST.contentItems.filter(function(x){return String(x.id)!==String(item.id);}); close(); toast('Conteúdo excluído','success'); renderPage(); }); });
+  var del=modal.querySelector('#ctDel'); if(del) del.addEventListener('click', function(){ confirmDelete('Excluir este conteúdo?', function(){ sb.from('malba_content').delete().eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.contentItems=ST.contentItems.filter(function(x){return String(x.id)!==String(item.id);}); close(); toast('Conteúdo excluído','success'); renderPage(); }); }); });
   modal.querySelector('#ctSave').addEventListener('click', function(){
     var title=(modal.querySelector('#ctTitle').value||'').trim(); if(!title){ toast('Dê um título','error'); return; }
     var ownerEl=modal.querySelector('#ctOwner'); var oid=ownerEl.value||null; var oname=''; if(oid){ for(var i=0;i<ST.users.length;i++) if(String(ST.users[i].id)===String(oid)) oname=ST.users[i].name; }
@@ -3992,7 +4405,7 @@ function openCriativoModal(item){
     if(isNew){ sb.from('malba_creativos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL da biblioteca).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } ST.creativos.unshift(r.data); auditLog('Criou criativo', title); close(); toast('Item salvo','success'); renderPage(); }); }
     else { sb.from('malba_creativos').update(rec).eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.creativos.length;i++) if(String(ST.creativos[i].id)===String(item.id)) ST.creativos[i]=Object.assign(ST.creativos[i],rec); close(); toast('Item atualizado','success'); renderPage(); }); }
   }
-  function del(){ if(!confirm('Excluir este item?')) return; sb.from('malba_creativos').delete().eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.creativos=ST.creativos.filter(function(x){return String(x.id)!==String(item.id);}); close(); toast('Item excluído','success'); renderPage(); }); }
+  function del(){ confirmDelete('Excluir este item?', function(){ sb.from('malba_creativos').delete().eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.creativos=ST.creativos.filter(function(x){return String(x.id)!==String(item.id);}); close(); toast('Item excluído','success'); renderPage(); }); }); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   document.body.appendChild(modal); draw();
 }
@@ -4082,7 +4495,7 @@ function openRotinaConfig(){
     var adds=modal.querySelectorAll('[data-addturno]');
     for(var a=0;a<adds.length;a++) adds[a].addEventListener('click', function(){ var turno=this.getAttribute('data-addturno'); var inp=modal.querySelector('#rcNew_'+turno); var label=(inp.value||'').trim(); if(!label){ inp.focus(); return; } var rec={ sector:'lojas', turno:turno, label:label, ordem:_nextOrdemChk(turno), active:true }; this.disabled=true; sb.from('malba_checklist_items').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL do checklist).','error'); console.error(r.error); draw(); return; } ST.checklistItems.push(r.data); draw(); }); });
     var dels=modal.querySelectorAll('[data-delitem]');
-    for(var d=0;d<dels.length;d++) dels[d].addEventListener('click', function(){ var id=this.getAttribute('data-delitem'); if(!confirm('Remover este item da rotina?')) return; sb.from('malba_checklist_items').delete().eq('id',id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.checklistItems=ST.checklistItems.filter(function(x){return String(x.id)!==String(id);}); draw(); }); });
+    for(var d=0;d<dels.length;d++) dels[d].addEventListener('click', function(){ var id=this.getAttribute('data-delitem'); confirmDelete('Remover este item da rotina?', function(){ sb.from('malba_checklist_items').delete().eq('id',id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.checklistItems=ST.checklistItems.filter(function(x){return String(x.id)!==String(id);}); draw(); }); }); });
     var inputs=modal.querySelectorAll('.rc-input');
     for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('change', function(){ var id=this.getAttribute('data-itemid'); var label=(this.value||'').trim(); if(!label){ this.value=''; return; } sb.from('malba_checklist_items').update({ label:label }).eq('id',id).then(function(r){ if(!r.error){ for(var k=0;k<ST.checklistItems.length;k++) if(String(ST.checklistItems[k].id)===String(id)) ST.checklistItems[k].label=label; } else toast('Erro ao salvar','error'); }); });
   }
@@ -4126,7 +4539,7 @@ function openCaixaModal(storeId, existing){
   modal.querySelector('#cxCancel').addEventListener('click', close);
   modal.querySelector('#cxEsp').addEventListener('input', recompute);
   modal.querySelector('#cxCont').addEventListener('input', recompute);
-  var del=modal.querySelector('#cxDel'); if(del) del.addEventListener('click', function(){ if(!confirm('Excluir o fechamento de caixa de hoje?')) return; sb.from('malba_caixa').delete().eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.caixas=ST.caixas.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Fechamento excluído','success'); renderPage(); }); });
+  var del=modal.querySelector('#cxDel'); if(del) del.addEventListener('click', function(){ confirmDelete('Excluir o fechamento de caixa de hoje?', function(){ sb.from('malba_caixa').delete().eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.caixas=ST.caixas.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Fechamento excluído','success'); renderPage(); }); }); });
   modal.querySelector('#cxSave').addEventListener('click', function(){
     var e=_parseBRL(modal.querySelector('#cxEsp').value); var c=_parseBRL(modal.querySelector('#cxCont').value);
     var u=ST.session.user; var rec={ store_unit_id:storeId, work_date:today(), esperado:e, contado:c, diferenca:(c-e), obs:(modal.querySelector('#cxObs').value||'').trim()||null, done_by:u.id, done_by_name:u.name, closed_at:new Date().toISOString() };
@@ -4259,7 +4672,7 @@ function openMetricasModal(storeId, m, y){
   '</div>';
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   modal.querySelector('#mtCancel').addEventListener('click', close);
-  var del=modal.querySelector('#mtDel'); if(del) del.addEventListener('click', function(){ if(!confirm('Excluir os indicadores deste mês?')) return; sb.from('malba_loja_metricas').delete().eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.lojaMetricas=ST.lojaMetricas.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Indicadores excluídos','success'); renderPage(); }); });
+  var del=modal.querySelector('#mtDel'); if(del) del.addEventListener('click', function(){ confirmDelete('Excluir os indicadores deste mês?', function(){ sb.from('malba_loja_metricas').delete().eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.lojaMetricas=ST.lojaMetricas.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Indicadores excluídos','success'); renderPage(); }); }); });
   modal.querySelector('#mtSave').addEventListener('click', function(){
     var num=function(id){ var v=(modal.querySelector(id).value||'').replace(/\./g,'').replace(',','.').replace(/[^0-9.]/g,''); return v?Number(v):0; };
     var rec={ store_unit_id:storeId, month:m, year:y, num_itens:num('#mtItens'), num_visitantes:num('#mtVis'), num_vendas:num('#mtVendas'), faturamento:_parseBRL(modal.querySelector('#mtFat').value) };
@@ -4454,12 +4867,11 @@ function openGoalModal(goal, preset) {
 
   if (!isNew) {
     modal.querySelector('#goalDel').addEventListener('click', function(){
-      if (!confirm('Excluir a meta de '+MESES[(g.month||1)-1]+'/'+g.year+'?')) return;
-      sb.from('malba_sales_goals').delete().eq('id', g.id).then(function(r){
+      confirmDelete('Excluir a meta de '+MESES[(g.month||1)-1]+'/'+g.year+'?', function(){ sb.from('malba_sales_goals').delete().eq('id', g.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.goals = ST.goals.filter(function(x){ return x.id!==g.id; });
         close(); toast('Meta excluída','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -4714,7 +5126,7 @@ function openClienteFicha(client){
     modal.querySelector('#clfClose').addEventListener('click', close);
     var ed=modal.querySelector('#clfEdit'); if(ed) ed.addEventListener('click', function(){ close(); openClientModal(c); });
     var bt=modal.querySelector('#clfBuy'); if(bt) bt.addEventListener('click', function(){ crmRegistrarCompra(c.id); setTimeout(draw,80); });
-    var dl=modal.querySelector('#clfDel'); if(dl) dl.addEventListener('click', function(){ if(!confirm('Excluir o cliente "'+c.name+'"?')) return; sb.from('malba_crm_clients').delete().eq('id',c.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.clients=ST.clients.filter(function(x){return String(x.id)!==String(c.id);}); close(); toast('Cliente excluído','success'); renderPage(); }); });
+    var dl=modal.querySelector('#clfDel'); if(dl) dl.addEventListener('click', function(){ confirmDelete('Excluir o cliente "'+c.name+'"?', function(){ sb.from('malba_crm_clients').delete().eq('id',c.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.clients=ST.clients.filter(function(x){return String(x.id)!==String(c.id);}); close(); toast('Cliente excluído','success'); renderPage(); }); }); });
   }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   document.body.appendChild(modal);
@@ -4808,12 +5220,11 @@ function openClientModal(client) {
       openTaskModal({ title:titulo, description:'', priority:'media', status:'todo', due_date:today(), area:'CRM', assignee_id:'' });
     });
     modal.querySelector('#cliDel').addEventListener('click', function(){
-      if (!confirm('Excluir o cliente "'+(c.name||'')+'"?')) return;
-      sb.from('malba_crm_clients').delete().eq('id', c.id).then(function(r){
+      confirmDelete('Excluir o cliente "'+(c.name||'')+'"?', function(){ sb.from('malba_crm_clients').delete().eq('id', c.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.clients = ST.clients.filter(function(x){ return x.id!==c.id; });
         close(); toast('Cliente excluído','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -5090,13 +5501,12 @@ function openProjectModal(project) {
 
   if (!isNew) {
     modal.querySelector('#projDel').addEventListener('click', function(){
-      if (!confirm('Excluir o projeto "'+(pr.name||'')+'" e todas as etapas?')) return;
-      sb.from('malba_vl_projects').delete().eq('id', pr.id).then(function(r){
+      confirmDelete('Excluir o projeto "'+(pr.name||'')+'" e todas as etapas?', function(){ sb.from('malba_vl_projects').delete().eq('id', pr.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.projects = ST.projects.filter(function(x){ return x.id!==pr.id; });
         ST.milestones = ST.milestones.filter(function(x){ return String(x.project_id)!==String(pr.id); });
         ST.openProject=null; close(); toast('Projeto excluído','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -5238,12 +5648,11 @@ function openUserModal(user) {
 
   if (!isNew && u.id!==ST.session.user.id) {
     modal.querySelector('#userDel').addEventListener('click', function(){
-      if (!confirm('Excluir o usuário "'+(u.name||'')+'"?')) return;
-      sb.from('malba_users').delete().eq('id', u.id).then(function(r){
+      confirmDelete('Excluir o usuário "'+(u.name||'')+'"?', function(){ sb.from('malba_users').delete().eq('id', u.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.allUsers = ST.allUsers.filter(function(x){ return x.id!==u.id; });
         close(); toast('Usuário excluído','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -5380,12 +5789,11 @@ function openStoreModal(store) {
 
   if (!isNew) {
     modal.querySelector('#storeDel').addEventListener('click', function(){
-      if (!confirm('Excluir a loja "'+(s.name||'')+'"?')) return;
-      sb.from('malba_store_units').delete().eq('id', s.id).then(function(r){
+      confirmDelete('Excluir a loja "'+(s.name||'')+'"?', function(){ sb.from('malba_store_units').delete().eq('id', s.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.storeUnits = ST.storeUnits.filter(function(x){ return x.id!==s.id; });
         close(); toast('Loja excluída','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -5509,12 +5917,11 @@ function openBannerModal(banner) {
 
   if (!isNew) {
     modal.querySelector('#bannerDel').addEventListener('click', function(){
-      if (!confirm('Excluir este banner?')) return;
-      sb.from('malba_banners').delete().eq('id', b.id).then(function(r){
+      confirmDelete('Excluir este banner?', function(){ sb.from('malba_banners').delete().eq('id', b.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.banners = ST.banners.filter(function(x){ return x.id!==b.id; });
         close(); toast('Banner excluído','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -5728,14 +6135,13 @@ function openCampaignModal(camp) {
 
   if (!isNew) {
     modal.querySelector('#campDel').addEventListener('click', function(){
-      if (!confirm('Excluir a campanha "'+(c.name||'')+'"?')) return;
-      sb.from('malba_campaigns').delete().eq('id', c.id).then(function(r){
+      confirmDelete('Excluir a campanha "'+(c.name||'')+'"?', function(){ sb.from('malba_campaigns').delete().eq('id', c.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.campaigns = ST.campaigns.filter(function(x){ return x.id!==c.id; });
         // limpeza best-effort das instâncias diárias
         sb.from('malba_campaign_instances').delete().eq('campaign_id', c.id);
         close(); toast('Campanha excluída','success'); renderPage();
-      });
+      }); });
     });
   }
 }
@@ -5845,25 +6251,44 @@ function lojasGestao() {
   return ls;
 }
 
+function gestaoTabsForSector(){
+  var s=ST.sector, T=[];
+  function add(id,label,ic){ T.push({id:id,label:label,icon:ic}); }
+  if(s==='lojas'){ add('visao','Visão geral','dashboard'); add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('comissoes','Comissões','dollar'); add('avaliacoes','Avaliações','target'); add('solicitacoes','Solicitações','bell'); add('atividade','Atividade','search'); }
+  else if(s==='marketing'){ add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('orcamento','Orçamento','dollar'); add('atividade','Atividade','search'); }
+  else if(s==='vendas'){ add('metas','Metas','target'); add('ranking','Ranking','trend'); add('atividade','Atividade','search'); }
+  else { add('atividade','Atividade','search'); }
+  return T;
+}
 function gestaoHTML() {
   if (!canEdit()) {
     return '<div class="empty-page"><div class="ep-ico">'+icon('target')+'</div><h3>Acesso restrito</h3><p>Esta área é para administradores e gestores.</p></div>';
   }
-  var tab = ST.gestaoTab || 'visao';
+  var T=gestaoTabsForSector(); var ids=T.map(function(x){return x.id;});
+  var tab = ST.gestaoTab || ids[0];
+  if (ids.indexOf(tab)===-1){ tab=ids[0]; ST.gestaoTab=tab; } // v74: valida a aba pro setor atual
   var pend = pendingRequests().length;
-  var tabs = '<div class="cfg-tabs">'+
-    '<button class="cfg-tab'+(tab==='visao'?' on':'')+'" data-gtab="visao">'+icon('dashboard')+'Visão geral</button>'+
-    '<button class="cfg-tab'+(tab==='solicitacoes'?' on':'')+'" data-gtab="solicitacoes">'+icon('bell')+'Solicitações'+(pend>0?' <span class="tab-badge">'+pend+'</span>':'')+'</button>'+
-    '<button class="cfg-tab'+(tab==='comissoes'?' on':'')+'" data-gtab="comissoes">'+icon('dollar')+'Comissões</button>'+
-    '<button class="cfg-tab'+(tab==='avaliacoes'?' on':'')+'" data-gtab="avaliacoes">'+icon('target')+'Avaliações</button>'+
-    '<button class="cfg-tab'+(tab==='atividade'?' on':'')+'" data-gtab="atividade">'+icon('search')+'Atividade</button>'+
-  '</div>';
-  var body = tab==='avaliacoes' ? avaliacoesHTML() : (tab==='atividade' ? atividadeHTML() : (tab==='comissoes' ? comissoesHTML() : (tab==='solicitacoes' ? solicitacoesHTML() : visaoGeralHTML())));
-  return '<div class="tasks-head"><div><h2>Gestão do setor</h2><div class="sub">Visão de lojas, equipe, comissões e avaliações</div></div></div>'+tabs+'<div id="gestaoBody">'+body+'</div>';
+  var tabs = '<div class="cfg-tabs">'+T.map(function(x){
+    var badge = (x.id==='solicitacoes' && pend>0) ? ' <span class="tab-badge">'+pend+'</span>' : '';
+    return '<button class="cfg-tab'+(tab===x.id?' on':'')+'" data-gtab="'+x.id+'">'+icon(x.icon)+x.label+badge+'</button>';
+  }).join('')+'</div>';
+  var body;
+  if (tab==='metas') body=metasHTML();
+  else if (tab==='relatorio') body=(ST.sector==='lojas'?relatorioLojasHTML():relatorioHTML());
+  else if (tab==='ranking') body=rankingHTML();
+  else if (tab==='orcamento') body=orcamentoHTML();
+  else if (tab==='avaliacoes') body=avaliacoesHTML();
+  else if (tab==='atividade') body=atividadeHTML();
+  else if (tab==='comissoes') body=comissoesHTML();
+  else if (tab==='solicitacoes') body=solicitacoesHTML();
+  else body=visaoGeralHTML();
+  return '<div class="tasks-head"><div><h2>Gestão</h2><div class="sub">Metas, resultados e gestão do setor</div></div></div>'+tabs+'<div id="gestaoBody">'+body+'</div>';
 }
 function gestaoStats(filterFn){
   var hoje=today(); var o={abertas:0,atrasadas:0,concluidas:0,total:0};
   ST.tasks.forEach(function(t){
+    if(t.is_rule) return; // v70
+    if(t.recur_group && (t.due_date||'').slice(0,10)>hoje) return; // v71: ocorrência futura de rotina não conta como aberta
     if(!filterFn(t)) return;
     o.total++;
     var d=(t.due_date||'').slice(0,10);
@@ -6104,12 +6529,11 @@ function comissaoDetalhe(c) {
     });
   });
   modal.querySelector('#comDel').addEventListener('click', function(){
-    if(!confirm('Excluir este lançamento de comissão?')) return;
-    sb.from('malba_comissoes').delete().eq('id', c.id).then(function(r){
+    confirmDelete('Excluir este lançamento de comissão?', function(){ sb.from('malba_comissoes').delete().eq('id', c.id).then(function(r){
       if(r.error){ toast('Erro ao excluir','error'); return; }
       ST.comissoes=ST.comissoes.filter(function(x){return x.id!==c.id;});
       auditLog('Excluiu comissão', (storeName(c.store_unit_id)||'Loja')); close(); toast('Comissão excluída','success'); renderPage();
-    });
+    }); });
   });
 }
 
@@ -6333,12 +6757,11 @@ function openAvaliacaoModal(aval, preset) {
     salvar();
   }
   function excluir(){
-    if(!confirm('Excluir esta avaliação?')) return;
-    sb.from('malba_avaliacoes').delete().eq('id',aval.id).then(function(r){
+    confirmDelete('Excluir esta avaliação?', function(){ sb.from('malba_avaliacoes').delete().eq('id',aval.id).then(function(r){
       if(r.error){ toast('Erro ao excluir','error'); return; }
       ST.avaliacoes=ST.avaliacoes.filter(function(x){return x.id!==aval.id;});
       auditLog('Excluiu avaliação', alvoLabel()); close(); toast('Avaliação excluída','success'); renderPage();
-    });
+    }); });
   }
   function salvar() {
     captura();
@@ -6412,12 +6835,11 @@ function avaliacaoDetalhe(a){
   modal.querySelector('#adClose').addEventListener('click', close);
   var ed=modal.querySelector('#adEdit'); if(ed) ed.addEventListener('click', function(){ close(); openAvaliacaoModal(a); });
   modal.querySelector('#adDel').addEventListener('click', function(){
-    if(!confirm('Excluir esta avaliação?')) return;
-    sb.from('malba_avaliacoes').delete().eq('id',a.id).then(function(r){
+    confirmDelete('Excluir esta avaliação?', function(){ sb.from('malba_avaliacoes').delete().eq('id',a.id).then(function(r){
       if(r.error){ toast('Erro ao excluir','error'); return; }
       ST.avaliacoes=ST.avaliacoes.filter(function(x){return x.id!==a.id;});
       auditLog('Excluiu avaliação', alvo); close(); toast('Avaliação excluída','success'); renderPage();
-    });
+    }); });
   });
   document.body.appendChild(modal);
 }
@@ -6426,6 +6848,11 @@ function bindGestao() {
   if (!canEdit()) return;
   var tabs=app.querySelectorAll('.cfg-tab');
   for (var i=0;i<tabs.length;i++) tabs[i].addEventListener('click', function(){ ST.gestaoTab=this.getAttribute('data-gtab'); renderPage(); });
+  // v74: liga os eventos da tela aninhada na aba ativa
+  var gt=ST.gestaoTab||'';
+  if (gt==='metas'){ if(typeof bindMetas==='function') bindMetas(); }
+  else if (gt==='relatorio'){ if(ST.sector==='lojas'){ if(typeof bindRelatorioLojas==='function') bindRelatorioLojas(); } else { if(typeof bindRelatorio==='function') bindRelatorio(); } }
+  else if (gt==='orcamento'){ if(typeof bindOrcamento==='function') bindOrcamento(); }
   var nc=document.getElementById('btnNovaComissao'); if(nc) nc.addEventListener('click', openComissaoModal);
   var na=document.getElementById('btnNovaAvaliacao'); if(na) na.addEventListener('click', function(){ openAvaliacaoModal(); });
   var crows=app.querySelectorAll('.com-row[data-cid]');
@@ -6816,6 +7243,7 @@ function calDayItems(ds) {
   var projIds={}; (ST.projects||[]).forEach(function(p){ projIds[String(p.id)]=1; });
   var out=[];
   ST.tasks.forEach(function(t){
+    if (t.is_rule) return; // v70
     if ((t.due_date||'').slice(0,10)!==ds) return;
     if (sid && String(t.store_unit_id)!==String(sid)) return;
     if (!admin) { if (String(t.assignee_id)!==me && String(t.created_by)!==me) return; }
@@ -7048,12 +7476,11 @@ function openEventModal(ev, presetDate){
   modal.querySelector('#evCancel').addEventListener('click', close);
   var del=modal.querySelector('#evDel');
   if (del) del.addEventListener('click', function(){
-    if(!confirm('Excluir este evento?')) return;
-    sb.from('malba_events').delete().eq('id', ev.id).then(function(r){
+    confirmDelete('Excluir este evento?', function(){ sb.from('malba_events').delete().eq('id', ev.id).then(function(r){
       if(r.error){ toast('Erro ao excluir','error'); return; }
       ST.events=ST.events.filter(function(x){return x.id!==ev.id;});
       auditLog('Excluiu evento', ev.title||''); close(); toast('Evento excluído','success'); renderPage();
-    });
+    }); });
   });
   modal.querySelector('#evSave').addEventListener('click', function(){
     var title=(modal.querySelector('#evTitle').value||'').trim();
@@ -7281,8 +7708,8 @@ function meusMemberIds(){
 function meuEspacoHTML(){
   var u=ST.session.user, me=String(u.id), hoje=today();
   function vk(l,v,c){ return '<div class="vg-kpi"><div class="vg-kpi-v" style="color:'+c+'">'+v+'</div><div class="vg-kpi-l">'+l+'</div></div>'; }
-  var mine=ST.tasks.filter(function(t){ return String(t.assignee_id)===me; });
-  var st={abertas:0,atrasadas:0,concluidas:0}; mine.forEach(function(t){ var d=(t.due_date||'').slice(0,10); if(t.status==='feito')st.concluidas++; else { st.abertas++; if(d&&d<hoje)st.atrasadas++; } });
+  var mine=ST.tasks.filter(function(t){ return !t.is_rule && String(t.assignee_id)===me; });
+  var st={abertas:0,atrasadas:0,concluidas:0}; mine.forEach(function(t){ var d=(t.due_date||'').slice(0,10); if(t.recur_group && d>hoje) return; if(t.status==='feito')st.concluidas++; else { st.abertas++; if(d&&d<hoje)st.atrasadas++; } });
   var foco=mine.filter(function(t){ var d=(t.due_date||'').slice(0,10); return t.status!=='feito'&&d&&d<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
   var focoHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada atrasado ou para hoje.</div>';
   var ate=addDays(hoje,7), agenda=[];
@@ -7344,8 +7771,7 @@ function bindMural(){
   for (var i=0;i<dels.length;i++) dels[i].addEventListener('click', function(e){
     e.stopPropagation();
     var id=this.getAttribute('data-avdel');
-    if(!confirm('Remover este aviso?')) return;
-    sb.from('malba_events').delete().eq('id', id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.events=ST.events.filter(function(x){return String(x.id)!==String(id);}); auditLog('Removeu aviso'); toast('Aviso removido','success'); renderPage(); });
+    confirmDelete('Remover este aviso?', function(){ sb.from('malba_events').delete().eq('id', id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.events=ST.events.filter(function(x){return String(x.id)!==String(id);}); auditLog('Removeu aviso'); toast('Aviso removido','success'); renderPage(); }); });
   });
 }
 function postAvisoModal(){
@@ -7373,6 +7799,9 @@ function postAvisoModal(){
 }
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
+  // v74: telas de resultado e Ponto abrem SEMPRE dentro do hub (Gestão/Equipe) — navegação unificada + compat de rotas/deep-links
+  if (GESTAO_CHILDREN.indexOf(ST.page)!==-1){ ST.gestaoTab=ST.page; ST.page='gestao'; }
+  else if (ST.page==='ponto'){ ST.equipeTab='ponto'; ST.page='equipe'; }
   if (ST.page!=='perfil' && !pageAllowed(ST.page, ST.session)) { ST.page='inicio'; }
   // Perfil é uma página especial, fora do menu de setores
   if (ST.page==='perfil') { renderShell(perfilHTML(), 'Meu Perfil'); bindPerfil(); return; }
