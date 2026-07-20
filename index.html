@@ -1402,6 +1402,18 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .act-btn.icon-only span { display: none; }
 .act-row { display: inline-flex; gap: 6px; align-items: center; }
 
+/* v85: transformar tarefa avulsa em rotina */
+.cv-alvo { display: flex; align-items: center; gap: 8px; background: var(--u-bg2); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 16px; font-size: 13px; color: var(--u-text2); }
+.cv-alvo svg { width: 15px; height: 15px; color: var(--u-text3); flex-shrink: 0; }
+.cv-alvo b { color: var(--u-text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cv-in { width: 100%; border: 1px solid var(--u-border); border-radius: var(--radius-sm); background: var(--u-card); color: var(--u-text); font-size: 13px; padding: 8px 10px; font-family: inherit; }
+.sp-virar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--u-accent-soft); border-radius: var(--radius-sm); padding: 11px 12px; margin-bottom: 14px; font-size: 12.5px; color: var(--u-accent); }
+.sp-virar > span { display: flex; align-items: center; gap: 7px; flex: 1; min-width: 170px; }
+.sp-virar svg { width: 15px; height: 15px; flex-shrink: 0; }
+.sp-virar-b { background: var(--u-card); color: var(--u-accent); font-size: 12px; font-weight: 700; padding: 6px 11px; border-radius: 7px; white-space: nowrap; }
+.act-btn.virar { color: var(--u-accent); }
+.act-btn.virar:hover { background: var(--u-accent); color: #fff; }
+
 /* v84: trilha (Setor › Colaborador), cartões de pessoa e ações rápidas */
 .adm-bc { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--u-text2); margin-bottom: 13px; flex-wrap: wrap; }
 .adm-bc svg { width: 15px; height: 15px; color: var(--u-text3); }
@@ -1920,7 +1932,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v84 · 20/07 (Central de Regras: navegação Setor > Colaborador > Categoria > Rotinas, ações rápidas na linha, busca por pessoa e por rotina, tudo paginado)';
+var APP_BUILD = 'v85 · 20/07 (Transformar tarefa avulsa em rotina: escolhe frequência, dias, dia do mês e horário, com prévia das próximas datas)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6890,6 +6902,7 @@ function admLinhaRegraHTML(r){
   var padrao = r.is_rule ? descrevePadraoRegra(r) : (prox?('prazo '+fmtDate(prox)):'sem prazo');
   function col(lb,v){ return '<span class="rg-c"><i>'+lb+'</i><b>'+(v||'—')+'</b></span>'; }
   var acoes='<span class="rg-acoes">'+
+      (!r.is_rule?'<button class="act-btn icon-only virar" data-qa="conv" data-qid="'+esc(r.id)+'" title="Transformar em rotina">'+icon('cal')+'<span>Virar rotina</span></button>':'')+
       '<button class="act-btn icon-only" data-qa="edit" data-qid="'+esc(r.id)+'" title="Editar">'+icon('edit')+'<span>Editar</span></button>'+
       '<button class="act-btn icon-only" data-qa="resp" data-qid="'+esc(r.id)+'" title="Trocar responsável">'+icon('users')+'<span>Responsável</span></button>'+
       '<button class="act-btn icon-only" data-qa="dup" data-qid="'+esc(r.id)+'" title="Duplicar">'+icon('copy')+'<span>Duplicar</span></button>'+
@@ -7000,9 +7013,106 @@ function bindAdmTarefas(){
   for(var w=0;w<wraps.length;w++) admBindRow(wraps[w]);
 }
 // ações rápidas da linha — sem abrir várias telas
+/* ===== v85: TRANSFORMAR TAREFA ÚNICA EM ROTINA =====
+   A própria tarefa vira a REGRA — mantém título, descrição, checklist,
+   responsável e projeto. Daí o motor passa a gerar as ocorrências sozinho. */
+function openConverterRotina(id){
+  var t=taskById(id); if(!t) return;
+  if(t.is_rule){ toast('Esta tarefa já é uma rotina','info'); return; }
+  var ini=(t.due_date||'').slice(0,10)||today();
+  var freq='diaria', uteis=true, hora=t.rec_hora||'', diaMes=_dParse(ini).getDate();
+  var wds=[_dParse(ini).getDay()];
+
+  var bg=document.createElement('div'); bg.className='modal-bg';
+  bg.innerHTML='<div class="modal" style="max-width:440px">'+
+    '<div class="wz-title">Transformar em rotina</div>'+
+    '<div class="cv-alvo">'+icon('tasks')+'<b>'+esc(t.title||'')+'</b></div>'+
+    '<div id="cvBody"></div>'+
+    modalFoot({ saveLabel:'Criar rotina', cancelId:'cvCancel', saveId:'cvOk' })+
+  '</div>';
+  document.body.appendChild(bg);
+  function close(){ if(bg.parentNode) bg.parentNode.removeChild(bg); }
+  bg.addEventListener('click', function(e){ if(e.target===bg) close(); });
+  bg.querySelector('#cvCancel').addEventListener('click', close);
+
+  function regraFake(){
+    return { recurrence:freq, rec_start:ini, rec_dias_uteis:(freq==='diaria'?uteis:false),
+             rec_weekdays:(freq==='semanal'?JSON.stringify(wds):null) };
+  }
+  function desenha(){
+    var extra='';
+    if(freq==='diaria'){
+      extra='<label class="rec-check"><input type="checkbox" id="cvUteis"'+(uteis?' checked':'')+'><span>Somente dias úteis (seg a sex)</span></label>';
+    } else if(freq==='semanal'){
+      var wdN=['D','S','T','Q','Q','S','S'], wdF=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+      extra='<span class="sp-lb" style="margin-top:12px">Dias da semana</span><div class="rec-wd">'+wdN.map(function(nn,i){
+        return '<button type="button" class="rec-wd-btn'+(wds.indexOf(i)!==-1?' on':'')+'" data-wd="'+i+'" title="'+wdF[i]+'">'+nn+'</button>'; }).join('')+'</div>';
+    } else {
+      extra='<span class="sp-lb" style="margin-top:12px">Dia do mês</span><input type="number" min="1" max="31" id="cvDiaMes" value="'+diaMes+'" class="cv-in">';
+    }
+    var prox=[]; try { prox=occDatesForRule(regraFake(), today(), addDays(today(),70)).slice(0,4); } catch(e){}
+    bg.querySelector('#cvBody').innerHTML=
+      '<div class="sp-row"><span class="sp-lb">Com que frequência se repete?</span><div class="sp-pills" id="cvFreq">'+
+        [['diaria','Diária'],['semanal','Semanal'],['mensal','Mensal']].map(function(x){
+          return '<button class="sp-pill'+(freq===x[0]?' on':'')+'" data-v="'+x[0]+'">'+x[1]+'</button>'; }).join('')+
+      '</div>'+extra+'</div>'+
+      '<div class="sp-grid2">'+
+        '<div class="sp-row"><span class="sp-lb">Começa em</span><input type="date" id="cvIni" value="'+esc(ini)+'" class="cv-in"></div>'+
+        '<div class="sp-row"><span class="sp-lb">Horário (opcional)</span><input type="time" id="cvHora" value="'+esc(hora)+'" class="cv-in"></div>'+
+      '</div>'+
+      '<div class="rec-preview">Repete <b>'+esc(descrevePadraoRegra(regraFake()))+'</b>'+(hora?(' às <b>'+esc(hora)+'</b>'):'')+'.<br>'+
+        (prox.length?('Próximas: <b>'+prox.map(function(d){ return fmtDate(d); }).join(' · ')+'</b>')
+                    :'<span style="color:var(--u-amber)">Nenhuma data cai nesse padrão — revise.</span>')+
+        '<br><span style="opacity:.7">Roda pra sempre até você pausar. Você ajusta tudo depois no painel da rotina.</span></div>';
+    var fb=bg.querySelectorAll('#cvFreq .sp-pill');
+    for(var i=0;i<fb.length;i++) fb[i].addEventListener('click', function(){ freq=this.getAttribute('data-v'); desenha(); });
+    var u=bg.querySelector('#cvUteis'); if(u) u.addEventListener('change', function(){ uteis=this.checked; desenha(); });
+    var wb=bg.querySelectorAll('.rec-wd-btn');
+    for(var j=0;j<wb.length;j++) wb[j].addEventListener('click', function(){
+      var d=+this.getAttribute('data-wd'), ix=wds.indexOf(d);
+      if(ix===-1) wds.push(d); else if(wds.length>1) wds.splice(ix,1); else return;
+      wds.sort(function(a,b){ return a-b; }); desenha();
+    });
+    var dm=bg.querySelector('#cvDiaMes'); if(dm) dm.addEventListener('change', function(){
+      diaMes=Math.max(1,Math.min(31,+this.value||1));
+      var d=_dParse(ini); ini=_dFmt(new Date(d.getFullYear(), d.getMonth(), diaMes, 12,0,0)); desenha();
+    });
+    var ei=bg.querySelector('#cvIni'); if(ei) ei.addEventListener('change', function(){
+      if(!this.value) return; ini=this.value; diaMes=_dParse(ini).getDate();
+      if(freq==='semanal') wds=[_dParse(ini).getDay()];
+      desenha();
+    });
+    var eh=bg.querySelector('#cvHora'); if(eh) eh.addEventListener('change', function(){ hora=this.value; desenha(); });
+  }
+  desenha();
+
+  bg.querySelector('#cvOk').addEventListener('click', function(){
+    var btn=this;
+    var patch={
+      is_rule:true, recur_group:uid()+'-'+Date.now(), recurrence:freq,
+      rec_start:ini, rec_until:null, rec_paused:false,
+      rec_dias_uteis:(freq==='diaria'?!!uteis:false),
+      rec_weekdays:(freq==='semanal'?JSON.stringify(wds):null),
+      rec_hora:hora||null, status:'todo', due_date:ini
+    };
+    setBusy(btn,true);
+    sb.from('malba_vl_tasks').update(patch).eq('id', id).then(function(r){
+      setBusy(btn,false);
+      if(r.error){ toast('Erro ao criar a rotina','error'); console.error(r.error); return; }
+      var k; for(k in patch) t[k]=patch[k];
+      close();
+      toast('Virou rotina: '+descrevePadraoRegra(t),'success');
+      if(typeof materializarRecorrencias==='function'){
+        Promise.resolve(materializarRecorrencias()).then(function(){ renderPage(); });
+      } else renderPage();
+    });
+  });
+}
+
 function admAcaoRapida(acao, id){
   var t=taskById(id); if(!t) return;
   if(acao==='edit') return openTaskPanel(id);
+  if(acao==='conv') return openConverterRotina(id);
   if(acao==='resp'){
     var uOpts='<option value="">Sem responsável</option>'+(ST.users||[]).map(function(u){ return '<option value="'+esc(u.id)+'"'+(String(u.id)===String(t.assignee_id)?' selected':'')+'>'+esc(u.name)+'</option>'; }).join('');
     return admPicker({ title:'Trocar responsável', campo:'<label class="modal-label">Responsável de "'+esc(t.title||'')+'"</label><select class="adm-pick" id="pkVal">'+uOpts+'</select>',
@@ -7202,6 +7312,7 @@ function openTaskPanel(id){
     '<div class="sp-head"><textarea class="sp-t" id="spTitle" rows="1">'+esc(t.title||'')+'</textarea><button class="sp-x" id="spClose">×</button></div>'+
     '<div class="sp-body">'+
       (rule?('<div class="sp-rec">'+icon('cal')+'<span>Faz parte da rotina <b>'+esc(descrevePadraoRegra(rule))+'</b></span><button class="sp-rec-b" id="spRule">Editar rotina</button></div>'):'')+
+      (!ehRegra && !t.recur_group ? '<div class="sp-virar"><span>'+icon('cal')+'Tarefa avulsa — se ela se repete, o sistema pode criar sozinho.</span><button class="sp-virar-b" id="spVirar">Transformar em rotina</button></div>' : '')+
       (ehRegra ? '<div class="sp-rec-box" id="spRecBox"></div>'
                : '<div class="sp-row"><span class="sp-lb">Status</span>'+pills('spStatus',[{v:'todo',l:'A fazer'},{v:'fazendo',l:'Em andamento'},{v:'feito',l:'Concluída'}], t.status||'todo')+'</div>')+
       '<div class="sp-row"><span class="sp-lb">Prioridade</span>'+pills('spPrio',[{v:'alta',l:'Alta'},{v:'media',l:'Média'},{v:'baixa',l:'Baixa'}], t.priority||'media')+'</div>'+
@@ -7348,6 +7459,8 @@ function openTaskPanel(id){
     var ef=box.querySelector('#spFim'); if(ef) ef.addEventListener('change', function(){ aplicaRec({ rec_until:this.value||null }); });
     var sf=box.querySelector('#spSemFim'); if(sf) sf.addEventListener('change', function(){ aplicaRec({ rec_until:this.checked?null:fimDoAnoDe(ini) }); });
   }
+  var bVirar=sp.querySelector('#spVirar');
+  if(bVirar) bVirar.addEventListener('click', function(){ fechar(); openConverterRotina(id); });
   var bPause=sp.querySelector('#spPause');
   if(bPause) bPause.addEventListener('click', function(){
     var novo=!t.rec_paused;
