@@ -1402,6 +1402,86 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .act-btn.icon-only span { display: none; }
 .act-row { display: inline-flex; gap: 6px; align-items: center; }
 
+/* v83: linha da REGRA (colunas) + edição de recorrência no painel */
+.rg-row { align-items: center; }
+.rg-row.off { opacity: .62; }
+.rg-nome { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rg-nome b { font-size: 13.5px; font-weight: 600; color: var(--u-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rg-nome i { font-style: normal; font-size: 11.5px; color: var(--u-text3); }
+.rg-c { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; min-width: 78px; }
+.rg-c i { font-style: normal; font-size: 10px; text-transform: uppercase; letter-spacing: .3px; color: var(--u-text3); }
+.rg-c b { font-size: 12.5px; font-weight: 600; color: var(--u-text2); }
+.rg-st { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+.rg-st.ativa { background: var(--u-green-soft); color: var(--u-green); }
+.rg-st.pausada { background: var(--u-amber-soft); color: var(--u-amber); }
+.rg-st.unica { background: var(--u-bg2); color: var(--u-text3); }
+.sp-rec-box { background: var(--u-bg2); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 14px; }
+.sp-rec-box .sp-row { margin-bottom: 10px; }
+.sp-rec-box .sp-row:last-child { margin-bottom: 0; }
+.sp-row input[type=time], .sp-row input[type=number] { width: 100%; border: 1px solid var(--u-border); border-radius: var(--radius-sm); background: var(--u-card); color: var(--u-text); font-size: 13px; padding: 8px 10px; font-family: inherit; }
+.sp-rec-box .rec-preview { margin-top: 10px; }
+@media (max-width: 900px) { .rg-c { min-width: 62px; } .rg-c:nth-of-type(4) { display: none; } }
+@media (max-width: 760px) {
+  .rg-row { flex-wrap: wrap; }
+  .rg-nome { flex: 1 1 100%; order: 1; }
+  .rg-c { min-width: 0; flex: 1; order: 2; }
+  .rg-st { order: 3; }
+}
+
+/* v82: lentes, visão por pessoa e linha de rotina */
+.adm-lentes { display: inline-flex; gap: 4px; background: var(--u-bg2); padding: 4px; border-radius: 11px; margin-bottom: 14px; }
+.adm-lt { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--u-text2); background: none; }
+.adm-lt svg { width: 15px; height: 15px; }
+.adm-lt.on { background: var(--u-card); color: var(--u-text); box-shadow: var(--u-shadow); }
+.pp { border: 1px solid var(--u-border); border-radius: var(--radius-sm); background: var(--u-card); margin-bottom: 8px; overflow: hidden; }
+.pp.on { border-color: var(--u-accent); }
+.pp-h { display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px 13px; background: none; text-align: left; }
+.pp-h:hover { background: var(--u-bg2); }
+.pp-n { font-size: 13.5px; font-weight: 700; color: var(--u-text); flex-shrink: 0; }
+.pp-chips { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
+.pp-chip { font-size: 11px; font-weight: 600; color: var(--u-text3); background: var(--u-bg2); padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+.pp-chip.late { background: var(--u-red-soft); color: var(--u-red); }
+.pp-chip.rot { background: var(--u-accent-soft); color: var(--u-accent); }
+.pp-chip.free { background: var(--u-green-soft); color: var(--u-green); }
+.pp-ar { color: var(--u-text3); flex-shrink: 0; transition: transform .15s; display: flex; }
+.pp-ar svg { width: 15px; height: 15px; }
+.pp.on .pp-ar { transform: rotate(90deg); }
+.pp-body { padding: 4px 13px 13px; border-top: 1px solid var(--u-line); }
+.pp-vazio { font-size: 12.5px; color: var(--u-text3); padding: 12px 0; }
+.rl-row .rl-datas { font-size: 11px; color: var(--u-text3); text-align: right; line-height: 1.45; flex-shrink: 0; }
+.rl-row .rl-datas b { color: var(--u-text2); font-size: 11.5px; font-weight: 600; }
+.rl-chip { font-size: 10.5px; font-weight: 700; padding: 1px 7px; border-radius: 20px; margin-left: 5px; vertical-align: 1px; }
+.rl-chip.late { background: var(--u-red-soft); color: var(--u-red); }
+.rl-chip.today { background: var(--u-accent-soft); color: var(--u-accent); }
+.rl-chip.pause { background: var(--u-amber-soft); color: var(--u-amber); }
+@media (max-width: 760px) {
+  .adm-lentes { display: flex; width: 100%; }
+  .adm-lt { flex: 1; padding: 0 8px; justify-content: center; }
+  .rl-row .rl-datas { display: none; }
+  .pp-h { flex-wrap: wrap; }
+}
+
+/* v81: seleção múltipla + ações em lote na Central de Tarefas */
+.adm-rw { display: flex; align-items: stretch; gap: 8px; }
+.adm-rw .adm-row { flex: 1; min-width: 0; }
+.adm-ck { display: flex; align-items: center; justify-content: center; width: 30px; flex-shrink: 0; border-radius: var(--radius-sm); transition: background .15s; }
+.adm-ck:hover { background: var(--u-bg2); }
+.adm-ck input { width: 16px; height: 16px; accent-color: var(--u-accent); cursor: pointer; }
+.adm-rw.sel .adm-row { border-color: var(--u-accent); background: var(--u-accent-soft); }
+.agh-sel { font-size: 11.5px; font-weight: 600; color: var(--u-text3); padding: 3px 9px; border-radius: 20px; background: var(--u-bg2); }
+.agh-sel:hover { background: var(--u-accent-soft); color: var(--u-accent); }
+.adm-lote { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1094; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center; background: var(--u-card); border: 1px solid var(--u-border); box-shadow: var(--u-shadow-lg); border-radius: 14px; padding: 9px 12px; max-width: calc(100vw - 24px); animation: slideup .2s cubic-bezier(.4,0,.2,1); }
+.adm-lote .al-n { font-size: 12.5px; font-weight: 700; color: var(--u-text); padding-right: 4px; white-space: nowrap; }
+.adm-lote .al-sep { width: 1px; align-self: stretch; background: var(--u-line); margin: 0 2px; }
+.adm-lote .al-x { color: var(--u-text3); font-size: 18px; line-height: 1; padding: 0 6px; }
+.adm-lote .al-x:hover { color: var(--u-text); }
+.adm-pick { width: 100%; }
+@media (max-width: 760px) {
+  .adm-lote { left: 8px; right: 8px; bottom: 10px; transform: none; max-width: none; padding: 10px calc(10px + env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)); }
+  .adm-lote .act-btn span { display: none; }
+  .adm-lote .act-btn { width: 36px; padding: 0; }
+}
+
 /* v80: painel lateral da tarefa (edição sem sair da tela) */
 .sp-bg { position: fixed; inset: 0; background: rgba(15,23,42,.35); z-index: 1095; animation: fade .12s; }
 .sp { position: fixed; top: 0; right: 0; bottom: 0; width: 430px; max-width: 92vw; background: var(--u-card); border-left: 1px solid var(--u-border); box-shadow: var(--u-shadow-lg); z-index: 1096; display: flex; flex-direction: column; animation: spin-right .22s cubic-bezier(.4,0,.2,1); }
@@ -1453,6 +1533,10 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .adm-filtros-btn { display: none; }
 .adm-group { margin-bottom: 14px; }
 .adm-group-h { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px 2px; background: none; color: var(--u-text); font-size: 13.5px; font-weight: 700; border-bottom: 1px solid var(--u-line); }
+.adm-group.vazio { opacity: .45; }
+.adm-group.vazio .adm-group-h { border-bottom-color: transparent; }
+.adm-group-h .agh-lb { display: flex; align-items: center; gap: 8px; background: none; color: inherit; font-size: inherit; font-weight: inherit; padding: 0; }
+.adm-group-h .agh-ar { background: none; }
 .adm-group-h .agh-c { font-size: 12px; font-weight: 600; color: var(--u-text3); background: var(--u-bg2); padding: 2px 8px; border-radius: 20px; }
 .adm-group-h .agh-sp { flex: 1; }
 .adm-group-h .agh-ar { color: var(--u-text3); transition: transform .15s; }
@@ -1806,7 +1890,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v80 · 18/07 (Central de Tarefas fatia 2: painel lateral com edição, checklist, duplicar, arquivar e excluir — sem sair da tela)';
+var APP_BUILD = 'v83 · 19/07 (Central de Rotinas: só as regras, por colaborador, em 4 grupos (Diárias/Semanais/Mensais/Únicas) + painel com frequência, dias, horário, início/fim, pausar e duplicar)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6623,11 +6707,16 @@ function admRowHTML(t){
                            : (d?'<span class="ar-date'+(late?' late':'')+'">'+fmtDate(d)+'</span>':'');
   var stHTML = t.is_rule ? (t.rec_paused?'<span class="adm-st" style="color:var(--u-amber);background:var(--u-amber-soft)">Pausada</span>':'<span class="adm-st" style="color:var(--u-green);background:var(--u-green-soft)">Ativa</span>')
                          : '<span class="adm-st" style="color:'+st.color+';background:'+st.color+'1a">'+st.label+'</span>';
-  return '<button class="adm-row" data-admtask="'+esc(t.id)+'">'+
-    '<span class="ar-prio" style="background:'+pr.color+'"></span>'+ av +
-    '<span class="ar-main"><span class="ar-t">'+esc(t.title||'(sem título)')+'</span><span class="ar-sub">'+sub.join(' ')+' '+selo+'</span></span>'+
-    dateHTML + stHTML +
-  '</button>';
+  var marcada = !!(ST.admSel||{})[t.id];
+  var ck = t.is_rule ? '<span class="adm-ck"></span>' // regra não entra em ação em lote
+                     : '<label class="adm-ck"><input type="checkbox" data-admsel="'+esc(t.id)+'"'+(marcada?' checked':'')+'></label>';
+  return '<div class="adm-rw'+(marcada?' sel':'')+'" data-admwrap="'+esc(t.id)+'">'+ ck +
+    '<button class="adm-row" data-admtask="'+esc(t.id)+'">'+
+      '<span class="ar-prio" style="background:'+pr.color+'"></span>'+ av +
+      '<span class="ar-main"><span class="ar-t">'+esc(t.title||'(sem título)')+'</span><span class="ar-sub">'+sub.join(' ')+' '+selo+'</span></span>'+
+      dateHTML + stHTML +
+    '</button>'+
+  '</div>';
 }
 function admGroupHTML(id, icone, titulo, arr){
   if(!arr.length) return '';
@@ -6636,80 +6725,195 @@ function admGroupHTML(id, icone, titulo, arr){
   var vis = arr.slice(0, lim);
   var mais = arr.length>lim ? '<button class="adm-more" data-admmore="'+id+'">Carregar mais ('+(arr.length-lim)+' restantes)</button>' : '';
   return '<div class="adm-group'+fechado+'" data-admg="'+id+'">'+
-    '<button class="adm-group-h" data-admtoggle="'+id+'">'+icone+'<span>'+esc(titulo)+'</span><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span><span class="agh-ar">'+icon('cal')+'</span></button>'+
+    '<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">'+icone+'<span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span><button class="agh-sel" data-admgsel="'+id+'">Selecionar todas</button><button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button></div>'+
     '<div class="adm-list">'+vis.map(admRowHTML).join('')+mais+'</div>'+
   '</div>';
 }
+/* ===== v82: ORGANIZAÇÃO DA CENTRAL — 3 lentes, rotina ≠ tarefa pontual =====
+   A rotina aparece UMA vez (a regra, com as datas em que se repete),
+   nunca 30 cópias. Tarefa pontual continua organizada por prazo. */
+// v83: esta tela administra REGRAS. Ocorrências geradas ficam no Kanban/Calendário.
+function admEhUnica(t){ return !t.is_rule && !t.recur_group; }
+function admRegistros(base){ return base.filter(function(t){ return t.is_rule || (admEhUnica(t) && t.status!=='feito'); }); }
+function admFreqLb(r){ return r.recurrence==='diaria'?'Diária':(r.recurrence==='semanal'?'Semanal':(r.recurrence==='mensal'?'Mensal':'Única')); }
+function admProxExec(r){
+  if(!r.is_rule) return (r.due_date||'').slice(0,10)||'';
+  if(r.rec_paused) return '';
+  var hoje=today();
+  try { var d=occDatesForRule(r, hoje, addDays(hoje,400)); return d.length?d[0]:''; } catch(e){ return ''; }
+}
+// mapa: quantas ocorrências de cada rotina estão pendentes hoje / atrasadas
+function admPendPorRegra(base){
+  var hoje=today(), m={};
+  base.forEach(function(t){
+    if(t.is_rule || !t.recur_group) return;
+    var g=String(t.recur_group); if(!m[g]) m[g]={hoje:0, atras:0};
+    var d=(t.due_date||'').slice(0,10);
+    if(t.status==='feito') return;
+    if(d===hoje) m[g].hoje++;
+    else if(d && d<hoje) m[g].atras++;
+  });
+  return m;
+}
+// linha de uma ROTINA: uma só, com o padrão e as próximas datas reais
+function admRuleLineHTML(rule, pend){
+  var u=rule.assignee_id?userById(rule.assignee_id):null;
+  var prox=admProxExec(rule);
+  var proj=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(rule.project_id)) { proj=ST.projects[i]; break; }
+  var p=(pend||{})[String(rule.recur_group)]||{hoje:0,atras:0};
+  var av = u ? '<span class="ar-av" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'
+             : '<span class="ar-av" style="background:var(--u-border2)">?</span>';
+  var pausada = !!rule.rec_paused;
+  var status = !rule.is_rule ? '<span class="rg-st unica">Única</span>'
+             : (pausada ? '<span class="rg-st pausada">Pausada</span>' : '<span class="rg-st ativa">Ativa</span>');
+  var alerta = (rule.is_rule && p.atras) ? '<span class="rl-chip late">'+p.atras+' atrasada'+(p.atras>1?'s':'')+'</span>' : '';
+  function col(lb, v, cls){ return '<span class="rg-c '+(cls||'')+'"><i>'+lb+'</i><b>'+(v||'—')+'</b></span>'; }
+  return '<div class="adm-rw" data-admwrap="'+esc(rule.id)+'">'+
+    '<span class="adm-ck"></span>'+
+    '<button class="adm-row rg-row'+(pausada?' off':'')+'" data-admtask="'+esc(rule.id)+'">'+
+      '<span class="ar-prio" style="background:'+((PRIO[rule.priority]||PRIO.media).color)+'"></span>'+ av +
+      '<span class="rg-nome"><b>'+esc(rule.title||'(sem título)')+'</b> '+alerta+'<i>'+esc(rule.is_rule?descrevePadraoRegra(rule):'sem repetição')+'</i></span>'+
+      col('Frequência', esc(admFreqLb(rule)))+
+      col('Próxima', prox?fmtDate(prox):'—')+
+      col('Horário', esc(rule.rec_hora||'—'))+
+      col('Projeto', proj?esc(proj.name):'—')+
+      status+
+    '</button>'+
+  '</div>';
+}
+function admRuleGroupHTML(id, titulo, arr, pend){
+  if(!arr.length) return '<div class="adm-group vazio"><div class="adm-group-h"><span class="agh-lb">🔁 <span>'+esc(titulo)+'</span></span><span class="agh-c">0</span><span class="agh-sp"></span></div></div>';
+  var fechado=(ST.admClosed||{})[id]===false ? '' : ' closed'; // rotinas começam fechadas
+  return '<div class="adm-group'+fechado+'" data-admg="'+id+'">'+
+    '<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">🔁 <span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span><button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button></div>'+
+    '<div class="adm-list">'+arr.map(function(r){ return admRuleLineHTML(r,pend); }).join('')+'</div>'+
+  '</div>';
+}
+// separa as rotinas por frequência
+function admRotinasPorFreq(base){
+  var R={ diaria:[], semanal:[], mensal:[], unica:[] };
+  admRegistros(base).forEach(function(t){
+    if(!t.is_rule){ R.unica.push(t); return; }
+    if(R[t.recurrence]) R[t.recurrence].push(t);
+  });
+  var ord=function(a,b){ return String(a.title||'').localeCompare(String(b.title||'')); };
+  R.diaria.sort(ord); R.semanal.sort(ord); R.mensal.sort(ord);
+  R.unica.sort(function(a,b){ return (a.due_date||'zz').localeCompare(b.due_date||'zz'); });
+  return R;
+}
+// os 4 grupos recolhíveis da tela
+function admBlocoRotinas(base, pref){
+  var R=admRotinasPorFreq(base), pend=admPendPorRegra(base);
+  return admRuleGroupHTML(pref+'rot-d','Tarefas Diárias', R.diaria, pend)+
+         admRuleGroupHTML(pref+'rot-s','Tarefas Semanais', R.semanal, pend)+
+         admRuleGroupHTML(pref+'rot-m','Tarefas Mensais', R.mensal, pend)+
+         admRuleGroupHTML(pref+'rot-u','Tarefas Únicas', R.unica, pend);
+}
+// filtro desta tela: frequência, situação e busca (colaborador/projeto/loja já vêm do escopo)
+function admFiltraRegs(list){
+  var f=admF(), q=(f.q||'').toLowerCase().trim();
+  return list.filter(function(r){
+    if(f.tipo){
+      if(f.tipo==='unica'){ if(r.is_rule) return false; }
+      else if(!r.is_rule || r.recurrence!==f.tipo) return false;
+    }
+    if(f.status==='ativa'   && !(r.is_rule && !r.rec_paused)) return false;
+    if(f.status==='pausada' && !(r.is_rule && r.rec_paused))  return false;
+    return admBusca(r, q);
+  });
+}
+// VISÃO POR COLABORADOR: uma linha fechada por pessoa; abre uma de cada vez
+function admPorPessoaHTML(base){
+  var aberta=ST.admPessoa||null;
+  var regs=admFiltraRegs(admRegistros(base));
+  function daPessoa(id){ return regs.filter(function(t){ return id==='_sem' ? !t.assignee_id : String(t.assignee_id)===String(id); }); }
+  var lista=(ST.users||[]).map(function(u){ return { id:u.id, nome:u.name, cor:u.color||'#3B6FF7' }; });
+  if(regs.some(function(t){ return !t.assignee_id; })) lista.push({ id:'_sem', nome:'Sem responsável', cor:'#9aa1ad' });
+
+  var linhas='';
+  lista.forEach(function(p){
+    var minhas=daPessoa(p.id);
+    var c={ d:0, s:0, m:0, u:0, pausadas:0 };
+    minhas.forEach(function(r){
+      if(!r.is_rule){ c.u++; return; }
+      if(r.rec_paused) c.pausadas++;
+      if(r.recurrence==='diaria') c.d++; else if(r.recurrence==='semanal') c.s++; else if(r.recurrence==='mensal') c.m++;
+    });
+    var chips='';
+    if(c.d) chips+='<span class="pp-chip rot">'+c.d+' diária'+(c.d>1?'s':'')+'</span>';
+    if(c.s) chips+='<span class="pp-chip rot">'+c.s+' semanal'+(c.s>1?'is':'')+'</span>';
+    if(c.m) chips+='<span class="pp-chip rot">'+c.m+' mensa'+(c.m>1?'is':'l')+'</span>';
+    if(c.u) chips+='<span class="pp-chip">'+c.u+' única'+(c.u>1?'s':'')+'</span>';
+    if(c.pausadas) chips+='<span class="pp-chip pause">'+c.pausadas+' pausada'+(c.pausadas>1?'s':'')+'</span>';
+    if(!minhas.length) chips='<span class="pp-chip free">sem rotinas</span>';
+    var aberto = String(aberta)===String(p.id);
+    linhas += '<div class="pp'+(aberto?' on':'')+'">'+
+      '<button class="pp-h" data-admpessoa="'+esc(p.id)+'">'+
+        '<span class="ar-av" style="background:'+p.cor+'">'+esc(iniciais(p.nome))+'</span>'+
+        '<span class="pp-n">'+esc(p.nome)+'</span><span class="pp-chips">'+chips+'</span>'+
+        '<span class="pp-ar">'+icon('cal')+'</span>'+
+      '</button>';
+    if(aberto){
+      var corpo=admBlocoRotinas(minhas, 'p-');
+      linhas += '<div class="pp-body">'+(corpo||'<div class="pp-vazio">Nenhuma rotina configurada para esta pessoa.</div>')+'</div>';
+    }
+    linhas += '</div>';
+  });
+  return linhas || emptyState({ icon:'users', title:'Sem pessoas no setor', text:'Cadastre a equipe para distribuir as rotinas.' });
+}
 // v80: bloco de indicadores isolado — permite recalcular sozinho, sem recarregar a tela
 function admKpisHTML(){
-  var f=admF(), s=admStats(admScope());
+  var f=admF(), regs=admRegistros(admScope());
+  var c={ ativas:0, pausadas:0, diaria:0, semanal:0, mensal:0, unica:0 };
+  regs.forEach(function(r){
+    if(r.is_rule){ if(r.rec_paused) c.pausadas++; else c.ativas++; c[r.recurrence]=(c[r.recurrence]||0)+1; }
+    else c.unica++;
+  });
   function kpi(id, val, label, cor, filtro){
-    var on = filtro && ((filtro.status && f.status===filtro.status) || (filtro.per && f.per===filtro.per) || (filtro.tipo && f.tipo===filtro.tipo));
+    var on = filtro && ((filtro.freq && f.tipo===filtro.freq) || (filtro.status && f.status===filtro.status));
     return '<button class="adm-kpi'+(on?' on':'')+'" data-admkpi="'+id+'"><b style="color:'+cor+'">'+val+'</b><i>'+label+'</i></button>';
   }
   return '<div class="adm-kpis">'+
-    kpi('total', s.total, 'Total', 'var(--u-text)', null)+
-    kpi('todo', s.todo, 'Pendentes', 'var(--u-text2)', {status:'todo'})+
-    kpi('fazendo', s.fazendo, 'Em andamento', 'var(--u-accent)', {status:'fazendo'})+
-    kpi('feito', s.feito, 'Concluídas', 'var(--u-green)', {status:'feito'})+
-    kpi('atrasadas', s.atrasadas, 'Atrasadas', 'var(--u-red)', {status:'atrasada'})+
-    kpi('rotinas', s.rotinasHoje, 'Rotinas de hoje', 'var(--u-amber)', {tipo:'rotina'})+
+    kpi('ativas', c.ativas, 'Rotinas ativas', 'var(--u-green)', {status:'ativa'})+
+    kpi('pausadas', c.pausadas, 'Pausadas', 'var(--u-amber)', {status:'pausada'})+
+    kpi('diaria', c.diaria, 'Diárias', 'var(--u-accent)', {freq:'diaria'})+
+    kpi('semanal', c.semanal, 'Semanais', 'var(--u-accent)', {freq:'semanal'})+
+    kpi('mensal', c.mensal, 'Mensais', 'var(--u-accent)', {freq:'mensal'})+
+    kpi('unica', c.unica, 'Únicas', 'var(--u-text2)', {freq:'unica'})+
   '</div>';
 }
 function admTarefasHTML(){
-  if(!isAdmin(ST.session)) return emptyState({ icon:'gear', title:'Acesso restrito', text:'A Central de Tarefas é exclusiva de administradores do setor.' });
-  var f=admF();
-  var base=admScope();
+  if(!isAdmin(ST.session)) return emptyState({ icon:'gear', title:'Acesso restrito', text:'A Central de Rotinas é exclusiva de administradores do setor.' });
+  var f=admF(), base=admScope();
   var kpis=admKpisHTML();
-  function opts(arr, sel, vlabel){
-    return arr.map(function(o){ return '<option value="'+esc(o.v)+'"'+(String(sel)===String(o.v)?' selected':'')+'>'+esc(o.l)+'</option>'; }).join('');
-  }
+  function opts(arr, sel){ return arr.map(function(o){ return '<option value="'+esc(o.v)+'"'+(String(sel)===String(o.v)?' selected':'')+'>'+esc(o.l)+'</option>'; }).join(''); }
   var uOpts=[{v:'',l:'Todos os colaboradores'}]; (ST.users||[]).forEach(function(u){ uOpts.push({v:u.id,l:u.name}); });
   var lOpts=[{v:'',l:'Todas as lojas'}]; (ST.storeUnits||[]).forEach(function(x){ lOpts.push({v:x.id,l:x.name||('Loja '+x.store_number)}); });
   var pOpts=[{v:'',l:'Todos os projetos'}]; (ST.projects||[]).forEach(function(p){ pOpts.push({v:p.id,l:p.name}); });
-  var priOpts=[{v:'',l:'Qualquer prioridade'},{v:'alta',l:'Alta'},{v:'media',l:'Média'},{v:'baixa',l:'Baixa'}];
-  var stOpts=[{v:'',l:'Qualquer status'},{v:'todo',l:'A fazer'},{v:'fazendo',l:'Em andamento'},{v:'feito',l:'Concluída'},{v:'atrasada',l:'Atrasada'}];
-  var tpOpts=[{v:'',l:'Qualquer tipo'},{v:'normal',l:'Normal'},{v:'rotina',l:'Rotina'},{v:'pop',l:'POP'},{v:'recorrente',l:'Recorrente'}];
-  var perOpts=[{v:'',l:'Qualquer prazo'},{v:'hoje',l:'Hoje'},{v:'amanha',l:'Amanhã'},{v:'semana',l:'Esta semana'},{v:'proxsemana',l:'Próxima semana'},{v:'mes',l:'Este mês'},{v:'custom',l:'Personalizado'}];
-  var custom = f.per==='custom' ? '<input type="date" id="admIni" value="'+esc(f.ini||'')+'"><input type="date" id="admFim" value="'+esc(f.fim||'')+'">' : '';
+  var fqOpts=[{v:'',l:'Qualquer frequência'},{v:'diaria',l:'Diária'},{v:'semanal',l:'Semanal'},{v:'mensal',l:'Mensal'},{v:'unica',l:'Única'}];
+  var stOpts=[{v:'',l:'Qualquer situação'},{v:'ativa',l:'Ativa'},{v:'pausada',l:'Pausada'}];
   var nAtivos=admFAtivos();
   var barra='<div class="adm-bar-bg hidden" id="admBarBg"></div>'+
     '<div class="adm-bar hidden" id="admBar">'+
-      '<input class="adm-search" id="admQ" placeholder="Buscar por nome, responsável, projeto, descrição ou tag..." value="'+esc(f.q||'')+'">'+
+      '<input class="adm-search" id="admQ" placeholder="Buscar rotina por nome, responsável, projeto ou tag..." value="'+esc(f.q||'')+'">'+
       '<select id="admColab">'+opts(uOpts,f.colab)+'</select>'+
       (ST.sector==='lojas'?'<select id="admLoja">'+opts(lOpts,f.loja)+'</select>':'')+
       '<select id="admProj">'+opts(pOpts,f.proj)+'</select>'+
-      '<select id="admPrio">'+opts(priOpts,f.prio)+'</select>'+
+      '<select id="admTipo">'+opts(fqOpts,f.tipo)+'</select>'+
       '<select id="admStatus">'+opts(stOpts,f.status)+'</select>'+
-      '<select id="admTipo">'+opts(tpOpts,f.tipo)+'</select>'+
-      '<select id="admPer">'+opts(perOpts,f.per)+'</select>'+ custom +
       (nAtivos?'<button class="adm-clear" id="admClear">Limpar filtros</button>':'')+
     '</div>';
   var btnFiltros='<button class="adm-filtros-btn" id="admOpenBar">'+icon('search')+'Filtros'+(nAtivos?'<span class="afb-n">'+nAtivos+'</span>':'')+'</button>';
-
-  var lista=admAplicaAtrasada(admAplica(base));
-  var G=admGrupos(lista);
-  var corpo =
-    admGroupHTML('atrasadas','⚠️ ','Atrasadas', G.atrasadas)+
-    admGroupHTML('hoje','📅 ','Hoje', G.hoje)+
-    admGroupHTML('semana','📆 ','Esta semana', G.semana)+
-    admGroupHTML('mes','🗓 ','Este mês', G.mes)+
-    admGroupHTML('depois','🕒 ','Depois / sem prazo', G.depois)+
-    admGroupHTML('recorrentes','🔄 ','Recorrentes (as rotinas configuradas)', G.recorrentes);
-  if(!corpo) corpo = emptyState({ icon:'tasks', title:'Nada com esses filtros', text: (nAtivos?'Ajuste ou limpe os filtros para ver as tarefas da equipe.':'Ainda não há tarefas na operação deste setor.'), cta:(nAtivos?'':'Nova tarefa') });
-
-  return '<div class="tasks-head"><div><h2>Administração de Tarefas</h2><div class="sub">Gerencie toda a operação da equipe em um único lugar.</div></div>'+btnFiltros+'</div>'+
+  var corpo=admPorPessoaHTML(base);
+  return '<div class="tasks-head"><div><h2>Central de Rotinas</h2><div class="sub">Configure as rotinas da equipe. As ocorrências do dia a dia aparecem no Kanban e no Calendário.</div></div>'+btnFiltros+'</div>'+
     kpis + barra + corpo;
 }
-/* ===== v80: PAINEL LATERAL DA TAREFA (fatia 2 da Central) =====
-   Edita tudo sem sair da tela. Reusa o mesmo motor: grava em malba_vl_tasks,
-   atualiza ST.tasks e refaz só a linha + os indicadores (nada de recarregar). */
+/* ===== núcleo do painel: salvar e atualizar só o que mudou (v80/v81) ===== */
 function admSaved(){
   var el=document.getElementById('spSaved'); if(!el) return;
   el.classList.add('on'); clearTimeout(window._spST);
   window._spST=setTimeout(function(){ el.classList.remove('on'); }, 1400);
 }
-// grava um pedaço da tarefa e atualiza só o que mudou
 function admPatch(id, patch, cb){
   var t=taskById(id); if(!t) return;
   var k; for(k in patch) t[k]=patch[k];
@@ -6719,11 +6923,19 @@ function admPatch(id, patch, cb){
   });
 }
 function admRefreshRow(id){
-  var el=app.querySelector('[data-admtask="'+id+'"]'); if(!el) return;
+  var el=app.querySelector('[data-admwrap="'+id+'"]'); if(!el) return;
   var t=taskById(id); if(!t){ el.parentNode.removeChild(el); return; }
-  var tmp=document.createElement('div'); tmp.innerHTML=admRowHTML(t);
+  var tmp=document.createElement('div');
+  tmp.innerHTML = t.is_rule ? admRuleLineHTML(t, admPendPorRegra(admScope())) : admRowHTML(t);
   var novo=tmp.firstChild; el.parentNode.replaceChild(novo, el);
-  novo.addEventListener('click', function(){ openTaskPanel(id); });
+  admBindRow(novo);
+}
+// liga clique (abre painel) + caixa de seleção de UMA linha
+function admBindRow(wrap){
+  var b=wrap.querySelector('[data-admtask]');
+  if(b) b.addEventListener('click', function(){ openTaskPanel(this.getAttribute('data-admtask')); });
+  var c=wrap.querySelector('[data-admsel]');
+  if(c) c.addEventListener('change', function(){ admToggleSel(this.getAttribute('data-admsel'), this.checked); });
 }
 function admRefreshKpis(){
   var el=app.querySelector('.adm-kpis'); if(!el) return;
@@ -6731,9 +6943,114 @@ function admRefreshKpis(){
   el.parentNode.replaceChild(tmp.firstChild, el);
   bindAdmKpis();
 }
+/* ===== v81: SELEÇÃO MÚLTIPLA + AÇÕES EM LOTE (fatia 3 da Central) ===== */
+function admSel(){ if(!ST.admSel) ST.admSel={}; return ST.admSel; }
+function admSelIds(){ var s=admSel(), out=[], k; for(k in s){ if(s[k]) out.push(k); } return out; }
+function admToggleSel(id, on){
+  var s=admSel();
+  if(on) s[id]=true; else delete s[id];
+  var w=app.querySelector('[data-admwrap="'+id+'"]'); if(w) w.classList.toggle('sel', !!on);
+  admLoteBar();
+}
+function admLimpaSel(){
+  ST.admSel={};
+  var ws=app.querySelectorAll('.adm-rw.sel');
+  for(var i=0;i<ws.length;i++) ws[i].classList.remove('sel');
+  var cs=app.querySelectorAll('[data-admsel]');
+  for(var j=0;j<cs.length;j++) cs[j].checked=false;
+  admLoteBar();
+}
+// seleciona/desmarca todas as tarefas visíveis de um grupo
+function admSelGrupo(gid){
+  var g=app.querySelector('[data-admg="'+gid+'"]'); if(!g) return;
+  var cs=g.querySelectorAll('[data-admsel]');
+  var faltam=false;
+  for(var i=0;i<cs.length;i++) if(!cs[i].checked) { faltam=true; break; }
+  for(var j=0;j<cs.length;j++){ cs[j].checked=faltam; admToggleSel(cs[j].getAttribute('data-admsel'), faltam); }
+}
+// barra flutuante — só existe quando há seleção
+function admLoteBar(){
+  var ids=admSelIds();
+  var bar=document.getElementById('admLote');
+  if(!ids.length){ if(bar&&bar.parentNode) bar.parentNode.removeChild(bar); return; }
+  if(!bar){
+    bar=document.createElement('div'); bar.className='adm-lote'; bar.id='admLote';
+    document.body.appendChild(bar);
+  }
+  bar.innerHTML='<span class="al-n">'+ids.length+' selecionada'+(ids.length>1?'s':'')+'</span><span class="al-sep"></span>'+
+    '<button class="act-btn" data-lote="resp">'+icon('users')+'<span>Responsável</span></button>'+
+    '<button class="act-btn" data-lote="prazo">'+icon('cal')+'<span>Prazo</span></button>'+
+    '<button class="act-btn" data-lote="prio">'+icon('target')+'<span>Prioridade</span></button>'+
+    '<button class="act-btn" data-lote="proj">'+icon('folder')+'<span>Projeto</span></button>'+
+    '<button class="act-btn" data-lote="feito">'+icon('check')+'<span>Concluir</span></button>'+
+    '<button class="act-btn" data-lote="arquivar">'+icon('archive')+'<span>Arquivar</span></button>'+
+    '<button class="act-btn danger" data-lote="excluir">'+icon('trash')+'<span>Excluir</span></button>'+
+    '<span class="al-sep"></span><button class="al-x" id="admLoteX" title="Limpar seleção">×</button>';
+  var bs=bar.querySelectorAll('[data-lote]');
+  for(var i=0;i<bs.length;i++) bs[i].addEventListener('click', function(){ admLoteAcao(this.getAttribute('data-lote')); });
+  bar.querySelector('#admLoteX').addEventListener('click', admLimpaSel);
+}
+// escolhedor genérico (responsável / prazo / prioridade / projeto)
+function admPicker(o){
+  var bg=document.createElement('div'); bg.className='modal-bg';
+  bg.innerHTML='<div class="modal" style="max-width:380px"><div class="wz-title">'+esc(o.title)+'</div>'+
+    '<div class="modal-row">'+o.campo+'</div>'+
+    modalFoot({ saveLabel:'Aplicar', cancelId:'pkCancel', saveId:'pkOk' })+'</div>';
+  document.body.appendChild(bg);
+  function close(){ if(bg.parentNode) bg.parentNode.removeChild(bg); }
+  bg.addEventListener('click', function(e){ if(e.target===bg) close(); });
+  bg.querySelector('#pkCancel').addEventListener('click', close);
+  bg.querySelector('#pkOk').addEventListener('click', function(){
+    var el=bg.querySelector('#pkVal'); o.onOk(el?el.value:null, close, this);
+  });
+  setTimeout(function(){ var el=bg.querySelector('#pkVal'); if(el) el.focus(); },30);
+}
+// aplica o mesmo patch em todas as selecionadas, numa única ida ao Supabase
+function admLotePatch(patch, msg){
+  var ids=admSelIds(); if(!ids.length) return;
+  sb.from('malba_vl_tasks').update(patch).in('id', ids).then(function(r){
+    if(r.error){ toast('Erro ao aplicar','error'); console.error(r.error); return; }
+    ids.forEach(function(id){ var t=taskById(id); if(t){ var k; for(k in patch) t[k]=patch[k]; } });
+    toast(msg+' ('+ids.length+')','success');
+    admLimpaSel(); renderPage();
+  });
+}
+function admLoteAcao(acao){
+  var ids=admSelIds(); if(!ids.length) return;
+  var n=ids.length;
+  if(acao==='resp'){
+    var uOpts='<option value="">Sem responsável</option>'+(ST.users||[]).map(function(u){ return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>'; }).join('');
+    admPicker({ title:'Trocar responsável de '+n+' tarefa(s)', campo:'<label class="modal-label">Responsável</label><select class="adm-pick" id="pkVal">'+uOpts+'</select>',
+      onOk:function(v, close){ close(); admLotePatch({ assignee_id:v||null }, 'Responsável alterado'); } });
+  } else if(acao==='prazo'){
+    admPicker({ title:'Alterar prazo de '+n+' tarefa(s)', campo:'<label class="modal-label">Novo prazo</label><input type="date" class="adm-pick" id="pkVal" value="'+today()+'">',
+      onOk:function(v, close){ if(!v){ toast('Escolha uma data','error'); return; } close(); admLotePatch({ due_date:v }, 'Prazo alterado'); } });
+  } else if(acao==='prio'){
+    admPicker({ title:'Alterar prioridade de '+n+' tarefa(s)', campo:'<label class="modal-label">Prioridade</label><select class="adm-pick" id="pkVal"><option value="alta">Alta</option><option value="media" selected>Média</option><option value="baixa">Baixa</option></select>',
+      onOk:function(v, close){ close(); admLotePatch({ priority:v }, 'Prioridade alterada'); } });
+  } else if(acao==='proj'){
+    var pOpts='<option value="">Sem projeto</option>'+(ST.projects||[]).map(function(p){ return '<option value="'+esc(p.id)+'">'+esc(p.name)+'</option>'; }).join('');
+    admPicker({ title:'Mover '+n+' tarefa(s) para projeto', campo:'<label class="modal-label">Projeto</label><select class="adm-pick" id="pkVal">'+pOpts+'</select>',
+      onOk:function(v, close){ close(); admLotePatch({ project_id:v||null }, 'Tarefas movidas'); } });
+  } else if(acao==='feito'){
+    admLotePatch({ status:'feito' }, 'Tarefas concluídas');
+  } else if(acao==='arquivar'){
+    confirmDialog({ warn:true, icon:'archive', title:'Arquivar '+n+' tarefa(s)?', message:'Elas saem da operação mas continuam no histórico.', confirmLabel:'Arquivar',
+      onConfirm:function(){ admLotePatch({ archived_at:new Date().toISOString() }, 'Tarefas arquivadas'); } });
+  } else if(acao==='excluir'){
+    confirmDelete('Excluir '+n+' tarefa(s)? Não dá pra desfazer.', function(){
+      sb.from('malba_vl_tasks').delete().in('id', ids).then(function(r){
+        if(r.error){ toast('Erro ao excluir','error'); console.error(r.error); return; }
+        ST.tasks=ST.tasks.filter(function(x){ return ids.indexOf(String(x.id))===-1; });
+        toast(n+' tarefa(s) excluída(s)','success'); admLimpaSel(); renderPage();
+      });
+    });
+  }
+}
+
 function openTaskPanel(id){
   var t=taskById(id); if(!t) return;
-  if(t.is_rule){ if(typeof openRotinaModal==='function') openRotinaModal(t); return; }
+  var ehRegra=!!t.is_rule; // v83: a regra é editada no mesmo painel
   var subs=(Array.isArray(t.subtasks)?t.subtasks:[]).map(function(s){ return { id:s.id||uid(), text:s.text||'', done:!!s.done }; });
   var rule=(typeof ruleForOccurrence==='function')?ruleForOccurrence(t):null;
 
@@ -6757,11 +7074,13 @@ function openTaskPanel(id){
     '<div class="sp-head"><textarea class="sp-t" id="spTitle" rows="1">'+esc(t.title||'')+'</textarea><button class="sp-x" id="spClose">×</button></div>'+
     '<div class="sp-body">'+
       (rule?('<div class="sp-rec">'+icon('cal')+'<span>Faz parte da rotina <b>'+esc(descrevePadraoRegra(rule))+'</b></span><button class="sp-rec-b" id="spRule">Editar rotina</button></div>'):'')+
-      '<div class="sp-row"><span class="sp-lb">Status</span>'+pills('spStatus',[{v:'todo',l:'A fazer'},{v:'fazendo',l:'Em andamento'},{v:'feito',l:'Concluída'}], t.status||'todo')+'</div>'+
+      (ehRegra ? '<div class="sp-rec-box" id="spRecBox"></div>'
+               : '<div class="sp-row"><span class="sp-lb">Status</span>'+pills('spStatus',[{v:'todo',l:'A fazer'},{v:'fazendo',l:'Em andamento'},{v:'feito',l:'Concluída'}], t.status||'todo')+'</div>')+
       '<div class="sp-row"><span class="sp-lb">Prioridade</span>'+pills('spPrio',[{v:'alta',l:'Alta'},{v:'media',l:'Média'},{v:'baixa',l:'Baixa'}], t.priority||'media')+'</div>'+
       '<div class="sp-grid2">'+
         '<div class="sp-row"><span class="sp-lb">Responsável</span><select id="spAssignee">'+optsFrom(uArr, t.assignee_id, 'Sem responsável')+'</select></div>'+
-        '<div class="sp-row"><span class="sp-lb">Prazo</span><input type="date" id="spDate" value="'+esc((t.due_date||'').slice(0,10))+'"></div>'+
+        (ehRegra ? '<div class="sp-row"><span class="sp-lb">Horário</span><input type="time" id="spHora" value="'+esc(t.rec_hora||'')+'"></div>'
+                 : '<div class="sp-row"><span class="sp-lb">Prazo</span><input type="date" id="spDate" value="'+esc((t.due_date||'').slice(0,10))+'"></div>')+
       '</div>'+
       '<div class="sp-row"><span class="sp-lb">Projeto</span><select id="spProj">'+optsFrom(pArr, t.project_id, 'Sem projeto')+'</select></div>'+
       '<div class="sp-row"><span class="sp-lb">Checklist</span><div id="spSubs">'+subsHTML()+'</div><input class="sp-sub-add" id="spSubAdd" placeholder="+ adicionar item (Enter)" maxlength="140"></div>'+
@@ -6770,6 +7089,7 @@ function openTaskPanel(id){
     '</div>'+
     '<div class="sp-foot">'+
       actionBtn('duplicar','id="spDup"')+
+      (ehRegra ? actionBtn(t.rec_paused?'retomar':'pausar','id="spPause"') : '')+
       actionBtn('arquivar','id="spArch"')+
       actionBtn('excluir','id="spDel"')+
       '<span class="sp-saved" id="spSaved">salvo ✓</span>'+
@@ -6808,11 +7128,14 @@ function openTaskPanel(id){
       var p={}; p[campo]=this.getAttribute('data-v'); admPatch(id, p);
     });
   }
-  bindSpPills('#spStatus','status'); bindSpPills('#spPrio','priority');
+  if(!ehRegra) bindSpPills('#spStatus','status');
+  bindSpPills('#spPrio','priority');
 
   sp.querySelector('#spAssignee').addEventListener('change', function(){ admPatch(id, { assignee_id:this.value||null }); });
   sp.querySelector('#spProj').addEventListener('change', function(){ admPatch(id, { project_id:this.value||null }); });
-  sp.querySelector('#spDate').addEventListener('change', function(){ admPatch(id, { due_date:this.value||null }); });
+  var elD=sp.querySelector('#spDate'); if(elD) elD.addEventListener('change', function(){ admPatch(id, { due_date:this.value||null }); });
+  var elH=sp.querySelector('#spHora'); if(elH) elH.addEventListener('change', function(){ admPatch(id, { rec_hora:this.value||null }); });
+  if(ehRegra) spRenderRec();
 
   // checklist
   function salvarSubs(){ admPatch(id, { subtasks:subs }); }
@@ -6835,6 +7158,75 @@ function openTaskPanel(id){
     salvarSubs(); redesenhaSubs();
   });
 
+  // ===== v83: edição da recorrência dentro do painel =====
+  function spRenderRec(){
+    var box=sp.querySelector('#spRecBox'); if(!box) return;
+    var freq=t.recurrence||'diaria';
+    var wds=parseWeekdaysStr(t.rec_weekdays); if(!wds.length && t.rec_start) wds=[_dParse(t.rec_start).getDay()];
+    var ini=(t.rec_start||'').slice(0,10)||today();
+    var semFim=!t.rec_until;
+    var extra='';
+    if(freq==='diaria'){
+      extra='<label class="rec-check"><input type="checkbox" id="spUteis"'+(t.rec_dias_uteis?' checked':'')+'><span>Somente dias úteis (seg a sex)</span></label>';
+    } else if(freq==='semanal'){
+      var wdN=['D','S','T','Q','Q','S','S'], wdF=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+      extra='<span class="sp-lb" style="margin-top:10px">Dias da semana</span><div class="rec-wd">'+wdN.map(function(n,i){ return '<button type="button" class="rec-wd-btn'+(wds.indexOf(i)!==-1?' on':'')+'" data-wd="'+i+'" title="'+wdF[i]+'">'+n+'</button>'; }).join('')+'</div>';
+    } else if(freq==='mensal'){
+      extra='<span class="sp-lb" style="margin-top:10px">Dia do mês</span><input type="number" min="1" max="31" id="spDiaMes" value="'+(ini?_dParse(ini).getDate():1)+'">';
+    }
+    box.innerHTML=
+      '<div class="sp-row"><span class="sp-lb">Frequência</span><div class="sp-pills" id="spFreq">'+
+        [['diaria','Diária'],['semanal','Semanal'],['mensal','Mensal']].map(function(x){ return '<button class="sp-pill'+(freq===x[0]?' on':'')+'" data-v="'+x[0]+'">'+x[1]+'</button>'; }).join('')+
+      '</div>'+extra+'</div>'+
+      '<div class="sp-grid2">'+
+        '<div class="sp-row"><span class="sp-lb">Início</span><input type="date" id="spIni" value="'+esc(ini)+'"></div>'+
+        '<div class="sp-row"><span class="sp-lb">Fim</span><input type="date" id="spFim" value="'+esc((t.rec_until||'').slice(0,10))+'"'+(semFim?' disabled':'')+'></div>'+
+      '</div>'+
+      '<label class="rec-check"><input type="checkbox" id="spSemFim"'+(semFim?' checked':'')+'><span>Sem data fim (roda pra sempre)</span></label>'+
+      '<div class="rec-preview">Repete <b>'+esc(descrevePadraoRegra(t))+'</b>'+(t.rec_hora?(' às <b>'+esc(t.rec_hora)+'</b>'):'')+'.'+
+        (t.rec_paused?' <b style="color:var(--u-amber)">Pausada no momento.</b>':'')+'<br><span style="opacity:.7">O sistema cria a tarefa de cada dia sozinho — ela aparece no Kanban e no Calendário.</span></div>';
+    // ao mudar a regra, limpa as ocorrências futuras e regenera (evita fantasma da configuração antiga)
+    function aplicaRec(patch){
+      admPatch(id, patch, function(){
+        sb.from('malba_vl_tasks').delete().eq('recur_group', t.recur_group).eq('is_rule', false).gt('due_date', today()).neq('status','feito').then(function(){
+          ST.tasks=ST.tasks.filter(function(x){ return !(String(x.recur_group)===String(t.recur_group) && !x.is_rule && (x.due_date||'').slice(0,10)>today() && x.status!=='feito'); });
+          if(typeof materializarRecorrencias==='function') materializarRecorrencias();
+          spRenderRec();
+        });
+      });
+    }
+    var fbs=box.querySelectorAll('#spFreq .sp-pill');
+    for(var i=0;i<fbs.length;i++) fbs[i].addEventListener('click', function(){
+      var v=this.getAttribute('data-v'); if(v===t.recurrence) return;
+      var p={ recurrence:v };
+      if(v==='semanal') p.rec_weekdays=JSON.stringify([_dParse(ini).getDay()]);
+      if(v!=='semanal') p.rec_weekdays=null;
+      if(v!=='diaria') p.rec_dias_uteis=false;
+      aplicaRec(p);
+    });
+    var u=box.querySelector('#spUteis'); if(u) u.addEventListener('change', function(){ aplicaRec({ rec_dias_uteis:this.checked }); });
+    var wbs=box.querySelectorAll('.rec-wd-btn');
+    for(var j=0;j<wbs.length;j++) wbs[j].addEventListener('click', function(){
+      var d=+this.getAttribute('data-wd'), ix=wds.indexOf(d);
+      if(ix===-1) wds.push(d); else if(wds.length>1) wds.splice(ix,1); else return;
+      aplicaRec({ rec_weekdays:JSON.stringify(wds.slice().sort(function(a,b){return a-b;})) });
+    });
+    var dm=box.querySelector('#spDiaMes'); if(dm) dm.addEventListener('change', function(){
+      var dia=Math.max(1,Math.min(31,+this.value||1)); var d=_dParse(ini);
+      var novo=_dFmt(new Date(d.getFullYear(), d.getMonth(), dia, 12,0,0));
+      aplicaRec({ rec_start:novo });
+    });
+    var ei=box.querySelector('#spIni'); if(ei) ei.addEventListener('change', function(){ aplicaRec({ rec_start:this.value||null }); });
+    var ef=box.querySelector('#spFim'); if(ef) ef.addEventListener('change', function(){ aplicaRec({ rec_until:this.value||null }); });
+    var sf=box.querySelector('#spSemFim'); if(sf) sf.addEventListener('change', function(){ aplicaRec({ rec_until:this.checked?null:fimDoAnoDe(ini) }); });
+  }
+  var bPause=sp.querySelector('#spPause');
+  if(bPause) bPause.addEventListener('click', function(){
+    var novo=!t.rec_paused;
+    function vai(){ admPatch(id, { rec_paused:novo }, function(){ toast(novo?'Rotina pausada':'Rotina retomada','success'); fechar(); renderPage(); }); }
+    if(novo) confirmDialog({ warn:true, icon:'pause', title:'Pausar rotina?', message:'Ela para de gerar novas tarefas até você retomar. As já criadas continuam.', confirmLabel:'Pausar', onConfirm:vai });
+    else vai();
+  });
   if(rule) sp.querySelector('#spRule').addEventListener('click', function(){ fechar(); openRotinaModal(rule); });
 
   // ações
@@ -6843,6 +7235,11 @@ function openTaskPanel(id){
       due_date:t.due_date||today(), area:t.area||'', tags:t.tags||'', task_kind:t.task_kind||'normal',
       assignee_id:t.assignee_id||null, project_id:t.project_id||null, sector:ST.sector,
       created_by:ST.session.user.id, store_unit_id:t.store_unit_id||null };
+    if(ehRegra){ // v83: duplicar a REGRA copia toda a configuração da rotina (pausada, pra você revisar antes)
+      novo.is_rule=true; novo.recur_group=uid()+'-'+Date.now(); novo.recurrence=t.recurrence;
+      novo.rec_start=t.rec_start||today(); novo.rec_until=t.rec_until||null; novo.rec_dias_uteis=!!t.rec_dias_uteis;
+      novo.rec_weekdays=t.rec_weekdays||null; novo.rec_hora=t.rec_hora||null; novo.rec_paused=true; novo.status='todo';
+    }
     if(subs.length) novo.subtasks=subs.map(function(s){ return { id:uid(), text:s.text, done:false }; });
     var b=this; setBusy(b,true);
     sb.from('malba_vl_tasks').insert(novo).select().single().then(function(r){
@@ -6873,10 +7270,9 @@ function bindAdmKpis(){
   var kps=app.querySelectorAll('[data-admkpi]');
   for(var i=0;i<kps.length;i++) kps[i].addEventListener('click', function(){
     var k=this.getAttribute('data-admkpi');
-    if(k==='total'){ f.status=''; f.tipo=''; f.per=''; }
-    else if(k==='atrasadas'){ f.status = f.status==='atrasada'?'':'atrasada'; f.per=''; f.tipo=''; }
-    else if(k==='rotinas'){ f.tipo = f.tipo==='rotina'?'':'rotina'; f.per = f.per==='hoje'?'':'hoje'; f.status=''; }
-    else { f.status = f.status===k?'':k; }
+    if(k==='ativas'){ f.status = f.status==='ativa'?'':'ativa'; f.tipo=''; }
+    else if(k==='pausadas'){ f.status = f.status==='pausada'?'':'pausada'; f.tipo=''; }
+    else { f.tipo = f.tipo===k?'':k; f.status=''; } // diaria / semanal / mensal / unica
     renderPage();
   });
 }
@@ -6907,10 +7303,19 @@ function bindAdmTarefas(){
     ST.admLimit[id]=(ST.admLimit[id]||ADM_PAGE)+ADM_PAGE; upd();
   });
   // abrir a tarefa (por enquanto reusa o modal existente — o painel lateral vem na fatia 2)
-  var rows=app.querySelectorAll('[data-admtask]');
-  for(var r=0;r<rows.length;r++) rows[r].addEventListener('click', function(){
-    openTaskPanel(this.getAttribute('data-admtask')); // v80: painel lateral, sem sair da tela
+  var pps=app.querySelectorAll('[data-admpessoa]');
+  for(var P=0;P<pps.length;P++) pps[P].addEventListener('click', function(){
+    var id=this.getAttribute('data-admpessoa');
+    ST.admPessoa = (String(ST.admPessoa)===String(id)) ? null : id; // abre uma pessoa por vez
+    renderPage();
   });
+  var wraps=app.querySelectorAll('[data-admwrap]');
+  for(var r=0;r<wraps.length;r++) admBindRow(wraps[r]);
+  var gsel=app.querySelectorAll('[data-admgsel]');
+  for(var g2=0;g2<gsel.length;g2++) gsel[g2].addEventListener('click', function(e){
+    e.stopPropagation(); admSelGrupo(this.getAttribute('data-admgsel'));
+  });
+  admLoteBar();
   // mobile: filtros viram um painel inferior
   var ob=document.getElementById('admOpenBar'), bar=document.getElementById('admBar'), bg=document.getElementById('admBarBg');
   function fecha(){ if(bar) bar.classList.add('hidden'); if(bg) bg.classList.add('hidden'); }
@@ -6921,7 +7326,7 @@ function bindAdmTarefas(){
 function gestaoTabsForSector(){
   var s=ST.sector, T=[];
   function add(id,label,ic){ T.push({id:id,label:label,icon:ic}); }
-  if(isAdmin(ST.session)) add('tarefas','Tarefas da equipe','tasks'); // v79: central de administração de tarefas
+  if(isAdmin(ST.session)) add('tarefas','Rotinas da equipe','tasks'); // v79: central de administração de tarefas
   if(s==='lojas'){ add('visao','Visão geral','dashboard'); add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('comissoes','Comissões','dollar'); add('avaliacoes','Avaliações','target'); add('solicitacoes','Solicitações','bell'); add('atividade','Atividade','search'); }
   else if(s==='marketing'){ add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('orcamento','Orçamento','dollar'); add('atividade','Atividade','search'); }
   else if(s==='vendas'){ add('metas','Metas','target'); add('ranking','Ranking','trend'); add('atividade','Atividade','search'); }
@@ -8442,6 +8847,7 @@ function postAvisoModal(){
 }
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
+  var _lb=document.getElementById('admLote'); if(_lb&&_lb.parentNode) _lb.parentNode.removeChild(_lb); // v81
   // v74: telas de resultado e Ponto abrem SEMPRE dentro do hub (Gestão/Equipe) — navegação unificada + compat de rotas/deep-links
   if (ST.page==='admtarefas'){ ST.gestaoTab='tarefas'; ST.page='gestao'; } // v79
   if (ST.page==='kpis'){ ST.page='inicio'; } // v78: painel de KPIs foi absorvido pelo Dashboard único
