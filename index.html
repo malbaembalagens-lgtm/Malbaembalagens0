@@ -1402,6 +1402,36 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .act-btn.icon-only span { display: none; }
 .act-row { display: inline-flex; gap: 6px; align-items: center; }
 
+/* v84: trilha (Setor › Colaborador), cartões de pessoa e ações rápidas */
+.adm-bc { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--u-text2); margin-bottom: 13px; flex-wrap: wrap; }
+.adm-bc svg { width: 15px; height: 15px; color: var(--u-text3); }
+.adm-bc b { color: var(--u-text); font-weight: 700; }
+.adm-bc .bc-sep { color: var(--u-text3); }
+.adm-bc .bc-fixo { font-weight: 600; color: var(--u-text); }
+.adm-bc .bc-link { background: none; color: var(--u-accent); font-weight: 600; font-size: 13px; padding: 0; }
+.adm-bc .bc-link:hover { text-decoration: underline; }
+.adm-sel-setor { height: 30px; border: 1px solid var(--u-border); border-radius: var(--radius-sm); background: var(--u-card); color: var(--u-text); font-size: 12.5px; font-weight: 600; padding: 0 8px; }
+.adm-bar2 { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+.adm-bar2 select { height: 34px; font-size: 12.5px; padding: 0 9px; border-radius: var(--radius-sm); border: 1px solid var(--u-border); background: var(--u-card); color: var(--u-text); }
+.adm-bar2 .btn-sm { height: 34px; padding: 0 13px; font-size: 12.5px; margin-left: auto; }
+.adm-bar2 .btn-sm svg { width: 15px; height: 15px; }
+.pp-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 8px; }
+.pp-card { display: flex; align-items: center; gap: 11px; padding: 12px 13px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius-sm); text-align: left; transition: border-color .15s; }
+.pp-card:hover { border-color: var(--u-accent); }
+.pp-mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.pp-go { color: var(--u-text3); display: flex; flex-shrink: 0; }
+.pp-go svg { width: 15px; height: 15px; }
+.pp-chip.pause { background: var(--u-amber-soft); color: var(--u-amber); }
+.rg-acoes { display: flex; gap: 4px; flex-shrink: 0; opacity: 0; transition: opacity .15s; }
+.adm-rw:hover .rg-acoes, .rg-acoes:focus-within { opacity: 1; }
+.rg-row { cursor: pointer; }
+@media (hover: none) { .rg-acoes { opacity: 1; } }
+@media (max-width: 760px) {
+  .pp-list { grid-template-columns: 1fr; }
+  .adm-bar2 .btn-sm { margin-left: 0; width: 100%; justify-content: center; }
+  .rg-acoes { opacity: 1; }
+}
+
 /* v83: linha da REGRA (colunas) + edição de recorrência no painel */
 .rg-row { align-items: center; }
 .rg-row.off { opacity: .62; }
@@ -1890,7 +1920,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v83 · 19/07 (Central de Rotinas: só as regras, por colaborador, em 4 grupos (Diárias/Semanais/Mensais/Únicas) + painel com frequência, dias, horário, início/fim, pausar e duplicar)';
+var APP_BUILD = 'v84 · 20/07 (Central de Regras: navegação Setor > Colaborador > Categoria > Rotinas, ações rápidas na linha, busca por pessoa e por rotina, tudo paginado)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6732,182 +6762,279 @@ function admGroupHTML(id, icone, titulo, arr){
 /* ===== v82: ORGANIZAÇÃO DA CENTRAL — 3 lentes, rotina ≠ tarefa pontual =====
    A rotina aparece UMA vez (a regra, com as datas em que se repete),
    nunca 30 cópias. Tarefa pontual continua organizada por prazo. */
-// v83: esta tela administra REGRAS. Ocorrências geradas ficam no Kanban/Calendário.
+/* ============================================================
+   v84 — CENTRAL DE ADMINISTRAÇÃO DE REGRAS
+   Navegação em níveis: Setor → Colaborador → Categoria → Rotinas.
+   Nunca lista ocorrências: só as REGRAS (uma linha por rotina).
+   Preparada para centenas de colaboradores e milhares de rotinas:
+   nada é renderizado antes de ser aberto, e tudo é paginado.
+   ============================================================ */
+var ADM_PG_PESSOAS = 24;  // colaboradores por página
+var ADM_PG_REGRAS  = 25;  // regras por grupo antes do "carregar mais"
+
+function admNav(){
+  if(!ST.admNav) ST.admNav={ setor:ST.sector, pessoa:null, qP:'', qR:'', limP:ADM_PG_PESSOAS, limG:{}, freq:'', sit:'' };
+  return ST.admNav;
+}
 function admEhUnica(t){ return !t.is_rule && !t.recur_group; }
-function admRegistros(base){ return base.filter(function(t){ return t.is_rule || (admEhUnica(t) && t.status!=='feito'); }); }
-function admFreqLb(r){ return r.recurrence==='diaria'?'Diária':(r.recurrence==='semanal'?'Semanal':(r.recurrence==='mensal'?'Mensal':'Única')); }
+function admFreqLb(r){ return !r.is_rule?'Única':(r.recurrence==='diaria'?'Diária':(r.recurrence==='semanal'?'Semanal':(r.recurrence==='mensal'?'Mensal':'—'))); }
 function admProxExec(r){
   if(!r.is_rule) return (r.due_date||'').slice(0,10)||'';
   if(r.rec_paused) return '';
   var hoje=today();
   try { var d=occDatesForRule(r, hoje, addDays(hoje,400)); return d.length?d[0]:''; } catch(e){ return ''; }
 }
-// mapa: quantas ocorrências de cada rotina estão pendentes hoje / atrasadas
-function admPendPorRegra(base){
-  var hoje=today(), m={};
-  base.forEach(function(t){
-    if(t.is_rule || !t.recur_group) return;
-    var g=String(t.recur_group); if(!m[g]) m[g]={hoje:0, atras:0};
-    var d=(t.due_date||'').slice(0,10);
-    if(t.status==='feito') return;
-    if(d===hoje) m[g].hoje++;
-    else if(d && d<hoje) m[g].atras++;
+// setores que este administrador pode inspecionar
+function admSetores(){
+  if(isSuper(ST.session)) return ['lojas','vendas','marketing','financeiro'];
+  return [ST.sector];
+}
+// REGISTROS do setor escolhido: regras + tarefas únicas em aberto.
+// O setor atual sai da memória; outros setores são buscados sob demanda (só as regras).
+function admRegistrosDoSetor(setor){
+  if(setor===ST.sector){
+    var sid=boardStore();
+    return (ST.tasks||[]).filter(function(t){
+      if(t.archived_at) return false;
+      if(String(t.sector||'')!==setor) return false;
+      if(sid && String(t.store_unit_id)!==String(sid)) return false;
+      return t.is_rule || (admEhUnica(t) && t.status!=='feito');
+    });
+  }
+  var c=(ST.admCache||{})[setor];
+  return c || null; // null = ainda carregando
+}
+function admCarregaSetor(setor, cb){
+  if(!ST.admCache) ST.admCache={};
+  if(ST.admCache[setor]) { cb(); return; }
+  sb.from('malba_vl_tasks').select('*').eq('sector', setor).eq('is_rule', true).then(function(r){
+    ST.admCache[setor] = (r.error||!r.data) ? [] : r.data;
+    if(r.error) toast('Não consegui carregar o setor','error');
+    cb();
+  });
+}
+// pessoas do setor (malba_users já vem completo, então dá pra ver qualquer setor)
+function admPessoasDoSetor(setor){
+  return (ST.users||[]).filter(function(u){
+    if(u.ativo===false || u.active===false) return false;
+    return !u.sector || u.sector===setor || setor===ST.sector;
+  });
+}
+// uma única varredura monta a contagem de TODO mundo (escala para centenas de pessoas)
+function admMapaContagens(regs){
+  var m={};
+  function slot(k){ if(!m[k]) m[k]={ d:0, s:0, m:0, u:0, pausadas:0, total:0 }; return m[k]; }
+  regs.forEach(function(r){
+    var c=slot(r.assignee_id?String(r.assignee_id):'_sem');
+    c.total++;
+    if(!r.is_rule){ c.u++; return; }
+    if(r.rec_paused) c.pausadas++;
+    if(r.recurrence==='diaria') c.d++; else if(r.recurrence==='semanal') c.s++; else if(r.recurrence==='mensal') c.m++;
   });
   return m;
 }
-// linha de uma ROTINA: uma só, com o padrão e as próximas datas reais
-function admRuleLineHTML(rule, pend){
-  var u=rule.assignee_id?userById(rule.assignee_id):null;
-  var prox=admProxExec(rule);
-  var proj=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(rule.project_id)) { proj=ST.projects[i]; break; }
-  var p=(pend||{})[String(rule.recur_group)]||{hoje:0,atras:0};
-  var av = u ? '<span class="ar-av" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'
-             : '<span class="ar-av" style="background:var(--u-border2)">?</span>';
-  var pausada = !!rule.rec_paused;
-  var status = !rule.is_rule ? '<span class="rg-st unica">Única</span>'
-             : (pausada ? '<span class="rg-st pausada">Pausada</span>' : '<span class="rg-st ativa">Ativa</span>');
-  var alerta = (rule.is_rule && p.atras) ? '<span class="rl-chip late">'+p.atras+' atrasada'+(p.atras>1?'s':'')+'</span>' : '';
-  function col(lb, v, cls){ return '<span class="rg-c '+(cls||'')+'"><i>'+lb+'</i><b>'+(v||'—')+'</b></span>'; }
-  return '<div class="adm-rw" data-admwrap="'+esc(rule.id)+'">'+
-    '<span class="adm-ck"></span>'+
-    '<button class="adm-row rg-row'+(pausada?' off':'')+'" data-admtask="'+esc(rule.id)+'">'+
-      '<span class="ar-prio" style="background:'+((PRIO[rule.priority]||PRIO.media).color)+'"></span>'+ av +
-      '<span class="rg-nome"><b>'+esc(rule.title||'(sem título)')+'</b> '+alerta+'<i>'+esc(rule.is_rule?descrevePadraoRegra(rule):'sem repetição')+'</i></span>'+
-      col('Frequência', esc(admFreqLb(rule)))+
-      col('Próxima', prox?fmtDate(prox):'—')+
-      col('Horário', esc(rule.rec_hora||'—'))+
-      col('Projeto', proj?esc(proj.name):'—')+
-      status+
-    '</button>'+
-  '</div>';
-}
-function admRuleGroupHTML(id, titulo, arr, pend){
-  if(!arr.length) return '<div class="adm-group vazio"><div class="adm-group-h"><span class="agh-lb">🔁 <span>'+esc(titulo)+'</span></span><span class="agh-c">0</span><span class="agh-sp"></span></div></div>';
-  var fechado=(ST.admClosed||{})[id]===false ? '' : ' closed'; // rotinas começam fechadas
-  return '<div class="adm-group'+fechado+'" data-admg="'+id+'">'+
-    '<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">🔁 <span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span><button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button></div>'+
-    '<div class="adm-list">'+arr.map(function(r){ return admRuleLineHTML(r,pend); }).join('')+'</div>'+
-  '</div>';
-}
-// separa as rotinas por frequência
-function admRotinasPorFreq(base){
-  var R={ diaria:[], semanal:[], mensal:[], unica:[] };
-  admRegistros(base).forEach(function(t){
-    if(!t.is_rule){ R.unica.push(t); return; }
-    if(R[t.recurrence]) R[t.recurrence].push(t);
+var ADM_ZERO={ d:0, s:0, m:0, u:0, pausadas:0, total:0 };
+function admFiltraRegras(list){
+  var n=admNav(), q=(n.qR||'').toLowerCase().trim();
+  return list.filter(function(r){
+    if(n.freq){
+      if(n.freq==='unica'){ if(r.is_rule) return false; }
+      else if(!r.is_rule || r.recurrence!==n.freq) return false;
+    }
+    if(n.sit==='ativa'   && !(r.is_rule && !r.rec_paused)) return false;
+    if(n.sit==='pausada' && !(r.is_rule && r.rec_paused))  return false;
+    if(!q) return true;
+    var u=r.assignee_id?userById(r.assignee_id):null;
+    return [r.title||'', r.description||'', r.tags||'', r.area||'', u?u.name:''].join(' ').toLowerCase().indexOf(q)!==-1;
   });
+}
+
+/* ---------- NÍVEL 1: colaboradores ---------- */
+function admNivelPessoasHTML(regs){
+  var n=admNav(), q=(n.qP||'').toLowerCase().trim();
+  var pessoas=admPessoasDoSetor(n.setor).map(function(u){ return { id:u.id, nome:u.name, cor:u.color||'#3B6FF7' }; });
+  if(regs.some(function(r){ return !r.assignee_id; })) pessoas.push({ id:'_sem', nome:'Sem responsável', cor:'#9aa1ad' });
+  if(q) pessoas=pessoas.filter(function(p){ return p.nome.toLowerCase().indexOf(q)!==-1; });
+  pessoas.sort(function(a,b){ return a.nome.localeCompare(b.nome); });
+  if(!pessoas.length) return emptyState({ icon:'users', title:'Ninguém encontrado', text:q?'Nenhum colaborador com esse nome.':'Cadastre a equipe para distribuir as rotinas.' });
+
+  var mapa=admMapaContagens(regs);
+  var lim=Math.min(n.limP, pessoas.length);
+  var linhas=pessoas.slice(0,lim).map(function(p){
+    var c=mapa[String(p.id)]||ADM_ZERO;
+    var chips='';
+    if(c.d) chips+='<span class="pp-chip rot">'+c.d+' diária'+(c.d>1?'s':'')+'</span>';
+    if(c.s) chips+='<span class="pp-chip rot">'+c.s+(c.s>1?' semanais':' semanal')+'</span>';
+    if(c.m) chips+='<span class="pp-chip rot">'+c.m+(c.m>1?' mensais':' mensal')+'</span>';
+    if(c.u) chips+='<span class="pp-chip">'+c.u+' única'+(c.u>1?'s':'')+'</span>';
+    if(c.pausadas) chips+='<span class="pp-chip pause">'+c.pausadas+' pausada'+(c.pausadas>1?'s':'')+'</span>';
+    if(!c.total) chips='<span class="pp-chip free">sem rotinas</span>';
+    return '<button class="pp-card" data-admpessoa="'+esc(p.id)+'">'+
+      '<span class="ar-av" style="background:'+p.cor+'">'+esc(iniciais(p.nome))+'</span>'+
+      '<span class="pp-mid"><span class="pp-n">'+esc(p.nome)+'</span><span class="pp-chips">'+chips+'</span></span>'+
+      '<span class="pp-go">'+icon('cal')+'</span>'+
+    '</button>';
+  }).join('');
+  var mais = pessoas.length>lim ? '<button class="adm-more" id="admMaisP">Carregar mais colaboradores ('+(pessoas.length-lim)+' restantes)</button>' : '';
+  return '<div class="pp-list">'+linhas+'</div>'+mais;
+}
+
+/* ---------- NÍVEL 2: categorias do colaborador ---------- */
+function admLinhaRegraHTML(r){
+  var u=r.assignee_id?userById(r.assignee_id):null;
+  var prox=admProxExec(r);
+  var proj=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(r.project_id)) { proj=ST.projects[i]; break; }
+  var pausada=!!r.rec_paused;
+  var status = !r.is_rule ? '<span class="rg-st unica">'+esc((STATUS[r.status]||STATUS.todo).label)+'</span>'
+             : (pausada?'<span class="rg-st pausada">Pausada</span>':'<span class="rg-st ativa">Ativa</span>');
+  var padrao = r.is_rule ? descrevePadraoRegra(r) : (prox?('prazo '+fmtDate(prox)):'sem prazo');
+  function col(lb,v){ return '<span class="rg-c"><i>'+lb+'</i><b>'+(v||'—')+'</b></span>'; }
+  var acoes='<span class="rg-acoes">'+
+      '<button class="act-btn icon-only" data-qa="edit" data-qid="'+esc(r.id)+'" title="Editar">'+icon('edit')+'<span>Editar</span></button>'+
+      '<button class="act-btn icon-only" data-qa="resp" data-qid="'+esc(r.id)+'" title="Trocar responsável">'+icon('users')+'<span>Responsável</span></button>'+
+      '<button class="act-btn icon-only" data-qa="dup" data-qid="'+esc(r.id)+'" title="Duplicar">'+icon('copy')+'<span>Duplicar</span></button>'+
+      '<button class="act-btn icon-only danger" data-qa="del" data-qid="'+esc(r.id)+'" title="Excluir">'+icon('trash')+'<span>Excluir</span></button>'+
+    '</span>';
+  return '<div class="adm-rw" data-admwrap="'+esc(r.id)+'">'+
+    '<div class="adm-row rg-row'+(pausada?' off':'')+'" data-admtask="'+esc(r.id)+'">'+
+      '<span class="ar-prio" style="background:'+((PRIO[r.priority]||PRIO.media).color)+'"></span>'+
+      '<span class="rg-nome"><b>'+esc(r.title||'(sem título)')+'</b><i>'+esc(padrao)+'</i></span>'+
+      (r.is_rule?col('Próxima', prox?fmtDate(prox):'—'):'')+
+      col('Horário', esc(r.rec_hora||'—'))+
+      col('Projeto', proj?esc(proj.name):'—')+
+      status + acoes +
+    '</div>'+
+  '</div>';
+}
+function admGrupoHTML(id, titulo, arr){
+  var n=admNav();
+  var aberto=(ST.admClosed||{})[id]===false; // fechado por padrão
+  var head='<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">🔁 <span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span>'+
+    (arr.length?'<button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button>':'')+'</div>';
+  if(!arr.length) return '<div class="adm-group vazio">'+head+'</div>';
+  if(!aberto) return '<div class="adm-group closed">'+head+'</div>'; // fechado: não renderiza nada dentro
+  var lim=Math.min(n.limG[id]||ADM_PG_REGRAS, arr.length);
+  var mais = arr.length>lim ? '<button class="adm-more" data-admmore="'+id+'">Carregar mais ('+(arr.length-lim)+' restantes)</button>' : '';
+  return '<div class="adm-group" data-admg="'+id+'">'+head+'<div class="adm-list">'+arr.slice(0,lim).map(admLinhaRegraHTML).join('')+mais+'</div></div>';
+}
+function admNivelCategoriasHTML(regs){
+  var n=admNav();
+  var pid=n.pessoa;
+  var minhas=admFiltraRegras(regs.filter(function(r){ return pid==='_sem' ? !r.assignee_id : String(r.assignee_id)===String(pid); }));
+  var R={ diaria:[], semanal:[], mensal:[], unica:[] };
+  minhas.forEach(function(r){ if(!r.is_rule) R.unica.push(r); else if(R[r.recurrence]) R[r.recurrence].push(r); });
   var ord=function(a,b){ return String(a.title||'').localeCompare(String(b.title||'')); };
   R.diaria.sort(ord); R.semanal.sort(ord); R.mensal.sort(ord);
   R.unica.sort(function(a,b){ return (a.due_date||'zz').localeCompare(b.due_date||'zz'); });
-  return R;
+  return admGrupoHTML('g-d','Tarefas Diárias', R.diaria)+
+         admGrupoHTML('g-s','Tarefas Semanais', R.semanal)+
+         admGrupoHTML('g-m','Tarefas Mensais', R.mensal)+
+         admGrupoHTML('g-u','Tarefas Únicas', R.unica);
 }
-// os 4 grupos recolhíveis da tela
-function admBlocoRotinas(base, pref){
-  var R=admRotinasPorFreq(base), pend=admPendPorRegra(base);
-  return admRuleGroupHTML(pref+'rot-d','Tarefas Diárias', R.diaria, pend)+
-         admRuleGroupHTML(pref+'rot-s','Tarefas Semanais', R.semanal, pend)+
-         admRuleGroupHTML(pref+'rot-m','Tarefas Mensais', R.mensal, pend)+
-         admRuleGroupHTML(pref+'rot-u','Tarefas Únicas', R.unica, pend);
-}
-// filtro desta tela: frequência, situação e busca (colaborador/projeto/loja já vêm do escopo)
-function admFiltraRegs(list){
-  var f=admF(), q=(f.q||'').toLowerCase().trim();
-  return list.filter(function(r){
-    if(f.tipo){
-      if(f.tipo==='unica'){ if(r.is_rule) return false; }
-      else if(!r.is_rule || r.recurrence!==f.tipo) return false;
-    }
-    if(f.status==='ativa'   && !(r.is_rule && !r.rec_paused)) return false;
-    if(f.status==='pausada' && !(r.is_rule && r.rec_paused))  return false;
-    return admBusca(r, q);
-  });
-}
-// VISÃO POR COLABORADOR: uma linha fechada por pessoa; abre uma de cada vez
-function admPorPessoaHTML(base){
-  var aberta=ST.admPessoa||null;
-  var regs=admFiltraRegs(admRegistros(base));
-  function daPessoa(id){ return regs.filter(function(t){ return id==='_sem' ? !t.assignee_id : String(t.assignee_id)===String(id); }); }
-  var lista=(ST.users||[]).map(function(u){ return { id:u.id, nome:u.name, cor:u.color||'#3B6FF7' }; });
-  if(regs.some(function(t){ return !t.assignee_id; })) lista.push({ id:'_sem', nome:'Sem responsável', cor:'#9aa1ad' });
 
-  var linhas='';
-  lista.forEach(function(p){
-    var minhas=daPessoa(p.id);
-    var c={ d:0, s:0, m:0, u:0, pausadas:0 };
-    minhas.forEach(function(r){
-      if(!r.is_rule){ c.u++; return; }
-      if(r.rec_paused) c.pausadas++;
-      if(r.recurrence==='diaria') c.d++; else if(r.recurrence==='semanal') c.s++; else if(r.recurrence==='mensal') c.m++;
-    });
-    var chips='';
-    if(c.d) chips+='<span class="pp-chip rot">'+c.d+' diária'+(c.d>1?'s':'')+'</span>';
-    if(c.s) chips+='<span class="pp-chip rot">'+c.s+' semanal'+(c.s>1?'is':'')+'</span>';
-    if(c.m) chips+='<span class="pp-chip rot">'+c.m+' mensa'+(c.m>1?'is':'l')+'</span>';
-    if(c.u) chips+='<span class="pp-chip">'+c.u+' única'+(c.u>1?'s':'')+'</span>';
-    if(c.pausadas) chips+='<span class="pp-chip pause">'+c.pausadas+' pausada'+(c.pausadas>1?'s':'')+'</span>';
-    if(!minhas.length) chips='<span class="pp-chip free">sem rotinas</span>';
-    var aberto = String(aberta)===String(p.id);
-    linhas += '<div class="pp'+(aberto?' on':'')+'">'+
-      '<button class="pp-h" data-admpessoa="'+esc(p.id)+'">'+
-        '<span class="ar-av" style="background:'+p.cor+'">'+esc(iniciais(p.nome))+'</span>'+
-        '<span class="pp-n">'+esc(p.nome)+'</span><span class="pp-chips">'+chips+'</span>'+
-        '<span class="pp-ar">'+icon('cal')+'</span>'+
-      '</button>';
-    if(aberto){
-      var corpo=admBlocoRotinas(minhas, 'p-');
-      linhas += '<div class="pp-body">'+(corpo||'<div class="pp-vazio">Nenhuma rotina configurada para esta pessoa.</div>')+'</div>';
-    }
-    linhas += '</div>';
-  });
-  return linhas || emptyState({ icon:'users', title:'Sem pessoas no setor', text:'Cadastre a equipe para distribuir as rotinas.' });
-}
-// v80: bloco de indicadores isolado — permite recalcular sozinho, sem recarregar a tela
-function admKpisHTML(){
-  var f=admF(), regs=admRegistros(admScope());
-  var c={ ativas:0, pausadas:0, diaria:0, semanal:0, mensal:0, unica:0 };
-  regs.forEach(function(r){
-    if(r.is_rule){ if(r.rec_paused) c.pausadas++; else c.ativas++; c[r.recurrence]=(c[r.recurrence]||0)+1; }
-    else c.unica++;
-  });
-  function kpi(id, val, label, cor, filtro){
-    var on = filtro && ((filtro.freq && f.tipo===filtro.freq) || (filtro.status && f.status===filtro.status));
-    return '<button class="adm-kpi'+(on?' on':'')+'" data-admkpi="'+id+'"><b style="color:'+cor+'">'+val+'</b><i>'+label+'</i></button>';
-  }
-  return '<div class="adm-kpis">'+
-    kpi('ativas', c.ativas, 'Rotinas ativas', 'var(--u-green)', {status:'ativa'})+
-    kpi('pausadas', c.pausadas, 'Pausadas', 'var(--u-amber)', {status:'pausada'})+
-    kpi('diaria', c.diaria, 'Diárias', 'var(--u-accent)', {freq:'diaria'})+
-    kpi('semanal', c.semanal, 'Semanais', 'var(--u-accent)', {freq:'semanal'})+
-    kpi('mensal', c.mensal, 'Mensais', 'var(--u-accent)', {freq:'mensal'})+
-    kpi('unica', c.unica, 'Únicas', 'var(--u-text2)', {freq:'unica'})+
-  '</div>';
-}
+/* ---------- a tela ---------- */
 function admTarefasHTML(){
   if(!isAdmin(ST.session)) return emptyState({ icon:'gear', title:'Acesso restrito', text:'A Central de Rotinas é exclusiva de administradores do setor.' });
-  var f=admF(), base=admScope();
-  var kpis=admKpisHTML();
-  function opts(arr, sel){ return arr.map(function(o){ return '<option value="'+esc(o.v)+'"'+(String(sel)===String(o.v)?' selected':'')+'>'+esc(o.l)+'</option>'; }).join(''); }
-  var uOpts=[{v:'',l:'Todos os colaboradores'}]; (ST.users||[]).forEach(function(u){ uOpts.push({v:u.id,l:u.name}); });
-  var lOpts=[{v:'',l:'Todas as lojas'}]; (ST.storeUnits||[]).forEach(function(x){ lOpts.push({v:x.id,l:x.name||('Loja '+x.store_number)}); });
-  var pOpts=[{v:'',l:'Todos os projetos'}]; (ST.projects||[]).forEach(function(p){ pOpts.push({v:p.id,l:p.name}); });
-  var fqOpts=[{v:'',l:'Qualquer frequência'},{v:'diaria',l:'Diária'},{v:'semanal',l:'Semanal'},{v:'mensal',l:'Mensal'},{v:'unica',l:'Única'}];
-  var stOpts=[{v:'',l:'Qualquer situação'},{v:'ativa',l:'Ativa'},{v:'pausada',l:'Pausada'}];
-  var nAtivos=admFAtivos();
-  var barra='<div class="adm-bar-bg hidden" id="admBarBg"></div>'+
-    '<div class="adm-bar hidden" id="admBar">'+
-      '<input class="adm-search" id="admQ" placeholder="Buscar rotina por nome, responsável, projeto ou tag..." value="'+esc(f.q||'')+'">'+
-      '<select id="admColab">'+opts(uOpts,f.colab)+'</select>'+
-      (ST.sector==='lojas'?'<select id="admLoja">'+opts(lOpts,f.loja)+'</select>':'')+
-      '<select id="admProj">'+opts(pOpts,f.proj)+'</select>'+
-      '<select id="admTipo">'+opts(fqOpts,f.tipo)+'</select>'+
-      '<select id="admStatus">'+opts(stOpts,f.status)+'</select>'+
-      (nAtivos?'<button class="adm-clear" id="admClear">Limpar filtros</button>':'')+
-    '</div>';
-  var btnFiltros='<button class="adm-filtros-btn" id="admOpenBar">'+icon('search')+'Filtros'+(nAtivos?'<span class="afb-n">'+nAtivos+'</span>':'')+'</button>';
-  var corpo=admPorPessoaHTML(base);
-  return '<div class="tasks-head"><div><h2>Central de Rotinas</h2><div class="sub">Configure as rotinas da equipe. As ocorrências do dia a dia aparecem no Kanban e no Calendário.</div></div>'+btnFiltros+'</div>'+
-    kpis + barra + corpo;
+  var n=admNav();
+  var regs=admRegistrosDoSetor(n.setor);
+  if(regs===null){ admCarregaSetor(n.setor, function(){ renderPage(); }); return '<div class="tasks-head"><div><h2>Central de Rotinas</h2></div></div><div class="pp-vazio">Carregando o setor...</div>'; }
+
+  var setores=admSetores();
+  var selSetor = setores.length>1
+    ? '<select id="admSetor" class="adm-sel-setor">'+setores.map(function(s){ return '<option value="'+s+'"'+(n.setor===s?' selected':'')+'>'+esc((SECTORS[s]||{}).label||s)+'</option>'; }).join('')+'</select>'
+    : '<span class="bc-fixo">'+esc((SECTORS[n.setor]||{}).label||n.setor)+'</span>';
+
+  var pessoa = n.pessoa ? (n.pessoa==='_sem' ? {name:'Sem responsável'} : userById(n.pessoa)) : null;
+  var trilha='<div class="adm-bc">'+icon('grid')+selSetor+
+    (pessoa?('<span class="bc-sep">›</span><button class="bc-link" id="bcVoltar">Colaboradores</button><span class="bc-sep">›</span><b>'+esc(pessoa.name||'')+'</b>'):'')+
+  '</div>';
+
+  var filtros='<div class="adm-bar2">'+
+    (pessoa
+      ? '<input class="adm-search" id="admQR" placeholder="Buscar rotina..." value="'+esc(n.qR||'')+'">'
+      : '<input class="adm-search" id="admQP" placeholder="Buscar colaborador..." value="'+esc(n.qP||'')+'">')+
+    '<select id="admFreq"><option value="">Toda frequência</option><option value="diaria"'+(n.freq==='diaria'?' selected':'')+'>Diária</option><option value="semanal"'+(n.freq==='semanal'?' selected':'')+'>Semanal</option><option value="mensal"'+(n.freq==='mensal'?' selected':'')+'>Mensal</option><option value="unica"'+(n.freq==='unica'?' selected':'')+'>Única</option></select>'+
+    '<select id="admSit"><option value="">Toda situação</option><option value="ativa"'+(n.sit==='ativa'?' selected':'')+'>Ativa</option><option value="pausada"'+(n.sit==='pausada'?' selected':'')+'>Pausada</option></select>'+
+    '<button class="btn btn-primary btn-sm" id="admNovaRotina">'+icon('plus')+'Nova rotina</button>'+
+  '</div>';
+
+  var corpo = pessoa ? admNivelCategoriasHTML(regs) : admNivelPessoasHTML(admFiltraRegras(regs));
+  var sub = pessoa ? 'Rotinas de '+esc((pessoa.name||'').split(' ')[0])+' — as ocorrências do dia a dia ficam no Kanban e no Calendário.'
+                   : 'Escolha um colaborador para ver e configurar as rotinas dele.';
+  return '<div class="tasks-head"><div><h2>Central de Rotinas</h2><div class="sub">'+sub+'</div></div></div>'+
+    trilha + filtros + corpo;
 }
+
+function bindAdmTarefas(){
+  if(!isAdmin(ST.session)) return;
+  var n=admNav();
+  function upd(){ renderPage(); }
+  var ss=document.getElementById('admSetor');
+  if(ss) ss.addEventListener('change', function(){ n.setor=this.value; n.pessoa=null; n.limP=ADM_PG_PESSOAS; upd(); });
+  var bv=document.getElementById('bcVoltar');
+  if(bv) bv.addEventListener('click', function(){ n.pessoa=null; n.qR=''; upd(); });
+  var pcs=app.querySelectorAll('[data-admpessoa]');
+  for(var i=0;i<pcs.length;i++) pcs[i].addEventListener('click', function(){ n.pessoa=this.getAttribute('data-admpessoa'); ST.admClosed={}; n.limG={}; upd(); });
+  var mp=document.getElementById('admMaisP');
+  if(mp) mp.addEventListener('click', function(){ n.limP+=ADM_PG_PESSOAS; upd(); });
+  function busca(id, campo){
+    var e=document.getElementById(id); if(!e) return;
+    e.addEventListener('input', function(){ var v=this.value; clearTimeout(window._admQT); window._admQT=setTimeout(function(){ n[campo]=v; upd(); }, 250); });
+  }
+  busca('admQP','qP'); busca('admQR','qR');
+  var sf=document.getElementById('admFreq'); if(sf) sf.addEventListener('change', function(){ n.freq=this.value; upd(); });
+  var si=document.getElementById('admSit');  if(si) si.addEventListener('change', function(){ n.sit=this.value; upd(); });
+  var nv=document.getElementById('admNovaRotina');
+  if(nv) nv.addEventListener('click', function(){ openTaskModal(null); });
+  var tg=app.querySelectorAll('[data-admtoggle]');
+  for(var j=0;j<tg.length;j++) tg[j].addEventListener('click', function(){
+    var id=this.getAttribute('data-admtoggle'); if(!ST.admClosed) ST.admClosed={};
+    ST.admClosed[id]=(ST.admClosed[id]===false); // alterna entre fechado (default) e aberto
+    upd();
+  });
+  var mr=app.querySelectorAll('[data-admmore]');
+  for(var m=0;m<mr.length;m++) mr[m].addEventListener('click', function(){
+    var id=this.getAttribute('data-admmore'); n.limG[id]=(n.limG[id]||ADM_PG_REGRAS)+ADM_PG_REGRAS; upd();
+  });
+  var wraps=app.querySelectorAll('[data-admwrap]');
+  for(var w=0;w<wraps.length;w++) admBindRow(wraps[w]);
+}
+// ações rápidas da linha — sem abrir várias telas
+function admAcaoRapida(acao, id){
+  var t=taskById(id); if(!t) return;
+  if(acao==='edit') return openTaskPanel(id);
+  if(acao==='resp'){
+    var uOpts='<option value="">Sem responsável</option>'+(ST.users||[]).map(function(u){ return '<option value="'+esc(u.id)+'"'+(String(u.id)===String(t.assignee_id)?' selected':'')+'>'+esc(u.name)+'</option>'; }).join('');
+    return admPicker({ title:'Trocar responsável', campo:'<label class="modal-label">Responsável de "'+esc(t.title||'')+'"</label><select class="adm-pick" id="pkVal">'+uOpts+'</select>',
+      onOk:function(v, close){ close(); admPatch(id, { assignee_id:v||null }, function(){ toast('Responsável alterado','success'); renderPage(); }); } });
+  }
+  if(acao==='dup'){
+    var novo={ title:(t.title||'')+' (cópia)', description:t.description||'', priority:t.priority||'media', status:'todo',
+      due_date:t.due_date||today(), area:t.area||'', tags:t.tags||'', task_kind:t.task_kind||'normal',
+      assignee_id:t.assignee_id||null, project_id:t.project_id||null, sector:t.sector||ST.sector,
+      created_by:ST.session.user.id, store_unit_id:t.store_unit_id||null };
+    if(Array.isArray(t.subtasks)) novo.subtasks=t.subtasks.map(function(s){ return { id:uid(), text:s.text, done:false }; });
+    if(t.is_rule){
+      novo.is_rule=true; novo.recur_group=uid()+'-'+Date.now(); novo.recurrence=t.recurrence;
+      novo.rec_start=t.rec_start||today(); novo.rec_until=t.rec_until||null; novo.rec_dias_uteis=!!t.rec_dias_uteis;
+      novo.rec_weekdays=t.rec_weekdays||null; novo.rec_hora=t.rec_hora||null; novo.rec_paused=true;
+    }
+    return sb.from('malba_vl_tasks').insert(novo).select().single().then(function(r){
+      if(r.error||!r.data){ toast('Erro ao duplicar','error'); console.error(r.error); return; }
+      ST.tasks.unshift(r.data); toast(t.is_rule?'Rotina duplicada (pausada)':'Tarefa duplicada','success'); renderPage();
+    });
+  }
+  if(acao==='del'){
+    return confirmDelete((t.is_rule?'Excluir a rotina "':'Excluir a tarefa "')+(t.title||'')+'"?'+(t.is_rule?' As tarefas já criadas por ela continuam.':''), function(){
+      sb.from('malba_vl_tasks').delete().eq('id', id).then(function(r){
+        if(r.error){ toast('Erro ao excluir','error'); return; }
+        ST.tasks=ST.tasks.filter(function(x){ return String(x.id)!==String(id); });
+        toast('Excluído','success'); renderPage();
+      });
+    });
+  }
+}
+
 /* ===== núcleo do painel: salvar e atualizar só o que mudou (v80/v81) ===== */
 function admSaved(){
   var el=document.getElementById('spSaved'); if(!el) return;
@@ -6926,7 +7053,7 @@ function admRefreshRow(id){
   var el=app.querySelector('[data-admwrap="'+id+'"]'); if(!el) return;
   var t=taskById(id); if(!t){ el.parentNode.removeChild(el); return; }
   var tmp=document.createElement('div');
-  tmp.innerHTML = t.is_rule ? admRuleLineHTML(t, admPendPorRegra(admScope())) : admRowHTML(t);
+  tmp.innerHTML = admLinhaRegraHTML(t);
   var novo=tmp.firstChild; el.parentNode.replaceChild(novo, el);
   admBindRow(novo);
 }
@@ -6936,13 +7063,14 @@ function admBindRow(wrap){
   if(b) b.addEventListener('click', function(){ openTaskPanel(this.getAttribute('data-admtask')); });
   var c=wrap.querySelector('[data-admsel]');
   if(c) c.addEventListener('change', function(){ admToggleSel(this.getAttribute('data-admsel'), this.checked); });
+  // v84: ações rápidas na própria linha
+  var qs=wrap.querySelectorAll('[data-qa]');
+  for(var i=0;i<qs.length;i++) qs[i].addEventListener('click', function(e){
+    e.stopPropagation(); e.preventDefault();
+    admAcaoRapida(this.getAttribute('data-qa'), this.getAttribute('data-qid'));
+  });
 }
-function admRefreshKpis(){
-  var el=app.querySelector('.adm-kpis'); if(!el) return;
-  var tmp=document.createElement('div'); tmp.innerHTML=admKpisHTML();
-  el.parentNode.replaceChild(tmp.firstChild, el);
-  bindAdmKpis();
-}
+function admRefreshKpis(){ /* v84: a tela não tem mais barra de indicadores */ }
 /* ===== v81: SELEÇÃO MÚLTIPLA + AÇÕES EM LOTE (fatia 3 da Central) ===== */
 function admSel(){ if(!ST.admSel) ST.admSel={}; return ST.admSel; }
 function admSelIds(){ var s=admSel(), out=[], k; for(k in s){ if(s[k]) out.push(k); } return out; }
@@ -7275,52 +7403,6 @@ function bindAdmKpis(){
     else { f.tipo = f.tipo===k?'':k; f.status=''; } // diaria / semanal / mensal / unica
     renderPage();
   });
-}
-function bindAdmTarefas(){
-  if(!isAdmin(ST.session)) return;
-  var f=admF();
-  function upd(){ renderPage(); }
-  bindAdmKpis();
-  function sel(id, campo){ var e=document.getElementById(id); if(e) e.addEventListener('change', function(){ f[campo]=this.value; if(campo==='per'&&this.value!=='custom'){ f.ini=''; f.fim=''; } upd(); }); }
-  sel('admColab','colab'); sel('admLoja','loja'); sel('admProj','proj'); sel('admPrio','prio');
-  sel('admStatus','status'); sel('admTipo','tipo'); sel('admPer','per');
-  var di=document.getElementById('admIni'); if(di) di.addEventListener('change', function(){ f.ini=this.value; upd(); });
-  var df=document.getElementById('admFim'); if(df) df.addEventListener('change', function(){ f.fim=this.value; upd(); });
-  var q=document.getElementById('admQ');
-  if(q) q.addEventListener('input', function(){ var v=this.value; clearTimeout(window._admQT); window._admQT=setTimeout(function(){ f.q=v; upd(); }, 260); });
-  var cl=document.getElementById('admClear'); if(cl) cl.addEventListener('click', function(){ ST.admF=null; upd(); });
-  // grupos recolhíveis
-  var tg=app.querySelectorAll('[data-admtoggle]');
-  for(var j=0;j<tg.length;j++) tg[j].addEventListener('click', function(){
-    var id=this.getAttribute('data-admtoggle'); if(!ST.admClosed) ST.admClosed={};
-    ST.admClosed[id]=!ST.admClosed[id];
-    var g=app.querySelector('[data-admg="'+id+'"]'); if(g) g.classList.toggle('closed', !!ST.admClosed[id]);
-  });
-  // carregar mais (sob demanda, sem nova consulta ao Supabase)
-  var mr=app.querySelectorAll('[data-admmore]');
-  for(var m=0;m<mr.length;m++) mr[m].addEventListener('click', function(){
-    var id=this.getAttribute('data-admmore'); if(!ST.admLimit) ST.admLimit={};
-    ST.admLimit[id]=(ST.admLimit[id]||ADM_PAGE)+ADM_PAGE; upd();
-  });
-  // abrir a tarefa (por enquanto reusa o modal existente — o painel lateral vem na fatia 2)
-  var pps=app.querySelectorAll('[data-admpessoa]');
-  for(var P=0;P<pps.length;P++) pps[P].addEventListener('click', function(){
-    var id=this.getAttribute('data-admpessoa');
-    ST.admPessoa = (String(ST.admPessoa)===String(id)) ? null : id; // abre uma pessoa por vez
-    renderPage();
-  });
-  var wraps=app.querySelectorAll('[data-admwrap]');
-  for(var r=0;r<wraps.length;r++) admBindRow(wraps[r]);
-  var gsel=app.querySelectorAll('[data-admgsel]');
-  for(var g2=0;g2<gsel.length;g2++) gsel[g2].addEventListener('click', function(e){
-    e.stopPropagation(); admSelGrupo(this.getAttribute('data-admgsel'));
-  });
-  admLoteBar();
-  // mobile: filtros viram um painel inferior
-  var ob=document.getElementById('admOpenBar'), bar=document.getElementById('admBar'), bg=document.getElementById('admBarBg');
-  function fecha(){ if(bar) bar.classList.add('hidden'); if(bg) bg.classList.add('hidden'); }
-  if(ob) ob.addEventListener('click', function(){ if(bar) bar.classList.remove('hidden'); if(bg) bg.classList.remove('hidden'); });
-  if(bg) bg.addEventListener('click', fecha);
 }
 
 function gestaoTabsForSector(){
