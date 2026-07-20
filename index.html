@@ -1402,6 +1402,9 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .act-btn.icon-only span { display: none; }
 .act-row { display: inline-flex; gap: 6px; align-items: center; }
 
+/* v89: explicação do nível de acesso escolhido */
+.nivel-desc { font-size: 12.5px; color: var(--u-text2); background: var(--u-bg2); border-radius: var(--radius-sm); padding: 9px 11px; margin: -4px 0 14px; line-height: 1.45; }
+
 /* v85: transformar tarefa avulsa em rotina */
 .cv-alvo { display: flex; align-items: center; gap: 8px; background: var(--u-bg2); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 16px; font-size: 13px; color: var(--u-text2); }
 .cv-alvo svg { width: 15px; height: 15px; color: var(--u-text3); flex-shrink: 0; }
@@ -1674,7 +1677,15 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 
 /* ===== Visão de tarefas: toggle + Matriz de Eisenhower ===== */
 .tasks-head-r { display: flex; align-items: center; gap: 12px; }
-.view-toggle { display: flex; gap: 3px; background: var(--u-bg2); border-radius: 11px; padding: 3px; }
+.view-toggle { display: flex; gap: 3px; background: var(--u-bg2); border-radius: 11px; padding: 3px; flex-wrap: wrap; }
+/* v88: barra de visões quando a tela hospedada traz o próprio cabeçalho (Calendário / Projetos) */
+.view-bar { margin-bottom: 14px; }
+.view-bar .view-toggle { display: inline-flex; }
+@media (max-width: 760px) {
+  .view-toggle { width: 100%; }
+  .vt-btn { flex: 1; justify-content: center; padding: 7px 9px; font-size: 12.5px; }
+  .vt-btn svg { display: none; }
+}
 .vt-btn { display: flex; align-items: center; gap: 6px; padding: 7px 13px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--u-text2); }
 .vt-btn svg { font-size: 16px; }
 .vt-btn.on { background: var(--u-card); color: var(--u-accent); box-shadow: var(--u-shadow); }
@@ -1932,7 +1943,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v85 · 20/07 (Transformar tarefa avulsa em rotina: escolhe frequência, dias, dia do mês e horário, com prévia das próximas datas)';
+var APP_BUILD = 'v89 · 20/07 (Hierarquia de usuarios: Administrador Geral > Gestor > Supervisor > Colaborador > Visualizador, com tabela de permissoes por nivel)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1949,29 +1960,29 @@ function p(id,label,ic,enabled,group,hidden){ return { id:id, label:label, icon:
 var GROUP_ORDER = ['PRINCIPAL','OPERAÇÃO','GESTÃO','SISTEMA'];
 // Páginas de resultado (Metas/Relatório/Ranking/Orçamento) e Ponto ficam "hidden": seguem roteáveis (compat) mas
 // não aparecem no menu — abrem como ABAS dentro da Gestão / Equipe. Assim o menu fica enxuto e o padrão é único.
-var PAGE_PARENT   = { ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'inicio' };
+var PAGE_PARENT   = { calendario:'tarefas', projetos:'tarefas', ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'inicio' };
 var GESTAO_CHILDREN = ['metas','relatorio','ranking','orcamento'];
 var PAGES = {
   lojas: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('ponto','Ponto','clock',true,'OPERAÇÃO',true), p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true)
   ],
   vendas: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('crm','CRM','users',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('ranking','Ranking','trend',true,'GESTÃO',true)
   ],
   financeiro: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA')
   ],
   marketing: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Tarefas','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL'), p('projetos','Projetos','folder',true,'PRINCIPAL'),
+    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
@@ -2058,20 +2069,16 @@ function login(email, password, sector) {
   }).catch(function(){ return { ok:false, msg:'Erro de conexão com o banco.' }; });
 }
 function logout() { clearSession(); location.hash=''; location.reload(); }
-function isSuper(s) { if(!s||!s.user) return false; var u=s.user; return u.role==='admin' || u.access_level==='super'; }
-// admin = super admin OU admin do setor. Só admin gerencia equipe/metas/config.
-// Resiliente: o banco pode marcar admin de setor via role, access_level ou sector_role.
-function isAdmin(s) { if(!s||!s.user) return false; if(isSuper(s)) return true; var u=s.user; return u.access_level==='sector_admin' || u.role==='sector_admin' || u.sector_role==='admin'; }
-// só admin (super OU admin de setor) cria/edita/exclui registros. Usuário comum: criar e concluir tarefas.
-function roleRank(s){ return (NIVEIS[nivelDe(s&&s.user)]||NIVEIS.user).rank; }
-function roleNivelLabel(s){ return (NIVEIS[nivelDe(s&&s.user)]||NIVEIS.user).label; }
-function isTopAdmin(s){ return roleRank(s) >= 4; } // Administrador ou Dono → gestão global (usuários, config, Bling)
-// canManage: Admin de Setor+ gerencia o setor; Gerente de Loja gerencia só dentro de Lojas
-function canManage(){ var rk=roleRank(ST.session); return rk>=3 || (rk>=2 && ST.sector==='lojas'); }
+/* v89: tudo aqui responde pela tabela CAPS — um nível, um conjunto de permissões */
+function isSuper(s){ return can('sistema', s); }                 // Administrador Geral
+function isAdmin(s){ return can('equipe', s); }                  // Administrador Geral e Gestor
+function isTopAdmin(s){ return can('sistema', s); }              // estrutura, usuários, integrações
+function roleRank(s){ return (NIVEIS[nivelDe(s&&s.user)]||NIVEIS.colaborador).rank; }
+function roleNivelLabel(s){ return (NIVEIS[nivelDe(s&&s.user)]||NIVEIS.colaborador).label; }
+function canManage(){ return can('gerir'); }                     // cria/edita/exclui registros do setor
 function blockManage(){ toast('Você não tem permissão para criar, editar ou excluir aqui.','error'); }
-// "Colaborador pessoal" = acesso individual (rank baixo) que NÃO é login de loja.
-// O login de loja (ST.store definido) é o acesso operacional da unidade.
-function isColaboradorPessoal(s){ s = s || ST.session; return roleRank(s) <= 1 && !ST.store; }
+// "Colaborador pessoal" = acesso individual (Colaborador ou Visualizador) que NÃO é login de loja.
+function isColaboradorPessoal(s){ s = s || ST.session; return roleRank(s) <= 2 && !ST.store; }
 // permissões por função concedidas a uma pessoa: mapa { pageId: 'ver' | 'fazer' }
 function userPermMap(s){ s = s || ST.session; var u=s&&s.user; if(!u) return {}; var p=u.perms;
   if(typeof p==='string'){ try{ p=JSON.parse(p); }catch(e){ p=p.split(',').map(function(x){return x.trim();}).filter(Boolean); } }
@@ -2081,7 +2088,13 @@ function userPermMap(s){ s = s || ST.session; var u=s&&s.user; if(!u) return {};
 }
 function permLevel(pgId, s){ var m=userPermMap(s); var v=m[pgId]; return (v==='ver'||v==='fazer')?v:'none'; }
 function permsHas(pgId, s){ return permLevel(pgId, s) !== 'none'; }        // pode ao menos visualizar
-function canEdit(){ if(canManage()) return true; return permLevel(ST.page)==='fazer'; } // pode executar na página atual
+function canEdit(){
+  if(can('gerir')) return true;                                   // Administrador e Gestor
+  if(!can('executar')) return false;                              // Visualizador nunca edita
+  // Supervisor: pode mexer nas tarefas (redistribuir), não em projetos/cadastros
+  if(can('redistribuir') && ST.page==='tarefas' && (ST.taskView||'')!=='projetos') return true;
+  return permLevel(ST.page)==='fazer';                            // permissão concedida caso a caso
+}
 // páginas que o admin pode conceder a um colaborador (exclui início e as de administração)
 function grantablePages(sector){ return (PAGES[sector]||PAGES.lojas).filter(function(p){ return !p.hidden && ['inicio','gestao','config'].indexOf(p.id)===-1; }); }
 // mantém perms/nível do usuário logado atualizados a partir da lista de usuários já carregada
@@ -2100,7 +2113,7 @@ function savePerms(id, map){ return sb.from('malba_users').update({ perms: map||
 function pageAllowed(pgId, s){
   s = s || ST.session;
   if (pgId==='config') return isTopAdmin(s);
-  if (pgId==='gestao')  return canManage();
+  if (pgId==='gestao')  return can('indicadores', s);   // v89: Supervisor acompanha indicadores
   if (pgId==='ponto')   return (ST.sector==='lojas' && !isColaboradorPessoal(s)) || permsHas(pgId, s);
   if (isColaboradorPessoal(s)) {
     // base do colaborador + funções concedidas no cadastro
@@ -2132,21 +2145,6 @@ function bindPermsPicker(modal){
   var scs=modal.querySelectorAll('.perm-sc'); for(var s=0;s<scs.length;s++) scs[s].addEventListener('click', function(){ var lvl=this.getAttribute('data-sc'); var segs=modal.querySelectorAll('.perm-seg'); for(var k=0;k<segs.length;k++){ var bs=segs[k].querySelectorAll('button'); for(var b=0;b<bs.length;b++){ var match=bs[b].getAttribute('data-lvl')===lvl; bs[b].classList.remove('on','ver','fazer'); if(match){ bs[b].classList.add('on'); if(lvl==='ver') bs[b].classList.add('ver'); if(lvl==='fazer') bs[b].classList.add('fazer'); } } } });
 }
 // permissões granulares por função
-function can(perm){
-  var rk=roleRank(ST.session);
-  switch(perm){
-    case 'gerir_usuarios':
-    case 'gerir_config':
-    case 'gerir_bling':
-    case 'gerir_lojas':        return rk>=4;                 // Administrador / Dono
-    case 'gerir_setor':        return rk>=3;                 // Admin de Setor +
-    case 'gerir_loja':
-    case 'editar_gestao':
-    case 'lancar_financeiro':  return canEdit();           // gestores (inclui Gerente de Loja em Lojas)
-    case 'criar_tarefa':       return true;                  // todos criam a própria tarefa
-    default:                   return canEdit();
-  }
-}
 // registro de auditoria (quem fez o quê) — melhor esforço, nunca quebra a UX
 function auditLog(action, detail){
   try{
@@ -2478,7 +2476,7 @@ function renderLogin(sector) {
     login(emailEl.value, senhaEl.value, sector).then(function(r){
       setBusy(btn,false); btn.textContent='Entrar';
       if(!r.ok){ errEl.textContent=r.msg; return; }
-      var landing = (roleRank(r.session) <= 1) ? 'inicio' : 'tarefas';
+      var landing = (roleRank(r.session) <= 2) ? 'inicio' : 'tarefas'; // v89: Colaborador e Visualizador entram pelo Início
       ST.loaded=false; startSplash(); navigate(sector+'/'+landing); boot();
     });
   }
@@ -2536,7 +2534,7 @@ function renderShell(innerHTML, title) {
   if (sideUser) sideUser.addEventListener('click', function(){ ST.page='perfil'; ST.openProject=null; navigate(ST.sector+'/perfil'); renderPage(); });
   var navBtns=app.querySelectorAll('.nav-item:not([disabled])');
   for (var i=0;i<navBtns.length;i++) {
-    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
+    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='tarefas') ST.taskView='kanban'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
   }
   bindTopbar();
   var _burger=document.getElementById('topBurger');
@@ -2561,6 +2559,7 @@ function novoContextual() {
   if (pg==='biblioteca') return openCriativoModal(null);
   if (pg==='crm') return openClientModal(null);
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
+  if (pg==='tarefas' && (ST.taskView||'')==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
   if (pg==='equipe') return openMemberModal(null);
   if (pg==='config'){
@@ -2888,16 +2887,6 @@ function bannerHeroHTML(b) {
   }
   return '<div class="dash-hero banner" style="background:'+bg+'">'+overlay+inner+'</div>';
 }
-function statCard(label,num,color){ return '<div class="stat-card"><div class="stat-top"><span class="stat-dot" style="background:'+color+'"></span>'+esc(label)+'</div><div class="stat-num">'+num+'</div></div>'; }
-
-/* ========== [9b] KPIs ========== */
-function kpiIso(dt){ var y=dt.getFullYear(), m=('0'+(dt.getMonth()+1)).slice(-2), d=('0'+dt.getDate()).slice(-2); return y+'-'+m+'-'+d; }
-function kpiRange(){
-  var fim = today();
-  if (ST.kpiPeriod==='dia') return { ini:fim, fim:fim };
-  if (ST.kpiPeriod==='semana'){ var b=new Date(fim+'T00:00:00'); b.setDate(b.getDate()-6); return { ini:kpiIso(b), fim:fim }; }
-  return { ini: fim.slice(0,8)+'01', fim:fim }; // mês corrente
-}
 // usa o filtro de loja do admin (ou a loja da conta, se for conta de loja)
 function kpiStoreId(){ return boardStore(); }
 function kpiFatRows(){
@@ -2945,12 +2934,6 @@ function siteUnits(){ return (ST.storeUnits||[]).filter(function(u){ return u.is
 function siteFatRange(ini, fim){ var ids={}; siteUnits().forEach(function(u){ ids[String(u.id)]=1; }); var s=0; (ST.blingFat||[]).forEach(function(f){ if(!ids[String(f.store_unit_id)]) return; var d=(f.ref_date||'').slice(0,10); if(d>=ini && d<=fim) s+=Number(f.total)||0; }); return s; }
 function _firstDayMonth(){ var n=new Date(); var mm=n.getMonth()+1; return n.getFullYear()+'-'+(mm<10?'0':'')+mm+'-01'; }
 function siteFatMes(){ return siteFatRange(_firstDayMonth(), today()); }
-function siteFatHoje(){ var t=today(); return siteFatRange(t,t); }
-function lojaMetaMes(storeId){
-  var now=new Date(), yy=now.getFullYear(), mm=now.getMonth()+1, meta=0, real=0;
-  (ST.goals||[]).forEach(function(g){ if(g.month===mm && g.year===yy && String(g.store_unit_id)===String(storeId)){ meta+=Number(g.goal_value)||0; real+=realizadoMeta(g); } });
-  return { meta:meta, real:real, pct: meta>0?Math.min(100,Math.round(real/meta*100)):0 };
-}
 function kpisHTML(){
   var admin = isAdmin(ST.session);
   var sid = kpiStoreId();
@@ -3055,7 +3038,18 @@ function tarefasHTML() {
     ? ((ST.sector==='lojas' && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc(SECTORS[ST.sector].label)))
     : 'Minhas tarefas';
   var rotinaBtn = (ST.sector==='lojas') ? '<button class="vt-btn'+(view==='rotina'?' on':'')+'" data-view="rotina">'+icon('clock')+'Rotina do dia</button>' : '';
-  var toggle = '<div class="view-toggle">'+rotinaBtn+'<button class="vt-btn'+(view==='kanban'?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Quadro</button><button class="vt-btn'+(view==='matriz'?' on':'')+'" data-view="matriz">'+icon('target')+'Prioridades</button></div>';
+  // v88: Calendário e Projetos viram VISÕES daqui — deixam de ser páginas do menu.
+  // A permissão continua valendo: quem não tinha acesso à página não ganha a visão.
+  var podeCal = pageAllowed('calendario', ST.session);
+  var podeProj = pageAllowed('projetos', ST.session);
+  if (view==='calendario' && !podeCal) view='kanban';
+  if (view==='projetos' && !podeProj) view='kanban';
+  var toggle = '<div class="view-toggle">'+rotinaBtn+
+    '<button class="vt-btn'+(view==='kanban'?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Quadro</button>'+
+    '<button class="vt-btn'+(view==='matriz'?' on':'')+'" data-view="matriz">'+icon('target')+'Prioridades</button>'+
+    (podeCal ? '<button class="vt-btn'+(view==='calendario'?' on':'')+'" data-view="calendario">'+icon('cal')+'Calendário</button>' : '')+
+    (podeProj ? '<button class="vt-btn'+(view==='projetos'?' on':'')+'" data-view="projetos">'+icon('folder')+'Projetos</button>' : '')+
+  '</div>';
   var filter = '';
   if (admin) {
     var meId = String(ST.session.user.id);
@@ -3074,7 +3068,11 @@ function tarefasHTML() {
     storeFilter = '<select class="task-filter" id="taskStore" title="Ver loja">'+sopts+'</select>';
   }
   var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
-  var head = '<div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
+  if (view==='calendario' || view==='projetos') {
+    // os filtros de tarefa não valem aqui; só a barra de visões, e a tela hospedada traz o próprio título
+    return '<div class="view-bar">'+toggle+'</div>' + (view==='calendario' ? calendarioHTML() : projetosHTML());
+  }
+  var head = '<div class="tasks-head"><div><h2>Trabalho</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
   return head + muralHTML() + (view==='kanban' ? rotinaHojeCardHTML() : '') + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
@@ -3155,25 +3153,6 @@ function kanbanHTML() {
   return '<div class="board-hint">O quadro mostra o que precisa de atenção: <b>atrasadas</b> e de <b>hoje</b>. Para planejar e arrastar tarefas por data, use o <b>Calendário</b>.</div><div class="board">'+cols+'</div>';
 }
 // Agrupa por data: Atrasadas / Hoje / Amanhã / Esta semana / Mais pra frente / Sem data
-function groupedByDate(items) {
-  var hoje=today(), t1=addDays(hoje,1), w=addDays(hoje,7);
-  var buckets=[
-    {k:'atras',  l:'Atrasadas',       late:true, f:function(d){ return d && d<hoje; }},
-    {k:'hoje',   l:'Hoje',                       f:function(d){ return d===hoje; }},
-    {k:'amanha', l:'Amanhã',                     f:function(d){ return d===t1; }},
-    {k:'semana', l:'Esta semana',                f:function(d){ return d>t1 && d<=w; }},
-    {k:'depois', l:'Mais pra frente',            f:function(d){ return d>w; }},
-    {k:'semdata',l:'Sem data',                   f:function(d){ return !d; }}
-  ];
-  items.sort(function(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); });
-  var html='';
-  buckets.forEach(function(bk){
-    var sub=items.filter(function(it){ return bk.f(it.due); });
-    if (!sub.length) return;
-    html += '<div class="grp'+(bk.late?' grp-late':'')+'"><span class="grp-l">'+bk.l+'</span><span class="grp-n">'+sub.length+'</span></div>'+sub.map(taskCardHTML).join('');
-  });
-  return html;
-}
 // v73: agrupa a coluna "A Fazer" em Atrasadas -> Rotina de Hoje -> Demais (só divisores; cards intactos)
 function groupedTodoFocus(items){
   var hoje=today();
@@ -3308,7 +3287,15 @@ function moveBoardItem(kind, id, ns) {
   }
 }
 function bindTarefas() {
-  if ((ST.taskView||'kanban')==='rotina') { bindRotina(); bindMural(); var _af=document.getElementById('taskStore'); if(_af) _af.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); }); var _vts=app.querySelectorAll('[data-view]'); for(var _v=0;_v<_vts.length;_v++) _vts[_v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); renderPage(); }); return; }
+  var _vw=ST.taskView||'kanban';
+  if (_vw==='calendario' || _vw==='projetos') {
+    if(_vw==='calendario'){ if(typeof bindCalendario==='function') bindCalendario(); }
+    else { if(typeof bindProjetos==='function') bindProjetos(); }
+    var _vt2=app.querySelectorAll('.vt-btn');
+    for(var _q=0;_q<_vt2.length;_q++) _vt2[_q].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); ST.openProject=null; renderPage(); });
+    return;
+  }
+  if (_vw==='rotina') { bindRotina(); bindMural(); var _af=document.getElementById('taskStore'); if(_af) _af.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); }); var _vts=app.querySelectorAll('[data-view]'); for(var _v=0;_v<_vts.length;_v++) _vts[_v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); renderPage(); }); return; }
   var nova=document.getElementById('btnNovaTarefa');
   if (nova) nova.addEventListener('click', function(){ openTaskModal(null); });
   var verRot=document.getElementById('btnVerRotina');
@@ -3943,8 +3930,7 @@ function openMemberModal(member) {
 
   // ----- bloco de acesso (login do funcionário) -----
   var grantorRank = roleRank(ST.session);
-  var NIV_ORDER = ['user','store_manager','sector_admin','admin_geral','super'];
-  var nivelOpts = NIV_ORDER.filter(function(k){ return NIVEIS[k].rank <= grantorRank; }).map(function(k){ return '<option value="'+k+'"'+(k==='user'?' selected':'')+'>'+NIVEIS[k].label+'</option>'; }).join('');
+  var nivelOpts = NIV_ORDER.filter(function(k){ return NIVEIS[k].rank <= grantorRank; }).map(function(k){ return '<option value="'+k+'"'+(k==='colaborador'?' selected':'')+'>'+NIVEIS[k].label+'</option>'; }).join('');
   function userVinculado(){
     if (!member) return null;
     var byId=null; (ST.allUsers||[]).forEach(function(u){ if(member.user_id && String(u.id)===String(member.user_id)) byId=u; });
@@ -3956,14 +3942,14 @@ function openMemberModal(member) {
   var linked = userVinculado();
   var accessBlock;
   if (linked) {
-    var nvL = NIVEIS[nivelDe(linked)]||NIVEIS.user;
+    var nvL = NIVEIS[nivelDe(linked)]||NIVEIS.colaborador;
     accessBlock = '<div class="acc-linked">'+icon('users')+'<span>Acesso já vinculado: <b>'+esc(linked.email||linked.name)+'</b> · '+esc(nvL.label)+'</span></div>';
   } else {
     accessBlock = '<div class="acc-box">'+
       '<label class="acc-toggle"><input type="checkbox" id="mMakeUser"><span class="acc-txt"><b>Criar acesso ao sistema</b><i>A pessoa entra com e-mail e senha e vê as próprias comissões e avaliações.</i></span></label>'+
       '<div class="acc-fields" id="mAccessFields" style="display:none">'+
         '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">E-mail de acesso *</label><input type="text" id="mEmail" placeholder="pessoa@malba.com.br"></div><div class="modal-row"><label class="modal-label">Senha *</label><input type="text" id="mPass" placeholder="senha de acesso"></div></div>'+
-        '<div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="mLevel">'+nivelOpts+'</select></div>'+
+        '<div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="mLevel">'+nivelOpts+'</select><div class="nivel-desc" id="mNivelDesc">'+esc(NIVEIS.colaborador.desc)+'</div></div>'+
         '<div id="mPermHolder"></div>'+
       '</div>'+
     '</div>';
@@ -3982,6 +3968,8 @@ function openMemberModal(member) {
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="memberCancel">Cancelar</button><button class="btn btn-primary" id="memberSave">'+(isNew?'Adicionar':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
+  (function(){ var sel=modal.querySelector('#mLevel'), d=modal.querySelector('#mNivelDesc');
+    if(sel&&d) sel.addEventListener('change', function(){ d.textContent=(NIVEIS[this.value]||{}).desc||''; }); })();
 
   var colorPick = m.color || '#3B6FF7';
   var dots = modal.querySelectorAll('.color-dot');
@@ -4174,14 +4162,14 @@ function openFichaColaborador(member){
     // Acesso
     var acesso;
     if(u){
-      var nvL=NIVEIS[nivelDe(u)]||NIVEIS.user;
+      var nvL=NIVEIS[nivelDe(u)]||NIVEIS.colaborador;
       acesso='<div class="fi-acc has"><div class="fi-acc-top"><span class="fi-acc-ic ok">'+icon('users')+'</span><div class="fi-acc-tx"><b>'+esc(u.email||u.name)+'</b><i>'+esc(nvL.label)+' · acesso ativo</i></div></div>'+
         (showReset?'<div class="fi-acc-reset"><input type="text" id="fiNewPass" placeholder="Nova senha (mín. 4)"><button class="btn btn-primary" id="fiDoReset">Salvar senha</button></div>':'')+
         '<div class="fi-acc-actions"><button class="fi-link" id="fiReset">'+(showReset?'Cancelar':'Redefinir senha')+'</button><button class="fi-link danger" id="fiRemove">Remover acesso</button></div>'+
       '</div>';
     } else {
-      var grantorRank=roleRank(ST.session); var NIV_ORDER=['user','store_manager','sector_admin','admin_geral','super'];
-      var nivelOpts=NIV_ORDER.filter(function(k){return NIVEIS[k].rank<=grantorRank;}).map(function(k){return '<option value="'+k+'"'+(k==='user'?' selected':'')+'>'+NIVEIS[k].label+'</option>';}).join('');
+      var grantorRank=roleRank(ST.session);
+      var nivelOpts=NIV_ORDER.filter(function(k){return NIVEIS[k].rank<=grantorRank;}).map(function(k){return '<option value="'+k+'"'+(k==='colaborador'?' selected':'')+'>'+NIVEIS[k].label+'</option>';}).join('');
       acesso='<div class="fi-acc none"><div class="fi-acc-top"><span class="fi-acc-ic">'+icon('bell')+'</span><div class="fi-acc-tx"><b>Sem acesso ao sistema</b><i>Crie um login para a pessoa ver o "Meu Dia", metas e avaliações.</i></div></div>'+
         '<div class="fi-acc-form"><div class="modal-grid2"><div class="modal-row"><input type="text" id="fiEmail" placeholder="e-mail de acesso"></div><div class="modal-row"><input type="text" id="fiPass" placeholder="senha"></div></div>'+
         '<div class="fi-acc-form-row"><select id="fiLevel">'+nivelOpts+'</select><button class="btn btn-primary" id="fiCreate">Criar acesso</button></div>'+
@@ -5887,21 +5875,46 @@ function openProjectModal(project) {
 }
 
 /* ========== [10f] CONFIGURAÇÕES / ADMIN (só admin) ========== */
+/* ===== v89: HIERARQUIA DE USUÁRIOS =====
+   Cinco níveis, cada um com permissões próprias declaradas numa tabela.
+   Nada de comparação de "rank" espalhada pelo código: tudo passa por can(). */
 var NIVEIS = {
-  user:          { label:'Colaborador',        color:'#9aa1ad', rank:1 },
-  store_manager: { label:'Gerente de Loja',     color:'#0EA5E9', rank:2 },
-  sector_admin:  { label:'Admin de Setor',      color:'#3B6FF7', rank:3 },
-  admin_geral:   { label:'Administrador',       color:'#6366F1', rank:4 },
-  super:         { label:'Dono · Super Admin',  color:'#8B5CF6', rank:5 }
+  viewer:      { label:'Visualizador',        color:'#9aa1ad', rank:1, desc:'Apenas consulta informações.' },
+  colaborador: { label:'Colaborador',         color:'#0EA5E9', rank:2, desc:'Executa tarefas, conclui checklists e envia evidências.' },
+  supervisor:  { label:'Supervisor',          color:'#F59E0B', rank:3, desc:'Acompanha a execução, redistribui tarefas e acompanha indicadores.' },
+  gestor:      { label:'Gestor',              color:'#3B6FF7', rank:4, desc:'Administra a equipe, cria projetos e rotinas (POPs) e administra as tarefas.' },
+  admin:       { label:'Administrador Geral', color:'#8B5CF6', rank:5, desc:'Acesso total: estrutura, lojas, usuários e integrações.' }
+};
+var NIV_ORDER = ['viewer','colaborador','supervisor','gestor','admin'];
+// nomes antigos continuam valendo (nada quebra pra quem já está cadastrado)
+var NIVEL_ALIAS = { user:'colaborador', store_manager:'supervisor', sector_admin:'gestor', admin_geral:'admin', super:'admin' };
+// O QUE CADA NÍVEL PODE — a fonte única de verdade
+var CAPS = {
+  admin:       { sistema:1, equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1 },
+  gestor:      {            equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1 },
+  supervisor:  {                                          redistribuir:1, indicadores:1, executar:1 },
+  colaborador: {                                                                         executar:1 },
+  viewer:      {}
 };
 // lê o nível de um registro de usuário de forma resiliente
 function nivelDe(u) {
-  if (!u) return 'user';
-  if (u.access_level && NIVEIS[u.access_level]) return u.access_level;
-  if (u.role==='admin') return 'super';
-  if (u.role==='sector_admin' || u.sector_role==='admin') return 'sector_admin';
-  return 'user';
+  if (!u) return 'colaborador';
+  var a = u.access_level;
+  if (a && NIVEIS[a]) return a;
+  if (a && NIVEL_ALIAS[a]) return NIVEL_ALIAS[a];
+  if (u.role==='admin') return 'admin';
+  if (u.role==='sector_admin' || u.sector_role==='admin') return 'gestor';
+  if (u.role==='store_manager' || u.sector_role==='supervisor') return 'supervisor';
+  return 'colaborador';
 }
+// can('gerir') — a única pergunta que o resto do sistema faz sobre permissão
+function can(cap, s){
+  s = s || ST.session;
+  if (!s || !s.user) return false;
+  var nv = nivelDe(s.user);
+  return !!((CAPS[nv]||{})[cap]);
+}
+function nivelInfo(s){ return NIVEIS[nivelDe((s||ST.session||{}).user)] || NIVEIS.colaborador; }
 
 function configHTML() {
   if (!isAdmin(ST.session)) {
@@ -5927,7 +5940,7 @@ function usuariosHTML() {
   } else {
     rows = '<div class="cfg-list">';
     list.forEach(function(u){
-      var nv = NIVEIS[nivelDe(u)] || NIVEIS.user;
+      var nv = NIVEIS[nivelDe(u)] || NIVEIS.colaborador;
       var setor = SECTORS[u.sector] ? SECTORS[u.sector].label : (u.sector||'—');
       rows += '<div class="cfg-row" data-uid="'+esc(u.id)+'">'+
         '<span class="crm-av" style="background:'+(u.color||'#3B6FF7')+'22;color:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
@@ -5944,10 +5957,9 @@ function openUserModal(user) {
   if(!canEdit()){ blockManage(); return; }
   var isNew = !user;
   var u = user || { name:'', email:'', sector:ST.sector, color:'#3B6FF7' };
-  var nivel = isNew ? 'user' : nivelDe(u);
+  var nivel = isNew ? 'colaborador' : nivelDe(u);
   var seedPerms = userPermMap({ user:u });
   var grantorRank = roleRank(ST.session); // só posso conceder níveis abaixo (ou igual) ao meu
-  var NIV_ORDER = ['user','store_manager','sector_admin','admin_geral','super'];
   var nivelOpts = NIV_ORDER.filter(function(k){ return NIVEIS[k].rank <= grantorRank; }).map(function(k){
     return '<option value="'+k+'"'+(nivel===k?' selected':'')+'>'+NIVEIS[k].label+'</option>';
   }).join('');
@@ -5967,10 +5979,13 @@ function openUserModal(user) {
       '<input class="modal-title-input" id="uName" placeholder="Nome do usuário..." value="'+esc(u.name||'')+'">'+
       emailField + passField +
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Setor</label><select id="uSector">'+sectorOpts+'</select></div><div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="uLevel">'+nivelOpts+'</select></div></div>'+
+      '<div class="nivel-desc" id="uNivelDesc">'+esc((NIVEIS[nivel]||NIVEIS.colaborador).desc)+'</div>'+
       '<div id="permHolder"></div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
+  (function(){ var sel=modal.querySelector('#uLevel'), d=modal.querySelector('#uNivelDesc');
+    if(sel&&d) sel.addEventListener('change', function(){ d.textContent=(NIVEIS[this.value]||{}).desc||''; }); })();
 
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -6634,143 +6649,9 @@ function admF(){
   if(!ST.admF) ST.admF={ colab:'', loja:'', proj:'', prio:'', status:'', tipo:'', per:'', ini:'', fim:'', q:'' };
   return ST.admF;
 }
-function admFAtivos(){ var f=admF(), n=0, k; for(k in f){ if(f[k]) n++; } return n; }
-// Tipo: recorrente = a REGRA; rotina = ocorrência gerada por ela; pop = procedimento padrão; normal = resto
-function admTaskKind(t){
-  if(t.is_rule) return 'recorrente';
-  if(t.task_kind==='pop') return 'pop';
-  if(t.recur_group) return 'rotina';
-  return 'normal';
-}
 var ADM_KIND_LB = { recorrente:'Recorrente', rotina:'Rotina', pop:'POP', normal:'Normal' };
 // Escopo: o que o gestor enxerga, já com os filtros "de recorte" (loja, colaborador, projeto)
-function admScope(){
-  var f=admF(), sid=boardStore();
-  return (ST.tasks||[]).filter(function(t){
-    if(t.archived_at) return false;
-    if(String(t.sector||'')!==ST.sector) return false;
-    if(sid && String(t.store_unit_id)!==String(sid)) return false;
-    if(f.loja && String(t.store_unit_id)!==String(f.loja)) return false;
-    if(f.colab && String(t.assignee_id)!==String(f.colab)) return false;
-    if(f.proj && String(t.project_id)!==String(f.proj)) return false;
-    return true;
-  });
-}
-function admStats(list){
-  var hoje=today();
-  var s={ total:0, todo:0, fazendo:0, feito:0, atrasadas:0, rotinasHoje:0 };
-  list.forEach(function(t){
-    if(t.is_rule){ return; } // a regra não conta como tarefa
-    var d=(t.due_date||'').slice(0,10);
-    if(d>hoje && t.recur_group) return; // ocorrência futura de rotina não infla contador
-    s.total++;
-    if(t.status==='feito') s.feito++;
-    else if(t.status==='fazendo') s.fazendo++;
-    else s.todo++;
-    if(d && d<hoje && t.status!=='feito') s.atrasadas++;
-    if(t.recur_group && d===hoje && t.status!=='feito') s.rotinasHoje++;
-  });
-  return s;
-}
-function admPeriodo(){
-  var f=admF(), hoje=today();
-  if(f.per==='hoje') return { ini:hoje, fim:hoje };
-  if(f.per==='amanha'){ var a=addDays(hoje,1); return { ini:a, fim:a }; }
-  if(f.per==='semana') return { ini:hoje, fim:addDays(hoje,7) };
-  if(f.per==='proxsemana') return { ini:addDays(hoje,8), fim:addDays(hoje,14) };
-  if(f.per==='mes') return { ini:hoje.slice(0,8)+'01', fim:addDays(hoje,31) };
-  if(f.per==='custom' && (f.ini||f.fim)) return { ini:f.ini||'0000-01-01', fim:f.fim||'9999-12-31' };
-  return null;
-}
-function admBusca(t, q){
-  if(!q) return true;
-  var u=t.assignee_id?userById(t.assignee_id):null;
-  var pr=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(t.project_id)) { pr=ST.projects[i]; break; }
-  var alvo=[t.title||'', t.description||'', t.tags||'', t.area||'', u?u.name:'', pr?pr.name:''].join(' ').toLowerCase();
-  return alvo.indexOf(q)!==-1;
-}
-function admAplica(list){
-  var f=admF(), q=(f.q||'').toLowerCase().trim(), per=admPeriodo(), hoje=today();
-  return list.filter(function(t){
-    var kind=admTaskKind(t);
-    // por padrão as REGRAS só aparecem no grupo Recorrentes (ou se o gestor filtrar por elas)
-    if(t.is_rule && f.tipo && f.tipo!=='recorrente') return false;
-    if(f.tipo && kind!==f.tipo) return false;
-    if(!t.is_rule){
-      if(f.status && f.status!=='atrasada' && t.status!==f.status) return false; // 'atrasada' é leitura, não status do banco
-      if(f.prio && (t.priority||'media')!==f.prio) return false;
-      var d=(t.due_date||'').slice(0,10);
-      if(per){ if(!d) return false; if(d<per.ini || d>per.fim) return false; }
-      else if(d>hoje && t.recur_group) return false; // sem período: ocorrência futura de rotina fica no grupo Recorrentes
-    } else {
-      if(f.status || f.prio || per) { if(f.tipo!=='recorrente') return false; }
-    }
-    return admBusca(t, q);
-  });
-}
 // Filtro "atrasada" não é um status do banco — é uma leitura. Tratado à parte:
-function admAplicaAtrasada(list){
-  var f=admF(); if(f.status!=='atrasada') return list;
-  var hoje=today();
-  return list.filter(function(t){ if(t.is_rule) return false; var d=(t.due_date||'').slice(0,10); return d && d<hoje && t.status!=='feito'; });
-}
-function admGrupos(list){
-  var hoje=today(), fimSem=addDays(hoje,7), fimMes=hoje.slice(0,8)+'31';
-  var G={ atrasadas:[], hoje:[], semana:[], mes:[], recorrentes:[], depois:[] };
-  list.forEach(function(t){
-    if(t.is_rule){ G.recorrentes.push(t); return; }
-    var d=(t.due_date||'').slice(0,10);
-    if(!d){ G.depois.push(t); return; }
-    if(d<hoje && t.status!=='feito'){ G.atrasadas.push(t); return; }
-    if(d===hoje){ G.hoje.push(t); return; }
-    if(d<=fimSem){ G.semana.push(t); return; }
-    if(d<=fimMes){ G.mes.push(t); return; }
-    G.depois.push(t);
-  });
-  var ord=function(a,b){ return (a.due_date||'zz').localeCompare(b.due_date||'zz'); };
-  for(var k in G) G[k].sort(ord);
-  return G;
-}
-function admRowHTML(t){
-  var pr=PRIO[t.priority]||PRIO.media, st=STATUS[t.status]||STATUS.todo;
-  var u=t.assignee_id?userById(t.assignee_id):null;
-  var hoje=today(), d=(t.due_date||'').slice(0,10);
-  var late=d && d<hoje && t.status!=='feito';
-  var kind=admTaskKind(t);
-  var selo = kind!=='normal' ? '<span class="adm-selo '+kind+'">'+ADM_KIND_LB[kind]+'</span>' : '';
-  var proj=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(t.project_id)) { proj=ST.projects[i]; break; }
-  var sub=[];
-  if(u) sub.push(esc(u.name.split(' ')[0]));
-  else sub.push('sem responsável');
-  if(proj) sub.push('· '+esc(proj.name));
-  var av = u ? '<span class="ar-av" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'
-             : '<span class="ar-av" style="background:var(--u-border2)">?</span>';
-  var dateHTML = t.is_rule ? '<span class="ar-date">'+esc(descrevePadraoRegra(t))+'</span>'
-                           : (d?'<span class="ar-date'+(late?' late':'')+'">'+fmtDate(d)+'</span>':'');
-  var stHTML = t.is_rule ? (t.rec_paused?'<span class="adm-st" style="color:var(--u-amber);background:var(--u-amber-soft)">Pausada</span>':'<span class="adm-st" style="color:var(--u-green);background:var(--u-green-soft)">Ativa</span>')
-                         : '<span class="adm-st" style="color:'+st.color+';background:'+st.color+'1a">'+st.label+'</span>';
-  var marcada = !!(ST.admSel||{})[t.id];
-  var ck = t.is_rule ? '<span class="adm-ck"></span>' // regra não entra em ação em lote
-                     : '<label class="adm-ck"><input type="checkbox" data-admsel="'+esc(t.id)+'"'+(marcada?' checked':'')+'></label>';
-  return '<div class="adm-rw'+(marcada?' sel':'')+'" data-admwrap="'+esc(t.id)+'">'+ ck +
-    '<button class="adm-row" data-admtask="'+esc(t.id)+'">'+
-      '<span class="ar-prio" style="background:'+pr.color+'"></span>'+ av +
-      '<span class="ar-main"><span class="ar-t">'+esc(t.title||'(sem título)')+'</span><span class="ar-sub">'+sub.join(' ')+' '+selo+'</span></span>'+
-      dateHTML + stHTML +
-    '</button>'+
-  '</div>';
-}
-function admGroupHTML(id, icone, titulo, arr){
-  if(!arr.length) return '';
-  var fechado = (ST.admClosed||{})[id] ? ' closed' : '';
-  var lim = (ST.admLimit||{})[id] || ADM_PAGE;
-  var vis = arr.slice(0, lim);
-  var mais = arr.length>lim ? '<button class="adm-more" data-admmore="'+id+'">Carregar mais ('+(arr.length-lim)+' restantes)</button>' : '';
-  return '<div class="adm-group'+fechado+'" data-admg="'+id+'">'+
-    '<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">'+icone+'<span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span><button class="agh-sel" data-admgsel="'+id+'">Selecionar todas</button><button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button></div>'+
-    '<div class="adm-list">'+vis.map(admRowHTML).join('')+mais+'</div>'+
-  '</div>';
-}
 /* ===== v82: ORGANIZAÇÃO DA CENTRAL — 3 lentes, rotina ≠ tarefa pontual =====
    A rotina aparece UMA vez (a regra, com as datas em que se repete),
    nunca 30 cópias. Tarefa pontual continua organizada por prazo. */
@@ -6908,7 +6789,9 @@ function admLinhaRegraHTML(r){
       '<button class="act-btn icon-only" data-qa="dup" data-qid="'+esc(r.id)+'" title="Duplicar">'+icon('copy')+'<span>Duplicar</span></button>'+
       '<button class="act-btn icon-only danger" data-qa="del" data-qid="'+esc(r.id)+'" title="Excluir">'+icon('trash')+'<span>Excluir</span></button>'+
     '</span>';
-  return '<div class="adm-rw" data-admwrap="'+esc(r.id)+'">'+
+  var marcada=!!(ST.admSel||{})[r.id];
+  return '<div class="adm-rw'+(marcada?' sel':'')+'" data-admwrap="'+esc(r.id)+'">'+
+    '<label class="adm-ck"><input type="checkbox" data-admsel="'+esc(r.id)+'"'+(marcada?' checked':'')+'></label>'+
     '<div class="adm-row rg-row'+(pausada?' off':'')+'" data-admtask="'+esc(r.id)+'">'+
       '<span class="ar-prio" style="background:'+((PRIO[r.priority]||PRIO.media).color)+'"></span>'+
       '<span class="rg-nome"><b>'+esc(r.title||'(sem título)')+'</b><i>'+esc(padrao)+'</i></span>'+
@@ -6926,6 +6809,7 @@ function admGrupoHTML(id, titulo, arr){
     (arr.length?'<button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button>':'')+'</div>';
   if(!arr.length) return '<div class="adm-group vazio">'+head+'</div>';
   if(!aberto) return '<div class="adm-group closed">'+head+'</div>'; // fechado: não renderiza nada dentro
+  head=head.replace('<span class="agh-sp"></span>','<span class="agh-sp"></span><button class="agh-sel" data-admgsel="'+id+'">Selecionar todas</button>');
   var lim=Math.min(n.limG[id]||ADM_PG_REGRAS, arr.length);
   var mais = arr.length>lim ? '<button class="adm-more" data-admmore="'+id+'">Carregar mais ('+(arr.length-lim)+' restantes)</button>' : '';
   return '<div class="adm-group" data-admg="'+id+'">'+head+'<div class="adm-list">'+arr.slice(0,lim).map(admLinhaRegraHTML).join('')+mais+'</div></div>';
@@ -6983,11 +6867,11 @@ function bindAdmTarefas(){
   var n=admNav();
   function upd(){ renderPage(); }
   var ss=document.getElementById('admSetor');
-  if(ss) ss.addEventListener('change', function(){ n.setor=this.value; n.pessoa=null; n.limP=ADM_PG_PESSOAS; upd(); });
+  if(ss) ss.addEventListener('change', function(){ n.setor=this.value; n.pessoa=null; n.limP=ADM_PG_PESSOAS; ST.admSel={}; upd(); });
   var bv=document.getElementById('bcVoltar');
-  if(bv) bv.addEventListener('click', function(){ n.pessoa=null; n.qR=''; upd(); });
+  if(bv) bv.addEventListener('click', function(){ n.pessoa=null; n.qR=''; ST.admSel={}; upd(); });
   var pcs=app.querySelectorAll('[data-admpessoa]');
-  for(var i=0;i<pcs.length;i++) pcs[i].addEventListener('click', function(){ n.pessoa=this.getAttribute('data-admpessoa'); ST.admClosed={}; n.limG={}; upd(); });
+  for(var i=0;i<pcs.length;i++) pcs[i].addEventListener('click', function(){ n.pessoa=this.getAttribute('data-admpessoa'); ST.admClosed={}; n.limG={}; ST.admSel={}; upd(); });
   var mp=document.getElementById('admMaisP');
   if(mp) mp.addEventListener('click', function(){ n.limP+=ADM_PG_PESSOAS; upd(); });
   function busca(id, campo){
@@ -7011,6 +6895,9 @@ function bindAdmTarefas(){
   });
   var wraps=app.querySelectorAll('[data-admwrap]');
   for(var w=0;w<wraps.length;w++) admBindRow(wraps[w]);
+  var gs=app.querySelectorAll('[data-admgsel]');
+  for(var g=0;g<gs.length;g++) gs[g].addEventListener('click', function(e){ e.stopPropagation(); admSelGrupo(this.getAttribute('data-admgsel')); });
+  admLoteBar(); // v86: redesenha a barra depois de cada render
 }
 // ações rápidas da linha — sem abrir várias telas
 /* ===== v85: TRANSFORMAR TAREFA ÚNICA EM ROTINA =====
@@ -7215,12 +7102,16 @@ function admLoteBar(){
     bar=document.createElement('div'); bar.className='adm-lote'; bar.id='admLote';
     document.body.appendChild(bar);
   }
-  bar.innerHTML='<span class="al-n">'+ids.length+' selecionada'+(ids.length>1?'s':'')+'</span><span class="al-sep"></span>'+
+  // v86: prazo e concluir só existem para tarefas — regra não tem prazo nem se conclui
+  var temTarefa=ids.some(function(i){ var t=taskById(i); return t && !t.is_rule; });
+  var nReg=ids.filter(function(i){ var t=taskById(i); return t && t.is_rule; }).length;
+  var resumo=ids.length+' selecionada'+(ids.length>1?'s':'')+(nReg?(' ('+nReg+' rotina'+(nReg>1?'s':'')+')'):'');
+  bar.innerHTML='<span class="al-n">'+resumo+'</span><span class="al-sep"></span>'+
     '<button class="act-btn" data-lote="resp">'+icon('users')+'<span>Responsável</span></button>'+
-    '<button class="act-btn" data-lote="prazo">'+icon('cal')+'<span>Prazo</span></button>'+
+    (temTarefa?'<button class="act-btn" data-lote="prazo">'+icon('cal')+'<span>Prazo</span></button>':'')+
     '<button class="act-btn" data-lote="prio">'+icon('target')+'<span>Prioridade</span></button>'+
     '<button class="act-btn" data-lote="proj">'+icon('folder')+'<span>Projeto</span></button>'+
-    '<button class="act-btn" data-lote="feito">'+icon('check')+'<span>Concluir</span></button>'+
+    (temTarefa?'<button class="act-btn" data-lote="feito">'+icon('check')+'<span>Concluir</span></button>':'')+
     '<button class="act-btn" data-lote="arquivar">'+icon('archive')+'<span>Arquivar</span></button>'+
     '<button class="act-btn danger" data-lote="excluir">'+icon('trash')+'<span>Excluir</span></button>'+
     '<span class="al-sep"></span><button class="al-x" id="admLoteX" title="Limpar seleção">×</button>';
@@ -7244,8 +7135,8 @@ function admPicker(o){
   setTimeout(function(){ var el=bg.querySelector('#pkVal'); if(el) el.focus(); },30);
 }
 // aplica o mesmo patch em todas as selecionadas, numa única ida ao Supabase
-function admLotePatch(patch, msg){
-  var ids=admSelIds(); if(!ids.length) return;
+function admLotePatch(patch, msg, lista){
+  var ids=lista||admSelIds(); if(!ids.length) return;
   sb.from('malba_vl_tasks').update(patch).in('id', ids).then(function(r){
     if(r.error){ toast('Erro ao aplicar','error'); console.error(r.error); return; }
     ids.forEach(function(id){ var t=taskById(id); if(t){ var k; for(k in patch) t[k]=patch[k]; } });
@@ -7256,13 +7147,16 @@ function admLotePatch(patch, msg){
 function admLoteAcao(acao){
   var ids=admSelIds(); if(!ids.length) return;
   var n=ids.length;
+  var soTarefas=ids.filter(function(i){ var t=taskById(i); return t && !t.is_rule; });
+  var temRegra=ids.some(function(i){ var t=taskById(i); return t && t.is_rule; });
+  if((acao==='feito'||acao==='prazo') && !soTarefas.length){ toast('Rotinas não têm prazo nem se concluem','info'); return; }
   if(acao==='resp'){
     var uOpts='<option value="">Sem responsável</option>'+(ST.users||[]).map(function(u){ return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>'; }).join('');
     admPicker({ title:'Trocar responsável de '+n+' tarefa(s)', campo:'<label class="modal-label">Responsável</label><select class="adm-pick" id="pkVal">'+uOpts+'</select>',
       onOk:function(v, close){ close(); admLotePatch({ assignee_id:v||null }, 'Responsável alterado'); } });
   } else if(acao==='prazo'){
     admPicker({ title:'Alterar prazo de '+n+' tarefa(s)', campo:'<label class="modal-label">Novo prazo</label><input type="date" class="adm-pick" id="pkVal" value="'+today()+'">',
-      onOk:function(v, close){ if(!v){ toast('Escolha uma data','error'); return; } close(); admLotePatch({ due_date:v }, 'Prazo alterado'); } });
+      onOk:function(v, close){ if(!v){ toast('Escolha uma data','error'); return; } close(); admLotePatch({ due_date:v }, 'Prazo alterado', soTarefas); } });
   } else if(acao==='prio'){
     admPicker({ title:'Alterar prioridade de '+n+' tarefa(s)', campo:'<label class="modal-label">Prioridade</label><select class="adm-pick" id="pkVal"><option value="alta">Alta</option><option value="media" selected>Média</option><option value="baixa">Baixa</option></select>',
       onOk:function(v, close){ close(); admLotePatch({ priority:v }, 'Prioridade alterada'); } });
@@ -7271,12 +7165,12 @@ function admLoteAcao(acao){
     admPicker({ title:'Mover '+n+' tarefa(s) para projeto', campo:'<label class="modal-label">Projeto</label><select class="adm-pick" id="pkVal">'+pOpts+'</select>',
       onOk:function(v, close){ close(); admLotePatch({ project_id:v||null }, 'Tarefas movidas'); } });
   } else if(acao==='feito'){
-    admLotePatch({ status:'feito' }, 'Tarefas concluídas');
+    admLotePatch({ status:'feito' }, 'Tarefas concluídas', soTarefas);
   } else if(acao==='arquivar'){
     confirmDialog({ warn:true, icon:'archive', title:'Arquivar '+n+' tarefa(s)?', message:'Elas saem da operação mas continuam no histórico.', confirmLabel:'Arquivar',
       onConfirm:function(){ admLotePatch({ archived_at:new Date().toISOString() }, 'Tarefas arquivadas'); } });
   } else if(acao==='excluir'){
-    confirmDelete('Excluir '+n+' tarefa(s)? Não dá pra desfazer.', function(){
+    confirmDelete('Excluir '+n+' item(ns)?'+(temRegra?' As tarefas já criadas pelas rotinas continuam.':' Não dá pra desfazer.'), function(){
       sb.from('malba_vl_tasks').delete().in('id', ids).then(function(r){
         if(r.error){ toast('Erro ao excluir','error'); console.error(r.error); return; }
         ST.tasks=ST.tasks.filter(function(x){ return ids.indexOf(String(x.id))===-1; });
@@ -7506,17 +7400,6 @@ function openTaskPanel(id){
   setTimeout(function(){ var el=sp.querySelector('#spTitle'); if(el) el.blur(); }, 10);
 }
 
-function bindAdmKpis(){
-  var f=admF();
-  var kps=app.querySelectorAll('[data-admkpi]');
-  for(var i=0;i<kps.length;i++) kps[i].addEventListener('click', function(){
-    var k=this.getAttribute('data-admkpi');
-    if(k==='ativas'){ f.status = f.status==='ativa'?'':'ativa'; f.tipo=''; }
-    else if(k==='pausadas'){ f.status = f.status==='pausada'?'':'pausada'; f.tipo=''; }
-    else { f.tipo = f.tipo===k?'':k; f.status=''; } // diaria / semanal / mensal / unica
-    renderPage();
-  });
-}
 
 function gestaoTabsForSector(){
   var s=ST.sector, T=[];
@@ -7529,8 +7412,8 @@ function gestaoTabsForSector(){
   return T;
 }
 function gestaoHTML() {
-  if (!canEdit()) {
-    return '<div class="empty-page"><div class="ep-ico">'+icon('target')+'</div><h3>Acesso restrito</h3><p>Esta área é para administradores e gestores.</p></div>';
+  if (!can('indicadores')) {
+    return emptyState({ icon:'target', title:'Acesso restrito', text:'Esta área é para Supervisores, Gestores e Administradores.' });
   }
   var T=gestaoTabsForSector(); var ids=T.map(function(x){return x.id;});
   var tab = ST.gestaoTab || ids[0];
@@ -8156,43 +8039,6 @@ function bindGestao() {
 }
 
 /* ============ COLABORADOR: registrar venda, solicitações, painel "Meu Dia" ============ */
-function isColaborador(s){ return roleRank(s||ST.session) <= 1; }
-function meuMemberId(){ var ids=meusMemberIds(); return ids.length?ids[0]:null; }
-function meuStoreId(){ var mid=meuMemberId(); if(mid){ for(var i=0;i<(ST.members||[]).length;i++) if(String(ST.members[i].id)===String(mid)) return ST.members[i].store_unit_id||null; } return ST.store?ST.store.id:null; }
-function _ymNow(){ var d=new Date(); return {y:d.getFullYear(), m:d.getMonth()+1}; }
-function _inMonth(dateStr){ var n=_ymNow(); var d=(dateStr||'').slice(0,10); if(!d) return false; var p=d.split('-'); return Number(p[0])===n.y && Number(p[1])===n.m; }
-function vendasUserMes(uid){ var s=0; (ST.salesEntries||[]).forEach(function(e){ if(String(e.user_id)===String(uid) && _inMonth(e.sale_date)) s+=Number(e.value)||0; }); return s; }
-function minhaMetaMes(){ var n=_ymNow(); var me=String(ST.session.user.id); var g=null; (ST.goals||[]).forEach(function(x){ if(x.month===n.m && x.year===n.y && String(x.user_id)===me) g=x; }); return g; }
-function pendingRequests(){ var sid=boardStore(); return (ST.requests||[]).filter(function(r){ return (r.status||'pendente')==='pendente' && (!sid || String(r.store_unit_id)===String(sid)); }); }
-function _parseBRL(s){ return parseFloat(String(s||'').replace(/\./g,'').replace(',', '.')) || 0; }
-
-function openVendaModal(){
-  var me=ST.session.user; var memberId=meuMemberId(); var storeId=meuStoreId();
-  var modal=document.createElement('div'); modal.className='modal-bg';
-  modal.innerHTML='<div class="modal">'+
-    '<div class="modal-title-input" style="cursor:default">Registrar venda</div>'+
-    '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Valor (R$) *</label><input type="text" id="vVal" inputmode="decimal" placeholder="0,00"></div><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="vDate" value="'+today()+'"></div></div>'+
-    '<div class="modal-row"><label class="modal-label">Cliente (opcional)</label><input type="text" id="vCli" placeholder="Nome do cliente"></div>'+
-    '<div class="modal-row"><label class="modal-label">Observação (opcional)</label><input type="text" id="vObs" placeholder="ex: forma de pagamento, itens"></div>'+
-    '<div class="modal-note">Sua venda entra na sua meta do mês e no acompanhamento do gestor.</div>'+
-    '<div class="modal-foot"><button class="btn btn-ghost" id="vCancel">Cancelar</button><button class="btn btn-primary" id="vSave">Registrar venda</button></div>'+
-  '</div>';
-  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
-  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
-  modal.querySelector('#vCancel').addEventListener('click', close);
-  modal.querySelector('#vSave').addEventListener('click', function(){
-    var val=_parseBRL(modal.querySelector('#vVal').value);
-    if(val<=0){ toast('Informe o valor da venda','error'); return; }
-    var rec={ sector:ST.sector, store_unit_id:storeId, user_id:me.id, user_name:me.name, member_id:memberId, value:val, sale_date:(modal.querySelector('#vDate').value||today()), client_name:(modal.querySelector('#vCli').value||'').trim()||null, note:(modal.querySelector('#vObs').value||'').trim()||null };
-    var b=this; setBusy(b,true);
-    sb.from('malba_sales_entries').insert(rec).select().single().then(function(r){
-      if(r.error||!r.data){ toast('Não consegui registrar (peça ao admin para rodar o SQL de vendas).','error'); console.error(r.error); setBusy(b,false); b.textContent='Registrar venda'; return; }
-      ST.salesEntries.unshift(r.data); auditLog('Registrou venda', 'R$ '+val.toFixed(2)); close(); toast('Venda registrada! 🎉','success'); renderPage();
-    });
-  });
-  document.body.appendChild(modal);
-  modal.querySelector('#vVal').focus();
-}
 
 var REQ_KINDS=['Folga / ausência','Troca de turno','Compra de material','Ajuste de ponto','Adiantamento','Outro'];
 function openRequestModal(){
@@ -8791,7 +8637,6 @@ function openEventModal(ev, presetDate){
 
 /* ========== [10l] CHAT EFÊMERO (Realtime broadcast — nada é salvo) ========== */
 var chatChannel=null, chatMsgs=[];
-function hhmm(){ var d=new Date(); return pad(d.getHours())+':'+pad(d.getMinutes()); }
 function chatTeardown(){ if (chatChannel) { try{ sb.removeChannel(chatChannel); }catch(e){} chatChannel=null; } }
 function chatStartOfDayISO(){ var d=new Date(); d.setHours(0,0,0,0); return d.toISOString(); }
 function chatTime(ts){ try{ var d=new Date(ts); return pad(d.getHours())+':'+pad(d.getMinutes()); }catch(e){ return ''; } }
@@ -9044,6 +8889,8 @@ function renderPage() {
   if (ST.page!=='chat') chatTeardown();
   var _lb=document.getElementById('admLote'); if(_lb&&_lb.parentNode) _lb.parentNode.removeChild(_lb); // v81
   // v74: telas de resultado e Ponto abrem SEMPRE dentro do hub (Gestão/Equipe) — navegação unificada + compat de rotas/deep-links
+  if (ST.page==='calendario' && pageAllowed('calendario', ST.session)){ ST.taskView='calendario'; ST.page='tarefas'; } // v88
+  if (ST.page==='projetos' && pageAllowed('projetos', ST.session)){ ST.taskView='projetos'; ST.page='tarefas'; }        // v88
   if (ST.page==='admtarefas'){ ST.gestaoTab='tarefas'; ST.page='gestao'; } // v79
   if (ST.page==='kpis'){ ST.page='inicio'; } // v78: painel de KPIs foi absorvido pelo Dashboard único
   if (GESTAO_CHILDREN.indexOf(ST.page)!==-1){ ST.gestaoTab=ST.page; ST.page='gestao'; }
