@@ -1402,6 +1402,141 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .act-btn.icon-only span { display: none; }
 .act-row { display: inline-flex; gap: 6px; align-items: center; }
 
+/* v80: painel lateral da tarefa (edição sem sair da tela) */
+.sp-bg { position: fixed; inset: 0; background: rgba(15,23,42,.35); z-index: 1095; animation: fade .12s; }
+.sp { position: fixed; top: 0; right: 0; bottom: 0; width: 430px; max-width: 92vw; background: var(--u-card); border-left: 1px solid var(--u-border); box-shadow: var(--u-shadow-lg); z-index: 1096; display: flex; flex-direction: column; animation: spin-right .22s cubic-bezier(.4,0,.2,1); }
+@keyframes spin-right { from { transform: translateX(30px); opacity: .5; } to { transform: translateX(0); opacity: 1; } }
+.sp-head { display: flex; align-items: flex-start; gap: 10px; padding: 16px 18px 12px; border-bottom: 1px solid var(--u-line); }
+.sp-head .sp-t { flex: 1; font-size: 15.5px; font-weight: 700; color: var(--u-text); background: none; border: 1px solid transparent; border-radius: var(--radius-sm); padding: 5px 7px; margin: -5px -7px; resize: none; min-height: 34px; line-height: 1.35; font-family: inherit; }
+.sp-head .sp-t:hover { border-color: var(--u-border); }
+.sp-head .sp-t:focus { border-color: var(--u-accent); background: var(--u-bg2); outline: none; }
+.sp-x { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--u-text3); flex-shrink: 0; font-size: 19px; line-height: 1; }
+.sp-x:hover { background: var(--u-bg2); color: var(--u-text); }
+.sp-body { flex: 1; overflow-y: auto; padding: 14px 18px 18px; -webkit-overflow-scrolling: touch; }
+.sp-row { margin-bottom: 14px; }
+.sp-lb { display: block; font-size: 11.5px; font-weight: 700; color: var(--u-text3); text-transform: uppercase; letter-spacing: .3px; margin-bottom: 6px; }
+.sp-row select, .sp-row input[type=date], .sp-row textarea { width: 100%; border: 1px solid var(--u-border); border-radius: var(--radius-sm); background: var(--u-card); color: var(--u-text); font-size: 13px; padding: 8px 10px; font-family: inherit; }
+.sp-row textarea { min-height: 74px; resize: vertical; }
+.sp-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sp-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.sp-pill { height: 30px; padding: 0 11px; border-radius: 20px; background: var(--u-bg2); color: var(--u-text2); font-size: 12.5px; font-weight: 600; border: 1px solid transparent; }
+.sp-pill.on { background: var(--u-accent-soft); color: var(--u-accent); border-color: var(--u-accent); }
+.sp-sub { display: flex; align-items: center; gap: 8px; padding: 7px 2px; border-bottom: 1px solid var(--u-line); font-size: 13px; color: var(--u-text); }
+.sp-sub input[type=checkbox] { width: 15px; height: 15px; flex-shrink: 0; accent-color: var(--u-accent); }
+.sp-sub span { flex: 1; }
+.sp-sub.done span { text-decoration: line-through; color: var(--u-text3); }
+.sp-sub-x { color: var(--u-text3); font-size: 16px; line-height: 1; padding: 0 4px; }
+.sp-sub-x:hover { color: var(--u-red); }
+.sp-sub-add { width: 100%; margin-top: 8px; border: 1px dashed var(--u-border); border-radius: var(--radius-sm); background: none; color: var(--u-text); font-size: 12.5px; padding: 8px 10px; }
+.sp-rec { display: flex; align-items: center; gap: 9px; padding: 10px 12px; background: var(--u-accent-soft); border-radius: var(--radius-sm); font-size: 12.5px; color: var(--u-accent); margin-bottom: 14px; }
+.sp-rec b { font-weight: 700; }
+.sp-rec .sp-rec-b { margin-left: auto; background: var(--u-card); color: var(--u-accent); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 7px; white-space: nowrap; }
+.sp-foot { border-top: 1px solid var(--u-line); padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); display: flex; flex-wrap: wrap; gap: 7px; }
+.sp-saved { font-size: 11.5px; color: var(--u-green); opacity: 0; transition: opacity .2s; margin-left: auto; align-self: center; }
+.sp-saved.on { opacity: 1; }
+@media (max-width: 760px) {
+  .sp { top: auto; left: 0; width: 100%; max-width: 100%; height: 92vh; border-left: 0; border-radius: 20px 20px 0 0; animation: slideup .25s cubic-bezier(.4,0,.2,1); }
+}
+
+/* v79: Central de Administração de Tarefas */
+.adm-kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
+.adm-kpi { background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius-sm); padding: 12px 10px; text-align: left; transition: border-color .15s, transform .12s; }
+.adm-kpi:hover { border-color: var(--u-accent); }
+.adm-kpi.on { border-color: var(--u-accent); box-shadow: 0 0 0 1px var(--u-accent) inset; }
+.adm-kpi b { display: block; font-size: 21px; font-weight: 700; line-height: 1.1; }
+.adm-kpi i { display: block; font-style: normal; font-size: 11.5px; color: var(--u-text3); margin-top: 4px; }
+.adm-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+.adm-bar select, .adm-bar input[type=date] { height: 34px; font-size: 12.5px; padding: 0 9px; border-radius: var(--radius-sm); border: 1px solid var(--u-border); background: var(--u-card); color: var(--u-text); }
+.adm-search { flex: 1; min-width: 190px; height: 34px; padding: 0 11px; border-radius: var(--radius-sm); border: 1px solid var(--u-border); background: var(--u-card); color: var(--u-text); font-size: 13px; }
+.adm-clear { height: 34px; padding: 0 11px; border-radius: var(--radius-sm); background: var(--u-bg2); color: var(--u-text2); font-size: 12.5px; font-weight: 600; }
+.adm-clear:hover { background: var(--u-border); color: var(--u-text); }
+.adm-filtros-btn { display: none; }
+.adm-group { margin-bottom: 14px; }
+.adm-group-h { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px 2px; background: none; color: var(--u-text); font-size: 13.5px; font-weight: 700; border-bottom: 1px solid var(--u-line); }
+.adm-group-h .agh-c { font-size: 12px; font-weight: 600; color: var(--u-text3); background: var(--u-bg2); padding: 2px 8px; border-radius: 20px; }
+.adm-group-h .agh-sp { flex: 1; }
+.adm-group-h .agh-ar { color: var(--u-text3); transition: transform .15s; }
+.adm-group.closed .agh-ar { transform: rotate(-90deg); }
+.adm-group.closed .adm-list { display: none; }
+.adm-list { display: flex; flex-direction: column; gap: 7px; padding-top: 9px; }
+.adm-row { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius-sm); padding: 10px 12px; transition: border-color .15s; }
+.adm-row:hover { border-color: var(--u-accent); }
+.adm-row .ar-prio { width: 4px; align-self: stretch; border-radius: 3px; flex-shrink: 0; }
+.adm-row .ar-main { flex: 1; min-width: 0; }
+.adm-row .ar-t { display: block; font-size: 13.5px; font-weight: 600; color: var(--u-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.adm-row .ar-sub { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 3px; font-size: 11.5px; color: var(--u-text3); }
+.adm-row .ar-av { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.adm-row .ar-date { font-size: 12px; color: var(--u-text2); flex-shrink: 0; }
+.adm-row .ar-date.late { color: var(--u-red); font-weight: 700; }
+.adm-selo { display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+.adm-selo.rotina { background: var(--u-accent-soft); color: var(--u-accent); }
+.adm-selo.recorrente { background: var(--u-amber-soft); color: var(--u-amber); }
+.adm-selo.pop { background: var(--u-green-soft); color: var(--u-green); }
+.adm-st { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; flex-shrink: 0; }
+.adm-more { width: 100%; margin-top: 10px; height: 38px; border-radius: var(--radius-sm); background: var(--u-bg2); color: var(--u-text2); font-size: 12.5px; font-weight: 600; }
+.adm-more:hover { background: var(--u-border); color: var(--u-text); }
+@media (max-width: 900px) { .adm-kpis { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) {
+  .adm-kpis { grid-template-columns: repeat(2, 1fr); }
+  .adm-filtros-btn { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 13px; border-radius: var(--radius-sm); background: var(--u-card); border: 1px solid var(--u-border); color: var(--u-text); font-size: 13px; font-weight: 600; }
+  .adm-filtros-btn svg { width: 15px; height: 15px; }
+  .adm-filtros-btn .afb-n { background: var(--u-accent); color: #fff; border-radius: 20px; padding: 1px 7px; font-size: 11px; }
+  .adm-bar { position: fixed; inset: auto 0 0 0; z-index: 1090; flex-direction: column; align-items: stretch; background: var(--u-card); border-radius: 20px 20px 0 0; box-shadow: var(--u-shadow-lg); padding: 18px 16px calc(18px + env(safe-area-inset-bottom)); margin: 0; max-height: 82vh; overflow-y: auto; animation: slideup .25s cubic-bezier(.4,0,.2,1); }
+  .adm-bar.hidden { display: none; }
+  .adm-bar select, .adm-bar input[type=date], .adm-search { width: 100%; height: 40px; }
+  .adm-bar-bg { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 1089; animation: fade .12s; }
+  .adm-bar-bg.hidden { display: none; }
+}
+
+/* v78: bloco de faturamento dentro do Dashboard único */
+.dash-fat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.df-kpi { background: var(--u-bg2); border-radius: var(--radius-sm); padding: 11px 12px; text-align: center; }
+.df-kpi b { display: block; font-size: 17px; font-weight: 700; color: var(--u-text); }
+.df-kpi i { display: block; font-style: normal; font-size: 11.5px; color: var(--u-text3); margin-top: 3px; }
+@media (max-width: 560px) { .dash-fat { grid-template-columns: 1fr; } }
+
+/* v76: assistente de cadastro em 4 passos (fluxo único de todo cadastro) */
+.wz-modal { max-width: 560px; }
+.wz-title { font-size: 17px; font-weight: 700; color: var(--u-text); margin-bottom: 15px; }
+.wz-steps { display: flex; align-items: center; margin-bottom: 18px; }
+.wz-step { display: flex; align-items: center; gap: 8px; background: none; padding: 0; color: var(--u-text3); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+.wz-num { width: 24px; height: 24px; border-radius: 50%; background: var(--u-bg2); color: var(--u-text3); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; transition: background .15s, color .15s; }
+.wz-num svg { width: 13px; height: 13px; }
+.wz-step.on .wz-num { background: var(--u-accent); color: #fff; }
+.wz-step.on { color: var(--u-text); }
+.wz-step.done .wz-num { background: var(--u-green); color: #fff; }
+.wz-line { flex: 1; height: 2px; background: var(--u-border); margin: 0 8px; min-width: 10px; }
+.wz-body { min-height: 190px; }
+.wz-pane { animation: fade .15s; }
+.wz-foot { flex-wrap: nowrap; }
+.wz-foot .wz-foot-sp { flex: 1; }
+.wz-foot .btn { flex: 0 0 auto; }
+.wz-auto { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding: 9px 11px; background: var(--u-bg2); border-radius: var(--radius-sm); font-size: 12.5px; color: var(--u-text2); }
+.wz-auto svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--u-text3); }
+.wz-review { display: flex; flex-direction: column; }
+.wz-rev-row { display: flex; justify-content: space-between; gap: 16px; padding: 11px 2px; border-bottom: 1px solid var(--u-line); font-size: 13.5px; }
+.wz-rev-row:last-child { border-bottom: 0; }
+.wz-rev-l { color: var(--u-text2); font-weight: 600; flex-shrink: 0; }
+.wz-rev-v { color: var(--u-text); text-align: right; word-break: break-word; }
+.wz-rev-v i { color: var(--u-text3); }
+.wz-rev-empty { color: var(--u-text3); font-size: 13px; padding: 12px 0; }
+@media (max-width: 560px) { .wz-step .wz-lb { display: none; } .wz-line { margin: 0 5px; } }
+
+/* v77: feedback de interação imediato + foco previsível + mobile limpo (vale pra todas as telas) */
+* { -webkit-tap-highlight-color: transparent; }
+.btn:active:not(:disabled) { transform: translateY(0) scale(.985); filter: brightness(.97); }
+.nav-item:active, .cfg-tab:active, .act-btn:active, .vt-btn:active, .wz-step:active, .pill:active, .team-seg button:active { transform: scale(.97); }
+.task-card:active, .member-card:active, .com-row:active, .aval-row:active, .client-card:active { transform: scale(.995); }
+button:focus-visible, a:focus-visible, .nav-item:focus-visible, .cfg-tab:focus-visible, .wz-step:focus-visible, .act-btn:focus-visible { outline: 2px solid var(--u-accent); outline-offset: 2px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--u-accent); outline-offset: 1px; }
+/* botão em carregamento — feedback imediato ao salvar */
+.btn.busy { position: relative; color: transparent !important; pointer-events: none; }
+.btn.busy::after { content: ''; position: absolute; width: 16px; height: 16px; top: 50%; left: 50%; margin: -8px 0 0 -8px; border: 2px solid rgba(255,255,255,.45); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; }
+.btn-ghost.busy::after, .btn-danger.busy::after { border-color: rgba(0,0,0,.2); border-top-color: var(--u-text2); }
+/* CTA dentro da tela vazia — ação previsível "e agora?" resolvida */
+.empty-page .es-cta { margin-top: 18px; display: inline-flex; align-items: center; gap: 7px; }
+.empty-page .es-cta svg { width: 16px; height: 16px; }
+
 .toast-wrap { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; gap: 8px; align-items: center; }
 .toast { padding: 12px 20px; border-radius: 12px; font-size: 13.5px; font-weight: 600; color: #fff; box-shadow: var(--u-shadow-lg); animation: toastIn .2s; }
 .toast.success { background: var(--u-green); }
@@ -1631,6 +1766,11 @@ html.dark .tc-src-camp { color: #C4B5FD; }
   .modal-foot { flex-wrap: wrap; }
   .modal-foot .btn { flex: 1; min-width: 116px; }
   .btn-del-wrap { order: 3; flex-basis: 100%; }
+  /* v77.2: assistente (wizard) e confirmação confortáveis no mobile */
+  .wz-foot .wz-foot-sp { display: none; }
+  .wz-foot #wzBack, .wz-foot #wzNext { flex: 1; min-width: 116px; }
+  .confirm-bg { padding: 0; align-items: flex-end; }
+  .confirm-card { max-width: 100%; width: 100%; border-radius: 20px 20px 0 0; padding: 22px 18px calc(22px + env(safe-area-inset-bottom)); animation: slideup .25s cubic-bezier(.4,0,.2,1); }
 }
 @keyframes slideup { from { transform: translateY(28px); opacity: .6; } to { transform: translateY(0); opacity: 1; } }
 
@@ -1666,7 +1806,7 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v75 · 17/07 (Biblioteca de ações: diálogo de confirmação único substitui os 27 confirm() do navegador + vocabulário/componentes reutilizáveis)';
+var APP_BUILD = 'v80 · 18/07 (Central de Tarefas fatia 2: painel lateral com edição, checklist, duplicar, arquivar e excluir — sem sair da tela)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1683,7 +1823,7 @@ function p(id,label,ic,enabled,group,hidden){ return { id:id, label:label, icon:
 var GROUP_ORDER = ['PRINCIPAL','OPERAÇÃO','GESTÃO','SISTEMA'];
 // Páginas de resultado (Metas/Relatório/Ranking/Orçamento) e Ponto ficam "hidden": seguem roteáveis (compat) mas
 // não aparecem no menu — abrem como ABAS dentro da Gestão / Equipe. Assim o menu fica enxuto e o padrão é único.
-var PAGE_PARENT   = { ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'gestao' };
+var PAGE_PARENT   = { ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'inicio' };
 var GESTAO_CHILDREN = ['metas','relatorio','ranking','orcamento'];
 var PAGES = {
   lojas: [
@@ -2098,6 +2238,73 @@ function actionBtn(type, attrs, iconOnly){
   var a=ACTIONS[type]||ACTIONS.editar; attrs=attrs||'';
   return '<button class="act-btn'+(a.danger?' danger':'')+(iconOnly?' icon-only':'')+'" '+attrs+' title="'+esc(a.label)+'">'+icon(a.icon)+'<span>'+esc(a.label)+'</span></button>';
 }
+// Assistente de cadastro em 4 passos — TODO cadastro usa o mesmo fluxo:
+// 1) Informações principais  2) Configurações  3) Responsáveis  4) Revisão.
+// O passo de Revisão é montado automaticamente lendo os campos marcados com data-review="Rótulo".
+function formWizard(opts){
+  opts=opts||{};
+  var steps=opts.steps||[];
+  var LABELS=['Informações principais','Configurações','Responsáveis','Revisão'];
+  var cur=0;
+  var bg=document.createElement('div'); bg.className='modal-bg';
+  var stepper=LABELS.map(function(l,i){ return '<button class="wz-step" data-goto="'+i+'"><span class="wz-num">'+(i+1)+'</span><span class="wz-lb">'+esc(l)+'</span></button>'; }).join('<span class="wz-line"></span>');
+  var panes='';
+  for(var i=0;i<3;i++){ panes+='<div class="wz-pane" data-pane="'+i+'">'+((steps[i]&&steps[i].html)||'')+'</div>'; }
+  panes+='<div class="wz-pane" data-pane="3"><div class="wz-review" id="wzReview"></div></div>';
+  var del=(opts.del)?'<button class="btn btn-danger btn-del-wrap" id="wzDel">'+esc(opts.delLabel||'Excluir')+'</button>':'';
+  bg.innerHTML='<div class="modal wz-modal">'+
+    (opts.title?'<div class="wz-title">'+esc(opts.title)+'</div>':'')+
+    '<div class="wz-steps">'+stepper+'</div>'+
+    '<div class="wz-body">'+panes+'</div>'+
+    '<div class="modal-foot wz-foot">'+del+'<div class="wz-foot-sp"></div><button class="btn btn-ghost" id="wzBack">Voltar</button><button class="btn btn-primary" id="wzNext">Avançar</button></div>'+
+  '</div>';
+  document.body.appendChild(bg);
+  function close(){ if(bg.parentNode) bg.parentNode.removeChild(bg); }
+  bg.addEventListener('click', function(e){ if(e.target===bg) close(); });
+  var stepEls=bg.querySelectorAll('.wz-step');
+  var paneEls=bg.querySelectorAll('.wz-pane');
+  var backBtn=bg.querySelector('#wzBack');
+  var nextBtn=bg.querySelector('#wzNext');
+  function reviewVal(el){
+    if(el.hasAttribute('data-review-value')) return el.getAttribute('data-review-value');
+    var tag=el.tagName;
+    if(tag==='SELECT'){ var o=el.options[el.selectedIndex]; return o?(o.textContent||'').trim():''; }
+    if(tag==='INPUT'||tag==='TEXTAREA'){ if(el.type==='date'&&el.value) return fmtDate(el.value); return (el.value||'').trim(); }
+    return (el.textContent||'').trim();
+  }
+  function buildReview(){
+    var rows=''; var nodes=bg.querySelectorAll('[data-review]');
+    for(var i=0;i<nodes.length;i++){ var lb=nodes[i].getAttribute('data-review'); var v=reviewVal(nodes[i]); rows+='<div class="wz-rev-row"><span class="wz-rev-l">'+esc(lb)+'</span><span class="wz-rev-v">'+(v?esc(v):'<i>—</i>')+'</span></div>'; }
+    if(opts.reviewExtra){ var ex=opts.reviewExtra(bg); if(ex) rows+=ex; }
+    bg.querySelector('#wzReview').innerHTML = rows || '<div class="wz-rev-empty">Sem dados para revisar.</div>';
+  }
+  function render(){
+    for(var i=0;i<paneEls.length;i++) paneEls[i].style.display=(i===cur?'':'none');
+    for(var s=0;s<stepEls.length;s++){ stepEls[s].className='wz-step'+(s===cur?' on':(s<cur?' done':'')); var num=stepEls[s].querySelector('.wz-num'); if(num) num.innerHTML=(s<cur?icon('check'):(s+1)); }
+    backBtn.style.visibility=(cur===0?'hidden':'visible');
+    nextBtn.textContent=(cur===3?(opts.saveLabel||(opts.editing?'Salvar':'Criar')):'Avançar');
+    if(cur===3) buildReview();
+    if(cur<3){ var f=paneEls[cur].querySelector('input,select,textarea'); if(f) setTimeout(function(){ try{f.focus();}catch(e){} },20); }
+  }
+  function valid(i){ var st=steps[i]; if(st&&st.validate) return st.validate(bg)!==false; return true; }
+  function go(to){ if(to<0||to>3) return; if(to>cur){ for(var i=cur;i<to;i++){ if(!valid(i)){ cur=i; render(); return; } } } cur=to; render(); }
+  backBtn.addEventListener('click', function(){ go(cur-1); });
+  nextBtn.addEventListener('click', function(){ if(cur<3) go(cur+1); else if(opts.onSave) opts.onSave(bg, close, nextBtn); });
+  for(var g=0; g<stepEls.length; g++) stepEls[g].addEventListener('click', function(){ go(parseInt(this.getAttribute('data-goto'),10)); });
+  if(opts.del && opts.onDelete){ var dbtn=bg.querySelector('#wzDel'); if(dbtn) dbtn.addEventListener('click', function(){ opts.onDelete(close); }); }
+  if(opts.onReady) opts.onReady(bg, close);
+  render();
+  return { bg:bg, close:close, go:go };
+}
+// Tela vazia padrão: ícone + o que é + o que fazer (CTA opcional). Some o "e agora?" de quem é novo.
+// cta: rótulo do botão. O clique dispara a ação principal da tela (novoContextual), então é sempre previsível.
+function emptyState(o){
+  o=o||{};
+  var cta = o.cta ? '<button class="btn btn-primary es-cta">'+icon('plus')+esc(o.cta)+'</button>' : '';
+  return '<div class="empty-page"'+(o.span?' style="grid-column:1/-1"':'')+'><div class="ep-ico">'+icon(o.icon||'folder')+'</div><h3>'+esc(o.title||'Nada por aqui ainda')+'</h3>'+(o.text?'<p>'+esc(o.text)+'</p>':'')+cta+'</div>';
+}
+// Estado de carregamento de um botão (feedback imediato).
+function setBusy(btn, on){ if(!btn) return; if(on){ btn.classList.add('busy'); btn.disabled=true; } else { btn.classList.remove('busy'); btn.disabled=false; } }
 /* ================================================================= */
 
 function startSplash(){
@@ -2143,7 +2350,7 @@ function renderLogin(sector) {
   function entrar(){
     errEl.textContent=''; btn.disabled=true; btn.textContent='Entrando...';
     login(emailEl.value, senhaEl.value, sector).then(function(r){
-      btn.disabled=false; btn.textContent='Entrar';
+      setBusy(btn,false); btn.textContent='Entrar';
       if(!r.ok){ errEl.textContent=r.msg; return; }
       var landing = (roleRank(r.session) <= 1) ? 'inicio' : 'tarefas';
       ST.loaded=false; startSplash(); navigate(sector+'/'+landing); boot();
@@ -2224,13 +2431,22 @@ function novoContextual() {
   if (!canEdit()) { return openTaskModal(null); } // usuário comum só cria tarefa
   var pg=ST.page;
   if (pg==='campanhas') return openCampaignModal(null);
+  if (pg==='conteudo') return openContentModal(null);
+  if (pg==='biblioteca') return openCriativoModal(null);
   if (pg==='crm') return openClientModal(null);
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
-  if (pg==='metas') return openGoalModal(null);
+  if (pg==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
   if (pg==='equipe') return openMemberModal(null);
+  if (pg==='config'){
+    var ct=ST.configTab||'usuarios';
+    if (ct==='lojas') return openStoreModal(null);
+    if (ct==='banners') return openBannerModal(null);
+    return openUserModal(null);
+  }
   if (pg==='gestao'){
     var gt=ST.gestaoTab||'';
-    if (gt==='metas') return openGoalModal(null);
+    if (gt==='tarefas') return openTaskModal(null);
+    if (gt==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
     if (gt==='avaliacoes') return openAvaliacaoModal();
     return openComissaoModal();
   }
@@ -2363,8 +2579,30 @@ function panelProjetos() {
   var body=ps.map(function(p){ var pct=projProgress(p.id); var cor=p.color||'#3B6FF7'; return '<button class="dash-proj" data-dproj="'+esc(p.id)+'"><div class="dp-top"><span class="dp-dot" style="background:'+cor+'"></span><span class="dp-n">'+esc(p.name)+'</span><b>'+pct+'%</b></div><div class="dg-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div></button>'; }).join('');
   return dashPanel('Projetos em andamento', icon('folder'), '<div class="dash-projs">'+body+'</div>');
 }
+// v78: faturamento — vinha de uma página de KPIs solta (fora do menu); agora é um bloco do Dashboard único
+function panelFaturamento(){
+  var rows=kpiFatRows();
+  var fat=rows.reduce(function(s,f){ return s+(Number(f.total)||0); },0);
+  var ped=rows.reduce(function(s,f){ return s+(Number(f.orders_count)||0); },0);
+  var ticket=ped>0?fat/ped:0;
+  var now=new Date(), y=now.getFullYear(), m=now.getMonth()+1, sid=kpiStoreId();
+  var gs=visibleGoals().filter(function(g){ return g.month===m && g.year===y && (!sid || String(g.store_unit_id)===String(sid)); });
+  var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
+  var real=gs.reduce(function(s,g){ return s+realizadoMeta(g); },0);
+  var pct=meta>0?Math.min(100,Math.round(real/meta*100)):0;
+  var body='<div class="dash-fat">'+
+      '<div class="df-kpi"><b style="color:var(--u-green)">'+brlShort(fat)+'</b><i>Faturamento (mês)</i></div>'+
+      '<div class="df-kpi"><b>'+ped+'</b><i>Pedidos</i></div>'+
+      '<div class="df-kpi"><b>'+brlShort(ticket)+'</b><i>Ticket médio</i></div>'+
+    '</div>'+
+    (meta>0
+      ? '<div class="dash-goal"><div class="dg-top"><span>Meta do mês</span><b>'+pct+'%</b></div><div class="dg-bar"><span style="width:'+pct+'%"></span></div></div>'
+      : '<div class="dash-empty">Defina a meta do mês em Gestão › Metas.</div>');
+  return dashPanel('Faturamento', icon('dollar'), body);
+}
 function dashPanels() {
-  return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+panelProjetos();
+  var fat = (ST.sector==='lojas'||ST.sector==='vendas') ? panelFaturamento() : '';
+  return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+fat+panelProjetos();
 }
 /* ----- Painel da loja (posto de trabalho, dia a dia) ----- */
 function vendasHojeLoja(storeId){ var t=today(); var s=0; (ST.blingFat||[]).forEach(function(f){ if(String(f.store_unit_id)===String(storeId) && String(f.ref_date).slice(0,10)===t) s+=Number(f.total)||0; }); return s; }
@@ -3136,6 +3374,8 @@ function openTaskModal(task, preset) {
   var dis = ro?' disabled':'';
   var subList = (task && Array.isArray(task.subtasks)) ? task.subtasks.map(function(s){ return { id:s.id||uid(), text:s.text||'', done:!!s.done }; }) : [];
   var stPills=STATUS_ORDER.map(function(k){ return '<button type="button" class="pill st-pill'+(t.status===k?' on':'')+'" data-st="'+k+'" style="color:'+STATUS[k].color+'"><span class="pdot" style="background:'+STATUS[k].color+'"></span>'+STATUS[k].label+'</button>'; }).join('');
+  // v79: tipo da tarefa (Normal / POP) — alimenta o filtro da Central de Tarefas
+  var kindPills=[['normal','Normal'],['pop','POP']].map(function(k){ return '<button type="button" class="pill kd-pill'+(((t.task_kind||'normal')===k[0])?' on':'')+'" data-kd="'+k[0]+'">'+k[1]+'</button>'; }).join('');
   var prPills=['alta','media','baixa'].map(function(k){ return '<button type="button" class="pill pr-pill'+(t.priority===k?' on':'')+'" data-pr="'+k+'" style="color:'+PRIO[k].color+'"><span class="pdot" style="background:'+PRIO[k].color+'"></span>'+PRIO[k].label+'</button>'; }).join('');
   var recPills=REC_ORDER.map(function(k){ return '<button type="button" class="pill rec-pill'+((t.recurrence||'none')===k?' on':'')+'" data-rec="'+k+'">'+REC[k].label+'</button>'; }).join('');
   var userOpts='<option value="">— Ninguém —</option>';
@@ -3151,6 +3391,7 @@ function openTaskModal(task, preset) {
       (ro?'<div class="crm-seg-hint"><span class="crm-seg-x">Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
       '<div class="modal-row"><label class="modal-label">Status</label><div class="pills" id="tStatus">'+stPills+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
+      '<div class="modal-row"><label class="modal-label">Tipo</label><div class="pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
       '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
       recManageRow+
@@ -3162,11 +3403,12 @@ function openTaskModal(task, preset) {
     '</div>';
   document.body.appendChild(modal);
 
-  var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none';
+  var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none', kdPick=(t.task_kind||'normal');
   var recUntil='', recDiasUteis=false, recWeekdays=[], recSemFim=true; // v70: por padrão a rotina roda pra sempre
   bindPills(modal, '#tStatus .st-pill', 'st', function(v){ stPick=v; });
   if (!ro) {
     bindPills(modal, '#tPrio .pr-pill', 'pr', function(v){ prPick=v; });
+    bindPills(modal, '#tKind .kd-pill', 'kd', function(v){ kdPick=v; });
     bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; renderRecOpts(); });
   }
   function renderRecOpts(){
@@ -3239,11 +3481,11 @@ function openTaskModal(task, preset) {
     var saveBtn=modal.querySelector('#taskSave');
     if (ro) {
       // colaborador: salva o status e o checklist (pode marcar os próprios passos)
-      saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+      setBusy(saveBtn,true);
       var roPayload={ status:stPick };
       if (subList.length>0 || (task && task.subtasks && task.subtasks.length)) roPayload.subtasks=subList;
       sb.from('malba_vl_tasks').update(roPayload).eq('id', t.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar status'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar status'; return; }
         for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i].status=stPick; ST.tasks[i].subtasks=subList; break; }
         close(); toast('Atualizado','success'); renderPage();
       });
@@ -3251,12 +3493,12 @@ function openTaskModal(task, preset) {
     }
     var title=(modal.querySelector('#tTitle').value||'').trim();
     if (!title) { toast('Informe o título da tarefa','error'); return; }
-    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), assignee_id:modal.querySelector('#tAssignee').value||null, project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:scopeStore() };
+    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), task_kind:kdPick, assignee_id:modal.querySelector('#tAssignee').value||null, project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:scopeStore() };
     if (subList.length>0 || (task && task.subtasks && task.subtasks.length)) payload.subtasks=subList;
-    saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    setBusy(saveBtn,true);
     if (isEdit) {
       sb.from('malba_vl_tasks').update(payload).eq('id', t.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i]=Object.assign(ST.tasks[i],payload); break; }
         auditLog('Editou tarefa', title); close(); toast('Tarefa atualizada','success'); renderPage();
       });
@@ -3280,21 +3522,21 @@ function openTaskModal(task, preset) {
               var datas=gerarDatasRec(payload.due_date, recPick, { until:until2, diasUteis:recDiasUteis, weekdays:recWeekdays });
               if (datas.length>1){
                 var rows=datas.map(function(ds){ var p=Object.assign({}, payload); p.due_date=ds; p.recur_group=grupo; return p; });
-                insertRecorrencia(rows, function(ok, n){ if(!ok){ saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; } auditLog('Criou tarefas recorrentes (compat)', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); toast('Dica: rode o SQL da Parte 2 p/ o modo automático','info'); renderPage(); });
+                insertRecorrencia(rows, function(ok, n){ if(!ok){ setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return; } auditLog('Criou tarefas recorrentes (compat)', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); toast('Dica: rode o SQL da Parte 2 p/ o modo automático','info'); renderPage(); });
                 return;
               }
             }
-            toast('Erro ao criar rotina','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return;
+            toast('Erro ao criar rotina','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return;
           }
           if (r.data) ST.tasks.unshift(r.data); // a regra em si (fica invisível nas telas)
           materializarRecorrencias().then(function(){
             auditLog('Criou rotina recorrente', title); close(); toast('Rotina criada — aparece todo dia ✓','success'); renderPage();
           });
-        }, function(e){ toast('Erro ao criar rotina','error'); console.error(e); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; });
+        }, function(e){ toast('Erro ao criar rotina','error'); console.error(e); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; });
         return;
       }
       sb.from('malba_vl_tasks').insert(payload).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar tarefa'; return; }
+        if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return; }
         ST.tasks.unshift(r.data);
         auditLog('Criou tarefa', title); close(); toast('Tarefa criada','success'); renderPage();
       });
@@ -3376,9 +3618,9 @@ function openRotinaModal(rule){
   modal.querySelector('#roSave').addEventListener('click', function(){
     var title=(modal.querySelector('#roTitle').value||'').trim(); if(!title){ toast('Informe o título','error'); return; }
     var patch={ title:title, description:(modal.querySelector('#roDesc').value||'').trim(), priority:prPick, area:(modal.querySelector('#roArea').value||'').trim(), assignee_id:(modal.querySelector('#roAssignee').value||null) };
-    var btn=modal.querySelector('#roSave'); btn.disabled=true; btn.textContent='Salvando...';
+    var btn=modal.querySelector('#roSave'); setBusy(btn,true);
     sb.from('malba_vl_tasks').update(patch).eq('id', rule.id).then(function(r){
-      if(r.error){ toast('Erro ao salvar rotina','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; }
+      if(r.error){ toast('Erro ao salvar rotina','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Salvar'; return; }
       Object.assign(rule, patch);
       // propaga para as próximas ocorrências ainda não feitas (de hoje pra frente)
       sb.from('malba_vl_tasks').update(patch).eq('recur_group', rule.recur_group).eq('is_rule', false).gte('due_date', today()).neq('status','feito').then(function(){
@@ -3665,7 +3907,7 @@ function openMemberModal(member) {
       if (!accPass)  { toast('Defina a senha de acesso','error'); return; }
     }
 
-    var saveBtn=modal.querySelector('#memberSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#memberSave'); setBusy(saveBtn,true);
     function finalize(msg, kind){ close(); toast(msg || ('Funcionário '+(isNew?'adicionado':'atualizado')), kind||'success'); renderPage(); }
     function showAccErr(err){
       var raw=(err&&err.message)?err.message:(typeof err==='string'?err:'erro desconhecido');
@@ -3726,13 +3968,13 @@ function openMemberModal(member) {
     }
     if (isNew) {
       sb.from('malba_store_members').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao adicionar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Adicionar'; return; }
+        if (r.error || !r.data) { toast('Erro ao adicionar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Adicionar'; return; }
         ST.members.push(r.data); auditLog('Adicionou funcionário', name);
         if (makeUser) criarConta(r.data.id); else finalize();
       });
     } else {
       sb.from('malba_store_members').update(rec).eq('id', m.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.members.length;i++) if (ST.members[i].id===m.id) { ST.members[i]=Object.assign(ST.members[i],rec); break; }
         if (makeUser) criarConta(m.id); else finalize();
       });
@@ -3868,15 +4110,15 @@ function openFichaColaborador(member){
   }
   function addNota1on1(){
     var el=modal.querySelector('#fiNota'); var txt=(el.value||'').trim(); if(!txt){ toast('Escreva a nota','error'); return; }
-    var btn=modal.querySelector('#fiAddNota'); btn.disabled=true; btn.textContent='Salvando...';
+    var btn=modal.querySelector('#fiAddNota'); setBusy(btn,true);
     var rec={ sector:ST.sector, member_id:m.id, author_id:ST.session.user.id, author_name:ST.session.user.name, note_date:today(), text:txt };
-    sb.from('malba_notes').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar nota'; return; } ST.notes1on1.unshift(r.data); auditLog('Nota 1:1', m.name); toast('Nota salva','success'); draw(); });
+    sb.from('malba_notes').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Salvar nota'; return; } ST.notes1on1.unshift(r.data); auditLog('Nota 1:1', m.name); toast('Nota salva','success'); draw(); });
   }
   function enviarKudos(){
     var el=modal.querySelector('#fiKudo'); var msg=(el.value||'').trim(); if(!msg){ toast('Escreva o reconhecimento','error'); return; }
     var btn=modal.querySelector('#fiSendKudo'); btn.disabled=true; btn.textContent='Enviando...';
     var rec={ sector:ST.sector, member_id:m.id, from_user_id:ST.session.user.id, from_name:ST.session.user.name, message:msg };
-    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado 🎉','success'); draw(); });
+    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado 🎉','success'); draw(); });
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   function draw(){ modal.innerHTML=fichaHTML(); bind(); }
@@ -3899,7 +4141,7 @@ function openFichaColaborador(member){
       if(!ex.error && ex.data && ex.data.length){ var exu=ex.data[0]; var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(exu.id)) jaTem=true; if(!jaTem) ST.allUsers.push(exu); linkTo(exu.id); auditLog('Vinculou acesso existente', m.name); toast('Esse e-mail já tinha acesso — vinculei.','success'); draw(); return; }
       var ehAdminSetor=(lvl==='sector_admin'||lvl==='admin_geral'||lvl==='super'); var baseU={ name:m.name, sector:'lojas', access_level:lvl, sector_role:(ehAdminSetor?'admin':'user'), role:(lvl==='super'?'admin':'user'), email:email, color:m.color||'#3B6FF7', initials:iniciais(m.name) };
       function tryIns(field, retry){ var urec=Object.assign({},baseU); urec[field]=pass; sb.from('malba_users').insert(urec).select().single().then(function(ru){
-        if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } btn.disabled=false; btn.textContent='Criar acesso'; return; }
+        if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } setBusy(btn,false); btn.textContent='Criar acesso'; return; }
         ST.allUsers.push(ru.data); linkTo(ru.data.id); savePerms(ru.data.id, fiPerms); auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
       }); }
       tryIns('password_hash', false);
@@ -3914,7 +4156,7 @@ function openFichaColaborador(member){
     var mt=modal.querySelector('#fiMeta'); if(mt) mt.addEventListener('click', function(){ var u=userDoMembro(m); var g=metaMembroMes(m); close(); if(g) openGoalModal(g); else openGoalModal(null, { store_unit_id:m.store_unit_id, user_id:u?u.id:null }); });
     var av=modal.querySelector('#fiAval'); if(av) av.addEventListener('click', function(){ close(); openAvaliacaoModal(null, { tipo:'membro', store_unit_id:m.store_unit_id, member_id:m.id }); });
     var rs=modal.querySelector('#fiReset'); if(rs) rs.addEventListener('click', function(){ showReset=!showReset; draw(); });
-    var dr=modal.querySelector('#fiDoReset'); if(dr) dr.addEventListener('click', function(){ var btn=this; var u=userDoMembro(m); var p=(modal.querySelector('#fiNewPass').value||'').trim(); if(p.length<4){ toast('Senha muito curta (mín. 4)','error'); return; } btn.disabled=true; btn.textContent='Salvando...'; resetSenha(u, p, function(ok){ if(ok){ showReset=false; toast('Senha redefinida','success'); draw(); } else { btn.disabled=false; btn.textContent='Salvar senha'; } }); });
+    var dr=modal.querySelector('#fiDoReset'); if(dr) dr.addEventListener('click', function(){ var btn=this; var u=userDoMembro(m); var p=(modal.querySelector('#fiNewPass').value||'').trim(); if(p.length<4){ toast('Senha muito curta (mín. 4)','error'); return; } setBusy(btn,true); resetSenha(u, p, function(ok){ if(ok){ showReset=false; toast('Senha redefinida','success'); draw(); } else { setBusy(btn,false); btn.textContent='Salvar senha'; } }); });
     var rm=modal.querySelector('#fiRemove'); if(rm) rm.addEventListener('click', function(){ var u=userDoMembro(m); if(!u) return; confirmDelete('Remover o acesso de '+m.name+'? A pessoa não poderá mais entrar (você pode recriar depois).', function(){ removerAcesso(u, function(){ toast('Acesso removido','success'); draw(); }); }); });
     var cr=modal.querySelector('#fiCreate'); if(cr) cr.addEventListener('click', criarAcessoFicha);
     var fiLv=modal.querySelector('#fiLevel');
@@ -3970,7 +4212,7 @@ function metasHTML() {
   var cards = '';
   if (gs.length === 0) {
     var msg = admin ? 'Crie a primeira meta mensal pelo botão acima.' : 'O administrador ainda não definiu metas.';
-    cards = '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('target')+'</div><h3>Nenhuma meta ainda</h3><p>'+msg+'</p></div>';
+    cards = emptyState({ span:true, icon:'target', title:'Nenhuma meta ainda', text:msg, cta:(canEdit()?'Nova meta':'') });
   } else {
     gs.forEach(function(g){ cards += goalCardHTML(g); });
   }
@@ -3996,7 +4238,7 @@ function mktMetasHTML(){
   var cur=(ST.mktMetas||[]).filter(function(g){ return (g.sector||'marketing')==='marketing' && g.month===n.m && g.year===n.y; });
   cur.sort(function(a,b){ return MKT_ORDER.indexOf(a.metric)-MKT_ORDER.indexOf(b.metric); });
   var btn=canEdit()?'<button class="btn-new" id="btnNovaMktMeta">'+icon('plus')+'Nova meta</button>':'';
-  var cards = cur.length ? cur.map(mktMetaCard).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('target')+'</div><h3>Sem metas neste mês</h3><p>Defina os alvos do marketing: faturamento do site, leads, seguidores e alcance.</p></div>';
+  var cards = cur.length ? cur.map(mktMetaCard).join('') : emptyState({ span:true, icon:'target', title:'Sem metas neste mês', text:'Defina os alvos do marketing: faturamento do site, leads, seguidores e alcance.', cta:(canEdit()?'Nova meta':'') });
   return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">Metas do marketing · '+MESES[n.m-1]+' '+n.y+'</div></div>'+btn+'</div><div class="goals-grid">'+cards+'</div>';
 }
 function mktMetaCard(g){
@@ -4051,9 +4293,9 @@ function openMktMetaModal(goal){
     var unit=(g.metric==='outro')?(g.unit||'num'):preset.unit;
     var rec={ sector:'marketing', month:g.month||(now.getMonth()+1), year:g.year||now.getFullYear(), metric:g.metric, label:label, target:target, unit:unit };
     if(!preset.auto) rec.actual=_parseBRL(g.actual);
-    var btn=modal.querySelector('#mmSave'); btn.disabled=true; btn.textContent='Salvando...';
-    if(isNew){ sb.from('malba_mkt_metas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de metas de marketing).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Criar meta'; return; } ST.mktMetas.push(r.data); auditLog('Criou meta de marketing', label); close(); toast('Meta criada','success'); renderPage(); }); }
-    else { sb.from('malba_mkt_metas').update(rec).eq('id',goal.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.mktMetas.length;i++) if(String(ST.mktMetas[i].id)===String(goal.id)) ST.mktMetas[i]=Object.assign(ST.mktMetas[i],rec); auditLog('Editou meta de marketing', label); close(); toast('Meta atualizada','success'); renderPage(); }); }
+    var btn=modal.querySelector('#mmSave'); setBusy(btn,true);
+    if(isNew){ sb.from('malba_mkt_metas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de metas de marketing).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Criar meta'; return; } ST.mktMetas.push(r.data); auditLog('Criou meta de marketing', label); close(); toast('Meta criada','success'); renderPage(); }); }
+    else { sb.from('malba_mkt_metas').update(rec).eq('id',goal.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Salvar'; return; } for(var i=0;i<ST.mktMetas.length;i++) if(String(ST.mktMetas[i].id)===String(goal.id)) ST.mktMetas[i]=Object.assign(ST.mktMetas[i],rec); auditLog('Editou meta de marketing', label); close(); toast('Meta atualizada','success'); renderPage(); }); }
   }
   function del(){ confirmDelete('Excluir esta meta?', function(){ sb.from('malba_mkt_metas').delete().eq('id',goal.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.mktMetas=ST.mktMetas.filter(function(x){return String(x.id)!==String(goal.id);}); close(); toast('Meta excluída','success'); renderPage(); }); }); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -4175,9 +4417,9 @@ function openVerbaModal(channel){
   var del=modal.querySelector('#vbDel'); if(del) del.addEventListener('click', function(){ sb.from('malba_mkt_budget').delete().eq('id',existing.id).then(function(rr){ if(rr.error){ toast('Erro ao remover','error'); return; } ST.mktBudget=ST.mktBudget.filter(function(x){return String(x.id)!==String(existing.id);}); close(); toast('Verba removida','success'); renderPage(); }); });
   modal.querySelector('#vbSave').addEventListener('click', function(){
     var val=_parseBRL(modal.querySelector('#vbVal').value); if(val<0){ toast('Valor inválido','error'); return; }
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
-    if(existing){ sb.from('malba_mkt_budget').update({ value:val }).eq('id',existing.id).then(function(rr){ if(rr.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } existing.value=val; close(); toast('Verba atualizada','success'); renderPage(); }); }
-    else { var rec={ sector:'marketing', kind:'plan', month:m, year:y, channel:channel, value:val }; sb.from('malba_mkt_budget').insert(rec).select().single().then(function(rr){ if(rr.error||!rr.data){ toast('Não consegui salvar (peça para rodar o SQL de orçamento).','error'); console.error(rr.error); btn.disabled=false; btn.textContent='Salvar'; return; } ST.mktBudget.push(rr.data); close(); toast('Verba definida','success'); renderPage(); }); }
+    var btn=this; setBusy(btn,true);
+    if(existing){ sb.from('malba_mkt_budget').update({ value:val }).eq('id',existing.id).then(function(rr){ if(rr.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; } existing.value=val; close(); toast('Verba atualizada','success'); renderPage(); }); }
+    else { var rec={ sector:'marketing', kind:'plan', month:m, year:y, channel:channel, value:val }; sb.from('malba_mkt_budget').insert(rec).select().single().then(function(rr){ if(rr.error||!rr.data){ toast('Não consegui salvar (peça para rodar o SQL de orçamento).','error'); console.error(rr.error); setBusy(btn,false); btn.textContent='Salvar'; return; } ST.mktBudget.push(rr.data); close(); toast('Verba definida','success'); renderPage(); }); }
   });
   document.body.appendChild(modal); modal.querySelector('#vbVal').focus();
 }
@@ -4202,9 +4444,9 @@ function openGastoModal(expense){
     var val=_parseBRL(modal.querySelector('#gtVal').value); if(val<=0){ toast('Informe o valor do gasto','error'); return; }
     var dt=modal.querySelector('#gtDate').value||today(); var pp=dt.split('-');
     var rec={ sector:'marketing', kind:'expense', channel:modal.querySelector('#gtCanal').value, value:val, spend_date:dt, month:Number(pp[1])||null, year:Number(pp[0])||null, note:(modal.querySelector('#gtNote').value||'').trim()||null, campaign_id:(modal.querySelector('#gtCamp').value||null) };
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
-    if(isNew){ sb.from('malba_mkt_budget').insert(rec).select().single().then(function(rr){ if(rr.error||!rr.data){ toast('Não consegui salvar (peça para rodar o SQL de orçamento).','error'); console.error(rr.error); btn.disabled=false; btn.textContent='Lançar'; return; } ST.mktBudget.push(rr.data); auditLog('Lançou gasto de marketing', canalLabel(rec.channel)+' R$ '+val.toFixed(2)); close(); toast('Gasto lançado','success'); renderPage(); }); }
-    else { sb.from('malba_mkt_budget').update(rec).eq('id',expense.id).then(function(rr){ if(rr.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.mktBudget.length;i++) if(String(ST.mktBudget[i].id)===String(expense.id)) ST.mktBudget[i]=Object.assign(ST.mktBudget[i],rec); close(); toast('Gasto atualizado','success'); renderPage(); }); }
+    var btn=this; setBusy(btn,true);
+    if(isNew){ sb.from('malba_mkt_budget').insert(rec).select().single().then(function(rr){ if(rr.error||!rr.data){ toast('Não consegui salvar (peça para rodar o SQL de orçamento).','error'); console.error(rr.error); setBusy(btn,false); btn.textContent='Lançar'; return; } ST.mktBudget.push(rr.data); auditLog('Lançou gasto de marketing', canalLabel(rec.channel)+' R$ '+val.toFixed(2)); close(); toast('Gasto lançado','success'); renderPage(); }); }
+    else { sb.from('malba_mkt_budget').update(rec).eq('id',expense.id).then(function(rr){ if(rr.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; } for(var i=0;i<ST.mktBudget.length;i++) if(String(ST.mktBudget[i].id)===String(expense.id)) ST.mktBudget[i]=Object.assign(ST.mktBudget[i],rec); close(); toast('Gasto atualizado','success'); renderPage(); }); }
   });
   document.body.appendChild(modal); modal.querySelector('#gtVal').focus();
 }
@@ -4318,9 +4560,9 @@ function openContentModal(item, presetDate){
     var title=(modal.querySelector('#ctTitle').value||'').trim(); if(!title){ toast('Dê um título','error'); return; }
     var ownerEl=modal.querySelector('#ctOwner'); var oid=ownerEl.value||null; var oname=''; if(oid){ for(var i=0;i<ST.users.length;i++) if(String(ST.users[i].id)===String(oid)) oname=ST.users[i].name; }
     var rec={ sector:'marketing', title:title, channel:modal.querySelector('#ctChan').value, ctype:modal.querySelector('#ctType').value, pub_date:(modal.querySelector('#ctDate').value||today()), status:modal.querySelector('#ctStatus').value, owner_id:oid, owner_name:oname||null, caption:(modal.querySelector('#ctCaption').value||'').trim()||null, link:(modal.querySelector('#ctLink').value||'').trim()||null };
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
-    if(isNew){ sb.from('malba_content').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de conteúdo).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Criar'; return; } ST.contentItems.push(r.data); auditLog('Criou conteúdo', title); close(); toast('Conteúdo criado','success'); renderPage(); }); }
-    else { sb.from('malba_content').update(rec).eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.contentItems.length;i++) if(String(ST.contentItems[i].id)===String(item.id)) ST.contentItems[i]=Object.assign(ST.contentItems[i],rec); close(); toast('Conteúdo atualizado','success'); renderPage(); }); }
+    var btn=this; setBusy(btn,true);
+    if(isNew){ sb.from('malba_content').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de conteúdo).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Criar'; return; } ST.contentItems.push(r.data); auditLog('Criou conteúdo', title); close(); toast('Conteúdo criado','success'); renderPage(); }); }
+    else { sb.from('malba_content').update(rec).eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; } for(var i=0;i<ST.contentItems.length;i++) if(String(ST.contentItems[i].id)===String(item.id)) ST.contentItems[i]=Object.assign(ST.contentItems[i],rec); close(); toast('Conteúdo atualizado','success'); renderPage(); }); }
   });
   document.body.appendChild(modal);
 }
@@ -4346,7 +4588,7 @@ function bibliotecaHTML(){
   });
   var chips=['todos','arte','legenda','texto','hashtags'].map(function(k){ var lb=k==='todos'?'Todos':CRIATIVO_KINDS[k].label; var n=(k==='todos')?items.length:items.filter(function(x){return (x.kind||'texto')===k;}).length; return '<button class="crm-chip'+(kind===k?' on':'')+'" data-bibkind="'+k+'">'+lb+' <i>'+n+'</i></button>'; }).join('');
   var btns=(canEdit()?'<button class="btn-new" id="btnNovoCriativo">'+icon('plus')+'Novo item</button>':'')+'<button class="btn-sync" id="btnUtm">'+icon('trend')+'Gerar link (UTM)</button>';
-  var cards=list.length ? list.map(criativoCardHTML).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('image')+'</div><h3>Biblioteca vazia</h3><p>Guarde aqui artes, legendas, textos e hashtags que você reaproveita.</p></div>';
+  var cards=list.length ? list.map(criativoCardHTML).join('') : emptyState({ span:true, icon:'image', title:'Biblioteca vazia', text:'Guarde aqui artes, legendas, textos e hashtags que você reaproveita.', cta:(canEdit()?'Novo item':'') });
   return '<div class="tasks-head"><div><h2>Biblioteca</h2><div class="sub">Artes, legendas e textos reaproveitáveis</div></div><div class="cfg-head-btns">'+btns+'</div></div>'+
     '<div class="crm-chips">'+chips+'</div>'+
     '<div class="crm-search">'+icon('search')+'<input id="bibSearch" placeholder="Buscar por título, texto ou tag..." value="'+esc(ST.bibQ||'')+'"></div>'+
@@ -4401,9 +4643,9 @@ function openCriativoModal(item){
     if(g.kind==='arte' && !(g.url||'').trim()){ toast('Informe o link da arte','error'); return; }
     if(g.kind!=='arte' && !(g.content||'').trim()){ toast('Escreva o texto','error'); return; }
     var rec={ sector:'marketing', title:title, kind:g.kind, channel:(g.channel||null), content:(g.content||'').trim()||null, url:(g.url||'').trim()||null, tags:(g.tags||'').trim()||null };
-    var btn=modal.querySelector('#crSave'); btn.disabled=true; btn.textContent='Salvando...';
-    if(isNew){ sb.from('malba_creativos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL da biblioteca).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } ST.creativos.unshift(r.data); auditLog('Criou criativo', title); close(); toast('Item salvo','success'); renderPage(); }); }
-    else { sb.from('malba_creativos').update(rec).eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.creativos.length;i++) if(String(ST.creativos[i].id)===String(item.id)) ST.creativos[i]=Object.assign(ST.creativos[i],rec); close(); toast('Item atualizado','success'); renderPage(); }); }
+    var btn=modal.querySelector('#crSave'); setBusy(btn,true);
+    if(isNew){ sb.from('malba_creativos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL da biblioteca).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Salvar'; return; } ST.creativos.unshift(r.data); auditLog('Criou criativo', title); close(); toast('Item salvo','success'); renderPage(); }); }
+    else { sb.from('malba_creativos').update(rec).eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; } for(var i=0;i<ST.creativos.length;i++) if(String(ST.creativos[i].id)===String(item.id)) ST.creativos[i]=Object.assign(ST.creativos[i],rec); close(); toast('Item atualizado','success'); renderPage(); }); }
   }
   function del(){ confirmDelete('Excluir este item?', function(){ sb.from('malba_creativos').delete().eq('id',item.id).then(function(r){ if(r.error){ toast('Erro ao excluir','error'); return; } ST.creativos=ST.creativos.filter(function(x){return String(x.id)!==String(item.id);}); close(); toast('Item excluído','success'); renderPage(); }); }); }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -4543,9 +4785,9 @@ function openCaixaModal(storeId, existing){
   modal.querySelector('#cxSave').addEventListener('click', function(){
     var e=_parseBRL(modal.querySelector('#cxEsp').value); var c=_parseBRL(modal.querySelector('#cxCont').value);
     var u=ST.session.user; var rec={ store_unit_id:storeId, work_date:today(), esperado:e, contado:c, diferenca:(c-e), obs:(modal.querySelector('#cxObs').value||'').trim()||null, done_by:u.id, done_by_name:u.name, closed_at:new Date().toISOString() };
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
-    if(existing){ sb.from('malba_caixa').update(rec).eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.caixas.length;i++) if(String(ST.caixas[i].id)===String(existing.id)) ST.caixas[i]=Object.assign(ST.caixas[i],rec); close(); toast('Caixa atualizado','success'); renderPage(); }); }
-    else { sb.from('malba_caixa').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL do caixa).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Fechar caixa'; return; } ST.caixas.push(r.data); auditLog('Fechou o caixa', storeName(storeId)); close(); toast('Caixa fechado','success'); renderPage(); }); }
+    var btn=this; setBusy(btn,true);
+    if(existing){ sb.from('malba_caixa').update(rec).eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; } for(var i=0;i<ST.caixas.length;i++) if(String(ST.caixas[i].id)===String(existing.id)) ST.caixas[i]=Object.assign(ST.caixas[i],rec); close(); toast('Caixa atualizado','success'); renderPage(); }); }
+    else { sb.from('malba_caixa').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL do caixa).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Fechar caixa'; return; } ST.caixas.push(r.data); auditLog('Fechou o caixa', storeName(storeId)); close(); toast('Caixa fechado','success'); renderPage(); }); }
   });
   document.body.appendChild(modal); recompute(); modal.querySelector('#cxEsp').focus();
 }
@@ -4676,9 +4918,9 @@ function openMetricasModal(storeId, m, y){
   modal.querySelector('#mtSave').addEventListener('click', function(){
     var num=function(id){ var v=(modal.querySelector(id).value||'').replace(/\./g,'').replace(',','.').replace(/[^0-9.]/g,''); return v?Number(v):0; };
     var rec={ store_unit_id:storeId, month:m, year:y, num_itens:num('#mtItens'), num_visitantes:num('#mtVis'), num_vendas:num('#mtVendas'), faturamento:_parseBRL(modal.querySelector('#mtFat').value) };
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
-    if(existing){ sb.from('malba_loja_metricas').update(rec).eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; } for(var i=0;i<ST.lojaMetricas.length;i++) if(String(ST.lojaMetricas[i].id)===String(existing.id)) ST.lojaMetricas[i]=Object.assign(ST.lojaMetricas[i],rec); close(); toast('Indicadores atualizados','success'); renderPage(); }); }
-    else { sb.from('malba_loja_metricas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de indicadores).','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; } ST.lojaMetricas.push(r.data); auditLog('Lançou indicadores', storeName(storeId)); close(); toast('Indicadores salvos','success'); renderPage(); }); }
+    var btn=this; setBusy(btn,true);
+    if(existing){ sb.from('malba_loja_metricas').update(rec).eq('id',existing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; } for(var i=0;i<ST.lojaMetricas.length;i++) if(String(ST.lojaMetricas[i].id)===String(existing.id)) ST.lojaMetricas[i]=Object.assign(ST.lojaMetricas[i],rec); close(); toast('Indicadores atualizados','success'); renderPage(); }); }
+    else { sb.from('malba_loja_metricas').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de indicadores).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Salvar'; return; } ST.lojaMetricas.push(r.data); auditLog('Lançou indicadores', storeName(storeId)); close(); toast('Indicadores salvos','success'); renderPage(); }); }
   });
   document.body.appendChild(modal); modal.querySelector('#mtItens').focus();
 }
@@ -4725,7 +4967,7 @@ function openProdutosModal(storeId, m, y){
     var nome=(modal.querySelector('#pdNome').value||'').trim(); if(!nome){ toast('Informe o produto','error'); return; }
     var num=function(id){ var v=(modal.querySelector(id).value||'').replace(/\./g,'').replace(',','.').replace(/[^0-9.]/g,''); return v?Number(v):0; };
     var rec={ store_unit_id:storeId, month:m, year:y, produto:nome, categoria:(modal.querySelector('#pdCat').value||'').trim()||'Sem categoria', quantidade:num('#pdQtd'), faturamento:_parseBRL(modal.querySelector('#pdFat').value) };
-    var btn=modal.querySelector('#pdSave'); btn.disabled=true; btn.textContent='Salvando...';
+    var btn=modal.querySelector('#pdSave'); setBusy(btn,true);
     if(editing){ sb.from('malba_loja_produtos').update(rec).eq('id',editing.id).then(function(r){ if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; return; } for(var i=0;i<ST.lojaProdutos.length;i++) if(String(ST.lojaProdutos[i].id)===String(editing.id)) ST.lojaProdutos[i]=Object.assign(ST.lojaProdutos[i],rec); editing=null; draw(); renderPage(); }); }
     else { sb.from('malba_loja_produtos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui salvar (peça para rodar o SQL de produtos).','error'); console.error(r.error); btn.disabled=false; return; } ST.lojaProdutos.push(r.data); draw(); renderPage(); }); }
   }
@@ -4825,7 +5067,7 @@ function openGoalModal(goal, preset) {
     if(!isAdmin(ST.session)) return;
     var bt=this; bt.disabled=true; bt.textContent='Limpando...';
     sb.from('malba_sales_goals').update({ actual_value:null }).eq('id', g.id).then(function(r){
-      if(r.error){ toast('Erro ao limpar','error'); bt.disabled=false; bt.textContent='Limpar e usar o Bling'; return; }
+      if(r.error){ toast('Erro ao limpar','error'); setBusy(bt,false); bt.textContent='Limpar e usar o Bling'; return; }
       for (var i=0;i<ST.goals.length;i++) if (ST.goals[i].id===g.id) { ST.goals[i].actual_value=null; break; }
       auditLog('Limpou realizado da meta (usar Bling)'); close(); toast('Pronto! Agora clique em Sincronizar Bling.','success'); renderPage();
     });
@@ -4850,15 +5092,15 @@ function openGoalModal(goal, preset) {
     };
     var gActualEl = modal.querySelector('#gActual');
     if (gActualEl && !storeBlingConnected(selStore)) rec.actual_value = parseNum(gActualEl.value);
-    var saveBtn=modal.querySelector('#goalSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#goalSave'); setBusy(saveBtn,true);
     if (isNew) {
       sb.from('malba_sales_goals').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar meta','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar meta'; return; }
+        if (r.error || !r.data) { toast('Erro ao criar meta','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar meta'; return; }
         ST.goals.push(r.data); auditLog('Criou meta'); close(); toast('Meta criada','success'); renderPage();
       });
     } else {
       sb.from('malba_sales_goals').update(rec).eq('id', g.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.goals.length;i++) if (ST.goals[i].id===g.id) { ST.goals[i]=Object.assign(ST.goals[i],rec); break; }
         close(); toast('Meta atualizada','success'); renderPage();
       });
@@ -4968,8 +5210,8 @@ function crmHTML() {
   // lista
   var rows = '';
   if (list.length === 0) {
-    var msg = all.length===0 ? 'Cadastre o primeiro cliente pelo botão acima.' : 'Nenhum cliente nesse filtro/busca.';
-    rows = '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem clientes</h3><p>'+msg+'</p></div>';
+    var vazioReal = all.length===0;
+    rows = emptyState({ icon:'users', title: vazioReal?'Nenhum cliente ainda':'Nada encontrado', text: vazioReal?'Cada cliente guarda histórico de compra e recompra pra você acompanhar.':'Nenhum cliente nesse filtro ou busca.', cta:(vazioReal && canEdit())?'Novo cliente':'' });
   } else {
     rows = '<div class="crm-list">';
     list.forEach(function(c){ rows += crmRowHTML(c); });
@@ -5197,15 +5439,15 @@ function openClientModal(client) {
       sector:ST.sector, store_unit_id:lojaId,
       last_contact:today(), updated_at:new Date().toISOString()
     };
-    var saveBtn=modal.querySelector('#cliSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#cliSave'); setBusy(saveBtn,true);
     if (isNew) {
       sb.from('malba_crm_clients').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao salvar cliente','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar'; return; }
+        if (r.error || !r.data) { toast('Erro ao salvar cliente','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar'; return; }
         ST.clients.unshift(r.data); auditLog('Criou cliente', name); close(); toast('Cliente criado','success'); renderPage();
       });
     } else {
       sb.from('malba_crm_clients').update(rec).eq('id', c.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.clients.length;i++) if (ST.clients[i].id===c.id) { ST.clients[i]=Object.assign(ST.clients[i],rec); break; }
         close(); toast('Cliente atualizado','success'); renderPage();
       });
@@ -5252,7 +5494,7 @@ function projetosHTML() {
   var ps = ST.projects;
   var cards = '';
   if (ps.length===0) {
-    cards = '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('folder')+'</div><h3>Nenhum projeto ainda</h3><p>Crie o primeiro projeto pelo botão acima.</p></div>';
+    cards = emptyState({ span:true, icon:'folder', title:'Nenhum projeto ainda', text:'Projetos reúnem as tarefas e etapas de um objetivo maior.', cta:(canEdit()?'Criar projeto':'') });
   } else {
     ps.forEach(function(pr){ cards += projectCardHTML(pr); });
   }
@@ -5432,7 +5674,7 @@ function bindProjetoDetalhe() {
     var rec={ project_id:ST.openProject, name:name, date:document.getElementById('msDate').value||null, assignee_id:document.getElementById('msResp').value||null, status:'todo', position:pos, subtasks:[] };
     addBtn.disabled=true; addBtn.textContent='...';
     sb.from('malba_vl_milestones').insert(rec).select().single().then(function(r){
-      if (r.error || !r.data) { toast('Erro ao adicionar etapa','error'); console.error(r.error); addBtn.disabled=false; addBtn.textContent='Adicionar'; return; }
+      if (r.error || !r.data) { toast('Erro ao adicionar etapa','error'); console.error(r.error); setBusy(addBtn,false); addBtn.textContent='Adicionar'; return; }
       ST.milestones.push(r.data); toast('Etapa adicionada','success'); renderPage();
     });
   });
@@ -5444,9 +5686,12 @@ function openProjectModal(project) {
   if(!canEdit()){ blockManage(); return; }
   var isNew=!project;
   var pr=project||{ name:'', description:'', start_date:'', end_date:'', status:'andamento', color:'#3B6FF7', members:[] };
-  var membros=pr.members||[];
+  var membros=(pr.members||[]).slice();
+  // v76: preenchimento automático — novo projeto já começa hoje e com você na equipe
+  if(isNew){ if(!pr.start_date) pr.start_date=today(); if(!membros.length && ST.session && ST.session.user) membros=[ST.session.user.id]; }
+  var colorPick=pr.color||'#3B6FF7';
 
-  var colorBtns=PROJ_COLORS.map(function(c){ return '<button type="button" class="color-dot'+(pr.color===c?' on':'')+'" data-color="'+c+'" style="background:'+c+'"></button>'; }).join('');
+  var colorBtns=PROJ_COLORS.map(function(c){ return '<button type="button" class="color-dot'+(colorPick===c?' on':'')+'" data-color="'+c+'" style="background:'+c+'"></button>'; }).join('');
   var memHTML='';
   ST.users.forEach(function(u){
     var on=membros.indexOf(u.id)!==-1;
@@ -5454,61 +5699,65 @@ function openProjectModal(project) {
   });
   if (ST.users.length===0) memHTML='<div style="font-size:12px;color:var(--u-text3)">Nenhuma pessoa no setor</div>';
 
-  var delBtn=isNew?'':'<button class="btn btn-danger btn-del-wrap" id="projDel">Excluir</button>';
+  var lojaInfo = ST.store ? ('<div class="wz-auto">'+icon('store')+'<span>Loja <b>'+esc(ST.store.name||('Loja '+ST.store.store_number))+'</b> — preenchida automaticamente</span></div>') : '';
 
-  var modal=document.createElement('div'); modal.className='modal-bg';
-  modal.innerHTML =
-    '<div class="modal">'+
-      '<input class="modal-title-input" id="pName" placeholder="Nome do projeto..." value="'+esc(pr.name)+'">'+
-      '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="pDesc" placeholder="Sobre o projeto...">'+esc(pr.description||'')+'</textarea></div>'+
-      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Início</label><input type="date" id="pStart" value="'+esc((pr.start_date||'').split('T')[0])+'"></div><div class="modal-row"><label class="modal-label">Prazo</label><input type="date" id="pEnd" value="'+esc((pr.end_date||'').split('T')[0])+'"></div></div>'+
-      '<div class="modal-row"><label class="modal-label">Equipe do projeto</label><div class="member-picks">'+memHTML+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Cor</label><div class="color-row" id="pColors">'+colorBtns+'</div></div>'+
-      '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="projCancel">Cancelar</button><button class="btn btn-primary" id="projSave">'+(isNew?'Criar':'Salvar')+'</button></div>'+
-    '</div>';
-  document.body.appendChild(modal);
+  var step1 = '<input class="modal-title-input" id="pName" placeholder="Nome do projeto..." value="'+esc(pr.name)+'" data-review="Nome">'+
+    '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="pDesc" placeholder="Sobre o projeto..." data-review="Descrição">'+esc(pr.description||'')+'</textarea></div>'+
+    '<div class="modal-row"><label class="modal-label">Cor</label><div class="color-row" id="pColors">'+colorBtns+'</div></div>';
+  var step2 = '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Início</label><input type="date" id="pStart" value="'+esc((pr.start_date||'').split('T')[0])+'" data-review="Início"></div><div class="modal-row"><label class="modal-label">Prazo</label><input type="date" id="pEnd" value="'+esc((pr.end_date||'').split('T')[0])+'" data-review="Prazo"></div></div>'+
+    '<div class="wz-auto">'+icon('target')+'<span>Situação inicial: <b>Em andamento</b> — automático</span></div>';
+  var step3 = '<div class="modal-row"><label class="modal-label">Equipe do projeto (responsáveis)</label><div class="member-picks">'+memHTML+'</div></div>'+lojaInfo;
 
-  var colorPick=pr.color||'#3B6FF7';
-  var dots=modal.querySelectorAll('.color-dot');
-  for (var i=0;i<dots.length;i++) dots[i].addEventListener('click', function(){ for(var k=0;k<dots.length;k++) dots[k].classList.remove('on'); this.classList.add('on'); colorPick=this.getAttribute('data-color'); });
-  var memCbs=modal.querySelectorAll('[data-member]');
-  for (var j=0;j<memCbs.length;j++) memCbs[j].addEventListener('change', function(){ this.closest('.member-pick').classList.toggle('on', this.checked); });
-
-  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
-  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
-  modal.querySelector('#projCancel').addEventListener('click', close);
-  modal.querySelector('#pName').focus();
-
-  modal.querySelector('#projSave').addEventListener('click', function(){
-    var name=(modal.querySelector('#pName').value||'').trim();
-    if (!name) { toast('Informe o nome','error'); return; }
-    var sel=[]; modal.querySelectorAll('[data-member]:checked').forEach(function(cb){ sel.push(cb.getAttribute('data-member')); });
-    var rec={ sector:ST.sector, name:name, description:(modal.querySelector('#pDesc').value||'').trim(), start_date:modal.querySelector('#pStart').value||null, end_date:modal.querySelector('#pEnd').value||null, members:sel, store_unit_id:ST.store?ST.store.id:null, color:colorPick, status:pr.status||'andamento' };
-    var saveBtn=modal.querySelector('#projSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
-    if (isNew) {
-      sb.from('malba_vl_projects').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar projeto','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar'; return; }
-        ST.projects.unshift(r.data); auditLog('Criou projeto', name); close(); toast('Projeto criado','success'); renderPage();
-      });
-    } else {
-      sb.from('malba_vl_projects').update(rec).eq('id', pr.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
-        for (var i=0;i<ST.projects.length;i++) if (ST.projects[i].id===pr.id) { ST.projects[i]=Object.assign(ST.projects[i],rec); break; }
-        close(); toast('Projeto atualizado','success'); renderPage();
-      });
-    }
-  });
-
-  if (!isNew) {
-    modal.querySelector('#projDel').addEventListener('click', function(){
+  formWizard({
+    title: isNew?'Novo projeto':'Editar projeto',
+    editing: !isNew,
+    del: !isNew, delLabel:'Excluir',
+    steps: [
+      { html: step1, validate: function(bg){ var n=(bg.querySelector('#pName').value||'').trim(); if(!n){ toast('Informe o nome do projeto','error'); return false; } return true; } },
+      { html: step2 },
+      { html: step3 }
+    ],
+    reviewExtra: function(bg){
+      var sel=[]; bg.querySelectorAll('[data-member]:checked').forEach(function(cb){ var u=userById(cb.getAttribute('data-member')); if(u) sel.push(u.name); });
+      var eq = sel.length ? esc(sel.join(', ')) : '<i>—</i>';
+      var cor = '<span style="display:inline-block;width:14px;height:14px;border-radius:4px;background:'+colorPick+';vertical-align:-2px"></span>';
+      return '<div class="wz-rev-row"><span class="wz-rev-l">Equipe</span><span class="wz-rev-v">'+eq+'</span></div>'+
+             '<div class="wz-rev-row"><span class="wz-rev-l">Cor</span><span class="wz-rev-v">'+cor+'</span></div>';
+    },
+    onReady: function(bg){
+      var dots=bg.querySelectorAll('.color-dot');
+      for (var i=0;i<dots.length;i++) dots[i].addEventListener('click', function(){ for(var k=0;k<dots.length;k++) dots[k].classList.remove('on'); this.classList.add('on'); colorPick=this.getAttribute('data-color'); });
+      var memCbs=bg.querySelectorAll('[data-member]');
+      for (var j=0;j<memCbs.length;j++) memCbs[j].addEventListener('change', function(){ this.closest('.member-pick').classList.toggle('on', this.checked); });
+    },
+    onSave: function(bg, close, btn){
+      var name=(bg.querySelector('#pName').value||'').trim();
+      if (!name) { toast('Informe o nome do projeto','error'); return; }
+      var sel=[]; bg.querySelectorAll('[data-member]:checked').forEach(function(cb){ sel.push(cb.getAttribute('data-member')); });
+      var rec={ sector:ST.sector, name:name, description:(bg.querySelector('#pDesc').value||'').trim(), start_date:bg.querySelector('#pStart').value||null, end_date:bg.querySelector('#pEnd').value||null, members:sel, store_unit_id:ST.store?ST.store.id:null, color:colorPick, status:pr.status||'andamento' };
+      setBusy(btn,true);
+      if (isNew) {
+        sb.from('malba_vl_projects').insert(rec).select().single().then(function(r){
+          if (r.error || !r.data) { toast('Erro ao criar projeto','error'); console.error(r.error); setBusy(btn,false); return; }
+          ST.projects.unshift(r.data); auditLog('Criou projeto', name); close(); toast('Projeto criado','success'); renderPage();
+        });
+      } else {
+        sb.from('malba_vl_projects').update(rec).eq('id', pr.id).then(function(r){
+          if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(btn,false); return; }
+          for (var i=0;i<ST.projects.length;i++) if (ST.projects[i].id===pr.id) { ST.projects[i]=Object.assign(ST.projects[i],rec); break; }
+          close(); toast('Projeto atualizado','success'); renderPage();
+        });
+      }
+    },
+    onDelete: function(close){
       confirmDelete('Excluir o projeto "'+(pr.name||'')+'" e todas as etapas?', function(){ sb.from('malba_vl_projects').delete().eq('id', pr.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.projects = ST.projects.filter(function(x){ return x.id!==pr.id; });
         ST.milestones = ST.milestones.filter(function(x){ return String(x.project_id)!==String(pr.id); });
         ST.openProject=null; close(); toast('Projeto excluído','success'); renderPage();
       }); });
-    });
-  }
+    }
+  });
 }
 
 /* ========== [10f] CONFIGURAÇÕES / ADMIN (só admin) ========== */
@@ -5548,7 +5797,7 @@ function usuariosHTML() {
   var list = isSuper(ST.session) ? ST.allUsers : ST.allUsers.filter(function(u){ return u.sector===ST.sector; });
   var rows = '';
   if (list.length===0) {
-    rows = '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Nenhum usuário</h3><p>Crie o primeiro acesso pelo botão acima.</p></div>';
+    rows = emptyState({ icon:'users', title:'Nenhum usuário', text:'Cada pessoa entra com o próprio login e vê só o que precisa.', cta:'Novo usuário' });
   } else {
     rows = '<div class="cfg-list">';
     list.forEach(function(u){
@@ -5631,15 +5880,15 @@ function openUserModal(user) {
     };
     if (isNew) { rec.email=email; rec.color=u.color||'#3B6FF7'; rec.initials=iniciais(name); }
     if (pass) rec.password_hash = pass; // a tabela guarda a senha em password_hash
-    var saveBtn=modal.querySelector('#userSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#userSave'); setBusy(saveBtn,true);
     if (isNew) {
       sb.from('malba_users').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar (e-mail já existe?)','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar usuário'; return; }
+        if (r.error || !r.data) { toast('Erro ao criar (e-mail já existe?)','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar usuário'; return; }
         ST.allUsers.push(r.data); auditLog('Criou usuário', name+' · '+(NIVEIS[lvl]?NIVEIS[lvl].label:lvl)); aplicarPerms(r.data.id); close(); toast('Usuário criado','success'); renderPage();
       });
     } else {
       sb.from('malba_users').update(rec).eq('id', u.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.allUsers.length;i++) if (ST.allUsers[i].id===u.id) { ST.allUsers[i]=Object.assign(ST.allUsers[i],rec); break; }
         aplicarPerms(u.id); close(); toast('Usuário atualizado','success'); renderPage();
       });
@@ -5662,7 +5911,7 @@ function lojasHTML() {
   var list = ST.storeUnits.slice().sort(function(a,b){ return (a.store_number||0)-(b.store_number||0); });
   var rows = '';
   if (list.length===0) {
-    rows = '<div class="empty-page"><div class="ep-ico">'+icon('store')+'</div><h3>Nenhuma loja</h3><p>Cadastre a primeira loja pelo botão acima.</p></div>';
+    rows = emptyState({ icon:'store', title:'Nenhuma loja', text:'Cadastre suas lojas para separar equipe, metas e vendas por unidade.', cta:'Nova loja' });
   } else {
     rows = '<div class="cfg-list">';
     list.forEach(function(s){
@@ -5710,14 +5959,14 @@ function openBlingModal(store) {
     var secret=(modal.querySelector('#blSecret').value||'').trim();
     if(!clientId){ toast('Informe o Client ID','error'); return; }
     if(!secret && !cid){ toast('Informe o Client Secret','error'); return; }
-    var btn=modal.querySelector('#blSave'); btn.disabled=true; btn.textContent='Salvando...';
+    var btn=modal.querySelector('#blSave'); setBusy(btn,true);
     var now=new Date().toISOString();
     var appRow={ store_unit_id:store.id, client_id:clientId, updated_at:now };
     if(secret) appRow.client_secret=secret;
     sb.from('malba_bling_apps').upsert(appRow, { onConflict:'store_unit_id' }).then(function(r1){
-      if (r1.error) { console.error('[bling apps]', r1.error); toast('Erro (apps): '+(r1.error.message||r1.error.hint||'falha'),'error'); btn.disabled=false; btn.textContent='Salvar e conectar'; return; }
+      if (r1.error) { console.error('[bling apps]', r1.error); toast('Erro (apps): '+(r1.error.message||r1.error.hint||'falha'),'error'); setBusy(btn,false); btn.textContent='Salvar e conectar'; return; }
       sb.from('malba_bling_estado').upsert({ store_unit_id:store.id, client_id:clientId, updated_at:now }, { onConflict:'store_unit_id' }).then(function(r2){
-        if (r2.error) { console.error('[bling estado]', r2.error); toast('Erro (estado): '+(r2.error.message||r2.error.hint||'falha'),'error'); btn.disabled=false; btn.textContent='Salvar e conectar'; return; }
+        if (r2.error) { console.error('[bling estado]', r2.error); toast('Erro (estado): '+(r2.error.message||r2.error.hint||'falha'),'error'); setBusy(btn,false); btn.textContent='Salvar e conectar'; return; }
         toast('Credenciais salvas. Indo ao Bling para autorizar...','success');
         setTimeout(function(){ window.location.href = blingAuthUrl(clientId, store.id); }, 700);
       });
@@ -5767,7 +6016,7 @@ function openStoreModal(store) {
       email:(modal.querySelector('#sEmail').value||'').trim(),
       user_id: modal.querySelector('#sUser').value || null
     };
-    var saveBtn=modal.querySelector('#storeSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#storeSave'); setBusy(saveBtn,true);
     var siteChecked = !!(modal.querySelector('#sSite') && modal.querySelector('#sSite').checked);
     function aplicarSite(id){
       // best-effort: ignora se a coluna is_site ainda não existir
@@ -5775,12 +6024,12 @@ function openStoreModal(store) {
     }
     if (isNew) {
       sb.from('malba_store_units').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar loja','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar loja'; return; }
+        if (r.error || !r.data) { toast('Erro ao criar loja','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar loja'; return; }
         ST.storeUnits.push(r.data); aplicarSite(r.data.id); close(); toast('Loja criada','success'); renderPage();
       });
     } else {
       sb.from('malba_store_units').update(rec).eq('id', s.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.storeUnits.length;i++) if (ST.storeUnits[i].id===s.id) { ST.storeUnits[i]=Object.assign(ST.storeUnits[i],rec); break; }
         aplicarSite(s.id); close(); toast('Loja atualizada','success'); renderPage();
       });
@@ -5811,7 +6060,7 @@ function bannersAdminHTML() {
   var list = (ST.banners||[]).slice().sort(function(a,b){ return (a.position||0)-(b.position||0); });
   var rows = '';
   if (list.length===0) {
-    rows = '<div class="empty-page"><div class="ep-ico">'+icon('dashboard')+'</div><h3>Nenhum banner</h3><p>Crie um banner pra aparecer no Início dos setores.</p></div>';
+    rows = emptyState({ icon:'dashboard', title:'Nenhum banner', text:'Banners aparecem no Início dos setores para avisos e destaques.', cta:'Novo banner' });
   } else {
     rows = '<div class="banner-list">';
     list.forEach(function(b){
@@ -5899,16 +6148,16 @@ function openBannerModal(banner) {
       is_active:actPick,
       store_unit_id:null
     };
-    var saveBtn=modal.querySelector('#bannerSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#bannerSave'); setBusy(saveBtn,true);
     if (isNew) {
       rec.position=(ST.banners||[]).length;
       sb.from('malba_banners').insert(rec).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar banner','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Criar banner'; return; }
+        if (r.error || !r.data) { toast('Erro ao criar banner','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar banner'; return; }
         ST.banners.push(r.data); close(); toast('Banner criado','success'); renderPage();
       });
     } else {
       sb.from('malba_banners').update(rec).eq('id', b.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.banners.length;i++) if (ST.banners[i].id===b.id) { ST.banners[i]=Object.assign(ST.banners[i],rec); break; }
         close(); toast('Banner atualizado','success'); renderPage();
       });
@@ -6001,7 +6250,7 @@ function campanhasHTML() {
   var cards='';
   if (cs.length===0) {
     var msg = admin ? 'Crie a primeira campanha pelo botão acima.' : 'Nenhuma campanha cadastrada.';
-    cards = '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('megaphone')+'</div><h3>Nenhuma campanha</h3><p>'+msg+'</p></div>';
+    cards = emptyState({ span:true, icon:'megaphone', title:'Nenhuma campanha', text:msg, cta:(canEdit()?'Nova campanha':'') });
   } else {
     cs.forEach(function(c){ cards += campCardHTML(c); });
   }
@@ -6124,7 +6373,7 @@ function openCampaignModal(camp) {
       user_ids:sel,
       tasks:taskList
     };
-    var saveBtn=modal.querySelector('#campSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#campSave'); setBusy(saveBtn,true);
     sb.from('malba_campaigns').upsert(rec, { onConflict:'id' }).select().single().then(function(r){
       if (r.error || !r.data) { toast('Erro ao salvar campanha','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent=(isNew?'Criar campanha':'Salvar'); return; }
       if (isNew) ST.campaigns.push(r.data);
@@ -6251,9 +6500,428 @@ function lojasGestao() {
   return ls;
 }
 
+/* ================= v79: CENTRAL DE ADMINISTRAÇÃO DE TAREFAS =================
+   Painel de controle operacional do gestor. NÃO duplica o quadro de Tarefas:
+   reusa o mesmo motor (ST.tasks, recorrência, openTaskModal) e só muda a leitura. */
+var ADM_PAGE = 20; // quantas tarefas por grupo antes do "carregar mais"
+function admF(){
+  if(!ST.admF) ST.admF={ colab:'', loja:'', proj:'', prio:'', status:'', tipo:'', per:'', ini:'', fim:'', q:'' };
+  return ST.admF;
+}
+function admFAtivos(){ var f=admF(), n=0, k; for(k in f){ if(f[k]) n++; } return n; }
+// Tipo: recorrente = a REGRA; rotina = ocorrência gerada por ela; pop = procedimento padrão; normal = resto
+function admTaskKind(t){
+  if(t.is_rule) return 'recorrente';
+  if(t.task_kind==='pop') return 'pop';
+  if(t.recur_group) return 'rotina';
+  return 'normal';
+}
+var ADM_KIND_LB = { recorrente:'Recorrente', rotina:'Rotina', pop:'POP', normal:'Normal' };
+// Escopo: o que o gestor enxerga, já com os filtros "de recorte" (loja, colaborador, projeto)
+function admScope(){
+  var f=admF(), sid=boardStore();
+  return (ST.tasks||[]).filter(function(t){
+    if(t.archived_at) return false;
+    if(String(t.sector||'')!==ST.sector) return false;
+    if(sid && String(t.store_unit_id)!==String(sid)) return false;
+    if(f.loja && String(t.store_unit_id)!==String(f.loja)) return false;
+    if(f.colab && String(t.assignee_id)!==String(f.colab)) return false;
+    if(f.proj && String(t.project_id)!==String(f.proj)) return false;
+    return true;
+  });
+}
+function admStats(list){
+  var hoje=today();
+  var s={ total:0, todo:0, fazendo:0, feito:0, atrasadas:0, rotinasHoje:0 };
+  list.forEach(function(t){
+    if(t.is_rule){ return; } // a regra não conta como tarefa
+    var d=(t.due_date||'').slice(0,10);
+    if(d>hoje && t.recur_group) return; // ocorrência futura de rotina não infla contador
+    s.total++;
+    if(t.status==='feito') s.feito++;
+    else if(t.status==='fazendo') s.fazendo++;
+    else s.todo++;
+    if(d && d<hoje && t.status!=='feito') s.atrasadas++;
+    if(t.recur_group && d===hoje && t.status!=='feito') s.rotinasHoje++;
+  });
+  return s;
+}
+function admPeriodo(){
+  var f=admF(), hoje=today();
+  if(f.per==='hoje') return { ini:hoje, fim:hoje };
+  if(f.per==='amanha'){ var a=addDays(hoje,1); return { ini:a, fim:a }; }
+  if(f.per==='semana') return { ini:hoje, fim:addDays(hoje,7) };
+  if(f.per==='proxsemana') return { ini:addDays(hoje,8), fim:addDays(hoje,14) };
+  if(f.per==='mes') return { ini:hoje.slice(0,8)+'01', fim:addDays(hoje,31) };
+  if(f.per==='custom' && (f.ini||f.fim)) return { ini:f.ini||'0000-01-01', fim:f.fim||'9999-12-31' };
+  return null;
+}
+function admBusca(t, q){
+  if(!q) return true;
+  var u=t.assignee_id?userById(t.assignee_id):null;
+  var pr=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(t.project_id)) { pr=ST.projects[i]; break; }
+  var alvo=[t.title||'', t.description||'', t.tags||'', t.area||'', u?u.name:'', pr?pr.name:''].join(' ').toLowerCase();
+  return alvo.indexOf(q)!==-1;
+}
+function admAplica(list){
+  var f=admF(), q=(f.q||'').toLowerCase().trim(), per=admPeriodo(), hoje=today();
+  return list.filter(function(t){
+    var kind=admTaskKind(t);
+    // por padrão as REGRAS só aparecem no grupo Recorrentes (ou se o gestor filtrar por elas)
+    if(t.is_rule && f.tipo && f.tipo!=='recorrente') return false;
+    if(f.tipo && kind!==f.tipo) return false;
+    if(!t.is_rule){
+      if(f.status && f.status!=='atrasada' && t.status!==f.status) return false; // 'atrasada' é leitura, não status do banco
+      if(f.prio && (t.priority||'media')!==f.prio) return false;
+      var d=(t.due_date||'').slice(0,10);
+      if(per){ if(!d) return false; if(d<per.ini || d>per.fim) return false; }
+      else if(d>hoje && t.recur_group) return false; // sem período: ocorrência futura de rotina fica no grupo Recorrentes
+    } else {
+      if(f.status || f.prio || per) { if(f.tipo!=='recorrente') return false; }
+    }
+    return admBusca(t, q);
+  });
+}
+// Filtro "atrasada" não é um status do banco — é uma leitura. Tratado à parte:
+function admAplicaAtrasada(list){
+  var f=admF(); if(f.status!=='atrasada') return list;
+  var hoje=today();
+  return list.filter(function(t){ if(t.is_rule) return false; var d=(t.due_date||'').slice(0,10); return d && d<hoje && t.status!=='feito'; });
+}
+function admGrupos(list){
+  var hoje=today(), fimSem=addDays(hoje,7), fimMes=hoje.slice(0,8)+'31';
+  var G={ atrasadas:[], hoje:[], semana:[], mes:[], recorrentes:[], depois:[] };
+  list.forEach(function(t){
+    if(t.is_rule){ G.recorrentes.push(t); return; }
+    var d=(t.due_date||'').slice(0,10);
+    if(!d){ G.depois.push(t); return; }
+    if(d<hoje && t.status!=='feito'){ G.atrasadas.push(t); return; }
+    if(d===hoje){ G.hoje.push(t); return; }
+    if(d<=fimSem){ G.semana.push(t); return; }
+    if(d<=fimMes){ G.mes.push(t); return; }
+    G.depois.push(t);
+  });
+  var ord=function(a,b){ return (a.due_date||'zz').localeCompare(b.due_date||'zz'); };
+  for(var k in G) G[k].sort(ord);
+  return G;
+}
+function admRowHTML(t){
+  var pr=PRIO[t.priority]||PRIO.media, st=STATUS[t.status]||STATUS.todo;
+  var u=t.assignee_id?userById(t.assignee_id):null;
+  var hoje=today(), d=(t.due_date||'').slice(0,10);
+  var late=d && d<hoje && t.status!=='feito';
+  var kind=admTaskKind(t);
+  var selo = kind!=='normal' ? '<span class="adm-selo '+kind+'">'+ADM_KIND_LB[kind]+'</span>' : '';
+  var proj=null; for(var i=0;i<(ST.projects||[]).length;i++) if(String(ST.projects[i].id)===String(t.project_id)) { proj=ST.projects[i]; break; }
+  var sub=[];
+  if(u) sub.push(esc(u.name.split(' ')[0]));
+  else sub.push('sem responsável');
+  if(proj) sub.push('· '+esc(proj.name));
+  var av = u ? '<span class="ar-av" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'
+             : '<span class="ar-av" style="background:var(--u-border2)">?</span>';
+  var dateHTML = t.is_rule ? '<span class="ar-date">'+esc(descrevePadraoRegra(t))+'</span>'
+                           : (d?'<span class="ar-date'+(late?' late':'')+'">'+fmtDate(d)+'</span>':'');
+  var stHTML = t.is_rule ? (t.rec_paused?'<span class="adm-st" style="color:var(--u-amber);background:var(--u-amber-soft)">Pausada</span>':'<span class="adm-st" style="color:var(--u-green);background:var(--u-green-soft)">Ativa</span>')
+                         : '<span class="adm-st" style="color:'+st.color+';background:'+st.color+'1a">'+st.label+'</span>';
+  return '<button class="adm-row" data-admtask="'+esc(t.id)+'">'+
+    '<span class="ar-prio" style="background:'+pr.color+'"></span>'+ av +
+    '<span class="ar-main"><span class="ar-t">'+esc(t.title||'(sem título)')+'</span><span class="ar-sub">'+sub.join(' ')+' '+selo+'</span></span>'+
+    dateHTML + stHTML +
+  '</button>';
+}
+function admGroupHTML(id, icone, titulo, arr){
+  if(!arr.length) return '';
+  var fechado = (ST.admClosed||{})[id] ? ' closed' : '';
+  var lim = (ST.admLimit||{})[id] || ADM_PAGE;
+  var vis = arr.slice(0, lim);
+  var mais = arr.length>lim ? '<button class="adm-more" data-admmore="'+id+'">Carregar mais ('+(arr.length-lim)+' restantes)</button>' : '';
+  return '<div class="adm-group'+fechado+'" data-admg="'+id+'">'+
+    '<button class="adm-group-h" data-admtoggle="'+id+'">'+icone+'<span>'+esc(titulo)+'</span><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span><span class="agh-ar">'+icon('cal')+'</span></button>'+
+    '<div class="adm-list">'+vis.map(admRowHTML).join('')+mais+'</div>'+
+  '</div>';
+}
+// v80: bloco de indicadores isolado — permite recalcular sozinho, sem recarregar a tela
+function admKpisHTML(){
+  var f=admF(), s=admStats(admScope());
+  function kpi(id, val, label, cor, filtro){
+    var on = filtro && ((filtro.status && f.status===filtro.status) || (filtro.per && f.per===filtro.per) || (filtro.tipo && f.tipo===filtro.tipo));
+    return '<button class="adm-kpi'+(on?' on':'')+'" data-admkpi="'+id+'"><b style="color:'+cor+'">'+val+'</b><i>'+label+'</i></button>';
+  }
+  return '<div class="adm-kpis">'+
+    kpi('total', s.total, 'Total', 'var(--u-text)', null)+
+    kpi('todo', s.todo, 'Pendentes', 'var(--u-text2)', {status:'todo'})+
+    kpi('fazendo', s.fazendo, 'Em andamento', 'var(--u-accent)', {status:'fazendo'})+
+    kpi('feito', s.feito, 'Concluídas', 'var(--u-green)', {status:'feito'})+
+    kpi('atrasadas', s.atrasadas, 'Atrasadas', 'var(--u-red)', {status:'atrasada'})+
+    kpi('rotinas', s.rotinasHoje, 'Rotinas de hoje', 'var(--u-amber)', {tipo:'rotina'})+
+  '</div>';
+}
+function admTarefasHTML(){
+  if(!isAdmin(ST.session)) return emptyState({ icon:'gear', title:'Acesso restrito', text:'A Central de Tarefas é exclusiva de administradores do setor.' });
+  var f=admF();
+  var base=admScope();
+  var kpis=admKpisHTML();
+  function opts(arr, sel, vlabel){
+    return arr.map(function(o){ return '<option value="'+esc(o.v)+'"'+(String(sel)===String(o.v)?' selected':'')+'>'+esc(o.l)+'</option>'; }).join('');
+  }
+  var uOpts=[{v:'',l:'Todos os colaboradores'}]; (ST.users||[]).forEach(function(u){ uOpts.push({v:u.id,l:u.name}); });
+  var lOpts=[{v:'',l:'Todas as lojas'}]; (ST.storeUnits||[]).forEach(function(x){ lOpts.push({v:x.id,l:x.name||('Loja '+x.store_number)}); });
+  var pOpts=[{v:'',l:'Todos os projetos'}]; (ST.projects||[]).forEach(function(p){ pOpts.push({v:p.id,l:p.name}); });
+  var priOpts=[{v:'',l:'Qualquer prioridade'},{v:'alta',l:'Alta'},{v:'media',l:'Média'},{v:'baixa',l:'Baixa'}];
+  var stOpts=[{v:'',l:'Qualquer status'},{v:'todo',l:'A fazer'},{v:'fazendo',l:'Em andamento'},{v:'feito',l:'Concluída'},{v:'atrasada',l:'Atrasada'}];
+  var tpOpts=[{v:'',l:'Qualquer tipo'},{v:'normal',l:'Normal'},{v:'rotina',l:'Rotina'},{v:'pop',l:'POP'},{v:'recorrente',l:'Recorrente'}];
+  var perOpts=[{v:'',l:'Qualquer prazo'},{v:'hoje',l:'Hoje'},{v:'amanha',l:'Amanhã'},{v:'semana',l:'Esta semana'},{v:'proxsemana',l:'Próxima semana'},{v:'mes',l:'Este mês'},{v:'custom',l:'Personalizado'}];
+  var custom = f.per==='custom' ? '<input type="date" id="admIni" value="'+esc(f.ini||'')+'"><input type="date" id="admFim" value="'+esc(f.fim||'')+'">' : '';
+  var nAtivos=admFAtivos();
+  var barra='<div class="adm-bar-bg hidden" id="admBarBg"></div>'+
+    '<div class="adm-bar hidden" id="admBar">'+
+      '<input class="adm-search" id="admQ" placeholder="Buscar por nome, responsável, projeto, descrição ou tag..." value="'+esc(f.q||'')+'">'+
+      '<select id="admColab">'+opts(uOpts,f.colab)+'</select>'+
+      (ST.sector==='lojas'?'<select id="admLoja">'+opts(lOpts,f.loja)+'</select>':'')+
+      '<select id="admProj">'+opts(pOpts,f.proj)+'</select>'+
+      '<select id="admPrio">'+opts(priOpts,f.prio)+'</select>'+
+      '<select id="admStatus">'+opts(stOpts,f.status)+'</select>'+
+      '<select id="admTipo">'+opts(tpOpts,f.tipo)+'</select>'+
+      '<select id="admPer">'+opts(perOpts,f.per)+'</select>'+ custom +
+      (nAtivos?'<button class="adm-clear" id="admClear">Limpar filtros</button>':'')+
+    '</div>';
+  var btnFiltros='<button class="adm-filtros-btn" id="admOpenBar">'+icon('search')+'Filtros'+(nAtivos?'<span class="afb-n">'+nAtivos+'</span>':'')+'</button>';
+
+  var lista=admAplicaAtrasada(admAplica(base));
+  var G=admGrupos(lista);
+  var corpo =
+    admGroupHTML('atrasadas','⚠️ ','Atrasadas', G.atrasadas)+
+    admGroupHTML('hoje','📅 ','Hoje', G.hoje)+
+    admGroupHTML('semana','📆 ','Esta semana', G.semana)+
+    admGroupHTML('mes','🗓 ','Este mês', G.mes)+
+    admGroupHTML('depois','🕒 ','Depois / sem prazo', G.depois)+
+    admGroupHTML('recorrentes','🔄 ','Recorrentes (as rotinas configuradas)', G.recorrentes);
+  if(!corpo) corpo = emptyState({ icon:'tasks', title:'Nada com esses filtros', text: (nAtivos?'Ajuste ou limpe os filtros para ver as tarefas da equipe.':'Ainda não há tarefas na operação deste setor.'), cta:(nAtivos?'':'Nova tarefa') });
+
+  return '<div class="tasks-head"><div><h2>Administração de Tarefas</h2><div class="sub">Gerencie toda a operação da equipe em um único lugar.</div></div>'+btnFiltros+'</div>'+
+    kpis + barra + corpo;
+}
+/* ===== v80: PAINEL LATERAL DA TAREFA (fatia 2 da Central) =====
+   Edita tudo sem sair da tela. Reusa o mesmo motor: grava em malba_vl_tasks,
+   atualiza ST.tasks e refaz só a linha + os indicadores (nada de recarregar). */
+function admSaved(){
+  var el=document.getElementById('spSaved'); if(!el) return;
+  el.classList.add('on'); clearTimeout(window._spST);
+  window._spST=setTimeout(function(){ el.classList.remove('on'); }, 1400);
+}
+// grava um pedaço da tarefa e atualiza só o que mudou
+function admPatch(id, patch, cb){
+  var t=taskById(id); if(!t) return;
+  var k; for(k in patch) t[k]=patch[k];
+  sb.from('malba_vl_tasks').update(patch).eq('id', id).then(function(r){
+    if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); return; }
+    admSaved(); admRefreshRow(id); admRefreshKpis(); if(cb) cb();
+  });
+}
+function admRefreshRow(id){
+  var el=app.querySelector('[data-admtask="'+id+'"]'); if(!el) return;
+  var t=taskById(id); if(!t){ el.parentNode.removeChild(el); return; }
+  var tmp=document.createElement('div'); tmp.innerHTML=admRowHTML(t);
+  var novo=tmp.firstChild; el.parentNode.replaceChild(novo, el);
+  novo.addEventListener('click', function(){ openTaskPanel(id); });
+}
+function admRefreshKpis(){
+  var el=app.querySelector('.adm-kpis'); if(!el) return;
+  var tmp=document.createElement('div'); tmp.innerHTML=admKpisHTML();
+  el.parentNode.replaceChild(tmp.firstChild, el);
+  bindAdmKpis();
+}
+function openTaskPanel(id){
+  var t=taskById(id); if(!t) return;
+  if(t.is_rule){ if(typeof openRotinaModal==='function') openRotinaModal(t); return; }
+  var subs=(Array.isArray(t.subtasks)?t.subtasks:[]).map(function(s){ return { id:s.id||uid(), text:s.text||'', done:!!s.done }; });
+  var rule=(typeof ruleForOccurrence==='function')?ruleForOccurrence(t):null;
+
+  function optsFrom(arr, sel, vazio){
+    var o='<option value="">'+esc(vazio)+'</option>';
+    return o+arr.map(function(x){ return '<option value="'+esc(x.v)+'"'+(String(sel)===String(x.v)?' selected':'')+'>'+esc(x.l)+'</option>'; }).join('');
+  }
+  var uArr=(ST.users||[]).map(function(u){ return {v:u.id,l:u.name}; });
+  var pArr=(ST.projects||[]).map(function(p){ return {v:p.id,l:p.name}; });
+  function pills(id2, arr, sel){
+    return '<div class="sp-pills" id="'+id2+'">'+arr.map(function(x){ return '<button class="sp-pill'+(sel===x.v?' on':'')+'" data-v="'+x.v+'">'+esc(x.l)+'</button>'; }).join('')+'</div>';
+  }
+  function subsHTML(){
+    if(!subs.length) return '<div style="font-size:12.5px;color:var(--u-text3)">Sem itens no checklist.</div>';
+    return subs.map(function(s,i){ return '<div class="sp-sub'+(s.done?' done':'')+'"><input type="checkbox" data-si="'+i+'"'+(s.done?' checked':'')+'><span>'+esc(s.text)+'</span><button class="sp-sub-x" data-sx="'+i+'">×</button></div>'; }).join('');
+  }
+
+  var bg=document.createElement('div'); bg.className='sp-bg';
+  var sp=document.createElement('aside'); sp.className='sp';
+  sp.innerHTML=
+    '<div class="sp-head"><textarea class="sp-t" id="spTitle" rows="1">'+esc(t.title||'')+'</textarea><button class="sp-x" id="spClose">×</button></div>'+
+    '<div class="sp-body">'+
+      (rule?('<div class="sp-rec">'+icon('cal')+'<span>Faz parte da rotina <b>'+esc(descrevePadraoRegra(rule))+'</b></span><button class="sp-rec-b" id="spRule">Editar rotina</button></div>'):'')+
+      '<div class="sp-row"><span class="sp-lb">Status</span>'+pills('spStatus',[{v:'todo',l:'A fazer'},{v:'fazendo',l:'Em andamento'},{v:'feito',l:'Concluída'}], t.status||'todo')+'</div>'+
+      '<div class="sp-row"><span class="sp-lb">Prioridade</span>'+pills('spPrio',[{v:'alta',l:'Alta'},{v:'media',l:'Média'},{v:'baixa',l:'Baixa'}], t.priority||'media')+'</div>'+
+      '<div class="sp-grid2">'+
+        '<div class="sp-row"><span class="sp-lb">Responsável</span><select id="spAssignee">'+optsFrom(uArr, t.assignee_id, 'Sem responsável')+'</select></div>'+
+        '<div class="sp-row"><span class="sp-lb">Prazo</span><input type="date" id="spDate" value="'+esc((t.due_date||'').slice(0,10))+'"></div>'+
+      '</div>'+
+      '<div class="sp-row"><span class="sp-lb">Projeto</span><select id="spProj">'+optsFrom(pArr, t.project_id, 'Sem projeto')+'</select></div>'+
+      '<div class="sp-row"><span class="sp-lb">Checklist</span><div id="spSubs">'+subsHTML()+'</div><input class="sp-sub-add" id="spSubAdd" placeholder="+ adicionar item (Enter)" maxlength="140"></div>'+
+      '<div class="sp-row"><span class="sp-lb">Descrição</span><textarea id="spDesc" placeholder="Detalhes da tarefa...">'+esc(t.description||'')+'</textarea></div>'+
+      '<div class="sp-row"><span class="sp-lb">Etiqueta / tags</span><textarea id="spTags" rows="1" placeholder="ex: caixa, fim de mês">'+esc(t.tags||'')+'</textarea></div>'+
+    '</div>'+
+    '<div class="sp-foot">'+
+      actionBtn('duplicar','id="spDup"')+
+      actionBtn('arquivar','id="spArch"')+
+      actionBtn('excluir','id="spDel"')+
+      '<span class="sp-saved" id="spSaved">salvo ✓</span>'+
+    '</div>';
+  document.body.appendChild(bg); document.body.appendChild(sp);
+
+  function fechar(){
+    if(bg.parentNode) bg.parentNode.removeChild(bg);
+    if(sp.parentNode) sp.parentNode.removeChild(sp);
+    document.removeEventListener('keydown', onKey, true);
+  }
+  function onKey(e){ if(e.key==='Escape'){ e.preventDefault(); fechar(); } }
+  document.addEventListener('keydown', onKey, true);
+  bg.addEventListener('click', fechar);
+  sp.querySelector('#spClose').addEventListener('click', fechar);
+
+  // título e textos: salvam ao sair do campo
+  function blurSave(elId, campo){
+    var el=sp.querySelector('#'+elId); if(!el) return;
+    el.addEventListener('blur', function(){
+      var v=(this.value||'').trim(); var atual=(t[campo]||'');
+      if(v===atual) return;
+      if(campo==='title' && !v){ this.value=atual; return; }
+      var p={}; p[campo]=v; admPatch(id, p);
+    });
+  }
+  blurSave('spTitle','title'); blurSave('spDesc','description'); blurSave('spTags','tags');
+
+  // pills
+  function bindSpPills(sel, campo){
+    var box=sp.querySelector(sel); if(!box) return;
+    var bs=box.querySelectorAll('.sp-pill');
+    for(var i=0;i<bs.length;i++) bs[i].addEventListener('click', function(){
+      for(var k=0;k<bs.length;k++) bs[k].classList.remove('on');
+      this.classList.add('on');
+      var p={}; p[campo]=this.getAttribute('data-v'); admPatch(id, p);
+    });
+  }
+  bindSpPills('#spStatus','status'); bindSpPills('#spPrio','priority');
+
+  sp.querySelector('#spAssignee').addEventListener('change', function(){ admPatch(id, { assignee_id:this.value||null }); });
+  sp.querySelector('#spProj').addEventListener('change', function(){ admPatch(id, { project_id:this.value||null }); });
+  sp.querySelector('#spDate').addEventListener('change', function(){ admPatch(id, { due_date:this.value||null }); });
+
+  // checklist
+  function salvarSubs(){ admPatch(id, { subtasks:subs }); }
+  function redesenhaSubs(){ sp.querySelector('#spSubs').innerHTML=subsHTML(); bindSubs(); }
+  function bindSubs(){
+    var cbs=sp.querySelectorAll('[data-si]');
+    for(var i=0;i<cbs.length;i++) cbs[i].addEventListener('change', function(){
+      subs[+this.getAttribute('data-si')].done=this.checked; salvarSubs(); redesenhaSubs();
+    });
+    var xs=sp.querySelectorAll('[data-sx]');
+    for(var j=0;j<xs.length;j++) xs[j].addEventListener('click', function(){
+      subs.splice(+this.getAttribute('data-sx'),1); salvarSubs(); redesenhaSubs();
+    });
+  }
+  bindSubs();
+  sp.querySelector('#spSubAdd').addEventListener('keydown', function(e){
+    if(e.key!=='Enter') return; e.preventDefault();
+    var v=(this.value||'').trim(); if(!v) return;
+    subs.push({ id:uid(), text:v, done:false }); this.value='';
+    salvarSubs(); redesenhaSubs();
+  });
+
+  if(rule) sp.querySelector('#spRule').addEventListener('click', function(){ fechar(); openRotinaModal(rule); });
+
+  // ações
+  sp.querySelector('#spDup').addEventListener('click', function(){
+    var novo={ title:(t.title||'')+' (cópia)', description:t.description||'', priority:t.priority||'media', status:'todo',
+      due_date:t.due_date||today(), area:t.area||'', tags:t.tags||'', task_kind:t.task_kind||'normal',
+      assignee_id:t.assignee_id||null, project_id:t.project_id||null, sector:ST.sector,
+      created_by:ST.session.user.id, store_unit_id:t.store_unit_id||null };
+    if(subs.length) novo.subtasks=subs.map(function(s){ return { id:uid(), text:s.text, done:false }; });
+    var b=this; setBusy(b,true);
+    sb.from('malba_vl_tasks').insert(novo).select().single().then(function(r){
+      setBusy(b,false);
+      if(r.error||!r.data){ toast('Erro ao duplicar','error'); console.error(r.error); return; }
+      ST.tasks.unshift(r.data); toast('Tarefa duplicada','success'); fechar(); renderPage();
+    });
+  });
+  sp.querySelector('#spArch').addEventListener('click', function(){
+    confirmDialog({ warn:true, icon:'archive', title:'Arquivar tarefa?', message:'Ela sai da operação mas continua no histórico. Dá pra reverter no banco.', confirmLabel:'Arquivar', onConfirm:function(){
+      admPatch(id, { archived_at:new Date().toISOString() }, function(){ toast('Tarefa arquivada','success'); fechar(); renderPage(); });
+    }});
+  });
+  sp.querySelector('#spDel').addEventListener('click', function(){
+    confirmDelete('Excluir a tarefa "'+(t.title||'')+'"?', function(){
+      sb.from('malba_vl_tasks').delete().eq('id', id).then(function(r){
+        if(r.error){ toast('Erro ao excluir','error'); return; }
+        ST.tasks=ST.tasks.filter(function(x){ return String(x.id)!==String(id); });
+        toast('Tarefa excluída','success'); fechar(); renderPage();
+      });
+    });
+  });
+  setTimeout(function(){ var el=sp.querySelector('#spTitle'); if(el) el.blur(); }, 10);
+}
+
+function bindAdmKpis(){
+  var f=admF();
+  var kps=app.querySelectorAll('[data-admkpi]');
+  for(var i=0;i<kps.length;i++) kps[i].addEventListener('click', function(){
+    var k=this.getAttribute('data-admkpi');
+    if(k==='total'){ f.status=''; f.tipo=''; f.per=''; }
+    else if(k==='atrasadas'){ f.status = f.status==='atrasada'?'':'atrasada'; f.per=''; f.tipo=''; }
+    else if(k==='rotinas'){ f.tipo = f.tipo==='rotina'?'':'rotina'; f.per = f.per==='hoje'?'':'hoje'; f.status=''; }
+    else { f.status = f.status===k?'':k; }
+    renderPage();
+  });
+}
+function bindAdmTarefas(){
+  if(!isAdmin(ST.session)) return;
+  var f=admF();
+  function upd(){ renderPage(); }
+  bindAdmKpis();
+  function sel(id, campo){ var e=document.getElementById(id); if(e) e.addEventListener('change', function(){ f[campo]=this.value; if(campo==='per'&&this.value!=='custom'){ f.ini=''; f.fim=''; } upd(); }); }
+  sel('admColab','colab'); sel('admLoja','loja'); sel('admProj','proj'); sel('admPrio','prio');
+  sel('admStatus','status'); sel('admTipo','tipo'); sel('admPer','per');
+  var di=document.getElementById('admIni'); if(di) di.addEventListener('change', function(){ f.ini=this.value; upd(); });
+  var df=document.getElementById('admFim'); if(df) df.addEventListener('change', function(){ f.fim=this.value; upd(); });
+  var q=document.getElementById('admQ');
+  if(q) q.addEventListener('input', function(){ var v=this.value; clearTimeout(window._admQT); window._admQT=setTimeout(function(){ f.q=v; upd(); }, 260); });
+  var cl=document.getElementById('admClear'); if(cl) cl.addEventListener('click', function(){ ST.admF=null; upd(); });
+  // grupos recolhíveis
+  var tg=app.querySelectorAll('[data-admtoggle]');
+  for(var j=0;j<tg.length;j++) tg[j].addEventListener('click', function(){
+    var id=this.getAttribute('data-admtoggle'); if(!ST.admClosed) ST.admClosed={};
+    ST.admClosed[id]=!ST.admClosed[id];
+    var g=app.querySelector('[data-admg="'+id+'"]'); if(g) g.classList.toggle('closed', !!ST.admClosed[id]);
+  });
+  // carregar mais (sob demanda, sem nova consulta ao Supabase)
+  var mr=app.querySelectorAll('[data-admmore]');
+  for(var m=0;m<mr.length;m++) mr[m].addEventListener('click', function(){
+    var id=this.getAttribute('data-admmore'); if(!ST.admLimit) ST.admLimit={};
+    ST.admLimit[id]=(ST.admLimit[id]||ADM_PAGE)+ADM_PAGE; upd();
+  });
+  // abrir a tarefa (por enquanto reusa o modal existente — o painel lateral vem na fatia 2)
+  var rows=app.querySelectorAll('[data-admtask]');
+  for(var r=0;r<rows.length;r++) rows[r].addEventListener('click', function(){
+    openTaskPanel(this.getAttribute('data-admtask')); // v80: painel lateral, sem sair da tela
+  });
+  // mobile: filtros viram um painel inferior
+  var ob=document.getElementById('admOpenBar'), bar=document.getElementById('admBar'), bg=document.getElementById('admBarBg');
+  function fecha(){ if(bar) bar.classList.add('hidden'); if(bg) bg.classList.add('hidden'); }
+  if(ob) ob.addEventListener('click', function(){ if(bar) bar.classList.remove('hidden'); if(bg) bg.classList.remove('hidden'); });
+  if(bg) bg.addEventListener('click', fecha);
+}
+
 function gestaoTabsForSector(){
   var s=ST.sector, T=[];
   function add(id,label,ic){ T.push({id:id,label:label,icon:ic}); }
+  if(isAdmin(ST.session)) add('tarefas','Tarefas da equipe','tasks'); // v79: central de administração de tarefas
   if(s==='lojas'){ add('visao','Visão geral','dashboard'); add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('comissoes','Comissões','dollar'); add('avaliacoes','Avaliações','target'); add('solicitacoes','Solicitações','bell'); add('atividade','Atividade','search'); }
   else if(s==='marketing'){ add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('orcamento','Orçamento','dollar'); add('atividade','Atividade','search'); }
   else if(s==='vendas'){ add('metas','Metas','target'); add('ranking','Ranking','trend'); add('atividade','Atividade','search'); }
@@ -6273,7 +6941,8 @@ function gestaoHTML() {
     return '<button class="cfg-tab'+(tab===x.id?' on':'')+'" data-gtab="'+x.id+'">'+icon(x.icon)+x.label+badge+'</button>';
   }).join('')+'</div>';
   var body;
-  if (tab==='metas') body=metasHTML();
+  if (tab==='tarefas') body=admTarefasHTML();
+  else if (tab==='metas') body=metasHTML();
   else if (tab==='relatorio') body=(ST.sector==='lojas'?relatorioLojasHTML():relatorioHTML());
   else if (tab==='ranking') body=rankingHTML();
   else if (tab==='orcamento') body=orcamentoHTML();
@@ -6489,9 +7158,9 @@ function openComissaoModal() {
       rateio=membros.map(function(m){ return { member_id:m.id, nome:m.name, role:m.role||'', base:null, percentual:pct, valor:Math.round(por*100)/100 }; });
     }
     var rec={ sector:'lojas', store_unit_id:lojaId, periodo_inicio:modal.querySelector('#comIni').value||null, periodo_fim:modal.querySelector('#comFim').value||null, periodo_label:(modal.querySelector('#comLabel').value||'').trim()||null, vendas_total:Math.round(vendasTotal*100)/100, percentual:pctRef, total_comissao:Math.round(totalCom*100)/100, rateio:rateio, created_by:ST.session.user.id };
-    var saveBtn=modal.querySelector('#comSave'); saveBtn.disabled=true; saveBtn.textContent='Salvando...';
+    var saveBtn=modal.querySelector('#comSave'); setBusy(saveBtn,true);
     sb.from('malba_comissoes').insert(rec).select().single().then(function(r){
-      if (r.error||!r.data){ toast('Erro ao salvar comissão','error'); console.error(r.error); saveBtn.disabled=false; saveBtn.textContent='Calcular e salvar'; return; }
+      if (r.error||!r.data){ toast('Erro ao salvar comissão','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Calcular e salvar'; return; }
       ST.comissoes.unshift(r.data); auditLog('Lançou comissão', (storeName(lojaId)||'Loja')); close(); toast('Comissão salva','success'); renderPage();
     });
   });
@@ -6520,9 +7189,9 @@ function comissaoDetalhe(c) {
   modal.querySelector('#comDetClose').addEventListener('click', close);
   modal.querySelector('#comDetSave').addEventListener('click', function(){
     var lbl=(modal.querySelector('#comDetLabel').value||'').trim()||null;
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
+    var btn=this; setBusy(btn,true);
     sb.from('malba_comissoes').update({ periodo_label:lbl }).eq('id', c.id).then(function(r){
-      if(r.error){ toast('Erro ao salvar','error'); btn.disabled=false; btn.textContent='Salvar'; return; }
+      if(r.error){ toast('Erro ao salvar','error'); setBusy(btn,false); btn.textContent='Salvar'; return; }
       c.periodo_label=lbl;
       for(var x=0;x<ST.comissoes.length;x++) if(ST.comissoes[x].id===c.id){ ST.comissoes[x].periodo_label=lbl; break; }
       auditLog('Editou comissão', (storeName(c.store_unit_id)||'Loja')); close(); toast('Atualizado','success'); renderPage();
@@ -6543,7 +7212,7 @@ function avaliacoesHTML() {
   if (ST.sector==='lojas' && ST.store && !isSuper(ST.session)) list = list.filter(function(a){ return a.store_unit_id===ST.store.id; });
   var rows='';
   if (list.length===0) {
-    rows = '<div class="empty-page"><div class="ep-ico">'+icon('target')+'</div><h3>Nenhuma avaliação</h3><p>Avalie o desempenho das lojas e dos funcionários periodicamente.</p></div>';
+    rows = emptyState({ icon:'target', title:'Nenhuma avaliação', text:'Avalie o desempenho das lojas e dos funcionários periodicamente.', cta:(canEdit()?'Nova avaliação':'') });
   } else {
     rows = '<div class="cfg-list">';
     list.forEach(function(a){
@@ -6779,7 +7448,7 @@ function openAvaliacaoModal(aval, preset) {
     var pLabel = MESES[form.ref_month-1]+' '+form.ref_year;
     var base={ sector:'lojas', tipo:tipo, store_unit_id:curLoja, member_id:memberId, periodo_label:pLabel, data_avaliacao:form.data_aval||today(), notas:notasToSave, nota_final:Math.round(media*10)/10, observacao:(form.obs||'').trim()||null, created_by: editing?(aval.created_by||ST.session.user.id):ST.session.user.id };
     var full=Object.assign({}, base, { periodo_inicio:pIni, periodo_fim:pFim, pontos_fortes:(form.fortes||'').trim()||null, pontos_desenvolver:(form.desenvolver||'').trim()||null, plano_acao:(form.plano||'').trim()||null });
-    var btn=modal.querySelector('#avNext'); if(btn){ btn.disabled=true; btn.textContent='Salvando...'; }
+    var btn=modal.querySelector('#avNext'); if(btn){ setBusy(btn,true); }
     function done(row){
       if(editing){ for(var i=0;i<ST.avaliacoes.length;i++) if(ST.avaliacoes[i].id===aval.id){ ST.avaliacoes[i]=Object.assign(ST.avaliacoes[i], row); break; } }
       else if(row){ ST.avaliacoes.unshift(row); }
@@ -6850,7 +7519,8 @@ function bindGestao() {
   for (var i=0;i<tabs.length;i++) tabs[i].addEventListener('click', function(){ ST.gestaoTab=this.getAttribute('data-gtab'); renderPage(); });
   // v74: liga os eventos da tela aninhada na aba ativa
   var gt=ST.gestaoTab||'';
-  if (gt==='metas'){ if(typeof bindMetas==='function') bindMetas(); }
+  if (gt==='tarefas'){ bindAdmTarefas(); }
+  else if (gt==='metas'){ if(typeof bindMetas==='function') bindMetas(); }
   else if (gt==='relatorio'){ if(ST.sector==='lojas'){ if(typeof bindRelatorioLojas==='function') bindRelatorioLojas(); } else { if(typeof bindRelatorio==='function') bindRelatorio(); } }
   else if (gt==='orcamento'){ if(typeof bindOrcamento==='function') bindOrcamento(); }
   var nc=document.getElementById('btnNovaComissao'); if(nc) nc.addEventListener('click', openComissaoModal);
@@ -6914,9 +7584,9 @@ function openVendaModal(){
     var val=_parseBRL(modal.querySelector('#vVal').value);
     if(val<=0){ toast('Informe o valor da venda','error'); return; }
     var rec={ sector:ST.sector, store_unit_id:storeId, user_id:me.id, user_name:me.name, member_id:memberId, value:val, sale_date:(modal.querySelector('#vDate').value||today()), client_name:(modal.querySelector('#vCli').value||'').trim()||null, note:(modal.querySelector('#vObs').value||'').trim()||null };
-    var b=this; b.disabled=true; b.textContent='Salvando...';
+    var b=this; setBusy(b,true);
     sb.from('malba_sales_entries').insert(rec).select().single().then(function(r){
-      if(r.error||!r.data){ toast('Não consegui registrar (peça ao admin para rodar o SQL de vendas).','error'); console.error(r.error); b.disabled=false; b.textContent='Registrar venda'; return; }
+      if(r.error||!r.data){ toast('Não consegui registrar (peça ao admin para rodar o SQL de vendas).','error'); console.error(r.error); setBusy(b,false); b.textContent='Registrar venda'; return; }
       ST.salesEntries.unshift(r.data); auditLog('Registrou venda', 'R$ '+val.toFixed(2)); close(); toast('Venda registrada! 🎉','success'); renderPage();
     });
   });
@@ -6947,7 +7617,7 @@ function openRequestModal(){
     var rec={ sector:ST.sector, store_unit_id:storeId, user_id:me.id, user_name:me.name, member_id:memberId, kind:modal.querySelector('#rKind').value, title:title, detail:(modal.querySelector('#rDetail').value||'').trim()||null, date_ref:(modal.querySelector('#rDate').value||null), status:'pendente' };
     var b=this; b.disabled=true; b.textContent='Enviando...';
     sb.from('malba_requests').insert(rec).select().single().then(function(r){
-      if(r.error||!r.data){ toast('Não consegui enviar (peça ao admin para rodar o SQL de solicitações).','error'); console.error(r.error); b.disabled=false; b.textContent='Enviar pedido'; return; }
+      if(r.error||!r.data){ toast('Não consegui enviar (peça ao admin para rodar o SQL de solicitações).','error'); console.error(r.error); setBusy(b,false); b.textContent='Enviar pedido'; return; }
       ST.requests.unshift(r.data); auditLog('Enviou solicitação', rec.kind+' · '+title); close(); toast('Pedido enviado ao gestor','success'); renderPage();
     });
   });
@@ -7063,6 +7733,13 @@ function colaboradorInicioHTML(){
   // reconhecimentos recebidos
   var kud=kudosDoUser().slice(0,4);
   var kudCard = kud.length ? ('<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Reconhecimentos 🎉</span></div><div class="cab-kudos">'+kud.map(function(k){ return '<div class="cab-kudo"><span class="ck-msg">'+esc(k.message||'')+'</span><span class="ck-from">— '+esc(k.from_name||'Gestão')+'</span></div>'; }).join('')+'</div></div>') : '';
+  // v78: agenda dos próximos 7 dias — vinha do painel "Meu Espaço" (solto); agora vive no Dashboard único
+  var ate=addDays(hoje,7), agenda=[];
+  (ST.events||[]).forEach(function(ev){ var d=(ev.date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; if(String(ev.sector||'')!==ST.sector)return; if(ev.scope==='me'&&String(ev.created_by)!==me)return; agenda.push({d:d,hora:ev.hora||'',label:ev.title,color:ev.color||'#0EA5E9',kind:'ev',scope:ev.scope,id:ev.id}); });
+  mine.forEach(function(t){ if(t.status==='feito')return; var d=(t.due_date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; agenda.push({d:d,hora:'',label:t.title,color:(STATUS[t.status]||STATUS.todo).color,kind:'task',id:t.id}); });
+  agenda.sort(function(a,b){ return (a.d+a.hora).localeCompare(b.d+b.hora); });
+  var agHTML = agenda.length ? agenda.slice(0,10).map(function(it){ return '<div class="me-ag" data-agk="'+it.kind+'" data-agid="'+esc(it.id)+'"><span class="me-ag-date">'+fmtDate(it.d)+(it.hora?' · '+esc(it.hora):'')+'</span><span class="me-ag-dot" style="background:'+it.color+'"></span><span class="me-ag-l">'+esc(it.label)+(it.kind==='ev'?(it.scope==='me'?' · pessoal':' · equipe'):'')+'</span></div>'; }).join('') : '<div class="col-empty">Nada nos próximos 7 dias.</div>';
+  var agendaCard = '<div class="cab-panel"><div class="cab-panel-h">'+icon('cal')+'<span>Minha agenda · 7 dias</span></div><div class="me-agenda">'+agHTML+'</div></div>';
   // ===== LOJAS: painel pessoal (só o que é dele — sem tarefas e sem ponto) =====
   if (ST.sector==='lojas') {
     var mids=meusMemberIds();
@@ -7078,7 +7755,7 @@ function colaboradorInicioHTML(){
         '<div class="cab-panel"><div class="cab-panel-h">'+icon('dollar')+'<span>Minhas comissões</span></div><div class="cab-coms">'+comHTML+'</div></div>'+
       '</div>'+
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('trend')+'<span>Meu desempenho</span></div>'+perfBlock+'</div>'+
-      kudCard +
+      agendaCard + kudCard +
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('bell')+'<span>Minhas solicitações</span></div><div class="cab-reqs">'+rHTML+'</div></div>';
   }
   // ===== VENDAS (e demais): dia a dia individual, com ponto e tarefas =====
@@ -7086,7 +7763,7 @@ function colaboradorInicioHTML(){
     '<div class="cab-grid2">'+
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Minha meta</span></div>'+metaCard+'</div>'+
       '<div class="cab-panel"><div class="cab-panel-h">'+icon('tasks')+'<span>Minhas tarefas de hoje</span></div><div class="cab-tasks">'+tHTML+'</div></div>'+
-    '</div>'+ kudCard +
+    '</div>'+ agendaCard + kudCard +
     '<div class="cab-panel"><div class="cab-panel-h">'+icon('bell')+'<span>Minhas solicitações</span></div><div class="cab-reqs">'+rHTML+'</div></div>';
 }
 function bindColaboradorInicio(){
@@ -7097,6 +7774,14 @@ function bindColaboradorInicio(){
   var ci2=document.getElementById('ciSaida'); if(ci2) ci2.addEventListener('click', function(){ registrarCheckin('saida'); });
   var ts=app.querySelectorAll('.cab-tasks .me-task[data-tid]');
   for(var i=0;i<ts.length;i++) ts[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-tid')); if(t) openTaskModal(t); });
+  // v78: agenda de 7 dias dentro do Dashboard
+  var adm=isAdmin(ST.session);
+  var ags=app.querySelectorAll('.me-agenda .me-ag[data-agk]');
+  for(var j=0;j<ags.length;j++) ags[j].addEventListener('click', function(){
+    var k=this.getAttribute('data-agk'), id=this.getAttribute('data-agid');
+    if(k==='task'){ var t=taskById(id); if(t) openTaskModal(t); }
+    else if(k==='ev'){ var ev=evById(id); if(ev){ if(adm||String(ev.created_by)===String(ST.session.user.id)) openEventModal(ev,null); else toast((ev.hora?ev.hora+' · ':'')+(ev.title||'Evento'),'info'); } }
+  });
 }
 function timeAgo(ts){
   try{
@@ -7212,9 +7897,9 @@ function bindPerfil() {
     var name=(document.getElementById('prfName').value||'').trim();
     if (!name) { toast('Nome obrigatório','error'); return; }
     var payload={ name:name, phone:(document.getElementById('prfPhone').value||'').trim(), position:(document.getElementById('prfPosition').value||'').trim(), bio:(document.getElementById('prfBio').value||'').trim(), initials:iniciais(name) };
-    save.disabled=true; save.textContent='Salvando...';
+    setBusy(save,true);
     sb.from('malba_users').update(payload).eq('id', u.id).then(function(r){
-      save.disabled=false; save.textContent='Salvar perfil';
+      setBusy(save,false); save.textContent='Salvar perfil';
       if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); return; }
       Object.assign(u, payload); saveSession(ST.session); toast('Perfil atualizado','success'); renderPage();
     });
@@ -7225,9 +7910,9 @@ function bindPerfil() {
     var p=(document.getElementById('prfPass').value||'').trim();
     if (!p) { toast('Digite a nova senha','error'); return; }
     if (p.length<4) { toast('Senha muito curta (mín. 4)','error'); return; }
-    ps.disabled=true; ps.textContent='Salvando...';
+    setBusy(ps,true);
     sb.from('malba_users').update({ password_hash:p }).eq('id', u.id).then(function(r){
-      ps.disabled=false; ps.textContent='Alterar senha';
+      setBusy(ps,false); ps.textContent='Alterar senha';
       if (r.error) { toast('Erro ao alterar senha','error'); console.error(r.error); return; }
       document.getElementById('prfPass').value=''; toast('Senha alterada','success');
     });
@@ -7486,16 +8171,16 @@ function openEventModal(ev, presetDate){
     var title=(modal.querySelector('#evTitle').value||'').trim();
     if(!title){ toast('Dê um título','error'); return; }
     var rec={ sector:ST.sector, title:title, date:modal.querySelector('#evDate').value||today(), hora:(modal.querySelector('#evHora').value||'')||null, kind:kind, scope:(admin?scope:'me'), color:EK[kind].color, store_unit_id:(modal.querySelector('#evStore')?(modal.querySelector('#evStore').value||null):null), created_by:(editing?(ev.created_by||me.id):me.id), created_by_name:(editing?(ev.created_by_name||me.name):me.name) };
-    var btn=this; btn.disabled=true; btn.textContent='Salvando...';
+    var btn=this; setBusy(btn,true);
     if (editing){
       sb.from('malba_events').update(rec).eq('id', ev.id).then(function(r){
-        if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); btn.disabled=false; btn.textContent='Salvar'; return; }
+        if(r.error){ toast('Erro ao salvar','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Salvar'; return; }
         for(var i=0;i<ST.events.length;i++) if(ST.events[i].id===ev.id){ ST.events[i]=Object.assign(ST.events[i],rec); break; }
         auditLog('Editou evento', title); close(); toast('Evento atualizado','success'); renderPage();
       });
     } else {
       sb.from('malba_events').insert(rec).select().single().then(function(r){
-        if(r.error||!r.data){ toast('Erro ao adicionar (rodou o SQL de eventos?)','error'); console.error(r.error); btn.disabled=false; btn.textContent='Adicionar'; return; }
+        if(r.error||!r.data){ toast('Erro ao adicionar (rodou o SQL de eventos?)','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Adicionar'; return; }
         ST.events.push(r.data); auditLog('Criou evento', title); close(); toast('Adicionado ao calendário','success'); renderPage();
       });
     }
@@ -7705,48 +8390,6 @@ function meusMemberIds(){
   (ST.members||[]).forEach(function(m){ if((m.name||'').trim().toLowerCase()===nome) ids.push(String(m.id)); });
   return ids;
 }
-function meuEspacoHTML(){
-  var u=ST.session.user, me=String(u.id), hoje=today();
-  function vk(l,v,c){ return '<div class="vg-kpi"><div class="vg-kpi-v" style="color:'+c+'">'+v+'</div><div class="vg-kpi-l">'+l+'</div></div>'; }
-  var mine=ST.tasks.filter(function(t){ return !t.is_rule && String(t.assignee_id)===me; });
-  var st={abertas:0,atrasadas:0,concluidas:0}; mine.forEach(function(t){ var d=(t.due_date||'').slice(0,10); if(t.recur_group && d>hoje) return; if(t.status==='feito')st.concluidas++; else { st.abertas++; if(d&&d<hoje)st.atrasadas++; } });
-  var foco=mine.filter(function(t){ var d=(t.due_date||'').slice(0,10); return t.status!=='feito'&&d&&d<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
-  var focoHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada atrasado ou para hoje.</div>';
-  var ate=addDays(hoje,7), agenda=[];
-  (ST.events||[]).forEach(function(ev){ var d=(ev.date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; if(String(ev.sector||'')!==ST.sector)return; if(ev.scope==='me'&&String(ev.created_by)!==me)return; agenda.push({d:d,hora:ev.hora||'',label:ev.title,color:ev.color||'#0EA5E9',kind:'ev',scope:ev.scope,id:ev.id}); });
-  mine.forEach(function(t){ if(t.status==='feito')return; var d=(t.due_date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; agenda.push({d:d,hora:'',label:t.title,color:(STATUS[t.status]||STATUS.todo).color,kind:'task',id:t.id}); });
-  agenda.sort(function(a,b){ return (a.d+a.hora).localeCompare(b.d+b.hora); });
-  var agendaHTML = agenda.length ? agenda.slice(0,12).map(function(it){ return '<div class="me-ag" data-agk="'+it.kind+'" data-agid="'+esc(it.id)+'"><span class="me-ag-date">'+fmtDate(it.d)+(it.hora?' · '+esc(it.hora):'')+'</span><span class="me-ag-dot" style="background:'+it.color+'"></span><span class="me-ag-l">'+esc(it.label)+(it.kind==='ev'?(it.scope==='me'?' · pessoal':' · equipe'):'')+'</span></div>'; }).join('') : '<div class="col-empty">Nada nos próximos 7 dias.</div>';
-  var mids=meusMemberIds();
-  var avals=ST.avaliacoes.filter(function(a){ return a.tipo==='membro' && mids.indexOf(String(a.member_id))!==-1; }).sort(function(a,b){return (b.data_avaliacao||'').localeCompare(a.data_avaliacao||'');});
-  var avalHTML = avals.length ? avals.slice(0,8).map(function(a){ var nota=Number(a.nota_final)||0; var stars=''; for(var i=1;i<=5;i++) stars+= '<span style="color:'+(i<=Math.round(nota)?'#F59E0B':'var(--u-border2)')+'">★</span>'; return '<div class="me-aval"><div class="me-aval-h"><b>'+(a.periodo_label?esc(a.periodo_label):fmtDate(a.data_avaliacao))+'</b><span class="me-aval-nota">'+stars+' '+nota.toFixed(1)+'</span></div>'+(a.observacao?'<div class="me-aval-obs">'+esc(a.observacao)+'</div>':'')+'</div>'; }).join('') : '<div class="col-empty">Você ainda não tem avaliações.</div>';
-  var coms=[];
-  (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
-  var comHTML = coms.length ? coms.slice(0,8).map(function(c){ return '<div class="me-com"><span class="me-com-l">'+esc(c.label||'Período')+(c.loja?' · '+esc(c.loja):'')+'</span><span class="me-com-v">'+fmtBRL(c.valor)+'</span></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
-  return '<div class="tasks-head"><div><h2>Olá, '+esc((u.name||'').split(' ')[0])+'</h2><div class="sub">Seu espaço: tarefas, agenda, avaliações e comissões — só o que é seu</div></div></div>'+
-    muralHTML()+
-    '<div class="vg-kpis me-kpis">'+vk('Minhas abertas',st.abertas,'var(--u-accent)')+vk('Atrasadas',st.atrasadas,'var(--u-red)')+vk('Concluídas',st.concluidas,'var(--u-green)')+'</div>'+
-    '<div class="me-grid">'+
-      '<div class="me-col"><div class="cfg-sec-head"><span>Para hoje e atrasadas</span></div><div class="me-tasks">'+focoHTML+'</div></div>'+
-      '<div class="me-col"><div class="cfg-sec-head"><span>Minha agenda · 7 dias</span></div><div class="me-agenda">'+agendaHTML+'</div></div>'+
-    '</div>'+
-    '<div class="me-grid">'+
-      '<div class="me-col"><div class="cfg-sec-head"><span>Minhas avaliações</span></div><div class="me-avals">'+avalHTML+'</div></div>'+
-      '<div class="me-col"><div class="cfg-sec-head"><span>Minhas comissões</span></div><div class="me-coms">'+comHTML+'</div></div>'+
-    '</div>';
-}
-function bindMeuEspaco(){
-  var admin=isAdmin(ST.session);
-  bindMural();
-  var ts=app.querySelectorAll('.me-task[data-tid]');
-  for (var i=0;i<ts.length;i++) ts[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-tid')); if(t) openTaskModal(t); });
-  var ags=app.querySelectorAll('.me-ag[data-agk]');
-  for (var j=0;j<ags.length;j++) ags[j].addEventListener('click', function(){
-    var k=this.getAttribute('data-agk'), id=this.getAttribute('data-agid');
-    if(k==='task'){ var t=taskById(id); if(t) openTaskModal(t); }
-    else if(k==='ev'){ var ev=evById(id); if(ev){ if(admin||String(ev.created_by)===String(ST.session.user.id)) openEventModal(ev,null); else toast((ev.hora?ev.hora+' · ':'')+(ev.title||'Evento'),'info'); } }
-  });
-}
 /* ===== Mural de avisos (comunicação com a equipe) — reaproveita malba_events ===== */
 function avisosAtivos(){
   var lim=addDays(today(),-21);
@@ -7790,7 +8433,7 @@ function postAvisoModal(){
     var rec={ sector:ST.sector, title:msg, date:today(), hora:null, kind:'aviso', scope:'team', color:'#3B6FF7', store_unit_id:null, created_by:me.id, created_by_name:me.name };
     var btn=this; btn.disabled=true; btn.textContent='Publicando...';
     sb.from('malba_events').insert(rec).select().single().then(function(r){
-      if(r.error||!r.data){ toast('Erro ao publicar (rodou o SQL de eventos?)','error'); console.error(r.error); btn.disabled=false; btn.textContent='Publicar'; return; }
+      if(r.error||!r.data){ toast('Erro ao publicar (rodou o SQL de eventos?)','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Publicar'; return; }
       ST.events.push(r.data); auditLog('Publicou aviso', msg.slice(0,40)); close(); toast('Aviso publicado','success'); renderPage();
     });
   });
@@ -7800,6 +8443,8 @@ function postAvisoModal(){
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
   // v74: telas de resultado e Ponto abrem SEMPRE dentro do hub (Gestão/Equipe) — navegação unificada + compat de rotas/deep-links
+  if (ST.page==='admtarefas'){ ST.gestaoTab='tarefas'; ST.page='gestao'; } // v79
+  if (ST.page==='kpis'){ ST.page='inicio'; } // v78: painel de KPIs foi absorvido pelo Dashboard único
   if (GESTAO_CHILDREN.indexOf(ST.page)!==-1){ ST.gestaoTab=ST.page; ST.page='gestao'; }
   else if (ST.page==='ponto'){ ST.equipeTab='ponto'; ST.page='equipe'; }
   if (ST.page!=='perfil' && !pageAllowed(ST.page, ST.session)) { ST.page='inicio'; }
@@ -7870,6 +8515,7 @@ function boot() {
     }
   } catch(e){}
   if (!window._onlineHook) { window._onlineHook=true; window.addEventListener('online', setOnlineState); window.addEventListener('offline', setOnlineState); }
+  if (!window._esctaHook) { window._esctaHook=true; document.addEventListener('click', function(e){ var b=e.target&&e.target.closest?e.target.closest('.es-cta'):null; if(b && ST.session){ e.preventDefault(); novoContextual(); } }); }
   if (!window._cmdkHook) { window._cmdkHook=true; window.addEventListener('keydown', function(e){ if ((e.metaKey||e.ctrlKey) && (e.key==='k'||e.key==='K')) { e.preventDefault(); if (ST.session) openCommandPalette(); } }); }
   if (!window._keysHook) { window._keysHook=true; window.addEventListener('keydown', function(e){
     if (!ST.session || e.metaKey || e.ctrlKey || e.altKey) return;
