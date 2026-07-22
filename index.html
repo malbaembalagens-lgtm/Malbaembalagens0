@@ -1943,7 +1943,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v89 · 20/07 (Hierarquia de usuarios: Administrador Geral > Gestor > Supervisor > Colaborador > Visualizador, com tabela de permissoes por nivel)';
+var APP_BUILD = 'v89.1 · 22/07 (Correcao urgente: restauradas 11 funcoes removidas por engano na limpeza v87 — Inicio, Gestao, painel da loja e registrar venda voltam a funcionar)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2886,6 +2886,74 @@ function bannerHeroHTML(b) {
     return '<a class="dash-hero banner" href="'+esc(b.link_url)+'" target="_blank" rel="noopener" style="background:'+bg+'">'+overlay+inner+'</a>';
   }
   return '<div class="dash-hero banner" style="background:'+bg+'">'+overlay+inner+'</div>';
+}
+/* ===== v89.1: RESTAURAÇÃO — funções engolidas pela limpeza da v87 =====
+   A remoção de código morto cortou além da conta e levou junto estas
+   auxiliares vivas. Reconstruídas a partir dos pontos de uso. */
+function _ymNow(){ var d=new Date(); return { y:d.getFullYear(), m:d.getMonth()+1 }; }
+function _inMonth(ds){ if(!ds) return false; var n=_ymNow(); return String(ds).slice(0,7) === (n.y+'-'+pad(n.m)); }
+function _parseBRL(v){
+  if (typeof v==='number') return v;
+  v=String(v==null?'':v).replace(/[^\d,.\-]/g,'');
+  if (v.indexOf(',')!==-1) v=v.replace(/\./g,'').replace(',','.');
+  var n=parseFloat(v); return isNaN(n)?0:n;
+}
+function kpiIso(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function kpiRange(){
+  var fim=today();
+  if (ST.kpiPeriod==='dia') return { ini:fim, fim:fim };
+  if (ST.kpiPeriod==='semana') return { ini:addDays(fim,-6), fim:fim };
+  return { ini:fim.slice(0,8)+'01', fim:fim }; // mês (padrão)
+}
+function pendingRequests(){ return (ST.requests||[]).filter(function(r){ return (r.status||'pendente')==='pendente'; }); }
+function meuMemberId(){ var me=String(ST.session.user.id); for(var i=0;i<(ST.members||[]).length;i++){ if(String(ST.members[i].user_id||'')===me) return ST.members[i].id; } return null; }
+function meuStoreId(){ var me=String(ST.session.user.id); for(var i=0;i<(ST.members||[]).length;i++){ if(String(ST.members[i].user_id||'')===me) return ST.members[i].store_unit_id||null; } return null; }
+function minhaMetaMes(){
+  var me=String(ST.session.user.id), n=_ymNow(), out=null;
+  (ST.goals||[]).forEach(function(g){ if(String(g.user_id||'')===me && Number(g.month)===n.m && Number(g.year)===n.y) out=g; });
+  return out;
+}
+function vendasUserMes(uid2){
+  var s2=0, u=String(uid2);
+  (ST.salesEntries||[]).forEach(function(e){ if(String(e.user_id||'')===u && _inMonth(e.sale_date)) s2+=Number(e.value)||0; });
+  return s2;
+}
+function lojaMetaMes(storeId){
+  var n=_ymNow(), meta=0;
+  (ST.goals||[]).forEach(function(g){ if(String(g.store_unit_id||'')===String(storeId) && !g.user_id && Number(g.month)===n.m && Number(g.year)===n.y) meta+=Number(g.goal_value)||0; });
+  var real=(typeof blingFatStoreMonth==='function') ? blingFatStoreMonth(storeId, n.m, n.y) : 0;
+  var pct=meta>0 ? Math.min(999, Math.round(real/meta*100)) : 0;
+  return { meta:meta, real:real, pct:pct };
+}
+// v89.1: também engolida na limpeza — o colaborador registra a própria venda
+function openVendaModal(){
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  modal.innerHTML='<div class="modal" style="max-width:380px">'+
+    '<div class="wz-title">Registrar venda</div>'+
+    '<div class="modal-row"><label class="modal-label">Valor da venda (R$)</label><input type="text" id="vdVal" inputmode="decimal" placeholder="ex: 350,00" autocomplete="off"></div>'+
+    '<div class="modal-row"><label class="modal-label">Data</label><input type="date" id="vdData" value="'+today()+'"></div>'+
+    '<div class="modal-note">Ela soma na sua meta do mês na hora.</div>'+
+    modalFoot({ saveLabel:'Registrar', cancelId:'vdCancel', saveId:'vdOk' })+
+  '</div>';
+  document.body.appendChild(modal);
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+  modal.querySelector('#vdCancel').addEventListener('click', close);
+  setTimeout(function(){ var el=modal.querySelector('#vdVal'); if(el) el.focus(); }, 30);
+  modal.querySelector('#vdOk').addEventListener('click', function(){
+    var val=_parseBRL(modal.querySelector('#vdVal').value);
+    if(val<=0){ toast('Informe o valor da venda','error'); return; }
+    var rec={ sector:ST.sector, user_id:ST.session.user.id, member_id:meuMemberId(), store_unit_id:meuStoreId(),
+              value:val, sale_date:(modal.querySelector('#vdData').value||today()) };
+    var b=this; setBusy(b,true);
+    sb.from('malba_sales_entries').insert(rec).select().single().then(function(r){
+      setBusy(b,false);
+      if(r.error||!r.data){ toast('Não consegui registrar (peça ao gestor para conferir o SQL de vendas).','error'); console.error(r.error); return; }
+      if(!ST.salesEntries) ST.salesEntries=[];
+      ST.salesEntries.push(r.data);
+      close(); toast('Venda registrada — '+fmtBRL(val),'success'); renderPage();
+    });
+  });
 }
 // usa o filtro de loja do admin (ou a loja da conta, se for conta de loja)
 function kpiStoreId(){ return boardStore(); }
@@ -6700,6 +6768,7 @@ function admRegistrosDoSetor(setor){
 function admCarregaSetor(setor, cb){
   if(!ST.admCache) ST.admCache={};
   if(ST.admCache[setor]) { cb(); return; }
+  if(!sb){ ST.admCache[setor]=[]; cb(); return; }
   sb.from('malba_vl_tasks').select('*').eq('sector', setor).eq('is_rule', true).then(function(r){
     ST.admCache[setor] = (r.error||!r.data) ? [] : r.data;
     if(r.error) toast('Não consegui carregar o setor','error');
