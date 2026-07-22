@@ -1943,7 +1943,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v89.1 · 22/07 (Correcao urgente: restauradas 11 funcoes removidas por engano na limpeza v87 — Inicio, Gestao, painel da loja e registrar venda voltam a funcionar)';
+var APP_BUILD = 'v89.2 · 22/07 (Central de Rotinas: grupos abrem por padrao — clicou no colaborador, ve as rotinas na hora)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6873,7 +6873,7 @@ function admLinhaRegraHTML(r){
 }
 function admGrupoHTML(id, titulo, arr){
   var n=admNav();
-  var aberto=(ST.admClosed||{})[id]===false; // fechado por padrão
+  var aberto=(ST.admClosed||{})[id]!==true; // v89.2: ABERTO por padrão — fechar é opção, não obrigação
   var head='<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">🔁 <span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span>'+
     (arr.length?'<button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button>':'')+'</div>';
   if(!arr.length) return '<div class="adm-group vazio">'+head+'</div>';
@@ -6955,7 +6955,7 @@ function bindAdmTarefas(){
   var tg=app.querySelectorAll('[data-admtoggle]');
   for(var j=0;j<tg.length;j++) tg[j].addEventListener('click', function(){
     var id=this.getAttribute('data-admtoggle'); if(!ST.admClosed) ST.admClosed={};
-    ST.admClosed[id]=(ST.admClosed[id]===false); // alterna entre fechado (default) e aberto
+    ST.admClosed[id]=(ST.admClosed[id]!==true); // v89.2: alterna — true = fechado explicitamente
     upd();
   });
   var mr=app.querySelectorAll('[data-admmore]');
