@@ -2287,6 +2287,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .doc-vinc-item:hover { background: var(--u-accent-soft); color: var(--u-accent); }
 .doc-vinc-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+
+/* v101: aviso enquanto o documento abre */
+.doc-editor-load { padding: 40px 20px; text-align: center; color: var(--u-text2); font-size: 13.5px; }
+
 </style>
 </head>
 <body>
@@ -2308,7 +2312,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v100 · 24/07 (Documentos Fase 5: vinculos com Projeto/Tarefa/Cliente/Ideia/Objetivo + painel de indicadores do modulo)';
+var APP_BUILD = 'v101 · 24/07 (CORRECAO: conteudo do documento sumia da tela — editor agora remonta apos qualquer re-render; titulo e menu voltaram a funcionar)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6979,7 +6983,7 @@ function loadDocs(sector){
     sb.from('malba_doc_folders').select('*').eq('sector', sector).then(function(r){
       if(r.error){ console.warn('Docs: rode o SQL Fase 1. Detalhe:', r.error.message); ST.docFolders=[]; return; }
       ST.docFolders = r.data || [];
-      if (ST.page==='docs') renderPage();
+      if (ST.page==='docs' && !ST.docOpen) renderPage(); // não re-renderiza com o editor aberto
     }, function(){ ST.docFolders=[]; });
     // v99: comentários do setor — um query só, alimenta o contador da lista
     sb.from('malba_doc_comments').select('id, doc_id, parent_id, resolved').eq('sector', sector).then(function(rc){
@@ -6989,12 +6993,12 @@ function loadDocs(sector){
         if (c.resolved || c.parent_id) return;
         ST.docCommentCount[c.doc_id] = (ST.docCommentCount[c.doc_id]||0) + 1;
       });
-      if (ST.page==='docs') renderPage();
+      if (ST.page==='docs' && !ST.docOpen) renderPage(); // não re-renderiza com o editor aberto
     }, function(){});
     sb.from('malba_docs').select('id, sector, title, doc_type, folder_id, author_id, visibility, default_perm, shares, unit_id, links, is_archived, is_favorite_by, tags, updated_at, created_at').eq('sector', sector).then(function(r){
       if(r.error){ ST.docs=[]; return; }
       ST.docs = r.data || [];
-      if (ST.page==='docs') renderPage();
+      if (ST.page==='docs' && !ST.docOpen) renderPage(); // não re-renderiza com o editor aberto
     }, function(){ ST.docs=[]; });
   } catch(e){ ST.docFolders=[]; ST.docs=[]; }
 }
@@ -7485,45 +7489,98 @@ function openDocEditor(d){
   // v97: sem permissão nem abre
   if (!docPodeVer(d)){ toast('Você não tem acesso a este documento.','error'); return; }
   var podeEditar = docPodeEditar(d);
-  _docEditorAtual = { id: d.id, editor:null, saving:false, dirty:false, doc:d, readOnly: !podeEditar };
-  ST.docOpen = d.id; // marca que estamos no editor
-  renderPage(); // desenha o wrapper do editor
+  _docEditorAtual = {
+    id: d.id, editor:null, holder:null, saving:false, dirty:false, doc:d,
+    readOnly: !podeEditar, carregando:true, bodyAtual:null
+  };
+  ST.docOpen = d.id;
+  renderPage(); // desenha o wrapper (com o aviso de "carregando")
 
   // o corpo completo não vem no load da lista — busca sob demanda
   sb.from('malba_docs').select('body').eq('id', d.id).single().then(function(rb){
     if (!rb.error && rb.data) d.body = rb.data.body;
-    // v99: já traz os comentários pro contador do cabeçalho
-    docsCarregarComentarios(d.id).then(function(){ if (ST.docOpen===d.id) renderPage(); });
-    // v98: guarda como estava ANTES desta sessão — vira a versão do histórico
-    if (_docEditorAtual && _docEditorAtual.id===d.id){
-      _docEditorAtual.bodyOriginal = d.body;
-      _docEditorAtual.versaoSalva = false;
-    }
-    montarEditor();
-  }, montarEditor);
+    prosseguir();
+  }, prosseguir);
 
-  function montarEditor(){
+  function prosseguir(){
+    var ctx = _docEditorAtual;
+    if (!ctx || ctx.id!==d.id) return; // o usuário já saiu
+    ctx.carregando = false;
+    ctx.bodyAtual = d.body;
+    // v98: guarda como estava ANTES desta sessão — vira a versão do histórico
+    ctx.bodyOriginal = d.body;
+    ctx.versaoSalva = false;
+    docsMontarEditorJS(d);
+    // v99: comentários chegam depois e só atualizam o contador — NUNCA re-renderizam
+    // a página, senão o editor recém-montado seria apagado da tela.
+    docsCarregarComentarios(d.id).then(function(){ docsAtualizarBadgeComentarios(d.id); });
+  }
+}
+
+/* ---------- Monta (ou remonta) o EditorJS no holder atual ---------- */
+function docsMontarEditorJS(d){
+  var ctx = _docEditorAtual;
+  if (!ctx || ctx.id!==d.id) return;
   carregarEditorJS().then(function(){
     var holder = document.getElementById('editorjsHolder');
-    if (!holder) return; // usuário navegou
+    if (!holder) return;                       // saiu da tela
+    if (ctx.editor && ctx.holder===holder) return; // já está montado neste holder
     var body = null;
-    try { body = d.body ? (typeof d.body==='string' ? JSON.parse(d.body) : d.body) : null; } catch(e){ body = null; }
+    try {
+      var bruto = ctx.bodyAtual != null ? ctx.bodyAtual : d.body;
+      body = bruto ? (typeof bruto==='string' ? JSON.parse(bruto) : bruto) : null;
+    } catch(e){ body = null; }
     if (body && !body.blocks) body = { blocks: [] };
+    holder.innerHTML = '';
     var ed = new window.EditorJS({
       holder: holder,
-      readOnly: !podeEditar,   // v97
-      autofocus: podeEditar,
+      readOnly: ctx.readOnly,
+      autofocus: !ctx.readOnly,
       placeholder: 'Comece a escrever aqui...',
       data: body || { blocks: [{ type:'paragraph', data:{ text:'' } }] },
       tools: docEditorTools(),
       onChange: function(){ if (_docEditorAtual && !_docEditorAtual.readOnly) { _docEditorAtual.dirty = true; docsAgendarAutosave(); } }
     });
-    _docEditorAtual.editor = ed;
-  }, function(err){
+    ctx.editor = ed;
+    ctx.holder = holder;
+  }, function(){
     var h = document.getElementById('editorjsHolder');
     if (h) h.innerHTML = '<div class="empty-page"><p>Não consegui carregar o editor. Sua conexão consegue acessar cdn.jsdelivr.net?</p></div>';
   });
-  }
+}
+
+/* ---------- Depois de qualquer re-render, garante que o editor volte ---------- */
+function docsGarantirEditorMontado(){
+  if (!ST.docOpen) return;
+  var ctx = _docEditorAtual;
+  if (!ctx || ctx.id!==ST.docOpen || ctx.carregando) return;
+  var holder = document.getElementById('editorjsHolder');
+  if (!holder) return;
+  if (ctx.editor && ctx.holder===holder) return; // continua vivo
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(ST.docOpen); });
+  if (!d) return;
+  ctx.editor = null; ctx.holder = null;
+  docsMontarEditorJS(d);
+}
+
+/* ---------- Guarda o conteúdo antes de um re-render intencional ---------- */
+function docsPreservarConteudo(depois){
+  var ctx = _docEditorAtual;
+  if (!ctx || !ctx.editor || ctx.readOnly){ depois(); return; }
+  ctx.editor.save().then(function(data){
+    ctx.bodyAtual = data;
+    ctx.editor = null; ctx.holder = null;
+    depois();
+  }).catch(function(){ ctx.editor = null; ctx.holder = null; depois(); });
+}
+
+/* ---------- Atualiza só o contador de comentários, sem re-render ---------- */
+function docsAtualizarBadgeComentarios(docId){
+  if (ST.docOpen!==docId) return;
+  var btn = document.getElementById('docComent');
+  if (!btn) return;
+  var n = docComentariosAbertos(docId);
+  btn.innerHTML = '💬 Comentários' + (n ? ' <b class="doc-coment-badge">'+n+'</b>' : '');
 }
 
 function docEditorTools(){
@@ -7563,6 +7620,7 @@ function docsSalvarAgora(){
       ctx.saving = false;
       if (r.error){ docsMostrarStatus('erro'); return; }
       ctx.dirty = false;
+      ctx.bodyAtual = data; // guarda o último estado bom — usado se a tela re-renderizar
       // atualiza cache local
       var idx = (ST.docs||[]).findIndex(function(x){ return String(x.id)===String(ctx.id); });
       if (idx>=0 && r.data){ ST.docs[idx] = Object.assign(ST.docs[idx], { updated_at: r.data.updated_at }); }
@@ -7583,14 +7641,18 @@ function docsMostrarStatus(kind){
 function docsFecharEditor(){
   if (!_docEditorAtual){ ST.docOpen = null; renderPage(); return; }
   var ctx = _docEditorAtual;
-  function limpar(){ _docEditorAtual = null; ST.docOpen = null; renderPage(); }
-  if (ctx.dirty && ctx.editor && !ctx.readOnly){ // v97
-    ctx.editor.save().then(function(data){
-      sb.from('malba_docs').update({ body: data, plain_text: docBodyParaTexto(data) }).eq('id', ctx.id).then(function(){ limpar(); }); // v98
-    }).catch(limpar);
-  } else {
-    limpar();
+  function limpar(){ _docEditorAtual = null; ST.docOpen = null; ST.docPainelComentarios = false; renderPage(); }
+  function gravar(data){
+    sb.from('malba_docs').update({ body: data, plain_text: docBodyParaTexto(data) }).eq('id', ctx.id).then(function(){
+      var idx = (ST.docs||[]).findIndex(function(x){ return String(x.id)===String(ctx.id); });
+      if (idx>=0) ST.docs[idx].body = data;
+      limpar();
+    }, limpar);
   }
+  if (!ctx.dirty || ctx.readOnly){ limpar(); return; }
+  if (ctx.editor){ ctx.editor.save().then(gravar).catch(limpar); return; }
+  if (ctx.bodyAtual){ gravar(ctx.bodyAtual); return; } // editor foi desmontado — usa o que está em memória
+  limpar();
 }
 
 /* ---------- Editor: renderiza o wrapper ---------- */
@@ -7629,7 +7691,7 @@ function docsEditorHTML(){
     (nLinks ? '<div class="doc-link-barra">'+docLinksDe(d).map(function(l){ return docLinkChipHTML(l, false); }).join('')+'</div>' : '')+
     '<div class="doc-editor-cols'+(ST.docPainelComentarios?' com-painel':'')+'">'+  // v99
       '<div class="doc-editor-body">'+
-        '<div id="editorjsHolder"></div>'+
+        '<div id="editorjsHolder">'+((_docEditorAtual && _docEditorAtual.id===d.id && _docEditorAtual.carregando) ? '<div class="doc-editor-load">Abrindo o documento…</div>' : '')+'</div>'+
       '</div>'+
       docsPainelComentariosHTML(d.id)+
     '</div>'+
@@ -7649,10 +7711,10 @@ function bindDocs(){
     // v99
     var bc = document.getElementById('docComent');
     if (bc) bc.addEventListener('click', function(){
-      ST.docPainelComentarios = !ST.docPainelComentarios;
       // guarda o bloco onde o cursor estava, pra ancorar o comentário
-      if (ST.docPainelComentarios) ST.docBlocoSelecionado = docsCapturarBlocoAtual();
-      renderPage();
+      if (!ST.docPainelComentarios) ST.docBlocoSelecionado = docsCapturarBlocoAtual();
+      ST.docPainelComentarios = !ST.docPainelComentarios;
+      docsPreservarConteudo(function(){ renderPage(); }); // não perde o que está escrito
     });
     var bl = document.getElementById('docLink');
     if (bl) bl.addEventListener('click', function(){ docsVincular(ST.docOpen); }); // v100
@@ -7678,6 +7740,7 @@ function bindDocs(){
     }
     var menu = document.getElementById('docMenu');
     if (menu) menu.addEventListener('click', function(e){ docsAbrirMenuAcoes(e.target, ST.docOpen); });
+    docsGarantirEditorMontado(); // remonta o editor depois de qualquer re-render da página
     return;
   }
 
