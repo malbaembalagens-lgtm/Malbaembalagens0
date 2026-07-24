@@ -1956,6 +1956,117 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .estr-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .estr-tag { font-size: 11px; color: var(--u-text2); background: var(--u-bg2); padding: 2px 8px; border-radius: 999px; font-weight: 500; }
 
+
+/* v92: Objetivos + linha de conversão na ideia */
+.obj-result { font-size: 12.5px; color: var(--u-text2); background: var(--u-bg2); border-radius: var(--radius-sm); padding: 8px 10px; margin: 6px 0 10px; line-height: 1.4; }
+.obj-origem { font-size: 11.5px; color: var(--u-text2); background: var(--u-bg2); padding: 3px 9px; border-radius: 999px; font-weight: 500; }
+.estr-prazo { font-size: 11.5px; color: var(--u-text2); background: var(--u-bg2); padding: 3px 9px; border-radius: 999px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.estr-prazo svg { font-size: 12px; }
+.ideia-conv { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--u-border); }
+.ideia-vinc { font-size: 12.5px; color: var(--u-text2); margin-bottom: 10px; }
+.ideia-vinc b { color: var(--u-text); }
+.ideia-vinc ul { margin: 4px 0 0 0; padding-left: 18px; }
+.ideia-vinc li { margin: 2px 0; }
+
+
+/* v93: Planejamento + Projetos */
+.plan-list { display: flex; flex-direction: column; gap: 10px; }
+.plan-card { background: var(--u-card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--u-shadow); cursor: pointer; transition: transform .12s, box-shadow .12s; border: 1px solid transparent; }
+.plan-card:hover { transform: translateY(-1px); border-color: var(--u-border); }
+.plan-card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.plan-card-head h4 { font-size: 15px; font-weight: 700; margin: 0; color: var(--u-text); }
+.plan-bar-wrap { background: var(--u-bg2); border-radius: 999px; height: 8px; overflow: hidden; }
+.plan-bar { height: 100%; border-radius: 999px; transition: width .3s; }
+.plan-bar-lb { font-size: 12.5px; color: var(--u-text2); margin-top: 6px; }
+.plan-empty-hint { font-size: 12.5px; color: var(--u-text2); font-style: italic; }
+.plan-conv { background: #16A34A22; color: #16A34A; padding: 6px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+.plan-conv:hover { background: #16A34A; color: #fff; }
+.plan-conv-done { font-size: 12px; color: #16A34A; background: #16A34A18; padding: 4px 10px; border-radius: 999px; font-weight: 700; white-space: nowrap; }
+
+/* modal de planejamento */
+.plan-modal-head { margin-bottom: 12px; }
+.plan-modal-title { font-size: 16px; font-weight: 800; color: var(--u-text); margin-bottom: 3px; }
+.plan-modal-obj { font-size: 13px; color: var(--u-text2); }
+.plan-etapas { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.plan-etapa { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--u-bg2); border-radius: 9px; }
+.plan-etapa.done .plan-etapa-lb span { text-decoration: line-through; color: var(--u-text3, #94a3b8); }
+.plan-etapa-lb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--u-text); cursor: pointer; flex: 1; }
+.plan-etapa-lb input { accent-color: var(--u-accent); width: 16px; height: 16px; }
+.plan-etapa-meta { display: flex; align-items: center; gap: 6px; }
+.plan-etapa-av { width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.plan-etapa-due { font-size: 11px; color: var(--u-text2); background: var(--u-card); padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+.plan-etapa-del { background: transparent; color: var(--u-text3, #94a3b8); font-size: 16px; padding: 2px 6px; line-height: 1; }
+.plan-etapa-del:hover { color: #EF4444; }
+.plan-etapas-empty { text-align: center; padding: 20px; color: var(--u-text2); font-size: 13px; background: var(--u-bg2); border-radius: 9px; }
+.plan-add { display: grid; grid-template-columns: 1fr 140px 140px auto; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--u-border); }
+.plan-add input, .plan-add select { padding: 8px 10px; border-radius: 8px; background: var(--u-bg2); border: 1px solid var(--u-border); font-size: 13px; color: var(--u-text); }
+@media (max-width: 640px) { .plan-add { grid-template-columns: 1fr; } }
+
+
+/* v94: visões extras (Kanban/Calendário) + Dashboard da Estratégia */
+.estr-viewtog { margin-bottom: 14px; }
+
+.estr-kanban { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.estr-kb-col { background: var(--u-bg2); border-radius: var(--radius); padding: 10px; min-height: 200px; }
+.estr-kb-head { display: flex; align-items: center; gap: 8px; padding: 4px 6px 10px; font-size: 13px; }
+.estr-kb-head b { flex: 1; color: var(--u-text); }
+.estr-kb-dot { width: 8px; height: 8px; border-radius: 50%; }
+.estr-kb-c { background: var(--u-card); color: var(--u-text2); font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.estr-kb-body { display: flex; flex-direction: column; gap: 8px; }
+.estr-kb-body .estr-card { padding: 10px; }
+.estr-kb-body .estr-title { font-size: 13.5px; }
+.estr-kb-body .estr-desc { display: none; } /* no Kanban só título+meta */
+.estr-kb-empty { text-align: center; color: var(--u-text3, #94a3b8); font-size: 12px; padding: 12px 0; }
+
+.estr-cal { display: flex; flex-direction: column; gap: 18px; }
+.estr-cal-mes-h { font-size: 12px; font-weight: 700; letter-spacing: 1px; color: var(--u-text2); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px dashed var(--u-border); }
+.estr-cal-mes-h span { color: var(--u-text3, #94a3b8); font-weight: 500; }
+
+/* Dashboard */
+.estr-dash { display: flex; flex-direction: column; gap: 16px; }
+.estr-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+.estr-kpi { background: var(--u-card); border-radius: var(--radius); padding: 14px; box-shadow: var(--u-shadow); }
+.estr-kpi-v { font-size: 26px; font-weight: 800; font-family: 'Sora', sans-serif; line-height: 1; }
+.estr-kpi-l { font-size: 12px; color: var(--u-text2); margin-top: 4px; font-weight: 600; }
+.estr-kpi-s { font-size: 11px; color: var(--u-text3, #94a3b8); margin-top: 3px; }
+.estr-dash-2col { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
+@media (max-width: 760px) { .estr-dash-2col { grid-template-columns: 1fr; } }
+.estr-funil, .estr-box { background: var(--u-card); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--u-shadow); }
+.estr-funil h4, .estr-box h4 { font-size: 13px; font-weight: 700; margin: 0 0 12px; color: var(--u-text); }
+.estr-funil-row { display: grid; grid-template-columns: 100px 1fr 40px; gap: 8px; align-items: center; margin-bottom: 8px; }
+.estr-funil-lb { font-size: 12px; color: var(--u-text2); font-weight: 600; }
+.estr-funil-bar { background: var(--u-bg2); border-radius: 999px; height: 12px; overflow: hidden; }
+.estr-funil-bar span { display: block; height: 100%; border-radius: 999px; transition: width .3s; }
+.estr-funil-c { font-size: 13px; color: var(--u-text); font-weight: 800; text-align: right; }
+.estr-rec { display: flex; flex-direction: column; gap: 4px; }
+.estr-rec-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; cursor: pointer; }
+.estr-rec-row:hover { background: var(--u-bg2); }
+.estr-rec-row b { flex: 1; font-size: 13px; color: var(--u-text); font-weight: 600; }
+.estr-rec-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.estr-rec-cat { font-size: 11px; color: var(--u-text2); background: var(--u-bg2); padding: 2px 8px; border-radius: 999px; }
+.estr-rec-empty { padding: 20px; text-align: center; color: var(--u-text2); font-size: 13px; }
+
+
+/* v95: Comentários + histórico dentro dos modais */
+.estr-atividade { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--u-border); }
+.estr-atividade-h { font-size: 13px; font-weight: 700; color: var(--u-text); margin: 0 0 10px; }
+.estr-coment-box { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 14px; align-items: end; }
+.estr-coment-box textarea { resize: vertical; padding: 9px 12px; border-radius: 9px; background: var(--u-bg2); border: 1px solid var(--u-border); font-size: 13px; color: var(--u-text); font-family: inherit; }
+.estr-coment-box textarea:focus { outline: none; border-color: var(--u-accent); }
+.estr-coment-box .btn { white-space: nowrap; padding: 9px 16px; }
+.estr-log { display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; }
+.estr-log-item { padding: 8px 10px; border-radius: 8px; font-size: 13px; }
+.estr-log-item.comentario { background: var(--u-bg2); }
+.estr-log-item.log { display: flex; align-items: center; gap: 8px; color: var(--u-text2); font-size: 12.5px; padding: 4px 6px; }
+.estr-log-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.estr-log-txt b { color: var(--u-text); }
+.estr-log-tempo { color: var(--u-text3, #94a3b8); font-size: 11.5px; }
+.estr-log-head { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.estr-log-head b { color: var(--u-text); font-size: 12.5px; }
+.estr-log-head span { color: var(--u-text3, #94a3b8); font-size: 11.5px; }
+.estr-log-body { color: var(--u-text); line-height: 1.4; white-space: pre-wrap; }
+.estr-log-empty { text-align: center; color: var(--u-text2); font-size: 12.5px; padding: 12px; background: var(--u-bg2); border-radius: 8px; font-style: italic; }
+
 </style>
 </head>
 <body>
@@ -1977,7 +2088,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v91 · 24/07 (Central de Estrategia — Fase 1: Ideias funcionais por setor, 4 areas na nav lateral, filtros, permissoes por nivel)';
+var APP_BUILD = 'v95 · 24/07 (Estrategia Fases 4+5: Dashboard, visoes Kanban/Calendario, comentarios e historico de alteracoes)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2272,7 +2383,7 @@ function loadData() {
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
     ST.requests = [];
     try { sb.from('malba_requests').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.requests=re.data; if(ST.page==='inicio'||ST.page==='gestao') renderPage(); } }, function(){}); } catch(e){}
-    try { loadEstrategia(sector); } catch(e){} // v91: Central de Estratégia
+    try { loadEstrategia(sector); loadObjetivos(sector); loadEstrategiaAtividade(sector); } catch(e){} // v91-v95: Estratégia
     ST.checkins = [];
     try { sb.from('malba_checkins').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.checkins=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
     ST.notes1on1 = [];
@@ -2657,7 +2768,13 @@ function novoContextual() {
   if (pg==='conteudo') return openContentModal(null);
   if (pg==='biblioteca') return openCriativoModal(null);
   if (pg==='crm') return openClientModal(null);
-  if (pg==='estrategia') { if(estrPodeEditar()) return openIdeiaModal(null); return blockManage(); }
+  if (pg==='estrategia') {
+    if(!estrPodeEditar()) return blockManage();
+    if (estrTab()==='objetivos') return openObjetivoModal(null);
+    if (estrTab()==='planejamento' || estrTab()==='projetos'){ toast('Vá em 🎯 Objetivos para criar um novo, ou clique num objetivo aqui para planejar.','info'); return; }
+    if (estrTab()==='dashboard'){ toast('O botão + cria novos itens — vá em 💡 Ideias ou 🎯 Objetivos.','info'); return; }
+    return openIdeiaModal(null);
+  }
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='tarefas' && (ST.taskView||'')==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
@@ -5523,22 +5640,35 @@ function estrategiaHTML(){
 
   var tab = estrTab();
   var podeEd = estrPodeEditar();
-  var novaBtn = podeEd ? '<button class="btn-new" id="btnNovaIdeia">'+icon('plus')+'Nova ideia</button>' : '';
+  var novaBtn = '';
+  if (podeEd){
+    if (tab==='objetivos') novaBtn = '<button class="btn-new" id="btnNovoObjetivo">'+icon('plus')+'Novo objetivo</button>';
+    else if (tab==='ideias' || tab==='arquivadas') novaBtn = '<button class="btn-new" id="btnNovaIdeia">'+icon('plus')+'Nova ideia</button>';
+  }
 
   // navegação lateral (as 4 áreas + Arquivadas)
   var contIdeias = (ST.ideias||[]).filter(function(i){ return i.status!=='arquivada'; }).length;
+  var contObj    = (ST.objetivos||[]).filter(function(o){ return (o.status||'ativo')==='ativo'; }).length;
+  // v93: planejamento = objetivos ativos com etapas; projetos = os que têm source_objetivo_id
+  var contPlan   = (ST.objetivos||[]).filter(function(o){ return (o.status||'ativo')==='ativo' && Array.isArray(o.etapas) && o.etapas.length>0; }).length;
+  var contProj   = (ST.projects||[]).filter(function(p){ return p.source_objetivo_id; }).length;
   var contArq    = (ST.ideias||[]).filter(function(i){ return i.status==='arquivada'; }).length;
   var side = '<aside class="estr-side">'+
+    estrSideItem('dashboard',  '📊 Dashboard',    '',         tab)+ // v94: painel de indicadores
     estrSideItem('ideias',     '💡 Ideias',       contIdeias, tab)+
-    estrSideItem('objetivos',  '🎯 Objetivos',    '—',        tab, true)+
-    estrSideItem('planejamento','📋 Planejamento', '—',        tab, true)+
-    estrSideItem('projetos',   '🚀 Projetos',     '—',        tab, true)+
+    estrSideItem('objetivos',  '🎯 Objetivos',    contObj,    tab)+
+    estrSideItem('planejamento','📋 Planejamento', contPlan,   tab)+ // v93: funcional
+    estrSideItem('projetos',   '🚀 Projetos',     contProj,   tab)+ // v93: funcional
     estrSideItem('arquivadas', '📂 Arquivadas',   contArq,    tab)+
   '</aside>';
 
   var body;
-  if (tab==='ideias')      body = estrIdeiasHTML(false);
+  if (tab==='dashboard')   body = estrDashboardHTML(); // v94
+  else if (tab==='ideias')      body = estrIdeiasHTML(false);
   else if (tab==='arquivadas') body = estrIdeiasHTML(true);
+  else if (tab==='objetivos')  body = estrObjetivosHTML();
+  else if (tab==='planejamento') body = estrPlanejamentoHTML();
+  else if (tab==='projetos')     body = estrProjetosHTML();
   else body = estrEmBreveHTML(tab);
 
   var sub = 'Onde a ideia vira ação · '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:'');
@@ -5596,19 +5726,22 @@ function estrIdeiasHTML(arquivadas){
 
   var filtros = '<div class="estr-filters">'+busca+statusOpts+catOpts+'</div>';
 
-  var cards;
+  // v94: visão-toggle (só na aba "ideias" — arquivadas fica sempre em lista)
+  var toggle = arquivadas ? '' : estrViewToggle('ideias');
+  var v = arquivadas ? 'lista' : estrView();
+  var body;
   if (lista.length===0){
-    cards = emptyState({
+    body = emptyState({
       icon:'target',
       title: arquivadas ? 'Nada arquivado ainda' : (q||st!=='todos'||ct!=='todas' ? 'Nenhuma ideia com esse filtro' : 'Ainda sem ideias registradas'),
       text: arquivadas ? 'Ideias que foram descartadas ou concluídas ficam aqui, sem serem apagadas.' : 'Toda vez que uma ideia surgir, cadastre aqui antes que ela se perca. Nem toda ideia precisa virar projeto — mas toda ideia merece ser registrada.',
       cta: (!arquivadas && estrPodeEditar()) ? 'Nova ideia' : '',
       span:true
     });
-  } else {
-    cards = '<div class="estr-cards">'+lista.map(estrIdeiaCard).join('')+'</div>';
-  }
-  return filtros + cards;
+  } else if (v==='kanban')     body = estrIdeiasHTML_kanban(lista);
+  else if (v==='calendario') body = estrIdeiasHTML_calendario(lista);
+  else                         body = estrIdeiasHTML_lista(arquivadas, lista);
+  return filtros + toggle + body;
 }
 
 function estrIdeiaCard(i){
@@ -5640,6 +5773,11 @@ function bindEstrategia(){
     ST.estrTab = this.getAttribute('data-estr-tab');
     renderPage();
   });
+  if (estrTab()==='objetivos') bindEstrategiaObjetivos();
+  if (estrTab()==='planejamento') bindEstrategiaPlanejamento();
+  if (estrTab()==='projetos') bindEstrategiaProjetos();
+  if (estrTab()==='dashboard') bindEstrategiaDashboard();       // v94
+  bindEstrategiaViewToggle();                                    // v94: Lista/Kanban/Calendário
 
   var q = document.getElementById('estrQ');
   if (q) {
@@ -5651,6 +5789,8 @@ function bindEstrategia(){
 
   var novo = document.getElementById('btnNovaIdeia');
   if (novo) novo.addEventListener('click', function(){ if(!estrPodeEditar()){ blockManage(); return; } openIdeiaModal(null); });
+  var novoObj = document.getElementById('btnNovoObjetivo');
+  if (novoObj) novoObj.addEventListener('click', function(){ if(!estrPodeEditar()){ blockManage(); return; } openObjetivoModal(null); });
 
   var cards = document.querySelectorAll('[data-estr-id]');
   for (var c=0;c<cards.length;c++) cards[c].addEventListener('click', function(){
@@ -5684,8 +5824,21 @@ function openIdeiaModal(ideia){
       '<div class="modal-row"><label class="modal-label">Origem da ideia</label><input type="text" id="idOrigem" placeholder="Ex: reunião com Thalia, cliente X" value="'+esc(i.origem||'')+'"></div>'+
     '</div>'+
     '<div class="modal-row"><label class="modal-label">Tags (separadas por vírgula)</label><input type="text" id="idTags" placeholder="ex: instagram, expedicao" value="'+esc(tagsStr)+'" autocomplete="off"></div>';
+  // v95: bloco de atividade (comentários + histórico) para ideia já existente
+  if (!isNew){
+    body += estrAtividadeBlocoHTML('ideia', i.id);
+  }
+  // v92: linha de conversão — só aparece pra ideias que já existem
+  if (!isNew){
+    var vinculados = ideiaObjetivosVinculados(i.id);
+    var vincHTML = vinculados.length ? '<div class="ideia-vinc"><b>Objetivos que nasceram desta ideia:</b><ul>'+vinculados.map(function(o){ return '<li>'+esc(o.title)+' <span style="color:'+(OBJ_STATUS[o.status||"ativo"]||OBJ_STATUS.ativo).color+'">('+(OBJ_STATUS[o.status||"ativo"]||OBJ_STATUS.ativo).label+')</span></li>'; }).join('')+'</ul></div>' : '';
+    body += '<div class="ideia-conv">'+
+      vincHTML+
+      '<button type="button" class="btn btn-secondary" id="idToObjetivo">🎯 Transformar em Objetivo</button>'+
+    '</div>';
+  }
 
-  var m = makeModal({
+  var mObj = makeModal({
     title: isNew ? 'Nova ideia' : 'Editar ideia',
     width: 560,
     body: body,
@@ -5716,18 +5869,873 @@ function openIdeiaModal(ideia){
       if (isNew){
         sb.from('malba_estrategia_ideias').insert(payload).select().single().then(function(r){
           if(r.error){ toast('Não consegui registrar: '+(r.error.message||''),'error'); console.error(r.error); return; }
-          if (r.data){ if(!ST.ideias) ST.ideias=[]; ST.ideias.push(r.data); }
+          if (r.data){ if(!ST.ideias) ST.ideias=[]; ST.ideias.push(r.data); estrRegistrar('ideia', r.data.id, 'criado', null); } // v95
           close(); toast('Ideia registrada','success'); renderPage();
         });
       } else {
+        // v95: detecta mudança de status para registrar
+        var statusAntigo = i.status;
         sb.from('malba_estrategia_ideias').update(payload).eq('id', i.id).select().single().then(function(r){
           if(r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
           var idx = (ST.ideias||[]).findIndex(function(x){ return String(x.id)===String(i.id); });
           if (idx>=0 && r.data) ST.ideias[idx] = r.data;
+          if (statusAntigo !== payload.status){
+            estrRegistrar('ideia', i.id, 'status', (ESTR_STATUS[payload.status]||{label:payload.status}).label); // v95
+          } else {
+            estrRegistrar('ideia', i.id, 'editado', null); // v95
+          }
           close(); toast('Ideia salva','success'); renderPage();
         });
       }
     }
+  });
+  // v95: bind do comentário
+  if (!isNew){
+    bindEstrAtividadeNoModal('ideia', i.id, function(){ mObj.close(); openIdeiaModal(i); });
+  }
+  // v92: botão "Transformar em Objetivo" dentro do modal
+  var btnConv = mObj.root.querySelector('#idToObjetivo');
+  if (btnConv) btnConv.addEventListener('click', function(){
+    if (!estrPodeEditar()){ blockManage(); return; }
+    mObj.close();
+    openObjetivoModal(null, i); // pré-preenche a partir desta ideia
+  });
+}
+
+/* ============================================================
+   v92: CENTRAL DE ESTRATÉGIA — Fase 2 (Objetivos)
+   Uma ideia aprovada pode virar um ou vários objetivos.
+   Cada objetivo guarda source_ideia_id (opcional, 1-N).
+   ============================================================ */
+
+var OBJ_STATUS = {
+  ativo:      { label:'Ativo',      color:'#3B6FF7' },
+  em_pausa:   { label:'Em pausa',   color:'#F59E0B' },
+  concluido:  { label:'Concluído',  color:'#16A34A' },
+  cancelado:  { label:'Cancelado',  color:'#9aa1ad' }
+};
+var OBJ_STATUS_ORDER = ['ativo','em_pausa','concluido','cancelado'];
+
+function objTab(){ return ST.objStatus || 'ativo'; }
+
+function loadObjetivos(sector){
+  if(!sb){ ST.objetivos=[]; return; }
+  try {
+    sb.from('malba_estrategia_objetivos').select('*').eq('sector', sector).then(function(r){
+      if(r.error){ console.warn('Objetivos: tabela ainda não existe (rode o SQL da Fase 2). Detalhe:', r.error.message); ST.objetivos=[]; return; }
+      ST.objetivos = r.data || [];
+      if (ST.page==='estrategia') renderPage();
+    }, function(){ ST.objetivos=[]; });
+  } catch(e){ ST.objetivos=[]; }
+}
+
+/* ---------- Tela de Objetivos ---------- */
+function estrObjetivosHTML(){
+  var lista = (ST.objetivos||[]).slice();
+  // busca reaproveita a mesma
+  var q = estrBusca().toLowerCase();
+  if (q) lista = lista.filter(function(o){
+    return (o.title||'').toLowerCase().indexOf(q)!==-1 ||
+           (o.description||'').toLowerCase().indexOf(q)!==-1 ||
+           (o.result_expected||'').toLowerCase().indexOf(q)!==-1;
+  });
+  var st = objTab();
+  if (st!=='todos') lista = lista.filter(function(o){ return (o.status||'ativo')===st; });
+  // mais recentes primeiro
+  lista.sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); });
+
+  // filtros: busca + status
+  var statusOpts = '<select class="task-filter" id="objStatus">'+
+    '<option value="todos">Todos os status</option>' +
+    OBJ_STATUS_ORDER.map(function(k){
+      return '<option value="'+k+'"'+(st===k?' selected':'')+'>'+OBJ_STATUS[k].label+'</option>';
+    }).join('')+'</select>';
+  var busca = '<input type="search" class="task-filter estr-search" id="estrQ" placeholder="Buscar objetivo..." value="'+esc(estrBusca())+'">';
+  var filtros = '<div class="estr-filters">'+busca+statusOpts+'</div>';
+
+  // v94: visão-toggle
+  var toggle = estrViewToggle('objetivos');
+  var v = estrView();
+  var body;
+  if (lista.length===0){
+    body = emptyState({
+      icon:'target',
+      title: (q||st!=='ativo') ? 'Nenhum objetivo com esse filtro' : 'Ainda sem objetivos definidos',
+      text: 'Um objetivo é o que você quer alcançar concretamente. Pode nascer de uma ideia aprovada (use "Transformar em Objetivo" na ideia) ou ser criado direto aqui.',
+      cta: estrPodeEditar() ? 'Novo objetivo' : '',
+      span:true
+    });
+  } else if (v==='kanban')     body = estrObjetivosHTML_kanban(lista);
+  else if (v==='calendario') body = estrObjetivosHTML_calendario(lista);
+  else                         body = '<div class="estr-cards">'+lista.map(objetivoCard).join('')+'</div>';
+  return filtros + toggle + body;
+}
+
+function objetivoCard(o){
+  var st = OBJ_STATUS[o.status] || OBJ_STATUS.ativo;
+  var u = userById(o.owner_id);
+  var av = u ? ('<span class="crm-av" style="background:'+(u.color||'#3B6FF7')+'22;color:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>') : '';
+  var prazo = o.deadline ? ('<span class="estr-prazo">'+icon('cal')+' '+esc(fmtDate(o.deadline))+'</span>') : '';
+  var resultChip = o.result_expected ? '<div class="obj-result"><b>Resultado esperado:</b> '+esc(String(o.result_expected).slice(0,90))+(String(o.result_expected).length>90?'…':'')+'</div>' : '';
+  // origem: se veio de uma ideia
+  var origem = '';
+  if (o.source_ideia_id){
+    var ideia = (ST.ideias||[]).find(function(x){ return String(x.id)===String(o.source_ideia_id); });
+    if (ideia) origem = '<span class="obj-origem" title="Nasceu de: '+esc(ideia.title)+'">💡 '+esc(ideia.title.slice(0,32))+(ideia.title.length>32?'…':'')+'</span>';
+  }
+  return '<div class="estr-card" data-obj-id="'+esc(o.id)+'">'+
+    '<div class="estr-card-top">'+
+      '<span class="estr-status" style="color:'+st.color+';background:'+st.color+'18">'+esc(st.label)+'</span>'+
+      prazo+
+    '</div>'+
+    '<h4 class="estr-title">'+esc(o.title||'—')+'</h4>'+
+    (o.description ? '<p class="estr-desc">'+esc(String(o.description).slice(0,120))+(String(o.description).length>120?'…':'')+'</p>' : '')+
+    resultChip+
+    '<div class="estr-card-foot">'+
+      '<div>'+origem+'</div>'+
+      av+
+    '</div>'+
+  '</div>';
+}
+
+/* ---------- Bind da aba Objetivos ---------- */
+function bindEstrategiaObjetivos(){
+  var sf = document.getElementById('objStatus');
+  if (sf) sf.addEventListener('change', function(){ ST.objStatus = this.value; renderPage(); });
+  var q = document.getElementById('estrQ');
+  if (q) {
+    var timer = null;
+    q.addEventListener('input', function(){ var v=this.value; clearTimeout(timer); timer = setTimeout(function(){ ST.estrQ = v; renderPage(); }, 220); });
+  }
+  var cards = document.querySelectorAll('[data-obj-id]');
+  for (var c=0;c<cards.length;c++) cards[c].addEventListener('click', function(){
+    var id = this.getAttribute('data-obj-id');
+    var it = (ST.objetivos||[]).find(function(x){ return String(x.id)===String(id); });
+    if (it) openObjetivoModal(it);
+  });
+  // botão "+" grande do estado vazio
+  var cta = document.querySelector('.empty-page .btn-new, .empty-page button');
+  if (cta && cta.textContent.indexOf('Novo objetivo')!==-1) cta.addEventListener('click', function(){ openObjetivoModal(null); });
+}
+
+/* ---------- Modal Objetivo (criar/editar) ---------- */
+function openObjetivoModal(objeto, sourceIdeia){
+  if (!estrPodeEditar()){ blockManage(); return; }
+  var isNew = !objeto;
+  var o = objeto || {
+    title:'', description:'', result_expected:'', indicators:'', deadline:'',
+    status:'ativo',
+    owner_id: (ST.session&&ST.session.user&&ST.session.user.id) || null,
+    source_ideia_id: sourceIdeia ? sourceIdeia.id : null
+  };
+  // se veio de uma ideia, pré-preenche título e descrição a partir dela
+  if (isNew && sourceIdeia){
+    o.title = sourceIdeia.title || '';
+    o.description = sourceIdeia.description || '';
+  }
+  var statusOpts = OBJ_STATUS_ORDER.map(function(k){ return '<option value="'+k+'"'+(o.status===k?' selected':'')+'>'+OBJ_STATUS[k].label+'</option>'; }).join('');
+  var respOpts = '<option value="">— sem responsável —</option>' + (ST.allUsers||ST.users||[]).filter(function(u){ return u.sector===ST.sector; }).map(function(u){
+    return '<option value="'+esc(u.id)+'"'+(String(o.owner_id)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>';
+  }).join('');
+  var ideiasList = (ST.ideias||[]).filter(function(i){ return i.status!=='arquivada'; });
+  var ideiaOpts = '<option value="">— nenhuma (independente) —</option>' + ideiasList.map(function(i){
+    return '<option value="'+esc(i.id)+'"'+(String(o.source_ideia_id)===String(i.id)?' selected':'')+'>💡 '+esc(i.title)+'</option>';
+  }).join('');
+
+  var body =
+    '<div class="modal-row"><label class="modal-label">Título do objetivo</label><input type="text" id="obTitle" placeholder="Ex: Dobrar leads qualificados até outubro" value="'+esc(o.title||'')+'" autocomplete="off"></div>'+
+    '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="obDesc" rows="3" placeholder="Contexto: por que este objetivo, quem se beneficia">'+esc(o.description||'')+'</textarea></div>'+
+    '<div class="modal-row"><label class="modal-label">Resultado esperado</label><textarea id="obResult" rows="2" placeholder="Como você vai saber que deu certo? (ex: 500 leads/mês, ticket médio +15%)">'+esc(o.result_expected||'')+'</textarea></div>'+
+    '<div class="modal-row"><label class="modal-label">Indicadores para acompanhar</label><input type="text" id="obInd" placeholder="Ex: leads/dia, taxa de conversão" value="'+esc(o.indicators||'')+'" autocomplete="off"></div>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Prazo</label><input type="date" id="obDeadline" value="'+esc(o.deadline||'')+'"></div>'+
+      '<div class="modal-row"><label class="modal-label">Status</label><select id="obStatus">'+statusOpts+'</select></div>'+
+    '</div>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Responsável</label><select id="obOwner">'+respOpts+'</select></div>'+
+      '<div class="modal-row"><label class="modal-label">Nasceu da ideia</label><select id="obIdeia">'+ideiaOpts+'</select></div>'+
+    '</div>';
+  // v95: bloco de atividade para objetivo já existente
+  if (!isNew){
+    body += estrAtividadeBlocoHTML('objetivo', o.id);
+  }
+
+  makeModal({
+    title: isNew ? 'Novo objetivo' : 'Editar objetivo',
+    width: 600,
+    body: body,
+    saveLabel: isNew ? 'Criar objetivo' : 'Salvar',
+    onDelete: (!isNew && estrPodeEditar()) ? function(close){
+      confirmDelete('Excluir este objetivo? A ideia de origem (se houver) continua guardada.', function(){
+        sb.from('malba_estrategia_objetivos').delete().eq('id', o.id).then(function(r){
+          if(r.error){ toast('Não consegui excluir: '+(r.error.message||''),'error'); return; }
+          ST.objetivos = (ST.objetivos||[]).filter(function(x){ return String(x.id)!==String(o.id); });
+          close(); toast('Objetivo excluído','success'); renderPage();
+        });
+      });
+    } : null,
+    deleteLabel: 'Excluir',
+    onSave: function(close, root){
+      var titulo = (root.querySelector('#obTitle').value||'').trim();
+      if (!titulo){ toast('O título é obrigatório','error'); return; }
+      var payload = {
+        sector: ST.sector,
+        title: titulo,
+        description: (root.querySelector('#obDesc').value||'').trim() || null,
+        result_expected: (root.querySelector('#obResult').value||'').trim() || null,
+        indicators: (root.querySelector('#obInd').value||'').trim() || null,
+        deadline: root.querySelector('#obDeadline').value || null,
+        status: root.querySelector('#obStatus').value || 'ativo',
+        owner_id: root.querySelector('#obOwner').value || null,
+        source_ideia_id: root.querySelector('#obIdeia').value || null
+      };
+      if (isNew){
+        sb.from('malba_estrategia_objetivos').insert(payload).select().single().then(function(r){
+          if(r.error){ toast('Não consegui criar: '+(r.error.message||''),'error'); console.error(r.error); return; }
+          if (r.data){
+            if(!ST.objetivos) ST.objetivos=[]; ST.objetivos.push(r.data);
+            estrRegistrar('objetivo', r.data.id, 'criado', null); // v95
+            if (sourceIdeia) estrRegistrar('ideia', sourceIdeia.id, 'convertido', 'transformou em objetivo', { objetivo_id: r.data.id }); // v95
+          }
+          close();
+          toast(sourceIdeia ? ('Objetivo criado a partir da ideia') : ('Objetivo criado'),'success');
+          // se veio de ideia, também move a ideia pra "aprovada" (se ainda estava nova/em_analise)
+          if (sourceIdeia && ['nova','em_analise'].indexOf(sourceIdeia.status)!==-1){
+            sourceIdeia.status = 'aprovada';
+            sb.from('malba_estrategia_ideias').update({ status:'aprovada' }).eq('id', sourceIdeia.id).then(function(){});
+          }
+          renderPage();
+        });
+      } else {
+        var statusAntigo = o.status;
+        sb.from('malba_estrategia_objetivos').update(payload).eq('id', o.id).select().single().then(function(r){
+          if(r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+          var idx = (ST.objetivos||[]).findIndex(function(x){ return String(x.id)===String(o.id); });
+          if (idx>=0 && r.data) ST.objetivos[idx] = r.data;
+          if (statusAntigo !== payload.status){
+            estrRegistrar('objetivo', o.id, 'status', (OBJ_STATUS[payload.status]||{label:payload.status}).label); // v95
+          } else {
+            estrRegistrar('objetivo', o.id, 'editado', null); // v95
+          }
+          close(); toast('Objetivo salvo','success'); renderPage();
+        });
+      }
+    }
+  });
+  // v95: bind do comentário e retorno para o mesmo objetivo
+  if (!isNew){
+    var mRef = arguments && arguments.length ? null : null; // referência ao makeModal já criado — não temos, então fechamos e reabrimos
+    bindEstrAtividadeNoModal('objetivo', o.id, function(){
+      document.querySelectorAll('.modal-bg').forEach(function(m){ m.remove(); });
+      openObjetivoModal(o);
+    });
+  }
+}
+
+/* ---------- Painel lateral da ideia: lista objetivos vinculados + botão de conversão ---------- */
+function ideiaObjetivosVinculados(ideiaId){
+  return (ST.objetivos||[]).filter(function(o){ return String(o.source_ideia_id||'')===String(ideiaId); });
+}
+
+/* ============================================================
+   v93: CENTRAL DE ESTRATÉGIA — Fase 3 (Planejamento + Projeto)
+   Planejamento = checklist de etapas dentro de UM objetivo.
+   As etapas vivem no próprio objetivo (JSON), sem tabela nova.
+   "Transformar em Projeto" cria em malba_vl_projects e vincula.
+   ============================================================ */
+
+/* ---------- Aba Planejamento: lista de objetivos com etapas ---------- */
+function estrPlanejamentoHTML(){
+  // só objetivos ativos com etapas OU sem etapas (aparecem pra você começar)
+  var lista = (ST.objetivos||[]).filter(function(o){ return (o.status||'ativo')==='ativo'; });
+  var q = estrBusca().toLowerCase();
+  if (q) lista = lista.filter(function(o){ return (o.title||'').toLowerCase().indexOf(q)!==-1; });
+  lista.sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); });
+
+  var busca = '<input type="search" class="task-filter estr-search" id="estrQ" placeholder="Buscar objetivo..." value="'+esc(estrBusca())+'">';
+  var filtros = '<div class="estr-filters">'+busca+'</div>';
+
+  if (lista.length===0){
+    return filtros + emptyState({
+      icon:'target',
+      title: q ? 'Nenhum objetivo com esse filtro' : 'Nenhum objetivo ativo para planejar',
+      text: 'Crie um objetivo primeiro (aba 🎯 Objetivos). Depois volte aqui pra dividir a execução em etapas.',
+      span:true
+    });
+  }
+
+  var cards = '<div class="plan-list">'+lista.map(planCardHTML).join('')+'</div>';
+  return filtros + cards;
+}
+
+function planCardHTML(o){
+  var etapas = Array.isArray(o.etapas) ? o.etapas : [];
+  var feitas = etapas.filter(function(e){ return e.done; }).length;
+  var total = etapas.length;
+  var pct = total>0 ? Math.round(feitas/total*100) : 0;
+  var pctColor = pct===100 ? '#16A34A' : (pct>=50 ? '#3B6FF7' : (pct>=20 ? '#F59E0B' : '#9aa1ad'));
+  var barra = total>0 ? '<div class="plan-bar-wrap"><div class="plan-bar" style="width:'+pct+'%;background:'+pctColor+'"></div></div><div class="plan-bar-lb">'+feitas+' de '+total+' etapa'+(total>1?'s':'')+' · <b style="color:'+pctColor+'">'+pct+'%</b></div>' : '<div class="plan-empty-hint">Ainda sem etapas — clique para planejar</div>';
+  // botão "Transformar em Projeto" habilita quando planejamento está pronto (>=1 etapa concluída ou todas concluídas)
+  var jaConvertido = (ST.projects||[]).some(function(p){ return String(p.source_objetivo_id||'')===String(o.id); });
+  var btnProj = jaConvertido
+    ? '<span class="plan-conv-done">✓ Projeto criado</span>'
+    : (total>0 && estrPodeEditar() ? '<button class="plan-conv" data-plan-conv="'+esc(o.id)+'">🚀 Transformar em Projeto</button>' : '');
+
+  return '<div class="plan-card" data-plan-id="'+esc(o.id)+'">'+
+    '<div class="plan-card-head">'+
+      '<h4>'+esc(o.title||'—')+'</h4>'+
+      btnProj+
+    '</div>'+
+    barra+
+  '</div>';
+}
+
+/* ---------- Modal de Planejamento: adicionar/marcar etapas ---------- */
+function openPlanejamentoModal(objetivo){
+  if (!estrPodeEditar()){ blockManage(); return; }
+  var o = objetivo;
+  var etapas = Array.isArray(o.etapas) ? o.etapas.map(function(e){ return { title:e.title, done:!!e.done, owner_id:e.owner_id||null, due:e.due||null }; }) : [];
+
+  var respOpts = '<option value="">— sem —</option>' + (ST.allUsers||ST.users||[]).filter(function(u){ return u.sector===ST.sector; }).map(function(u){
+    return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>';
+  }).join('');
+
+  function etapasHTML(){
+    if (!etapas.length) return '<div class="plan-etapas-empty">Nenhuma etapa ainda. Adicione a primeira abaixo.</div>';
+    return '<ul class="plan-etapas">'+etapas.map(function(e, idx){
+      var u = e.owner_id ? userById(e.owner_id) : null;
+      var av = u ? '<span class="plan-etapa-av" title="'+esc(u.name)+'" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>' : '';
+      var prazo = e.due ? '<span class="plan-etapa-due">'+esc(fmtDate(e.due))+'</span>' : '';
+      return '<li class="plan-etapa'+(e.done?' done':'')+'" data-idx="'+idx+'">'+
+        '<label class="plan-etapa-lb"><input type="checkbox" data-etapa-done="'+idx+'"'+(e.done?' checked':'')+'><span>'+esc(e.title)+'</span></label>'+
+        '<div class="plan-etapa-meta">'+prazo+av+'<button class="plan-etapa-del" data-etapa-del="'+idx+'" title="Remover">×</button></div>'+
+      '</li>';
+    }).join('')+'</ul>';
+  }
+
+  var body =
+    '<div class="plan-modal-head">'+
+      '<div class="plan-modal-title">Planejamento do objetivo</div>'+
+      '<div class="plan-modal-obj">🎯 '+esc(o.title||'')+'</div>'+
+    '</div>'+
+    '<div id="planEtapasWrap">'+etapasHTML()+'</div>'+
+    '<div class="plan-add">'+
+      '<input type="text" id="planNovaEtapa" placeholder="Nova etapa (ex: Definir orçamento, Aprovar peça...)" autocomplete="off">'+
+      '<select id="planNovoOwner" title="Responsável (opcional)">'+respOpts+'</select>'+
+      '<input type="date" id="planNovoDue" title="Prazo (opcional)">'+
+      '<button class="btn btn-primary" id="planAddEtapa">Adicionar</button>'+
+    '</div>';
+
+  var m = makeModal({
+    title: '', hideFoot: false, width: 640, body: body,
+    saveLabel: 'Salvar planejamento',
+    onSave: function(close, root){
+      sb.from('malba_estrategia_objetivos').update({ etapas: etapas }).eq('id', o.id).select().single().then(function(r){
+        if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); console.error(r.error); return; }
+        var idx = (ST.objetivos||[]).findIndex(function(x){ return String(x.id)===String(o.id); });
+        if (idx>=0){ ST.objetivos[idx].etapas = etapas; }
+        close(); toast('Planejamento salvo','success'); renderPage();
+      });
+    }
+  });
+
+  // rebind das etapas dinâmicas
+  function redesenha(){
+    m.root.querySelector('#planEtapasWrap').innerHTML = etapasHTML();
+    ligaEventosEtapas();
+  }
+  function ligaEventosEtapas(){
+    m.root.querySelectorAll('[data-etapa-done]').forEach(function(cb){
+      cb.addEventListener('change', function(){
+        var i = Number(this.getAttribute('data-etapa-done'));
+        etapas[i].done = this.checked;
+        this.closest('.plan-etapa').classList.toggle('done', this.checked);
+      });
+    });
+    m.root.querySelectorAll('[data-etapa-del]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var i = Number(this.getAttribute('data-etapa-del'));
+        etapas.splice(i,1); redesenha();
+      });
+    });
+  }
+  ligaEventosEtapas();
+
+  var inputNova = m.root.querySelector('#planNovaEtapa');
+  var ownerSel = m.root.querySelector('#planNovoOwner');
+  var dueInp = m.root.querySelector('#planNovoDue');
+  function addNova(){
+    var t = (inputNova.value||'').trim();
+    if (!t){ toast('Escreva a etapa antes de adicionar','error'); return; }
+    etapas.push({ title:t, done:false, owner_id: ownerSel.value||null, due: dueInp.value||null });
+    inputNova.value=''; ownerSel.value=''; dueInp.value='';
+    redesenha(); inputNova.focus();
+  }
+  m.root.querySelector('#planAddEtapa').addEventListener('click', addNova);
+  inputNova.addEventListener('keydown', function(e){ if (e.key==='Enter'){ e.preventDefault(); addNova(); } });
+}
+
+/* ---------- Aba Projetos: mostra projetos originados na Estratégia ---------- */
+function estrProjetosHTML(){
+  // reaproveita ST.projects, mostra os que têm source_objetivo_id
+  var lista = (ST.projects||[]).filter(function(p){ return p.source_objetivo_id; });
+  var q = estrBusca().toLowerCase();
+  if (q) lista = lista.filter(function(p){ return (p.name||'').toLowerCase().indexOf(q)!==-1; });
+  lista.sort(function(a,b){ return (b.created_at||b.start_date||'').localeCompare(a.created_at||a.start_date||''); });
+
+  var busca = '<input type="search" class="task-filter estr-search" id="estrQ" placeholder="Buscar projeto..." value="'+esc(estrBusca())+'">';
+  var filtros = '<div class="estr-filters">'+busca+'</div>';
+
+  if (lista.length===0){
+    return filtros + emptyState({
+      icon:'folder',
+      title: q ? 'Nenhum projeto com esse filtro' : 'Nenhum projeto vindo da estratégia ainda',
+      text: 'Projetos criados via botão "Transformar em Projeto" (aba Planejamento) aparecem aqui, com vínculo ao objetivo de origem preservado.',
+      span:true
+    });
+  }
+
+  var cards = '<div class="estr-cards">'+lista.map(function(p){
+    var o = (ST.objetivos||[]).find(function(x){ return String(x.id)===String(p.source_objetivo_id); });
+    var origem = o ? '<span class="obj-origem" title="Objetivo de origem">🎯 '+esc((o.title||'').slice(0,32))+((o.title||'').length>32?'…':'')+'</span>' : '';
+    var membros = (p.members||[]).slice(0,3).map(function(uid){
+      var u = userById(uid);
+      return u ? '<span class="crm-av" style="background:'+(u.color||'#3B6FF7')+'22;color:'+(u.color||'#3B6FF7')+';margin-left:-4px">'+esc(iniciais(u.name))+'</span>' : '';
+    }).join('');
+    return '<div class="estr-card" data-proj-id="'+esc(p.id)+'">'+
+      '<div class="estr-card-top">'+
+        '<span class="estr-status" style="color:'+(p.color||'#3B6FF7')+';background:'+(p.color||'#3B6FF7')+'18">'+esc(p.status||'em andamento')+'</span>'+
+      '</div>'+
+      '<h4 class="estr-title">'+esc(p.name||'—')+'</h4>'+
+      (p.description ? '<p class="estr-desc">'+esc(String(p.description).slice(0,120))+'</p>' : '')+
+      '<div class="estr-card-foot">'+
+        '<div>'+origem+'</div>'+
+        '<div style="display:flex">'+membros+'</div>'+
+      '</div>'+
+    '</div>';
+  }).join('')+'</div>';
+  return filtros + cards;
+}
+
+function bindEstrategiaProjetos(){
+  var q = document.getElementById('estrQ');
+  if (q){ var timer=null; q.addEventListener('input', function(){ var v=this.value; clearTimeout(timer); timer=setTimeout(function(){ ST.estrQ=v; renderPage(); }, 220); }); }
+  document.querySelectorAll('[data-proj-id]').forEach(function(el){
+    el.addEventListener('click', function(){
+      // abre o modal de projeto padrão do sistema
+      var p = (ST.projects||[]).find(function(x){ return String(x.id)===String(el.getAttribute('data-proj-id')); });
+      if (p) openProjectModal(p);
+    });
+  });
+}
+
+/* ---------- Bind da aba Planejamento ---------- */
+function bindEstrategiaPlanejamento(){
+  var q = document.getElementById('estrQ');
+  if (q){ var timer=null; q.addEventListener('input', function(){ var v=this.value; clearTimeout(timer); timer=setTimeout(function(){ ST.estrQ=v; renderPage(); }, 220); }); }
+  document.querySelectorAll('[data-plan-id]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      // ignora clique no botão de conversão
+      if (e.target.closest('[data-plan-conv]')) return;
+      var o = (ST.objetivos||[]).find(function(x){ return String(x.id)===String(el.getAttribute('data-plan-id')); });
+      if (o) openPlanejamentoModal(o);
+    });
+  });
+  document.querySelectorAll('[data-plan-conv]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (!estrPodeEditar()){ blockManage(); return; }
+      var o = (ST.objetivos||[]).find(function(x){ return String(x.id)===String(btn.getAttribute('data-plan-conv')); });
+      if (o) transformarEmProjeto(o);
+    });
+  });
+}
+
+/* ---------- Transformar Objetivo em Projeto (a peça mágica) ---------- */
+function transformarEmProjeto(objetivo){
+  var etapas = Array.isArray(objetivo.etapas) ? objetivo.etapas : [];
+  if (!etapas.length){ toast('Adicione ao menos uma etapa no planejamento antes de virar projeto.','error'); return; }
+  confirmDialog({
+    title:'Transformar em Projeto?',
+    message:'Vou criar um projeto novo com o mesmo título e descrição do objetivo. As '+etapas.length+' etapa'+(etapas.length>1?'s':'')+' do planejamento viram tarefas do projeto. O vínculo com o objetivo original fica guardado.',
+    confirmLabel:'Sim, criar projeto',
+    onConfirm:function(){
+      var eu = ST.session && ST.session.user ? ST.session.user.id : null;
+      var proj = {
+        sector: ST.sector,
+        name: objetivo.title,
+        description: objetivo.description || (objetivo.result_expected ? ('Resultado esperado: '+objetivo.result_expected) : null),
+        start_date: today(),
+        end_date: objetivo.deadline || null,
+        status: 'andamento',
+        color: '#3B6FF7',
+        members: eu ? [eu] : [],
+        store_unit_id: ST.store ? ST.store.id : null,
+        source_objetivo_id: objetivo.id
+      };
+      sb.from('malba_vl_projects').insert(proj).select().single().then(function(r){
+        if (r.error || !r.data){
+          // se a coluna source_objetivo_id não existir ainda, tenta sem ela e avisa
+          if (r.error && String(r.error.message||'').indexOf('source_objetivo_id') !== -1){
+            delete proj.source_objetivo_id;
+            sb.from('malba_vl_projects').insert(proj).select().single().then(function(r2){
+              if (r2.error || !r2.data){ toast('Não consegui criar o projeto: '+(r2.error && r2.error.message || ''),'error'); return; }
+              ST.projects.unshift(r2.data);
+              toast('Projeto criado (rode o SQL da Fase 3 para vincular ao objetivo)','info');
+              criarTarefasDoPlanejamento(r2.data.id, etapas);
+              renderPage();
+            });
+            return;
+          }
+          toast('Não consegui criar o projeto: '+(r.error && r.error.message || ''),'error'); return;
+        }
+        ST.projects.unshift(r.data);
+        estrRegistrar('objetivo', objetivo.id, 'convertido', 'transformou em projeto', { projeto_id: r.data.id }); // v95
+        toast('Projeto criado a partir do objetivo','success');
+        criarTarefasDoPlanejamento(r.data.id, etapas);
+        renderPage();
+      });
+    }
+  });
+}
+
+/* ---------- Cria uma tarefa por etapa do planejamento ---------- */
+function criarTarefasDoPlanejamento(projectId, etapas){
+  var criadas = 0;
+  etapas.forEach(function(e){
+    var t = {
+      sector: ST.sector,
+      title: e.title,
+      status: e.done ? 'feito' : 'todo',
+      priority: 'media',
+      due_date: e.due || null,
+      assignee_id: e.owner_id || null,
+      project_id: projectId,
+      store_unit_id: ST.store ? ST.store.id : null
+    };
+    sb.from('malba_vl_tasks').insert(t).select().single().then(function(r){
+      if (r.error){ console.error('etapa->tarefa:', r.error); return; }
+      if (r.data){ if(!ST.tasks) ST.tasks=[]; ST.tasks.push(r.data); }
+      criadas++;
+      if (criadas === etapas.length){
+        toast(etapas.length+' tarefa'+(etapas.length>1?'s':'')+' criada'+(etapas.length>1?'s':'')+' no projeto','success');
+        renderPage();
+      }
+    });
+  });
+}
+
+/* ============================================================
+   v94: CENTRAL DE ESTRATÉGIA — Fase 4 (Visões + Dashboard)
+   Novas visões para Ideias e Objetivos: Lista (default) · Kanban ·
+   Calendário. Aba "Dashboard" com indicadores da própria estratégia.
+   Reaproveita .view-toggle já usado no Trabalho.
+   ============================================================ */
+
+/* ---------- Visão atual (Ideias/Objetivos): 'lista' por padrão ---------- */
+function estrView(){ return ST.estrView || 'lista'; }
+
+function estrViewToggle(alvo){
+  // alvo = 'ideias' | 'objetivos'
+  var v = estrView();
+  var btns = [
+    ['lista','Lista','grid'],
+    ['kanban','Kanban','dashboard'],
+    ['calendario','Calendário','cal']
+  ];
+  return '<div class="view-toggle estr-viewtog">'+btns.map(function(b){
+    return '<button class="vt-btn'+(v===b[0]?' on':'')+'" data-estr-view="'+b[0]+'">'+icon(b[2])+b[1]+'</button>';
+  }).join('')+'</div>';
+}
+
+/* ---------- Ideias: adiciona o toggle e despacha para a visão ---------- */
+function estrIdeiasHTML_lista(arquivadas, lista){
+  // corpo original de estrIdeiasHTML (só a parte da grade de cards)
+  if (lista.length===0){
+    return emptyState({
+      icon:'target',
+      title: arquivadas ? 'Nada arquivado ainda' : 'Nenhuma ideia com esse filtro',
+      text: arquivadas ? 'Ideias arquivadas aparecem aqui, sem serem apagadas.' : 'Ajuste os filtros ou registre uma nova ideia.',
+      span:true
+    });
+  }
+  return '<div class="estr-cards">'+lista.map(estrIdeiaCard).join('')+'</div>';
+}
+
+function estrIdeiasHTML_kanban(lista){
+  // uma coluna por status (menos arquivada, que fica na aba dela)
+  var cols = ESTR_STATUS_ORDER.filter(function(k){ return k!=='arquivada'; });
+  var byStatus = {};
+  cols.forEach(function(k){ byStatus[k]=[]; });
+  lista.forEach(function(i){ var st=i.status||'nova'; if(byStatus[st]) byStatus[st].push(i); });
+  var html = '<div class="estr-kanban">'+cols.map(function(k){
+    var s = ESTR_STATUS[k];
+    var arr = byStatus[k];
+    var cards = arr.length ? arr.map(estrIdeiaCard).join('') : '<div class="estr-kb-empty">—</div>';
+    return '<div class="estr-kb-col" data-kb-col="'+k+'">'+
+      '<div class="estr-kb-head"><span class="estr-kb-dot" style="background:'+s.color+'"></span><b>'+esc(s.label)+'</b><span class="estr-kb-c">'+arr.length+'</span></div>'+
+      '<div class="estr-kb-body">'+cards+'</div>'+
+    '</div>';
+  }).join('')+'</div>';
+  return html;
+}
+
+function estrIdeiasHTML_calendario(lista){
+  // agrupa por mês de created_at (as ideias não têm prazo próprio nesta fase)
+  var byMonth = {};
+  lista.forEach(function(i){
+    var d = (i.created_at||'').slice(0,7); if(!d) return;
+    if(!byMonth[d]) byMonth[d]=[];
+    byMonth[d].push(i);
+  });
+  var months = Object.keys(byMonth).sort().reverse();
+  if (!months.length){
+    return emptyState({ icon:'cal', title:'Nada para mostrar no calendário', text:'Ideias precisam de data de criação para aparecer aqui.', span:true });
+  }
+  var meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return '<div class="estr-cal">'+months.map(function(ym){
+    var y = ym.slice(0,4), m = Number(ym.slice(5,7));
+    var titulo = meses[m-1].toUpperCase()+' / '+y;
+    return '<div class="estr-cal-mes"><div class="estr-cal-mes-h">'+esc(titulo)+' <span>('+byMonth[ym].length+')</span></div><div class="estr-cards">'+byMonth[ym].map(estrIdeiaCard).join('')+'</div></div>';
+  }).join('')+'</div>';
+}
+
+/* ---------- Objetivos: Kanban por status, Calendário por deadline ---------- */
+function estrObjetivosHTML_kanban(lista){
+  var cols = OBJ_STATUS_ORDER;
+  var by = {}; cols.forEach(function(k){ by[k]=[]; });
+  lista.forEach(function(o){ var st=o.status||'ativo'; if(by[st]) by[st].push(o); });
+  return '<div class="estr-kanban">'+cols.map(function(k){
+    var s = OBJ_STATUS[k];
+    var arr = by[k];
+    var cards = arr.length ? arr.map(objetivoCard).join('') : '<div class="estr-kb-empty">—</div>';
+    return '<div class="estr-kb-col" data-kb-col="'+k+'">'+
+      '<div class="estr-kb-head"><span class="estr-kb-dot" style="background:'+s.color+'"></span><b>'+esc(s.label)+'</b><span class="estr-kb-c">'+arr.length+'</span></div>'+
+      '<div class="estr-kb-body">'+cards+'</div>'+
+    '</div>';
+  }).join('')+'</div>';
+}
+
+function estrObjetivosHTML_calendario(lista){
+  // agrupa por mês de deadline; sem deadline vai pra "sem prazo"
+  var byMonth = {}, semPrazo = [];
+  lista.forEach(function(o){
+    if (!o.deadline){ semPrazo.push(o); return; }
+    var d = String(o.deadline).slice(0,7);
+    if(!byMonth[d]) byMonth[d]=[];
+    byMonth[d].push(o);
+  });
+  var months = Object.keys(byMonth).sort();
+  if (!months.length && !semPrazo.length){
+    return emptyState({ icon:'cal', title:'Nada para mostrar no calendário', text:'Adicione prazos aos objetivos para agrupá-los aqui.', span:true });
+  }
+  var meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var html = '<div class="estr-cal">'+months.map(function(ym){
+    var y = ym.slice(0,4), m = Number(ym.slice(5,7));
+    var titulo = meses[m-1].toUpperCase()+' / '+y;
+    return '<div class="estr-cal-mes"><div class="estr-cal-mes-h">'+esc(titulo)+' <span>('+byMonth[ym].length+')</span></div><div class="estr-cards">'+byMonth[ym].map(objetivoCard).join('')+'</div></div>';
+  }).join('');
+  if (semPrazo.length){
+    html += '<div class="estr-cal-mes"><div class="estr-cal-mes-h">SEM PRAZO <span>('+semPrazo.length+')</span></div><div class="estr-cards">'+semPrazo.map(objetivoCard).join('')+'</div></div>';
+  }
+  return html + '</div>';
+}
+
+/* ---------- Aba Dashboard: indicadores da estratégia ---------- */
+function estrDashboardHTML(){
+  var ideias = ST.ideias||[];
+  var objetivos = ST.objetivos||[];
+  var projetos = (ST.projects||[]).filter(function(p){ return p.source_objetivo_id; });
+
+  var ideiasAtivas = ideias.filter(function(i){ return i.status!=='arquivada'; }).length;
+  var ideiasAnalise = ideias.filter(function(i){ return i.status==='em_analise'; }).length;
+  var ideiasAprovadas = ideias.filter(function(i){ return ['aprovada','em_planejamento','em_execucao','concluida'].indexOf(i.status)!==-1; }).length;
+  var objAtivos = objetivos.filter(function(o){ return (o.status||'ativo')==='ativo'; }).length;
+  var planCount = objetivos.filter(function(o){ return Array.isArray(o.etapas) && o.etapas.length>0; }).length;
+  var projCount = projetos.length;
+  // taxa de conversão: (ideias que viraram objetivo) / total de ideias
+  var ideiasQueViraramObj = ideias.filter(function(i){
+    return objetivos.some(function(o){ return String(o.source_ideia_id||'')===String(i.id); });
+  }).length;
+  var taxaConv = ideias.length>0 ? Math.round(ideiasQueViraramObj/ideias.length*100) : 0;
+
+  function card(label, valor, cor, sub){
+    return '<div class="estr-kpi"><div class="estr-kpi-v" style="color:'+(cor||'var(--u-text)')+'">'+valor+'</div><div class="estr-kpi-l">'+esc(label)+'</div>'+(sub?'<div class="estr-kpi-s">'+esc(sub)+'</div>':'')+'</div>';
+  }
+
+  var kpis = '<div class="estr-kpis">'+
+    card('Ideias cadastradas', ideiasAtivas, '#0EA5E9', ideiasAnalise+' em análise')+
+    card('Objetivos ativos', objAtivos, '#3B6FF7', ideiasAprovadas+' ideias aprovadas')+
+    card('Em planejamento', planCount, '#F59E0B', 'com etapas definidas')+
+    card('Projetos originados', projCount, '#16A34A', 'com vínculo à estratégia')+
+    card('Taxa de conversão', taxaConv+'%', taxaConv>=30?'#16A34A':(taxaConv>=10?'#F59E0B':'#EF4444'), ideiasQueViraramObj+' de '+ideias.length+' ideias')+
+  '</div>';
+
+  // fluxo (funil visual)
+  var etapas = [
+    { label:'Ideias', count: ideias.length, cor:'#0EA5E9' },
+    { label:'Objetivos', count: objetivos.length, cor:'#3B6FF7' },
+    { label:'Planejamento', count: planCount, cor:'#F59E0B' },
+    { label:'Projetos', count: projCount, cor:'#16A34A' }
+  ];
+  var max = Math.max(1, etapas[0].count);
+  var funil = '<div class="estr-funil"><h4>Fluxo da estratégia</h4>'+etapas.map(function(e){
+    var pct = Math.round((e.count/max)*100);
+    return '<div class="estr-funil-row"><span class="estr-funil-lb">'+esc(e.label)+'</span><div class="estr-funil-bar"><span style="width:'+pct+'%;background:'+e.cor+'"></span></div><span class="estr-funil-c">'+e.count+'</span></div>';
+  }).join('')+'</div>';
+
+  // ideias recentes
+  var recentes = ideias.slice().sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }).slice(0,5);
+  var recentesHTML = recentes.length ? recentes.map(function(i){
+    var st = ESTR_STATUS[i.status]||ESTR_STATUS.nova;
+    return '<div class="estr-rec-row" data-rec-id="'+esc(i.id)+'"><span class="estr-rec-status" style="background:'+st.color+'"></span><b>'+esc(i.title)+'</b><span class="estr-rec-cat">'+esc(i.category||'—')+'</span></div>';
+  }).join('') : '<div class="estr-rec-empty">Nenhuma ideia registrada ainda.</div>';
+  var recentesBox = '<div class="estr-box"><h4>Ideias recentes</h4><div class="estr-rec">'+recentesHTML+'</div></div>';
+
+  return '<div class="estr-dash">'+kpis+'<div class="estr-dash-2col">'+funil+recentesBox+'</div></div>';
+}
+
+function bindEstrategiaDashboard(){
+  // clicar em ideia recente abre o modal
+  document.querySelectorAll('[data-rec-id]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var i = (ST.ideias||[]).find(function(x){ return String(x.id)===String(el.getAttribute('data-rec-id')); });
+      if (i) openIdeiaModal(i);
+    });
+  });
+}
+
+/* ---------- Bind: troca de visão em Ideias/Objetivos ---------- */
+function bindEstrategiaViewToggle(){
+  document.querySelectorAll('[data-estr-view]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ST.estrView = this.getAttribute('data-estr-view');
+      renderPage();
+    });
+  });
+}
+
+/* ============================================================
+   v95: CENTRAL DE ESTRATÉGIA — Fase 5 (Comentários + Histórico)
+   Comentários e log de alterações em ideias e objetivos.
+   Uma tabela só (malba_estrategia_atividade) com entity_type
+   ('ideia'|'objetivo') e entity_id — evita explosão de tabelas.
+   ============================================================ */
+
+/* ---------- Load: comentários e histórico por setor ---------- */
+function loadEstrategiaAtividade(sector){
+  if(!sb){ ST.estrAtividade = []; return; }
+  try {
+    sb.from('malba_estrategia_atividade').select('*').eq('sector', sector).order('created_at', { ascending:true }).then(function(r){
+      if(r.error){ console.warn('Atividade: rode o SQL da Fase 5. Detalhe:', r.error.message); ST.estrAtividade=[]; return; }
+      ST.estrAtividade = r.data || [];
+      if (ST.page==='estrategia') renderPage();
+    }, function(){ ST.estrAtividade=[]; });
+  } catch(e){ ST.estrAtividade=[]; }
+}
+
+/* ---------- Helpers: pegar atividade de uma entidade ---------- */
+function estrAtividadeDe(tipo, id){
+  return (ST.estrAtividade||[]).filter(function(a){
+    return a.entity_type===tipo && String(a.entity_id)===String(id);
+  });
+}
+
+/* ---------- Registrar (comentário ou log) ---------- */
+function estrRegistrar(tipo, entidadeId, kind, texto, extra){
+  if(!sb) return Promise.resolve(null);
+  var eu = ST.session && ST.session.user ? ST.session.user : null;
+  var payload = {
+    sector: ST.sector,
+    entity_type: tipo,      // 'ideia' | 'objetivo'
+    entity_id: entidadeId,
+    kind: kind,             // 'comentario' | 'criado' | 'editado' | 'status' | 'convertido'
+    text: texto || null,
+    author_id: eu ? eu.id : null,
+    author_name: eu ? eu.name : null,
+    meta: extra || null
+  };
+  return sb.from('malba_estrategia_atividade').insert(payload).select().single().then(function(r){
+    if(r.error){ console.error('atividade:', r.error); return null; }
+    if(r.data){
+      if(!ST.estrAtividade) ST.estrAtividade=[];
+      ST.estrAtividade.push(r.data);
+    }
+    return r.data;
+  });
+}
+
+/* ---------- Formata um item de atividade ---------- */
+function estrAtividadeItemHTML(a){
+  var quem = a.author_name || 'alguém';
+  var tempo = a.created_at ? tempoRelativo(a.created_at) : '';
+  var textoRelato = '';
+  var iconeKey = 'bell';
+  var cor = 'var(--u-text2)';
+  if (a.kind==='comentario'){
+    iconeKey='chat'; cor='var(--u-accent)';
+    return '<div class="estr-log-item comentario"><div class="estr-log-head"><b>'+esc(quem)+'</b><span>'+esc(tempo)+'</span></div><div class="estr-log-body">'+esc(a.text||'')+'</div></div>';
+  }
+  if (a.kind==='criado'){       textoRelato = 'criou'; iconeKey='plus';    cor='#16A34A'; }
+  else if (a.kind==='editado'){ textoRelato = 'editou'; iconeKey='edit';  cor='#3B6FF7'; }
+  else if (a.kind==='status'){  textoRelato = 'mudou o status para '+esc(a.text||''); iconeKey='target'; cor='#F59E0B'; }
+  else if (a.kind==='convertido'){ textoRelato = esc(a.text||'converteu'); iconeKey='folder'; cor='#8B5CF6'; }
+  else textoRelato = esc(a.text||a.kind);
+
+  return '<div class="estr-log-item log"><span class="estr-log-dot" style="background:'+cor+'"></span><span class="estr-log-txt"><b>'+esc(quem)+'</b> '+textoRelato+' <span class="estr-log-tempo">'+esc(tempo)+'</span></span></div>';
+}
+
+/* ---------- Formata "há X" ---------- */
+function tempoRelativo(iso){
+  if(!iso) return '';
+  try {
+    var ms = Date.now() - new Date(iso).getTime();
+    var s = Math.floor(ms/1000);
+    if (s<60) return 'agora';
+    var m = Math.floor(s/60);
+    if (m<60) return 'há '+m+' min';
+    var h = Math.floor(m/60);
+    if (h<24) return 'há '+h+'h';
+    var d = Math.floor(h/24);
+    if (d<7) return 'há '+d+' dia'+(d>1?'s':'');
+    return fmtDate(iso.slice(0,10));
+  } catch(e){ return ''; }
+}
+
+/* ---------- Bloco de atividade dentro do modal (comentário + log) ---------- */
+function estrAtividadeBlocoHTML(tipo, id){
+  var arr = estrAtividadeDe(tipo, id).slice().reverse(); // mais recentes primeiro
+  var comentarioBox = '<div class="estr-coment-box">'+
+    '<textarea id="estrComentTxt" placeholder="Escreva um comentário..." rows="2"></textarea>'+
+    '<button class="btn btn-primary" id="estrComentSend">Enviar</button>'+
+  '</div>';
+  var lista = arr.length ? arr.map(estrAtividadeItemHTML).join('') : '<div class="estr-log-empty">Nenhuma atividade ainda. O histórico vai crescer conforme você e a equipe interagirem.</div>';
+  return '<div class="estr-atividade">'+
+    '<h4 class="estr-atividade-h">Atividade</h4>'+
+    comentarioBox+
+    '<div class="estr-log">'+lista+'</div>'+
+  '</div>';
+}
+
+/* ---------- Bind: enviar comentário dentro de um modal ---------- */
+function bindEstrAtividadeNoModal(tipo, id, rerender){
+  var txt = document.getElementById('estrComentTxt');
+  var btn = document.getElementById('estrComentSend');
+  if (!txt || !btn) return;
+  function enviar(){
+    var v = (txt.value||'').trim();
+    if (!v){ toast('Escreva algo antes de enviar','error'); return; }
+    setBusy(btn, true);
+    estrRegistrar(tipo, id, 'comentario', v).then(function(){
+      setBusy(btn, false);
+      txt.value='';
+      if (rerender) rerender();
+    });
+  }
+  btn.addEventListener('click', enviar);
+  txt.addEventListener('keydown', function(e){
+    // Ctrl+Enter / Cmd+Enter envia
+    if ((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); enviar(); }
   });
 }
 
