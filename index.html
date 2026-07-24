@@ -2162,6 +2162,131 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .doc-acao:hover { background: var(--u-accent-soft); color: var(--u-accent); }
 .doc-acao.danger:hover { background: #EF444418; color: #EF4444; }
 
+
+/* v97: Compartilhamento granular de documentos */
+.doc-share-doc { background: var(--u-bg2); border-radius: 9px; padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
+.doc-vis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+@media (max-width: 520px) { .doc-vis-grid { grid-template-columns: 1fr; } }
+.doc-vis-opt { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border-radius: 10px; background: var(--u-bg2); border: 2px solid transparent; text-align: left; cursor: pointer; }
+.doc-vis-opt:hover { border-color: var(--u-border); }
+.doc-vis-opt.on { border-color: var(--u-accent); background: var(--u-accent-soft); }
+.doc-vis-ic { font-size: 18px; }
+.doc-vis-lb { font-size: 13px; font-weight: 700; color: var(--u-text); }
+.doc-vis-opt.on .doc-vis-lb { color: var(--u-accent); }
+.doc-vis-desc { font-size: 11px; color: var(--u-text2); line-height: 1.3; }
+.doc-share-padrao { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--u-bg2); border-radius: 9px; padding: 10px 12px; font-size: 13px; color: var(--u-text2); }
+.doc-share-perm { padding: 6px 10px; border-radius: 8px; background: var(--u-card); border: 1px solid var(--u-border); font-size: 12.5px; color: var(--u-text); }
+.doc-share-lista { display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto; }
+.doc-share-row { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; background: var(--u-bg2); border-radius: 9px; padding: 7px 10px; }
+.doc-share-nome { font-size: 13px; color: var(--u-text); font-weight: 500; }
+.doc-share-del { background: transparent; color: var(--u-text3, #94a3b8); font-size: 17px; padding: 0 6px; line-height: 1; }
+.doc-share-del:hover { color: #EF4444; }
+.doc-share-vazio { font-size: 12.5px; color: var(--u-text2); font-style: italic; padding: 10px 12px; background: var(--u-bg2); border-radius: 9px; text-align: center; }
+.doc-share-add { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--u-border); }
+.doc-share-add select { padding: 8px 10px; border-radius: 8px; background: var(--u-bg2); border: 1px solid var(--u-border); font-size: 13px; color: var(--u-text); }
+@media (max-width: 520px) { .doc-share-add, .doc-share-row { grid-template-columns: 1fr; } }
+.doc-perm-selo { font-size: 11.5px; font-weight: 700; color: #F59E0B; background: #F59E0B18; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.doc-editor-share { background: var(--u-bg2); color: var(--u-text2); font-size: 12.5px; font-weight: 600; padding: 7px 12px; border-radius: 8px; white-space: nowrap; }
+.doc-editor-share:hover { background: var(--u-accent-soft); color: var(--u-accent); }
+.doc-editor-title[readonly] { cursor: default; }
+.doc-editor-title[readonly]:focus { background: transparent; }
+
+
+/* v98: Histórico de versões + pesquisa no conteúdo */
+.doc-hist-doc { background: var(--u-bg2); border-radius: 9px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
+.doc-hist-marcar { width: 100%; margin-bottom: 12px; }
+.doc-hist-load, .doc-hist-vazio { text-align: center; padding: 22px 14px; color: var(--u-text2); font-size: 13px; background: var(--u-bg2); border-radius: 9px; }
+.doc-hist-vazio span { display: block; margin-top: 6px; font-size: 12px; color: var(--u-text3, #94a3b8); line-height: 1.45; }
+.doc-hist-lista { display: flex; flex-direction: column; gap: 6px; max-height: 380px; overflow-y: auto; }
+.doc-hist-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--u-bg2); border-radius: 9px; padding: 10px 12px; }
+.doc-hist-info { min-width: 0; flex: 1; }
+.doc-hist-tit { font-size: 13px; font-weight: 700; color: var(--u-text); margin-bottom: 2px; }
+.doc-hist-nota { font-size: 10.5px; font-weight: 600; color: var(--u-accent); background: var(--u-accent-soft); padding: 1px 7px; border-radius: 999px; margin-left: 4px; white-space: nowrap; }
+.doc-hist-meta { font-size: 11.5px; color: var(--u-text2); }
+.doc-hist-meta span { color: var(--u-text3, #94a3b8); margin-left: 4px; }
+.doc-hist-restaurar { background: var(--u-card); color: var(--u-accent); font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+.doc-hist-restaurar:hover { background: var(--u-accent); color: #fff; }
+
+.doc-busca-aviso { font-size: 12px; color: var(--u-text2); padding: 6px 12px; background: var(--u-bg2); border-radius: 8px; margin-bottom: 12px; }
+.doc-busca-aviso.ok { color: var(--u-accent); background: var(--u-accent-soft); }
+.doc-trecho { font-size: 12px; color: var(--u-text2); margin-top: 5px; line-height: 1.45; font-weight: 400; }
+.doc-trecho mark { background: #F59E0B33; color: var(--u-text); padding: 0 2px; border-radius: 3px; font-weight: 600; }
+
+
+/* v99: comentários + pendências */
+.doc-editor-cols { display: block; }
+.doc-editor-cols.com-painel { display: grid; grid-template-columns: 1fr 320px; gap: 14px; align-items: start; }
+@media (max-width: 900px) { .doc-editor-cols.com-painel { grid-template-columns: 1fr; } }
+.doc-editor-wrap { max-width: 1180px; }
+
+.doc-coment-painel { background: var(--u-card); border-radius: var(--radius); box-shadow: var(--u-shadow); position: sticky; top: 12px; max-height: 80vh; display: flex; flex-direction: column; }
+.doc-coment-head { display: flex; align-items: center; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--u-border); }
+.doc-coment-head b { flex: 1; font-size: 14px; color: var(--u-text); }
+.doc-coment-toggle { font-size: 11px; color: var(--u-text2); display: flex; align-items: center; gap: 4px; cursor: pointer; white-space: nowrap; }
+.doc-coment-toggle input { accent-color: var(--u-accent); }
+.doc-coment-fechar { background: transparent; color: var(--u-text2); font-size: 20px; line-height: 1; padding: 0 4px; }
+.doc-coment-fechar:hover { color: var(--u-text); }
+.doc-coment-corpo { padding: 12px 14px; overflow-y: auto; }
+.doc-coment-load, .doc-coment-vazio { text-align: center; padding: 18px 10px; font-size: 12.5px; color: var(--u-text2); background: var(--u-bg2); border-radius: 9px; }
+.doc-coment-novo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.doc-coment-novo textarea, .doc-coment-respbox textarea { resize: vertical; padding: 9px 11px; border-radius: 9px; background: var(--u-bg2); border: 1px solid var(--u-border); font-size: 13px; color: var(--u-text); font-family: inherit; }
+.doc-coment-novo textarea:focus, .doc-coment-respbox textarea:focus { outline: none; border-color: var(--u-accent); }
+.doc-coment-lista { display: flex; flex-direction: column; gap: 10px; }
+.doc-coment-item { background: var(--u-bg2); border-radius: 10px; padding: 10px 12px; }
+.doc-coment-item.resolvido { opacity: .62; }
+.doc-coment-ancora { font-size: 11.5px; color: var(--u-text2); font-style: italic; border-left: 3px solid var(--u-accent); padding-left: 8px; margin-bottom: 6px; line-height: 1.35; }
+.doc-coment-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+.doc-coment-meta b { font-size: 12.5px; color: var(--u-text); }
+.doc-coment-meta span { font-size: 11px; color: var(--u-text3, #94a3b8); }
+.doc-coment-selo { font-size: 10px; font-weight: 700; color: #16A34A; background: #16A34A18; padding: 1px 7px; border-radius: 999px; }
+.doc-coment-txt { font-size: 13px; color: var(--u-text); line-height: 1.45; white-space: pre-wrap; word-break: break-word; }
+.doc-mencao { color: var(--u-accent); background: var(--u-accent-soft); padding: 0 4px; border-radius: 4px; font-weight: 600; }
+.doc-coment-resps { margin-top: 8px; padding-left: 10px; border-left: 2px solid var(--u-border); display: flex; flex-direction: column; gap: 8px; }
+.doc-coment-resp { }
+.doc-coment-acoes { display: flex; gap: 4px; margin-top: 7px; flex-wrap: wrap; }
+.doc-coment-acao { background: transparent; color: var(--u-text2); font-size: 11.5px; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
+.doc-coment-acao:hover { background: var(--u-card); color: var(--u-accent); }
+.doc-coment-acao.del:hover { color: #EF4444; }
+.doc-coment-acao.mini { font-size: 14px; padding: 0 5px; line-height: 1; margin-left: auto; }
+.doc-coment-respbox { display: none; gap: 6px; margin-top: 8px; flex-direction: column; }
+.doc-coment-badge { background: #EF4444; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 999px; margin-left: 3px; }
+.doc-editor-share.on { background: var(--u-accent-soft); color: var(--u-accent); }
+.doc-editor-share.destaque { background: #16A34A18; color: #16A34A; }
+.doc-editor-share.destaque:hover { background: #16A34A; color: #fff; }
+.doc-lista-coment { font-size: 11px; color: var(--u-text2); background: var(--u-bg2); padding: 1px 7px; border-radius: 999px; font-weight: 600; }
+
+.doc-pend-doc { background: var(--u-bg2); border-radius: 9px; padding: 10px 12px; font-size: 14px; margin-bottom: 10px; }
+.doc-pend-vazio { text-align: center; padding: 24px 16px; color: var(--u-text2); font-size: 13px; background: var(--u-bg2); border-radius: 9px; line-height: 1.5; }
+.doc-pend-vazio span { display: block; margin-top: 8px; font-size: 12px; color: var(--u-text3, #94a3b8); }
+.doc-pend-lista { display: flex; flex-direction: column; gap: 6px; max-height: 340px; overflow-y: auto; }
+.doc-pend-row { display: grid; grid-template-columns: 1fr 150px 140px; gap: 6px; align-items: center; background: var(--u-bg2); border-radius: 9px; padding: 8px 10px; }
+@media (max-width: 560px) { .doc-pend-row { grid-template-columns: 1fr; } }
+.doc-pend-lb { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--u-text); cursor: pointer; min-width: 0; }
+.doc-pend-lb input { accent-color: var(--u-accent); width: 16px; height: 16px; flex-shrink: 0; }
+.doc-pend-lb span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-pend-row select, .doc-pend-row input[type=date] { padding: 6px 9px; border-radius: 7px; background: var(--u-card); border: 1px solid var(--u-border); font-size: 12.5px; color: var(--u-text); }
+
+
+/* v100: vínculos + painel do módulo */
+.doc-link-doc { background: var(--u-bg2); border-radius: 9px; padding: 10px 12px; font-size: 14px; margin-bottom: 12px; }
+.doc-link-lista { display: flex; flex-wrap: wrap; gap: 6px; }
+.doc-link-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--u-bg2); border-radius: 999px; padding: 5px 11px; font-size: 12.5px; color: var(--u-text); font-weight: 500; max-width: 260px; }
+.doc-link-chip > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-link-del { background: transparent; color: var(--u-text3, #94a3b8); font-size: 15px; line-height: 1; padding: 0 0 0 3px; }
+.doc-link-del:hover { color: #EF4444; }
+.doc-link-vazio { font-size: 12.5px; color: var(--u-text2); font-style: italic; padding: 12px; background: var(--u-bg2); border-radius: 9px; text-align: center; }
+.doc-link-add { display: grid; grid-template-columns: 150px 1fr auto; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--u-border); }
+.doc-link-add select { padding: 8px 10px; border-radius: 8px; background: var(--u-bg2); border: 1px solid var(--u-border); font-size: 13px; color: var(--u-text); min-width: 0; }
+@media (max-width: 520px) { .doc-link-add { grid-template-columns: 1fr; } }
+.doc-link-badge { background: #8B5CF6; color: #fff; font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 999px; margin-left: 3px; }
+.doc-link-barra { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--u-border); }
+
+.doc-vinc-bloco { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--u-border); }
+.doc-vinc-lista { display: flex; flex-direction: column; gap: 5px; }
+.doc-vinc-item { display: flex; align-items: center; gap: 8px; background: var(--u-bg2); border-radius: 9px; padding: 9px 12px; font-size: 13px; color: var(--u-text); text-align: left; width: 100%; }
+.doc-vinc-item:hover { background: var(--u-accent-soft); color: var(--u-accent); }
+.doc-vinc-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
 </style>
 </head>
 <body>
@@ -2183,7 +2308,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v96 · 24/07 (Modulo Documentos Fase 1: pastas ilimitadas, 7 templates, favoritos/arquivados, editor EditorJS com autosave, uma central por setor)';
+var APP_BUILD = 'v100 · 24/07 (Documentos Fase 5: vinculos com Projeto/Tarefa/Cliente/Ideia/Objetivo + painel de indicadores do modulo)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6152,6 +6277,8 @@ function openObjetivoModal(objeto, sourceIdeia){
       '<div class="modal-row"><label class="modal-label">Responsável</label><select id="obOwner">'+respOpts+'</select></div>'+
       '<div class="modal-row"><label class="modal-label">Nasceu da ideia</label><select id="obIdeia">'+ideiaOpts+'</select></div>'+
     '</div>';
+  // v100: documentos vinculados a este objetivo
+  if (!isNew) body += docsVinculadosBlocoHTML('objetivo', o.id);
   // v95: bloco de atividade para objetivo já existente
   if (!isNew){
     body += estrAtividadeBlocoHTML('objetivo', o.id);
@@ -6219,6 +6346,7 @@ function openObjetivoModal(objeto, sourceIdeia){
       }
     }
   });
+  bindDocsVinculados(document); // v100
   // v95: bind do comentário e retorno para o mesmo objetivo
   if (!isNew){
     var mRef = arguments && arguments.length ? null : null; // referência ao makeModal já criado — não temos, então fechamos e reabrimos
@@ -6853,7 +6981,17 @@ function loadDocs(sector){
       ST.docFolders = r.data || [];
       if (ST.page==='docs') renderPage();
     }, function(){ ST.docFolders=[]; });
-    sb.from('malba_docs').select('id, sector, title, folder_id, author_id, is_archived, is_favorite_by, tags, updated_at, created_at').eq('sector', sector).then(function(r){
+    // v99: comentários do setor — um query só, alimenta o contador da lista
+    sb.from('malba_doc_comments').select('id, doc_id, parent_id, resolved').eq('sector', sector).then(function(rc){
+      if (rc.error || !rc.data) return;
+      ST.docCommentCount = {};
+      rc.data.forEach(function(c){
+        if (c.resolved || c.parent_id) return;
+        ST.docCommentCount[c.doc_id] = (ST.docCommentCount[c.doc_id]||0) + 1;
+      });
+      if (ST.page==='docs') renderPage();
+    }, function(){});
+    sb.from('malba_docs').select('id, sector, title, doc_type, folder_id, author_id, visibility, default_perm, shares, unit_id, links, is_archived, is_favorite_by, tags, updated_at, created_at').eq('sector', sector).then(function(r){
       if(r.error){ ST.docs=[]; return; }
       ST.docs = r.data || [];
       if (ST.page==='docs') renderPage();
@@ -6871,11 +7009,13 @@ function isViewer(){ var nv=nivelDe(ST.session&&ST.session.user); return nv==='v
 /* ---------- Documento pertence a esta lista? ---------- */
 function docPertenceAba(d, tab){
   var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  // v97: só entra na lista o que a pessoa realmente pode ver
+  if (!docPodeVer(d)) return false;
   var arqui = d.is_archived;
   if (tab==='arquivados') return arqui;
   if (arqui) return false;
   if (tab==='meus')            return String(d.author_id||'')===eu;
-  if (tab==='compartilhados')  return String(d.author_id||'')!==eu && (d.visibility||'setor')!=='privado';
+  if (tab==='compartilhados')  return String(d.author_id||'')!==eu; // v97: já passou pelo docPodeVer
   if (tab==='privados')        return (d.visibility||'setor')==='privado' && String(d.author_id||'')===eu;
   if (tab==='atas')            return (d.doc_type||'')==='ata';
   if (tab==='favoritos')       return Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
@@ -6883,6 +7023,7 @@ function docPertenceAba(d, tab){
     var seteDias = new Date(Date.now()-7*24*3600*1000).toISOString();
     return (d.updated_at||'')>=seteDias;
   }
+  if (tab==='vinculados')      return docLinksDe(d).length>0; // v100
   if (tab.indexOf('folder:')===0) return String(d.folder_id||'')===tab.slice(7);
   return true; // 'todos'
 }
@@ -6896,7 +7037,8 @@ function docsHTML(){
   var sub = 'Central de documentos · '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:'');
   var head = '<div class="tasks-head"><div><h2>Documentos</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+novaBtn+'</div></div>';
 
-  return head + '<div class="docs-wrap">'+docsSideHTML()+'<div class="docs-main">'+docsListHTML()+'</div></div>';
+  var corpo = (docTab()==='dashboard') ? docsDashboardHTML() : docsListHTML(); // v100
+  return head + '<div class="docs-wrap">'+docsSideHTML()+'<div class="docs-main">'+corpo+'</div></div>';
 }
 
 /* ---------- Sidebar: abas fixas + pastas em árvore ---------- */
@@ -6920,12 +7062,15 @@ function docsSideHTML(){
     return '<button class="docs-side-item'+on+'" data-doc-tab="'+id+'"><span>'+esc(icone||'')+' '+esc(label)+'</span><span class="docs-count">'+count+'</span></button>';
   }
 
+  var contVinc = docs.filter(function(d){ return !d.is_archived && docLinksDe(d).length>0; }).length; // v100
   var g1 = '<div class="docs-side-group">'+
+    item('dashboard','Painel', '', '📊')+
     item('todos','Todos os documentos', contTotal, '📁')+
     item('meus','Meus documentos', contMeus, '👤')+
     item('compartilhados','Compartilhados comigo', contComp, '👥')+
     item('privados','Privados', contPriv, '🔒')+
     item('atas','Atas de reunião', contAtas, '📝')+
+    item('vinculados','Vinculados', contVinc, '🔗')+
     item('arquivados','Arquivados', contArqu, '🗂')+
   '</div>';
   var g2 = '<div class="docs-side-group">'+
@@ -6983,8 +7128,10 @@ function docsListHTML(){
   var lista = (ST.docs||[]).filter(function(d){ return docPertenceAba(d, tab); });
   var q = docQ().toLowerCase();
   if (q) lista = lista.filter(function(d){
+    // v98: casa por título, tag OU pelo conteúdo (resultado que veio do servidor)
     return (d.title||'').toLowerCase().indexOf(q)!==-1 ||
-           ((d.tags||[]).join(' ').toLowerCase().indexOf(q)!==-1);
+           ((d.tags||[]).join(' ').toLowerCase().indexOf(q)!==-1) ||
+           (ST.docHits && ST.docHits[d.id]);
   });
   // ordena por atualização recente
   lista.sort(function(a,b){ return (b.updated_at||'').localeCompare(a.updated_at||''); });
@@ -6993,13 +7140,21 @@ function docsListHTML(){
   var templates = docPodeCriar() ? '<div class="doc-tpls">'+DOC_TEMPLATES.map(function(t){
     return '<button class="doc-tpl" data-tpl="'+t.key+'"><span class="doc-tpl-ic">'+t.icon+'</span><span>'+esc(t.label)+'</span></button>';
   }).join('')+'</div>' : '';
-  var busca = '<input type="search" class="task-filter" id="docQ" placeholder="Buscar por título ou tag..." value="'+esc(docQ())+'">';
+  var busca = '<input type="search" class="task-filter" id="docQ" placeholder="Buscar no título, tags e dentro dos documentos..." value="'+esc(docQ())+'">';
   var vt = docView();
   var toggle = '<div class="view-toggle doc-vtog">'+
     '<button class="vt-btn'+(vt==='lista'?' on':'')+'" data-doc-view="lista">'+icon('grid')+'Lista</button>'+
     '<button class="vt-btn'+(vt==='grade'?' on':'')+'" data-doc-view="grade">'+icon('dashboard')+'Grade</button>'+
   '</div>';
   var filtros = '<div class="doc-filtros">'+busca+toggle+'</div>';
+  // v98: aviso do que a busca está fazendo
+  if (docQ()){
+    if (ST.docBuscando) filtros += '<div class="doc-busca-aviso">procurando dentro dos documentos…</div>';
+    else if (ST.docHits){
+      var nHits = Object.keys(ST.docHits).length;
+      filtros += '<div class="doc-busca-aviso ok">'+(nHits ? (nHits+' documento'+(nHits>1?'s':'')+' com esse texto no conteúdo') : 'nenhum documento com esse texto no conteúdo')+'</div>';
+    }
+  }
 
   var body;
   if (lista.length===0){
@@ -7025,13 +7180,21 @@ function docsTableHTML(lista){
     var fav = Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
     var pasta = d.folder_id ? (ST.docFolders||[]).find(function(f){ return String(f.id)===String(d.folder_id); }) : null;
     var pastaLb = pasta ? '📁 '+esc(pasta.name) : '—';
-    var vis = d.visibility==='privado' ? '🔒 Privado' : '👥 Setor';
+    var vis = docShareLabel(d); // v97
     var upd = d.updated_at ? esc(tempoRelativo(d.updated_at)) : '—';
     var tipoIc = docTipoIcon(d.doc_type);
     var tags = (d.tags||[]).slice(0,3).map(function(t){ return '<span class="doc-tag">'+esc(t)+'</span>'; }).join('');
+    // v98: trecho do conteúdo quando a busca casou lá dentro
+    var trecho = (ST.docHits && ST.docHits[d.id]) ? '<div class="doc-trecho">'+docDestacar(ST.docHits[d.id], docQ())+'</div>' : '';
+    // v99: quantos comentários em aberto
+    var nc = (ST.docCommentCount && ST.docCommentCount[d.id]) || docComentariosAbertos(d.id);
+    var badge = nc ? ' <span class="doc-lista-coment" title="'+nc+' comentário'+(nc>1?'s':'')+' em aberto">💬 '+nc+'</span>' : '';
+    // v100: vínculos na linha
+    var nl = docLinksDe(d).length;
+    if (nl) badge += ' <span class="doc-lista-coment" title="'+nl+' vínculo'+(nl>1?'s':'')+'">🔗 '+nl+'</span>';
     return '<tr data-doc-id="'+esc(d.id)+'">'+
       '<td class="doc-td-star"><button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+(fav?'★':'☆')+'</button></td>'+
-      '<td class="doc-td-title"><span class="doc-tipo-ic">'+tipoIc+'</span><b>'+esc(d.title||'(sem título)')+'</b> <span class="doc-tags-inline">'+tags+'</span></td>'+
+      '<td class="doc-td-title"><span class="doc-tipo-ic">'+tipoIc+'</span><b>'+esc(d.title||'(sem título)')+'</b>'+badge+' <span class="doc-tags-inline">'+tags+'</span>'+trecho+'</td>'+
       '<td>'+pastaLb+'</td>'+
       '<td>'+esc(quem)+'</td>'+
       '<td>'+vis+'</td>'+
@@ -7166,7 +7329,11 @@ function docsCriar(tplKey, folderId){
     folder_id: folderId || null,
     author_id: eu ? eu.id : null,
     visibility: 'setor',
+    default_perm: 'editar',  // v97
+    shares: [],              // v97
+    links: [],               // v100
     body: tpl.body,
+    plain_text: docBodyParaTexto(tpl.body), // v98
     is_archived: false,
     is_favorite_by: [],
     tags: []
@@ -7198,6 +7365,7 @@ function docsFavToggle(id){
 function docsArquivar(id, arquivar){
   var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
   if (!d) return;
+  if (!docPodeAdmin(d)){ toast('Você não tem acesso de Admin neste documento.','error'); return; } // v97
   var novo = arquivar!==false;
   d.is_archived = novo; renderPage();
   sb.from('malba_docs').update({ is_archived: novo }).eq('id', id).then(function(r){
@@ -7207,6 +7375,8 @@ function docsArquivar(id, arquivar){
 }
 
 function docsExcluir(id){
+  var dd = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (dd && !docPodeAdmin(dd)){ toast('Você não tem acesso de Admin neste documento.','error'); return; } // v97
   confirmDialog({
     title:'Excluir este documento?', message:'A ação não pode ser desfeita. Prefira arquivar para manter no histórico.',
     danger:true, confirmLabel:'Excluir',
@@ -7227,7 +7397,9 @@ function docsDuplicar(id){
   var copia = {
     sector: d.sector, title: (d.title||'Sem título') + ' (cópia)',
     doc_type: d.doc_type, folder_id: d.folder_id, author_id: eu?eu.id:null,
-    visibility: d.visibility||'setor', body: d.body, is_archived:false,
+    visibility: d.visibility||'setor', default_perm: d.default_perm||'editar',
+    shares: [], // v97: a cópia não herda convites — quem duplicou decide de novo
+    body: d.body, is_archived:false,
     is_favorite_by: [], tags: d.tags||[]
   };
   sb.from('malba_docs').insert(copia).select().single().then(function(r){
@@ -7240,6 +7412,7 @@ function docsDuplicar(id){
 function docsMover(id, folderId){
   var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
   if (!d) return;
+  if (!docPodeEditar(d)){ toast('Você tem acesso de leitura neste documento.','error'); return; } // v97
   var antes = d.folder_id;
   d.folder_id = folderId || null; renderPage();
   sb.from('malba_docs').update({ folder_id: folderId||null }).eq('id', id).then(function(r){
@@ -7309,10 +7482,27 @@ function carregarEditorJS(){
 var _docEditorAtual = null; // { holder, editor, id, saving, dirty }
 
 function openDocEditor(d){
-  _docEditorAtual = { id: d.id, editor:null, saving:false, dirty:false, doc:d };
+  // v97: sem permissão nem abre
+  if (!docPodeVer(d)){ toast('Você não tem acesso a este documento.','error'); return; }
+  var podeEditar = docPodeEditar(d);
+  _docEditorAtual = { id: d.id, editor:null, saving:false, dirty:false, doc:d, readOnly: !podeEditar };
   ST.docOpen = d.id; // marca que estamos no editor
   renderPage(); // desenha o wrapper do editor
 
+  // o corpo completo não vem no load da lista — busca sob demanda
+  sb.from('malba_docs').select('body').eq('id', d.id).single().then(function(rb){
+    if (!rb.error && rb.data) d.body = rb.data.body;
+    // v99: já traz os comentários pro contador do cabeçalho
+    docsCarregarComentarios(d.id).then(function(){ if (ST.docOpen===d.id) renderPage(); });
+    // v98: guarda como estava ANTES desta sessão — vira a versão do histórico
+    if (_docEditorAtual && _docEditorAtual.id===d.id){
+      _docEditorAtual.bodyOriginal = d.body;
+      _docEditorAtual.versaoSalva = false;
+    }
+    montarEditor();
+  }, montarEditor);
+
+  function montarEditor(){
   carregarEditorJS().then(function(){
     var holder = document.getElementById('editorjsHolder');
     if (!holder) return; // usuário navegou
@@ -7321,17 +7511,19 @@ function openDocEditor(d){
     if (body && !body.blocks) body = { blocks: [] };
     var ed = new window.EditorJS({
       holder: holder,
-      autofocus: true,
+      readOnly: !podeEditar,   // v97
+      autofocus: podeEditar,
       placeholder: 'Comece a escrever aqui...',
       data: body || { blocks: [{ type:'paragraph', data:{ text:'' } }] },
       tools: docEditorTools(),
-      onChange: function(){ if (_docEditorAtual) { _docEditorAtual.dirty = true; docsAgendarAutosave(); } }
+      onChange: function(){ if (_docEditorAtual && !_docEditorAtual.readOnly) { _docEditorAtual.dirty = true; docsAgendarAutosave(); } }
     });
     _docEditorAtual.editor = ed;
   }, function(err){
     var h = document.getElementById('editorjsHolder');
     if (h) h.innerHTML = '<div class="empty-page"><p>Não consegui carregar o editor. Sua conexão consegue acessar cdn.jsdelivr.net?</p></div>';
   });
+  }
 }
 
 function docEditorTools(){
@@ -7357,10 +7549,17 @@ function docsAgendarAutosave(){
 }
 function docsSalvarAgora(){
   if (!_docEditorAtual || !_docEditorAtual.editor || _docEditorAtual.saving) return;
+  if (_docEditorAtual.readOnly) return; // v97
   var ctx = _docEditorAtual;
   ctx.saving = true; docsMostrarStatus('salvando');
   ctx.editor.save().then(function(data){
-    return sb.from('malba_docs').update({ body: data, updated_at: new Date().toISOString() }).eq('id', ctx.id).select().single().then(function(r){
+    // v98: uma versão por sessão — guarda como estava antes de você mexer
+    if (!ctx.versaoSalva){
+      ctx.versaoSalva = true;
+      var docAtual = (ST.docs||[]).find(function(x){ return String(x.id)===String(ctx.id); });
+      docsGravarVersao(ctx.id, ctx.bodyOriginal, docAtual ? docAtual.title : null, 'antes desta edição');
+    }
+    return sb.from('malba_docs').update({ body: data, plain_text: docBodyParaTexto(data), updated_at: new Date().toISOString() }).eq('id', ctx.id).select().single().then(function(r){
       ctx.saving = false;
       if (r.error){ docsMostrarStatus('erro'); return; }
       ctx.dirty = false;
@@ -7385,9 +7584,9 @@ function docsFecharEditor(){
   if (!_docEditorAtual){ ST.docOpen = null; renderPage(); return; }
   var ctx = _docEditorAtual;
   function limpar(){ _docEditorAtual = null; ST.docOpen = null; renderPage(); }
-  if (ctx.dirty && ctx.editor){
+  if (ctx.dirty && ctx.editor && !ctx.readOnly){ // v97
     ctx.editor.save().then(function(data){
-      sb.from('malba_docs').update({ body: data }).eq('id', ctx.id).then(function(){ limpar(); });
+      sb.from('malba_docs').update({ body: data, plain_text: docBodyParaTexto(data) }).eq('id', ctx.id).then(function(){ limpar(); }); // v98
     }).catch(limpar);
   } else {
     limpar();
@@ -7399,15 +7598,40 @@ function docsEditorHTML(){
   var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(ST.docOpen); });
   if (!d) return docsHTML(); // caiu do estado — volta pra lista
   var titulo = d.title || 'Sem título';
+  // v97: selo do nível de acesso e trava do título
+  var perm = docPermDe(d) || 'visualizar';
+  var podeEd = docPermRank(perm) >= 3;
+  var selo = podeEd
+    ? ''
+    : '<span class="doc-perm-selo">'+DOC_PERMS[perm].ic+' Somente '+esc(DOC_PERMS[perm].label.toLowerCase())+'</span>';
+  var btnShare = docPodeAdmin(d) ? '<button class="doc-editor-share" id="docShare" title="Compartilhar">🔗 Compartilhar</button>' : '';
+  var btnHist = '<button class="doc-editor-share" id="docHist" title="Histórico de versões">🕓 Histórico</button>'; // v98
+  // v99: comentários e (na ata) pendências
+  var nAbertos = docComentariosAbertos(d.id);
+  var btnComent = '<button class="doc-editor-share'+(ST.docPainelComentarios?' on':'')+'" id="docComent" title="Comentários">💬 Comentários'+(nAbertos?' <b class="doc-coment-badge">'+nAbertos+'</b>':'')+'</button>';
+  var nLinks = docLinksDe(d).length; // v100
+  var btnLink = docPodeEditar(d) ? '<button class="doc-editor-share" id="docLink" title="Vincular a projeto, tarefa, cliente...">🔗 Vínculos'+(nLinks?' <b class="doc-link-badge">'+nLinks+'</b>':'')+'</button>' : '';
+  var btnPend = (d.doc_type==='ata' && docPodeVer(d))
+    ? '<button class="doc-editor-share destaque" id="docPend" title="Criar tarefas a partir das pendências">✅ Pendências → tarefas</button>' : '';
   return '<div class="doc-editor-wrap">'+
     '<div class="doc-editor-head">'+
       '<button class="doc-editor-back" id="docBack">← Voltar</button>'+
-      '<input type="text" class="doc-editor-title" id="docTitle" value="'+esc(titulo)+'" placeholder="Título do documento">'+
+      '<input type="text" class="doc-editor-title" id="docTitle" value="'+esc(titulo)+'" placeholder="Título do documento"'+(podeEd?'':' readonly')+'>'+
+      selo+
       '<span id="docSaveStatus"></span>'+
+      btnPend+
+      btnLink+
+      btnComent+
+      btnHist+
+      btnShare+
       '<button class="btn-new doc-editor-menu" id="docMenu" title="Ações">⋯</button>'+
     '</div>'+
-    '<div class="doc-editor-body">'+
-      '<div id="editorjsHolder"></div>'+
+    (nLinks ? '<div class="doc-link-barra">'+docLinksDe(d).map(function(l){ return docLinkChipHTML(l, false); }).join('')+'</div>' : '')+
+    '<div class="doc-editor-cols'+(ST.docPainelComentarios?' com-painel':'')+'">'+  // v99
+      '<div class="doc-editor-body">'+
+        '<div id="editorjsHolder"></div>'+
+      '</div>'+
+      docsPainelComentariosHTML(d.id)+
     '</div>'+
   '</div>';
 }
@@ -7418,8 +7642,27 @@ function bindDocs(){
   if (ST.docOpen){
     var back = document.getElementById('docBack');
     if (back) back.addEventListener('click', docsFecharEditor);
+    var share = document.getElementById('docShare');
+    if (share) share.addEventListener('click', function(){ docsCompartilhar(ST.docOpen); }); // v97
+    var hist = document.getElementById('docHist');
+    if (hist) hist.addEventListener('click', function(){ docsAbrirHistorico(ST.docOpen); }); // v98
+    // v99
+    var bc = document.getElementById('docComent');
+    if (bc) bc.addEventListener('click', function(){
+      ST.docPainelComentarios = !ST.docPainelComentarios;
+      // guarda o bloco onde o cursor estava, pra ancorar o comentário
+      if (ST.docPainelComentarios) ST.docBlocoSelecionado = docsCapturarBlocoAtual();
+      renderPage();
+    });
+    var bl = document.getElementById('docLink');
+    if (bl) bl.addEventListener('click', function(){ docsVincular(ST.docOpen); }); // v100
+    var bp = document.getElementById('docPend');
+    if (bp) bp.addEventListener('click', function(){ docsPendenciasEmTarefas(ST.docOpen); });
+    if (ST.docPainelComentarios){
+      docsCarregarComentarios(ST.docOpen).then(function(){ docsPainelComentariosRender(ST.docOpen); });
+    }
     var titulo = document.getElementById('docTitle');
-    if (titulo){
+    if (titulo && !(_docEditorAtual && _docEditorAtual.readOnly)){ // v97
       titulo.addEventListener('input', function(){
         if (_docEditorAtual) _docEditorAtual.dirty = true;
         // debounce próprio para o título
@@ -7445,6 +7688,7 @@ function bindDocs(){
   var pasta = document.getElementById('btnNovaPasta');
   if (pasta) pasta.addEventListener('click', function(e){ e.stopPropagation(); docsNovaPasta(null); });
 
+  if (docTab()==='dashboard') bindDocsDashboard(); // v100
   // abas fixas
   document.querySelectorAll('[data-doc-tab]').forEach(function(b){
     b.addEventListener('click', function(){ ST.docTab = this.getAttribute('data-doc-tab'); renderPage(); });
@@ -7476,7 +7720,17 @@ function bindDocs(){
 
   // busca
   var q = document.getElementById('docQ');
-  if (q){ var t=null; q.addEventListener('input', function(){ var v=this.value; clearTimeout(t); t=setTimeout(function(){ ST.docQ=v; renderPage(); }, 220); }); }
+  if (q){ var t=null; q.addEventListener('input', function(){
+    var v=this.value; clearTimeout(t);
+    t=setTimeout(function(){
+      ST.docQ=v;
+      if (!v){ ST.docHits=null; ST.docBuscando=false; }
+      renderPage();
+      // v98: busca no conteúdo em paralelo (a partir de 3 letras)
+      clearTimeout(_buscaConteudoTimer);
+      _buscaConteudoTimer = setTimeout(function(){ docsBuscarNoConteudo(v); }, 180);
+    }, 220);
+  }); }
 
   // toggle de visão
   document.querySelectorAll('[data-doc-view]').forEach(function(b){
@@ -7504,22 +7758,34 @@ var _tituloTimer = null;
 function docsAbrirMenuAcoes(anchor, id){
   var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
   if (!d) return;
+  // v97: cada ação exige um nível diferente
+  var podeEd = docPodeEditar(d);
+  var podeAd = docPodeAdmin(d);
   var pastas = '<option value="">— sem pasta —</option>' + (ST.docFolders||[]).map(function(f){
     return '<option value="'+esc(f.id)+'"'+(String(d.folder_id||'')===String(f.id)?' selected':'')+'>'+esc(f.name)+'</option>';
   }).join('');
+  var moverRow = podeEd
+    ? '<div class="modal-row"><label class="modal-label">Mover para pasta</label><select id="acMover">'+pastas+'</select></div>'
+    : '<p class="modal-note">Você tem acesso de leitura neste documento. Peça ao autor para liberar edição.</p>';
+  var botoes = '<button class="doc-acao" data-acao="duplicar">📄 Duplicar</button>'+
+               '<button class="doc-acao" data-acao="historico">🕓 Histórico</button>';
+  if (podeEd) botoes += '<button class="doc-acao" data-acao="vinculos">🔗 Vínculos</button>'; // v100
+  if (d.doc_type==='ata') botoes += '<button class="doc-acao" data-acao="pendencias">✅ Pendências → tarefas</button>'; // v99
+  if (podeAd){
+    botoes += '<button class="doc-acao" data-acao="compartilhar">🔗 Compartilhar</button>'+
+              '<button class="doc-acao" data-acao="arquivar">'+(d.is_archived?'♻️ Restaurar':'🗂 Arquivar')+'</button>'+
+              '<button class="doc-acao danger" data-acao="excluir">🗑 Excluir</button>';
+  }
   makeModal({
-    title:'Ações do documento', width:400,
-    body:
-      '<div class="modal-row"><label class="modal-label">Mover para pasta</label><select id="acMover">'+pastas+'</select></div>'+
-      '<div class="doc-acoes-grid">'+
-        '<button class="doc-acao" data-acao="duplicar">📄 Duplicar</button>'+
-        '<button class="doc-acao" data-acao="arquivar">'+(d.is_archived?'♻️ Restaurar':'🗂 Arquivar')+'</button>'+
-        '<button class="doc-acao danger" data-acao="excluir">🗑 Excluir</button>'+
-      '</div>',
-    saveLabel:'Aplicar mudanças',
+    title:'Ações do documento', width:420,
+    body: moverRow + '<div class="doc-acoes-grid">'+botoes+'</div>',
+    saveLabel: podeEd ? 'Aplicar mudanças' : 'Fechar',
     onSave: function(close, root){
-      var nova = root.querySelector('#acMover').value || null;
-      if (String(nova||'') !== String(d.folder_id||'')) docsMover(id, nova);
+      var sel = root.querySelector('#acMover');
+      if (sel){
+        var nova = sel.value || null;
+        if (String(nova||'') !== String(d.folder_id||'')) docsMover(id, nova);
+      }
       close();
     }
   });
@@ -7530,11 +7796,1079 @@ function docsAbrirMenuAcoes(anchor, id){
         var acao = this.getAttribute('data-acao');
         document.querySelectorAll('.modal-bg').forEach(function(m){ m.remove(); });
         if (acao==='duplicar') docsDuplicar(id);
+        else if (acao==='compartilhar') docsCompartilhar(id); // v97
+        else if (acao==='historico') docsAbrirHistorico(id);   // v98
+        else if (acao==='pendencias') docsPendenciasEmTarefas(id); // v99
+        else if (acao==='vinculos') docsVincular(id);              // v100
         else if (acao==='arquivar') docsArquivar(id, !d.is_archived);
         else if (acao==='excluir'){ docsExcluir(id); if (ST.docOpen===id) docsFecharEditor(); }
       });
     });
   }, 50);
+}
+
+/* ============================================================
+   v97: MÓDULO DOCUMENTOS — Fase 2 (Compartilhamento granular)
+   Alvos: privado · unidade/loja · setor inteiro · pessoas específicas
+   Níveis: visualizar < comentar < editar < admin
+   shares = JSONB [{ type:'user'|'unidade', id, perm }]
+   ============================================================ */
+
+var DOC_PERMS = {
+  visualizar: { label:'Visualizar', rank:1, ic:'👁' },
+  comentar:   { label:'Comentar',   rank:2, ic:'💬' },
+  editar:     { label:'Editar',     rank:3, ic:'✏️' },
+  admin:      { label:'Admin',      rank:4, ic:'🔑' }
+};
+var DOC_PERM_ORDER = ['visualizar','comentar','editar','admin'];
+
+var DOC_VIS = {
+  privado: { label:'Privado',             ic:'🔒', desc:'Só você e quem convidar' },
+  unidade: { label:'Minha unidade',       ic:'🏪', desc:'Quem trabalha na mesma loja' },
+  setor:   { label:'Setor inteiro',       ic:'👥', desc:'Todo mundo do setor' },
+  pessoas: { label:'Pessoas específicas', ic:'🙋', desc:'Só quem estiver na lista' }
+};
+var DOC_VIS_ORDER = ['privado','unidade','setor','pessoas'];
+
+function docPermRank(p){ return (DOC_PERMS[p] && DOC_PERMS[p].rank) || 0; }
+
+/* ---------- Permissão efetiva de alguém sobre um documento ---------- */
+function docPermDe(d, userId){
+  if (!d) return null;
+  var u = userId
+    ? (ST.allUsers||ST.users||[]).find(function(x){ return String(x.id)===String(userId); })
+    : (ST.session && ST.session.user);
+  if (!u) return null;
+  var uid = String(u.id);
+  var nv = nivelDe(u);
+
+  // 1) autor manda no próprio documento
+  if (String(d.author_id||'')===uid) return nv==='viewer' ? 'admin' : 'admin';
+
+  // 2) Admin do sistema e Gestor administram tudo do setor
+  if (nv==='admin' || nv==='gestor') return 'admin';
+
+  var melhor = null;
+  function sobe(p){ if (p && docPermRank(p) > docPermRank(melhor)) melhor = p; }
+
+  // 3) convite explícito (pessoa ou unidade)
+  var shares = Array.isArray(d.shares) ? d.shares : [];
+  for (var i=0;i<shares.length;i++){
+    var s = shares[i];
+    if (s.type==='user' && String(s.id)===uid) sobe(s.perm);
+    if (s.type==='unidade' && u.store_unit_id && String(s.id)===String(u.store_unit_id)) sobe(s.perm);
+  }
+
+  // 4) visibilidade ampla
+  var vis = d.visibility || 'setor';
+  var padrao = d.default_perm || 'editar';
+  if (vis==='setor' && String(u.sector||'')===String(d.sector||'')) sobe(padrao);
+  if (vis==='unidade' && u.store_unit_id && String(u.store_unit_id)===String(d.unit_id||'')) sobe(padrao);
+
+  // 5) Visualizador nunca passa de leitura, não importa o que foi compartilhado
+  if (nv==='viewer' && docPermRank(melhor) > 1) melhor = 'visualizar';
+
+  return melhor;
+}
+
+function docPodeVer(d){      return docPermRank(docPermDe(d)) >= 1; }
+function docPodeComentar(d){ return docPermRank(docPermDe(d)) >= 2; }
+function docPodeEditar(d){   return docPermRank(docPermDe(d)) >= 3; }
+function docPodeAdmin(d){    return docPermRank(docPermDe(d)) >= 4; }
+
+/* ---------- Rótulo do compartilhamento (coluna da lista) ---------- */
+function docShareLabel(d){
+  var vis = d.visibility || 'setor';
+  var n = (Array.isArray(d.shares) ? d.shares : []).length;
+  var extra = n ? ' +'+n : '';
+  if (vis==='privado') return '🔒 Privado'+extra;
+  if (vis==='pessoas') return '🙋 '+n+' pessoa'+(n===1?'':'s');
+  if (vis==='unidade') return '🏪 Unidade'+extra;
+  return '👥 Setor'+extra;
+}
+
+/* ---------- Modal de compartilhamento ---------- */
+function docsCompartilhar(id){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!d){ toast('Documento não encontrado','error'); return; }
+  if (!docPodeAdmin(d)){ toast('Só quem tem acesso de Admin pode compartilhar este documento.','error'); return; }
+
+  // cópia de trabalho — só grava ao salvar
+  var vis = d.visibility || 'setor';
+  var padrao = d.default_perm || 'editar';
+  var shares = (Array.isArray(d.shares) ? d.shares : []).map(function(s){ return { type:s.type, id:String(s.id), perm:s.perm }; });
+  var unitId = d.unit_id || (ST.store ? ST.store.id : null);
+
+  var pessoas = (ST.allUsers||ST.users||[]).filter(function(u){
+    return String(u.sector||'')===String(ST.sector) && String(u.id)!==String(d.author_id||'');
+  });
+  var unidades = (ST.storeUnits||[]).slice();
+
+  function permSelect(valor, attr){
+    return '<select class="doc-share-perm" '+attr+'>'+DOC_PERM_ORDER.map(function(p){
+      return '<option value="'+p+'"'+(valor===p?' selected':'')+'>'+DOC_PERMS[p].ic+' '+DOC_PERMS[p].label+'</option>';
+    }).join('')+'</select>';
+  }
+
+  function visHTML(){
+    return '<div class="doc-vis-grid">'+DOC_VIS_ORDER.map(function(k){
+      var v = DOC_VIS[k];
+      return '<button type="button" class="doc-vis-opt'+(vis===k?' on':'')+'" data-vis="'+k+'">'+
+        '<span class="doc-vis-ic">'+v.ic+'</span>'+
+        '<span class="doc-vis-lb">'+esc(v.label)+'</span>'+
+        '<span class="doc-vis-desc">'+esc(v.desc)+'</span>'+
+      '</button>';
+    }).join('')+'</div>';
+  }
+
+  function padraoHTML(){
+    if (vis==='privado' || vis==='pessoas') return '';
+    var quem = vis==='unidade' ? 'da unidade' : 'do setor';
+    return '<div class="doc-share-padrao"><span>Todo mundo '+quem+' pode:</span>'+permSelect(padrao,'id="dsPadrao"')+'</div>';
+  }
+
+  function nomeDoAlvo(s){
+    if (s.type==='unidade'){
+      var un = unidades.find(function(x){ return String(x.id)===String(s.id); });
+      return { ic:'🏪', nome: un ? un.name : 'Unidade removida' };
+    }
+    var pe = (ST.allUsers||ST.users||[]).find(function(x){ return String(x.id)===String(s.id); });
+    return { ic:'👤', nome: pe ? pe.name : 'Usuário removido' };
+  }
+
+  function listaHTML(){
+    if (!shares.length) return '<div class="doc-share-vazio">Ninguém convidado individualmente ainda.</div>';
+    return '<div class="doc-share-lista">'+shares.map(function(s, idx){
+      var a = nomeDoAlvo(s);
+      return '<div class="doc-share-row">'+
+        '<span class="doc-share-nome">'+a.ic+' '+esc(a.nome)+'</span>'+
+        permSelect(s.perm, 'data-share-perm="'+idx+'"')+
+        '<button type="button" class="doc-share-del" data-share-del="'+idx+'" title="Remover">×</button>'+
+      '</div>';
+    }).join('')+'</div>';
+  }
+
+  function addHTML(){
+    var jaTem = shares.map(function(s){ return s.type+':'+s.id; });
+    var optsP = pessoas.filter(function(u){ return jaTem.indexOf('user:'+u.id)===-1; })
+      .map(function(u){ return '<option value="user:'+esc(u.id)+'">👤 '+esc(u.name)+'</option>'; }).join('');
+    var optsU = unidades.filter(function(x){ return jaTem.indexOf('unidade:'+x.id)===-1; })
+      .map(function(x){ return '<option value="unidade:'+esc(x.id)+'">🏪 '+esc(x.name)+'</option>'; }).join('');
+    if (!optsP && !optsU) return '<div class="doc-share-vazio">Todo mundo do setor já está na lista.</div>';
+    return '<div class="doc-share-add">'+
+      '<select id="dsAlvo"><option value="">— escolher pessoa ou unidade —</option>'+optsP+optsU+'</select>'+
+      permSelect('editar','id="dsPerm"')+
+      '<button type="button" class="btn btn-primary" id="dsAdd">Convidar</button>'+
+    '</div>';
+  }
+
+  var corpo =
+    '<div class="doc-share-doc">'+docTipoIcon(d.doc_type)+' <b>'+esc(d.title||'Sem título')+'</b></div>'+
+    '<label class="modal-label">Quem tem acesso</label>'+
+    '<div id="dsVisWrap">'+visHTML()+'</div>'+
+    '<div id="dsPadraoWrap">'+padraoHTML()+'</div>'+
+    '<label class="modal-label" style="margin-top:14px">Convidados individualmente</label>'+
+    '<div id="dsListaWrap">'+listaHTML()+'</div>'+
+    '<div id="dsAddWrap">'+addHTML()+'</div>';
+
+  var m = makeModal({
+    title: 'Compartilhar documento',
+    width: 560,
+    body: corpo,
+    saveLabel: 'Salvar acesso',
+    onSave: function(close){
+      var payload = { visibility: vis, default_perm: padrao, shares: shares };
+      if (vis==='unidade') payload.unit_id = unitId;
+      sb.from('malba_docs').update(payload).eq('id', d.id).then(function(r){
+        if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+        d.visibility = vis; d.default_perm = padrao; d.shares = shares;
+        if (vis==='unidade') d.unit_id = unitId;
+        close(); toast('Acesso atualizado','success'); renderPage();
+      });
+    }
+  });
+
+  function redesenha(){
+    var w1 = m.root.querySelector('#dsPadraoWrap'); if (w1) w1.innerHTML = padraoHTML();
+    var w2 = m.root.querySelector('#dsListaWrap');  if (w2) w2.innerHTML = listaHTML();
+    var w3 = m.root.querySelector('#dsAddWrap');    if (w3) w3.innerHTML = addHTML();
+    ligar();
+  }
+
+  function ligar(){
+    m.root.querySelectorAll('[data-vis]').forEach(function(b){
+      b.addEventListener('click', function(){
+        vis = this.getAttribute('data-vis');
+        m.root.querySelectorAll('[data-vis]').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-vis')===vis); });
+        redesenha();
+      });
+    });
+    var sp = m.root.querySelector('#dsPadrao');
+    if (sp) sp.addEventListener('change', function(){ padrao = this.value; });
+    m.root.querySelectorAll('[data-share-perm]').forEach(function(sel){
+      sel.addEventListener('change', function(){ shares[Number(this.getAttribute('data-share-perm'))].perm = this.value; });
+    });
+    m.root.querySelectorAll('[data-share-del]').forEach(function(b){
+      b.addEventListener('click', function(){ shares.splice(Number(this.getAttribute('data-share-del')),1); redesenha(); });
+    });
+    var add = m.root.querySelector('#dsAdd');
+    if (add) add.addEventListener('click', function(){
+      var sel = m.root.querySelector('#dsAlvo');
+      var alvo = sel ? sel.value : '';
+      if (!alvo){ toast('Escolha quem vai receber o acesso','error'); return; }
+      var permEl = m.root.querySelector('#dsPerm');
+      var partes = alvo.split(':');
+      shares.push({ type: partes[0]==='unidade' ? 'unidade' : 'user', id: partes.slice(1).join(':'), perm: permEl ? permEl.value : 'editar' });
+      redesenha();
+    });
+  }
+  ligar();
+}
+
+/* ============================================================
+   v98: MÓDULO DOCUMENTOS — Fase 3
+   (A) Versionamento com histórico e restauração
+   (B) Pesquisa no conteúdo (full-text em português)
+
+   Estratégia de versão: UMA por sessão de edição — guarda o
+   estado ANTES das alterações. Mais o botão manual "Marcar
+   versão". Evita 200 versões inúteis por causa do autosave.
+   ============================================================ */
+
+/* ---------- (B) Extrai texto puro dos blocos do EditorJS ---------- */
+function docBodyParaTexto(body){
+  if (!body) return '';
+  var b = body;
+  if (typeof b === 'string'){ try { b = JSON.parse(b); } catch(e){ return ''; } }
+  var blocks = b && Array.isArray(b.blocks) ? b.blocks : [];
+  var partes = [];
+  function limpaTags(t){ return String(t||'').replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' '); }
+  blocks.forEach(function(bl){
+    var d = bl && bl.data ? bl.data : {};
+    if (d.text) partes.push(limpaTags(d.text));
+    if (d.caption) partes.push(limpaTags(d.caption));
+    if (d.title) partes.push(limpaTags(d.title));
+    if (d.message) partes.push(limpaTags(d.message));
+    if (d.code) partes.push(String(d.code));
+    if (Array.isArray(d.items)){
+      d.items.forEach(function(it){
+        if (typeof it === 'string') partes.push(limpaTags(it));
+        else if (it && it.text) partes.push(limpaTags(it.text));
+        else if (it && it.content) partes.push(limpaTags(it.content));
+      });
+    }
+    if (Array.isArray(d.content)){ // tabela: matriz de linhas
+      d.content.forEach(function(linha){
+        if (Array.isArray(linha)) linha.forEach(function(cel){ partes.push(limpaTags(cel)); });
+      });
+    }
+  });
+  return partes.join(' ').replace(/\s+/g,' ').trim().slice(0, 100000);
+}
+
+/* ---------- (A) Grava uma versão ---------- */
+function docsGravarVersao(docId, body, titulo, nota){
+  if (!sb) return Promise.resolve(null);
+  var eu = ST.session && ST.session.user ? ST.session.user : null;
+  var payload = {
+    doc_id: docId,
+    sector: ST.sector,
+    title: titulo || null,
+    body: body || null,
+    note: nota || null,
+    author_id: eu ? eu.id : null,
+    author_name: eu ? eu.name : null
+  };
+  return sb.from('malba_doc_versions').insert(payload).select().single().then(function(r){
+    if (r.error){ console.warn('versão:', r.error.message); return null; }
+    if (r.data){
+      if (!ST.docVersions) ST.docVersions = {};
+      if (!ST.docVersions[docId]) ST.docVersions[docId] = [];
+      ST.docVersions[docId].unshift(r.data);
+    }
+    return r.data;
+  });
+}
+
+/* ---------- (A) Carrega o histórico de um documento ---------- */
+function docsCarregarVersoes(docId){
+  if (!sb) return Promise.resolve([]);
+  return sb.from('malba_doc_versions')
+    .select('id, doc_id, title, note, author_id, author_name, created_at')
+    .eq('doc_id', docId).order('created_at', { ascending:false }).limit(50)
+    .then(function(r){
+      if (r.error){ console.warn('histórico:', r.error.message); return []; }
+      if (!ST.docVersions) ST.docVersions = {};
+      ST.docVersions[docId] = r.data || [];
+      return ST.docVersions[docId];
+    });
+}
+
+/* ---------- (A) Painel de histórico ---------- */
+function docsAbrirHistorico(docId){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  if (!d){ toast('Documento não encontrado','error'); return; }
+  if (!docPodeVer(d)){ toast('Você não tem acesso a este documento.','error'); return; }
+  var podeRestaurar = docPodeEditar(d);
+
+  var m = makeModal({
+    title: 'Histórico de versões',
+    width: 560,
+    body: '<div class="doc-hist-doc">'+docTipoIcon(d.doc_type)+' <b>'+esc(d.title||'Sem título')+'</b></div>'+
+          (podeRestaurar ? '<button type="button" class="btn btn-secondary doc-hist-marcar" id="dhMarcar">📌 Marcar versão agora</button>' : '')+
+          '<div id="dhLista"><div class="doc-hist-load">Carregando histórico…</div></div>',
+    hideFoot: true
+  });
+
+  function desenhar(versoes){
+    var wrap = m.root.querySelector('#dhLista');
+    if (!wrap) return;
+    if (!versoes.length){
+      wrap.innerHTML = '<div class="doc-hist-vazio">Nenhuma versão guardada ainda.<br><span>Uma versão é criada automaticamente sempre que alguém começa a editar o documento — guardando como ele estava antes.</span></div>';
+      return;
+    }
+    wrap.innerHTML = '<div class="doc-hist-lista">'+versoes.map(function(v){
+      var quando = v.created_at ? tempoRelativo(v.created_at) : '';
+      var dataCompleta = v.created_at ? (fmtDate(String(v.created_at).slice(0,10))+' '+String(v.created_at).slice(11,16)) : '';
+      var nota = v.note ? '<span class="doc-hist-nota">'+esc(v.note)+'</span>' : '';
+      var btn = podeRestaurar ? '<button type="button" class="doc-hist-restaurar" data-restaurar="'+esc(v.id)+'">Restaurar</button>' : '';
+      return '<div class="doc-hist-item">'+
+        '<div class="doc-hist-info">'+
+          '<div class="doc-hist-tit">'+esc(v.title || '(sem título)')+' '+nota+'</div>'+
+          '<div class="doc-hist-meta">'+esc(v.author_name||'alguém')+' · '+esc(quando)+' <span>'+esc(dataCompleta)+'</span></div>'+
+        '</div>'+btn+
+      '</div>';
+    }).join('')+'</div>';
+    wrap.querySelectorAll('[data-restaurar]').forEach(function(b){
+      b.addEventListener('click', function(){ docsRestaurarVersao(docId, this.getAttribute('data-restaurar'), m); });
+    });
+  }
+
+  docsCarregarVersoes(docId).then(desenhar);
+
+  var marcar = m.root.querySelector('#dhMarcar');
+  if (marcar) marcar.addEventListener('click', function(){
+    var b = marcar; setBusy(b, true);
+    function terminou(){ setBusy(b, false); docsCarregarVersoes(docId).then(desenhar); }
+    // se o editor está aberto, pega o estado atual dele; senão busca do banco
+    if (_docEditorAtual && _docEditorAtual.id===docId && _docEditorAtual.editor){
+      _docEditorAtual.editor.save().then(function(data){
+        docsGravarVersao(docId, data, d.title, 'marcada manualmente').then(terminou);
+      }).catch(terminou);
+    } else {
+      sb.from('malba_docs').select('body').eq('id', docId).single().then(function(r){
+        docsGravarVersao(docId, r.data ? r.data.body : null, d.title, 'marcada manualmente').then(terminou);
+      }, terminou);
+    }
+  });
+}
+
+/* ---------- (A) Restaurar uma versão ---------- */
+function docsRestaurarVersao(docId, versaoId, modalHist){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  if (!d || !docPodeEditar(d)){ toast('Você não tem acesso de edição neste documento.','error'); return; }
+  confirmDialog({
+    title:'Restaurar esta versão?',
+    message:'O conteúdo atual vai ser guardado como uma nova versão antes — então dá pra voltar atrás se você se arrepender.',
+    confirmLabel:'Sim, restaurar',
+    onConfirm: function(){
+      // 1) busca o corpo da versão escolhida
+      sb.from('malba_doc_versions').select('body, title, created_at').eq('id', versaoId).single().then(function(rv){
+        if (rv.error || !rv.data){ toast('Não consegui ler a versão','error'); return; }
+        var corpoAntigo = rv.data.body;
+        // 2) guarda o estado atual antes de sobrescrever
+        function aplicar(corpoAtual){
+          docsGravarVersao(docId, corpoAtual, d.title, 'antes de restaurar').then(function(){
+            var texto = docBodyParaTexto(corpoAntigo);
+            sb.from('malba_docs').update({ body: corpoAntigo, plain_text: texto }).eq('id', docId).then(function(r){
+              if (r.error){ toast('Não consegui restaurar: '+(r.error.message||''),'error'); return; }
+              d.body = corpoAntigo;
+              toast('Versão restaurada','success');
+              if (modalHist && modalHist.close) modalHist.close();
+              // reabre o editor com o conteúdo restaurado
+              if (ST.docOpen===docId){ _docEditorAtual = null; openDocEditor(d); }
+              else renderPage();
+            });
+          });
+        }
+        if (_docEditorAtual && _docEditorAtual.id===docId && _docEditorAtual.editor){
+          _docEditorAtual.editor.save().then(aplicar).catch(function(){ aplicar(d.body); });
+        } else {
+          sb.from('malba_docs').select('body').eq('id', docId).single().then(function(rb){
+            aplicar(rb.data ? rb.data.body : d.body);
+          }, function(){ aplicar(d.body); });
+        }
+      });
+    }
+  });
+}
+
+/* ---------- (B) Pesquisa no conteúdo (servidor) ---------- */
+var _buscaConteudoTimer = null;
+function docsBuscarNoConteudo(termo){
+  if (!sb || !termo || termo.length < 3){ ST.docHits = null; renderPage(); return; }
+  ST.docBuscando = true; renderPage();
+  sb.from('malba_docs')
+    .select('id, plain_text')
+    .eq('sector', ST.sector)
+    .ilike('plain_text', '%'+termo+'%')
+    .limit(100)
+    .then(function(r){
+      ST.docBuscando = false;
+      if (r.error){ console.warn('busca conteúdo:', r.error.message); ST.docHits = null; renderPage(); return; }
+      var hits = {};
+      (r.data||[]).forEach(function(row){
+        hits[row.id] = docTrechoDoTermo(row.plain_text, termo);
+      });
+      ST.docHits = hits;
+      renderPage();
+    }, function(){ ST.docBuscando = false; ST.docHits = null; renderPage(); });
+}
+
+/* ---------- (B) Recorta um trecho ao redor do termo encontrado ---------- */
+function docTrechoDoTermo(texto, termo){
+  if (!texto) return '';
+  var t = String(texto);
+  var i = t.toLowerCase().indexOf(String(termo).toLowerCase());
+  if (i < 0) return t.slice(0, 120);
+  var ini = Math.max(0, i - 45);
+  var fim = Math.min(t.length, i + termo.length + 75);
+  return (ini>0?'…':'') + t.slice(ini, fim) + (fim<t.length?'…':'');
+}
+
+/* ---------- (B) Destaca o termo dentro do trecho (já escapado) ---------- */
+function docDestacar(trecho, termo){
+  if (!trecho) return '';
+  var safe = esc(trecho);
+  if (!termo) return safe;
+  var alvo = esc(termo);
+  var re = new RegExp('(' + alvo.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'ig');
+  return safe.replace(re, '<mark>$1</mark>');
+}
+
+/* ============================================================
+   v99: MÓDULO DOCUMENTOS — Fase 4
+   (A) Comentários com respostas, menções e resolução
+       Ancorados por BLOCO (não por trecho de texto) — bloco tem
+       id próprio e sobrevive às edições ao redor.
+   (B) Ata: "Transformar pendências em tarefas"
+   ============================================================ */
+
+/* ---------- (A) Carregar comentários de um documento ---------- */
+function docsCarregarComentarios(docId){
+  if (!sb) return Promise.resolve([]);
+  return sb.from('malba_doc_comments').select('*').eq('doc_id', docId).order('created_at', { ascending:true })
+    .then(function(r){
+      if (r.error){ console.warn('comentários:', r.error.message); return []; }
+      if (!ST.docComments) ST.docComments = {};
+      ST.docComments[docId] = r.data || [];
+      return ST.docComments[docId];
+    });
+}
+
+function docComentariosDe(docId){ return (ST.docComments && ST.docComments[docId]) || []; }
+
+/* ---------- (A) Contagem de comentários abertos (aparece na lista) ---------- */
+function docComentariosAbertos(docId){
+  return docComentariosDe(docId).filter(function(c){ return !c.resolved && !c.parent_id; }).length;
+}
+
+/* ---------- (A) Gravar comentário ou resposta ---------- */
+function docsComentar(docId, texto, blockId, blockPreview, parentId){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  if (!d || !docPodeComentar(d)){ toast('Você precisa de acesso de comentário neste documento.','error'); return Promise.resolve(null); }
+  var eu = ST.session && ST.session.user ? ST.session.user : null;
+  var payload = {
+    doc_id: docId,
+    sector: ST.sector,
+    block_id: blockId || null,
+    block_preview: blockPreview || null,
+    parent_id: parentId || null,
+    text: texto,
+    mentions: docExtrairMencoes(texto),
+    author_id: eu ? eu.id : null,
+    author_name: eu ? eu.name : null,
+    resolved: false
+  };
+  return sb.from('malba_doc_comments').insert(payload).select().single().then(function(r){
+    if (r.error){ toast('Não consegui comentar: '+(r.error.message||''),'error'); return null; }
+    if (r.data){
+      if (!ST.docComments) ST.docComments = {};
+      if (!ST.docComments[docId]) ST.docComments[docId] = [];
+      ST.docComments[docId].push(r.data);
+    }
+    return r.data;
+  });
+}
+
+/* ---------- (A) Extrai @mencoes e devolve os ids das pessoas ---------- */
+function docExtrairMencoes(texto){
+  if (!texto) return [];
+  var achados = [];
+  var pessoas = (ST.allUsers||ST.users||[]).filter(function(u){ return String(u.sector||'')===String(ST.sector); });
+  pessoas.forEach(function(u){
+    var primeiro = String(u.name||'').split(' ')[0];
+    if (!primeiro) return;
+    var re = new RegExp('@'+primeiro.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'i');
+    if (re.test(texto) && achados.indexOf(u.id)===-1) achados.push(u.id);
+  });
+  return achados;
+}
+
+/* ---------- (A) Marca as menções no texto exibido ---------- */
+function docRenderMencoes(texto){
+  var safe = esc(texto||'');
+  var pessoas = (ST.allUsers||ST.users||[]).filter(function(u){ return String(u.sector||'')===String(ST.sector); });
+  pessoas.forEach(function(u){
+    var primeiro = String(u.name||'').split(' ')[0];
+    if (!primeiro) return;
+    var re = new RegExp('(@'+esc(primeiro).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')', 'ig');
+    safe = safe.replace(re, '<span class="doc-mencao">$1</span>');
+  });
+  return safe;
+}
+
+/* ---------- (A) Resolver / reabrir ---------- */
+function docsResolverComentario(docId, comentarioId, resolver){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  if (!d || !docPodeComentar(d)){ toast('Sem acesso para resolver.','error'); return; }
+  var eu = ST.session && ST.session.user ? ST.session.user : null;
+  var novo = resolver !== false;
+  var patch = novo
+    ? { resolved:true, resolved_by: eu?eu.id:null, resolved_at: new Date().toISOString() }
+    : { resolved:false, resolved_by:null, resolved_at:null };
+  sb.from('malba_doc_comments').update(patch).eq('id', comentarioId).then(function(r){
+    if (r.error){ toast('Não consegui salvar','error'); return; }
+    var c = docComentariosDe(docId).find(function(x){ return String(x.id)===String(comentarioId); });
+    if (c) Object.assign(c, patch);
+    toast(novo ? 'Comentário resolvido' : 'Comentário reaberto','success');
+    docsPainelComentariosRender(docId);
+    renderPage();
+  });
+}
+
+/* ---------- (A) Excluir comentário (autor ou admin do doc) ---------- */
+function docsExcluirComentario(docId, comentarioId){
+  var c = docComentariosDe(docId).find(function(x){ return String(x.id)===String(comentarioId); });
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  if (!c || !d) return;
+  if (String(c.author_id||'')!==eu && !docPodeAdmin(d)){ toast('Só quem escreveu (ou um admin do documento) pode apagar.','error'); return; }
+  sb.from('malba_doc_comments').delete().eq('id', comentarioId).then(function(r){
+    if (r.error){ toast('Não consegui apagar','error'); return; }
+    // apaga também as respostas dele
+    ST.docComments[docId] = docComentariosDe(docId).filter(function(x){
+      return String(x.id)!==String(comentarioId) && String(x.parent_id||'')!==String(comentarioId);
+    });
+    docsPainelComentariosRender(docId);
+    renderPage();
+  });
+}
+
+/* ---------- (A) Painel lateral de comentários ---------- */
+function docsPainelComentariosHTML(docId){
+  var aberto = !!ST.docPainelComentarios;
+  if (!aberto) return '';
+  return '<aside class="doc-coment-painel" id="docComentPainel">'+
+    '<div class="doc-coment-head">'+
+      '<b>Comentários</b>'+
+      '<label class="doc-coment-toggle"><input type="checkbox" id="dcMostrarResolvidos"'+(ST.docMostrarResolvidos?' checked':'')+'> mostrar resolvidos</label>'+
+      '<button class="doc-coment-fechar" id="dcFechar" title="Fechar">×</button>'+
+    '</div>'+
+    '<div id="dcCorpo" class="doc-coment-corpo"><div class="doc-coment-load">Carregando…</div></div>'+
+  '</aside>';
+}
+
+function docsPainelComentariosRender(docId){
+  var corpo = document.getElementById('dcCorpo');
+  if (!corpo) return;
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  var podeComentar = d && docPodeComentar(d);
+  var todos = docComentariosDe(docId);
+  var raizes = todos.filter(function(c){ return !c.parent_id; });
+  if (!ST.docMostrarResolvidos) raizes = raizes.filter(function(c){ return !c.resolved; });
+  raizes.sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); });
+
+  var novo = podeComentar
+    ? '<div class="doc-coment-novo">'+
+        '<textarea id="dcNovoTxt" rows="2" placeholder="Comentar no documento… use @ para mencionar"></textarea>'+
+        '<button class="btn btn-primary" id="dcNovoSend">Comentar</button>'+
+      '</div>'
+    : '<div class="doc-coment-vazio">Você tem acesso de leitura — não dá pra comentar aqui.</div>';
+
+  var lista;
+  if (!raizes.length){
+    lista = '<div class="doc-coment-vazio">'+(ST.docMostrarResolvidos?'Nenhum comentário ainda.':'Nenhum comentário em aberto.')+'</div>';
+  } else {
+    lista = raizes.map(function(c){
+      var respostas = todos.filter(function(x){ return String(x.parent_id||'')===String(c.id); })
+                           .sort(function(a,b){ return (a.created_at||'').localeCompare(b.created_at||''); });
+      return docComentarioItemHTML(c, respostas, podeComentar, d);
+    }).join('');
+  }
+  corpo.innerHTML = novo + '<div class="doc-coment-lista">'+lista+'</div>';
+  docsPainelComentariosBind(docId);
+}
+
+function docComentarioItemHTML(c, respostas, podeComentar, d){
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  var podeApagar = String(c.author_id||'')===eu || (d && docPodeAdmin(d));
+  var ancora = c.block_preview
+    ? '<div class="doc-coment-ancora" title="Trecho comentado">“'+esc(String(c.block_preview).slice(0,80))+(String(c.block_preview).length>80?'…':'')+'”</div>'
+    : '';
+  var acoes = '';
+  if (podeComentar) acoes += '<button class="doc-coment-acao" data-resolver="'+esc(c.id)+'" data-estado="'+(c.resolved?'1':'0')+'">'+(c.resolved?'↩︎ reabrir':'✓ resolver')+'</button>';
+  if (podeComentar) acoes += '<button class="doc-coment-acao" data-responder="'+esc(c.id)+'">↳ responder</button>';
+  if (podeApagar)   acoes += '<button class="doc-coment-acao del" data-apagar="'+esc(c.id)+'">apagar</button>';
+
+  var resps = respostas.map(function(r){
+    var podeApagarR = String(r.author_id||'')===eu || (d && docPodeAdmin(d));
+    return '<div class="doc-coment-resp">'+
+      '<div class="doc-coment-meta"><b>'+esc(r.author_name||'alguém')+'</b><span>'+esc(tempoRelativo(r.created_at))+'</span>'+
+        (podeApagarR?'<button class="doc-coment-acao del mini" data-apagar="'+esc(r.id)+'">×</button>':'')+
+      '</div>'+
+      '<div class="doc-coment-txt">'+docRenderMencoes(r.text)+'</div>'+
+    '</div>';
+  }).join('');
+
+  return '<div class="doc-coment-item'+(c.resolved?' resolvido':'')+'" data-coment-id="'+esc(c.id)+'">'+
+    ancora+
+    '<div class="doc-coment-meta"><b>'+esc(c.author_name||'alguém')+'</b><span>'+esc(tempoRelativo(c.created_at))+'</span>'+
+      (c.resolved?'<span class="doc-coment-selo">resolvido</span>':'')+
+    '</div>'+
+    '<div class="doc-coment-txt">'+docRenderMencoes(c.text)+'</div>'+
+    (resps ? '<div class="doc-coment-resps">'+resps+'</div>' : '')+
+    '<div class="doc-coment-acoes">'+acoes+'</div>'+
+    '<div class="doc-coment-respbox" id="rb-'+esc(c.id)+'" style="display:none">'+
+      '<textarea rows="2" placeholder="Responder…"></textarea>'+
+      '<button class="btn btn-primary" data-enviar-resp="'+esc(c.id)+'">Enviar</button>'+
+    '</div>'+
+  '</div>';
+}
+
+function docsPainelComentariosBind(docId){
+  var corpo = document.getElementById('dcCorpo');
+  if (!corpo) return;
+
+  var send = corpo.querySelector('#dcNovoSend');
+  if (send) send.addEventListener('click', function(){
+    var ta = corpo.querySelector('#dcNovoTxt');
+    var v = (ta.value||'').trim();
+    if (!v){ toast('Escreva algo antes de enviar','error'); return; }
+    setBusy(send, true);
+    // se tem um bloco selecionado no editor, ancora nele
+    var alvo = ST.docBlocoSelecionado || {};
+    docsComentar(docId, v, alvo.id||null, alvo.preview||null, null).then(function(){
+      setBusy(send, false);
+      ta.value='';
+      ST.docBlocoSelecionado = null;
+      docsPainelComentariosRender(docId);
+    });
+  });
+  var ta = corpo.querySelector('#dcNovoTxt');
+  if (ta) ta.addEventListener('keydown', function(e){
+    if ((e.ctrlKey||e.metaKey) && e.key==='Enter'){ e.preventDefault(); if (send) send.click(); }
+  });
+
+  corpo.querySelectorAll('[data-resolver]').forEach(function(b){
+    b.addEventListener('click', function(){
+      docsResolverComentario(docId, this.getAttribute('data-resolver'), this.getAttribute('data-estado')!=='1');
+    });
+  });
+  corpo.querySelectorAll('[data-apagar]').forEach(function(b){
+    b.addEventListener('click', function(){ docsExcluirComentario(docId, this.getAttribute('data-apagar')); });
+  });
+  corpo.querySelectorAll('[data-responder]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var box = corpo.querySelector('#rb-'+this.getAttribute('data-responder'));
+      if (box){ box.style.display = box.style.display==='none' ? 'flex' : 'none'; var t=box.querySelector('textarea'); if(t) t.focus(); }
+    });
+  });
+  corpo.querySelectorAll('[data-enviar-resp]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var pid = this.getAttribute('data-enviar-resp');
+      var box = corpo.querySelector('#rb-'+pid);
+      var t = box ? box.querySelector('textarea') : null;
+      var v = t ? (t.value||'').trim() : '';
+      if (!v){ toast('Escreva a resposta','error'); return; }
+      setBusy(b, true);
+      docsComentar(docId, v, null, null, pid).then(function(){
+        setBusy(b, false);
+        docsPainelComentariosRender(docId);
+      });
+    });
+  });
+
+  var chk = document.getElementById('dcMostrarResolvidos');
+  if (chk) chk.addEventListener('change', function(){ ST.docMostrarResolvidos = this.checked; docsPainelComentariosRender(docId); });
+  var fechar = document.getElementById('dcFechar');
+  if (fechar) fechar.addEventListener('click', function(){ ST.docPainelComentarios = false; renderPage(); });
+}
+
+/* ---------- (A) Captura qual bloco está selecionado no editor ---------- */
+function docsCapturarBlocoAtual(){
+  var ctx = _docEditorAtual;
+  if (!ctx || !ctx.editor || !ctx.editor.blocks) return null;
+  try {
+    var idx = ctx.editor.blocks.getCurrentBlockIndex();
+    if (idx < 0) return null;
+    var bl = ctx.editor.blocks.getBlockByIndex(idx);
+    if (!bl) return null;
+    var texto = '';
+    if (bl.holder) texto = String(bl.holder.textContent||'').trim();
+    return { id: bl.id || ('idx-'+idx), preview: texto.slice(0,120) };
+  } catch(e){ return null; }
+}
+
+/* ============================================================
+   (B) ATA — Transformar pendências em tarefas
+   ============================================================ */
+
+/* ---------- Varre o corpo procurando itens de checklist/lista pendentes ---------- */
+function docPendenciasDoCorpo(body){
+  var b = body;
+  if (typeof b === 'string'){ try { b = JSON.parse(b); } catch(e){ return []; } }
+  var blocks = (b && Array.isArray(b.blocks)) ? b.blocks : [];
+  function limpa(t){ return String(t||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').trim(); }
+  var achados = [];
+  var secaoRelevante = false;
+  blocks.forEach(function(bl){
+    var d = bl && bl.data ? bl.data : {};
+    if (bl.type==='header'){
+      var h = limpa(d.text).toLowerCase();
+      // seções que costumam virar tarefa
+      secaoRelevante = /pend|próxim|proxim|ação|acao|ações|acoes|to.?do|tarefa/.test(h);
+      return;
+    }
+    if (bl.type==='checklist' && Array.isArray(d.items)){
+      d.items.forEach(function(it){
+        var t = limpa(it && it.text);
+        if (t && !(it && it.checked)) achados.push(t); // só o que NÃO foi marcado
+      });
+      return;
+    }
+    if (secaoRelevante && bl.type==='list' && Array.isArray(d.items)){
+      d.items.forEach(function(it){
+        var t = limpa(typeof it==='string' ? it : (it && (it.content||it.text)));
+        if (t) achados.push(t);
+      });
+    }
+  });
+  // remove duplicados e placeholders de template
+  var vistos = {};
+  return achados.filter(function(t){
+    if (!t || t.length < 3) return false;
+    if (/^\(.*\)$/.test(t)) return false;           // "(cada item vira uma tarefa...)"
+    if (vistos[t.toLowerCase()]) return false;
+    vistos[t.toLowerCase()] = true;
+    return true;
+  });
+}
+
+/* ---------- Modal: escolher quais pendências viram tarefa ---------- */
+function docsPendenciasEmTarefas(docId){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  if (!d){ toast('Documento não encontrado','error'); return; }
+  if (!docPodeVer(d)){ toast('Sem acesso a este documento.','error'); return; }
+
+  function abrirCom(body){
+    var itens = docPendenciasDoCorpo(body);
+    if (!itens.length){
+      makeModal({
+        title:'Transformar pendências em tarefas', width:480, hideFoot:true,
+        body:'<div class="doc-pend-vazio">Não encontrei pendências neste documento.<br><span>Procuro por itens de checklist não marcados, e por listas embaixo de títulos como “Pendências” ou “Próximas ações”.</span></div>'
+      });
+      return;
+    }
+    var respOpts = '<option value="">— sem responsável —</option>' + (ST.allUsers||ST.users||[]).filter(function(u){
+      return String(u.sector||'')===String(ST.sector);
+    }).map(function(u){ return '<option value="'+esc(u.id)+'">'+esc(u.name)+'</option>'; }).join('');
+
+    var linhas = itens.map(function(t, i){
+      return '<div class="doc-pend-row">'+
+        '<label class="doc-pend-lb"><input type="checkbox" data-pend="'+i+'" checked><span>'+esc(t)+'</span></label>'+
+        '<select data-pend-resp="'+i+'">'+respOpts+'</select>'+
+        '<input type="date" data-pend-due="'+i+'">'+
+      '</div>';
+    }).join('');
+
+    makeModal({
+      title:'Transformar pendências em tarefas',
+      width:640,
+      body:'<div class="doc-pend-doc">'+docTipoIcon(d.doc_type)+' <b>'+esc(d.title||'Sem título')+'</b></div>'+
+           '<p class="modal-note">Achei '+itens.length+' pendência'+(itens.length>1?'s':'')+'. Desmarque o que não vira tarefa e escolha responsável e prazo.</p>'+
+           '<div class="doc-pend-lista">'+linhas+'</div>',
+      saveLabel:'Criar tarefas',
+      onSave: function(close, root){
+        var novas = [];
+        itens.forEach(function(t, i){
+          var chk = root.querySelector('[data-pend="'+i+'"]');
+          if (!chk || !chk.checked) return;
+          var resp = root.querySelector('[data-pend-resp="'+i+'"]');
+          var due  = root.querySelector('[data-pend-due="'+i+'"]');
+          novas.push({
+            sector: ST.sector,
+            title: t,
+            status: 'todo',
+            priority: 'media',
+            due_date: (due && due.value) || null,
+            assignee_id: (resp && resp.value) || null,
+            store_unit_id: ST.store ? ST.store.id : null
+          });
+        });
+        if (!novas.length){ toast('Marque pelo menos uma pendência','error'); return; }
+        var criadas = 0, erros = 0;
+        novas.forEach(function(t){
+          sb.from('malba_vl_tasks').insert(t).select().single().then(function(r){
+            if (r.error){ erros++; console.error('pendência->tarefa:', r.error); }
+            else if (r.data){ if(!ST.tasks) ST.tasks=[]; ST.tasks.push(r.data); }
+            criadas++;
+            if (criadas===novas.length){
+              close();
+              if (erros) toast(erros+' não deram certo — o resto foi criado','error');
+              else toast(novas.length+' tarefa'+(novas.length>1?'s':'')+' criada'+(novas.length>1?'s':'')+' em Trabalho','success');
+              renderPage();
+            }
+          });
+        });
+      }
+    });
+  }
+
+  // usa o conteúdo do editor se estiver aberto; senão busca do banco
+  if (_docEditorAtual && _docEditorAtual.id===docId && _docEditorAtual.editor){
+    _docEditorAtual.editor.save().then(abrirCom).catch(function(){ abrirCom(d.body); });
+  } else {
+    sb.from('malba_docs').select('body').eq('id', docId).single().then(function(r){
+      abrirCom(r.data ? r.data.body : d.body);
+    }, function(){ abrirCom(d.body); });
+  }
+}
+
+/* ============================================================
+   v100: MÓDULO DOCUMENTOS — Fase 5 (última)
+   (A) Vínculos: documento ligado a Projeto / Tarefa / Cliente /
+       Ideia / Objetivo. Guardado em links JSONB no próprio doc.
+   (B) Dashboard de indicadores do módulo.
+   ============================================================ */
+
+/* ---------- (A) Tipos de entidade que aceitam vínculo ---------- */
+var DOC_LINK_TIPOS = {
+  projeto:  { label:'Projeto',   ic:'🚀', lista:function(){ return (ST.projects||[]).map(function(p){ return { id:p.id, nome:p.name }; }); } },
+  tarefa:   { label:'Tarefa',    ic:'✅', lista:function(){ return (ST.tasks||[]).filter(function(t){ return String(t.sector||'')===String(ST.sector); }).map(function(t){ return { id:t.id, nome:t.title }; }); } },
+  cliente:  { label:'Cliente',   ic:'🤝', lista:function(){ return (ST.clients||[]).map(function(c){ return { id:c.id, nome:c.name || c.nome }; }); } },
+  ideia:    { label:'Ideia',     ic:'💡', lista:function(){ return (ST.ideias||[]).map(function(i){ return { id:i.id, nome:i.title }; }); } },
+  objetivo: { label:'Objetivo',  ic:'🎯', lista:function(){ return (ST.objetivos||[]).map(function(o){ return { id:o.id, nome:o.title }; }); } }
+};
+var DOC_LINK_ORDER = ['projeto','tarefa','cliente','ideia','objetivo'];
+
+/* ---------- (A) Resolve o nome atual da entidade (com fallback) ---------- */
+function docLinkNome(link){
+  if (!link) return '';
+  var tipo = DOC_LINK_TIPOS[link.type];
+  if (tipo){
+    var achado = tipo.lista().find(function(e){ return String(e.id)===String(link.id); });
+    if (achado && achado.nome) return achado.nome;
+  }
+  // entidade sumiu — usa o nome guardado no momento do vínculo
+  return link.label || '(item removido)';
+}
+
+function docLinksDe(d){ return Array.isArray(d && d.links) ? d.links : []; }
+
+/* ---------- (A) Documentos ligados a uma entidade (usado na volta) ---------- */
+function docsDaEntidade(tipo, entidadeId){
+  return (ST.docs||[]).filter(function(d){
+    if (d.is_archived || !docPodeVer(d)) return false;
+    return docLinksDe(d).some(function(l){ return l.type===tipo && String(l.id)===String(entidadeId); });
+  });
+}
+
+/* ---------- (A) Chip de vínculo ---------- */
+function docLinkChipHTML(link, comRemover){
+  var t = DOC_LINK_TIPOS[link.type] || { ic:'🔗', label:'Vínculo' };
+  var rm = comRemover ? '<button type="button" class="doc-link-del" data-link-del="'+esc(link.type+':'+link.id)+'" title="Desvincular">×</button>' : '';
+  return '<span class="doc-link-chip" title="'+esc(t.label)+'">'+t.ic+' '+esc(docLinkNome(link))+rm+'</span>';
+}
+
+/* ---------- (A) Modal de vínculos ---------- */
+function docsVincular(docId){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(docId); });
+  if (!d){ toast('Documento não encontrado','error'); return; }
+  if (!docPodeEditar(d)){ toast('Você precisa de acesso de edição para vincular.','error'); return; }
+
+  var links = docLinksDe(d).map(function(l){ return { type:l.type, id:String(l.id), label:l.label||'' }; });
+
+  function listaHTML(){
+    if (!links.length) return '<div class="doc-link-vazio">Nenhum vínculo ainda. Ligue este documento a um projeto, tarefa, cliente, ideia ou objetivo.</div>';
+    return '<div class="doc-link-lista">'+links.map(function(l){ return docLinkChipHTML(l, true); }).join('')+'</div>';
+  }
+
+  function addHTML(){
+    var tipoSel = ST.docLinkTipo || 'projeto';
+    var tipos = DOC_LINK_ORDER.map(function(k){
+      return '<option value="'+k+'"'+(tipoSel===k?' selected':'')+'>'+DOC_LINK_TIPOS[k].ic+' '+DOC_LINK_TIPOS[k].label+'</option>';
+    }).join('');
+    var jaTem = links.map(function(l){ return l.type+':'+l.id; });
+    var itens = DOC_LINK_TIPOS[tipoSel].lista().filter(function(e){
+      return e.nome && jaTem.indexOf(tipoSel+':'+e.id)===-1;
+    });
+    var opts = itens.length
+      ? itens.map(function(e){ return '<option value="'+esc(e.id)+'">'+esc(e.nome)+'</option>'; }).join('')
+      : '';
+    var selAlvo = itens.length
+      ? '<select id="dlAlvo"><option value="">— escolher —</option>'+opts+'</select>'
+      : '<select id="dlAlvo" disabled><option>nenhum disponível</option></select>';
+    return '<div class="doc-link-add">'+
+      '<select id="dlTipo">'+tipos+'</select>'+
+      selAlvo+
+      '<button type="button" class="btn btn-primary" id="dlAdd">Vincular</button>'+
+    '</div>';
+  }
+
+  var m = makeModal({
+    title:'Vínculos do documento', width:540,
+    body:'<div class="doc-link-doc">'+docTipoIcon(d.doc_type)+' <b>'+esc(d.title||'Sem título')+'</b></div>'+
+         '<label class="modal-label">Ligado a</label>'+
+         '<div id="dlListaWrap">'+listaHTML()+'</div>'+
+         '<div id="dlAddWrap">'+addHTML()+'</div>'+
+         '<p class="modal-note">O documento aparece dentro do projeto, tarefa ou cliente vinculado — e você pode filtrar por vínculo na barra lateral.</p>',
+    saveLabel:'Salvar vínculos',
+    onSave: function(close){
+      sb.from('malba_docs').update({ links: links }).eq('id', d.id).then(function(r){
+        if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+        d.links = links;
+        close(); toast('Vínculos salvos','success'); renderPage();
+      });
+    }
+  });
+
+  function redesenha(){
+    var a = m.root.querySelector('#dlListaWrap'); if (a) a.innerHTML = listaHTML();
+    var b = m.root.querySelector('#dlAddWrap');   if (b) b.innerHTML = addHTML();
+    ligar();
+  }
+  function ligar(){
+    var tp = m.root.querySelector('#dlTipo');
+    if (tp) tp.addEventListener('change', function(){ ST.docLinkTipo = this.value; redesenha(); });
+    var add = m.root.querySelector('#dlAdd');
+    if (add) add.addEventListener('click', function(){
+      var sel = m.root.querySelector('#dlAlvo');
+      var id = sel ? sel.value : '';
+      if (!id){ toast('Escolha o item','error'); return; }
+      var tipo = ST.docLinkTipo || 'projeto';
+      var achado = DOC_LINK_TIPOS[tipo].lista().find(function(e){ return String(e.id)===String(id); });
+      links.push({ type:tipo, id:String(id), label: achado ? achado.nome : '' });
+      redesenha();
+    });
+    m.root.querySelectorAll('[data-link-del]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var chave = this.getAttribute('data-link-del');
+        links = links.filter(function(l){ return (l.type+':'+l.id)!==chave; });
+        redesenha();
+      });
+    });
+  }
+  ligar();
+}
+
+/* ---------- (A) Bloco "Documentos vinculados" para reusar em outros modais ---------- */
+function docsVinculadosBlocoHTML(tipo, entidadeId){
+  var lista = docsDaEntidade(tipo, entidadeId);
+  if (!lista.length) return '';
+  return '<div class="doc-vinc-bloco">'+
+    '<label class="modal-label">📄 Documentos vinculados ('+lista.length+')</label>'+
+    '<div class="doc-vinc-lista">'+lista.map(function(d){
+      return '<button type="button" class="doc-vinc-item" data-abrir-doc="'+esc(d.id)+'">'+
+        docTipoIcon(d.doc_type)+' <span>'+esc(d.title||'Sem título')+'</span>'+
+      '</button>';
+    }).join('')+'</div>'+
+  '</div>';
+}
+
+function bindDocsVinculados(root){
+  (root||document).querySelectorAll('[data-abrir-doc]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = this.getAttribute('data-abrir-doc');
+      var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+      if (!d) return;
+      document.querySelectorAll('.modal-bg').forEach(function(m){ m.remove(); });
+      ST.page = 'docs';
+      openDocEditor(d);
+    });
+  });
+}
+
+/* ============================================================
+   (B) DASHBOARD DO MÓDULO
+   ============================================================ */
+function docsDashboardHTML(){
+  var todos = (ST.docs||[]).filter(docPodeVer);
+  var ativos = todos.filter(function(d){ return !d.is_archived; });
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+
+  var arquivados = todos.filter(function(d){ return d.is_archived; }).length;
+  var favoritos  = ativos.filter(function(d){ return Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1; }).length;
+  var seteDias   = new Date(Date.now()-7*24*3600*1000).toISOString();
+  var recentes   = ativos.filter(function(d){ return (d.updated_at||'')>=seteDias; }).length;
+  var compartilhados = ativos.filter(function(d){
+    var vis = d.visibility||'setor';
+    return vis!=='privado' || (Array.isArray(d.shares) && d.shares.length>0);
+  }).length;
+  var noventa = new Date(Date.now()-90*24*3600*1000).toISOString();
+  var parados = ativos.filter(function(d){ return (d.updated_at||'') < noventa; });
+  var comentariosAbertos = Object.keys(ST.docCommentCount||{}).reduce(function(acc,k){
+    var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(k); });
+    return acc + ((d && docPodeVer(d)) ? (ST.docCommentCount[k]||0) : 0);
+  }, 0);
+  var vinculados = ativos.filter(function(d){ return docLinksDe(d).length>0; }).length;
+
+  function kpi(label, valor, cor, sub){
+    return '<div class="estr-kpi"><div class="estr-kpi-v" style="color:'+(cor||'var(--u-text)')+'">'+valor+'</div><div class="estr-kpi-l">'+esc(label)+'</div>'+(sub?'<div class="estr-kpi-s">'+esc(sub)+'</div>':'')+'</div>';
+  }
+
+  var kpis = '<div class="estr-kpis">'+
+    kpi('Documentos', ativos.length, '#0EA5E9', arquivados+' arquivado'+(arquivados===1?'':'s'))+
+    kpi('Compartilhados', compartilhados, '#3B6FF7', 'visíveis para outras pessoas')+
+    kpi('Meus favoritos', favoritos, '#F59E0B', 'marcados por você')+
+    kpi('Editados na semana', recentes, '#16A34A', 'últimos 7 dias')+
+    kpi('Comentários abertos', comentariosAbertos, comentariosAbertos?'#EF4444':'#16A34A', 'esperando resposta')+
+    kpi('Vinculados', vinculados, '#8B5CF6', 'ligados a projeto, tarefa ou cliente')+
+  '</div>';
+
+  // distribuição por tipo
+  var porTipo = {};
+  ativos.forEach(function(d){ var t = d.doc_type||'geral'; porTipo[t] = (porTipo[t]||0)+1; });
+  var nomes = { geral:'Documento', ata:'Ata de reunião', pop:'POP', manual:'Manual', wiki:'Wiki', planejamento:'Planejamento', estrategia:'Estratégia' };
+  var chaves = Object.keys(porTipo).sort(function(a,b){ return porTipo[b]-porTipo[a]; });
+  var maxT = chaves.length ? porTipo[chaves[0]] : 1;
+  var tiposHTML = chaves.length
+    ? chaves.map(function(k){
+        var pct = Math.round(porTipo[k]/maxT*100);
+        return '<div class="estr-funil-row"><span class="estr-funil-lb">'+docTipoIcon(k)+' '+esc(nomes[k]||k)+'</span><div class="estr-funil-bar"><span style="width:'+pct+'%;background:#3B6FF7"></span></div><span class="estr-funil-c">'+porTipo[k]+'</span></div>';
+      }).join('')
+    : '<div class="estr-rec-empty">Nenhum documento ainda.</div>';
+  var boxTipos = '<div class="estr-funil"><h4>Por tipo</h4>'+tiposHTML+'</div>';
+
+  // documentos parados
+  var paradosOrd = parados.slice().sort(function(a,b){ return (a.updated_at||'').localeCompare(b.updated_at||''); }).slice(0,6);
+  var paradosHTML = paradosOrd.length
+    ? paradosOrd.map(function(d){
+        return '<div class="estr-rec-row" data-dash-doc="'+esc(d.id)+'"><span class="estr-rec-status" style="background:#F59E0B"></span><b>'+esc(d.title||'Sem título')+'</b><span class="estr-rec-cat">'+esc(tempoRelativo(d.updated_at))+'</span></div>';
+      }).join('')
+    : '<div class="estr-rec-empty">Nenhum documento parado há mais de 90 dias. 👏</div>';
+  var boxParados = '<div class="estr-box"><h4>Sem atualização há 90+ dias'+(parados.length>6?' (6 de '+parados.length+')':'')+'</h4><div class="estr-rec">'+paradosHTML+'</div></div>';
+
+  return '<div class="estr-dash">'+kpis+'<div class="estr-dash-2col">'+boxTipos+boxParados+'</div></div>';
+}
+
+function bindDocsDashboard(){
+  document.querySelectorAll('[data-dash-doc]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(el.getAttribute('data-dash-doc')); });
+      if (d) openDocEditor(d);
+    });
+  });
 }
 
 function crmHTML() {
@@ -8084,7 +9418,8 @@ function openProjectModal(project) {
     '<div class="modal-row"><label class="modal-label">Cor</label><div class="color-row" id="pColors">'+colorBtns+'</div></div>';
   var step2 = '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Início</label><input type="date" id="pStart" value="'+esc((pr.start_date||'').split('T')[0])+'" data-review="Início"></div><div class="modal-row"><label class="modal-label">Prazo</label><input type="date" id="pEnd" value="'+esc((pr.end_date||'').split('T')[0])+'" data-review="Prazo"></div></div>'+
     '<div class="wz-auto">'+icon('target')+'<span>Situação inicial: <b>Em andamento</b> — automático</span></div>';
-  var step3 = '<div class="modal-row"><label class="modal-label">Equipe do projeto (responsáveis)</label><div class="member-picks">'+memHTML+'</div></div>'+lojaInfo;
+  var step3 = '<div class="modal-row"><label class="modal-label">Equipe do projeto (responsáveis)</label><div class="member-picks">'+memHTML+'</div></div>'+lojaInfo+
+    (isNew ? '' : docsVinculadosBlocoHTML('projeto', pr.id)); // v100
 
   formWizard({
     title: isNew?'Novo projeto':'Editar projeto',
@@ -8103,6 +9438,7 @@ function openProjectModal(project) {
              '<div class="wz-rev-row"><span class="wz-rev-l">Cor</span><span class="wz-rev-v">'+cor+'</span></div>';
     },
     onReady: function(bg){
+      bindDocsVinculados(bg); // v100
       var dots=bg.querySelectorAll('.color-dot');
       for (var i=0;i<dots.length;i++) dots[i].addEventListener('click', function(){ for(var k=0;k<dots.length;k++) dots[k].classList.remove('on'); this.classList.add('on'); colorPick=this.getAttribute('data-color'); });
       var memCbs=bg.querySelectorAll('[data-member]');
