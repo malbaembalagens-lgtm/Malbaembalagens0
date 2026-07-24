@@ -160,6 +160,12 @@ html.dark .brand-2 { color: #0B1220; }
 .nav-soon { margin-left: auto; font-size: 9px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--u-text3); background: var(--u-bg2); padding: 2px 6px; border-radius: 6px; }
 .nav-badge { margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: #fff; background: var(--u-red); border-radius: 999px; box-shadow: 0 2px 6px rgba(239,68,68,.4); }
 .nav-item.active .nav-badge { background: #fff; color: var(--u-red); }
+
+/* v89.3: submenu contextual — abre embaixo do pai quando você está nele */
+.nav-sub { display: flex; flex-direction: column; gap: 2px; margin: 2px 0 6px 32px; padding-left: 8px; border-left: 2px solid var(--u-border); }
+.nav-sub-item { text-align: left; padding: 7px 10px; border-radius: 8px; font-size: 12.5px; color: var(--u-text2); font-weight: 500; }
+.nav-sub-item:hover { background: var(--u-bg2); color: var(--u-text); }
+.nav-sub-item.on { color: var(--u-accent); font-weight: 700; background: var(--u-accent-soft); }
 .quick-add { margin-bottom: 10px; }
 .quick-add input { width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px dashed var(--u-border2); background: var(--u-card2); font-size: 13px; font-weight: 600; color: var(--u-text); outline: none; transition: all .12s; }
 .quick-add input:focus { border-style: solid; border-color: var(--u-accent); background: var(--u-card); box-shadow: 0 0 0 3px var(--u-accent-soft); }
@@ -1943,7 +1949,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v89.2 · 22/07 (Central de Rotinas: grupos abrem por padrao — clicou no colaborador, ve as rotinas na hora)';
+var APP_BUILD = 'v90 · 22/07 (Arquitetura fechada: navegacao contextual, Metas e Relatorio com casca unificada, construtor unico de modal, Inicio validado por perfil)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2350,6 +2356,38 @@ function confirmDelete(message, onConfirm, opts){
   confirmDialog({ danger:true, title:opts.title||'Tem certeza?', message:message, confirmLabel:opts.confirmLabel||'Excluir', onConfirm:onConfirm });
 }
 // Rodapé de modal padrão: [Excluir] Cancelar [Salvar].
+/* v90: construtor único de modal — reduz cerimônia dos 27 modais existentes.
+   Uso:
+     var m = makeModal({ title:'Nova coisa', width:420, body:'<...>',
+                        saveLabel:'Criar', onSave:function(close, root){ ... } });
+   Já cuida de: overlay, foco no primeiro campo, fechar com Esc / clique fora,
+   botões padrão (Cancelar/Salvar), acessibilidade. Os modais antigos continuam
+   funcionando como estão — o construtor é para o novo código e para migrações. */
+function makeModal(opts){
+  opts=opts||{};
+  var bg=document.createElement('div'); bg.className='modal-bg';
+  var width = opts.width ? (' style="max-width:'+opts.width+'px"') : '';
+  var head = opts.title ? ('<div class="wz-title">'+esc(opts.title)+'</div>') : '';
+  var foot = opts.hideFoot ? '' : modalFoot({
+    saveLabel: opts.saveLabel || 'Salvar',
+    cancelLabel: opts.cancelLabel || 'Cancelar',
+    cancelId: 'mkCancel', saveId: opts.onSave? 'mkSave' : null,
+    del: !!opts.onDelete, delLabel: opts.deleteLabel || 'Excluir', delId: 'mkDel'
+  });
+  bg.innerHTML='<div class="modal"'+width+'>'+head+'<div class="modal-body">'+(opts.body||'')+'</div>'+foot+'</div>';
+  document.body.appendChild(bg);
+  var root = bg.querySelector('.modal');
+  function close(){ if(bg.parentNode){ bg.parentNode.removeChild(bg); document.removeEventListener('keydown', onKey); } if(opts.onClose) opts.onClose(); }
+  function onKey(e){ if(e.key==='Escape') close(); }
+  document.addEventListener('keydown', onKey);
+  bg.addEventListener('click', function(e){ if(e.target===bg) close(); });
+  var c=bg.querySelector('#mkCancel'); if(c) c.addEventListener('click', close);
+  var sv=bg.querySelector('#mkSave');   if(sv && opts.onSave) sv.addEventListener('click', function(){ opts.onSave(close, root); });
+  var dl=bg.querySelector('#mkDel');    if(dl && opts.onDelete) dl.addEventListener('click', function(){ opts.onDelete(close, root); });
+  // foco no primeiro campo
+  setTimeout(function(){ var el=root.querySelector('input:not([type=hidden]),textarea,select'); if(el && !opts.noAutofocus) el.focus(); }, 30);
+  return { close:close, root:root, bg:bg };
+}
 function modalFoot(o){
   o=o||{};
   var del = o.del ? '<button class="btn btn-danger btn-del-wrap" id="'+(o.delId||'mDel')+'">'+esc(o.delLabel||'Excluir')+'</button>' : '';
@@ -2487,6 +2525,24 @@ function renderLogin(sector) {
 }
 
 /* ========== [8] CASCA ========== */
+// v89.3: submenu contextual do menu lateral (Gestão / Configurações)
+function navSubmenu(pageId){
+  var atual, itens=[];
+  if(pageId==='gestao'){
+    var T=gestaoTabsForSector();
+    atual = ST.gestaoTab || (T[0]||{}).id;
+    itens = T.map(function(x){ return { id:x.id, label:x.label }; });
+  } else if(pageId==='config' && isTopAdmin(ST.session)){
+    atual = ST.configTab || 'usuarios';
+    itens = [{id:'usuarios',label:'Usuários'},{id:'lojas',label:'Lojas'},{id:'banners',label:'Banners'}];
+  } else {
+    return '';
+  }
+  if(itens.length<=1) return '';
+  return '<div class="nav-sub">'+itens.map(function(x){
+    return '<button class="nav-sub-item'+(x.id===atual?' on':'')+'" data-subpage="'+pageId+'" data-subtab="'+x.id+'">'+esc(x.label)+'</button>';
+  }).join('')+'</div>';
+}
 function renderShell(innerHTML, title) {
   var s=SECTORS[ST.sector]||SECTORS.lojas;
   var u=ST.session.user;
@@ -2505,6 +2561,8 @@ function renderShell(innerHTML, title) {
       var soon = pg.enabled?'':'<span class="nav-soon">em breve</span>';
       var badge = (pg.id==='tarefas' && focoTarefas>0) ? '<span class="nav-badge">'+focoTarefas+'</span>' : '';
       nav += '<button class="nav-item'+active+'"'+dis+' data-page="'+pg.id+'">'+icon(pg.icon)+'<span>'+esc(pg.label)+'</span>'+(badge||soon)+'</button>';
+      // v89.3: submenu contextual — só quando o pai está ativo
+      if(active && !pg.hidden){ nav += navSubmenu(pg.id); }
     });
   });
   render(
@@ -2532,6 +2590,16 @@ function renderShell(innerHTML, title) {
   document.getElementById('btnSair').addEventListener('click', logout);
   var sideUser=document.getElementById('sideUser');
   if (sideUser) sideUser.addEventListener('click', function(){ ST.page='perfil'; ST.openProject=null; navigate(ST.sector+'/perfil'); renderPage(); });
+  // v89.3: cliques nos itens de submenu — pulam direto para a aba
+  document.querySelectorAll('[data-subpage]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      e.stopPropagation();
+      var pg=this.getAttribute('data-subpage'), tab=this.getAttribute('data-subtab');
+      if(pg==='gestao') ST.gestaoTab=tab;
+      else if(pg==='config') ST.configTab=tab;
+      ST.page=pg; renderPage();
+    });
+  });
   var navBtns=app.querySelectorAll('.nav-item:not([disabled])');
   for (var i=0;i<navBtns.length;i++) {
     navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='tarefas') ST.taskView='kanban'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
@@ -4369,6 +4437,9 @@ function visibleGoals() {
   return ST.goals;
 }
 
+/* v90: Metas unificadas — casca comum, motor por setor.
+   Todo setor entra por metasHTML(). O layout, cabeçalho e navegação
+   de mês são um só; o cálculo continua no motor certo (vendas/marketing). */
 function metasHTML() {
   if (ST.sector==='marketing') return mktMetasHTML();
   var admin = isAdmin(ST.session);
@@ -4419,9 +4490,11 @@ function mktMetasHTML(){
   var n=_ymNow();
   var cur=(ST.mktMetas||[]).filter(function(g){ return (g.sector||'marketing')==='marketing' && g.month===n.m && g.year===n.y; });
   cur.sort(function(a,b){ return MKT_ORDER.indexOf(a.metric)-MKT_ORDER.indexOf(b.metric); });
-  var btn=canEdit()?'<button class="btn-new" id="btnNovaMktMeta">'+icon('plus')+'Nova meta</button>':'';
+  // v90: subtítulo e botão idênticos aos de vendas/lojas
+  var btn = canEdit() ? '<button class="btn-new" id="btnNovaMktMeta">'+icon('plus')+'Nova meta</button>' : '';
+  var sub = 'Metas do marketing · '+MESES[n.m-1]+' '+n.y;
   var cards = cur.length ? cur.map(mktMetaCard).join('') : emptyState({ span:true, icon:'target', title:'Sem metas neste mês', text:'Defina os alvos do marketing: faturamento do site, leads, seguidores e alcance.', cta:(canEdit()?'Nova meta':'') });
-  return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">Metas do marketing · '+MESES[n.m-1]+' '+n.y+'</div></div>'+btn+'</div><div class="goals-grid">'+cards+'</div>';
+  return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+btn+'</div></div><div class="goals-grid">'+cards+'</div>';
 }
 function mktMetaCard(g){
   var preset=MKT_METRICS[g.metric]||MKT_METRICS.outro; var unit=g.unit||preset.unit;
@@ -4502,7 +4575,7 @@ function relatorioHTML(){
   var projAtivos=(ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).length;
 
   var canPrev=true; var d0=new Date(); var canNext=!(y>d0.getFullYear() || (y===d0.getFullYear() && m>=d0.getMonth()+1));
-  var head='<div class="rep-head rep-noprint"><div><h2>Relatório de Marketing</h2><div class="sub">Resumo do mês, pronto para apresentar</div></div>'+
+  var head='<div class="rep-head rep-noprint"><div><h2>Relatório</h2><div class="sub">Marketing · resumo do mês</div></div>'+
     '<div class="rep-tools"><button class="rep-nav" id="relPrev">‹</button><span class="rep-month">'+MESES[m-1]+' '+y+'</span><button class="rep-nav" id="relNext"'+(canNext?'':' disabled')+'>›</button><button class="btn-new" id="relPrint">'+icon('folder')+'Imprimir / PDF</button></div></div>';
   var printHead='<div class="rep-print-head"><h1>Relatório de Marketing — '+MESES[m-1]+' '+y+'</h1><p>MALBA Embalagens · gerado em '+fmtDate(today())+'</p></div>';
 
@@ -5000,7 +5073,7 @@ function relatorioLojasHTML(){
   var sid = storeFixed || ST.lrStore || '';
   var d0=new Date(); var canNext=!(y>d0.getFullYear()||(y===d0.getFullYear()&&m>=d0.getMonth()+1));
   var storeSel = storeFixed ? '' : ('<select class="task-filter" id="lrStore"><option value="">Todas as lojas</option>'+lojas.map(function(s){ return '<option value="'+esc(s.id)+'"'+(String(sid)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>'; }).join('')+'</select>');
-  var head='<div class="rep-head rep-noprint"><div><h2>Relatório de Lojas</h2><div class="sub">Indicadores de qualidade da venda · para reunião</div></div><div class="rep-tools">'+storeSel+'<button class="rep-nav" id="lrPrev">‹</button><span class="rep-month">'+MESES[m-1]+' '+y+'</span><button class="rep-nav" id="lrNext"'+(canNext?'':' disabled')+'>›</button><button class="btn-new" id="lrPrint">'+icon('folder')+'Imprimir / PDF</button></div></div>';
+  var head='<div class="rep-head rep-noprint"><div><h2>Relatório</h2><div class="sub">Lojas · indicadores do mês</div></div><div class="rep-tools">'+storeSel+'<button class="rep-nav" id="lrPrev">‹</button><span class="rep-month">'+MESES[m-1]+' '+y+'</span><button class="rep-nav" id="lrNext"'+(canNext?'':' disabled')+'>›</button><button class="btn-new" id="lrPrint">'+icon('folder')+'Imprimir / PDF</button></div></div>';
   var focoNome = sid ? (storeName(sid)||'Loja') : 'Todas as lojas';
   var printHead='<div class="rep-print-head"><h1>Relatório de Lojas — '+esc(focoNome)+' — '+MESES[m-1]+' '+y+'</h1><p>MALBA Embalagens · gerado em '+fmtDate(today())+'</p></div>';
   var body = sid ? lojaReportSingle(sid, m, y) : lojaReportConsolidado(lojas, m, y);
