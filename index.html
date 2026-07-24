@@ -1949,7 +1949,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v90 · 22/07 (Arquitetura fechada: navegacao contextual, Metas e Relatorio com casca unificada, construtor unico de modal, Inicio validado por perfil)';
+var APP_BUILD = 'v90.2 · 22/07 (Kanban: concluir rotina (clique ou arrastar) deixa a de hoje em Concluida e cria a proxima em A fazer)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3392,14 +3392,43 @@ function taskCardHTML(it) {
     : (it.area?'<span class="tc-chip">'+esc(it.area)+'</span>':'');
   var recBadge = (it.kind==='task' && it.rec && it.rec!=='none') ? '<span class="tc-rec" title="Rotina · repete: '+(REC[it.rec]?REC[it.rec].label:'')+'">↻ Rotina</span>' : '';
   var subChip = it.sub ? '<span class="tc-sub'+(it.sub.done===it.sub.total?' done':'')+'">✓ '+it.sub.done+'/'+it.sub.total+'</span>' : '';
-  var quick = (it.kind==='task' && it.rec && it.rec!=='none') ? '<button class="tc-done" data-done="'+esc(it.id)+'">✓ feito hoje</button>' : '';
+  // v90.1: só quando faz sentido — rotina que ainda não foi concluída hoje
+  var quick = (it.kind==='task' && it.rec && it.rec!=='none' && it.status!=='feito') ? '<button class="tc-done" data-done="'+esc(it.id)+'">'+icon('check')+'<span>Concluir hoje</span></button>' : '';
   var drag = it.draggable ? ' draggable="true"' : '';
   return '<div class="task-card" data-kind="'+it.kind+'" data-id="'+esc(it.id)+'"'+drag+'><div class="tc-top"><span class="tc-prio" style="background:'+pr.color+'" title="Prioridade '+pr.label+'"></span><span class="tc-title">'+esc(it.title)+'</span></div><div class="tc-meta">'+lateChip+srcChip+recBadge+subChip+dateChip+av+'</div>'+quick+'</div>';
 }
 // move um item do quadro entre colunas (status) e persiste
+/* v90.2: concluir a rotina de hoje — mantém a de hoje em "Concluída" e cria a próxima
+   (mesmo comportamento pro botão "Concluir hoje" e pro arrastar pra "Concluída") */
+function concluirRotinaHoje(t){
+  if(!t) return;
+  var prev=t.status; t.status='feito'; renderPage();
+  sb.from('malba_vl_tasks').update({ status:'feito' }).eq('id', t.id).then(function(r){
+    if(r.error){ t.status=prev; console.error(r.error); toast('Não consegui concluir: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); return; }
+    // marcou como feita — agora cria a próxima ocorrência como nova tarefa
+    if(!isRecurring(t)) { toast('Concluída!','success'); return; }
+    var nd = nextDate(t.recurrence);
+    var proxima = {
+      sector: t.sector, title: t.title, description: t.description||null,
+      status: 'todo', priority: t.priority||'media', due_date: nd,
+      assignee_id: t.assignee_id||null, store_unit_id: t.store_unit_id||null,
+      project_id: t.project_id||null, recurrence: t.recurrence,
+      recur_group: t.recur_group||null, is_rule: false, rec_hora: t.rec_hora||null
+    };
+    sb.from('malba_vl_tasks').insert(proxima).select().single().then(function(r2){
+      if(r2.error){ console.error(r2.error); toast('Concluída, mas não consegui criar a próxima: '+(r2.error.message||''),'error'); return; }
+      if(r2.data) ST.tasks.push(r2.data);
+      toast('Concluída! Próxima em '+fmtDate(nd),'success');
+      renderPage();
+    });
+  });
+}
 function moveBoardItem(kind, id, ns) {
   if (kind==='task') {
     var t=taskById(id); if (!t || t.status===ns) return;
+    // v90.2: arrastar rotina pra "Concluída" faz o mesmo que "Concluir hoje" —
+    // cartão fica em Concluída E a próxima ocorrência aparece em "A fazer"
+    if (ns==='feito' && isRecurring(t)) { concluirRotinaHoje(t); return; }
     var prev=t.status; t.status=ns; renderPage();
     sb.from('malba_vl_tasks').update({ status:ns }).eq('id', id).then(function(r){
       if(r.error){ t.status=prev; console.error('mover tarefa:', r.error); toast('Não consegui mover: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); }
@@ -3466,11 +3495,7 @@ function bindTarefas() {
       e.stopPropagation();
       var id=this.getAttribute('data-done'); var t=taskById(id);
       if (!t) return;
-      var nd=nextDate(t.recurrence);
-      t.due_date=nd; t.status='todo';
-      sb.from('malba_vl_tasks').update({ due_date:nd, status:'todo' }).eq('id', t.id).then(function(r){ if(r.error) toast('Erro ao reagendar','error'); });
-      toast('Concluída! Próxima: '+fmtDate(nd),'success');
-      renderPage();
+      concluirRotinaHoje(t); // v90.2: reusa a mesma lógica do arrastar
     });
   }
   // clique nos cards (depende do tipo)
