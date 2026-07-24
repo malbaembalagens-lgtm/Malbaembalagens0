@@ -1928,6 +1928,34 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
   h2 { font-size: 20px; }
 }
 @media (max-width: 620px){ .fi-kpis { grid-template-columns: repeat(2,1fr); } .fi-modal .fi-head { flex-wrap: wrap; } }
+
+/* v91: Central de Estratégia */
+.estr-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 18px; margin-top: 14px; }
+@media (max-width: 760px) { .estr-wrap { grid-template-columns: 1fr; } }
+.estr-side { display: flex; flex-direction: column; gap: 4px; background: var(--u-card); border-radius: var(--radius); padding: 8px; box-shadow: var(--u-shadow); height: fit-content; }
+.estr-side-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 9px; font-size: 13.5px; font-weight: 600; color: var(--u-text2); text-align: left; }
+.estr-side-item:hover { background: var(--u-bg2); color: var(--u-text); }
+.estr-side-item.on { background: var(--u-accent-soft); color: var(--u-accent); }
+.estr-side-item.soon { opacity: .55; }
+.estr-side-item.soon:hover { background: transparent; color: var(--u-text2); cursor: default; }
+.estr-count { background: var(--u-bg2); color: var(--u-text2); padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.estr-side-item.on .estr-count { background: #fff; color: var(--u-accent); }
+.estr-soon { font-size: 10.5px; color: var(--u-text2); text-transform: uppercase; letter-spacing: .5px; }
+.estr-main { min-height: 300px; }
+.estr-filters { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+.estr-search { flex: 1; min-width: 200px; }
+.estr-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.estr-card { background: var(--u-card); border-radius: var(--radius); padding: 14px; box-shadow: var(--u-shadow); cursor: pointer; transition: transform .12s, box-shadow .12s; border: 1px solid transparent; }
+.estr-card:hover { transform: translateY(-1px); box-shadow: var(--u-shadow-lg, 0 8px 24px rgba(0,0,0,.08)); border-color: var(--u-border); }
+.estr-card-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+.estr-status { font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+.estr-cat { font-size: 11.5px; color: var(--u-text2); background: var(--u-bg2); padding: 3px 9px; border-radius: 999px; font-weight: 600; }
+.estr-title { font-size: 15px; font-weight: 700; margin: 0 0 6px; color: var(--u-text); line-height: 1.3; }
+.estr-desc { font-size: 13px; color: var(--u-text2); margin: 0 0 10px; line-height: 1.45; }
+.estr-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; }
+.estr-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.estr-tag { font-size: 11px; color: var(--u-text2); background: var(--u-bg2); padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+
 </style>
 </head>
 <body>
@@ -1949,7 +1977,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v90.2 · 22/07 (Kanban: concluir rotina (clique ou arrastar) deixa a de hoje em Concluida e cria a proxima em A fazer)';
+var APP_BUILD = 'v91 · 24/07 (Central de Estrategia — Fase 1: Ideias funcionais por setor, 4 areas na nav lateral, filtros, permissoes por nivel)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -1971,25 +1999,26 @@ var GESTAO_CHILDREN = ['metas','relatorio','ranking','orcamento'];
 var PAGES = {
   lojas: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'),
+    p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('ponto','Ponto','clock',true,'OPERAÇÃO',true), p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true)
   ],
   vendas: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('crm','CRM','users',true,'OPERAÇÃO'),
+    p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('ranking','Ranking','trend',true,'GESTÃO',true)
   ],
   financeiro: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
+    p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA')
   ],
   marketing: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'),
+    p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true), p('orcamento','Orçamento','dollar',true,'GESTÃO',true)
@@ -2120,6 +2149,7 @@ function pageAllowed(pgId, s){
   s = s || ST.session;
   if (pgId==='config') return isTopAdmin(s);
   if (pgId==='gestao')  return can('indicadores', s);   // v89: Supervisor acompanha indicadores
+  if (pgId==='estrategia') return can('estrategia', s) || permsHas(pgId, s); // v91: Admin/Gestor/Supervisor + Colaborador se autorizado
   if (pgId==='ponto')   return (ST.sector==='lojas' && !isColaboradorPessoal(s)) || permsHas(pgId, s);
   if (isColaboradorPessoal(s)) {
     // base do colaborador + funções concedidas no cadastro
@@ -2242,6 +2272,7 @@ function loadData() {
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
     ST.requests = [];
     try { sb.from('malba_requests').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.requests=re.data; if(ST.page==='inicio'||ST.page==='gestao') renderPage(); } }, function(){}); } catch(e){}
+    try { loadEstrategia(sector); } catch(e){} // v91: Central de Estratégia
     ST.checkins = [];
     try { sb.from('malba_checkins').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.checkins=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
     ST.notes1on1 = [];
@@ -2626,6 +2657,7 @@ function novoContextual() {
   if (pg==='conteudo') return openContentModal(null);
   if (pg==='biblioteca') return openCriativoModal(null);
   if (pg==='crm') return openClientModal(null);
+  if (pg==='estrategia') { if(estrPodeEditar()) return openIdeiaModal(null); return blockManage(); }
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='tarefas' && (ST.taskView||'')==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
@@ -5439,6 +5471,266 @@ function crmPertenceSetor(c){
   if (ST.sector==='lojas') return (c.sector==='lojas' || !c.sector || !!c.store_unit_id);
   return c.sector===ST.sector;
 }
+/* ============================================================
+   v91: CENTRAL DE ESTRATÉGIA — Fase 1
+   Onde uma ideia é registrada ANTES de virar projeto/tarefa.
+   Uma central por setor (filtro por sector, como CRM).
+   Áreas: Ideias · Objetivos · Planejamento · Projetos (nesta fase
+   só Ideias é funcional; as outras entram nas próximas fases).
+   ============================================================ */
+
+// estado local do módulo
+var ESTR_STATUS = {
+  nova:            { label:'Nova',            color:'#64748B' },
+  em_analise:      { label:'Em análise',      color:'#F59E0B' },
+  aprovada:        { label:'Aprovada',        color:'#16A34A' },
+  em_planejamento: { label:'Em planejamento', color:'#0EA5E9' },
+  em_execucao:     { label:'Em execução',     color:'#8B5CF6' },
+  concluida:       { label:'Concluída',       color:'#16A34A' },
+  arquivada:       { label:'Arquivada',       color:'#9aa1ad' }
+};
+var ESTR_STATUS_ORDER = ['nova','em_analise','aprovada','em_planejamento','em_execucao','concluida','arquivada'];
+
+// categorias padrão (o usuário pode criar mais no futuro, na Fase 5)
+var ESTR_CATS = ['Marketing','Vendas','Financeiro','RH','Tecnologia','Operações','Produtos','Melhorias','Automação','IA','Clientes','Outra'];
+
+function estrPodeEditar(){ return can('estrategia') || permsHas('estrategia'); }
+function estrPodeAprovar(){ return can('gerir'); }  // aprovar é responsabilidade de Gestor+
+
+// aba atual (Ideias por padrão nesta fase)
+function estrTab(){ return ST.estrTab || 'ideias'; }
+function estrBusca(){ return ST.estrQ || ''; }
+function estrStatusFiltro(){ return ST.estrStatus || 'todos'; }
+function estrCatFiltro(){ return ST.estrCat || 'todas'; }
+
+/* ---------- Fetch da tabela (chamado no boot do setor) ---------- */
+function loadEstrategia(sector){
+  if(!sb){ ST.ideias=[]; return; }
+  try {
+    sb.from('malba_estrategia_ideias').select('*').eq('sector', sector).then(function(r){
+      if(r.error){ console.warn('Estratégia: tabela ainda não existe (rode o SQL). Detalhe:', r.error.message); ST.ideias=[]; return; }
+      ST.ideias = r.data || [];
+      if (ST.page==='estrategia') renderPage();
+    }, function(){ ST.ideias=[]; });
+  } catch(e){ ST.ideias=[]; }
+}
+
+/* ---------- Tela principal ---------- */
+function estrategiaHTML(){
+  if (!(can('estrategia') || permsHas('estrategia'))) {
+    return emptyState({ icon:'target', title:'Acesso restrito', text:'A Central de Estratégia é para Administradores, Gestores e Supervisores (ou Colaboradores autorizados).' });
+  }
+
+  var tab = estrTab();
+  var podeEd = estrPodeEditar();
+  var novaBtn = podeEd ? '<button class="btn-new" id="btnNovaIdeia">'+icon('plus')+'Nova ideia</button>' : '';
+
+  // navegação lateral (as 4 áreas + Arquivadas)
+  var contIdeias = (ST.ideias||[]).filter(function(i){ return i.status!=='arquivada'; }).length;
+  var contArq    = (ST.ideias||[]).filter(function(i){ return i.status==='arquivada'; }).length;
+  var side = '<aside class="estr-side">'+
+    estrSideItem('ideias',     '💡 Ideias',       contIdeias, tab)+
+    estrSideItem('objetivos',  '🎯 Objetivos',    '—',        tab, true)+
+    estrSideItem('planejamento','📋 Planejamento', '—',        tab, true)+
+    estrSideItem('projetos',   '🚀 Projetos',     '—',        tab, true)+
+    estrSideItem('arquivadas', '📂 Arquivadas',   contArq,    tab)+
+  '</aside>';
+
+  var body;
+  if (tab==='ideias')      body = estrIdeiasHTML(false);
+  else if (tab==='arquivadas') body = estrIdeiasHTML(true);
+  else body = estrEmBreveHTML(tab);
+
+  var sub = 'Onde a ideia vira ação · '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:'');
+  var head = '<div class="tasks-head"><div><h2>Central de Estratégia</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+novaBtn+'</div></div>';
+  return head + '<div class="estr-wrap">'+side+'<div class="estr-main">'+body+'</div></div>';
+}
+
+function estrSideItem(id, label, count, atual, soon){
+  var on = id===atual ? ' on' : '';
+  var cs = soon ? '<span class="estr-soon">em breve</span>' : '<span class="estr-count">'+count+'</span>';
+  return '<button class="estr-side-item'+on+(soon?' soon':'')+'" data-estr-tab="'+id+'">'+
+    '<span>'+esc(label)+'</span>'+cs+
+  '</button>';
+}
+
+function estrEmBreveHTML(tab){
+  var titulos = { objetivos:'🎯 Objetivos', planejamento:'📋 Planejamento', projetos:'🚀 Projetos' };
+  var textos = {
+    objetivos:'Aqui vão morar os objetivos derivados das ideias aprovadas — com indicadores, prazo e resultado esperado.',
+    planejamento:'Aqui você vai estruturar como cada objetivo será executado — checklists, etapas, dependências, documentos.',
+    projetos:'Aqui aparecem os projetos originados na estratégia. Quando o planejamento estiver pronto, um botão "Transformar em Projeto" cria o projeto sem cadastrar tudo de novo.'
+  };
+  return emptyState({ icon:'target', title:titulos[tab]||'Em breve', text:(textos[tab]||'Esta área entra numa próxima fase.'), span:true });
+}
+
+function estrIdeiasHTML(arquivadas){
+  var lista = (ST.ideias||[]).filter(function(i){
+    if (arquivadas) return i.status==='arquivada';
+    return i.status!=='arquivada';
+  });
+
+  // filtros de busca, status e categoria
+  var q = estrBusca().toLowerCase();
+  if (q) lista = lista.filter(function(i){
+    return (i.title||'').toLowerCase().indexOf(q)!==-1 ||
+           (i.description||'').toLowerCase().indexOf(q)!==-1 ||
+           (i.category||'').toLowerCase().indexOf(q)!==-1 ||
+           ((i.tags||[]).join(' ').toLowerCase().indexOf(q)!==-1);
+  });
+  var st = estrStatusFiltro();
+  if (st!=='todos' && !arquivadas) lista = lista.filter(function(i){ return i.status===st; });
+  var ct = estrCatFiltro();
+  if (ct!=='todas') lista = lista.filter(function(i){ return i.category===ct; });
+
+  // ordena: mais nova primeiro
+  lista.sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); });
+
+  var statusOpts = arquivadas ? '' : ('<select class="task-filter" id="estrStatus"><option value="todos">Todos os status</option>'+
+    ESTR_STATUS_ORDER.filter(function(k){return k!=='arquivada';}).map(function(k){
+      return '<option value="'+k+'"'+(st===k?' selected':'')+'>'+ESTR_STATUS[k].label+'</option>';
+    }).join('')+'</select>');
+  var catOpts = '<select class="task-filter" id="estrCat"><option value="todas">Todas categorias</option>'+
+    ESTR_CATS.map(function(c){ return '<option value="'+esc(c)+'"'+(ct===c?' selected':'')+'>'+esc(c)+'</option>'; }).join('')+'</select>';
+  var busca = '<input type="search" class="task-filter estr-search" id="estrQ" placeholder="Buscar ideia..." value="'+esc(estrBusca())+'">';
+
+  var filtros = '<div class="estr-filters">'+busca+statusOpts+catOpts+'</div>';
+
+  var cards;
+  if (lista.length===0){
+    cards = emptyState({
+      icon:'target',
+      title: arquivadas ? 'Nada arquivado ainda' : (q||st!=='todos'||ct!=='todas' ? 'Nenhuma ideia com esse filtro' : 'Ainda sem ideias registradas'),
+      text: arquivadas ? 'Ideias que foram descartadas ou concluídas ficam aqui, sem serem apagadas.' : 'Toda vez que uma ideia surgir, cadastre aqui antes que ela se perca. Nem toda ideia precisa virar projeto — mas toda ideia merece ser registrada.',
+      cta: (!arquivadas && estrPodeEditar()) ? 'Nova ideia' : '',
+      span:true
+    });
+  } else {
+    cards = '<div class="estr-cards">'+lista.map(estrIdeiaCard).join('')+'</div>';
+  }
+  return filtros + cards;
+}
+
+function estrIdeiaCard(i){
+  var st = ESTR_STATUS[i.status] || ESTR_STATUS.nova;
+  var u = userById(i.owner_id);
+  var av = u ? ('<span class="crm-av" style="background:'+(u.color||'#3B6FF7')+'22;color:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>') : '';
+  var tagsHTML = (i.tags||[]).slice(0,4).map(function(t){ return '<span class="estr-tag">'+esc(t)+'</span>'; }).join('');
+  var desc = i.description ? '<p class="estr-desc">'+esc(String(i.description).slice(0,120))+(String(i.description).length>120?'…':'')+'</p>' : '';
+  var cat = i.category ? '<span class="estr-cat">'+esc(i.category)+'</span>' : '';
+  return '<div class="estr-card" data-estr-id="'+esc(i.id)+'">'+
+    '<div class="estr-card-top">'+
+      '<span class="estr-status" style="color:'+st.color+';background:'+st.color+'18">'+esc(st.label)+'</span>'+
+      cat+
+    '</div>'+
+    '<h4 class="estr-title">'+esc(i.title||'—')+'</h4>'+
+    desc+
+    '<div class="estr-card-foot">'+
+      '<div class="estr-tags">'+tagsHTML+'</div>'+
+      av+
+    '</div>'+
+  '</div>';
+}
+
+/* ---------- Bind: cliques na navegação, filtros, card, novo ---------- */
+function bindEstrategia(){
+  var sides = document.querySelectorAll('[data-estr-tab]');
+  for (var i=0;i<sides.length;i++) sides[i].addEventListener('click', function(){
+    if (this.classList.contains('soon')) { toast('Esta área entra na próxima fase.','info'); return; }
+    ST.estrTab = this.getAttribute('data-estr-tab');
+    renderPage();
+  });
+
+  var q = document.getElementById('estrQ');
+  if (q) {
+    var timer = null;
+    q.addEventListener('input', function(){ var v=this.value; clearTimeout(timer); timer = setTimeout(function(){ ST.estrQ = v; renderPage(); }, 220); });
+  }
+  var sf = document.getElementById('estrStatus'); if (sf) sf.addEventListener('change', function(){ ST.estrStatus = this.value; renderPage(); });
+  var cf = document.getElementById('estrCat'); if (cf) cf.addEventListener('change', function(){ ST.estrCat = this.value; renderPage(); });
+
+  var novo = document.getElementById('btnNovaIdeia');
+  if (novo) novo.addEventListener('click', function(){ if(!estrPodeEditar()){ blockManage(); return; } openIdeiaModal(null); });
+
+  var cards = document.querySelectorAll('[data-estr-id]');
+  for (var c=0;c<cards.length;c++) cards[c].addEventListener('click', function(){
+    var id = this.getAttribute('data-estr-id');
+    var it = (ST.ideias||[]).find(function(x){ return String(x.id)===String(id); });
+    if (it) openIdeiaModal(it);
+  });
+}
+
+/* ---------- Modal de ideia (criar/editar) — usa makeModal ---------- */
+function openIdeiaModal(ideia){
+  if (!estrPodeEditar()){ blockManage(); return; }
+  var isNew = !ideia;
+  var i = ideia || { title:'', description:'', category:'', status:'nova', origem:'', tags:[], owner_id:(ST.session&&ST.session.user&&ST.session.user.id)||null };
+  var catOpts = '<option value="">— selecione —</option>'+ESTR_CATS.map(function(c){ return '<option value="'+esc(c)+'"'+(i.category===c?' selected':'')+'>'+esc(c)+'</option>'; }).join('');
+  var statusOpts = ESTR_STATUS_ORDER.map(function(k){ return '<option value="'+k+'"'+(i.status===k?' selected':'')+'>'+ESTR_STATUS[k].label+'</option>'; }).join('');
+  var respOpts = '<option value="">— sem responsável —</option>' + (ST.allUsers||ST.users||[]).filter(function(u){ return u.sector===ST.sector; }).map(function(u){
+    return '<option value="'+esc(u.id)+'"'+(String(i.owner_id)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>';
+  }).join('');
+  var tagsStr = (i.tags||[]).join(', ');
+
+  var body =
+    '<div class="modal-row"><label class="modal-label">Título</label><input type="text" id="idTitle" placeholder="Ex: Landing page nova para o feirão" value="'+esc(i.title||'')+'" autocomplete="off"></div>'+
+    '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="idDesc" rows="3" placeholder="O que é a ideia? Por que faz sentido agora?">'+esc(i.description||'')+'</textarea></div>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Categoria</label><select id="idCat">'+catOpts+'</select></div>'+
+      '<div class="modal-row"><label class="modal-label">Status</label><select id="idStatus">'+statusOpts+'</select></div>'+
+    '</div>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Responsável</label><select id="idOwner">'+respOpts+'</select></div>'+
+      '<div class="modal-row"><label class="modal-label">Origem da ideia</label><input type="text" id="idOrigem" placeholder="Ex: reunião com Thalia, cliente X" value="'+esc(i.origem||'')+'"></div>'+
+    '</div>'+
+    '<div class="modal-row"><label class="modal-label">Tags (separadas por vírgula)</label><input type="text" id="idTags" placeholder="ex: instagram, expedicao" value="'+esc(tagsStr)+'" autocomplete="off"></div>';
+
+  var m = makeModal({
+    title: isNew ? 'Nova ideia' : 'Editar ideia',
+    width: 560,
+    body: body,
+    saveLabel: isNew ? 'Registrar ideia' : 'Salvar',
+    onDelete: (!isNew && estrPodeEditar()) ? function(close){
+      confirmDelete('Excluir esta ideia? Se você quer só tirar do caminho, prefira "Arquivar" (aba Arquivadas).', function(){
+        sb.from('malba_estrategia_ideias').delete().eq('id', i.id).then(function(r){
+          if(r.error){ toast('Não consegui excluir: '+(r.error.message||''),'error'); return; }
+          ST.ideias = (ST.ideias||[]).filter(function(x){ return String(x.id)!==String(i.id); });
+          close(); toast('Ideia excluída','success'); renderPage();
+        });
+      });
+    } : null,
+    deleteLabel: 'Excluir',
+    onSave: function(close, root){
+      var titulo = (root.querySelector('#idTitle').value||'').trim();
+      if (!titulo){ toast('O título é obrigatório','error'); return; }
+      var payload = {
+        sector: ST.sector,
+        title: titulo,
+        description: (root.querySelector('#idDesc').value||'').trim() || null,
+        category: root.querySelector('#idCat').value || null,
+        status: root.querySelector('#idStatus').value || 'nova',
+        owner_id: root.querySelector('#idOwner').value || null,
+        origem: (root.querySelector('#idOrigem').value||'').trim() || null,
+        tags: (root.querySelector('#idTags').value||'').split(',').map(function(t){return t.trim();}).filter(Boolean)
+      };
+      if (isNew){
+        sb.from('malba_estrategia_ideias').insert(payload).select().single().then(function(r){
+          if(r.error){ toast('Não consegui registrar: '+(r.error.message||''),'error'); console.error(r.error); return; }
+          if (r.data){ if(!ST.ideias) ST.ideias=[]; ST.ideias.push(r.data); }
+          close(); toast('Ideia registrada','success'); renderPage();
+        });
+      } else {
+        sb.from('malba_estrategia_ideias').update(payload).eq('id', i.id).select().single().then(function(r){
+          if(r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+          var idx = (ST.ideias||[]).findIndex(function(x){ return String(x.id)===String(i.id); });
+          if (idx>=0 && r.data) ST.ideias[idx] = r.data;
+          close(); toast('Ideia salva','success'); renderPage();
+        });
+      }
+    }
+  });
+}
+
 function crmHTML() {
   var q = crmBusca.toLowerCase();
   var sid = boardStore();
@@ -6056,10 +6348,10 @@ var NIV_ORDER = ['viewer','colaborador','supervisor','gestor','admin'];
 var NIVEL_ALIAS = { user:'colaborador', store_manager:'supervisor', sector_admin:'gestor', admin_geral:'admin', super:'admin' };
 // O QUE CADA NÍVEL PODE — a fonte única de verdade
 var CAPS = {
-  admin:       { sistema:1, equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1 },
-  gestor:      {            equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1 },
-  supervisor:  {                                          redistribuir:1, indicadores:1, executar:1 },
-  colaborador: {                                                                         executar:1 },
+  admin:       { sistema:1, equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1, estrategia:1 },
+  gestor:      {            equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1, estrategia:1 },
+  supervisor:  {                                          redistribuir:1, indicadores:1, executar:1, estrategia:1 }, // v91: Supervisor acompanha
+  colaborador: {                                                                         executar:1 },              // via permissão explícita da página
   viewer:      {}
 };
 // lê o nível de um registro de usuário de forma resiliente
@@ -9079,6 +9371,8 @@ function renderPage() {
     renderShell(equipeHTML(), 'Equipe'); bindEquipe();
   } else if (pg.id==='metas') {
     renderShell(metasHTML(), 'Metas'); bindMetas();
+  } else if (pg.id==='estrategia') {
+    renderShell(estrategiaHTML(), 'Estratégia'); bindEstrategia();
   } else if (pg.id==='crm') {
     renderShell(crmHTML(), 'CRM'); bindCRM();
   } else if (pg.id==='projetos') {
