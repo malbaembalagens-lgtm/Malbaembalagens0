@@ -2067,6 +2067,101 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .estr-log-body { color: var(--u-text); line-height: 1.4; white-space: pre-wrap; }
 .estr-log-empty { text-align: center; color: var(--u-text2); font-size: 12.5px; padding: 12px; background: var(--u-bg2); border-radius: 8px; font-style: italic; }
 
+
+/* v96: Módulo Documentos */
+.docs-wrap { display: grid; grid-template-columns: 260px 1fr; gap: 18px; margin-top: 14px; }
+@media (max-width: 900px) { .docs-wrap { grid-template-columns: 1fr; } }
+
+/* Sidebar */
+.docs-side { background: var(--u-card); border-radius: var(--radius); padding: 10px; box-shadow: var(--u-shadow); max-height: 78vh; overflow-y: auto; }
+.docs-side-group { display: flex; flex-direction: column; gap: 2px; padding: 4px 0; }
+.docs-side-group + .docs-side-group { border-top: 1px solid var(--u-border); margin-top: 6px; padding-top: 10px; }
+.docs-side-group-h { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; font-size: 12px; color: var(--u-text2); font-weight: 700; letter-spacing: .3px; }
+.docs-side-add { background: var(--u-bg2); color: var(--u-accent); width: 22px; height: 22px; border-radius: 6px; font-size: 15px; font-weight: 800; padding: 0; }
+.docs-side-add:hover { background: var(--u-accent); color: #fff; }
+.docs-side-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 8px; font-size: 13px; color: var(--u-text); text-align: left; font-weight: 500; }
+.docs-side-item:hover { background: var(--u-bg2); }
+.docs-side-item.on { background: var(--u-accent-soft); color: var(--u-accent); font-weight: 700; }
+.docs-count { background: var(--u-bg2); color: var(--u-text2); font-size: 11px; padding: 1px 8px; border-radius: 999px; font-weight: 700; }
+.docs-side-item.on .docs-count { background: #fff; color: var(--u-accent); }
+
+.docs-folder-tree { display: flex; flex-direction: column; gap: 1px; }
+.docs-folder-row {}
+.docs-folder-item { display: flex; align-items: center; gap: 4px; padding: 6px 8px; border-radius: 7px; font-size: 13px; cursor: pointer; }
+.docs-folder-item:hover { background: var(--u-bg2); }
+.docs-folder-item.on { background: var(--u-accent-soft); color: var(--u-accent); font-weight: 700; }
+.docs-folder-toggle { width: 14px; text-align: center; font-size: 10px; color: var(--u-text2); cursor: pointer; }
+.docs-folder-toggle.empty { cursor: default; color: var(--u-text3, #94a3b8); }
+.docs-folder-lb { flex: 1; }
+.docs-folder-c { font-size: 11px; color: var(--u-text2); background: var(--u-bg2); padding: 1px 7px; border-radius: 999px; font-weight: 600; }
+.docs-folder-empty { padding: 8px 10px; font-size: 12px; color: var(--u-text3, #94a3b8); font-style: italic; }
+
+/* Main */
+.docs-main { min-height: 500px; }
+.doc-tpls { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 16px; }
+.doc-tpl { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 10px; background: var(--u-card); border-radius: var(--radius); box-shadow: var(--u-shadow); font-size: 12.5px; font-weight: 600; color: var(--u-text); cursor: pointer; transition: transform .12s, box-shadow .12s; border: 1px solid transparent; }
+.doc-tpl:hover { transform: translateY(-1px); border-color: var(--u-accent); }
+.doc-tpl-ic { font-size: 22px; }
+
+.doc-filtros { display: flex; gap: 8px; margin-bottom: 14px; align-items: center; }
+.doc-filtros input { flex: 1; }
+.doc-vtog { margin-left: auto; }
+
+/* Tabela */
+.doc-table-wrap { background: var(--u-card); border-radius: var(--radius); padding: 6px; box-shadow: var(--u-shadow); overflow-x: auto; }
+.doc-table { width: 100%; border-collapse: collapse; }
+.doc-table th { text-align: left; padding: 10px 12px; font-size: 11.5px; color: var(--u-text2); font-weight: 700; text-transform: uppercase; letter-spacing: .4px; border-bottom: 1px solid var(--u-border); }
+.doc-table td { padding: 12px; font-size: 13px; color: var(--u-text); border-bottom: 1px solid var(--u-border); }
+.doc-table tbody tr { cursor: pointer; }
+.doc-table tbody tr:hover { background: var(--u-bg2); }
+.doc-table tbody tr:last-child td { border-bottom: none; }
+.doc-td-star { width: 28px; padding-right: 0 !important; }
+.doc-td-title b { color: var(--u-text); }
+.doc-tipo-ic { display: inline-block; margin-right: 6px; }
+.doc-tags-inline { margin-left: 6px; }
+.doc-tag { font-size: 10.5px; color: var(--u-text2); background: var(--u-bg2); padding: 1px 6px; border-radius: 999px; margin-right: 3px; }
+.doc-fav { background: transparent; font-size: 16px; color: var(--u-text3, #94a3b8); padding: 2px 6px; line-height: 1; }
+.doc-fav.on { color: #F59E0B; }
+.doc-fav:hover { color: #F59E0B; }
+
+/* Grade */
+.doc-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.doc-card { background: var(--u-card); border-radius: var(--radius); padding: 12px; box-shadow: var(--u-shadow); cursor: pointer; transition: transform .12s, box-shadow .12s; border: 1px solid transparent; }
+.doc-card:hover { transform: translateY(-1px); border-color: var(--u-border); }
+.doc-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; font-size: 22px; }
+.doc-card-title { font-size: 14px; font-weight: 700; color: var(--u-text); margin: 0 0 8px; line-height: 1.3; min-height: 36px; }
+.doc-card-foot { display: flex; justify-content: space-between; font-size: 11px; color: var(--u-text2); }
+
+/* Editor */
+.doc-editor-wrap { max-width: 900px; margin: 0 auto; }
+.doc-editor-head { display: flex; align-items: center; gap: 10px; padding: 14px 0; margin-bottom: 8px; }
+.doc-editor-back { background: transparent; color: var(--u-text2); font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; }
+.doc-editor-back:hover { background: var(--u-bg2); color: var(--u-text); }
+.doc-editor-title { flex: 1; font-size: 28px; font-weight: 800; color: var(--u-text); background: transparent; border: none; padding: 4px 8px; font-family: 'Sora', sans-serif; }
+.doc-editor-title:focus { outline: none; background: var(--u-bg2); border-radius: 8px; }
+.doc-editor-menu { padding: 6px 14px; font-size: 20px; line-height: 1; }
+.doc-save { font-size: 11.5px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+.doc-save.saving { color: var(--u-text2); background: var(--u-bg2); }
+.doc-save.ok { color: #16A34A; background: #16A34A18; }
+.doc-save.err { color: #EF4444; background: #EF444418; }
+.doc-editor-body { background: var(--u-card); border-radius: var(--radius); padding: 20px 30px; box-shadow: var(--u-shadow); min-height: 500px; }
+
+/* EditorJS overrides — cores do MALBA */
+.doc-editor-body .codex-editor { color: var(--u-text); }
+.doc-editor-body .ce-block__content, .doc-editor-body .ce-toolbar__content { max-width: none; }
+.doc-editor-body .ce-block { padding: 2px 0; }
+.doc-editor-body .ce-paragraph { font-size: 15px; line-height: 1.55; }
+.doc-editor-body h1.ce-header { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800; }
+.doc-editor-body h2.ce-header { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700; margin-top: 12px; }
+.doc-editor-body h3.ce-header { font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 700; }
+.doc-editor-body .ce-delimiter:before { color: var(--u-text3, #94a3b8); }
+
+/* Ações rápidas modal */
+.doc-acoes-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; }
+.doc-acao { padding: 12px 8px; background: var(--u-bg2); border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--u-text); }
+.doc-acao:hover { background: var(--u-accent-soft); color: var(--u-accent); }
+.doc-acao.danger:hover { background: #EF444418; color: #EF4444; }
+
 </style>
 </head>
 <body>
@@ -2088,7 +2183,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v95 · 24/07 (Estrategia Fases 4+5: Dashboard, visoes Kanban/Calendario, comentarios e historico de alteracoes)';
+var APP_BUILD = 'v96 · 24/07 (Modulo Documentos Fase 1: pastas ilimitadas, 7 templates, favoritos/arquivados, editor EditorJS com autosave, uma central por setor)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2110,26 +2205,26 @@ var GESTAO_CHILDREN = ['metas','relatorio','ranking','orcamento'];
 var PAGES = {
   lojas: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
+    p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('ponto','Ponto','clock',true,'OPERAÇÃO',true), p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true)
   ],
   vendas: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
+    p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('ranking','Ranking','trend',true,'GESTÃO',true)
   ],
   financeiro: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
+    p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA')
   ],
   marketing: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'),
+    p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
     p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true), p('orcamento','Orçamento','dollar',true,'GESTÃO',true)
@@ -2260,7 +2355,8 @@ function pageAllowed(pgId, s){
   s = s || ST.session;
   if (pgId==='config') return isTopAdmin(s);
   if (pgId==='gestao')  return can('indicadores', s);   // v89: Supervisor acompanha indicadores
-  if (pgId==='estrategia') return can('estrategia', s) || permsHas(pgId, s); // v91: Admin/Gestor/Supervisor + Colaborador se autorizado
+  if (pgId==='estrategia') return can('estrategia', s) || permsHas(pgId, s); // v91
+  if (pgId==='docs')       return can('docs', s) || permsHas(pgId, s);       // v96: docs abre pra todos por default
   if (pgId==='ponto')   return (ST.sector==='lojas' && !isColaboradorPessoal(s)) || permsHas(pgId, s);
   if (isColaboradorPessoal(s)) {
     // base do colaborador + funções concedidas no cadastro
@@ -2383,7 +2479,7 @@ function loadData() {
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
     ST.requests = [];
     try { sb.from('malba_requests').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.requests=re.data; if(ST.page==='inicio'||ST.page==='gestao') renderPage(); } }, function(){}); } catch(e){}
-    try { loadEstrategia(sector); loadObjetivos(sector); loadEstrategiaAtividade(sector); } catch(e){} // v91-v95: Estratégia
+    try { loadEstrategia(sector); loadObjetivos(sector); loadEstrategiaAtividade(sector); loadDocs(sector); } catch(e){}
     ST.checkins = [];
     try { sb.from('malba_checkins').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.checkins=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
     ST.notes1on1 = [];
@@ -2768,6 +2864,7 @@ function novoContextual() {
   if (pg==='conteudo') return openContentModal(null);
   if (pg==='biblioteca') return openCriativoModal(null);
   if (pg==='crm') return openClientModal(null);
+  if (pg==='docs') { if(!docPodeCriar()) return blockManage(); return docsCriar('branco', null); }
   if (pg==='estrategia') {
     if(!estrPodeEditar()) return blockManage();
     if (estrTab()==='objetivos') return openObjetivoModal(null);
@@ -6739,6 +6836,707 @@ function bindEstrAtividadeNoModal(tipo, id, rerender){
   });
 }
 
+/* ============================================================
+   v96: MÓDULO DOCUMENTOS — Fase 1
+   Central de documentos por setor. Pastas em profundidade
+   ilimitada (nested via parent_id), documentos com autor,
+   favoritos, arquivados, compartilhamento simples (equipe do setor).
+   Editor: EditorJS (carregado sob demanda no modal).
+   ============================================================ */
+
+/* ---------- Load: puxa pastas e documentos do setor ---------- */
+function loadDocs(sector){
+  if(!sb){ ST.docFolders=[]; ST.docs=[]; return; }
+  try {
+    sb.from('malba_doc_folders').select('*').eq('sector', sector).then(function(r){
+      if(r.error){ console.warn('Docs: rode o SQL Fase 1. Detalhe:', r.error.message); ST.docFolders=[]; return; }
+      ST.docFolders = r.data || [];
+      if (ST.page==='docs') renderPage();
+    }, function(){ ST.docFolders=[]; });
+    sb.from('malba_docs').select('id, sector, title, folder_id, author_id, is_archived, is_favorite_by, tags, updated_at, created_at').eq('sector', sector).then(function(r){
+      if(r.error){ ST.docs=[]; return; }
+      ST.docs = r.data || [];
+      if (ST.page==='docs') renderPage();
+    }, function(){ ST.docs=[]; });
+  } catch(e){ ST.docFolders=[]; ST.docs=[]; }
+}
+
+/* ---------- Estado local ---------- */
+function docView(){ return ST.docView || 'lista'; }        // lista | grade
+function docTab(){ return ST.docTab || 'todos'; }          // todos | meus | compartilhados | privados | atas | arquivados | favoritos | recentes | folder:<id>
+function docQ(){ return ST.docQ || ''; }
+function docPodeCriar(){ return can('docs') && !isViewer(); }
+function isViewer(){ var nv=nivelDe(ST.session&&ST.session.user); return nv==='viewer'; }
+
+/* ---------- Documento pertence a esta lista? ---------- */
+function docPertenceAba(d, tab){
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  var arqui = d.is_archived;
+  if (tab==='arquivados') return arqui;
+  if (arqui) return false;
+  if (tab==='meus')            return String(d.author_id||'')===eu;
+  if (tab==='compartilhados')  return String(d.author_id||'')!==eu && (d.visibility||'setor')!=='privado';
+  if (tab==='privados')        return (d.visibility||'setor')==='privado' && String(d.author_id||'')===eu;
+  if (tab==='atas')            return (d.doc_type||'')==='ata';
+  if (tab==='favoritos')       return Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
+  if (tab==='recentes'){
+    var seteDias = new Date(Date.now()-7*24*3600*1000).toISOString();
+    return (d.updated_at||'')>=seteDias;
+  }
+  if (tab.indexOf('folder:')===0) return String(d.folder_id||'')===tab.slice(7);
+  return true; // 'todos'
+}
+
+/* ---------- Tela principal ---------- */
+function docsHTML(){
+  if (!(can('docs') || permsHas('docs'))){
+    return emptyState({ icon:'folder', title:'Acesso restrito', text:'Módulo Documentos exige permissão.' });
+  }
+  var novaBtn = docPodeCriar() ? '<button class="btn-new" id="btnNovoDoc">'+icon('plus')+'Novo documento</button>' : '';
+  var sub = 'Central de documentos · '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:'');
+  var head = '<div class="tasks-head"><div><h2>Documentos</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+novaBtn+'</div></div>';
+
+  return head + '<div class="docs-wrap">'+docsSideHTML()+'<div class="docs-main">'+docsListHTML()+'</div></div>';
+}
+
+/* ---------- Sidebar: abas fixas + pastas em árvore ---------- */
+function docsSideHTML(){
+  var tab = docTab();
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  var docs = (ST.docs||[]);
+  function cont(fn){ return docs.filter(function(d){ return !d.is_archived && fn(d); }).length; }
+  var contTotal = docs.filter(function(d){ return !d.is_archived; }).length;
+  var contMeus = cont(function(d){ return String(d.author_id||'')===eu; });
+  var contComp = cont(function(d){ return String(d.author_id||'')!==eu && (d.visibility||'setor')!=='privado'; });
+  var contPriv = cont(function(d){ return (d.visibility||'setor')==='privado' && String(d.author_id||'')===eu; });
+  var contAtas = cont(function(d){ return (d.doc_type||'')==='ata'; });
+  var contArqu = docs.filter(function(d){ return d.is_archived; }).length;
+  var contFav = cont(function(d){ return Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1; });
+  var seteDias = new Date(Date.now()-7*24*3600*1000).toISOString();
+  var contRec = cont(function(d){ return (d.updated_at||'')>=seteDias; });
+
+  function item(id, label, count, icone){
+    var on = id===tab ? ' on' : '';
+    return '<button class="docs-side-item'+on+'" data-doc-tab="'+id+'"><span>'+esc(icone||'')+' '+esc(label)+'</span><span class="docs-count">'+count+'</span></button>';
+  }
+
+  var g1 = '<div class="docs-side-group">'+
+    item('todos','Todos os documentos', contTotal, '📁')+
+    item('meus','Meus documentos', contMeus, '👤')+
+    item('compartilhados','Compartilhados comigo', contComp, '👥')+
+    item('privados','Privados', contPriv, '🔒')+
+    item('atas','Atas de reunião', contAtas, '📝')+
+    item('arquivados','Arquivados', contArqu, '🗂')+
+  '</div>';
+  var g2 = '<div class="docs-side-group">'+
+    item('favoritos','Favoritos', contFav, '⭐')+
+    item('recentes','Recentes', contRec, '🕓')+
+  '</div>';
+
+  // pastas — nested; renderiza a raiz e chama recursivo
+  var g3Head = '<div class="docs-side-group-h">📂 Pastas'+(docPodeCriar()?' <button class="docs-side-add" id="btnNovaPasta" title="Nova pasta">+</button>':'')+'</div>';
+  var g3Body = docsFolderTreeHTML(null, 0);
+  var g3 = '<div class="docs-side-group folders">'+g3Head+g3Body+'</div>';
+
+  return '<aside class="docs-side">'+g1+g2+g3+'</aside>';
+}
+
+/* ---------- Árvore de pastas (recursiva, sem limite de profundidade) ---------- */
+function docsFolderTreeHTML(parentId, depth){
+  var folders = (ST.docFolders||[]).filter(function(f){ return String(f.parent_id||'')===String(parentId||''); });
+  folders.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  if (!folders.length && depth===0){
+    return '<div class="docs-folder-empty">Nenhuma pasta ainda</div>';
+  }
+  var tab = docTab();
+  return '<div class="docs-folder-tree" style="padding-left:'+(depth*10)+'px">'+folders.map(function(f){
+    var docCount = (ST.docs||[]).filter(function(d){ return !d.is_archived && String(d.folder_id||'')===String(f.id); }).length;
+    var childCount = (ST.docFolders||[]).filter(function(x){ return String(x.parent_id||'')===String(f.id); }).length;
+    var on = tab==='folder:'+f.id ? ' on' : '';
+    var expanded = ST.docFolderOpen && ST.docFolderOpen[f.id];
+    var expander = childCount>0 ? '<span class="docs-folder-toggle" data-folder-toggle="'+esc(f.id)+'">'+(expanded?'▾':'▸')+'</span>' : '<span class="docs-folder-toggle empty">·</span>';
+    return '<div class="docs-folder-row">'+
+      '<div class="docs-folder-item'+on+'" data-folder-id="'+esc(f.id)+'">'+
+        expander+
+        '<span class="docs-folder-lb">📁 '+esc(f.name)+'</span>'+
+        '<span class="docs-folder-c">'+docCount+'</span>'+
+      '</div>'+
+      (expanded && childCount>0 ? docsFolderTreeHTML(f.id, depth+1) : '')+
+    '</div>';
+  }).join('')+'</div>';
+}
+
+/* ---------- Templates (Parte C usa isso pra criar doc estruturado) ---------- */
+var DOC_TEMPLATES = [
+  { key:'branco', icon:'📌', label:'Em branco', doc_type:'geral', body: null },
+  { key:'ata', icon:'📋', label:'Ata de reunião', doc_type:'ata', body: docTplAta() },
+  { key:'pop', icon:'📑', label:'POP', doc_type:'pop', body: docTplPOP() },
+  { key:'manual', icon:'📘', label:'Manual', doc_type:'manual', body: docTplManual() },
+  { key:'wiki', icon:'📚', label:'Wiki', doc_type:'wiki', body: docTplWiki() },
+  { key:'planejamento', icon:'📊', label:'Planejamento', doc_type:'planejamento', body: docTplPlanejamento() },
+  { key:'estrategia', icon:'📈', label:'Estratégia', doc_type:'estrategia', body: docTplEstrategia() }
+];
+
+/* ---------- Lista principal ---------- */
+function docsListHTML(){
+  var tab = docTab();
+  var lista = (ST.docs||[]).filter(function(d){ return docPertenceAba(d, tab); });
+  var q = docQ().toLowerCase();
+  if (q) lista = lista.filter(function(d){
+    return (d.title||'').toLowerCase().indexOf(q)!==-1 ||
+           ((d.tags||[]).join(' ').toLowerCase().indexOf(q)!==-1);
+  });
+  // ordena por atualização recente
+  lista.sort(function(a,b){ return (b.updated_at||'').localeCompare(a.updated_at||''); });
+
+  // barra: templates + busca + toggle de visão
+  var templates = docPodeCriar() ? '<div class="doc-tpls">'+DOC_TEMPLATES.map(function(t){
+    return '<button class="doc-tpl" data-tpl="'+t.key+'"><span class="doc-tpl-ic">'+t.icon+'</span><span>'+esc(t.label)+'</span></button>';
+  }).join('')+'</div>' : '';
+  var busca = '<input type="search" class="task-filter" id="docQ" placeholder="Buscar por título ou tag..." value="'+esc(docQ())+'">';
+  var vt = docView();
+  var toggle = '<div class="view-toggle doc-vtog">'+
+    '<button class="vt-btn'+(vt==='lista'?' on':'')+'" data-doc-view="lista">'+icon('grid')+'Lista</button>'+
+    '<button class="vt-btn'+(vt==='grade'?' on':'')+'" data-doc-view="grade">'+icon('dashboard')+'Grade</button>'+
+  '</div>';
+  var filtros = '<div class="doc-filtros">'+busca+toggle+'</div>';
+
+  var body;
+  if (lista.length===0){
+    body = emptyState({
+      icon:'folder',
+      title: q ? 'Nenhum documento com esse filtro' : 'Nenhum documento por aqui ainda',
+      text: docPodeCriar() ? 'Use um dos modelos acima ou clique em "Novo documento" para criar em branco.' : 'Os documentos vão aparecer aqui quando forem criados.',
+      span:true
+    });
+  } else if (vt==='grade'){
+    body = '<div class="doc-grade">'+lista.map(docCardHTML).join('')+'</div>';
+  } else {
+    body = docsTableHTML(lista);
+  }
+  return templates + filtros + body;
+}
+
+function docsTableHTML(lista){
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  var rows = lista.map(function(d){
+    var au = userById(d.author_id);
+    var quem = au ? au.name : '—';
+    var fav = Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
+    var pasta = d.folder_id ? (ST.docFolders||[]).find(function(f){ return String(f.id)===String(d.folder_id); }) : null;
+    var pastaLb = pasta ? '📁 '+esc(pasta.name) : '—';
+    var vis = d.visibility==='privado' ? '🔒 Privado' : '👥 Setor';
+    var upd = d.updated_at ? esc(tempoRelativo(d.updated_at)) : '—';
+    var tipoIc = docTipoIcon(d.doc_type);
+    var tags = (d.tags||[]).slice(0,3).map(function(t){ return '<span class="doc-tag">'+esc(t)+'</span>'; }).join('');
+    return '<tr data-doc-id="'+esc(d.id)+'">'+
+      '<td class="doc-td-star"><button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+(fav?'★':'☆')+'</button></td>'+
+      '<td class="doc-td-title"><span class="doc-tipo-ic">'+tipoIc+'</span><b>'+esc(d.title||'(sem título)')+'</b> <span class="doc-tags-inline">'+tags+'</span></td>'+
+      '<td>'+pastaLb+'</td>'+
+      '<td>'+esc(quem)+'</td>'+
+      '<td>'+vis+'</td>'+
+      '<td>'+upd+'</td>'+
+    '</tr>';
+  }).join('');
+  return '<div class="doc-table-wrap"><table class="doc-table">'+
+    '<thead><tr><th></th><th>Nome</th><th>Pasta</th><th>Autor</th><th>Compartilhamento</th><th>Atualizado</th></tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+  '</table></div>';
+}
+
+function docCardHTML(d){
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  var au = userById(d.author_id);
+  var fav = Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
+  var tipoIc = docTipoIcon(d.doc_type);
+  var upd = d.updated_at ? tempoRelativo(d.updated_at) : '';
+  return '<div class="doc-card" data-doc-id="'+esc(d.id)+'">'+
+    '<div class="doc-card-top">'+
+      '<span class="doc-tipo-ic">'+tipoIc+'</span>'+
+      '<button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+(fav?'★':'☆')+'</button>'+
+    '</div>'+
+    '<h4 class="doc-card-title">'+esc(d.title||'(sem título)')+'</h4>'+
+    '<div class="doc-card-foot"><span>'+esc(au?au.name:'—')+'</span><span>'+esc(upd)+'</span></div>'+
+  '</div>';
+}
+
+function docTipoIcon(t){
+  return { ata:'📝', pop:'📑', manual:'📘', wiki:'📚', planejamento:'📊', estrategia:'📈' }[t] || '📄';
+}
+
+/* ---------- Templates: geram o JSON inicial do EditorJS ---------- */
+function tpl_para(text){ return { type:'paragraph', data:{ text: text||'' } }; }
+function tpl_header(text, level){ return { type:'header', data:{ text:text||'', level: level||2 } }; }
+function tpl_checklist(itens){ return { type:'checklist', data:{ items: (itens||[]).map(function(t){ return { text:t, checked:false }; }) } }; }
+function tpl_list(itens, style){ return { type:'list', data:{ style: style||'unordered', items: itens||[] } }; }
+function tpl_delim(){ return { type:'delimiter', data:{} }; }
+
+function docTplAta(){
+  return { blocks:[
+    tpl_header('Ata de reunião', 1),
+    tpl_para('<b>Data:</b> '+fmtDate(today())),
+    tpl_para('<b>Participantes:</b> '),
+    tpl_delim(),
+    tpl_header('Objetivos', 2),
+    tpl_list(['(o que a reunião precisa resolver)']),
+    tpl_header('Assuntos discutidos', 2),
+    tpl_list(['']),
+    tpl_header('Decisões', 2),
+    tpl_list(['']),
+    tpl_header('Pendências', 2),
+    tpl_checklist(['(cada item vira uma tarefa com o botão no topo)']),
+    tpl_header('Próximas ações', 2),
+    tpl_checklist([''])
+  ]};
+}
+function docTplPOP(){
+  return { blocks:[
+    tpl_header('POP — Procedimento Operacional Padrão', 1),
+    tpl_para('<b>Objetivo:</b> '),
+    tpl_para('<b>Área/Setor:</b> '),
+    tpl_para('<b>Responsável:</b> '),
+    tpl_delim(),
+    tpl_header('Passo a passo', 2),
+    tpl_list(['Passo 1', 'Passo 2', 'Passo 3'], 'ordered'),
+    tpl_header('Materiais necessários', 2),
+    tpl_list(['']),
+    tpl_header('Cuidados / atenções', 2),
+    tpl_list([''])
+  ]};
+}
+function docTplManual(){
+  return { blocks:[
+    tpl_header('Manual', 1),
+    tpl_para('<i>Escreva aqui a apresentação do manual.</i>'),
+    tpl_delim(),
+    tpl_header('Índice', 2),
+    tpl_list(['Introdução', 'Como usar', 'Perguntas frequentes']),
+    tpl_header('Introdução', 2),
+    tpl_para(''),
+    tpl_header('Como usar', 2),
+    tpl_para(''),
+    tpl_header('Perguntas frequentes', 2),
+    tpl_para('')
+  ]};
+}
+function docTplWiki(){
+  return { blocks:[
+    tpl_header('Wiki', 1),
+    tpl_para('Documentação viva. Vai crescendo. Pode ser editado por quem tiver acesso.'),
+    tpl_delim(),
+    tpl_header('Tópicos', 2),
+    tpl_list([''])
+  ]};
+}
+function docTplPlanejamento(){
+  return { blocks:[
+    tpl_header('Planejamento', 1),
+    tpl_header('Contexto', 2),  tpl_para(''),
+    tpl_header('Objetivo', 2),   tpl_para(''),
+    tpl_header('Escopo', 2),     tpl_list(['']),
+    tpl_header('Cronograma', 2), tpl_list(['']),
+    tpl_header('Responsáveis', 2), tpl_para(''),
+    tpl_header('Riscos', 2),     tpl_list([''])
+  ]};
+}
+function docTplEstrategia(){
+  return { blocks:[
+    tpl_header('Plano Estratégico', 1),
+    tpl_header('Diagnóstico', 2),        tpl_para(''),
+    tpl_header('Objetivos estratégicos', 2), tpl_list(['']),
+    tpl_header('Indicadores', 2),         tpl_para(''),
+    tpl_header('Iniciativas', 2),         tpl_list(['']),
+    tpl_header('Prazo', 2),               tpl_para('')
+  ]};
+}
+
+/* ============================================================
+   v96: MÓDULO DOCUMENTOS — Parte B (CRUD + Editor)
+   ============================================================ */
+
+/* ---------- Cria um novo documento a partir de um template ---------- */
+function docsCriar(tplKey, folderId){
+  if (!docPodeCriar()){ blockManage(); return; }
+  var tpl = DOC_TEMPLATES.find(function(t){ return t.key===tplKey; }) || DOC_TEMPLATES[0];
+  var eu = ST.session && ST.session.user ? ST.session.user : null;
+  var payload = {
+    sector: ST.sector,
+    title: tpl.key==='branco' ? 'Sem título' : tpl.label,
+    doc_type: tpl.doc_type,
+    folder_id: folderId || null,
+    author_id: eu ? eu.id : null,
+    visibility: 'setor',
+    body: tpl.body,
+    is_archived: false,
+    is_favorite_by: [],
+    tags: []
+  };
+  sb.from('malba_docs').insert(payload).select().single().then(function(r){
+    if (r.error || !r.data){ toast('Não consegui criar: '+(r.error && r.error.message || ''),'error'); return; }
+    if (!ST.docs) ST.docs=[];
+    ST.docs.unshift(r.data);
+    toast('Documento criado','success');
+    openDocEditor(r.data);
+  });
+}
+
+/* ---------- Ações rápidas (arquivar, favoritar, duplicar, mover, excluir) ---------- */
+function docsFavToggle(id){
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!d) return;
+  var fav = Array.isArray(d.is_favorite_by) ? d.is_favorite_by.slice() : [];
+  var idx = fav.indexOf(eu);
+  if (idx>=0) fav.splice(idx,1); else fav.push(eu);
+  d.is_favorite_by = fav; // otimista
+  renderPage();
+  sb.from('malba_docs').update({ is_favorite_by: fav }).eq('id', d.id).then(function(r){
+    if (r.error){ toast('Não consegui salvar favorito','error'); }
+  });
+}
+
+function docsArquivar(id, arquivar){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!d) return;
+  var novo = arquivar!==false;
+  d.is_archived = novo; renderPage();
+  sb.from('malba_docs').update({ is_archived: novo }).eq('id', id).then(function(r){
+    if (r.error){ toast('Não consegui arquivar','error'); d.is_archived = !novo; renderPage(); return; }
+    toast(novo?'Documento arquivado':'Documento restaurado','success');
+  });
+}
+
+function docsExcluir(id){
+  confirmDialog({
+    title:'Excluir este documento?', message:'A ação não pode ser desfeita. Prefira arquivar para manter no histórico.',
+    danger:true, confirmLabel:'Excluir',
+    onConfirm: function(){
+      sb.from('malba_docs').delete().eq('id', id).then(function(r){
+        if (r.error){ toast('Não consegui excluir','error'); return; }
+        ST.docs = (ST.docs||[]).filter(function(x){ return String(x.id)!==String(id); });
+        toast('Documento excluído','success'); renderPage();
+      });
+    }
+  });
+}
+
+function docsDuplicar(id){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!d) return;
+  var eu = ST.session && ST.session.user ? ST.session.user : null;
+  var copia = {
+    sector: d.sector, title: (d.title||'Sem título') + ' (cópia)',
+    doc_type: d.doc_type, folder_id: d.folder_id, author_id: eu?eu.id:null,
+    visibility: d.visibility||'setor', body: d.body, is_archived:false,
+    is_favorite_by: [], tags: d.tags||[]
+  };
+  sb.from('malba_docs').insert(copia).select().single().then(function(r){
+    if (r.error || !r.data){ toast('Não consegui duplicar','error'); return; }
+    ST.docs.unshift(r.data);
+    toast('Documento duplicado','success'); renderPage();
+  });
+}
+
+function docsMover(id, folderId){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!d) return;
+  var antes = d.folder_id;
+  d.folder_id = folderId || null; renderPage();
+  sb.from('malba_docs').update({ folder_id: folderId||null }).eq('id', id).then(function(r){
+    if (r.error){ d.folder_id = antes; renderPage(); toast('Não consegui mover','error'); return; }
+    toast('Documento movido','success');
+  });
+}
+
+/* ---------- Pastas: criar, renomear, excluir ---------- */
+function docsNovaPasta(parentId){
+  if (!docPodeCriar()){ blockManage(); return; }
+  makeModal({
+    title:'Nova pasta', width:400,
+    body:'<div class="modal-row"><label class="modal-label">Nome da pasta</label><input type="text" id="pfName" placeholder="Ex: Marketing" autocomplete="off"></div>'+
+         (parentId ? '<p class="modal-note">Vai virar subpasta de: '+esc((ST.docFolders||[]).find(function(f){return String(f.id)===String(parentId);}).name||'')+'</p>' : ''),
+    saveLabel:'Criar pasta',
+    onSave: function(close, root){
+      var nome = (root.querySelector('#pfName').value||'').trim();
+      if (!nome){ toast('Informe o nome','error'); return; }
+      var payload = { sector:ST.sector, name:nome, parent_id: parentId||null };
+      sb.from('malba_doc_folders').insert(payload).select().single().then(function(r){
+        if (r.error || !r.data){ toast('Não consegui criar pasta: '+(r.error&&r.error.message||''),'error'); return; }
+        if (!ST.docFolders) ST.docFolders=[];
+        ST.docFolders.push(r.data);
+        // já expande o pai se tiver
+        if (parentId){ ST.docFolderOpen = ST.docFolderOpen||{}; ST.docFolderOpen[parentId] = true; }
+        close(); toast('Pasta criada','success'); renderPage();
+      });
+    }
+  });
+}
+
+/* ---------- Editor: EditorJS via CDN ---------- */
+var _editorJsPromise = null;
+function carregarEditorJS(){
+  if (_editorJsPromise) return _editorJsPromise;
+  if (window.EditorJS) { _editorJsPromise = Promise.resolve(); return _editorJsPromise; }
+  _editorJsPromise = new Promise(function(resolve, reject){
+    // uma tag pra cada script — carrega em sequência
+    var libs = [
+      'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.6/dist/editorjs.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.7/dist/header.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/list@1.9.0/dist/list.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/checklist@1.6.0/dist/checklist.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/table@2.3.0/dist/table.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/code@2.9.0/dist/code.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/quote@2.6.0/dist/quote.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.4.0/dist/delimiter.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/warning@1.4.1/dist/warning.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/marker@1.4.0/dist/marker.umd.min.js',
+      'https://cdn.jsdelivr.net/npm/@editorjs/inline-code@1.5.1/dist/inline-code.umd.min.js'
+    ];
+    var i = 0;
+    function next(){
+      if (i>=libs.length){ resolve(); return; }
+      var s = document.createElement('script');
+      s.src = libs[i++]; s.onload = next;
+      s.onerror = function(){ reject(new Error('Falha ao carregar '+s.src)); };
+      document.head.appendChild(s);
+    }
+    next();
+  });
+  return _editorJsPromise;
+}
+
+/* ---------- Editor: tela inteira (renderiza fora do modal padrão) ---------- */
+var _docEditorAtual = null; // { holder, editor, id, saving, dirty }
+
+function openDocEditor(d){
+  _docEditorAtual = { id: d.id, editor:null, saving:false, dirty:false, doc:d };
+  ST.docOpen = d.id; // marca que estamos no editor
+  renderPage(); // desenha o wrapper do editor
+
+  carregarEditorJS().then(function(){
+    var holder = document.getElementById('editorjsHolder');
+    if (!holder) return; // usuário navegou
+    var body = null;
+    try { body = d.body ? (typeof d.body==='string' ? JSON.parse(d.body) : d.body) : null; } catch(e){ body = null; }
+    if (body && !body.blocks) body = { blocks: [] };
+    var ed = new window.EditorJS({
+      holder: holder,
+      autofocus: true,
+      placeholder: 'Comece a escrever aqui...',
+      data: body || { blocks: [{ type:'paragraph', data:{ text:'' } }] },
+      tools: docEditorTools(),
+      onChange: function(){ if (_docEditorAtual) { _docEditorAtual.dirty = true; docsAgendarAutosave(); } }
+    });
+    _docEditorAtual.editor = ed;
+  }, function(err){
+    var h = document.getElementById('editorjsHolder');
+    if (h) h.innerHTML = '<div class="empty-page"><p>Não consegui carregar o editor. Sua conexão consegue acessar cdn.jsdelivr.net?</p></div>';
+  });
+}
+
+function docEditorTools(){
+  return {
+    header:     { class: window.Header,     inlineToolbar: true, config:{ placeholder:'Cabeçalho', levels:[1,2,3,4], defaultLevel:2 } },
+    list:       { class: window.List,       inlineToolbar: true },
+    checklist:  { class: window.Checklist,  inlineToolbar: true },
+    table:      { class: window.Table,      inlineToolbar: true, config:{ rows:2, cols:2 } },
+    code:       { class: window.CodeTool },
+    quote:      { class: window.Quote,      inlineToolbar: true },
+    delimiter:  { class: window.Delimiter },
+    warning:    { class: window.Warning,    inlineToolbar: true },
+    marker:     { class: window.Marker,     shortcut:'CMD+SHIFT+M' },
+    inlineCode: { class: window.InlineCode, shortcut:'CMD+SHIFT+C' }
+  };
+}
+
+/* ---------- Autosave debounced (1.5s de silêncio) ---------- */
+var _autosaveTimer = null;
+function docsAgendarAutosave(){
+  if (_autosaveTimer) clearTimeout(_autosaveTimer);
+  _autosaveTimer = setTimeout(docsSalvarAgora, 1500);
+}
+function docsSalvarAgora(){
+  if (!_docEditorAtual || !_docEditorAtual.editor || _docEditorAtual.saving) return;
+  var ctx = _docEditorAtual;
+  ctx.saving = true; docsMostrarStatus('salvando');
+  ctx.editor.save().then(function(data){
+    return sb.from('malba_docs').update({ body: data, updated_at: new Date().toISOString() }).eq('id', ctx.id).select().single().then(function(r){
+      ctx.saving = false;
+      if (r.error){ docsMostrarStatus('erro'); return; }
+      ctx.dirty = false;
+      // atualiza cache local
+      var idx = (ST.docs||[]).findIndex(function(x){ return String(x.id)===String(ctx.id); });
+      if (idx>=0 && r.data){ ST.docs[idx] = Object.assign(ST.docs[idx], { updated_at: r.data.updated_at }); }
+      docsMostrarStatus('salvo');
+    });
+  }).catch(function(){ ctx.saving=false; docsMostrarStatus('erro'); });
+}
+
+function docsMostrarStatus(kind){
+  var el = document.getElementById('docSaveStatus');
+  if (!el) return;
+  if (kind==='salvando') el.innerHTML = '<span class="doc-save saving">salvando…</span>';
+  else if (kind==='salvo') el.innerHTML = '<span class="doc-save ok">✓ salvo</span>';
+  else if (kind==='erro') el.innerHTML = '<span class="doc-save err">erro ao salvar</span>';
+}
+
+/* ---------- Editor: fechar (salva pendente e volta pra lista) ---------- */
+function docsFecharEditor(){
+  if (!_docEditorAtual){ ST.docOpen = null; renderPage(); return; }
+  var ctx = _docEditorAtual;
+  function limpar(){ _docEditorAtual = null; ST.docOpen = null; renderPage(); }
+  if (ctx.dirty && ctx.editor){
+    ctx.editor.save().then(function(data){
+      sb.from('malba_docs').update({ body: data }).eq('id', ctx.id).then(function(){ limpar(); });
+    }).catch(limpar);
+  } else {
+    limpar();
+  }
+}
+
+/* ---------- Editor: renderiza o wrapper ---------- */
+function docsEditorHTML(){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(ST.docOpen); });
+  if (!d) return docsHTML(); // caiu do estado — volta pra lista
+  var titulo = d.title || 'Sem título';
+  return '<div class="doc-editor-wrap">'+
+    '<div class="doc-editor-head">'+
+      '<button class="doc-editor-back" id="docBack">← Voltar</button>'+
+      '<input type="text" class="doc-editor-title" id="docTitle" value="'+esc(titulo)+'" placeholder="Título do documento">'+
+      '<span id="docSaveStatus"></span>'+
+      '<button class="btn-new doc-editor-menu" id="docMenu" title="Ações">⋯</button>'+
+    '</div>'+
+    '<div class="doc-editor-body">'+
+      '<div id="editorjsHolder"></div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ---------- Bind: cliques na tela de documentos ---------- */
+function bindDocs(){
+  // se está no editor, bind diferente
+  if (ST.docOpen){
+    var back = document.getElementById('docBack');
+    if (back) back.addEventListener('click', docsFecharEditor);
+    var titulo = document.getElementById('docTitle');
+    if (titulo){
+      titulo.addEventListener('input', function(){
+        if (_docEditorAtual) _docEditorAtual.dirty = true;
+        // debounce próprio para o título
+        clearTimeout(_tituloTimer);
+        _tituloTimer = setTimeout(function(){
+          var novo = (titulo.value||'').trim() || 'Sem título';
+          sb.from('malba_docs').update({ title: novo }).eq('id', ST.docOpen).then(function(){
+            var idx = (ST.docs||[]).findIndex(function(x){ return String(x.id)===String(ST.docOpen); });
+            if (idx>=0) ST.docs[idx].title = novo;
+          });
+        }, 800);
+      });
+    }
+    var menu = document.getElementById('docMenu');
+    if (menu) menu.addEventListener('click', function(e){ docsAbrirMenuAcoes(e.target, ST.docOpen); });
+    return;
+  }
+
+  // lista principal
+  var novo = document.getElementById('btnNovoDoc');
+  if (novo) novo.addEventListener('click', function(){ docsCriar('branco', docTab().indexOf('folder:')===0 ? docTab().slice(7) : null); });
+
+  var pasta = document.getElementById('btnNovaPasta');
+  if (pasta) pasta.addEventListener('click', function(e){ e.stopPropagation(); docsNovaPasta(null); });
+
+  // abas fixas
+  document.querySelectorAll('[data-doc-tab]').forEach(function(b){
+    b.addEventListener('click', function(){ ST.docTab = this.getAttribute('data-doc-tab'); renderPage(); });
+  });
+  // pastas
+  document.querySelectorAll('[data-folder-id]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      if (e.target.closest('[data-folder-toggle]')) return;
+      ST.docTab = 'folder:'+this.getAttribute('data-folder-id'); renderPage();
+    });
+  });
+  document.querySelectorAll('[data-folder-toggle]').forEach(function(t){
+    t.addEventListener('click', function(e){
+      e.stopPropagation();
+      var id = this.getAttribute('data-folder-toggle');
+      ST.docFolderOpen = ST.docFolderOpen || {};
+      ST.docFolderOpen[id] = !ST.docFolderOpen[id];
+      renderPage();
+    });
+  });
+
+  // templates
+  document.querySelectorAll('[data-tpl]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var folder = docTab().indexOf('folder:')===0 ? docTab().slice(7) : null;
+      docsCriar(this.getAttribute('data-tpl'), folder);
+    });
+  });
+
+  // busca
+  var q = document.getElementById('docQ');
+  if (q){ var t=null; q.addEventListener('input', function(){ var v=this.value; clearTimeout(t); t=setTimeout(function(){ ST.docQ=v; renderPage(); }, 220); }); }
+
+  // toggle de visão
+  document.querySelectorAll('[data-doc-view]').forEach(function(b){
+    b.addEventListener('click', function(){ ST.docView = this.getAttribute('data-doc-view'); renderPage(); });
+  });
+
+  // favoritar (na linha)
+  document.querySelectorAll('[data-doc-fav]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.stopPropagation(); docsFavToggle(this.getAttribute('data-doc-fav')); });
+  });
+
+  // clique numa linha/card → abre editor
+  document.querySelectorAll('[data-doc-id]').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if (e.target.closest('[data-doc-fav]')) return;
+      var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(el.getAttribute('data-doc-id')); });
+      if (d) openDocEditor(d);
+    });
+  });
+}
+
+var _tituloTimer = null;
+
+/* ---------- Menu de ações rápidas ---------- */
+function docsAbrirMenuAcoes(anchor, id){
+  var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!d) return;
+  var pastas = '<option value="">— sem pasta —</option>' + (ST.docFolders||[]).map(function(f){
+    return '<option value="'+esc(f.id)+'"'+(String(d.folder_id||'')===String(f.id)?' selected':'')+'>'+esc(f.name)+'</option>';
+  }).join('');
+  makeModal({
+    title:'Ações do documento', width:400,
+    body:
+      '<div class="modal-row"><label class="modal-label">Mover para pasta</label><select id="acMover">'+pastas+'</select></div>'+
+      '<div class="doc-acoes-grid">'+
+        '<button class="doc-acao" data-acao="duplicar">📄 Duplicar</button>'+
+        '<button class="doc-acao" data-acao="arquivar">'+(d.is_archived?'♻️ Restaurar':'🗂 Arquivar')+'</button>'+
+        '<button class="doc-acao danger" data-acao="excluir">🗑 Excluir</button>'+
+      '</div>',
+    saveLabel:'Aplicar mudanças',
+    onSave: function(close, root){
+      var nova = root.querySelector('#acMover').value || null;
+      if (String(nova||'') !== String(d.folder_id||'')) docsMover(id, nova);
+      close();
+    }
+  });
+  // liga os botões — precisa esperar o modal existir
+  setTimeout(function(){
+    document.querySelectorAll('[data-acao]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var acao = this.getAttribute('data-acao');
+        document.querySelectorAll('.modal-bg').forEach(function(m){ m.remove(); });
+        if (acao==='duplicar') docsDuplicar(id);
+        else if (acao==='arquivar') docsArquivar(id, !d.is_archived);
+        else if (acao==='excluir'){ docsExcluir(id); if (ST.docOpen===id) docsFecharEditor(); }
+      });
+    });
+  }, 50);
+}
+
 function crmHTML() {
   var q = crmBusca.toLowerCase();
   var sid = boardStore();
@@ -7356,11 +8154,11 @@ var NIV_ORDER = ['viewer','colaborador','supervisor','gestor','admin'];
 var NIVEL_ALIAS = { user:'colaborador', store_manager:'supervisor', sector_admin:'gestor', admin_geral:'admin', super:'admin' };
 // O QUE CADA NÍVEL PODE — a fonte única de verdade
 var CAPS = {
-  admin:       { sistema:1, equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1, estrategia:1 },
-  gestor:      {            equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1, estrategia:1 },
-  supervisor:  {                                          redistribuir:1, indicadores:1, executar:1, estrategia:1 }, // v91: Supervisor acompanha
-  colaborador: {                                                                         executar:1 },              // via permissão explícita da página
-  viewer:      {}
+  admin:       { sistema:1, equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1, estrategia:1, docs:1 },
+  gestor:      {            equipe:1, gerir:1, rotinas:1, redistribuir:1, indicadores:1, executar:1, estrategia:1, docs:1 },
+  supervisor:  {                                          redistribuir:1, indicadores:1, executar:1, estrategia:1, docs:1 },
+  colaborador: {                                                                         executar:1,               docs:1 }, // v96: colaborador CRIA docs por padrão
+  viewer:      {                                                                                                    docs:1 } // v96: viewer só LÊ (não cria/edita — controle no canEdit)
 };
 // lê o nível de um registro de usuário de forma resiliente
 function nivelDe(u) {
@@ -10381,6 +11179,8 @@ function renderPage() {
     renderShell(metasHTML(), 'Metas'); bindMetas();
   } else if (pg.id==='estrategia') {
     renderShell(estrategiaHTML(), 'Estratégia'); bindEstrategia();
+  } else if (pg.id==='docs') {
+    renderShell(ST.docOpen ? docsEditorHTML() : docsHTML(), 'Documentos'); bindDocs();
   } else if (pg.id==='crm') {
     renderShell(crmHTML(), 'CRM'); bindCRM();
   } else if (pg.id==='projetos') {
