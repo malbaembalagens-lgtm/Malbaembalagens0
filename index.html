@@ -2428,6 +2428,25 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .cad-linha-btn:hover { background:var(--u-accent-soft); color:var(--u-accent); }
 .cad-linha-btn.danger:hover { background:#EF444418; color:#EF4444; }
 
+
+/* v108: Modal e lista de Departamentos */
+.dp-2col { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px; }
+@media (max-width:520px){ .dp-2col { grid-template-columns:minmax(0,1fr); } }
+.dp-ico-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(48px,1fr)); gap:6px; padding:8px; background:var(--u-bg2); border-radius:9px; }
+.dp-ico-opt { --c:#3B6FF7; background:var(--u-card); border:1px solid var(--u-border); border-radius:8px; width:100%; aspect-ratio:1; display:flex; align-items:center; justify-content:center; color:var(--u-text2); cursor:pointer; }
+.dp-ico-opt:hover { border-color:var(--c); color:var(--c); }
+.dp-ico-opt.on { border-color:var(--c); background:color-mix(in srgb, var(--c) 15%, transparent); color:var(--c); }
+.dp-ico-opt svg { width:20px; height:20px; }
+.dp-cor-grid { display:flex; gap:6px; flex-wrap:wrap; padding:8px 0; }
+.dp-cor-opt { width:32px; height:32px; border-radius:8px; border:2px solid transparent; cursor:pointer; padding:0; }
+.dp-cor-opt.on { border-color:var(--u-text); box-shadow:0 0 0 2px var(--u-bg); }
+.dp-cap { display:flex; flex-direction:column; gap:6px; }
+.dp-cap-item { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:var(--u-bg2); border-radius:9px; cursor:pointer; min-width:0; }
+.dp-cap-item input { margin-top:2px; accent-color:var(--u-accent); flex-shrink:0; }
+.dp-cap-item b { font-size:13px; color:var(--u-text); display:block; }
+.dp-cap-item span { font-size:11.5px; color:var(--u-text2); display:block; }
+.cad-linha-btn.placeholder { visibility:hidden; }
+
 </style>
 </head>
 <body>
@@ -2449,7 +2468,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v107 · 25/07 (Tela Quem esta acessando: grid adaptativo — 5 deptos viram 3+2 centralizado, 6 vira 3+3, 7 vira 4+3 (nao mais orfaos numa segunda linha))';
+var APP_BUILD = 'v108 · 25/07 (Cadastros F3c: aba Departamentos na Central — criar, editar, reordenar, desativar deptos sem tocar em SQL; menu clonado do modelo escolhido, capacidades por checkbox; protegidos podem editar mas nao remover)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -9180,6 +9199,7 @@ function centralArvoreHTML(){
     colabsFilhos+
     item('acessos', '🔑', 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
     item('cargos',  '💼', 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
+    (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '')+
   '</aside>';
 }
 
@@ -9194,6 +9214,7 @@ function centralConteudoHTML(){
   if (c.nav==='lojas')   return centralListaLojasHTML();
   if (c.nav==='acessos') return centralAcessosHTML();
   if (c.nav==='cargos')  return centralCargosHTML();
+  if (c.nav==='departamentos' && isSuper(ST.session)) return centralDepartamentosHTML();
   return centralVisaoEmpresaHTML();
 }
 
@@ -9461,6 +9482,7 @@ function centralPesquisaHTML(termo){
 function bindCentral(){
   if (!centralPodeAcessar()) return;
   if (ST.central && ST.central.nav==='cargos') bindCentralCargos();
+  if (ST.central && ST.central.nav==='departamentos') bindCentralDepartamentos();
   var q = document.getElementById('cadQ');
   if (q){
     var t=null;
@@ -9861,6 +9883,304 @@ function departamentosParaLogin(){
   var deps = (ST.departamentos || DEPS_PADRAO).slice();
   return deps.filter(function(d){ return d.is_active!==false; })
              .sort(function(a,b){ return (a.ordem||0)-(b.ordem||0); });
+}
+
+/* ============================================================
+   v108: CADASTROS — Fase 3c (Gerenciar Departamentos)
+
+   Interface para criar, editar, reordenar e desativar
+   departamentos sem tocar em SQL.
+   ============================================================ */
+
+/* ---------- Ícones e cores oferecidas no modal ---------- */
+var DEPTO_ICONES = ['megaphone','trend','store','dollar','grid','users','target','folder','tasks','dashboard','cal','image','archive','gear','chat','bell','check','clock','edit','copy'];
+var DEPTO_CORES  = ['#3B6FF7','#8B5CF6','#16A34A','#F59E0B','#EF4444','#0EA5E9','#EC4899','#14B8A6','#F97316','#64748B'];
+
+/* ---------- Aba "Departamentos" na Central ---------- */
+function centralDepartamentosHTML(){
+  var deps = (ST.departamentos || []).slice().sort(function(a,b){ return (a.ordem||0)-(b.ordem||0); });
+  var podeMexer = isSuper(ST.session); // só Admin
+  var btn = podeMexer ? '<button class="btn-new" id="cadNovoDepto">'+icon('plus')+'Novo departamento</button>' : '';
+
+  var linhas = deps.length ? deps.map(function(d, idx){
+    var cor = d.color || '#64748B';
+    var status = d.is_active===false ? '<span class="cad-eq-chip cinza">desativado</span>' : '';
+    var prot = d.is_protegido ? '<span class="cad-eq-chip" title="Departamento protegido — não pode ser apagado">🛡 padrão</span>' : '';
+    var caps = [];
+    if (d.tem_crm)     caps.push('CRM');
+    if (d.tem_rotinas) caps.push('Rotinas');
+    if (d.tem_equipe)  caps.push('Equipe');
+    var capsTxt = caps.length ? caps.join(' · ') : 'menu básico';
+    var acoes = podeMexer ? '<span class="cad-linha-acoes">'+
+      (idx>0 ? '<button class="cad-linha-btn" data-depto-cima="'+esc(d.id||d.key)+'" title="Subir">↑</button>' : '<span class="cad-linha-btn placeholder"></span>')+
+      (idx<deps.length-1 ? '<button class="cad-linha-btn" data-depto-baixo="'+esc(d.id||d.key)+'" title="Descer">↓</button>' : '<span class="cad-linha-btn placeholder"></span>')+
+      '<button class="cad-linha-btn" data-depto-edit="'+esc(d.id||d.key)+'" title="Editar">✎</button>'+
+      (d.is_protegido
+        ? '<button class="cad-linha-btn" data-depto-toggle="'+esc(d.id||d.key)+'" title="'+(d.is_active===false?'Ativar':'Desativar')+'">'+(d.is_active===false?'✓':'⏸')+'</button>'
+        : '<button class="cad-linha-btn danger" data-depto-del="'+esc(d.id||d.key)+'" title="Remover">×</button>')+
+    '</span>' : '';
+    return '<div class="cad-linha'+(d.is_active===false?' inativo':'')+'">'+
+      '<span class="cad-linha-ic" style="background:'+cor+'18;color:'+cor+'">'+icon(d.icon||'grid')+'</span>'+
+      '<span class="cad-linha-main">'+
+        '<b>'+esc(d.label||d.key)+'</b> '+prot+' '+status+
+        '<span class="cad-linha-sub">'+esc(d.sub||'sem descrição')+' · '+esc(capsTxt)+'</span>'+
+      '</span>'+
+      acoes+
+    '</div>';
+  }).join('') : '<div class="cad-vazio">Nenhum departamento cadastrado.</div>';
+
+  return '<div class="cad-titulo"><h3>🏢 Departamentos</h3><span class="cad-sub">'+deps.length+' no total</span>'+btn+'</div>'+
+    '<p class="cad-explica">Cada departamento é um portal com seu próprio menu. Novos departamentos aparecem na tela "Quem está acessando?" e podem clonar o menu de qualquer um existente.</p>'+
+    '<div class="cad-lista">'+linhas+'</div>';
+}
+
+function bindCentralDepartamentos(){
+  var novo = document.getElementById('cadNovoDepto');
+  if (novo) novo.addEventListener('click', function(){ openDepartamentoModal({}); });
+  document.querySelectorAll('[data-depto-edit]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var chave = this.getAttribute('data-depto-edit');
+      var d = (ST.departamentos||[]).find(function(x){ return String(x.id||x.key)===String(chave); });
+      if (d) openDepartamentoModal(d);
+    });
+  });
+  document.querySelectorAll('[data-depto-del]').forEach(function(b){
+    b.addEventListener('click', function(){ departamentoRemover(this.getAttribute('data-depto-del')); });
+  });
+  document.querySelectorAll('[data-depto-toggle]').forEach(function(b){
+    b.addEventListener('click', function(){ departamentoToggleAtivo(this.getAttribute('data-depto-toggle')); });
+  });
+  document.querySelectorAll('[data-depto-cima]').forEach(function(b){
+    b.addEventListener('click', function(){ departamentoMover(this.getAttribute('data-depto-cima'), -1); });
+  });
+  document.querySelectorAll('[data-depto-baixo]').forEach(function(b){
+    b.addEventListener('click', function(){ departamentoMover(this.getAttribute('data-depto-baixo'), +1); });
+  });
+}
+
+/* ---------- Modal ---------- */
+function openDepartamentoModal(d){
+  var isNew = !d || !d.id;
+  var ed = Object.assign({
+    key:'', label:'', sub:'', icon:'grid', color:'#3B6FF7',
+    tem_crm:false, tem_rotinas:false, tem_equipe:false,
+    menu_modelo:'marketing', ordem: 100, is_active: true
+  }, d || {});
+
+  // slug gerado do label — só editável em novos, os antigos travam a key
+  function slugify(t){
+    return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'').slice(0,32);
+  }
+
+  var iconesHTML = DEPTO_ICONES.map(function(k){
+    return '<button type="button" class="dp-ico-opt'+(ed.icon===k?' on':'')+'" data-dp-ico="'+k+'" style="--c:'+ed.color+'">'+icon(k)+'</button>';
+  }).join('');
+  var coresHTML = DEPTO_CORES.map(function(c){
+    return '<button type="button" class="dp-cor-opt'+(ed.color===c?' on':'')+'" data-dp-cor="'+c+'" style="background:'+c+'"></button>';
+  }).join('');
+
+  // opções de "menu clonado de"
+  var modelosHTML = (ST.departamentos||[])
+    .filter(function(x){ return !ed.id || String(x.id||x.key)!==String(ed.id); })
+    .map(function(x){ return '<option value="'+esc(x.key)+'"'+(ed.menu_modelo===x.key?' selected':'')+'>'+esc(x.label)+'</option>'; })
+    .join('');
+
+  var travadoKey = !isNew || ed.is_protegido;
+  var travadoProt = ed.is_protegido;
+
+  var protInfo = travadoProt
+    ? '<p class="cad-explica" style="color:#F59E0B">🛡 Este é um departamento padrão. Você pode editar aparência e capacidades, mas não pode remover nem trocar o identificador — o sistema depende dele para os dados existentes.</p>'
+    : '';
+
+  var m = makeModal({
+    title: isNew ? 'Novo departamento' : 'Editar '+ed.label,
+    width: 640,
+    body:
+      protInfo +
+      '<div class="dp-2col">'+
+        '<div class="modal-row"><label class="modal-label">Nome</label>'+
+          '<input type="text" id="dpNome" value="'+esc(ed.label)+'" placeholder="Ex: Tecnologia" autofocus></div>'+
+        '<div class="modal-row"><label class="modal-label">Subtítulo <span class="cad-sub">(opcional)</span></label>'+
+          '<input type="text" id="dpSub" value="'+esc(ed.sub||'')+'" placeholder="Ex: Sistemas & Infra"></div>'+
+      '</div>'+
+      '<div class="modal-row"><label class="modal-label">Identificador interno</label>'+
+        '<input type="text" id="dpKey" value="'+esc(ed.key)+'" placeholder="gerado do nome"'+(travadoKey?' readonly':'')+'>'+
+        '<div class="cad-explica">'+(travadoKey?'Não pode ser alterado depois de criado — dados já usam este identificador.':'Gerado do nome. Só letras, números e underscore.')+'</div>'+
+      '</div>'+
+      '<div class="modal-row"><label class="modal-label">Ícone</label>'+
+        '<div class="dp-ico-grid" id="dpIcoGrid">'+iconesHTML+'</div></div>'+
+      '<div class="modal-row"><label class="modal-label">Cor</label>'+
+        '<div class="dp-cor-grid" id="dpCorGrid">'+coresHTML+'</div></div>'+
+      '<div class="modal-row"><label class="modal-label">Menu — clonar de qual departamento?</label>'+
+        '<select id="dpModelo"'+(travadoProt?' disabled':'')+'>'+modelosHTML+'</select>'+
+        '<div class="cad-explica">'+(travadoProt?'Departamentos padrão têm seu próprio menu.':'O novo departamento começa com o mesmo menu deste, e você ajusta as capacidades abaixo.')+'</div>'+
+      '</div>'+
+      '<div class="modal-row"><label class="modal-label">Capacidades do portal</label>'+
+        '<div class="dp-cap">'+
+          '<label class="dp-cap-item"><input type="checkbox" id="dpCrm"'+(ed.tem_crm?' checked':'')+'><b>CRM</b><span>Gestão de clientes e funil</span></label>'+
+          '<label class="dp-cap-item"><input type="checkbox" id="dpRot"'+(ed.tem_rotinas?' checked':'')+'><b>Rotinas do Dia</b><span>POPs que viram checklist diário</span></label>'+
+          '<label class="dp-cap-item"><input type="checkbox" id="dpEqp"'+(ed.tem_equipe?' checked':'')+'><b>Equipe e Ponto</b><span>Gestão de funcionários e batida de ponto</span></label>'+
+        '</div>'+
+      '</div>',
+    saveLabel: isNew ? 'Criar departamento' : 'Salvar',
+    onSave: function(close, root){
+      var payload = {
+        label: (root.querySelector('#dpNome').value||'').trim(),
+        sub:   (root.querySelector('#dpSub').value||'').trim(),
+        icon:  ed.icon,
+        color: ed.color,
+        tem_crm:     !!root.querySelector('#dpCrm').checked,
+        tem_rotinas: !!root.querySelector('#dpRot').checked,
+        tem_equipe:  !!root.querySelector('#dpEqp').checked
+      };
+      if (!payload.label){ toast('Digite o nome','error'); return; }
+      // key: só define em criação
+      if (isNew){
+        var keyInput = (root.querySelector('#dpKey').value||'').trim();
+        payload.key = keyInput || slugify(payload.label);
+        if (!/^[a-z0-9_]+$/.test(payload.key)){ toast('Identificador só aceita letras, números e underscore','error'); return; }
+        if ((ST.departamentos||[]).some(function(x){ return x.key===payload.key; })){ toast('Já existe um departamento com este identificador','error'); return; }
+        payload.menu_modelo = root.querySelector('#dpModelo').value || 'marketing';
+        payload.ordem = ((ST.departamentos||[]).reduce(function(mx,x){ return Math.max(mx, x.ordem||0); }, 0)) + 1;
+      }
+      departamentoSalvar(Object.assign({}, ed, payload), close);
+    }
+  });
+
+  // preview em tempo real
+  var nomeIn = m.root.querySelector('#dpNome');
+  var keyIn = m.root.querySelector('#dpKey');
+  if (nomeIn && keyIn && isNew) nomeIn.addEventListener('input', function(){ keyIn.value = slugify(this.value); });
+
+  // seletores de ícone e cor
+  function refazIco(){
+    var grid = m.root.querySelector('#dpIcoGrid');
+    if (!grid) return;
+    grid.innerHTML = DEPTO_ICONES.map(function(k){
+      return '<button type="button" class="dp-ico-opt'+(ed.icon===k?' on':'')+'" data-dp-ico="'+k+'" style="--c:'+ed.color+'">'+icon(k)+'</button>';
+    }).join('');
+    grid.querySelectorAll('[data-dp-ico]').forEach(function(b){
+      b.addEventListener('click', function(){ ed.icon = this.getAttribute('data-dp-ico'); refazIco(); });
+    });
+  }
+  function refazCor(){
+    var grid = m.root.querySelector('#dpCorGrid');
+    if (!grid) return;
+    grid.innerHTML = DEPTO_CORES.map(function(c){
+      return '<button type="button" class="dp-cor-opt'+(ed.color===c?' on':'')+'" data-dp-cor="'+c+'" style="background:'+c+'"></button>';
+    }).join('');
+    grid.querySelectorAll('[data-dp-cor]').forEach(function(b){
+      b.addEventListener('click', function(){ ed.color = this.getAttribute('data-dp-cor'); refazIco(); refazCor(); });
+    });
+  }
+  refazIco(); refazCor();
+}
+
+/* ---------- Salvar ---------- */
+function departamentoSalvar(dep, cb){
+  var isNew = !dep.id;
+  var payload = {
+    key:         dep.key,
+    label:       dep.label,
+    sub:         dep.sub || null,
+    icon:        dep.icon || 'grid',
+    color:       dep.color || '#64748B',
+    tem_crm:     !!dep.tem_crm,
+    tem_rotinas: !!dep.tem_rotinas,
+    tem_equipe:  !!dep.tem_equipe,
+    menu_modelo: dep.menu_modelo || null,
+    ordem:       dep.ordem || 100,
+    is_active:   dep.is_active!==false
+  };
+  if (isNew){
+    sb.from('malba_departamentos').insert(payload).select().single().then(function(r){
+      if (r.error){
+        var m = (r.error.message||'').toLowerCase();
+        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-fase3a.sql no Supabase para habilitar departamentos.','error');
+        else toast('Não consegui criar: '+(r.error.message||''),'error');
+        return;
+      }
+      ST.departamentos = ST.departamentos || [];
+      ST.departamentos.push(r.data);
+      refazSECTORS();
+      if (cb) cb();
+      toast('Departamento criado','success'); renderPage();
+    });
+  } else {
+    // protegidos não podem trocar key
+    var patch = Object.assign({}, payload);
+    delete patch.key; // proteção extra
+    sb.from('malba_departamentos').update(patch).eq('id', dep.id).then(function(r){
+      if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+      var i = (ST.departamentos||[]).findIndex(function(x){ return String(x.id)===String(dep.id); });
+      if (i>=0) ST.departamentos[i] = Object.assign(ST.departamentos[i], patch);
+      refazSECTORS();
+      if (cb) cb();
+      toast('Departamento salvo','success'); renderPage();
+    });
+  }
+}
+
+/* ---------- Ativar/Desativar (usado nos protegidos) ---------- */
+function departamentoToggleAtivo(chave){
+  var d = (ST.departamentos||[]).find(function(x){ return String(x.id||x.key)===String(chave); });
+  if (!d) return;
+  var novo = d.is_active===false;
+  if (novo===false){
+    // não deixa desativar o último ativo — protegido ou não
+    var ativos = (ST.departamentos||[]).filter(function(x){ return x.is_active!==false; }).length;
+    if (ativos<=1){ toast('Não posso desativar — precisa ter pelo menos um departamento ativo','error'); return; }
+  }
+  sb.from('malba_departamentos').update({ is_active:novo }).eq('id', d.id).then(function(r){
+    if (r.error){ toast('Não consegui salvar','error'); return; }
+    d.is_active = novo;
+    refazSECTORS();
+    toast(novo?'Ativado':'Desativado','success'); renderPage();
+  });
+}
+
+/* ---------- Remover ---------- */
+function departamentoRemover(chave){
+  var d = (ST.departamentos||[]).find(function(x){ return String(x.id||x.key)===String(chave); });
+  if (!d) return;
+  if (d.is_protegido){ toast('Este é um departamento padrão — só dá pra desativar, não remover','error'); return; }
+  var usuarios = (ST.allUsers||[]).filter(function(u){ return String(u.sector||'')===String(d.key); }).length;
+  var msg = usuarios
+    ? 'Este departamento tem '+usuarios+' pessoa'+(usuarios===1?'':'s')+' vinculada'+(usuarios===1?'':'s')+'. Elas ficarão órfãs — precisarão ser movidas para outro departamento. Remover mesmo assim?'
+    : 'Remover o departamento "'+d.label+'"? Todos os dados vinculados a ele (tarefas, documentos, etc) continuam existindo mas ficam sem portal para serem acessados.';
+  confirmDialog({
+    title:'Remover departamento', message:msg, confirmLabel:'Remover',
+    onConfirm: function(){
+      sb.from('malba_departamentos').delete().eq('id', d.id).then(function(r){
+        if (r.error){ toast('Não consegui remover: '+(r.error.message||''),'error'); return; }
+        ST.departamentos = (ST.departamentos||[]).filter(function(x){ return String(x.id)!==String(d.id); });
+        delete SECTORS[d.key]; delete PAGES[d.key];
+        toast('Departamento removido','success'); renderPage();
+      });
+    }
+  });
+}
+
+/* ---------- Reordenar (subir/descer) ---------- */
+function departamentoMover(chave, dir){
+  var lista = (ST.departamentos||[]).slice().sort(function(a,b){ return (a.ordem||0)-(b.ordem||0); });
+  var idx = lista.findIndex(function(x){ return String(x.id||x.key)===String(chave); });
+  if (idx<0) return;
+  var alvo = idx + dir;
+  if (alvo<0 || alvo>=lista.length) return;
+  var a = lista[idx], b = lista[alvo];
+  var oa = a.ordem||0, ob = b.ordem||0;
+  // se as ordens forem iguais, força +/-1
+  if (oa===ob){ if (dir<0){ oa=ob-1; } else { oa=ob+1; } }
+  Promise.all([
+    sb.from('malba_departamentos').update({ ordem:ob }).eq('id', a.id).then(function(r){ return r; }),
+    sb.from('malba_departamentos').update({ ordem:oa }).eq('id', b.id).then(function(r){ return r; })
+  ]).then(function(res){
+    if (res.some(function(x){ return x.error; })){ toast('Falha ao reordenar','error'); return; }
+    a.ordem = ob; b.ordem = oa;
+    renderPage();
+  });
 }
 
 function crmHTML() {
