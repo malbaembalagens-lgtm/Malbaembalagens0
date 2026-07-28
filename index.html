@@ -73,7 +73,8 @@ svg { width: 1em; height: 1em; display: block; }
 .brand-mark-lg .brand-2 { font-size: 19px; padding: 8px 18px; }
 html.dark .brand-2 { color: #0B1220; }
 .screen-title { margin: 30px 0 28px; font-family: var(--u-font-display); font-size: 20px; font-weight: 700; color: var(--u-text2); }
-.sector-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; width: 100%; }
+.sector-grid { display: grid; grid-template-columns: repeat(var(--sector-cols, 4), minmax(0, 1fr)); gap: 18px; width: 100%; max-width: calc(var(--sector-cols, 4) * 240px); margin: 0 auto; justify-content: center; }
+.sector-card { min-width: 0; }
 .sector-card { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 30px 16px; border-radius: 24px; background: var(--u-card); border: 1px solid var(--u-border); box-shadow: var(--u-shadow); transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s, border-color .25s; }
 .sector-card:hover { transform: translateY(-6px); box-shadow: var(--u-shadow-lg); border-color: rgba(59,111,247,.3); }
 .sector-ico { width: 84px; height: 84px; border-radius: 24px; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--c) 12%, white); color: var(--c); font-size: 36px; transition: all .25s; }
@@ -1852,7 +1853,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 
 @media (max-width: 900px) { .board { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 760px) {
-  .sector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .sector-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 100%; }
   .sector-ico { width: 72px; height: 72px; }
   .side { position: fixed; z-index: 50; transform: translateX(-100%); transition: transform .25s; }
   .content { padding: 16px; }
@@ -1860,7 +1861,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
   .crm-summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .crm-cp-seg { display: none; }
 }
-@media (max-width: 420px) { .sector-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 420px) { .sector-grid { grid-template-columns: minmax(0, 1fr); max-width: 100%; } }
 
 /* ================= MOBILE / RESPONSIVO (gaveta + empilhamento) ================= */
 .top-burger { display: none; }
@@ -2448,7 +2449,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v106 · 25/07 (Cadastros F3b: tela Quem esta acessando vem do banco; deptoComoModelo faz depto novo herdar comportamento (Metas do Marketing, KPIs do Vendas) do modelo escolhido; cabecalhos genericos quando nao e Lojas)';
+var APP_BUILD = 'v107 · 25/07 (Tela Quem esta acessando: grid adaptativo — 5 deptos viram 3+2 centralizado, 6 vira 3+3, 7 vira 4+3 (nao mais orfaos numa segunda linha))';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3007,7 +3008,14 @@ function renderSectorScreen() {
     var s = SECTORS[d.key]; if (!s) return;
     cards += '<button class="sector-card" data-sector="'+esc(d.key)+'"><span class="sector-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><span class="sector-name">'+esc(s.label)+'</span><span class="sector-sub">'+esc(s.sub||'')+'</span></button>';
   });
-  render('<div class="screen"><div class="screen-inner">'+brandMark('lg')+'<p class="screen-title">Quem está acessando?</p><div class="sector-grid">'+cards+'</div></div></div>');
+  // v107: calcula o número de colunas pra cada linha ficar cheia (ou quase)
+  var n = lista.length;
+  var cols;
+  if (n <= 4) cols = n;                                 // 1..4 → uma linha só
+  else if (n === 5 || n === 6) cols = 3;                // 3+2 ou 3+3
+  else if (n === 7 || n === 8) cols = 4;                // 4+3 ou 4+4
+  else cols = 5;                                        // 9+ → 5 por linha
+  render('<div class="screen"><div class="screen-inner">'+brandMark('lg')+'<p class="screen-title">Quem está acessando?</p><div class="sector-grid" style="--sector-cols:'+cols+'">'+cards+'</div></div></div>');
   var btns=app.querySelectorAll('.sector-card');
   for (var i=0;i<btns.length;i++) btns[i].addEventListener('click', function(){ renderLogin(this.getAttribute('data-sector')); });
 }
