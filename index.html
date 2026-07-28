@@ -2349,6 +2349,84 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
   .content > * { max-width: 1560px; }
 }
 
+
+/* v103: Central de Cadastros */
+.cad-search { display:flex; align-items:center; gap:10px; background:var(--u-card); border:1px solid var(--u-border); border-radius:var(--radius-sm); padding:11px 15px; margin-bottom:14px; color:var(--u-text3); box-shadow:var(--u-shadow); }
+.cad-search input { flex:1; border:none; background:transparent; font-size:14px; color:var(--u-text); outline:none; min-width:0; }
+.cad-wrap { display:grid; grid-template-columns:260px minmax(0,1fr); gap:18px; }
+@media (max-width:900px){ .cad-wrap { grid-template-columns:minmax(0,1fr); } }
+.cad-side { background:var(--u-card); border-radius:var(--radius); padding:10px; box-shadow:var(--u-shadow); max-height:78vh; overflow-y:auto; min-width:0; }
+.cad-main { min-width:0; }
+.cad-item { display:flex; align-items:center; gap:8px; width:100%; padding:9px 10px; border-radius:8px; background:transparent; color:var(--u-text); font-size:13.5px; font-weight:600; text-align:left; }
+.cad-item:hover { background:var(--u-bg2); }
+.cad-item.on { background:var(--u-accent-soft); color:var(--u-accent); }
+.cad-item-ic { font-size:15px; }
+.cad-item-lb { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-item.cad-sub { padding-left:32px; font-size:12.5px; font-weight:500; }
+.cad-count { font-size:11px; font-weight:800; padding:1px 8px; border-radius:999px; background:var(--u-bg2); color:var(--u-text2); }
+.cad-item.on .cad-count { background:var(--u-card); color:var(--u-accent); }
+.cad-titulo { display:flex; align-items:center; gap:12px; margin:0 0 12px; flex-wrap:wrap; }
+.cad-titulo h3 { font-family:var(--u-font-display); font-size:20px; margin:0; display:flex; align-items:center; gap:8px; min-width:0; overflow-wrap:break-word; }
+.cad-sub { font-size:12.5px; color:var(--u-text2); }
+.cad-voltar { background:var(--u-bg2); color:var(--u-text2); font-size:13px; font-weight:600; padding:6px 12px; border-radius:8px; }
+.cad-voltar:hover { background:var(--u-accent-soft); color:var(--u-accent); }
+.cad-titulo .btn-new, .cad-titulo .btn { margin-left:auto; }
+.cad-kpis { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(160px,100%),1fr)); gap:12px; margin-bottom:18px; }
+.cad-kpi { background:var(--u-card); border-radius:var(--radius-sm); padding:14px 16px; box-shadow:var(--u-shadow); min-width:0; }
+.cad-kpi-v { font-family:var(--u-font-display); font-size:26px; font-weight:800; line-height:1; margin-bottom:4px; }
+.cad-kpi-l { font-size:12px; color:var(--u-text2); }
+.cad-loja-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(280px,100%),1fr)); gap:12px; }
+.cad-loja-card { background:var(--u-card); border-radius:var(--radius-sm); padding:14px 16px; box-shadow:var(--u-shadow); text-align:left; display:flex; flex-direction:column; gap:6px; min-width:0; }
+.cad-loja-card:hover { transform:translateY(-1px); box-shadow:var(--u-shadow-lg); }
+.cad-loja-h { font-size:14px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-loja-info { font-size:12px; color:var(--u-text2); overflow-wrap:break-word; }
+.cad-lista { display:flex; flex-direction:column; gap:6px; }
+.cad-linha { display:flex; align-items:center; gap:12px; background:var(--u-card); border-radius:9px; padding:10px 14px; box-shadow:var(--u-shadow); text-align:left; min-width:0; }
+.cad-linha:hover { background:var(--u-accent-soft); }
+.cad-linha.inativo { opacity:.55; }
+.cad-linha-ic { font-size:18px; flex-shrink:0; }
+.cad-linha-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.cad-linha-main b { font-size:13.5px; color:var(--u-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-linha-sub { font-size:11.5px; color:var(--u-text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-linha-seta { color:var(--u-text3); font-size:16px; flex-shrink:0; }
+.cad-eq-av { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:12px; flex-shrink:0; }
+.cad-eq-av.grande { width:44px; height:44px; font-size:15px; border-radius:12px; }
+.cad-eq-chip { font-size:11px; font-weight:700; color:var(--u-accent); background:var(--u-accent-soft); padding:3px 9px; border-radius:999px; white-space:nowrap; }
+.cad-eq-chip.cinza { color:var(--u-text3); background:var(--u-bg2); }
+.cad-2col { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:14px; margin-bottom:16px; }
+@media (max-width:720px){ .cad-2col { grid-template-columns:minmax(0,1fr); } }
+.cad-bloco { background:var(--u-card); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--u-shadow); min-width:0; }
+.cad-bloco h4 { font-size:13px; font-weight:700; color:var(--u-text2); margin:0 0 10px; text-transform:uppercase; letter-spacing:.3px; }
+.cad-info-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:8px 0; border-bottom:1px dashed var(--u-border); }
+.cad-info-row:last-child { border-bottom:none; }
+.cad-info-row span { font-size:12.5px; color:var(--u-text2); }
+.cad-info-row b { font-size:13px; color:var(--u-text); text-align:right; overflow-wrap:break-word; min-width:0; }
+.cad-vazio { padding:22px 16px; text-align:center; font-size:13px; color:var(--u-text2); background:var(--u-bg2); border-radius:9px; }
+.cad-abas { display:flex; gap:4px; margin-bottom:16px; border-bottom:1px solid var(--u-border); flex-wrap:wrap; }
+.cad-aba { background:transparent; color:var(--u-text2); font-size:13px; font-weight:600; padding:9px 14px; border-radius:8px 8px 0 0; }
+.cad-aba:hover { color:var(--u-text); }
+.cad-aba.on { color:var(--u-accent); border-bottom:2px solid var(--u-accent); margin-bottom:-1px; }
+.cad-eq-lista { display:flex; flex-direction:column; gap:6px; }
+.cad-eq-item { display:flex; align-items:center; gap:10px; background:var(--u-card); border-radius:9px; padding:10px 14px; box-shadow:var(--u-shadow); text-align:left; min-width:0; }
+.cad-eq-item:hover { background:var(--u-accent-soft); }
+.cad-eq-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.cad-eq-main b { font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-eq-sub { font-size:11.5px; color:var(--u-text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-acao-grid { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+.cad-btn-editar { margin-top:14px; }
+.cad-btn-danger { color:#EF4444; }
+.cad-btn-danger:hover { background:#EF444418; }
+.cad-explica { font-size:12.5px; color:var(--u-text2); line-height:1.5; margin:8px 0; }
+.cad-vinc-lista { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--u-text); }
+.cad-vinc-lista li { padding:6px 8px; background:var(--u-bg2); border-radius:6px; overflow-wrap:break-word; }
+
+
+/* v104: linha de cargo com ações inline */
+.cad-linha-acoes { display:flex; gap:4px; flex-shrink:0; }
+.cad-linha-btn { background:var(--u-bg2); color:var(--u-text2); font-size:15px; font-weight:700; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.cad-linha-btn:hover { background:var(--u-accent-soft); color:var(--u-accent); }
+.cad-linha-btn.danger:hover { background:#EF444418; color:#EF4444; }
+
 </style>
 </head>
 <body>
@@ -2370,7 +2448,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v102 · 24/07 (Auditoria de layout: 97 grids e 57 itens flex agora encolhem dentro do container — fim do estouro horizontal)';
+var APP_BUILD = 'v105 · 25/07 (Cadastros F3a: Departamentos com fundacao no banco. Rotinas do dia e Ponto passam a olhar capacidade do depto, nao string hardcoded — nada muda visualmente ainda; tela de login vem na F3b)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2394,26 +2472,26 @@ var PAGES = {
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA'),
     p('ponto','Ponto','clock',true,'OPERAÇÃO',true), p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true)
   ],
   vendas: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('ranking','Ranking','trend',true,'GESTÃO',true)
   ],
   financeiro: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA')
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA')
   ],
   marketing: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
     p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
     p('gestao','Gestão','target',true,'GESTÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Configurações','gear',true,'SISTEMA'),
+    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA'),
     p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true), p('orcamento','Orçamento','dollar',true,'GESTÃO',true)
   ]
 };
@@ -2540,11 +2618,11 @@ function savePerms(id, map){ return sb.from('malba_users').update({ perms: map||
 // que páginas cada pessoa pode acessar
 function pageAllowed(pgId, s){
   s = s || ST.session;
-  if (pgId==='config') return isTopAdmin(s);
+  if (pgId==='config') return can('equipe', s); // v103: Admin e Gestor (Gestor restrito ao próprio setor)
   if (pgId==='gestao')  return can('indicadores', s);   // v89: Supervisor acompanha indicadores
   if (pgId==='estrategia') return can('estrategia', s) || permsHas(pgId, s); // v91
   if (pgId==='docs')       return can('docs', s) || permsHas(pgId, s);       // v96: docs abre pra todos por default
-  if (pgId==='ponto')   return (ST.sector==='lojas' && !isColaboradorPessoal(s)) || permsHas(pgId, s);
+  if (pgId==='ponto')   return (deptoTemEquipe(ST.sector) && !isColaboradorPessoal(s)) || permsHas(pgId, s); // v105
   if (isColaboradorPessoal(s)) {
     // base do colaborador + funções concedidas no cadastro
     var base = (ST.sector==='lojas') ? ['inicio','chat'] : COLAB_PAGES;
@@ -2658,6 +2736,8 @@ function loadData() {
     ST.loaded = true;
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
+    try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
+    try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
     // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
     ST.events = [];
     try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario') renderPage(); } }, function(){}); } catch(e){}
@@ -3606,7 +3686,7 @@ function tarefasHTML() {
   var sub = admin
     ? ((ST.sector==='lojas' && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc(SECTORS[ST.sector].label)))
     : 'Minhas tarefas';
-  var rotinaBtn = (ST.sector==='lojas') ? '<button class="vt-btn'+(view==='rotina'?' on':'')+'" data-view="rotina">'+icon('clock')+'Rotina do dia</button>' : '';
+  var rotinaBtn = deptoTemRotinas(ST.sector) ? '<button class="vt-btn'+(view==='rotina'?' on':'')+'" data-view="rotina">'+icon('clock')+'Rotina do dia</button>' : ''; // v105
   // v88: Calendário e Projetos viram VISÕES daqui — deixam de ser páginas do menu.
   // A permissão continua valendo: quem não tinha acesso à página não ganha a visão.
   var podeCal = pageAllowed('calendario', ST.session);
@@ -4495,8 +4575,12 @@ function openMemberModal(member) {
   // Loja-alvo: se há loja logada (login de loja), usa ela. Se é admin, ele escolhe no seletor.
   var lojaFixa = ST.store ? ST.store.id : null;
 
+  // v104: consome cargos cadastrados; se o cargo atual do funcionário não estiver na lista, adiciona-o
   var roleOpts = '<option value="">Selecione a função</option>';
-  FUNCOES.forEach(function(f){ roleOpts += '<option value="'+f+'"'+(m.role===f?' selected':'')+'>'+f+'</option>'; });
+  var listaC = cargosVisiveis(ST.sector);
+  var nomesLista = listaC.map(function(c){ return c.name; });
+  if (m.role && nomesLista.indexOf(m.role)===-1) roleOpts += '<option value="'+esc(m.role)+'" selected>'+esc(m.role)+' (personalizado)</option>';
+  listaC.forEach(function(c){ roleOpts += '<option value="'+esc(c.name)+'"'+(m.role===c.name?' selected':'')+'>'+esc(c.name)+'</option>'; });
 
   // Seletor de loja: aparece quando NÃO há loja fixa (admin gerenciando várias lojas).
   var lojaSelectHTML = '';
@@ -8992,6 +9076,768 @@ function bindDocsDashboard(){
   });
 }
 
+/* ============================================================
+   v103: CENTRAL DE CADASTROS (Fase 1)
+   Árvore Empresa → Lojas → Colaboradores → Acessos.
+   Nenhum termo técnico na tela. Nenhuma mudança de banco.
+   ============================================================ */
+
+/* ---------- Quem pode entrar ---------- */
+function centralPodeAcessar(){ return isAdmin(ST.session); } // Admin ou Gestor
+function centralGestorRestrito(){ return isAdmin(ST.session) && !isSuper(ST.session); } // Gestor vê só o próprio setor
+
+/* ---------- Estado inicial ---------- */
+function centralEstadoIni(){
+  if (!ST.central) ST.central = { nav:'empresa', lojaId:null, colabId:null, q:'', colabAba:'dados', filtro:'todos' };
+  return ST.central;
+}
+
+/* ---------- Contagens usadas na árvore ---------- */
+function centralColabsDaLoja(lojaId){
+  return (ST.members||[]).filter(function(m){ return String(m.store_unit_id||'')===String(lojaId); });
+}
+function centralColabsDoSetor(){
+  var todos = (ST.members||[]);
+  if (centralGestorRestrito()){
+    // Gestor: só colaboradores das lojas que estão no setor dele
+    return todos; // Lojas é setor 'lojas'; simplificamos: se admin de setor, vê os membros que ele já enxerga
+  }
+  return todos;
+}
+function centralUnidadesVisiveis(){
+  var todas = (ST.storeUnits||[]).slice();
+  // Ordena por número da loja
+  todas.sort(function(a,b){ return (a.store_number||0) - (b.store_number||0); });
+  return todas;
+}
+function centralUserDoColab(m){ return userDoMembro(m); } // reusa a existente
+
+/* ---------- HTML principal ---------- */
+function centralHTML(){
+  if (!centralPodeAcessar()){
+    return '<div class="empty-page"><div class="ep-ico">'+icon('gear')+'</div><h3>Acesso restrito</h3><p>Só Administrador e Gestor entram na Central de Cadastros.</p></div>';
+  }
+  centralEstadoIni();
+  var head = '<div class="tasks-head"><div><h2>Central de Cadastros</h2><div class="sub">Estrutura da empresa em um lugar só</div></div></div>';
+  var busca = '<div class="cad-search">'+icon('search')+
+    '<input id="cadQ" placeholder="Buscar colaborador, loja, cargo…" value="'+esc(ST.central.q||'')+'">'+
+  '</div>';
+  return head + busca + '<div class="cad-wrap">'+centralArvoreHTML()+'<div class="cad-main">'+centralConteudoHTML()+'</div></div>';
+}
+
+/* ---------- Árvore lateral ---------- */
+function centralArvoreHTML(){
+  var c = ST.central;
+  var lojas = centralUnidadesVisiveis();
+  var colabs = centralColabsDoSetor();
+  var ativos = colabs.filter(function(m){ return m.is_active!==false; });
+  var comAcesso = ativos.filter(centralUserDoColab).length;
+  var semAcesso = ativos.length - comAcesso;
+
+  function item(nav, ic, label, contagem, extra, ativo){
+    var on = ativo ? ' on' : '';
+    var badge = (contagem!==undefined && contagem!==null) ? '<span class="cad-count">'+contagem+'</span>' : '';
+    return '<button class="cad-item'+on+'" data-cad-nav="'+esc(nav)+'"'+(extra||'')+'>'+
+      '<span class="cad-item-ic">'+ic+'</span>'+
+      '<span class="cad-item-lb">'+esc(label)+'</span>'+badge+
+    '</button>';
+  }
+
+  var lojasAbertas = c.nav==='lojas' || c.nav==='loja';
+  var lojasFilhos = lojasAbertas ? lojas.map(function(l){
+    var n = centralColabsDaLoja(l.id).filter(function(m){ return m.is_active!==false; }).length;
+    var atv = c.nav==='loja' && String(c.lojaId)===String(l.id);
+    return '<button class="cad-item cad-sub'+(atv?' on':'')+'" data-cad-nav="loja" data-cad-loja="'+esc(l.id)+'">'+
+      '<span class="cad-item-lb">'+esc(l.name || ('Loja '+l.store_number))+'</span>'+
+      '<span class="cad-count">'+n+'</span>'+
+    '</button>';
+  }).join('') : '';
+
+  var colabsAbertos = c.nav==='colabs' || c.nav==='colab';
+  var filtroAtual = c.filtro || 'todos';
+  var colabsFilhos = colabsAbertos ? [
+    '<button class="cad-item cad-sub'+(filtroAtual==='todos'?' on':'')+'" data-cad-nav="colabs" data-cad-filtro="todos"><span class="cad-item-lb">Todos ativos</span><span class="cad-count">'+ativos.length+'</span></button>',
+    '<button class="cad-item cad-sub'+(filtroAtual==='comacesso'?' on':'')+'" data-cad-nav="colabs" data-cad-filtro="comacesso"><span class="cad-item-lb">Com acesso ao sistema</span><span class="cad-count">'+comAcesso+'</span></button>',
+    '<button class="cad-item cad-sub'+(filtroAtual==='semacesso'?' on':'')+'" data-cad-nav="colabs" data-cad-filtro="semacesso"><span class="cad-item-lb">Sem acesso ao sistema</span><span class="cad-count">'+semAcesso+'</span></button>',
+    '<button class="cad-item cad-sub'+(filtroAtual==='inativos'?' on':'')+'" data-cad-nav="colabs" data-cad-filtro="inativos"><span class="cad-item-lb">Inativos</span><span class="cad-count">'+(colabs.length-ativos.length)+'</span></button>'
+  ].join('') : '';
+
+  return '<aside class="cad-side">'+
+    item('empresa', '🏢', 'Empresa', null, '', c.nav==='empresa')+
+    item('lojas',   '🏪', 'Lojas', lojas.length, '', lojasAbertas)+
+    lojasFilhos+
+    item('colabs',  '👥', 'Colaboradores', ativos.length, '', colabsAbertos)+
+    colabsFilhos+
+    item('acessos', '🔑', 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
+    item('cargos',  '💼', 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
+  '</aside>';
+}
+
+/* ---------- Conteúdo principal (roteador) ---------- */
+function centralConteudoHTML(){
+  var c = ST.central;
+  var q = (c.q||'').trim();
+  if (q) return centralPesquisaHTML(q);
+  if (c.nav==='colab' && c.colabId) return centralColabHTML(c.colabId);
+  if (c.nav==='loja' && c.lojaId)   return centralLojaHTML(c.lojaId);
+  if (c.nav==='colabs')  return centralListaColabsHTML();
+  if (c.nav==='lojas')   return centralListaLojasHTML();
+  if (c.nav==='acessos') return centralAcessosHTML();
+  if (c.nav==='cargos')  return centralCargosHTML();
+  return centralVisaoEmpresaHTML();
+}
+
+/* ---------- Empresa (visão geral) ---------- */
+function centralVisaoEmpresaHTML(){
+  var lojas = centralUnidadesVisiveis();
+  var colabs = centralColabsDoSetor().filter(function(m){ return m.is_active!==false; });
+  var comAcesso = colabs.filter(centralUserDoColab).length;
+  var gestores = (ST.allUsers||[]).filter(function(u){
+    var nv = nivelDe(u);
+    return nv==='gestor' || nv==='admin';
+  }).length;
+  function box(n, l, cor){
+    return '<div class="cad-kpi"><div class="cad-kpi-v" style="color:'+cor+'">'+n+'</div><div class="cad-kpi-l">'+esc(l)+'</div></div>';
+  }
+  var kpis = '<div class="cad-kpis">'+
+    box(lojas.length, 'Lojas', '#3B6FF7')+
+    box(colabs.length, 'Colaboradores ativos', '#16A34A')+
+    box(comAcesso, 'Com acesso ao sistema', '#8B5CF6')+
+    box(gestores, 'Gestores', '#F59E0B')+
+  '</div>';
+
+  // Grade das lojas com resumo
+  var cards = lojas.length ? lojas.map(function(l){
+    var totalM = centralColabsDaLoja(l.id).filter(function(m){ return m.is_active!==false; }).length;
+    var gestor = l.user_id ? (ST.allUsers||[]).find(function(u){ return String(u.id)===String(l.user_id); }) : null;
+    return '<button class="cad-loja-card" data-cad-nav="loja" data-cad-loja="'+esc(l.id)+'">'+
+      '<div class="cad-loja-h">🏪 <b>'+esc(l.name || ('Loja '+l.store_number))+'</b></div>'+
+      '<div class="cad-loja-info">'+totalM+' pessoa'+(totalM===1?'':'s')+(gestor?' · Gestor: '+esc(gestor.name):'')+'</div>'+
+    '</button>';
+  }).join('') : '<div class="cad-vazio">Nenhuma loja cadastrada ainda.</div>';
+
+  return '<div class="cad-titulo"><h3>Visão da empresa</h3><span class="cad-sub">Panorama da estrutura MALBA</span></div>'+
+    kpis +
+    '<div class="cad-titulo"><h3>Lojas</h3></div>'+
+    '<div class="cad-loja-grid">'+cards+'</div>';
+}
+
+/* ---------- Lista de lojas ---------- */
+function centralListaLojasHTML(){
+  var lojas = centralUnidadesVisiveis();
+  var podeCriar = isSuper(ST.session); // só Admin cria loja
+  var btn = podeCriar ? '<button class="btn-new" id="cadNovaLoja">'+icon('plus')+'Nova loja</button>' : '';
+  var linhas = lojas.length ? lojas.map(function(l){
+    var totalM = centralColabsDaLoja(l.id).filter(function(m){ return m.is_active!==false; }).length;
+    var gestor = l.user_id ? (ST.allUsers||[]).find(function(u){ return String(u.id)===String(l.user_id); }) : null;
+    return '<button class="cad-linha" data-cad-nav="loja" data-cad-loja="'+esc(l.id)+'">'+
+      '<span class="cad-linha-ic">🏪</span>'+
+      '<span class="cad-linha-main"><b>'+esc(l.name || ('Loja '+l.store_number))+'</b>'+
+        '<span class="cad-linha-sub">'+totalM+' pessoa'+(totalM===1?'':'s')+(gestor?' · Gestor: '+esc(gestor.name):'')+'</span>'+
+      '</span>'+
+      '<span class="cad-linha-seta">›</span>'+
+    '</button>';
+  }).join('') : '<div class="cad-vazio">Nenhuma loja cadastrada.</div>';
+  return '<div class="cad-titulo"><h3>Lojas</h3><span class="cad-sub">'+lojas.length+' unidade(s)</span>'+btn+'</div>'+
+    '<div class="cad-lista">'+linhas+'</div>';
+}
+
+/* ---------- Detalhe da loja ---------- */
+function centralLojaHTML(lojaId){
+  var l = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(lojaId); });
+  if (!l) return '<div class="cad-vazio">Loja não encontrada.</div>';
+  var pessoas = centralColabsDaLoja(l.id);
+  var ativos = pessoas.filter(function(m){ return m.is_active!==false; });
+  var gestor = l.user_id ? (ST.allUsers||[]).find(function(u){ return String(u.id)===String(l.user_id); }) : null;
+  var podeEditar = isSuper(ST.session);
+
+  var infoLinhas = [
+    ['Nome', l.name || ('Loja '+l.store_number)],
+    ['Número', l.store_number || '—'],
+    ['Endereço', l.address || '—'],
+    ['Gestor responsável', gestor ? gestor.name : '— não definido —']
+  ].map(function(li){ return '<div class="cad-info-row"><span>'+esc(li[0])+'</span><b>'+esc(String(li[1]))+'</b></div>'; }).join('');
+
+  var equipe = ativos.length ? '<div class="cad-eq-lista">'+ativos.map(function(m){
+    var u = centralUserDoColab(m);
+    var chip = u ? '<span class="cad-eq-chip">🔑 tem acesso</span>' : '';
+    return '<button class="cad-eq-item" data-cad-nav="colab" data-cad-colab="'+esc(m.id)+'">'+
+      '<span class="cad-eq-av" style="background:'+esc(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+
+      '<span class="cad-eq-main"><b>'+esc(m.name)+'</b><span class="cad-eq-sub">'+esc(m.role||'sem cargo')+'</span></span>'+
+      chip+
+    '</button>';
+  }).join('')+'</div>' : '<div class="cad-vazio">Nenhum colaborador vinculado a esta loja.</div>';
+
+  var acoes = podeEditar ? '<button class="btn btn-secondary" id="cadLojaEditar">Editar loja</button>' : '';
+
+  return '<div class="cad-titulo"><button class="cad-voltar" data-cad-nav="lojas">← Lojas</button><h3>🏪 '+esc(l.name || ('Loja '+l.store_number))+'</h3>'+acoes+'</div>'+
+    '<div class="cad-2col">'+
+      '<div class="cad-bloco"><h4>Informações</h4>'+infoLinhas+'</div>'+
+      '<div class="cad-bloco"><h4>Indicadores</h4>'+
+        '<div class="cad-info-row"><span>Colaboradores ativos</span><b>'+ativos.length+'</b></div>'+
+        '<div class="cad-info-row"><span>Com acesso ao sistema</span><b>'+ativos.filter(centralUserDoColab).length+'</b></div>'+
+        '<div class="cad-info-row"><span>Sem acesso</span><b>'+ativos.filter(function(m){ return !centralUserDoColab(m); }).length+'</b></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="cad-titulo"><h3>Equipe</h3><span class="cad-sub">'+ativos.length+' pessoa(s)</span></div>'+
+    equipe;
+}
+
+/* ---------- Lista de colaboradores ---------- */
+function centralListaColabsHTML(){
+  var filtro = ST.central.filtro || 'todos';
+  var todos = centralColabsDoSetor();
+  var list = todos.filter(function(m){
+    if (filtro==='todos')     return m.is_active!==false;
+    if (filtro==='inativos')  return m.is_active===false;
+    if (filtro==='comacesso') return m.is_active!==false && !!centralUserDoColab(m);
+    if (filtro==='semacesso') return m.is_active!==false && !centralUserDoColab(m);
+    return true;
+  });
+  list.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  var btn = isAdmin(ST.session) ? '<button class="btn-new" id="cadNovoColab">'+icon('plus')+'Novo colaborador</button>' : '';
+  var linhas = list.length ? list.map(function(m){
+    var u = centralUserDoColab(m);
+    var loja = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(m.store_unit_id); });
+    var lojaLb = loja ? (loja.name || ('Loja '+loja.store_number)) : 'sem loja';
+    var acesso = u ? '<span class="cad-eq-chip">🔑 '+esc((NIVEIS[nivelDe(u)]||NIVEIS.colaborador).label)+'</span>' : '<span class="cad-eq-chip cinza">sem acesso</span>';
+    var inat = m.is_active===false ? ' inativo' : '';
+    return '<button class="cad-linha'+inat+'" data-cad-nav="colab" data-cad-colab="'+esc(m.id)+'">'+
+      '<span class="cad-eq-av" style="background:'+esc(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+
+      '<span class="cad-linha-main"><b>'+esc(m.name)+'</b>'+
+        '<span class="cad-linha-sub">'+esc(m.role||'sem cargo')+' · '+esc(lojaLb)+'</span>'+
+      '</span>'+
+      acesso+
+      '<span class="cad-linha-seta">›</span>'+
+    '</button>';
+  }).join('') : '<div class="cad-vazio">Nenhum colaborador nesta lista.</div>';
+  var titulos = { todos:'Todos os colaboradores ativos', comacesso:'Com acesso ao sistema', semacesso:'Sem acesso ao sistema', inativos:'Inativos' };
+  return '<div class="cad-titulo"><h3>👥 '+esc(titulos[filtro])+'</h3><span class="cad-sub">'+list.length+' pessoa(s)</span>'+btn+'</div>'+
+    '<div class="cad-lista">'+linhas+'</div>';
+}
+
+/* ---------- Detalhe do colaborador ---------- */
+function centralColabHTML(colabId){
+  var m = (ST.members||[]).find(function(x){ return String(x.id)===String(colabId); });
+  if (!m) return '<div class="cad-vazio">Colaborador não encontrado.</div>';
+  var aba = ST.central.colabAba || 'dados';
+  var abas = ['dados','acesso','vinculos','historico'].map(function(k){
+    var lbs = { dados:'Dados', acesso:'Acesso ao Sistema', vinculos:'Vínculos', historico:'Histórico' };
+    return '<button class="cad-aba'+(aba===k?' on':'')+'" data-cad-aba="'+k+'">'+esc(lbs[k])+'</button>';
+  }).join('');
+  var u = centralUserDoColab(m);
+  var loja = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(m.store_unit_id); });
+  var lojaLb = loja ? (loja.name || ('Loja '+loja.store_number)) : '— sem loja —';
+
+  var conteudo = '';
+  if (aba==='dados'){
+    conteudo = '<div class="cad-bloco"><h4>Dados pessoais</h4>'+
+      '<div class="cad-info-row"><span>Nome</span><b>'+esc(m.name)+'</b></div>'+
+      '<div class="cad-info-row"><span>Cargo</span><b>'+esc(m.role||'sem cargo')+'</b></div>'+
+      '<div class="cad-info-row"><span>Loja</span><b>'+esc(lojaLb)+'</b></div>'+
+      '<div class="cad-info-row"><span>Situação</span><b>'+(m.is_active===false?'Inativo':'Ativo')+'</b></div>'+
+      (m.email ? '<div class="cad-info-row"><span>Contato</span><b>'+esc(m.email)+'</b></div>' : '')+
+      (isAdmin(ST.session) ? '<button class="btn btn-secondary cad-btn-editar" id="cadEditarColab">Editar dados</button>' : '')+
+    '</div>';
+  } else if (aba==='acesso'){
+    conteudo = centralColabAcessoHTML(m, u);
+  } else if (aba==='vinculos'){
+    conteudo = centralColabVinculosHTML(m, u);
+  } else if (aba==='historico'){
+    conteudo = '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Histórico de alterações e ações desta pessoa aparecerá aqui em breve.</div></div>';
+  }
+
+  return '<div class="cad-titulo"><button class="cad-voltar" data-cad-nav="colabs">← Colaboradores</button>'+
+    '<h3><span class="cad-eq-av grande" style="background:'+esc(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span> '+esc(m.name)+'</h3>'+
+    '<span class="cad-sub">'+esc(m.role||'sem cargo')+' · '+esc(lojaLb)+'</span></div>'+
+    '<div class="cad-abas">'+abas+'</div>'+
+    conteudo;
+}
+
+/* ---------- Aba: Acesso ao Sistema ---------- */
+function centralColabAcessoHTML(m, u){
+  if (!u){
+    var podeCriar = isAdmin(ST.session);
+    return '<div class="cad-bloco"><h4>🔑 Acesso ao Sistema</h4>'+
+      '<p class="cad-explica">Esta pessoa <b>não tem acesso</b> ao sistema. Ela existe como colaboradora, aparece em ponto e ranking, mas não faz login.</p>'+
+      (podeCriar ? '<div class="cad-acao-grid">'+
+        '<button class="btn btn-primary" id="cadCriarAcesso">Criar acesso agora</button>'+
+        '<button class="btn btn-secondary" id="cadVincularAcesso">Vincular a um login que já existe</button>'+
+      '</div>' : '<p class="cad-explica">Peça a um administrador para criar o acesso.</p>')+
+    '</div>';
+  }
+  var nv = nivelDe(u);
+  var info = NIVEIS[nv] || NIVEIS.colaborador;
+  var podeMexer = isAdmin(ST.session) && String(u.id)!==String(ST.session.user.id); // não mexe no próprio
+  return '<div class="cad-bloco"><h4>🔑 Acesso ao Sistema</h4>'+
+    '<div class="cad-info-row"><span>E-mail de login</span><b>'+esc(u.email||'—')+'</b></div>'+
+    '<div class="cad-info-row"><span>Nível de acesso</span><b style="color:'+info.color+'">'+esc(info.label)+'</b></div>'+
+    '<div class="cad-explica">'+esc(info.desc)+'</div>'+
+    (podeMexer ? '<div class="cad-acao-grid">'+
+      '<button class="btn btn-secondary" id="cadAcessoEditar">Alterar nível e permissões</button>'+
+      '<button class="btn btn-secondary" id="cadAcessoSenha">Redefinir senha</button>'+
+      '<button class="btn btn-ghost cad-btn-danger" id="cadAcessoRemover">Remover acesso</button>'+
+    '</div>' : '')+
+  '</div>';
+}
+
+/* ---------- Aba: Vínculos ---------- */
+function centralColabVinculosHTML(m, u){
+  var uid = u ? String(u.id) : null;
+  var tarefas = uid ? (ST.tasks||[]).filter(function(t){ return String(t.assignee_id||'')===uid; }) : [];
+  var projetos = uid ? (ST.projects||[]).filter(function(p){ return (p.members||[]).map(String).indexOf(uid)!==-1; }) : [];
+  var docs = uid ? (ST.docs||[]).filter(function(d){ return String(d.author_id||'')===uid; }) : [];
+  function bloco(titulo, itens){
+    if (!itens.length) return '<div class="cad-bloco"><h4>'+esc(titulo)+'</h4><div class="cad-vazio">Nenhum item.</div></div>';
+    return '<div class="cad-bloco"><h4>'+esc(titulo)+' ('+itens.length+')</h4>'+
+      '<ul class="cad-vinc-lista">'+itens.slice(0,10).map(function(x){ return '<li>'+esc(x.title || x.name || 'sem título')+'</li>'; }).join('')+'</ul>'+
+      (itens.length>10 ? '<div class="cad-sub">e mais '+(itens.length-10)+'…</div>' : '')+
+    '</div>';
+  }
+  if (!u) return '<div class="cad-bloco"><h4>Vínculos</h4><div class="cad-vazio">Esta pessoa não tem acesso ao sistema — não há tarefas, projetos ou documentos vinculados.</div></div>';
+  return '<div class="cad-2col">'+bloco('Tarefas', tarefas)+bloco('Projetos', projetos)+'</div>'+bloco('Documentos', docs);
+}
+
+/* ---------- Acessos e Permissões (visão geral) ---------- */
+function centralAcessosHTML(){
+  var users = (ST.allUsers||[]);
+  if (centralGestorRestrito()) users = users.filter(function(u){ return String(u.sector||'')===String(ST.sector); });
+  users.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  var podeCriar = isAdmin(ST.session);
+  var btn = podeCriar ? '<button class="btn-new" id="cadNovoUsuario">'+icon('plus')+'Novo acesso</button>' : '';
+  var linhas = users.length ? users.map(function(u){
+    var nv = nivelDe(u); var info = NIVEIS[nv] || NIVEIS.colaborador;
+    return '<button class="cad-linha" data-cad-usuario="'+esc(u.id)+'">'+
+      '<span class="cad-eq-av" style="background:'+esc(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
+      '<span class="cad-linha-main"><b>'+esc(u.name)+'</b>'+
+        '<span class="cad-linha-sub">'+esc(u.email||'')+'</span>'+
+      '</span>'+
+      '<span class="cad-eq-chip" style="color:'+info.color+';background:'+info.color+'18">'+esc(info.label)+'</span>'+
+      '<span class="cad-linha-seta">›</span>'+
+    '</button>';
+  }).join('') : '<div class="cad-vazio">Nenhum acesso cadastrado.</div>';
+  return '<div class="cad-titulo"><h3>🔑 Acessos e Permissões</h3><span class="cad-sub">'+users.length+' pessoa(s) com login</span>'+btn+'</div>'+
+    '<p class="cad-explica">Cada linha é uma pessoa que faz login. O nível define o que ela pode fazer.</p>'+
+    '<div class="cad-lista">'+linhas+'</div>';
+}
+
+/* ---------- Pesquisa global ---------- */
+function centralPesquisaHTML(termo){
+  var t = termo.toLowerCase();
+  var lojas = centralUnidadesVisiveis().filter(function(l){ return (l.name||('Loja '+l.store_number)).toLowerCase().indexOf(t)!==-1; });
+  var colabs = centralColabsDoSetor().filter(function(m){
+    return (m.name||'').toLowerCase().indexOf(t)!==-1 || (m.role||'').toLowerCase().indexOf(t)!==-1;
+  });
+  var users = (centralGestorRestrito() ? (ST.allUsers||[]).filter(function(u){ return String(u.sector||'')===String(ST.sector); }) : (ST.allUsers||[])).filter(function(u){
+    return (u.name||'').toLowerCase().indexOf(t)!==-1 || (u.email||'').toLowerCase().indexOf(t)!==-1;
+  });
+  function bloco(titulo, itens, tipo){
+    if (!itens.length) return '';
+    return '<div class="cad-bloco"><h4>'+esc(titulo)+' ('+itens.length+')</h4><div class="cad-lista">'+itens.slice(0,20).map(function(x){
+      if (tipo==='loja') return '<button class="cad-linha" data-cad-nav="loja" data-cad-loja="'+esc(x.id)+'"><span class="cad-linha-ic">🏪</span><span class="cad-linha-main"><b>'+esc(x.name||('Loja '+x.store_number))+'</b></span></button>';
+      if (tipo==='colab') return '<button class="cad-linha" data-cad-nav="colab" data-cad-colab="'+esc(x.id)+'"><span class="cad-eq-av" style="background:'+esc(x.color||'#3B6FF7')+'">'+esc(iniciais(x.name))+'</span><span class="cad-linha-main"><b>'+esc(x.name)+'</b><span class="cad-linha-sub">'+esc(x.role||'sem cargo')+'</span></span></button>';
+      return '<button class="cad-linha" data-cad-usuario="'+esc(x.id)+'"><span class="cad-eq-av" style="background:'+esc(x.color||'#3B6FF7')+'">'+esc(iniciais(x.name))+'</span><span class="cad-linha-main"><b>'+esc(x.name)+'</b><span class="cad-linha-sub">'+esc(x.email||'')+'</span></span></button>';
+    }).join('')+'</div></div>';
+  }
+  var total = lojas.length + colabs.length + users.length;
+  if (!total) return '<div class="cad-vazio">Nada encontrado para "'+esc(termo)+'".</div>';
+  return '<div class="cad-titulo"><h3>Resultado da pesquisa</h3><span class="cad-sub">'+total+' resultado(s) para "'+esc(termo)+'"</span></div>'+
+    bloco('Lojas', lojas, 'loja')+
+    bloco('Colaboradores', colabs, 'colab')+
+    bloco('Acessos ao sistema', users, 'user');
+}
+
+/* ---------- Binds ---------- */
+function bindCentral(){
+  if (!centralPodeAcessar()) return;
+  if (ST.central && ST.central.nav==='cargos') bindCentralCargos();
+  var q = document.getElementById('cadQ');
+  if (q){
+    var t=null;
+    q.addEventListener('input', function(){
+      var v=this.value; clearTimeout(t);
+      t=setTimeout(function(){ ST.central.q=v; renderPage(); }, 180);
+    });
+  }
+  document.querySelectorAll('[data-cad-nav]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      var nav = this.getAttribute('data-cad-nav');
+      var loja = this.getAttribute('data-cad-loja');
+      var colab = this.getAttribute('data-cad-colab');
+      var filtro = this.getAttribute('data-cad-filtro');
+      ST.central.nav = nav;
+      if (loja) ST.central.lojaId = loja;
+      if (colab){ ST.central.colabId = colab; ST.central.colabAba = 'dados'; }
+      if (filtro) ST.central.filtro = filtro;
+      ST.central.q = ''; // pesquisa não sobrevive a clique
+      renderPage();
+    });
+  });
+  document.querySelectorAll('[data-cad-aba]').forEach(function(b){
+    b.addEventListener('click', function(){ ST.central.colabAba = this.getAttribute('data-cad-aba'); renderPage(); });
+  });
+  document.querySelectorAll('[data-cad-usuario]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var uid = this.getAttribute('data-cad-usuario');
+      var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
+      if (u) openUserModal(u);
+    });
+  });
+  // ações do detalhe
+  var novoColab = document.getElementById('cadNovoColab');
+  if (novoColab) novoColab.addEventListener('click', function(){ openMemberModal({ store_unit_id: ST.central.lojaId || (ST.store?ST.store.id:null) }); });
+  var editarColab = document.getElementById('cadEditarColab');
+  if (editarColab) editarColab.addEventListener('click', function(){
+    var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
+    if (m) openMemberModal(m);
+  });
+  var novaLoja = document.getElementById('cadNovaLoja');
+  if (novaLoja) novaLoja.addEventListener('click', function(){ openStoreModal({}); });
+  var editLoja = document.getElementById('cadLojaEditar');
+  if (editLoja) editLoja.addEventListener('click', function(){
+    var l = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(ST.central.lojaId); });
+    if (l) openStoreModal(l);
+  });
+  var novoUser = document.getElementById('cadNovoUsuario');
+  if (novoUser) novoUser.addEventListener('click', function(){ openUserModal({}); });
+  // ações da aba Acesso
+  var criarAc = document.getElementById('cadCriarAcesso');
+  if (criarAc) criarAc.addEventListener('click', function(){
+    var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
+    if (!m) return;
+    // abre o modal de novo usuário já com nome e setor pré-preenchidos
+    openUserModal({ name:m.name, sector: ST.sector, color: m.color, _origem_member_id: m.id });
+  });
+  var vincAc = document.getElementById('cadVincularAcesso');
+  if (vincAc) vincAc.addEventListener('click', function(){
+    // por enquanto: abre a lista de acessos pra pessoa escolher
+    ST.central.nav = 'acessos'; renderPage();
+    toast('Encontre o acesso na lista e edite para trocar o setor da pessoa','info');
+  });
+  var acEd = document.getElementById('cadAcessoEditar');
+  if (acEd) acEd.addEventListener('click', function(){
+    var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
+    var u = m ? centralUserDoColab(m) : null;
+    if (u) openUserModal(u);
+  });
+}
+
+/* ============================================================
+   v104: CADASTROS — Fase 2 (Cargos)
+   Cargos deixam de ser lista fixa e viram cadastro editável,
+   consumido pelo modal de funcionário e reutilizável nos
+   próximos módulos (equipes, avaliações, comissões).
+   ============================================================ */
+
+/* ---------- Semeia lista se o banco estiver vazio ---------- */
+var CARGOS_SEED = [
+  { name:'Vendedor',    sector:null },
+  { name:'Caixa',       sector:'lojas' },
+  { name:'Estoquista',  sector:'lojas' },
+  { name:'Gerente',     sector:null },
+  { name:'Atendente',   sector:'lojas' },
+  { name:'Repositor',   sector:'lojas' },
+  { name:'Auxiliar',    sector:null }
+];
+
+/* ---------- Carrega cargos do banco ---------- */
+function cargosCarregar(cb){
+  if (!sb){ cb && cb(); return; }
+  sb.from('malba_cargos').select('*').order('name').then(function(r){
+    if (r.error){
+      var m = (r.error.message||'').toLowerCase();
+      if (m.indexOf('does not exist')!==-1 || m.indexOf('relation')!==-1){
+        // tabela ainda não criada — usa a lista antiga
+        ST.cargos = CARGOS_SEED.map(function(c,i){ return { id:'seed-'+i, name:c.name, sector:c.sector, is_active:true }; });
+      } else {
+        console.warn('cargos:', r.error.message);
+        ST.cargos = [];
+      }
+    } else {
+      ST.cargos = r.data || [];
+    }
+    if (cb) cb();
+  }, function(){ ST.cargos = []; if (cb) cb(); });
+}
+
+/* ---------- Cargos visíveis pra um setor ---------- */
+function cargosVisiveis(setor){
+  var s = setor || ST.sector;
+  return (ST.cargos||[]).filter(function(c){
+    if (c.is_active===false) return false;
+    if (!c.sector) return true;              // compartilhado
+    return String(c.sector)===String(s);
+  }).sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+}
+
+/* ---------- Chip do cargo (usado na descrição do colab) ---------- */
+function cargoLabel(nomeOuId){
+  if (!nomeOuId) return '';
+  var c = (ST.cargos||[]).find(function(x){ return String(x.id)===String(nomeOuId) || String(x.name)===String(nomeOuId); });
+  return c ? c.name : String(nomeOuId);
+}
+
+/* ---------- CRUD do cargo ---------- */
+function cargoSalvar(cargo, cb){
+  var payload = { name: (cargo.name||'').trim(), sector: cargo.sector||null, is_active: cargo.is_active!==false };
+  if (!payload.name){ toast('Digite um nome para o cargo','error'); return; }
+  // duplicado?
+  var jaTem = (ST.cargos||[]).find(function(c){
+    return String(c.id)!==String(cargo.id||'') &&
+           (c.name||'').toLowerCase()===payload.name.toLowerCase() &&
+           String(c.sector||'')===String(payload.sector||'');
+  });
+  if (jaTem){ toast('Já existe um cargo com esse nome nesse escopo','error'); return; }
+  if (cargo.id && !String(cargo.id).startsWith('seed-')){
+    sb.from('malba_cargos').update(payload).eq('id', cargo.id).then(function(r){
+      if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+      var i = (ST.cargos||[]).findIndex(function(x){ return String(x.id)===String(cargo.id); });
+      if (i>=0) ST.cargos[i] = Object.assign(ST.cargos[i], payload);
+      if (cb) cb(); toast('Cargo salvo','success'); renderPage();
+    });
+  } else {
+    sb.from('malba_cargos').insert(payload).select().single().then(function(r){
+      if (r.error){
+        var m = (r.error.message||'').toLowerCase();
+        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-fase2.sql no Supabase para habilitar cargos.','error');
+        else toast('Não consegui criar: '+(r.error.message||''),'error');
+        return;
+      }
+      ST.cargos = ST.cargos || [];
+      ST.cargos.push(r.data);
+      if (cb) cb(); toast('Cargo criado','success'); renderPage();
+    });
+  }
+}
+
+function cargoRemover(id){
+  var c = (ST.cargos||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!c) return;
+  // conta quantos funcionários usam esse cargo
+  var emUso = (ST.members||[]).filter(function(m){ return (m.role||'')===c.name; }).length;
+  var msg = emUso
+    ? 'Este cargo está em uso por '+emUso+' funcionário'+(emUso===1?'':'s')+'. Se remover, eles continuam com o cargo antigo como texto — mas some da lista de opções. Remover mesmo assim?'
+    : 'Remover o cargo "'+c.name+'"?';
+  confirmDialog({
+    title:'Remover cargo', message:msg, confirmLabel:'Remover',
+    onConfirm: function(){
+      if (String(id).startsWith('seed-')){
+        ST.cargos = (ST.cargos||[]).filter(function(x){ return String(x.id)!==String(id); });
+        toast('Cargo removido','success'); renderPage(); return;
+      }
+      sb.from('malba_cargos').delete().eq('id', id).then(function(r){
+        if (r.error){ toast('Não consegui remover: '+(r.error.message||''),'error'); return; }
+        ST.cargos = (ST.cargos||[]).filter(function(x){ return String(x.id)!==String(id); });
+        toast('Cargo removido','success'); renderPage();
+      });
+    }
+  });
+}
+
+/* ---------- Modal editar/criar cargo ---------- */
+function openCargoModal(cargo){
+  var isNew = !cargo || !cargo.id;
+  var c = Object.assign({ name:'', sector:null, is_active:true }, cargo||{});
+  var setorOpts = '<option value="">Todos os setores (compartilhado)</option>' +
+    Object.keys(SECTORS).map(function(k){
+      return '<option value="'+k+'"'+(String(c.sector||'')===k?' selected':'')+'>'+esc(SECTORS[k].label)+'</option>';
+    }).join('');
+  var contagem = c.id ? (ST.members||[]).filter(function(m){ return (m.role||'')===c.name; }).length : 0;
+  var infoUso = c.id ? '<div class="cad-explica">Em uso por <b>'+contagem+'</b> funcionário'+(contagem===1?'':'s')+'.</div>' : '';
+  var m = makeModal({
+    title: isNew ? 'Novo cargo' : 'Editar cargo',
+    width: 460,
+    body: '<div class="modal-row"><label class="modal-label">Nome do cargo</label>'+
+            '<input type="text" id="cgNome" value="'+esc(c.name)+'" placeholder="Ex: Vendedor, Caixa, Gerente" autofocus></div>'+
+          '<div class="modal-row"><label class="modal-label">Setor</label>'+
+            '<select id="cgSetor">'+setorOpts+'</select>'+
+            '<div class="cad-explica">Deixe "compartilhado" quando o cargo faz sentido em vários setores (ex: Gerente).</div></div>'+
+          infoUso,
+    saveLabel: isNew ? 'Criar cargo' : 'Salvar',
+    onSave: function(close, root){
+      var nome = (root.querySelector('#cgNome').value||'').trim();
+      var setor = root.querySelector('#cgSetor').value || null;
+      if (!nome){ toast('Digite o nome','error'); return; }
+      cargoSalvar({ id:c.id, name:nome, sector:setor, is_active:true }, function(){ close(); });
+    }
+  });
+}
+
+/* ---------- Tela da aba Cargos dentro de Cadastros ---------- */
+function centralCargosHTML(){
+  var todos = (ST.cargos||[]).slice().sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  var podeMexer = isSuper(ST.session); // só Admin gerencia cargos
+  var btn = podeMexer ? '<button class="btn-new" id="cadNovoCargo">'+icon('plus')+'Novo cargo</button>' : '';
+  var linhas = todos.length ? todos.map(function(c){
+    var setLb = c.sector ? (SECTORS[c.sector]||{label:c.sector}).label : 'Todos os setores';
+    var emUso = (ST.members||[]).filter(function(m){ return (m.role||'')===c.name; }).length;
+    var acao = podeMexer
+      ? '<span class="cad-linha-acoes">'+
+          '<button class="cad-linha-btn" data-cargo-edit="'+esc(c.id)+'">✎</button>'+
+          '<button class="cad-linha-btn danger" data-cargo-del="'+esc(c.id)+'">×</button>'+
+        '</span>'
+      : '';
+    return '<div class="cad-linha">'+
+      '<span class="cad-linha-ic">💼</span>'+
+      '<span class="cad-linha-main"><b>'+esc(c.name)+'</b>'+
+        '<span class="cad-linha-sub">'+esc(setLb)+' · '+emUso+' funcionário'+(emUso===1?'':'s')+'</span>'+
+      '</span>'+
+      acao+
+    '</div>';
+  }).join('') : '<div class="cad-vazio">Nenhum cargo cadastrado ainda.</div>';
+  var info = todos.some(function(c){ return String(c.id||'').indexOf('seed-')===0; })
+    ? '<p class="cad-explica">⚠️ Os cargos mostrados são os padrões antigos. Rode o SQL da Fase 2 no Supabase para começar a editar.</p>'
+    : '';
+  return '<div class="cad-titulo"><h3>💼 Cargos</h3><span class="cad-sub">'+todos.length+' cargo(s)</span>'+btn+'</div>'+
+    '<p class="cad-explica">Cargos padronizam o que aparece na lista quando você cadastra um funcionário. Um cargo "compartilhado" aparece em todos os setores.</p>'+
+    info +
+    '<div class="cad-lista">'+linhas+'</div>';
+}
+
+function bindCentralCargos(){
+  var novo = document.getElementById('cadNovoCargo');
+  if (novo) novo.addEventListener('click', function(){ openCargoModal({}); });
+  document.querySelectorAll('[data-cargo-edit]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var c = (ST.cargos||[]).find(function(x){ return String(x.id)===String(this.getAttribute('data-cargo-edit')); }.bind(this));
+      if (c) openCargoModal(c);
+    });
+  });
+  document.querySelectorAll('[data-cargo-del]').forEach(function(b){
+    b.addEventListener('click', function(){ cargoRemover(this.getAttribute('data-cargo-del')); });
+  });
+}
+
+/* ============================================================
+   v105: CADASTROS — Fase 3a (Departamentos: banco + fundação)
+
+   Setor deixa de ser hardcoded e passa a vir do banco. Os 4
+   originais ficam como registros "protegidos" no banco (não
+   podem ser apagados). Registros novos herdam o menu de um
+   existente e podem definir suas próprias flags.
+
+   Nada muda visualmente nesta fase — a tela de login e o
+   gerenciamento vêm em F3b e F3c.
+   ============================================================ */
+
+/* ---------- Departamentos padrão (fallback se a tabela ainda não existir) ---------- */
+var DEPS_PADRAO = [
+  { key:'marketing',  label:'Marketing',  sub:'Campanhas & Conteúdo', icon:'megaphone', color:'#8B5CF6', tem_crm:true,  tem_rotinas:false, tem_equipe:false, ordem:1, is_protegido:true, is_active:true },
+  { key:'vendas',     label:'Vendas',     sub:'CRM & Metas',          icon:'trend',     color:'#16A34A', tem_crm:true,  tem_rotinas:false, tem_equipe:false, ordem:2, is_protegido:true, is_active:true },
+  { key:'lojas',      label:'Lojas',      sub:'Operação Diária',      icon:'store',     color:'#3B6FF7', tem_crm:true,  tem_rotinas:true,  tem_equipe:true,  ordem:3, is_protegido:true, is_active:true },
+  { key:'financeiro', label:'Financeiro', sub:'Rotinas & Controle',   icon:'dollar',    color:'#F59E0B', tem_crm:false, tem_rotinas:false, tem_equipe:false, ordem:4, is_protegido:true, is_active:true }
+];
+
+/* ---------- Menu padrão de cada setor original (a fonte é o próprio PAGES original) ---------- */
+/* Guardado como page IDs simples (sem posição/grupo) — usado para clonar em depto novo */
+var MENU_PADRAO_POR_DEPTO = {
+  lojas:      ['inicio','tarefas','calendario','projetos','equipe','crm','estrategia','docs','gestao','chat','config','ponto','metas','relatorio'],
+  vendas:     ['inicio','tarefas','calendario','projetos','crm','estrategia','docs','gestao','chat','config','metas','ranking'],
+  financeiro: ['inicio','tarefas','calendario','projetos','estrategia','docs','chat','config'],
+  marketing:  ['inicio','tarefas','calendario','projetos','crm','campanhas','conteudo','biblioteca','estrategia','docs','gestao','chat','config','metas','relatorio','orcamento']
+};
+
+/* ---------- Estado ---------- */
+ST.departamentos = null;   // preenchido no boot; null = ainda não carregou
+
+/* ---------- Carrega departamentos do banco ---------- */
+function departamentosCarregar(cb){
+  if (!sb){ ST.departamentos = DEPS_PADRAO.slice(); refazSECTORS(); if (cb) cb(); return; }
+  sb.from('malba_departamentos').select('*').order('ordem').then(function(r){
+    if (r.error){
+      var msg = (r.error.message||'').toLowerCase();
+      if (msg.indexOf('does not exist')!==-1 || msg.indexOf('relation')!==-1){
+        // tabela ainda não criada — usa os 4 padrão
+        ST.departamentos = DEPS_PADRAO.slice();
+      } else {
+        console.warn('departamentos:', r.error.message);
+        ST.departamentos = DEPS_PADRAO.slice();
+      }
+    } else {
+      var lista = r.data || [];
+      if (!lista.length){
+        // banco vazio — usa os padrão (SQL seed deve popular, mas por segurança)
+        ST.departamentos = DEPS_PADRAO.slice();
+      } else {
+        ST.departamentos = lista;
+      }
+    }
+    refazSECTORS();
+    if (cb) cb();
+  }, function(){ ST.departamentos = DEPS_PADRAO.slice(); refazSECTORS(); if (cb) cb(); });
+}
+
+/* ---------- Reconstrói SECTORS e PAGES a partir de ST.departamentos ----------
+   SECTORS mantém a MESMA forma que tinha antes (chave = key do depto).
+   PAGES ganha um entry pra cada depto novo (menu clonado do template).
+   Os 4 originais NÃO são recriados aqui: eles já existem em PAGES.
+*/
+function refazSECTORS(){
+  var deps = ST.departamentos || [];
+  deps.forEach(function(d){
+    if (!d.key) return;
+    // SECTORS: sempre reflete o cadastro (label/sub/ícone podem ter mudado)
+    SECTORS[d.key] = { label: d.label, sub: d.sub||'', icon: d.icon||'grid', color: d.color||'#64748B' };
+    // PAGES: novos deptos ganham menu clonado a partir do modelo
+    if (!PAGES[d.key]){
+      var modelo = d.menu_modelo || 'marketing';
+      var ids = MENU_PADRAO_POR_DEPTO[modelo] || MENU_PADRAO_POR_DEPTO['marketing'];
+      // pega o PAGES do modelo pra copiar posições/grupos/hidden — não só os ids
+      var modeloPages = PAGES[modelo] || PAGES['marketing'];
+      var novoMenu = [];
+      modeloPages.forEach(function(pg){
+        // filtros: remove CRM se o depto não tem CRM; remove equipe/ponto se não tem equipe
+        if (pg.id==='crm' && !d.tem_crm) return;
+        if ((pg.id==='equipe' || pg.id==='ponto') && !d.tem_equipe) return;
+        // rotina/pop não é uma página por si — é uma capacidade dentro de Tarefas
+        novoMenu.push(Object.assign({}, pg));
+      });
+      PAGES[d.key] = novoMenu;
+    }
+  });
+  // remove departamentos inativos da lista efetiva
+  Object.keys(SECTORS).forEach(function(k){
+    var d = deps.find(function(x){ return x.key===k; });
+    if (d && d.is_active===false){
+      // marca visualmente pra tela de login pular, mas mantém o registro
+      SECTORS[k]._inativo = true;
+    } else if (SECTORS[k]) {
+      delete SECTORS[k]._inativo;
+    }
+  });
+}
+
+/* ---------- Lookup por key ---------- */
+function departamentoDe(key){
+  if (!ST.departamentos) return null;
+  return ST.departamentos.find(function(d){ return d.key===key; }) || null;
+}
+
+/* ---------- Perguntas sobre capacidades — usadas pelo resto do sistema ---------- */
+function deptoTemRotinas(key){
+  var d = departamentoDe(key || ST.sector);
+  if (!d) return (key||ST.sector)==='lojas'; // fallback ao comportamento antigo
+  return !!d.tem_rotinas;
+}
+function deptoTemCRM(key){
+  var d = departamentoDe(key || ST.sector);
+  if (!d) return ['marketing','vendas','lojas'].indexOf(key||ST.sector)!==-1;
+  return !!d.tem_crm;
+}
+function deptoTemEquipe(key){
+  var d = departamentoDe(key || ST.sector);
+  if (!d) return (key||ST.sector)==='lojas';
+  return !!d.tem_equipe;
+}
+
+/* ---------- Departamentos visíveis pra escolha na tela de login ---------- */
+function departamentosParaLogin(){
+  var deps = (ST.departamentos || DEPS_PADRAO).slice();
+  return deps.filter(function(d){ return d.is_active!==false; })
+             .sort(function(a,b){ return (a.ordem||0)-(b.ordem||0); });
+}
+
 function crmHTML() {
   var q = crmBusca.toLowerCase();
   var sid = boardStore();
@@ -12643,7 +13489,7 @@ function renderPage() {
   } else if (pg.id==='projetos') {
     renderShell(projetosHTML(), 'Projetos'); bindProjetos();
   } else if (pg.id==='config') {
-    renderShell(configHTML(), 'Configurações'); bindConfig();
+    renderShell(centralHTML(), 'Cadastros'); bindCentral();
   } else if (pg.id==='campanhas') {
     renderShell(campanhasHTML(), 'Campanhas'); bindCampanhas();
   } else if (pg.id==='calendario') {
