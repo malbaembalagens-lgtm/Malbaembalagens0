@@ -2447,6 +2447,11 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .dp-cap-item span { font-size:11.5px; color:var(--u-text2); display:block; }
 .cad-linha-btn.placeholder { visibility:hidden; }
 
+
+/* v109: Equipes */
+.add-pick { cursor:pointer; }
+.add-pick input { flex-shrink:0; margin-right:4px; accent-color:var(--u-accent); }
+
 </style>
 </head>
 <body>
@@ -2468,7 +2473,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v108 · 25/07 (Cadastros F3c: aba Departamentos na Central — criar, editar, reordenar, desativar deptos sem tocar em SQL; menu clonado do modelo escolhido, capacidades por checkbox; protegidos podem editar mas nao remover)';
+var APP_BUILD = 'v109 · 25/07 (Cadastros F4: Equipes — agrupamentos de pessoas que podem ser de um so departamento ou cross; uma pessoa em varias equipes; Central agora tem aba de Equipes com detalhe, adicionar/tirar membros)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2757,6 +2762,7 @@ function loadData() {
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
+    try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
     // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
     ST.events = [];
@@ -9199,6 +9205,7 @@ function centralArvoreHTML(){
     colabsFilhos+
     item('acessos', '🔑', 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
     item('cargos',  '💼', 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
+    item('equipes', '👥', 'Equipes', equipesVisiveis().length, '', c.nav==='equipes' || c.nav==='equipe-detalhe')+
     (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '')+
   '</aside>';
 }
@@ -9215,6 +9222,8 @@ function centralConteudoHTML(){
   if (c.nav==='acessos') return centralAcessosHTML();
   if (c.nav==='cargos')  return centralCargosHTML();
   if (c.nav==='departamentos' && isSuper(ST.session)) return centralDepartamentosHTML();
+  if (c.nav==='equipes')  return centralEquipesHTML();
+  if (c.nav==='equipe-detalhe' && c.equipeId) return centralEquipeDetalheHTML(c.equipeId);
   return centralVisaoEmpresaHTML();
 }
 
@@ -9483,6 +9492,8 @@ function bindCentral(){
   if (!centralPodeAcessar()) return;
   if (ST.central && ST.central.nav==='cargos') bindCentralCargos();
   if (ST.central && ST.central.nav==='departamentos') bindCentralDepartamentos();
+  if (ST.central && ST.central.nav==='equipes') bindCentralEquipes();
+  if (ST.central && ST.central.nav==='equipe-detalhe') bindCentralEquipeDetalhe();
   var q = document.getElementById('cadQ');
   if (q){
     var t=null;
@@ -10180,6 +10191,315 @@ function departamentoMover(chave, dir){
     if (res.some(function(x){ return x.error; })){ toast('Falha ao reordenar','error'); return; }
     a.ordem = ob; b.ordem = oa;
     renderPage();
+  });
+}
+
+/* ============================================================
+   v109: CADASTROS — Fase 4 (Equipes)
+
+   Equipes são agrupamentos de pessoas — podem ser de um só
+   departamento ou cross-departamento (ex: "Força-tarefa BF").
+   Uma pessoa participa de várias.
+   ============================================================ */
+
+/* ---------- Carrega equipes + membros ---------- */
+function equipesCarregar(cb){
+  if (!sb){ ST.equipes=[]; ST.equipeMembros=[]; if (cb) cb(); return; }
+  Promise.all([
+    sb.from('malba_equipes').select('*').order('nome').then(function(r){ return r; }),
+    sb.from('malba_equipe_membros').select('*').then(function(r){ return r; })
+  ]).then(function(res){
+    var er = res[0], mr = res[1];
+    if (er.error){
+      var msg = (er.error.message||'').toLowerCase();
+      if (msg.indexOf('does not exist')===-1 && msg.indexOf('relation')===-1) console.warn('equipes:', er.error.message);
+      ST.equipes=[]; ST.equipeMembros=[];
+    } else {
+      ST.equipes = er.data || [];
+      ST.equipeMembros = (mr && !mr.error && mr.data) ? mr.data : [];
+    }
+    if (cb) cb();
+  });
+}
+
+/* ---------- Consultas ---------- */
+function equipeMembrosDe(equipeId){
+  return (ST.equipeMembros||[]).filter(function(m){ return String(m.equipe_id)===String(equipeId); });
+}
+function equipesDoUsuario(userId){
+  var ids = (ST.equipeMembros||[]).filter(function(m){ return String(m.user_id)===String(userId); }).map(function(m){ return String(m.equipe_id); });
+  return (ST.equipes||[]).filter(function(e){ return ids.indexOf(String(e.id))!==-1; });
+}
+function equipesVisiveis(){
+  // Admin vê tudo; Gestor vê equipes do seu depto + cross-departamento
+  var todas = (ST.equipes||[]).slice();
+  if (isSuper(ST.session)) return todas;
+  return todas.filter(function(e){ return !e.sector || String(e.sector)===String(ST.sector); });
+}
+
+/* ---------- Aba "Equipes" na Central ---------- */
+function centralEquipesHTML(){
+  var equipes = equipesVisiveis().slice().sort(function(a,b){ return (a.nome||'').localeCompare(b.nome||''); });
+  var podeMexer = isAdmin(ST.session);
+  var btn = podeMexer ? '<button class="btn-new" id="cadNovaEquipe">'+icon('plus')+'Nova equipe</button>' : '';
+
+  var linhas = equipes.length ? equipes.map(function(e){
+    var membros = equipeMembrosDe(e.id);
+    var setLb = e.sector ? ((SECTORS[e.sector]||{label:e.sector}).label) : '🌐 Cross-departamento';
+    var cor = e.color || '#3B6FF7';
+    var acoes = podeMexer ? '<span class="cad-linha-acoes">'+
+      '<button class="cad-linha-btn" data-eq-edit="'+esc(e.id)+'" title="Editar">✎</button>'+
+      '<button class="cad-linha-btn danger" data-eq-del="'+esc(e.id)+'" title="Remover">×</button>'+
+    '</span>' : '';
+    return '<button class="cad-linha" data-eq-abrir="'+esc(e.id)+'">'+
+      '<span class="cad-linha-ic" style="background:'+cor+'18;color:'+cor+'">👥</span>'+
+      '<span class="cad-linha-main">'+
+        '<b>'+esc(e.nome)+'</b>'+
+        '<span class="cad-linha-sub">'+esc(setLb)+' · '+membros.length+' pessoa'+(membros.length===1?'':'s')+(e.descricao?' · '+esc(e.descricao):'')+'</span>'+
+      '</span>'+
+      acoes+
+    '</button>';
+  }).join('') : '<div class="cad-vazio">Nenhuma equipe cadastrada ainda.</div>';
+
+  return '<div class="cad-titulo"><h3>👥 Equipes</h3><span class="cad-sub">'+equipes.length+' no total</span>'+btn+'</div>'+
+    '<p class="cad-explica">Equipes agrupam pessoas para colaborar em projetos, campanhas ou frentes específicas. Uma equipe pode ficar num só departamento ou ser cross-departamento. Uma pessoa pode estar em várias.</p>'+
+    '<div class="cad-lista">'+linhas+'</div>';
+}
+
+function bindCentralEquipes(){
+  var nova = document.getElementById('cadNovaEquipe');
+  if (nova) nova.addEventListener('click', function(){ openEquipeModal({}); });
+  document.querySelectorAll('[data-eq-edit]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(this.getAttribute('data-eq-edit')); }.bind(this));
+      if (e) openEquipeModal(e);
+    });
+  });
+  document.querySelectorAll('[data-eq-del]').forEach(function(b){
+    b.addEventListener('click', function(ev){ ev.stopPropagation(); equipeRemover(this.getAttribute('data-eq-del')); });
+  });
+  document.querySelectorAll('[data-eq-abrir]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ST.central.equipeId = this.getAttribute('data-eq-abrir');
+      ST.central.nav = 'equipe-detalhe';
+      renderPage();
+    });
+  });
+}
+
+/* ---------- Detalhe da equipe ---------- */
+function centralEquipeDetalheHTML(equipeId){
+  var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
+  if (!e) return '<div class="cad-vazio">Equipe não encontrada.</div>';
+  var membros = equipeMembrosDe(e.id);
+  var setLb = e.sector ? ((SECTORS[e.sector]||{label:e.sector}).label) : '🌐 Cross-departamento';
+  var podeMexer = isAdmin(ST.session);
+  var cor = e.color || '#3B6FF7';
+
+  // enriquece cada membro com dados do usuário
+  var membrosCards = membros.length ? '<div class="cad-eq-lista">'+membros.map(function(m){
+    var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(m.user_id); });
+    if (!u) return '';
+    var deptoLb = (SECTORS[u.sector]||{label:u.sector}).label;
+    var remover = podeMexer
+      ? '<button class="cad-linha-btn danger" data-eq-tirar="'+esc(m.id)+'" title="Tirar da equipe">×</button>'
+      : '';
+    return '<div class="cad-eq-item">'+
+      '<span class="cad-eq-av" style="background:'+esc(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
+      '<span class="cad-eq-main"><b>'+esc(u.name)+'</b><span class="cad-eq-sub">'+esc(u.email||'')+' · '+esc(deptoLb)+'</span></span>'+
+      remover+
+    '</div>';
+  }).join('')+'</div>' : '<div class="cad-vazio">Nenhum membro nesta equipe ainda.</div>';
+
+  var addBtn = podeMexer ? '<button class="btn-new" id="cadAddMembro">'+icon('plus')+'Adicionar pessoas</button>' : '';
+  var editBtn = podeMexer ? '<button class="btn btn-secondary" id="cadEqEditar">Editar equipe</button>' : '';
+
+  return '<div class="cad-titulo">'+
+      '<button class="cad-voltar" data-cad-nav="equipes">← Equipes</button>'+
+      '<h3><span class="cad-eq-av grande" style="background:'+cor+'">👥</span> '+esc(e.nome)+'</h3>'+
+      editBtn+
+    '</div>'+
+    '<div class="cad-bloco"><h4>Sobre a equipe</h4>'+
+      '<div class="cad-info-row"><span>Escopo</span><b>'+esc(setLb)+'</b></div>'+
+      (e.descricao ? '<div class="cad-info-row"><span>Descrição</span><b>'+esc(e.descricao)+'</b></div>' : '')+
+      '<div class="cad-info-row"><span>Membros</span><b>'+membros.length+'</b></div>'+
+    '</div>'+
+    '<div class="cad-titulo"><h3>Membros</h3><span class="cad-sub">'+membros.length+' pessoa(s)</span>'+addBtn+'</div>'+
+    membrosCards;
+}
+
+function bindCentralEquipeDetalhe(){
+  var voltar = document.querySelector('[data-cad-nav="equipes"]');
+  if (voltar) voltar.addEventListener('click', function(){ ST.central.nav='equipes'; renderPage(); });
+  var editar = document.getElementById('cadEqEditar');
+  if (editar) editar.addEventListener('click', function(){
+    var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(ST.central.equipeId); });
+    if (e) openEquipeModal(e);
+  });
+  var add = document.getElementById('cadAddMembro');
+  if (add) add.addEventListener('click', function(){ openEquipeAdicionarMembros(ST.central.equipeId); });
+  document.querySelectorAll('[data-eq-tirar]').forEach(function(b){
+    b.addEventListener('click', function(){ equipeTirarMembro(this.getAttribute('data-eq-tirar')); });
+  });
+}
+
+/* ---------- Modal: criar/editar equipe ---------- */
+function openEquipeModal(eq){
+  var isNew = !eq || !eq.id;
+  var ed = Object.assign({ nome:'', descricao:'', sector:'', color:'#3B6FF7' }, eq || {});
+  var setorOpts = '<option value="">🌐 Cross-departamento (aberta a qualquer setor)</option>' +
+    (ST.departamentos||[]).filter(function(d){ return d.is_active!==false; }).map(function(d){
+      return '<option value="'+esc(d.key)+'"'+(String(ed.sector||'')===d.key?' selected':'')+'>'+esc(d.label)+'</option>';
+    }).join('');
+  var membros = eq.id ? equipeMembrosDe(eq.id).length : 0;
+  var infoUso = eq.id ? '<div class="cad-explica">'+membros+' pessoa'+(membros===1?'':'s')+' nesta equipe.</div>' : '';
+
+  var m = makeModal({
+    title: isNew ? 'Nova equipe' : 'Editar equipe',
+    width: 520,
+    body:
+      '<div class="modal-row"><label class="modal-label">Nome da equipe</label>'+
+        '<input type="text" id="eqNome" value="'+esc(ed.nome)+'" placeholder="Ex: Força-tarefa Black Friday" autofocus></div>'+
+      '<div class="modal-row"><label class="modal-label">Descrição <span class="cad-sub">(opcional)</span></label>'+
+        '<input type="text" id="eqDesc" value="'+esc(ed.descricao||'')+'" placeholder="Ex: Preparação da campanha de novembro"></div>'+
+      '<div class="modal-row"><label class="modal-label">Escopo</label>'+
+        '<select id="eqSetor">'+setorOpts+'</select>'+
+        '<div class="cad-explica">Uma equipe de um só departamento aparece só na Central daquele departamento. Cross-departamento aparece pra todos os admins.</div>'+
+      '</div>'+
+      infoUso,
+    saveLabel: isNew ? 'Criar equipe' : 'Salvar',
+    onSave: function(close, root){
+      var payload = {
+        nome: (root.querySelector('#eqNome').value||'').trim(),
+        descricao: (root.querySelector('#eqDesc').value||'').trim() || null,
+        sector: root.querySelector('#eqSetor').value || null,
+        color: ed.color || '#3B6FF7'
+      };
+      if (!payload.nome){ toast('Digite o nome','error'); return; }
+      // duplicado?
+      var duplicado = (ST.equipes||[]).find(function(x){
+        return String(x.id)!==String(eq.id||'') && (x.nome||'').toLowerCase()===payload.nome.toLowerCase() && String(x.sector||'')===String(payload.sector||'');
+      });
+      if (duplicado){ toast('Já existe uma equipe com esse nome nesse escopo','error'); return; }
+      equipeSalvar(Object.assign({}, eq, payload), close);
+    }
+  });
+}
+
+/* ---------- Salvar equipe ---------- */
+function equipeSalvar(eq, cb){
+  var isNew = !eq.id;
+  var payload = { nome:eq.nome, descricao:eq.descricao||null, sector:eq.sector||null, color:eq.color||'#3B6FF7' };
+  // duplicado no mesmo escopo?
+  var duplicado = (ST.equipes||[]).find(function(x){
+    return String(x.id)!==String(eq.id||'') &&
+           (x.nome||'').toLowerCase()===(payload.nome||'').toLowerCase() &&
+           String(x.sector||'')===String(payload.sector||'');
+  });
+  if (duplicado){ toast('Já existe uma equipe com esse nome nesse escopo','error'); return; }
+  if (isNew){
+    sb.from('malba_equipes').insert(payload).select().single().then(function(r){
+      if (r.error){
+        var m=(r.error.message||'').toLowerCase();
+        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-fase4.sql no Supabase para habilitar equipes.','error');
+        else toast('Não consegui criar: '+(r.error.message||''),'error');
+        return;
+      }
+      ST.equipes = ST.equipes || [];
+      ST.equipes.push(r.data);
+      if (cb) cb();
+      toast('Equipe criada','success'); renderPage();
+    });
+  } else {
+    sb.from('malba_equipes').update(payload).eq('id', eq.id).then(function(r){
+      if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+      var i = (ST.equipes||[]).findIndex(function(x){ return String(x.id)===String(eq.id); });
+      if (i>=0) ST.equipes[i] = Object.assign(ST.equipes[i], payload);
+      if (cb) cb();
+      toast('Equipe salva','success'); renderPage();
+    });
+  }
+}
+
+/* ---------- Remover equipe (leva os vínculos junto) ---------- */
+function equipeRemover(id){
+  var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!e) return;
+  var membros = equipeMembrosDe(id).length;
+  var msg = membros
+    ? 'A equipe "'+e.nome+'" tem '+membros+' pessoa'+(membros===1?'':'s')+' vinculada'+(membros===1?'':'s')+'. Remover a equipe tira todos esses vínculos — as pessoas continuam no sistema, só saem desta equipe.'
+    : 'Remover a equipe "'+e.nome+'"?';
+  confirmDialog({
+    title:'Remover equipe', message:msg, confirmLabel:'Remover',
+    onConfirm: function(){
+      // apaga membros primeiro, depois a equipe
+      Promise.all([
+        sb.from('malba_equipe_membros').delete().eq('equipe_id', id).then(function(r){ return r; }),
+        sb.from('malba_equipes').delete().eq('id', id).then(function(r){ return r; })
+      ]).then(function(res){
+        if (res[1].error){ toast('Não consegui remover: '+(res[1].error.message||''),'error'); return; }
+        ST.equipes = (ST.equipes||[]).filter(function(x){ return String(x.id)!==String(id); });
+        ST.equipeMembros = (ST.equipeMembros||[]).filter(function(x){ return String(x.equipe_id)!==String(id); });
+        // se estava no detalhe dela, volta pra lista
+        if (ST.central.equipeId===id){ ST.central.equipeId=null; ST.central.nav='equipes'; }
+        toast('Equipe removida','success'); renderPage();
+      });
+    }
+  });
+}
+
+/* ---------- Adicionar pessoas ---------- */
+function openEquipeAdicionarMembros(equipeId){
+  var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
+  if (!e) return;
+  var jaSao = new Set(equipeMembrosDe(equipeId).map(function(m){ return String(m.user_id); }));
+  // universo: se equipe é do setor X, mostra usuários do setor X; se cross, mostra todos
+  var universo = (ST.allUsers||[]).slice();
+  if (e.sector) universo = universo.filter(function(u){ return String(u.sector||'')===String(e.sector); });
+  // fora quem já é membro
+  var candidatos = universo.filter(function(u){ return !jaSao.has(String(u.id)); });
+  candidatos.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+
+  var listaHTML = candidatos.length ? candidatos.map(function(u){
+    var deptoLb = (SECTORS[u.sector]||{label:u.sector}).label;
+    return '<label class="cad-eq-item add-pick">'+
+      '<input type="checkbox" data-add-user="'+esc(u.id)+'">'+
+      '<span class="cad-eq-av" style="background:'+esc(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
+      '<span class="cad-eq-main"><b>'+esc(u.name)+'</b><span class="cad-eq-sub">'+esc(u.email||'')+' · '+esc(deptoLb)+'</span></span>'+
+    '</label>';
+  }).join('') : '<div class="cad-vazio">Ninguém disponível pra adicionar (todo mundo já está na equipe).</div>';
+
+  var m = makeModal({
+    title:'Adicionar pessoas à equipe',
+    width: 540,
+    body:
+      '<p class="cad-explica">Selecione quem quer adicionar em <b>'+esc(e.nome)+'</b>.</p>'+
+      '<div class="cad-lista">'+listaHTML+'</div>',
+    saveLabel:'Adicionar',
+    onSave: function(close, root){
+      var picks = [...root.querySelectorAll('[data-add-user]')].filter(function(c){ return c.checked; }).map(function(c){ return c.getAttribute('data-add-user'); });
+      if (!picks.length){ toast('Marque pelo menos uma pessoa','error'); return; }
+      var payload = picks.map(function(uid){ return { equipe_id:equipeId, user_id:uid }; });
+      sb.from('malba_equipe_membros').insert(payload).select().then(function(r){
+        if (r.error){ toast('Não consegui adicionar: '+(r.error.message||''),'error'); return; }
+        ST.equipeMembros = (ST.equipeMembros||[]).concat(r.data || payload);
+        close();
+        toast(picks.length+' pessoa'+(picks.length===1?'':'s')+' adicionada'+(picks.length===1?'':'s'),'success');
+        renderPage();
+      });
+    }
+  });
+}
+
+/* ---------- Tirar membro ---------- */
+function equipeTirarMembro(membroId){
+  var m = (ST.equipeMembros||[]).find(function(x){ return String(x.id)===String(membroId); });
+  if (!m) return;
+  sb.from('malba_equipe_membros').delete().eq('id', membroId).then(function(r){
+    if (r.error){ toast('Não consegui remover','error'); return; }
+    ST.equipeMembros = (ST.equipeMembros||[]).filter(function(x){ return String(x.id)!==String(membroId); });
+    toast('Pessoa removida da equipe','success'); renderPage();
   });
 }
 
