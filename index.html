@@ -2452,6 +2452,67 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .add-pick { cursor:pointer; }
 .add-pick input { flex-shrink:0; margin-right:4px; accent-color:var(--u-accent); }
 
+
+/* v109: Equipes */
+.cad-eq-avs { display:flex; gap:-4px; flex-shrink:0; margin-right:4px; }
+.cad-eq-mini { width:26px; height:26px; border-radius:8px; color:#fff; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; border:2px solid var(--u-card); margin-left:-6px; flex-shrink:0; }
+.cad-eq-mini:first-child { margin-left:0; }
+.cad-eq-mini.extra { background:var(--u-bg2); color:var(--u-text2); }
+.cad-eq-picks { display:flex; flex-direction:column; gap:6px; max-height:340px; overflow-y:auto; padding:2px; }
+.cad-eq-pick { display:flex; align-items:center; gap:10px; padding:8px 10px; background:var(--u-bg2); border-radius:9px; cursor:pointer; min-width:0; }
+.cad-eq-pick:hover { background:var(--u-accent-soft); }
+.cad-eq-pick input { accent-color:var(--u-accent); flex-shrink:0; }
+.cad-eq-pick-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.cad-eq-pick-main b { font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cad-eq-pick-main span { font-size:11.5px; color:var(--u-text2); }
+
+
+/* v110: Perfis de Permissão */
+.perfil-caps { display:flex; flex-direction:column; gap:6px; }
+.perfil-cap { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:var(--u-bg2); border-radius:9px; cursor:pointer; min-width:0; }
+.perfil-cap:hover { background:var(--u-accent-soft); }
+.perfil-cap.on { background:color-mix(in srgb, var(--u-accent) 8%, var(--u-bg2)); }
+.perfil-cap input { margin-top:2px; accent-color:var(--u-accent); flex-shrink:0; }
+.perfil-cap-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.perfil-cap-main b { font-size:13px; color:var(--u-text); }
+.perfil-cap-desc { font-size:11.5px; color:var(--u-text2); }
+.perfil-cap-chip { font-size:11px; font-weight:800; text-transform:uppercase; flex-shrink:0; padding-top:2px; }
+
+
+/* v111: Organograma */
+.org-filtro { display:flex; gap:8px; align-items:center; margin:12px 0 16px; flex-wrap:wrap; }
+.org-filtro select { flex:1; min-width:200px; padding:9px 12px; border:1px solid var(--u-border); border-radius:9px; background:var(--u-card); color:var(--u-text); }
+.org-arvore { display:flex; flex-direction:column; gap:8px; }
+.org-depto { background:var(--u-card); border-radius:var(--radius); box-shadow:var(--u-shadow); overflow:hidden; }
+.org-depto-h { display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; background:transparent; text-align:left; min-width:0; border-left:4px solid transparent; }
+.org-depto-h:hover { background:var(--u-bg2); }
+.org-caret { font-size:13px; color:var(--u-text2); flex-shrink:0; width:14px; }
+.org-depto-ic { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.org-depto-ic svg { width:18px; height:18px; }
+.org-depto-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.org-depto-main b { font-size:14px; color:var(--u-text); }
+.org-depto-main span { font-size:11.5px; color:var(--u-text2); }
+.org-depto-body { padding:0 16px 14px 40px; display:flex; flex-direction:column; gap:12px; }
+.org-secao h5 { font-size:11px; font-weight:800; text-transform:uppercase; color:var(--u-text3); margin:6px 0 6px; letter-spacing:.4px; }
+.org-equipe { background:var(--u-bg2); border-radius:9px; margin-bottom:4px; overflow:hidden; }
+.org-equipe-h { display:flex; align-items:center; gap:10px; width:100%; padding:10px 12px; background:transparent; text-align:left; min-width:0; }
+.org-equipe-h:hover { background:var(--u-accent-soft); }
+.org-equipe-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.org-equipe-main b { font-size:13px; color:var(--u-text); }
+.org-equipe-main span { font-size:11px; color:var(--u-text2); }
+.org-membros { padding:6px 12px 10px 26px; display:grid; grid-template-columns:repeat(auto-fill, minmax(min(200px,100%),1fr)); gap:6px; }
+.org-pessoa { display:flex; align-items:center; gap:8px; background:var(--u-card); padding:8px 10px; border-radius:8px; text-align:left; min-width:0; }
+.org-pessoa:hover { background:var(--u-accent-soft); }
+.org-pessoa-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.org-pessoa-main b { font-size:12.5px; color:var(--u-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.org-pessoa-main span { font-size:11px; color:var(--u-text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.org-sem-eq { border-top:1px dashed var(--u-border); padding-top:10px; }
+.org-sem-eq-h { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; color:var(--u-text2); text-transform:uppercase; padding:0 0 6px; letter-spacing:.4px; }
+.org-sem-eq-h svg { width:14px; height:14px; }
+.org-cruzadas { margin-top:22px; padding-top:16px; border-top:1px dashed var(--u-border); }
+.org-cruzadas h4 { font-size:13px; margin:0 0 6px; }
+.org-cruzadas .cad-linha { margin-bottom:6px; }
+
 </style>
 </head>
 <body>
@@ -2473,7 +2534,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v109 · 25/07 (Cadastros F4: Equipes — agrupamentos de pessoas que podem ser de um so departamento ou cross; uma pessoa em varias equipes; Central agora tem aba de Equipes com detalhe, adicionar/tirar membros)';
+var APP_BUILD = 'v112 · 25/07 (Cadastros F5c: busca global no header + Ctrl+K agora acha pessoas, equipes, departamentos e documentos alem de tarefas/clientes/projetos/campanhas; respeita permissao — Colaborador NAO busca pessoas/equipes/deptos, Gestor cai no proprio setor)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2762,6 +2823,8 @@ function loadData() {
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
+    try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
+    try { perfisCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v110
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
     // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
@@ -3120,7 +3183,7 @@ function renderShell(innerHTML, title) {
           return '<select class="top-store" id="topStore" title="Loja em foco">'+op+'</select>';
         })()+
         '<span class="top-online" id="topOnline"><i></i><span>Online</span></span>'+
-        '<div class="top-search"><span class="ts-ico">'+icon('search')+'</span><input id="topSearch" placeholder="Buscar..." autocomplete="off"><span class="ts-kbd" id="tsKbd">Ctrl K</span><div class="ts-results" id="topResults"></div></div>'+
+        '<div class="top-search"><span class="ts-ico">'+icon('search')+'</span><input id="topSearch" placeholder="Buscar em tudo..." autocomplete="off"><span class="ts-kbd" id="tsKbd">Ctrl K</span><div class="ts-results" id="topResults"></div></div>'+
         '<button class="top-theme" id="themeToggle" title="'+(getTheme()==='dark'?'Modo claro':'Modo escuro')+'">'+icon(getTheme()==='dark'?'sun':'moon')+'</button>'+
         '<button class="btn btn-primary top-novo" id="topNovo">'+icon('plus')+'<span>Novo</span></button>'+
       '</header>'+
@@ -3196,17 +3259,73 @@ function novoContextual() {
 function globalSearch(q) {
   q=(q||'').toLowerCase().trim(); if(!q) return [];
   var res=[];
+  // v112: pessoas — só se admin/gestor podem ver (colaborador não busca por pessoas)
+  if (isAdmin(ST.session)){
+    var pessoasVis = (ST.allUsers||[]);
+    // gestor: só do próprio setor
+    if (!isSuper(ST.session)) pessoasVis = pessoasVis.filter(function(u){ return String(u.sector||'')===String(ST.sector); });
+    pessoasVis.forEach(function(u){
+      if ((u.name||'').toLowerCase().indexOf(q)>=0 || (u.email||'').toLowerCase().indexOf(q)>=0){
+        var setLb = u.sector ? ((SECTORS[u.sector]||{label:u.sector}).label) : '';
+        res.push({k:'user',label:u.name||u.email,sub:'Pessoa'+(setLb?' · '+setLb:''),color:'#3B6FF7',ref:u});
+      }
+    });
+  }
+  // v112: equipes — mesma visibilidade que a Central de Cadastros
+  if (isAdmin(ST.session) && typeof equipesVisiveis === 'function'){
+    equipesVisiveis().forEach(function(e){
+      if (e.is_active===false) return;
+      if ((e.name||'').toLowerCase().indexOf(q)>=0 || (e.description||'').toLowerCase().indexOf(q)>=0){
+        var setLb = e.sector ? ((SECTORS[e.sector]||{label:e.sector}).label) : 'Cruzada';
+        res.push({k:'equipe',label:e.name,sub:'Equipe · '+setLb,color:'#8B5CF6',ref:e});
+      }
+    });
+  }
+  // v112: departamentos (só Admin geral)
+  if (isSuper(ST.session)){
+    (ST.departamentos||[]).forEach(function(d){
+      if ((d.label||'').toLowerCase().indexOf(q)>=0){
+        res.push({k:'depto',label:d.label,sub:'Departamento',color:d.color||'#3B6FF7',ref:d});
+      }
+    });
+  }
+  // v112: documentos — respeita permissão de leitura por doc
+  (ST.docs||[]).forEach(function(d){
+    if (d.is_deleted) return;
+    if ((d.title||'').toLowerCase().indexOf(q)>=0){
+      // se docPermDe existir, respeita
+      if (typeof docPermDe==='function'){
+        var p = docPermDe(d, ST.session && ST.session.user);
+        if (p==='nenhum') return;
+      }
+      res.push({k:'doc',label:d.title||'Sem título',sub:'Documento',color:'#0EA5E9',ref:d});
+    }
+  });
   (ST.tasks||[]).forEach(function(t){ if(t.is_rule) return; if((t.title||'').toLowerCase().indexOf(q)>=0) res.push({k:'task',label:t.title,sub:'Tarefa',color:'#3B6FF7',ref:t}); });
   (ST.clients||[]).forEach(function(c){ if((c.name||'').toLowerCase().indexOf(q)>=0||(c.company||'').toLowerCase().indexOf(q)>=0) res.push({k:'client',label:c.name,sub:'Cliente'+(c.company?' · '+c.company:''),color:'#00ACC1',ref:c}); });
   (ST.projects||[]).forEach(function(p){ if((p.name||'').toLowerCase().indexOf(q)>=0) res.push({k:'project',label:p.name,sub:'Projeto',color:'#FB8C00',ref:p}); });
   (ST.campaigns||[]).forEach(function(c){ if((c.name||'').toLowerCase().indexOf(q)>=0) res.push({k:'campaign',label:c.name,sub:'Campanha',color:'#8B5CF6',ref:c}); });
-  return res.slice(0,8);
+  return res.slice(0,12); // v112: 8 → 12
 }
 function openSearchResult(r) {
   if (r.k==='task') openTaskModal(r.ref);
   else if (r.k==='client') openClientModal(r.ref);
   else if (r.k==='campaign') openCampaignModal(r.ref);
   else if (r.k==='project') { ST.openProject=r.ref.id; ST.page='projetos'; navigate(ST.sector+'/projetos'); renderPage(); }
+  // v112: novos tipos
+  else if (r.k==='user') { openUserModal(r.ref); }
+  else if (r.k==='equipe') {
+    ST.page='config'; ST.central = ST.central || {}; ST.central.nav='equipe'; ST.central.equipeId=r.ref.id;
+    navigate(ST.sector+'/config'); renderPage();
+  }
+  else if (r.k==='depto') {
+    ST.page='config'; ST.central = ST.central || {}; ST.central.nav='departamentos';
+    navigate(ST.sector+'/config'); renderPage();
+  }
+  else if (r.k==='doc') {
+    ST.page='docs'; ST.docOpen = r.ref.id;
+    navigate(ST.sector+'/docs'); renderPage();
+  }
 }
 function bindTopbar() {
   setOnlineState();
@@ -9207,6 +9326,8 @@ function centralArvoreHTML(){
     item('cargos',  '💼', 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
     item('equipes', '👥', 'Equipes', equipesVisiveis().length, '', c.nav==='equipes' || c.nav==='equipe-detalhe')+
     (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '')+
+    (isSuper(ST.session) ? item('perfis', '🎭', 'Perfis de Permissão', (5 + ((ST.perfis||[]).length)), '', c.nav==='perfis') : '')+
+    item('organograma', '🗺️', 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma')+
   '</aside>';
 }
 
@@ -9222,8 +9343,10 @@ function centralConteudoHTML(){
   if (c.nav==='acessos') return centralAcessosHTML();
   if (c.nav==='cargos')  return centralCargosHTML();
   if (c.nav==='departamentos' && isSuper(ST.session)) return centralDepartamentosHTML();
+  if (c.nav==='perfis' && isSuper(ST.session)) return centralPerfisHTML();
+  if (c.nav==='organograma') return centralOrganogramaHTML();
+  if (c.nav==='equipe' && c.equipeId) return centralEquipeDetalheHTML(c.equipeId);
   if (c.nav==='equipes')  return centralEquipesHTML();
-  if (c.nav==='equipe-detalhe' && c.equipeId) return centralEquipeDetalheHTML(c.equipeId);
   return centralVisaoEmpresaHTML();
 }
 
@@ -9492,8 +9615,10 @@ function bindCentral(){
   if (!centralPodeAcessar()) return;
   if (ST.central && ST.central.nav==='cargos') bindCentralCargos();
   if (ST.central && ST.central.nav==='departamentos') bindCentralDepartamentos();
+  if (ST.central && ST.central.nav==='perfis') bindCentralPerfis();
+  if (ST.central && ST.central.nav==='organograma') bindCentralOrganograma();
   if (ST.central && ST.central.nav==='equipes') bindCentralEquipes();
-  if (ST.central && ST.central.nav==='equipe-detalhe') bindCentralEquipeDetalhe();
+  if (ST.central && ST.central.nav==='equipe') bindCentralEquipeDetalhe();
   var q = document.getElementById('cadQ');
   if (q){
     var t=null;
@@ -10203,211 +10328,226 @@ function departamentoMover(chave, dir){
    ============================================================ */
 
 /* ---------- Carrega equipes + membros ---------- */
+/* ============================================================
+   v109: CADASTROS — Fase 4 (Equipes)
+
+   Equipe = grupo nomeado de pessoas.
+   - N pra N (pessoa em várias, equipe com várias)
+   - Pode ser de um departamento (só admite pessoas dele) OU
+     cruzada (aceita qualquer pessoa)
+   - Sem líder (por decisão do usuário)
+
+   Estado em ST.equipes  = [{id,name,description,sector,color,is_active,membros:[user_id...]}]
+   ============================================================ */
+
+/* ---------- Carregar ---------- */
 function equipesCarregar(cb){
-  if (!sb){ ST.equipes=[]; ST.equipeMembros=[]; if (cb) cb(); return; }
+  if (!sb){ ST.equipes = []; if (cb) cb(); return; }
+  // busca equipes + membros em paralelo
   Promise.all([
-    sb.from('malba_equipes').select('*').order('nome').then(function(r){ return r; }),
+    sb.from('malba_equipes').select('*').order('name').then(function(r){ return r; }),
     sb.from('malba_equipe_membros').select('*').then(function(r){ return r; })
   ]).then(function(res){
-    var er = res[0], mr = res[1];
-    if (er.error){
-      var msg = (er.error.message||'').toLowerCase();
-      if (msg.indexOf('does not exist')===-1 && msg.indexOf('relation')===-1) console.warn('equipes:', er.error.message);
-      ST.equipes=[]; ST.equipeMembros=[];
-    } else {
-      ST.equipes = er.data || [];
-      ST.equipeMembros = (mr && !mr.error && mr.data) ? mr.data : [];
+    var e = res[0], m = res[1];
+    if (e.error){
+      var msg = (e.error.message||'').toLowerCase();
+      if (msg.indexOf('does not exist')!==-1 || msg.indexOf('relation')!==-1){
+        ST.equipes = [];
+      } else {
+        console.warn('equipes:', e.error.message);
+        ST.equipes = [];
+      }
+      if (cb) cb(); return;
     }
+    var eqs = (e.data||[]).map(function(x){ return Object.assign({}, x, { membros: [] }); });
+    var byId = {}; eqs.forEach(function(x){ byId[String(x.id)] = x; });
+    var membros = (m && !m.error && m.data) ? m.data : [];
+    membros.forEach(function(mm){
+      var q = byId[String(mm.equipe_id)];
+      if (q) q.membros.push(String(mm.user_id));
+    });
+    ST.equipes = eqs;
     if (cb) cb();
   });
 }
 
-/* ---------- Consultas ---------- */
-function equipeMembrosDe(equipeId){
-  return (ST.equipeMembros||[]).filter(function(m){ return String(m.equipe_id)===String(equipeId); });
-}
+/* ---------- Lookups ---------- */
 function equipesDoUsuario(userId){
-  var ids = (ST.equipeMembros||[]).filter(function(m){ return String(m.user_id)===String(userId); }).map(function(m){ return String(m.equipe_id); });
-  return (ST.equipes||[]).filter(function(e){ return ids.indexOf(String(e.id))!==-1; });
+  return (ST.equipes||[]).filter(function(e){
+    return (e.membros||[]).map(String).indexOf(String(userId))!==-1;
+  });
+}
+function usuariosDaEquipe(equipeId){
+  var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
+  if (!e) return [];
+  return (e.membros||[]).map(function(uid){
+    return (ST.allUsers||[]).find(function(u){ return String(u.id)===String(uid); });
+  }).filter(Boolean);
 }
 function equipesVisiveis(){
-  // Admin vê tudo; Gestor vê equipes do seu depto + cross-departamento
-  var todas = (ST.equipes||[]).slice();
-  if (isSuper(ST.session)) return todas;
-  return todas.filter(function(e){ return !e.sector || String(e.sector)===String(ST.sector); });
+  // Admin vê tudo. Gestor vê equipes do próprio setor + cruzadas.
+  var lista = (ST.equipes||[]).slice();
+  if (!isSuper(ST.session) && isAdmin(ST.session)){
+    lista = lista.filter(function(e){ return !e.sector || String(e.sector)===String(ST.sector); });
+  }
+  return lista.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
 }
 
-/* ---------- Aba "Equipes" na Central ---------- */
+/* ---------- Tela: aba Equipes na Central ---------- */
 function centralEquipesHTML(){
-  var equipes = equipesVisiveis().slice().sort(function(a,b){ return (a.nome||'').localeCompare(b.nome||''); });
-  var podeMexer = isAdmin(ST.session);
+  var lista = equipesVisiveis();
+  var podeMexer = isAdmin(ST.session); // Admin ou Gestor (Gestor no próprio setor)
   var btn = podeMexer ? '<button class="btn-new" id="cadNovaEquipe">'+icon('plus')+'Nova equipe</button>' : '';
 
-  var linhas = equipes.length ? equipes.map(function(e){
-    var membros = equipeMembrosDe(e.id);
-    var setLb = e.sector ? ((SECTORS[e.sector]||{label:e.sector}).label) : '🌐 Cross-departamento';
+  var linhas = lista.length ? lista.map(function(e){
     var cor = e.color || '#3B6FF7';
-    var acoes = podeMexer ? '<span class="cad-linha-acoes">'+
-      '<button class="cad-linha-btn" data-eq-edit="'+esc(e.id)+'" title="Editar">✎</button>'+
-      '<button class="cad-linha-btn danger" data-eq-del="'+esc(e.id)+'" title="Remover">×</button>'+
-    '</span>' : '';
-    return '<button class="cad-linha" data-eq-abrir="'+esc(e.id)+'">'+
-      '<span class="cad-linha-ic" style="background:'+cor+'18;color:'+cor+'">👥</span>'+
+    var qtd = (e.membros||[]).length;
+    var escopo = e.sector ? (SECTORS[e.sector]||{label:e.sector}).label : 'Cruzada';
+    var status = e.is_active===false ? '<span class="cad-eq-chip cinza">desativada</span>' : '';
+    var chipEsc = e.sector ? '<span class="cad-eq-chip">'+esc(escopo)+'</span>' : '<span class="cad-eq-chip" style="color:#8B5CF6;background:#8B5CF618">🔗 cruzada</span>';
+    var avatares = (e.membros||[]).slice(0,4).map(function(uid){
+      var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
+      if (!u) return '';
+      return '<span class="cad-eq-mini" style="background:'+esc(u.color||'#64748B')+'" title="'+esc(u.name||'')+'">'+esc(iniciais(u.name||''))+'</span>';
+    }).join('');
+    var maisN = qtd>4 ? '<span class="cad-eq-mini extra">+'+(qtd-4)+'</span>' : '';
+    return '<button class="cad-linha'+(e.is_active===false?' inativo':'')+'" data-eq-open="'+esc(e.id)+'">'+
+      '<span class="cad-linha-ic" style="background:'+cor+'18;color:'+cor+'">'+icon('users')+'</span>'+
       '<span class="cad-linha-main">'+
-        '<b>'+esc(e.nome)+'</b>'+
-        '<span class="cad-linha-sub">'+esc(setLb)+' · '+membros.length+' pessoa'+(membros.length===1?'':'s')+(e.descricao?' · '+esc(e.descricao):'')+'</span>'+
+        '<b>'+esc(e.name)+'</b> '+chipEsc+' '+status+
+        '<span class="cad-linha-sub">'+esc(e.description || 'sem descrição')+' · '+qtd+' pessoa'+(qtd===1?'':'s')+'</span>'+
       '</span>'+
-      acoes+
+      '<span class="cad-eq-avs">'+avatares+maisN+'</span>'+
+      '<span class="cad-linha-seta">›</span>'+
     '</button>';
   }).join('') : '<div class="cad-vazio">Nenhuma equipe cadastrada ainda.</div>';
 
-  return '<div class="cad-titulo"><h3>👥 Equipes</h3><span class="cad-sub">'+equipes.length+' no total</span>'+btn+'</div>'+
-    '<p class="cad-explica">Equipes agrupam pessoas para colaborar em projetos, campanhas ou frentes específicas. Uma equipe pode ficar num só departamento ou ser cross-departamento. Uma pessoa pode estar em várias.</p>'+
+  return '<div class="cad-titulo"><h3>👥 Equipes</h3><span class="cad-sub">'+lista.length+' equipe(s)</span>'+btn+'</div>'+
+    '<p class="cad-explica">Equipes agrupam pessoas para compartilhar documentos, receber tarefas em conjunto ou aparecer em relatórios. Uma equipe pode ser de um departamento ou <b>cruzada</b> (aceita qualquer pessoa).</p>'+
     '<div class="cad-lista">'+linhas+'</div>';
 }
 
-function bindCentralEquipes(){
-  var nova = document.getElementById('cadNovaEquipe');
-  if (nova) nova.addEventListener('click', function(){ openEquipeModal({}); });
-  document.querySelectorAll('[data-eq-edit]').forEach(function(b){
-    b.addEventListener('click', function(ev){
-      ev.stopPropagation();
-      var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(this.getAttribute('data-eq-edit')); }.bind(this));
-      if (e) openEquipeModal(e);
-    });
-  });
-  document.querySelectorAll('[data-eq-del]').forEach(function(b){
-    b.addEventListener('click', function(ev){ ev.stopPropagation(); equipeRemover(this.getAttribute('data-eq-del')); });
-  });
-  document.querySelectorAll('[data-eq-abrir]').forEach(function(b){
-    b.addEventListener('click', function(){
-      ST.central.equipeId = this.getAttribute('data-eq-abrir');
-      ST.central.nav = 'equipe-detalhe';
-      renderPage();
-    });
-  });
-}
-
-/* ---------- Detalhe da equipe ---------- */
+/* ---------- Detalhe de uma equipe ---------- */
 function centralEquipeDetalheHTML(equipeId){
   var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
   if (!e) return '<div class="cad-vazio">Equipe não encontrada.</div>';
-  var membros = equipeMembrosDe(e.id);
-  var setLb = e.sector ? ((SECTORS[e.sector]||{label:e.sector}).label) : '🌐 Cross-departamento';
-  var podeMexer = isAdmin(ST.session);
   var cor = e.color || '#3B6FF7';
+  var podeMexer = isAdmin(ST.session);
+  var escopo = e.sector ? (SECTORS[e.sector]||{label:e.sector}).label : 'Cruzada (qualquer departamento)';
 
-  // enriquece cada membro com dados do usuário
-  var membrosCards = membros.length ? '<div class="cad-eq-lista">'+membros.map(function(m){
-    var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(m.user_id); });
-    if (!u) return '';
-    var deptoLb = (SECTORS[u.sector]||{label:u.sector}).label;
-    var remover = podeMexer
-      ? '<button class="cad-linha-btn danger" data-eq-tirar="'+esc(m.id)+'" title="Tirar da equipe">×</button>'
-      : '';
-    return '<div class="cad-eq-item">'+
-      '<span class="cad-eq-av" style="background:'+esc(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
-      '<span class="cad-eq-main"><b>'+esc(u.name)+'</b><span class="cad-eq-sub">'+esc(u.email||'')+' · '+esc(deptoLb)+'</span></span>'+
-      remover+
+  var membros = usuariosDaEquipe(e.id);
+  var listaMembros = membros.length ? membros.map(function(u){
+    var setLb = u.sector ? ' · '+((SECTORS[u.sector]||{label:u.sector}).label) : '';
+    var acao = podeMexer ? '<button class="cad-linha-btn danger" data-eq-rem="'+esc(u.id)+'" title="Tirar da equipe">×</button>' : '';
+    return '<div class="cad-linha">'+
+      '<span class="cad-eq-av" style="background:'+esc(u.color||'#64748B')+'">'+esc(iniciais(u.name||''))+'</span>'+
+      '<span class="cad-linha-main">'+
+        '<b>'+esc(u.name||'')+'</b>'+
+        '<span class="cad-linha-sub">'+esc(u.email||'sem e-mail')+esc(setLb)+'</span>'+
+      '</span>'+
+      acao+
     '</div>';
-  }).join('')+'</div>' : '<div class="cad-vazio">Nenhum membro nesta equipe ainda.</div>';
+  }).join('') : '<div class="cad-vazio">Nenhum membro ainda. Clique em "Adicionar pessoa" para começar.</div>';
 
-  var addBtn = podeMexer ? '<button class="btn-new" id="cadAddMembro">'+icon('plus')+'Adicionar pessoas</button>' : '';
-  var editBtn = podeMexer ? '<button class="btn btn-secondary" id="cadEqEditar">Editar equipe</button>' : '';
+  var acoesTopo = podeMexer ? '<button class="btn btn-secondary" id="eqEditar">Editar</button>' +
+    '<button class="btn btn-secondary" id="eqAddMembro">'+icon('plus')+'Adicionar pessoa</button>' : '';
 
-  return '<div class="cad-titulo">'+
-      '<button class="cad-voltar" data-cad-nav="equipes">← Equipes</button>'+
-      '<h3><span class="cad-eq-av grande" style="background:'+cor+'">👥</span> '+esc(e.nome)+'</h3>'+
-      editBtn+
+  return '<div class="cad-titulo"><button class="cad-voltar" data-cad-nav="equipes">← Equipes</button>'+
+    '<h3><span class="cad-eq-av grande" style="background:'+cor+'">'+icon('users')+'</span> '+esc(e.name)+'</h3>'+
+    '<span class="cad-sub">'+esc(escopo)+' · '+membros.length+' pessoa(s)</span>'+
+    acoesTopo+
+  '</div>'+
+    '<div class="cad-2col">'+
+      '<div class="cad-bloco"><h4>Informações</h4>'+
+        '<div class="cad-info-row"><span>Descrição</span><b>'+esc(e.description||'—')+'</b></div>'+
+        '<div class="cad-info-row"><span>Escopo</span><b>'+esc(escopo)+'</b></div>'+
+        '<div class="cad-info-row"><span>Situação</span><b>'+(e.is_active===false?'Desativada':'Ativa')+'</b></div>'+
+      '</div>'+
+      '<div class="cad-bloco"><h4>Indicadores</h4>'+
+        '<div class="cad-info-row"><span>Membros</span><b>'+membros.length+'</b></div>'+
+        '<div class="cad-info-row"><span>Com acesso ao sistema</span><b>'+membros.length+'</b></div>'+
+      '</div>'+
     '</div>'+
-    '<div class="cad-bloco"><h4>Sobre a equipe</h4>'+
-      '<div class="cad-info-row"><span>Escopo</span><b>'+esc(setLb)+'</b></div>'+
-      (e.descricao ? '<div class="cad-info-row"><span>Descrição</span><b>'+esc(e.descricao)+'</b></div>' : '')+
-      '<div class="cad-info-row"><span>Membros</span><b>'+membros.length+'</b></div>'+
-    '</div>'+
-    '<div class="cad-titulo"><h3>Membros</h3><span class="cad-sub">'+membros.length+' pessoa(s)</span>'+addBtn+'</div>'+
-    membrosCards;
+    '<div class="cad-titulo"><h3>Membros</h3></div>'+
+    '<div class="cad-lista">'+listaMembros+'</div>';
 }
 
-function bindCentralEquipeDetalhe(){
-  var voltar = document.querySelector('[data-cad-nav="equipes"]');
-  if (voltar) voltar.addEventListener('click', function(){ ST.central.nav='equipes'; renderPage(); });
-  var editar = document.getElementById('cadEqEditar');
-  if (editar) editar.addEventListener('click', function(){
-    var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(ST.central.equipeId); });
-    if (e) openEquipeModal(e);
-  });
-  var add = document.getElementById('cadAddMembro');
-  if (add) add.addEventListener('click', function(){ openEquipeAdicionarMembros(ST.central.equipeId); });
-  document.querySelectorAll('[data-eq-tirar]').forEach(function(b){
-    b.addEventListener('click', function(){ equipeTirarMembro(this.getAttribute('data-eq-tirar')); });
-  });
-}
+/* ---------- Modal criar/editar equipe ---------- */
+function openEquipeModal(equipe){
+  var isNew = !equipe || !equipe.id;
+  var ed = Object.assign({ name:'', description:'', sector:'', color:'#3B6FF7', is_active:true }, equipe || {});
+  // opções de escopo: cruzada + todos os departamentos ativos
+  var setorOpts = '<option value="">Cruzada (qualquer departamento)</option>' +
+    (ST.departamentos||[]).filter(function(d){ return d.is_active!==false; })
+      .map(function(d){ return '<option value="'+esc(d.key)+'"'+(String(ed.sector||'')===d.key?' selected':'')+'>'+esc(d.label)+'</option>'; })
+      .join('');
+  var cores = ['#3B6FF7','#8B5CF6','#16A34A','#F59E0B','#EF4444','#0EA5E9','#EC4899','#14B8A6'];
+  var coresHTML = cores.map(function(c){ return '<button type="button" class="dp-cor-opt'+(ed.color===c?' on':'')+'" data-eq-cor="'+c+'" style="background:'+c+'"></button>'; }).join('');
 
-/* ---------- Modal: criar/editar equipe ---------- */
-function openEquipeModal(eq){
-  var isNew = !eq || !eq.id;
-  var ed = Object.assign({ nome:'', descricao:'', sector:'', color:'#3B6FF7' }, eq || {});
-  var setorOpts = '<option value="">🌐 Cross-departamento (aberta a qualquer setor)</option>' +
-    (ST.departamentos||[]).filter(function(d){ return d.is_active!==false; }).map(function(d){
-      return '<option value="'+esc(d.key)+'"'+(String(ed.sector||'')===d.key?' selected':'')+'>'+esc(d.label)+'</option>';
-    }).join('');
-  var membros = eq.id ? equipeMembrosDe(eq.id).length : 0;
-  var infoUso = eq.id ? '<div class="cad-explica">'+membros+' pessoa'+(membros===1?'':'s')+' nesta equipe.</div>' : '';
+  var contMembros = isNew ? '' : '<div class="cad-explica">Esta equipe tem <b>'+((equipe.membros||[]).length)+'</b> membro(s). Para gerenciar membros, feche este modal e use "Adicionar pessoa" na tela da equipe.</div>';
 
   var m = makeModal({
     title: isNew ? 'Nova equipe' : 'Editar equipe',
     width: 520,
     body:
-      '<div class="modal-row"><label class="modal-label">Nome da equipe</label>'+
-        '<input type="text" id="eqNome" value="'+esc(ed.nome)+'" placeholder="Ex: Força-tarefa Black Friday" autofocus></div>'+
+      '<div class="modal-row"><label class="modal-label">Nome</label>'+
+        '<input type="text" id="eqNome" value="'+esc(ed.name)+'" placeholder="Ex: Força-tarefa Black Friday" autofocus></div>'+
       '<div class="modal-row"><label class="modal-label">Descrição <span class="cad-sub">(opcional)</span></label>'+
-        '<input type="text" id="eqDesc" value="'+esc(ed.descricao||'')+'" placeholder="Ex: Preparação da campanha de novembro"></div>'+
+        '<input type="text" id="eqDesc" value="'+esc(ed.description||'')+'" placeholder="Para que serve esta equipe?"></div>'+
       '<div class="modal-row"><label class="modal-label">Escopo</label>'+
         '<select id="eqSetor">'+setorOpts+'</select>'+
-        '<div class="cad-explica">Uma equipe de um só departamento aparece só na Central daquele departamento. Cross-departamento aparece pra todos os admins.</div>'+
+        '<div class="cad-explica">Um escopo de departamento limita a equipe a pessoas daquele setor. "Cruzada" aceita qualquer pessoa.</div>'+
       '</div>'+
-      infoUso,
+      '<div class="modal-row"><label class="modal-label">Cor</label>'+
+        '<div class="dp-cor-grid" id="eqCorGrid">'+coresHTML+'</div>'+
+      '</div>'+
+      contMembros,
     saveLabel: isNew ? 'Criar equipe' : 'Salvar',
     onSave: function(close, root){
       var payload = {
-        nome: (root.querySelector('#eqNome').value||'').trim(),
-        descricao: (root.querySelector('#eqDesc').value||'').trim() || null,
+        name: (root.querySelector('#eqNome').value||'').trim(),
+        description: (root.querySelector('#eqDesc').value||'').trim(),
         sector: root.querySelector('#eqSetor').value || null,
-        color: ed.color || '#3B6FF7'
+        color: ed.color,
+        is_active: ed.is_active!==false
       };
-      if (!payload.nome){ toast('Digite o nome','error'); return; }
-      // duplicado?
-      var duplicado = (ST.equipes||[]).find(function(x){
-        return String(x.id)!==String(eq.id||'') && (x.nome||'').toLowerCase()===payload.nome.toLowerCase() && String(x.sector||'')===String(payload.sector||'');
+      if (!payload.name){ toast('Digite o nome','error'); return; }
+      var duplo = (ST.equipes||[]).find(function(x){
+        return (!ed.id || String(x.id)!==String(ed.id)) &&
+               (x.name||'').toLowerCase()===payload.name.toLowerCase();
       });
-      if (duplicado){ toast('Já existe uma equipe com esse nome nesse escopo','error'); return; }
-      equipeSalvar(Object.assign({}, eq, payload), close);
+      if (duplo){ toast('Já existe uma equipe com esse nome','error'); return; }
+      equipeSalvar(Object.assign({}, ed, payload), close);
     }
+  });
+
+  // bind cores
+  m.root.querySelectorAll('[data-eq-cor]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ed.color = this.getAttribute('data-eq-cor');
+      m.root.querySelectorAll('[data-eq-cor]').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-eq-cor')===ed.color); });
+    });
   });
 }
 
-/* ---------- Salvar equipe ---------- */
+/* ---------- Salvar ---------- */
 function equipeSalvar(eq, cb){
   var isNew = !eq.id;
-  var payload = { nome:eq.nome, descricao:eq.descricao||null, sector:eq.sector||null, color:eq.color||'#3B6FF7' };
-  // duplicado no mesmo escopo?
-  var duplicado = (ST.equipes||[]).find(function(x){
-    return String(x.id)!==String(eq.id||'') &&
-           (x.nome||'').toLowerCase()===(payload.nome||'').toLowerCase() &&
-           String(x.sector||'')===String(payload.sector||'');
-  });
-  if (duplicado){ toast('Já existe uma equipe com esse nome nesse escopo','error'); return; }
+  var payload = {
+    name: eq.name, description: eq.description || null,
+    sector: eq.sector || null, color: eq.color || '#3B6FF7',
+    is_active: eq.is_active!==false
+  };
   if (isNew){
     sb.from('malba_equipes').insert(payload).select().single().then(function(r){
       if (r.error){
-        var m=(r.error.message||'').toLowerCase();
-        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-fase4.sql no Supabase para habilitar equipes.','error');
+        var m = (r.error.message||'').toLowerCase();
+        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-fase4.sql no Supabase.','error');
         else toast('Não consegui criar: '+(r.error.message||''),'error');
         return;
       }
-      ST.equipes = ST.equipes || [];
-      ST.equipes.push(r.data);
+      var novo = Object.assign({}, r.data, { membros: [] });
+      ST.equipes = (ST.equipes||[]).concat([novo]);
       if (cb) cb();
       toast('Equipe criada','success'); renderPage();
     });
@@ -10422,84 +10562,645 @@ function equipeSalvar(eq, cb){
   }
 }
 
-/* ---------- Remover equipe (leva os vínculos junto) ---------- */
-function equipeRemover(id){
-  var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(id); });
-  if (!e) return;
-  var membros = equipeMembrosDe(id).length;
-  var msg = membros
-    ? 'A equipe "'+e.nome+'" tem '+membros+' pessoa'+(membros===1?'':'s')+' vinculada'+(membros===1?'':'s')+'. Remover a equipe tira todos esses vínculos — as pessoas continuam no sistema, só saem desta equipe.'
-    : 'Remover a equipe "'+e.nome+'"?';
-  confirmDialog({
-    title:'Remover equipe', message:msg, confirmLabel:'Remover',
-    onConfirm: function(){
-      // apaga membros primeiro, depois a equipe
-      Promise.all([
-        sb.from('malba_equipe_membros').delete().eq('equipe_id', id).then(function(r){ return r; }),
-        sb.from('malba_equipes').delete().eq('id', id).then(function(r){ return r; })
-      ]).then(function(res){
-        if (res[1].error){ toast('Não consegui remover: '+(res[1].error.message||''),'error'); return; }
-        ST.equipes = (ST.equipes||[]).filter(function(x){ return String(x.id)!==String(id); });
-        ST.equipeMembros = (ST.equipeMembros||[]).filter(function(x){ return String(x.equipe_id)!==String(id); });
-        // se estava no detalhe dela, volta pra lista
-        if (ST.central.equipeId===id){ ST.central.equipeId=null; ST.central.nav='equipes'; }
-        toast('Equipe removida','success'); renderPage();
-      });
-    }
-  });
-}
+/* ---------- Adicionar membro ---------- */
+function openAddMembroEquipe(equipeId){
+  var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
+  if (!eq) return;
+  // candidatos: quem ainda não é membro E respeita o escopo da equipe
+  var jaSao = new Set((eq.membros||[]).map(String));
+  var candidatos = (ST.allUsers||[]).filter(function(u){
+    if (jaSao.has(String(u.id))) return false;
+    if (eq.sector && String(u.sector||'')!==String(eq.sector)) return false;
+    return true;
+  }).sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
 
-/* ---------- Adicionar pessoas ---------- */
-function openEquipeAdicionarMembros(equipeId){
-  var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
-  if (!e) return;
-  var jaSao = new Set(equipeMembrosDe(equipeId).map(function(m){ return String(m.user_id); }));
-  // universo: se equipe é do setor X, mostra usuários do setor X; se cross, mostra todos
-  var universo = (ST.allUsers||[]).slice();
-  if (e.sector) universo = universo.filter(function(u){ return String(u.sector||'')===String(e.sector); });
-  // fora quem já é membro
-  var candidatos = universo.filter(function(u){ return !jaSao.has(String(u.id)); });
-  candidatos.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  if (!candidatos.length){
+    var msg = eq.sector
+      ? 'Todos do departamento "'+((SECTORS[eq.sector]||{label:eq.sector}).label)+'" já estão nesta equipe, ou não há mais pessoas neste departamento.'
+      : 'Todas as pessoas com acesso ao sistema já estão nesta equipe.';
+    toast(msg, 'info'); return;
+  }
 
-  var listaHTML = candidatos.length ? candidatos.map(function(u){
-    var deptoLb = (SECTORS[u.sector]||{label:u.sector}).label;
-    return '<label class="cad-eq-item add-pick">'+
-      '<input type="checkbox" data-add-user="'+esc(u.id)+'">'+
-      '<span class="cad-eq-av" style="background:'+esc(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
-      '<span class="cad-eq-main"><b>'+esc(u.name)+'</b><span class="cad-eq-sub">'+esc(u.email||'')+' · '+esc(deptoLb)+'</span></span>'+
+  var linhas = candidatos.map(function(u){
+    var setLb = u.sector ? ((SECTORS[u.sector]||{label:u.sector}).label) : '—';
+    return '<label class="cad-eq-pick"><input type="checkbox" data-add-uid="'+esc(u.id)+'">'+
+      '<span class="cad-eq-av" style="background:'+esc(u.color||'#64748B')+'">'+esc(iniciais(u.name||''))+'</span>'+
+      '<span class="cad-eq-pick-main"><b>'+esc(u.name||'')+'</b><span>'+esc(setLb)+'</span></span>'+
     '</label>';
-  }).join('') : '<div class="cad-vazio">Ninguém disponível pra adicionar (todo mundo já está na equipe).</div>';
+  }).join('');
 
-  var m = makeModal({
-    title:'Adicionar pessoas à equipe',
-    width: 540,
+  makeModal({
+    title: 'Adicionar pessoas a '+eq.name,
+    width: 520,
     body:
-      '<p class="cad-explica">Selecione quem quer adicionar em <b>'+esc(e.nome)+'</b>.</p>'+
-      '<div class="cad-lista">'+listaHTML+'</div>',
-    saveLabel:'Adicionar',
+      '<p class="cad-explica">'+(eq.sector ? 'Só pessoas do departamento "'+esc((SECTORS[eq.sector]||{label:eq.sector}).label)+'" aparecem aqui.' : 'Equipe cruzada — qualquer pessoa pode entrar.')+'</p>'+
+      '<div class="cad-eq-picks">'+linhas+'</div>',
+    saveLabel: 'Adicionar selecionadas',
     onSave: function(close, root){
-      var picks = [...root.querySelectorAll('[data-add-user]')].filter(function(c){ return c.checked; }).map(function(c){ return c.getAttribute('data-add-user'); });
-      if (!picks.length){ toast('Marque pelo menos uma pessoa','error'); return; }
-      var payload = picks.map(function(uid){ return { equipe_id:equipeId, user_id:uid }; });
-      sb.from('malba_equipe_membros').insert(payload).select().then(function(r){
+      var ids = [...root.querySelectorAll('[data-add-uid]:checked')].map(function(c){ return c.getAttribute('data-add-uid'); });
+      if (!ids.length){ toast('Selecione ao menos uma pessoa','error'); return; }
+      var payloads = ids.map(function(uid){ return { equipe_id: eq.id, user_id: uid }; });
+      sb.from('malba_equipe_membros').insert(payloads).select().then(function(r){
         if (r.error){ toast('Não consegui adicionar: '+(r.error.message||''),'error'); return; }
-        ST.equipeMembros = (ST.equipeMembros||[]).concat(r.data || payload);
+        eq.membros = (eq.membros||[]).concat(ids.map(String));
         close();
-        toast(picks.length+' pessoa'+(picks.length===1?'':'s')+' adicionada'+(picks.length===1?'':'s'),'success');
+        toast(ids.length+' pessoa'+(ids.length===1?'':'s')+' adicionada'+(ids.length===1?'':'s'),'success');
         renderPage();
       });
     }
   });
 }
 
-/* ---------- Tirar membro ---------- */
-function equipeTirarMembro(membroId){
-  var m = (ST.equipeMembros||[]).find(function(x){ return String(x.id)===String(membroId); });
-  if (!m) return;
-  sb.from('malba_equipe_membros').delete().eq('id', membroId).then(function(r){
-    if (r.error){ toast('Não consegui remover','error'); return; }
-    ST.equipeMembros = (ST.equipeMembros||[]).filter(function(x){ return String(x.id)!==String(membroId); });
+/* ---------- Remover membro ---------- */
+function equipeRemoverMembro(equipeId, userId){
+  var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(equipeId); });
+  if (!eq) return;
+  sb.from('malba_equipe_membros').delete().eq('equipe_id', equipeId).eq('user_id', userId).then(function(r){
+    if (r.error){ toast('Não consegui remover: '+(r.error.message||''),'error'); return; }
+    eq.membros = (eq.membros||[]).filter(function(x){ return String(x)!==String(userId); });
     toast('Pessoa removida da equipe','success'); renderPage();
+  });
+}
+
+/* ---------- Remover equipe ---------- */
+function equipeRemover(id){
+  var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!eq) return;
+  var qtd = (eq.membros||[]).length;
+  var msg = qtd
+    ? 'Esta equipe tem '+qtd+' pessoa'+(qtd===1?'':'s')+'. Elas continuam existindo (só saem desta equipe). Remover mesmo assim?'
+    : 'Remover a equipe "'+eq.name+'"?';
+  confirmDialog({
+    title:'Remover equipe', message:msg, confirmLabel:'Remover',
+    onConfirm: function(){
+      // remove membros primeiro, depois a equipe
+      sb.from('malba_equipe_membros').delete().eq('equipe_id', id).then(function(){
+        sb.from('malba_equipes').delete().eq('id', id).then(function(r){
+          if (r.error){ toast('Não consegui remover','error'); return; }
+          ST.equipes = (ST.equipes||[]).filter(function(x){ return String(x.id)!==String(id); });
+          toast('Equipe removida','success');
+          if (ST.central && ST.central.equipeId===id) ST.central.nav='equipes';
+          renderPage();
+        });
+      });
+    }
+  });
+}
+
+/* ---------- Bind ---------- */
+function bindCentralEquipes(){
+  var nova = document.getElementById('cadNovaEquipe');
+  if (nova) nova.addEventListener('click', function(){ openEquipeModal({}); });
+  document.querySelectorAll('[data-eq-open]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ST.central.equipeId = this.getAttribute('data-eq-open');
+      ST.central.nav = 'equipe';
+      renderPage();
+    });
+  });
+}
+function bindCentralEquipeDetalhe(){
+  var edit = document.getElementById('eqEditar');
+  if (edit) edit.addEventListener('click', function(){
+    var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(ST.central.equipeId); });
+    if (eq) openEquipeModal(eq);
+  });
+  var add = document.getElementById('eqAddMembro');
+  if (add) add.addEventListener('click', function(){ openAddMembroEquipe(ST.central.equipeId); });
+  document.querySelectorAll('[data-eq-rem]').forEach(function(b){
+    b.addEventListener('click', function(){ equipeRemoverMembro(ST.central.equipeId, this.getAttribute('data-eq-rem')); });
+  });
+}
+
+/* ============================================================
+   v110: CADASTROS — Fase 5a (Perfis de Permissão customizáveis)
+
+   Um perfil = nível base (um dos 5) + adições/remoções em cima.
+   Quem tem um perfil atribuído usa-o. Quem não tem, usa o nível
+   fixo como antes. Nada quebra.
+   ============================================================ */
+
+/* ---------- Capacidades disponíveis pra editar (rótulos amigáveis) ---------- */
+var CAPS_INFO = {
+  sistema:       { label:'Sistema completo',        desc:'Estrutura, usuários, integrações, configurações' },
+  equipe:        { label:'Equipe',                  desc:'Gerenciar funcionários e ponto' },
+  gerir:         { label:'Gerenciar tarefas',       desc:'Criar projetos, POPs e administrar todo o quadro' },
+  rotinas:       { label:'Rotinas do Dia',          desc:'Criar e agendar POPs recorrentes' },
+  redistribuir:  { label:'Redistribuir',            desc:'Mover tarefas entre pessoas' },
+  indicadores:   { label:'Indicadores',             desc:'Ver KPIs, dashboards e relatórios' },
+  executar:      { label:'Executar tarefas',        desc:'Marcar como feito, enviar evidências' },
+  estrategia:    { label:'Estratégia',              desc:'Criar/ver ideias, objetivos, projetos' },
+  docs:          { label:'Documentos',              desc:'Criar/ler documentos' }
+};
+
+/* ---------- Carregar perfis do banco ---------- */
+function perfisCarregar(cb){
+  if (!sb){ ST.perfis = []; if (cb) cb(); return; }
+  sb.from('malba_perfis').select('*').order('label').then(function(r){
+    if (r.error){
+      var msg = (r.error.message||'').toLowerCase();
+      if (msg.indexOf('does not exist')!==-1 || msg.indexOf('relation')!==-1){
+        ST.perfis = [];
+      } else {
+        console.warn('perfis:', r.error.message);
+        ST.perfis = [];
+      }
+    } else {
+      ST.perfis = r.data || [];
+    }
+    if (cb) cb();
+  });
+}
+
+/* ---------- Compõe capacidades: base + adiciona - remove ---------- */
+function capsDoPerfil(perfil){
+  if (!perfil) return null;
+  var base = CAPS[perfil.base_nivel] || {};
+  var out = Object.assign({}, base);
+  (perfil.caps_adicionar||[]).forEach(function(k){ out[k] = 1; });
+  (perfil.caps_remover||[]).forEach(function(k){ delete out[k]; });
+  return out;
+}
+
+/* ---------- Substitui CAPS[user] no can() ---------- */
+/* Se o usuário tem profile_id → usa capsDoPerfil. Senão → nivelDe(user) e CAPS[nível]. */
+function capsDoUsuario(u){
+  if (!u) return {};
+  if (u.profile_id){
+    var p = (ST.perfis||[]).find(function(x){ return String(x.id)===String(u.profile_id); });
+    if (p) return capsDoPerfil(p);
+  }
+  var nv = nivelDe(u);
+  return CAPS[nv] || {};
+}
+
+/* ---------- Rótulo do perfil (mostrar em lugar do "Gestor") ---------- */
+function perfilLabelDe(u){
+  if (u && u.profile_id){
+    var p = (ST.perfis||[]).find(function(x){ return String(x.id)===String(u.profile_id); });
+    if (p) return p.label;
+  }
+  var nv = nivelDe(u);
+  return (NIVEIS[nv]||{label:nv}).label;
+}
+
+/* ============================================================
+   TELA — Aba Perfis na Central
+   ============================================================ */
+function centralPerfisHTML(){
+  var lista = (ST.perfis||[]).slice().sort(function(a,b){ return (a.label||'').localeCompare(b.label||''); });
+  var podeMexer = isSuper(ST.session);
+  var btn = podeMexer ? '<button class="btn-new" id="cadNovoPerfil">'+icon('plus')+'Novo perfil</button>' : '';
+
+  // Bloco dos 5 níveis fixos (só leitura)
+  var fixos = ['viewer','colaborador','supervisor','gestor','admin'].map(function(nv){
+    var info = NIVEIS[nv];
+    var cnt = (ST.allUsers||[]).filter(function(u){ return !u.profile_id && nivelDe(u)===nv; }).length;
+    return '<div class="cad-linha">'+
+      '<span class="cad-linha-ic" style="background:'+info.color+'18;color:'+info.color+'">'+icon('users')+'</span>'+
+      '<span class="cad-linha-main">'+
+        '<b>'+esc(info.label)+'</b> <span class="cad-eq-chip cinza">nível padrão</span>'+
+        '<span class="cad-linha-sub">'+esc(info.desc)+' · '+cnt+' pessoa'+(cnt===1?'':'s')+'</span>'+
+      '</span>'+
+    '</div>';
+  }).join('');
+
+  // Perfis customizados
+  var linhas = lista.length ? lista.map(function(p){
+    var baseLb = (NIVEIS[p.base_nivel]||{label:p.base_nivel}).label;
+    var cor = p.color || '#3B6FF7';
+    var cnt = (ST.allUsers||[]).filter(function(u){ return String(u.profile_id||'')===String(p.id); }).length;
+    var adds = (p.caps_adicionar||[]).length;
+    var rems = (p.caps_remover||[]).length;
+    var mods = [];
+    if (adds) mods.push('+'+adds);
+    if (rems) mods.push('−'+rems);
+    var chip = mods.length ? '<span class="cad-eq-chip" style="color:'+cor+';background:'+cor+'18">'+mods.join(' · ')+' caps</span>' : '';
+    var acao = podeMexer ? '<span class="cad-linha-acoes">'+
+      '<button class="cad-linha-btn" data-perfil-edit="'+esc(p.id)+'" title="Editar">✎</button>'+
+      '<button class="cad-linha-btn danger" data-perfil-del="'+esc(p.id)+'" title="Remover">×</button>'+
+    '</span>' : '';
+    return '<div class="cad-linha">'+
+      '<span class="cad-linha-ic" style="background:'+cor+'18;color:'+cor+'">'+icon('gear')+'</span>'+
+      '<span class="cad-linha-main">'+
+        '<b>'+esc(p.label)+'</b> '+chip+
+        '<span class="cad-linha-sub">Baseado em <b>'+esc(baseLb)+'</b> · '+cnt+' pessoa'+(cnt===1?'':'s')+'</span>'+
+      '</span>'+
+      acao+
+    '</div>';
+  }).join('') : '<div class="cad-vazio">Nenhum perfil customizado ainda. Os 5 níveis padrão continuam funcionando pra todo mundo.</div>';
+
+  return '<div class="cad-titulo"><h3>🎭 Perfis de Permissão</h3><span class="cad-sub">'+(5+lista.length)+' perfis no total</span>'+btn+'</div>'+
+    '<p class="cad-explica">Os 5 níveis padrão (Visualizador → Administrador) são a base. Perfis customizados <b>partem de um nível</b> e adicionam ou removem capacidades específicas.</p>'+
+    '<div class="cad-bloco"><h4>Níveis padrão</h4>'+
+      '<div class="cad-lista">'+fixos+'</div>'+
+    '</div>'+
+    '<div class="cad-bloco"><h4>Perfis customizados</h4>'+
+      '<div class="cad-lista">'+linhas+'</div>'+
+    '</div>';
+}
+
+function bindCentralPerfis(){
+  var novo = document.getElementById('cadNovoPerfil');
+  if (novo) novo.addEventListener('click', function(){ openPerfilModal({}); });
+  document.querySelectorAll('[data-perfil-edit]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var p = (ST.perfis||[]).find(function(x){ return String(x.id)===String(b.getAttribute('data-perfil-edit')); });
+      if (p) openPerfilModal(p);
+    });
+  });
+  document.querySelectorAll('[data-perfil-del]').forEach(function(b){
+    b.addEventListener('click', function(){ perfilRemover(b.getAttribute('data-perfil-del')); });
+  });
+}
+
+/* ---------- Modal criar/editar perfil ---------- */
+function openPerfilModal(perfil){
+  var isNew = !perfil || !perfil.id;
+  var ed = Object.assign({
+    label:'', base_nivel:'colaborador', color:'#3B6FF7',
+    caps_adicionar:[], caps_remover:[]
+  }, perfil || {});
+  // clone os arrays pra não mutar o original
+  ed.caps_adicionar = (ed.caps_adicionar||[]).slice();
+  ed.caps_remover   = (ed.caps_remover||[]).slice();
+
+  function refazBloco(){
+    var baseCaps = CAPS[ed.base_nivel] || {};
+    var itens = Object.keys(CAPS_INFO).map(function(k){
+      var temNaBase = !!baseCaps[k];
+      var isAdd = ed.caps_adicionar.indexOf(k)!==-1;
+      var isRem = ed.caps_remover.indexOf(k)!==-1;
+      // estado efetivo: base ? (rem ? off : on) : (add ? on : off)
+      var ligado = temNaBase ? !isRem : isAdd;
+      var estado = temNaBase ? (isRem ? 'removida' : 'base') : (isAdd ? 'adicionada' : 'off');
+      var chip = { base:'do nível base', adicionada:'+ adicionada', removida:'− removida', off:'—' }[estado];
+      var chipCor = { base:'#64748B', adicionada:'#16A34A', removida:'#EF4444', off:'#9CA3AF' }[estado];
+      return '<label class="perfil-cap'+(ligado?' on':'')+'"><input type="checkbox" data-cap="'+esc(k)+'"'+(ligado?' checked':'')+'>'+
+        '<span class="perfil-cap-main"><b>'+esc(CAPS_INFO[k].label)+'</b>'+
+          '<span class="perfil-cap-desc">'+esc(CAPS_INFO[k].desc)+'</span>'+
+        '</span>'+
+        '<span class="perfil-cap-chip" style="color:'+chipCor+'">'+chip+'</span>'+
+      '</label>';
+    }).join('');
+    var el = document.getElementById('perfilCapsList');
+    if (el){
+      el.innerHTML = itens;
+      el.querySelectorAll('[data-cap]').forEach(function(chk){
+        chk.addEventListener('change', function(){
+          var k = this.getAttribute('data-cap');
+          var temNaBase = !!(CAPS[ed.base_nivel]||{})[k];
+          // limpa listas
+          ed.caps_adicionar = ed.caps_adicionar.filter(function(x){ return x!==k; });
+          ed.caps_remover   = ed.caps_remover.filter(function(x){ return x!==k; });
+          if (this.checked){
+            if (!temNaBase) ed.caps_adicionar.push(k); // marcado e não é da base → adicionar
+          } else {
+            if (temNaBase) ed.caps_remover.push(k);    // desmarcado e é da base → remover
+          }
+          refazBloco();
+        });
+      });
+    }
+  }
+
+  var cores = ['#3B6FF7','#8B5CF6','#16A34A','#F59E0B','#EF4444','#0EA5E9','#EC4899','#14B8A6'];
+  var coresHTML = cores.map(function(c){ return '<button type="button" class="dp-cor-opt'+(ed.color===c?' on':'')+'" data-perfil-cor="'+c+'" style="background:'+c+'"></button>'; }).join('');
+  var niveisOpts = ['viewer','colaborador','supervisor','gestor','admin'].map(function(nv){
+    return '<option value="'+nv+'"'+(ed.base_nivel===nv?' selected':'')+'>'+esc(NIVEIS[nv].label)+'</option>';
+  }).join('');
+
+  var contUso = ed.id ? (ST.allUsers||[]).filter(function(u){ return String(u.profile_id||'')===String(ed.id); }).length : 0;
+  var infoUso = contUso ? '<div class="cad-explica">Este perfil está aplicado a <b>'+contUso+'</b> pessoa'+(contUso===1?'':'s')+'. Mudanças aqui refletem imediatamente para todas elas.</div>' : '';
+
+  var m = makeModal({
+    title: isNew ? 'Novo perfil' : 'Editar '+ed.label,
+    width: 640,
+    body:
+      '<div class="dp-2col">'+
+        '<div class="modal-row"><label class="modal-label">Nome do perfil</label>'+
+          '<input type="text" id="perfilNome" value="'+esc(ed.label)+'" placeholder="Ex: Gerência Financeira" autofocus></div>'+
+        '<div class="modal-row"><label class="modal-label">Baseado em</label>'+
+          '<select id="perfilBase">'+niveisOpts+'</select>'+
+        '</div>'+
+      '</div>'+
+      '<div class="modal-row"><label class="modal-label">Cor</label>'+
+        '<div class="dp-cor-grid" id="perfilCorGrid">'+coresHTML+'</div>'+
+      '</div>'+
+      infoUso+
+      '<div class="modal-row"><label class="modal-label">Capacidades</label>'+
+        '<p class="cad-explica">Ative pra dar acesso, desative pra tirar. Cinza = do nível base, verde = adicionada, vermelho = removida.</p>'+
+        '<div id="perfilCapsList" class="perfil-caps"></div>'+
+      '</div>',
+    saveLabel: isNew ? 'Criar perfil' : 'Salvar',
+    onSave: function(close, root){
+      var payload = {
+        label: (root.querySelector('#perfilNome').value||'').trim(),
+        base_nivel: root.querySelector('#perfilBase').value || 'colaborador',
+        color: ed.color,
+        caps_adicionar: ed.caps_adicionar,
+        caps_remover: ed.caps_remover
+      };
+      if (!payload.label){ toast('Digite o nome','error'); return; }
+      var dup = (ST.perfis||[]).find(function(x){
+        return (!ed.id || String(x.id)!==String(ed.id)) &&
+               (x.label||'').toLowerCase()===payload.label.toLowerCase();
+      });
+      if (dup){ toast('Já existe um perfil com esse nome','error'); return; }
+      perfilSalvar(Object.assign({}, ed, payload), close);
+    }
+  });
+
+  refazBloco();
+  m.root.querySelector('#perfilBase').addEventListener('change', function(){
+    ed.base_nivel = this.value;
+    // NÃO limpa adds/rems — o usuário pode ter mexido de propósito
+    refazBloco();
+  });
+  m.root.querySelectorAll('[data-perfil-cor]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ed.color = this.getAttribute('data-perfil-cor');
+      m.root.querySelectorAll('[data-perfil-cor]').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-perfil-cor')===ed.color); });
+    });
+  });
+}
+
+/* ---------- Salvar ---------- */
+function perfilSalvar(perfil, cb){
+  var isNew = !perfil.id;
+  var payload = {
+    label: perfil.label,
+    base_nivel: perfil.base_nivel,
+    color: perfil.color || '#3B6FF7',
+    caps_adicionar: perfil.caps_adicionar || [],
+    caps_remover: perfil.caps_remover || []
+  };
+  if (isNew){
+    sb.from('malba_perfis').insert(payload).select().single().then(function(r){
+      if (r.error){
+        var m = (r.error.message||'').toLowerCase();
+        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-fase5a.sql no Supabase.','error');
+        else toast('Não consegui criar: '+(r.error.message||''),'error');
+        return;
+      }
+      ST.perfis = (ST.perfis||[]).concat([r.data]);
+      if (cb) cb();
+      toast('Perfil criado','success'); renderPage();
+    });
+  } else {
+    sb.from('malba_perfis').update(payload).eq('id', perfil.id).then(function(r){
+      if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+      var i = (ST.perfis||[]).findIndex(function(x){ return String(x.id)===String(perfil.id); });
+      if (i>=0) ST.perfis[i] = Object.assign(ST.perfis[i], payload);
+      if (cb) cb();
+      toast('Perfil salvo','success'); renderPage();
+    });
+  }
+}
+
+/* ---------- Remover ---------- */
+function perfilRemover(id){
+  var p = (ST.perfis||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!p) return;
+  var cnt = (ST.allUsers||[]).filter(function(u){ return String(u.profile_id||'')===String(id); }).length;
+  var msg = cnt
+    ? 'Este perfil está aplicado a '+cnt+' pessoa'+(cnt===1?'':'s')+'. Ao remover, elas voltam para o nível padrão ('+((NIVEIS[p.base_nivel]||{label:p.base_nivel}).label)+'). Continuar?'
+    : 'Remover o perfil "'+p.label+'"?';
+  confirmDialog({
+    title:'Remover perfil', message:msg, confirmLabel:'Remover',
+    onConfirm: function(){
+      sb.from('malba_perfis').delete().eq('id', id).then(function(r){
+        if (r.error){ toast('Não consegui remover: '+(r.error.message||''),'error'); return; }
+        // limpa profile_id de quem estava usando (mesma transação seria ideal via trigger, mas fazemos aqui)
+        var afetados = (ST.allUsers||[]).filter(function(u){ return String(u.profile_id||'')===String(id); });
+        afetados.forEach(function(u){ u.profile_id = null; });
+        ST.perfis = (ST.perfis||[]).filter(function(x){ return String(x.id)!==String(id); });
+        toast('Perfil removido','success'); renderPage();
+      });
+    }
+  });
+}
+
+/* ============================================================
+   v111: CADASTROS — Fase 5b (Dashboard da Estrutura)
+
+   Tela "Organograma" dentro da Central. Mostra:
+   - KPIs no topo
+   - Árvore Empresa → Departamento → Equipes + Colaboradores
+   - Contagens, filtro por departamento, expandir/colapsar
+   ============================================================ */
+
+/* ---------- Estado da tela ---------- */
+function orgEstadoIni(){
+  if (!ST.central.org) ST.central.org = { expandidos: {}, filtroDep: '', q: '' };
+  return ST.central.org;
+}
+
+/* ---------- Lookups auxiliares ---------- */
+function orgPessoasDoDepto(deptoKey){
+  return (ST.allUsers||[]).filter(function(u){ return String(u.sector||'')===String(deptoKey); });
+}
+function orgEquipesDoDepto(deptoKey){
+  return (ST.equipes||[]).filter(function(e){ return e.is_active!==false && String(e.sector||'')===String(deptoKey); });
+}
+function orgEquipesCruzadas(){
+  return (ST.equipes||[]).filter(function(e){ return e.is_active!==false && !e.sector; });
+}
+function orgPessoasSemEquipe(deptoKey){
+  var pessoas = orgPessoasDoDepto(deptoKey);
+  var idsEmEquipe = new Set();
+  (ST.equipes||[]).forEach(function(e){
+    // membros que são deste depto
+    (e.membros||[]).forEach(function(uid){
+      var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
+      if (u && String(u.sector||'')===String(deptoKey)) idsEmEquipe.add(String(u.id));
+    });
+  });
+  return pessoas.filter(function(u){ return !idsEmEquipe.has(String(u.id)); });
+}
+
+/* ---------- Tela ---------- */
+function centralOrganogramaHTML(){
+  orgEstadoIni();
+  var org = ST.central.org;
+  var deps = (ST.departamentos||[]).slice().sort(function(a,b){ return (a.ordem||0)-(b.ordem||0); });
+  // filtro por depto (Gestor cai automaticamente no seu setor)
+  if (!isSuper(ST.session) && isAdmin(ST.session)) deps = deps.filter(function(d){ return d.key===ST.sector; });
+  else if (org.filtroDep) deps = deps.filter(function(d){ return d.key===org.filtroDep; });
+
+  // KPIs (calculados sobre a lista visível)
+  var users = deps.reduce(function(acc,d){ return acc.concat(orgPessoasDoDepto(d.key)); }, []);
+  var equipesAtivas = (ST.equipes||[]).filter(function(e){ return e.is_active!==false; });
+  var equipesCruzadas = orgEquipesCruzadas().length;
+  var comPerfilCustom = users.filter(function(u){ return !!u.profile_id; }).length;
+  var lojas = (ST.storeUnits||[]).length;
+
+  function kpi(v, l, cor){
+    return '<div class="cad-kpi"><div class="cad-kpi-v" style="color:'+cor+'">'+v+'</div><div class="cad-kpi-l">'+esc(l)+'</div></div>';
+  }
+  var kpis = '<div class="cad-kpis">'+
+    kpi(deps.length, 'Departamentos', '#3B6FF7')+
+    kpi(users.length, 'Pessoas com acesso', '#16A34A')+
+    kpi(equipesAtivas.length, 'Equipes ativas', '#8B5CF6')+
+    kpi(equipesCruzadas, 'Equipes cruzadas', '#EC4899')+
+    kpi(comPerfilCustom, 'Com perfil customizado', '#F59E0B')+
+    kpi(lojas, 'Lojas', '#0EA5E9')+
+  '</div>';
+
+  // Filtro de departamento (só Admin geral)
+  var filtroHTML = '';
+  if (isSuper(ST.session)){
+    var opts = '<option value="">Todos os departamentos</option>' +
+      (ST.departamentos||[]).filter(function(d){ return d.is_active!==false; })
+        .map(function(d){ return '<option value="'+esc(d.key)+'"'+(org.filtroDep===d.key?' selected':'')+'>'+esc(d.label)+'</option>'; }).join('');
+    filtroHTML = '<div class="org-filtro"><select id="orgFiltro">'+opts+'</select>'+
+      '<button class="btn btn-secondary" id="orgExpAll">'+icon('plus')+'Expandir tudo</button>'+
+      '<button class="btn btn-secondary" id="orgColAll">×Colapsar tudo</button>'+
+    '</div>';
+  }
+
+  // Árvore
+  var arvore = deps.length ? deps.map(function(d){
+    var pessoas = orgPessoasDoDepto(d.key);
+    var equipes = orgEquipesDoDepto(d.key);
+    var semEquipe = orgPessoasSemEquipe(d.key);
+    var expandido = org.expandidos[d.key] !== false; // padrão: aberto
+    var cor = d.color || '#3B6FF7';
+
+    var equipesHTML = equipes.map(function(e){
+      var membros = usuariosDaEquipe(e.id);
+      var eqExp = org.expandidos['e:'+e.id] === true; // padrão: fechado
+      var avs = membros.slice(0,5).map(function(u){
+        return '<span class="cad-eq-mini" style="background:'+esc(u.color||'#64748B')+'" title="'+esc(u.name||'')+'">'+esc(iniciais(u.name||''))+'</span>';
+      }).join('');
+      var maisN = membros.length>5 ? '<span class="cad-eq-mini extra">+'+(membros.length-5)+'</span>' : '';
+      var membrosLista = eqExp ? '<div class="org-membros">'+ membros.map(function(u){
+        return '<button class="org-pessoa" data-org-pessoa="'+esc(u.id)+'">'+
+          '<span class="cad-eq-av" style="background:'+esc(u.color||'#64748B')+'">'+esc(iniciais(u.name||''))+'</span>'+
+          '<span class="org-pessoa-main"><b>'+esc(u.name||'')+'</b><span>'+esc(perfilLabelDe(u))+'</span></span>'+
+        '</button>';
+      }).join('') +'</div>' : '';
+      return '<div class="org-equipe">'+
+        '<button class="org-equipe-h" data-org-toggle="e:'+esc(e.id)+'">'+
+          '<span class="org-caret">'+(eqExp?'▾':'▸')+'</span>'+
+          '<span class="cad-linha-ic" style="background:'+esc(e.color||'#3B6FF7')+'18;color:'+esc(e.color||'#3B6FF7')+'">'+icon('users')+'</span>'+
+          '<span class="org-equipe-main"><b>'+esc(e.name)+'</b><span>'+membros.length+' pessoa'+(membros.length===1?'':'s')+'</span></span>'+
+          '<span class="cad-eq-avs">'+avs+maisN+'</span>'+
+        '</button>'+
+        membrosLista+
+      '</div>';
+    }).join('');
+
+    var semEquipeHTML = semEquipe.length ? '<div class="org-sem-eq">'+
+      '<div class="org-sem-eq-h">'+icon('users')+'Sem equipe · '+semEquipe.length+'</div>'+
+      '<div class="org-membros">'+ semEquipe.map(function(u){
+        return '<button class="org-pessoa" data-org-pessoa="'+esc(u.id)+'">'+
+          '<span class="cad-eq-av" style="background:'+esc(u.color||'#64748B')+'">'+esc(iniciais(u.name||''))+'</span>'+
+          '<span class="org-pessoa-main"><b>'+esc(u.name||'')+'</b><span>'+esc(perfilLabelDe(u))+'</span></span>'+
+        '</button>';
+      }).join('') +'</div>'+
+    '</div>' : '';
+
+    var corpo = expandido ? (
+      '<div class="org-depto-body">'+
+        (equipes.length ? '<div class="org-secao"><h5>Equipes ('+equipes.length+')</h5>'+equipesHTML+'</div>' : '')+
+        (semEquipeHTML || (equipes.length ? '' : '<div class="cad-vazio" style="margin-top:8px">Nenhuma pessoa neste departamento ainda.</div>'))+
+      '</div>'
+    ) : '';
+
+    return '<div class="org-depto">'+
+      '<button class="org-depto-h" style="border-left-color:'+cor+'" data-org-toggle="'+esc(d.key)+'">'+
+        '<span class="org-caret">'+(expandido?'▾':'▸')+'</span>'+
+        '<span class="org-depto-ic" style="background:'+cor+'18;color:'+cor+'">'+icon(d.icon||'grid')+'</span>'+
+        '<span class="org-depto-main"><b>'+esc(d.label)+'</b><span>'+pessoas.length+' pessoa'+(pessoas.length===1?'':'s')+' · '+equipes.length+' equipe'+(equipes.length===1?'':'s')+'</span></span>'+
+      '</button>'+
+      corpo+
+    '</div>';
+  }).join('') : '<div class="cad-vazio">Nenhum departamento visível.</div>';
+
+  // Equipes cruzadas fora da árvore
+  var cruzadasSecao = '';
+  if (isSuper(ST.session)){
+    var cruzadas = orgEquipesCruzadas();
+    if (cruzadas.length){
+      cruzadasSecao = '<div class="org-cruzadas"><h4>🔗 Equipes cruzadas ('+cruzadas.length+')</h4>'+
+        '<p class="cad-explica">Não pertencem a um departamento — aceitam pessoas de qualquer setor.</p>'+
+        cruzadas.map(function(e){
+          var membros = usuariosDaEquipe(e.id);
+          var avs = membros.slice(0,5).map(function(u){
+            return '<span class="cad-eq-mini" style="background:'+esc(u.color||'#64748B')+'" title="'+esc(u.name||'')+'">'+esc(iniciais(u.name||''))+'</span>';
+          }).join('');
+          var maisN = membros.length>5 ? '<span class="cad-eq-mini extra">+'+(membros.length-5)+'</span>' : '';
+          return '<button class="cad-linha" data-org-equipe="'+esc(e.id)+'">'+
+            '<span class="cad-linha-ic" style="background:'+esc(e.color||'#8B5CF6')+'18;color:'+esc(e.color||'#8B5CF6')+'">'+icon('users')+'</span>'+
+            '<span class="cad-linha-main"><b>'+esc(e.name)+'</b>'+
+              '<span class="cad-linha-sub">'+membros.length+' pessoa'+(membros.length===1?'':'s')+' · de departamentos diversos</span>'+
+            '</span>'+
+            '<span class="cad-eq-avs">'+avs+maisN+'</span>'+
+          '</button>';
+        }).join('')+
+      '</div>';
+    }
+  }
+
+  return '<div class="cad-titulo"><h3>🗺️ Organograma</h3><span class="cad-sub">Como a empresa está organizada agora</span></div>'+
+    kpis+
+    filtroHTML+
+    '<div class="org-arvore">'+arvore+'</div>'+
+    cruzadasSecao;
+}
+
+function bindCentralOrganograma(){
+  // toggle depto/equipe
+  document.querySelectorAll('[data-org-toggle]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var k = this.getAttribute('data-org-toggle');
+      var org = ST.central.org;
+      if (k.indexOf('e:')===0){
+        org.expandidos[k] = !org.expandidos[k];
+      } else {
+        // deptos: default aberto, então guardar 'false' pra fechar
+        org.expandidos[k] = org.expandidos[k] === false ? true : false;
+      }
+      renderPage();
+    });
+  });
+  // clicar em pessoa: leva pro detalhe do colaborador (se existir vínculo em members) ou ao user modal
+  document.querySelectorAll('[data-org-pessoa]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var uid = this.getAttribute('data-org-pessoa');
+      var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
+      if (u) openUserModal(u);
+    });
+  });
+  // clicar em equipe cruzada: abre detalhe da equipe
+  document.querySelectorAll('[data-org-equipe]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ST.central.nav = 'equipe';
+      ST.central.equipeId = this.getAttribute('data-org-equipe');
+      renderPage();
+    });
+  });
+  // filtro
+  var f = document.getElementById('orgFiltro');
+  if (f) f.addEventListener('change', function(){
+    ST.central.org.filtroDep = this.value;
+    renderPage();
+  });
+  // expandir/colapsar tudo
+  var ea = document.getElementById('orgExpAll');
+  if (ea) ea.addEventListener('click', function(){
+    var org = ST.central.org;
+    (ST.departamentos||[]).forEach(function(d){ org.expandidos[d.key] = true; });
+    (ST.equipes||[]).forEach(function(e){ org.expandidos['e:'+e.id] = true; });
+    renderPage();
+  });
+  var ca = document.getElementById('orgColAll');
+  if (ca) ca.addEventListener('click', function(){
+    var org = ST.central.org;
+    (ST.departamentos||[]).forEach(function(d){ org.expandidos[d.key] = false; });
+    (ST.equipes||[]).forEach(function(e){ org.expandidos['e:'+e.id] = false; });
+    renderPage();
   });
 }
 
@@ -11143,6 +11844,10 @@ function nivelDe(u) {
 function can(cap, s){
   s = s || ST.session;
   if (!s || !s.user) return false;
+  // v110: se tiver perfil customizado, usa capsDoUsuario; senão, o CAPS por nível como antes
+  if (typeof capsDoUsuario === 'function' && s.user.profile_id){
+    return !!(capsDoUsuario(s.user)[cap]);
+  }
   var nv = nivelDe(s.user);
   return !!((CAPS[nv]||{})[cap]);
 }
@@ -13997,9 +14702,9 @@ function buildCommands() {
 function openCommandPalette() {
   if (document.getElementById('cmdkBg') || !ST.session) return;
   var cmds=buildCommands(), sel=0, filtered=cmds;
-  var iconFor={ task:'tasks', client:'users', project:'folder', campaign:'megaphone' };
+  var iconFor={ task:'tasks', client:'users', project:'folder', campaign:'megaphone', user:'users', equipe:'users', depto:'grid', doc:'folder' }; // v112
   var bg=document.createElement('div'); bg.className='cmdk-bg'; bg.id='cmdkBg';
-  bg.innerHTML='<div class="cmdk"><div class="cmdk-input-wrap">'+icon('search')+'<input id="cmdkInput" placeholder="Buscar páginas, ações, tarefas, clientes..." autocomplete="off"><span class="cmdk-esc">esc</span></div><div class="cmdk-list" id="cmdkList"></div></div>';
+  bg.innerHTML='<div class="cmdk"><div class="cmdk-input-wrap">'+icon('search')+'<input id="cmdkInput" placeholder="Buscar em tudo — páginas, pessoas, equipes, documentos, tarefas..." autocomplete="off"><span class="cmdk-esc">esc</span></div><div class="cmdk-list" id="cmdkList"></div></div>';
   document.body.appendChild(bg);
   var input=bg.querySelector('#cmdkInput'), list=bg.querySelector('#cmdkList');
 
