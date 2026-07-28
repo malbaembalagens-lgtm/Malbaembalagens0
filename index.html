@@ -2448,7 +2448,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v105 · 25/07 (Cadastros F3a: Departamentos com fundacao no banco. Rotinas do dia e Ponto passam a olhar capacidade do depto, nao string hardcoded — nada muda visualmente ainda; tela de login vem na F3b)';
+var APP_BUILD = 'v106 · 25/07 (Cadastros F3b: tela Quem esta acessando vem do banco; deptoComoModelo faz depto novo herdar comportamento (Metas do Marketing, KPIs do Vendas) do modelo escolhido; cabecalhos genericos quando nao e Lojas)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3001,9 +3001,11 @@ function brandMark(size){
 }
 function renderSectorScreen() {
   var cards='';
-  Object.keys(SECTORS).forEach(function(key){
-    var s=SECTORS[key];
-    cards += '<button class="sector-card" data-sector="'+key+'"><span class="sector-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><span class="sector-name">'+esc(s.label)+'</span><span class="sector-sub">'+esc(s.sub)+'</span></button>';
+  // v106: consome o cadastro real — ordenado e sem inativos
+  var lista = (typeof departamentosParaLogin==='function') ? departamentosParaLogin() : Object.keys(SECTORS).map(function(k){ return { key:k }; });
+  lista.forEach(function(d){
+    var s = SECTORS[d.key]; if (!s) return;
+    cards += '<button class="sector-card" data-sector="'+esc(d.key)+'"><span class="sector-ico" style="--c:'+s.color+'">'+icon(s.icon)+'</span><span class="sector-name">'+esc(s.label)+'</span><span class="sector-sub">'+esc(s.sub||'')+'</span></button>';
   });
   render('<div class="screen"><div class="screen-inner">'+brandMark('lg')+'<p class="screen-title">Quem está acessando?</p><div class="sector-grid">'+cards+'</div></div></div>');
   var btns=app.querySelectorAll('.sector-card');
@@ -3141,7 +3143,7 @@ function novoContextual() {
   }
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='tarefas' && (ST.taskView||'')==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
-  if (pg==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
+  if (pg==='metas') return (deptoComoModelo('marketing')?openMktMetaModal(null):openGoalModal(null));
   if (pg==='equipe') return openMemberModal(null);
   if (pg==='config'){
     var ct=ST.configTab||'usuarios';
@@ -3152,7 +3154,7 @@ function novoContextual() {
   if (pg==='gestao'){
     var gt=ST.gestaoTab||'';
     if (gt==='tarefas') return openTaskModal(null);
-    if (gt==='metas') return (ST.sector==='marketing'?openMktMetaModal(null):openGoalModal(null));
+    if (gt==='metas') return (deptoComoModelo('marketing')?openMktMetaModal(null):openGoalModal(null));
     if (gt==='avaliacoes') return openAvaliacaoModal();
     return openComissaoModal();
   }
@@ -3307,7 +3309,7 @@ function panelFaturamento(){
   return dashPanel('Faturamento', icon('dollar'), body);
 }
 function dashPanels() {
-  var fat = (ST.sector==='lojas'||ST.sector==='vendas') ? panelFaturamento() : '';
+  var fat = deptoTemCRM(ST.sector) ? panelFaturamento() : ''; // v106
   return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+fat+panelProjetos();
 }
 /* ----- Painel da loja (posto de trabalho, dia a dia) ----- */
@@ -3397,13 +3399,13 @@ function sectorStatCards(c) {
     { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
     { label:'Clientes ativos',  val:clientesAtivos.toLocaleString('pt-BR'), sub:clientList.length+' no CRM', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
   ];
-  if (ST.sector==='vendas') return [
+  if (deptoComoModelo('vendas')) return [
     { label:'Vendas do mês',  val:(real>0?brlShort(real):'—'), sub:(real>0?'meta '+brlShort(meta):'via Bling / metas'), subColor:(real>0?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark' },
     { label:'Meta do mês',    val:metaPct+'%', sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'Defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
     { label:'Tarefas do dia', val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
     { label:'Clientes',       val:clientList.length.toLocaleString('pt-BR'), sub:clientesAtivos+' ativos', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
   ];
-  if (ST.sector==='marketing') {
+  if (deptoComoModelo('marketing')) {
     var mkArr=[
       { label:'Campanhas ativas', val:campAtivas, sub:(ST.campaigns||[]).length+' no total', subColor:'#8B5CF6', color:'#8B5CF6', icon:'megaphone', viz:'spark' },
       { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#3B6FF7', icon:'tasks', viz:'bar', barPct:pctHoje },
@@ -3684,7 +3686,7 @@ function tarefasHTML() {
   var view = ST.taskView || 'kanban';
   var admin = isAdmin(ST.session);
   var sub = admin
-    ? ((ST.sector==='lojas' && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc(SECTORS[ST.sector].label)))
+    ? ((deptoComoModelo('lojas') && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc((SECTORS[ST.sector]||{label:ST.sector}).label))) // v106b
     : 'Minhas tarefas';
   var rotinaBtn = deptoTemRotinas(ST.sector) ? '<button class="vt-btn'+(view==='rotina'?' on':'')+'" data-view="rotina">'+icon('clock')+'Rotina do dia</button>' : ''; // v105
   // v88: Calendário e Projetos viram VISÕES daqui — deixam de ser páginas do menu.
@@ -4502,9 +4504,9 @@ function equipeHTML() {
   if (admin && !ST.store && (ST.storeUnits||[]).length>1) { var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(s){return '<option value="'+esc(s.id)+'"'+(String(t.loja)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join(''); lojaSel='<select class="task-filter" id="teamLoja">'+op+'</select>'; }
   var btn = admin ? '<button class="btn-new" id="btnNovoMembro">'+icon('plus')+'Novo funcionário</button>' : '';
   var cards = list.length ? list.map(function(m){ return memberCardHTML(m, admin); }).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('users')+'</div><h3>Nada por aqui</h3><p>Ajuste a busca ou os filtros acima.</p></div>';
-  var sub = (ST.sector==='lojas' && ST.store) ? ('Equipe de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Equipe (todas as lojas)';
+  var sub = (deptoComoModelo('lojas') && ST.store) ? ('Equipe de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Equipe do setor'; // v106b
   // v74: Ponto vira aba da Equipe (some do menu, mesma navegação do hub Gestão)
-  var showPonto = (ST.sector==='lojas');
+  var showPonto = deptoTemEquipe(ST.sector); // v106
   var etab = showPonto ? (ST.equipeTab||'equipe') : 'equipe';
   var tabBar = showPonto ? ('<div class="cfg-tabs"><button class="cfg-tab'+(etab==='equipe'?' on':'')+'" data-etab="equipe">'+icon('users')+'Equipe</button><button class="cfg-tab'+(etab==='ponto'?' on':'')+'" data-etab="ponto">'+icon('clock')+'Ponto</button></div>') : '';
   if (etab==='ponto') {
@@ -4544,7 +4546,7 @@ function bindEquipe() {
   // v74: abas Equipe/Ponto
   var etabs=app.querySelectorAll('.cfg-tab[data-etab]');
   for (var e=0;e<etabs.length;e++) etabs[e].addEventListener('click', function(){ ST.equipeTab=this.getAttribute('data-etab'); renderPage(); });
-  if ((ST.equipeTab||'')==='ponto' && ST.sector==='lojas'){ if(typeof bindPonto==='function') bindPonto(); return; }
+  if ((ST.equipeTab||'')==='ponto' && deptoTemEquipe(ST.sector)){ if(typeof bindPonto==='function') bindPonto(); return; } // v106
   var novo = document.getElementById('btnNovoMembro');
   if (novo && admin) novo.addEventListener('click', function(){ openMemberModal(null); });
   var qEl = document.getElementById('teamQ');
@@ -4983,13 +4985,13 @@ function visibleGoals() {
    Todo setor entra por metasHTML(). O layout, cabeçalho e navegação
    de mês são um só; o cálculo continua no motor certo (vendas/marketing). */
 function metasHTML() {
-  if (ST.sector==='marketing') return mktMetasHTML();
+  if (deptoComoModelo('marketing')) return mktMetasHTML();
   var admin = isAdmin(ST.session);
   var gs = visibleGoals().slice().sort(function(a,b){
     if (b.year!==a.year) return b.year-a.year;
     return b.month-a.month;
   });
-  var sub = (ST.sector==='lojas' && ST.store && !admin) ? ('Metas de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Metas mensais por loja e por vendedor';
+  var sub = (deptoComoModelo('lojas') && ST.store && !admin) ? ('Metas de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Metas mensais'; // v106b
   var btn = admin ? '<button class="btn-new" id="btnNovaMeta">'+icon('plus')+'Nova meta</button>' : '';
   var storeFilter='';
   if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
@@ -5793,7 +5795,7 @@ function goalCardHTML(g) {
 }
 
 function bindMetas() {
-  if (ST.sector==='marketing') { bindMktMetas(); return; }
+  if (deptoComoModelo('marketing')) { bindMktMetas(); return; }
   var admin = isAdmin(ST.session);
   var nova = document.getElementById('btnNovaMeta');
   if (nova && admin) nova.addEventListener('click', function(){ openGoalModal(null); });
@@ -9831,6 +9833,21 @@ function deptoTemEquipe(key){
   return !!d.tem_equipe;
 }
 
+/* ---------- v106b: "esta pessoa se comporta como qual dos 4 modelos originais?"
+   Usado nos hardcodes que dependem de comportamento específico (Metas do Marketing,
+   KPIs do Vendas etc). Depto novo herda o comportamento do modelo escolhido no cadastro.
+*/
+function deptoModelo(key){
+  var k = key || ST.sector;
+  var d = departamentoDe(k);
+  if (!d) return k; // sem cadastro: comporta-se como o próprio nome
+  if (d.is_protegido) return k; // é um dos 4 originais: comporta-se como ele mesmo
+  return d.menu_modelo || 'marketing';
+}
+function deptoComoModelo(modelo, key){
+  return deptoModelo(key||ST.sector) === modelo;
+}
+
 /* ---------- Departamentos visíveis pra escolha na tela de login ---------- */
 function departamentosParaLogin(){
   var deps = (ST.departamentos || DEPS_PADRAO).slice();
@@ -13316,7 +13333,7 @@ function buildCommands() {
   // ações de criação
   cmds.push({ cat:'Criar', label:'Nova tarefa', icon:'plus', run:function(){ openTaskModal(null); } });
   if (admin) {
-    if (ST.sector==='marketing') cmds.push({ cat:'Criar', label:'Nova campanha', icon:'plus', run:function(){ openCampaignModal(null); } });
+    if (deptoComoModelo('marketing')) cmds.push({ cat:'Criar', label:'Nova campanha', icon:'plus', run:function(){ openCampaignModal(null); } });
     cmds.push({ cat:'Criar', label:'Novo cliente', icon:'plus', run:function(){ openClientModal(null); } });
     cmds.push({ cat:'Criar', label:'Novo projeto', icon:'plus', run:function(){ openProjectModal(null); } });
     cmds.push({ cat:'Criar', label:'Nova meta', icon:'plus', run:function(){ openGoalModal(null); } });
@@ -13547,7 +13564,14 @@ function boot() {
     else if ((e.key==='n'||e.key==='N') && !modalOpen) { e.preventDefault(); openTaskModal(null); }
   }); }
   var session=getSession();
-  if (!session || !session.user) { renderSectorScreen(); return; }
+  if (!session || !session.user) {
+    // v106: carrega departamentos antes de mostrar os cards (roda uma vez só)
+    if (!ST.departamentos){
+      render('<div class="screen"><div class="spinner"></div></div>');
+      departamentosCarregar(function(){ renderSectorScreen(); });
+    } else { renderSectorScreen(); }
+    return;
+  }
   ST.session=session; ST.sector=session.sector;
   var route=currentRoute();
   ST.page = (route.length>=2) ? route[1] : 'inicio';
