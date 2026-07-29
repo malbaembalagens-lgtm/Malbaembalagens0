@@ -2513,6 +2513,11 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .org-cruzadas h4 { font-size:13px; margin:0 0 6px; }
 .org-cruzadas .cad-linha { margin-bottom:6px; }
 
+
+/* v115: Rotinas POPs */
+.rot-ind { font-weight:700; font-size:11.5px; margin-left:6px; }
+.rot-ind.cinza { color:var(--u-text3); font-weight:500; }
+
 </style>
 </head>
 <body>
@@ -2536,7 +2541,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v113r · 25/07 (Bloco 1 aplicado, formato monolitico restaurado: dropdown de Perfil no modal do usuario · wrapper openMetaModal · 3 hardcodes lojas trocados · compartilhamento de doc com Equipe)';
+var APP_BUILD = 'v115 · 25/07 (Bloco 3: Rotinas/POPs em cadastro proprio malba_rotinas — nova aba na Central com categorias, frequencia, responsavel default e indicadores de conclusao do mes; regras antigas (is_rule) continuam intactas em modelo dual)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2827,6 +2832,7 @@ function loadData() {
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { perfisCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v110
+    try { rotinasCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v115
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
     // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
@@ -9360,6 +9366,7 @@ function centralArvoreHTML(){
     (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '')+
     (isSuper(ST.session) ? item('perfis', '🎭', 'Perfis de Permissão', (5 + ((ST.perfis||[]).length)), '', c.nav==='perfis') : '')+
     item('organograma', '🗺️', 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma')+
+    item('rotinas-pop', '📋', 'Rotinas (POPs)', (ST.rotinas||[]).length, '', c.nav==='rotinas-pop')+
   '</aside>';
 }
 
@@ -9377,6 +9384,7 @@ function centralConteudoHTML(){
   if (c.nav==='departamentos' && isSuper(ST.session)) return centralDepartamentosHTML();
   if (c.nav==='perfis' && isSuper(ST.session)) return centralPerfisHTML();
   if (c.nav==='organograma') return centralOrganogramaHTML();
+  if (c.nav==='rotinas-pop') return centralRotinasHTML();
   if (c.nav==='equipe' && c.equipeId) return centralEquipeDetalheHTML(c.equipeId);
   if (c.nav==='equipes')  return centralEquipesHTML();
   return centralVisaoEmpresaHTML();
@@ -9649,6 +9657,7 @@ function bindCentral(){
   if (ST.central && ST.central.nav==='departamentos') bindCentralDepartamentos();
   if (ST.central && ST.central.nav==='perfis') bindCentralPerfis();
   if (ST.central && ST.central.nav==='organograma') bindCentralOrganograma();
+  if (ST.central && ST.central.nav==='rotinas-pop') bindCentralRotinas();
   if (ST.central && ST.central.nav==='equipes') bindCentralEquipes();
   if (ST.central && ST.central.nav==='equipe') bindCentralEquipeDetalhe();
   var q = document.getElementById('cadQ');
@@ -11233,6 +11242,311 @@ function bindCentralOrganograma(){
     (ST.departamentos||[]).forEach(function(d){ org.expandidos[d.key] = false; });
     (ST.equipes||[]).forEach(function(e){ org.expandidos['e:'+e.id] = false; });
     renderPage();
+  });
+}
+
+/* ============================================================
+   v115: CADASTROS — Bloco 3 (Rotinas / POPs em cadastro próprio)
+
+   Modelo dual: malba_rotinas é uma tabela NOVA de rotinas
+   catalogadas com metadados. NÃO substitui as regras antigas
+   (is_rule=true em malba_vl_tasks) — coexistem.
+
+   O que muda:
+   - Aba "📋 Rotinas (POPs)" na Central
+   - CRUD de POP com categoria, freq, responsável default
+   - Indicadores: taxa de conclusão do mês (calculada via
+     tarefas materializadas com recur_group correspondente)
+
+   O que NÃO muda:
+   - materializarRecorrencias continua igual
+   - Regras existentes continuam funcionando
+   - Painel "Rotina do Dia" idêntico
+   ============================================================ */
+
+/* ---------- Categorias padrão (editáveis pelo admin depois) ---------- */
+var ROTINA_CATEGORIAS = [
+  { key:'abertura',  label:'Abertura de loja',    icon:'🌅', color:'#F59E0B' },
+  { key:'durante',   label:'Durante o dia',        icon:'☀️', color:'#3B6FF7' },
+  { key:'fechamento',label:'Fechamento de loja',   icon:'🌙', color:'#8B5CF6' },
+  { key:'semanal',   label:'Semanal',              icon:'📅', color:'#0EA5E9' },
+  { key:'mensal',    label:'Mensal',               icon:'🗓️', color:'#16A34A' },
+  { key:'outros',    label:'Outros',               icon:'📌', color:'#64748B' }
+];
+
+function categoriaDe(key){
+  return ROTINA_CATEGORIAS.find(function(c){ return c.key===key; }) || ROTINA_CATEGORIAS[5];
+}
+
+/* ---------- Carregar ---------- */
+function rotinasCarregar(cb){
+  if (!sb){ ST.rotinas = []; if (cb) cb(); return; }
+  sb.from('malba_rotinas').select('*').order('name').then(function(r){
+    if (r.error){
+      var msg = (r.error.message||'').toLowerCase();
+      if (msg.indexOf('does not exist')!==-1 || msg.indexOf('relation')!==-1){
+        ST.rotinas = [];
+      } else {
+        console.warn('rotinas:', r.error.message);
+        ST.rotinas = [];
+      }
+    } else {
+      ST.rotinas = r.data || [];
+    }
+    if (cb) cb();
+  });
+}
+
+/* ---------- Lookups ---------- */
+function rotinasVisiveis(){
+  // Admin vê tudo. Gestor vê rotinas do próprio setor.
+  var lista = (ST.rotinas||[]).slice();
+  if (!isSuper(ST.session) && isAdmin(ST.session)){
+    lista = lista.filter(function(r){ return String(r.sector||'')===String(ST.sector); });
+  }
+  return lista.sort(function(a,b){
+    var ca = (a.categoria||'outros'), cb2 = (b.categoria||'outros');
+    if (ca !== cb2){
+      var ia = ROTINA_CATEGORIAS.findIndex(function(x){ return x.key===ca; });
+      var ib = ROTINA_CATEGORIAS.findIndex(function(x){ return x.key===cb2; });
+      return (ia<0?99:ia) - (ib<0?99:ib);
+    }
+    return (a.name||'').localeCompare(b.name||'');
+  });
+}
+
+/* ---------- Indicadores por POP ---------- */
+/* Taxa de conclusão do mês: quantas ocorrências foram materializadas
+   (recur_group=X, is_rule=false, mês atual) e quantas estão "feito". */
+function rotinaIndicadores(rotina){
+  if (!rotina.recur_group) return { total:0, feito:0, taxa:0, ultima:null };
+  var hoje = new Date(); var m = String(hoje.getMonth()+1).padStart(2,'0'); var y = hoje.getFullYear();
+  var pref = y+'-'+m;
+  var ocorrencias = (ST.tasks||[]).filter(function(t){
+    if (t.is_rule) return false;
+    if (String(t.recur_group||'') !== String(rotina.recur_group)) return false;
+    return (t.due_date||'').indexOf(pref) === 0;
+  });
+  var feitos = ocorrencias.filter(function(t){ return t.status==='feito'; }).length;
+  var total = ocorrencias.length;
+  var taxa = total ? Math.round(feitos*100/total) : 0;
+  // última execução: tarefa com status=feito mais recente vinculada
+  var ultima = null;
+  (ST.tasks||[]).forEach(function(t){
+    if (t.is_rule) return;
+    if (String(t.recur_group||'') !== String(rotina.recur_group)) return;
+    if (t.status !== 'feito') return;
+    var d = (t.completed_at || t.due_date || '').slice(0,10);
+    if (!ultima || d > ultima) ultima = d;
+  });
+  return { total:total, feito:feitos, taxa:taxa, ultima:ultima };
+}
+
+/* ============================================================
+   TELA — Aba Rotinas na Central
+   ============================================================ */
+function centralRotinasHTML(){
+  var lista = rotinasVisiveis();
+  var podeMexer = isAdmin(ST.session);
+  var btn = podeMexer ? '<button class="btn-new" id="cadNovaRotina">'+icon('plus')+'Novo POP</button>' : '';
+
+  // agrupa por categoria
+  var porCat = {};
+  ROTINA_CATEGORIAS.forEach(function(c){ porCat[c.key] = []; });
+  lista.forEach(function(r){
+    var k = r.categoria||'outros';
+    if (!porCat[k]) porCat[k] = [];
+    porCat[k].push(r);
+  });
+
+  var linhasHTML = ROTINA_CATEGORIAS.map(function(cat){
+    var rr = porCat[cat.key] || [];
+    if (!rr.length) return '';
+    return '<div class="cad-bloco">'+
+      '<h4 style="display:flex;align-items:center;gap:8px">'+
+        '<span style="color:'+cat.color+'">'+cat.icon+'</span> '+esc(cat.label)+
+        ' <span class="cad-sub">('+rr.length+')</span>'+
+      '</h4>'+
+      '<div class="cad-lista">'+
+        rr.map(function(r){
+          var ind = rotinaIndicadores(r);
+          var freq = r.recurrence==='diaria' ? 'Diária' : (r.recurrence==='semanal' ? 'Semanal' : (r.recurrence==='mensal' ? 'Mensal' : '—'));
+          var respNome = r.assignee_id ? (function(){ var u=(ST.allUsers||[]).find(function(x){ return String(x.id)===String(r.assignee_id); }); return u?u.name:'—'; })() : 'Quem estiver';
+          var setLb = r.sector ? ((SECTORS[r.sector]||{label:r.sector}).label) : '—';
+          var taxaCor = ind.taxa >= 80 ? '#16A34A' : (ind.taxa >= 50 ? '#F59E0B' : '#EF4444');
+          var indicHTML = ind.total ? '<span class="rot-ind" style="color:'+taxaCor+'">'+ind.feito+'/'+ind.total+' · '+ind.taxa+'%</span>' : '<span class="rot-ind cinza">sem execuções ainda</span>';
+          var acao = podeMexer ? '<span class="cad-linha-acoes">'+
+            '<button class="cad-linha-btn" data-rot-edit="'+esc(r.id)+'" title="Editar">✎</button>'+
+            '<button class="cad-linha-btn danger" data-rot-del="'+esc(r.id)+'" title="Remover">×</button>'+
+          '</span>' : '';
+          return '<div class="cad-linha">'+
+            '<span class="cad-linha-ic" style="background:'+cat.color+'18;color:'+cat.color+'">'+cat.icon+'</span>'+
+            '<span class="cad-linha-main">'+
+              '<b>'+esc(r.name)+'</b> <span class="cad-eq-chip">'+esc(freq)+'</span> '+indicHTML+
+              '<span class="cad-linha-sub">'+esc(setLb)+' · Responsável: '+esc(respNome)+'</span>'+
+            '</span>'+
+            acao+
+          '</div>';
+        }).join('')+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  if (!lista.length){
+    linhasHTML = '<div class="cad-vazio">Nenhum POP cadastrado ainda. Clique em "Novo POP" pra começar.</div>';
+  }
+
+  return '<div class="cad-titulo"><h3>📋 Rotinas (POPs)</h3><span class="cad-sub">'+lista.length+' POP(s) no total</span>'+btn+'</div>'+
+    '<p class="cad-explica">Um <b>POP</b> (Procedimento Operacional Padrão) é uma rotina catalogada — abertura da loja, fechamento, conferência de caixa, limpeza. As tarefas do dia a dia geradas por esta rotina aparecem no <b>Trabalho → Rotina do Dia</b>.</p>'+
+    linhasHTML;
+}
+
+function bindCentralRotinas(){
+  var nova = document.getElementById('cadNovaRotina');
+  if (nova) nova.addEventListener('click', function(){ openRotinaPopModal({}); });
+  document.querySelectorAll('[data-rot-edit]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var r = (ST.rotinas||[]).find(function(x){ return String(x.id)===String(b.getAttribute('data-rot-edit')); });
+      if (r) openRotinaPopModal(r);
+    });
+  });
+  document.querySelectorAll('[data-rot-del]').forEach(function(b){
+    b.addEventListener('click', function(){ rotinaPopRemover(b.getAttribute('data-rot-del')); });
+  });
+}
+
+/* ---------- Modal criar/editar POP ---------- */
+function openRotinaPopModal(rotina){
+  var isNew = !rotina || !rotina.id;
+  var ed = Object.assign({
+    name:'', categoria:'outros', description:'', sector:ST.sector,
+    recurrence:'diaria', assignee_id:null, color:'#3B6FF7'
+  }, rotina || {});
+
+  // deptos com rotinas
+  var deptos = (ST.departamentos||[]).filter(function(d){ return d.is_active!==false && (d.tem_rotinas || deptoTemRotinas(d.key)); });
+  if (!deptos.length){
+    // fallback: pega o setor atual
+    deptos = [{ key:ST.sector, label:(SECTORS[ST.sector]||{label:ST.sector}).label }];
+  }
+  var setorOpts = deptos.map(function(d){
+    return '<option value="'+esc(d.key)+'"'+(ed.sector===d.key?' selected':'')+'>'+esc(d.label)+'</option>';
+  }).join('');
+
+  var catOpts = ROTINA_CATEGORIAS.map(function(c){
+    return '<option value="'+esc(c.key)+'"'+(ed.categoria===c.key?' selected':'')+'>'+c.icon+' '+esc(c.label)+'</option>';
+  }).join('');
+
+  var freqOpts = [
+    {v:'diaria',lb:'Diária'},{v:'semanal',lb:'Semanal'},{v:'mensal',lb:'Mensal'}
+  ].map(function(f){ return '<option value="'+f.v+'"'+(ed.recurrence===f.v?' selected':'')+'>'+f.lb+'</option>'; }).join('');
+
+  // pessoas do setor selecionado
+  function pessoasHTML(setor){
+    var ppl = (ST.allUsers||[]).filter(function(u){ return String(u.sector||'')===String(setor); });
+    return '<option value="">Quem estiver na loja / sem responsável fixo</option>' +
+      ppl.map(function(u){ return '<option value="'+esc(u.id)+'"'+(String(ed.assignee_id||'')===String(u.id)?' selected':'')+'>'+esc(u.name||u.email)+'</option>'; }).join('');
+  }
+
+  var m = makeModal({
+    title: isNew ? 'Novo POP' : 'Editar '+ed.name,
+    width: 560,
+    body:
+      '<div class="modal-row"><label class="modal-label">Nome</label>'+
+        '<input type="text" id="rotNome" value="'+esc(ed.name)+'" placeholder="Ex: Abrir caixa da manhã" autofocus></div>'+
+      '<div class="modal-row"><label class="modal-label">Categoria</label>'+
+        '<select id="rotCategoria">'+catOpts+'</select></div>'+
+      '<div class="modal-row"><label class="modal-label">Descrição <span class="cad-sub">(opcional)</span></label>'+
+        '<textarea id="rotDesc" rows="2" placeholder="Detalhes do procedimento">'+esc(ed.description||'')+'</textarea></div>'+
+      '<div class="dp-2col">'+
+        '<div class="modal-row"><label class="modal-label">Departamento</label>'+
+          '<select id="rotSetor">'+setorOpts+'</select></div>'+
+        '<div class="modal-row"><label class="modal-label">Frequência</label>'+
+          '<select id="rotFreq">'+freqOpts+'</select></div>'+
+      '</div>'+
+      '<div class="modal-row"><label class="modal-label">Responsável default</label>'+
+        '<select id="rotResp">'+pessoasHTML(ed.sector)+'</select>'+
+        '<p class="cad-explica">Se marcar uma pessoa, ela será o dono da tarefa gerada. Deixe em "quem estiver" pra tarefa aparecer pra loja toda.</p>'+
+      '</div>'+
+      (isNew ? '' : '<div class="cad-explica">📊 <b>'+(function(){ var i=rotinaIndicadores(ed); return i.total ? i.feito+'/'+i.total+' concluídas neste mês ('+i.taxa+'%)' : 'sem execuções ainda'; })()+'</b></div>'),
+    saveLabel: isNew ? 'Criar POP' : 'Salvar',
+    onSave: function(close, root){
+      var payload = {
+        name: (root.querySelector('#rotNome').value||'').trim(),
+        categoria: root.querySelector('#rotCategoria').value || 'outros',
+        description: (root.querySelector('#rotDesc').value||'').trim(),
+        sector: root.querySelector('#rotSetor').value || ST.sector,
+        recurrence: root.querySelector('#rotFreq').value || 'diaria',
+        assignee_id: root.querySelector('#rotResp').value || null,
+        color: ed.color || '#3B6FF7'
+      };
+      if (!payload.name){ toast('Digite o nome do POP','error'); return; }
+      var dup = (ST.rotinas||[]).find(function(x){
+        return (!ed.id || String(x.id)!==String(ed.id)) &&
+               (x.name||'').toLowerCase()===payload.name.toLowerCase() &&
+               String(x.sector||'')===String(payload.sector);
+      });
+      if (dup){ toast('Já existe um POP com esse nome no departamento','error'); return; }
+      rotinaPopSalvar(Object.assign({}, ed, payload), close);
+    }
+  });
+
+  // Atualiza lista de pessoas quando trocar o setor
+  m.root.querySelector('#rotSetor').addEventListener('change', function(){
+    var novoResp = m.root.querySelector('#rotResp');
+    ed.assignee_id = null;
+    novoResp.innerHTML = pessoasHTML(this.value);
+  });
+}
+
+/* ---------- Salvar ---------- */
+function rotinaPopSalvar(rotina, cb){
+  var isNew = !rotina.id;
+  var payload = {
+    name: rotina.name, categoria: rotina.categoria, description: rotina.description || null,
+    sector: rotina.sector, recurrence: rotina.recurrence,
+    assignee_id: rotina.assignee_id || null, color: rotina.color || '#3B6FF7',
+    // recur_group: para casar com as regras is_rule do modelo dual, geramos um agora
+    recur_group: rotina.recur_group || ('rot-'+Date.now()+'-'+Math.random().toString(36).slice(2,7))
+  };
+  if (isNew){
+    sb.from('malba_rotinas').insert(payload).select().single().then(function(r){
+      if (r.error){
+        var m = (r.error.message||'').toLowerCase();
+        if (m.indexOf('does not exist')!==-1) toast('Rode o SQL-cadastros-bloco3.sql no Supabase.','error');
+        else toast('Não consegui criar: '+(r.error.message||''),'error');
+        return;
+      }
+      ST.rotinas = (ST.rotinas||[]).concat([r.data]);
+      if (cb) cb();
+      toast('POP criado ✓','success'); renderPage();
+    });
+  } else {
+    sb.from('malba_rotinas').update(payload).eq('id', rotina.id).then(function(r){
+      if (r.error){ toast('Não consegui salvar: '+(r.error.message||''),'error'); return; }
+      var i = (ST.rotinas||[]).findIndex(function(x){ return String(x.id)===String(rotina.id); });
+      if (i>=0) ST.rotinas[i] = Object.assign(ST.rotinas[i], payload);
+      if (cb) cb();
+      toast('POP salvo ✓','success'); renderPage();
+    });
+  }
+}
+
+/* ---------- Remover ---------- */
+function rotinaPopRemover(id){
+  var r = (ST.rotinas||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!r) return;
+  confirmDialog({
+    title:'Remover POP',
+    message:'Remover o POP "'+r.name+'"? As tarefas já geradas por ele continuam existindo.',
+    confirmLabel:'Remover',
+    onConfirm: function(){
+      sb.from('malba_rotinas').delete().eq('id', id).then(function(x){
+        if (x.error){ toast('Não consegui remover: '+(x.error.message||''),'error'); return; }
+        ST.rotinas = (ST.rotinas||[]).filter(function(z){ return String(z.id)!==String(id); });
+        toast('POP removido','success'); renderPage();
+      });
+    }
   });
 }
 
