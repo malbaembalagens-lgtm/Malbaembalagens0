@@ -2523,6 +2523,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+(function () {
+'use strict';
+
+
 /* ============================================================
    MALBA Work OS — APLICAÇÃO (single-file)
    v1: Fundação · v2: módulo Tarefas (Lojas/Vendas/Financeiro/Marketing)
@@ -2530,11 +2534,9 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
            [6]ESTADO+DADOS [7]UTIL+ENTRADA [8]CASCA
            [9]DASHBOARD [10]TAREFAS [11]ROTEAMENTO [12]BOOT
    ============================================================ */
-(function () {
-'use strict';
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v112 · 25/07 (Cadastros F5c: busca global no header + Ctrl+K agora acha pessoas, equipes, departamentos e documentos alem de tarefas/clientes/projetos/campanhas; respeita permissao — Colaborador NAO busca pessoas/equipes/deptos, Gestor cai no proprio setor)';
+var APP_BUILD = 'v113r · 25/07 (Bloco 1 aplicado, formato monolitico restaurado: dropdown de Perfil no modal do usuario · wrapper openMetaModal · 3 hardcodes lojas trocados · compartilhamento de doc com Equipe)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2711,7 +2713,7 @@ function pageAllowed(pgId, s){
   if (pgId==='ponto')   return (deptoTemEquipe(ST.sector) && !isColaboradorPessoal(s)) || permsHas(pgId, s); // v105
   if (isColaboradorPessoal(s)) {
     // base do colaborador + funções concedidas no cadastro
-    var base = (ST.sector==='lojas') ? ['inicio','chat'] : COLAB_PAGES;
+    var base = deptoTemRotinas(ST.sector) ? ['inicio','chat'] : COLAB_PAGES; // v113: depto com rotinas → colab tem menu ainda mais enxuto
     return base.indexOf(pgId) !== -1 || permsHas(pgId, s);
   }
   return true;
@@ -3239,7 +3241,7 @@ function novoContextual() {
   }
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
   if (pg==='tarefas' && (ST.taskView||'')==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
-  if (pg==='metas') return (deptoComoModelo('marketing')?openMktMetaModal(null):openGoalModal(null));
+  if (pg==='metas') return openMetaModal(null); // v113
   if (pg==='equipe') return openMemberModal(null);
   if (pg==='config'){
     var ct=ST.configTab||'usuarios';
@@ -3250,7 +3252,7 @@ function novoContextual() {
   if (pg==='gestao'){
     var gt=ST.gestaoTab||'';
     if (gt==='tarefas') return openTaskModal(null);
-    if (gt==='metas') return (deptoComoModelo('marketing')?openMktMetaModal(null):openGoalModal(null));
+    if (gt==='metas') return openMetaModal(null); // v113
     if (gt==='avaliacoes') return openAvaliacaoModal();
     return openComissaoModal();
   }
@@ -5964,6 +5966,15 @@ function bindMetas() {
   }
 }
 
+// v113: wrapper único — decide qual modal abrir pelo contexto do setor.
+// A refatoração completa (unificar campos, reduzir código) vem no Bloco 2 depois da modularização.
+function openMetaModal(goal, preset){
+  if (typeof deptoComoModelo==='function' && deptoComoModelo('marketing')){
+    return openMktMetaModal(goal);
+  }
+  return openGoalModal(goal, preset);
+}
+
 function openGoalModal(goal, preset) {
   if(!canEdit()){ blockManage(); return; }
   var isNew = !goal;
@@ -6107,7 +6118,7 @@ var crmBusca = '';
 var crmSeg = 'todos';
 
 function crmPertenceSetor(c){
-  if (ST.sector==='lojas') return (c.sector==='lojas' || !c.sector || !!c.store_unit_id);
+  if (deptoTemEquipe(ST.sector)) return (c.sector===ST.sector || !c.sector || !!c.store_unit_id); // v113
   return c.sector===ST.sector;
 }
 /* ============================================================
@@ -8216,6 +8227,11 @@ function docPermDe(d, userId){
     var s = shares[i];
     if (s.type==='user' && String(s.id)===uid) sobe(s.perm);
     if (s.type==='unidade' && u.store_unit_id && String(s.id)===String(u.store_unit_id)) sobe(s.perm);
+    // v113: compartilhamento com equipe — a pessoa está na equipe compartilhada?
+    if (s.type==='equipe'){
+      var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(s.id); });
+      if (eq && (eq.membros||[]).map(String).indexOf(uid)!==-1) sobe(s.perm);
+    }
   }
 
   // 4) visibilidade ampla
@@ -8291,6 +8307,11 @@ function docsCompartilhar(id){
       var un = unidades.find(function(x){ return String(x.id)===String(s.id); });
       return { ic:'🏪', nome: un ? un.name : 'Unidade removida' };
     }
+    // v113: compartilhamento com equipe
+    if (s.type==='equipe'){
+      var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(s.id); });
+      return { ic:'👥', nome: eq ? (eq.name+' ('+((eq.membros||[]).length)+' pessoas)') : 'Equipe removida' };
+    }
     var pe = (ST.allUsers||ST.users||[]).find(function(x){ return String(x.id)===String(s.id); });
     return { ic:'👤', nome: pe ? pe.name : 'Usuário removido' };
   }
@@ -8313,9 +8334,20 @@ function docsCompartilhar(id){
       .map(function(u){ return '<option value="user:'+esc(u.id)+'">👤 '+esc(u.name)+'</option>'; }).join('');
     var optsU = unidades.filter(function(x){ return jaTem.indexOf('unidade:'+x.id)===-1; })
       .map(function(x){ return '<option value="unidade:'+esc(x.id)+'">🏪 '+esc(x.name)+'</option>'; }).join('');
-    if (!optsP && !optsU) return '<div class="doc-share-vazio">Todo mundo do setor já está na lista.</div>';
+    // v113: equipes visíveis no compartilhamento
+    var equipesAptas = (typeof equipesVisiveis==='function' ? equipesVisiveis() : (ST.equipes||[])).filter(function(e){ return e.is_active!==false; });
+    var optsE = equipesAptas.filter(function(e){ return jaTem.indexOf('equipe:'+e.id)===-1; })
+      .map(function(e){
+        var n = (e.membros||[]).length;
+        return '<option value="equipe:'+esc(e.id)+'">👥 '+esc(e.name)+' ('+n+')</option>';
+      }).join('');
+    if (!optsP && !optsU && !optsE) return '<div class="doc-share-vazio">Todo mundo do setor já está na lista.</div>';
     return '<div class="doc-share-add">'+
-      '<select id="dsAlvo"><option value="">— escolher pessoa ou unidade —</option>'+optsP+optsU+'</select>'+
+      '<select id="dsAlvo"><option value="">— escolher pessoa, unidade ou equipe —</option>'+
+        (optsE ? '<optgroup label="Equipes">'+optsE+'</optgroup>' : '')+
+        (optsP ? '<optgroup label="Pessoas">'+optsP+'</optgroup>' : '')+
+        (optsU ? '<optgroup label="Unidades">'+optsU+'</optgroup>' : '')+
+      '</select>'+
       permSelect('editar','id="dsPerm"')+
       '<button type="button" class="btn btn-primary" id="dsAdd">Convidar</button>'+
     '</div>';
@@ -9534,7 +9566,7 @@ function centralColabAcessoHTML(m, u){
   var podeMexer = isAdmin(ST.session) && String(u.id)!==String(ST.session.user.id); // não mexe no próprio
   return '<div class="cad-bloco"><h4>🔑 Acesso ao Sistema</h4>'+
     '<div class="cad-info-row"><span>E-mail de login</span><b>'+esc(u.email||'—')+'</b></div>'+
-    '<div class="cad-info-row"><span>Nível de acesso</span><b style="color:'+info.color+'">'+esc(info.label)+'</b></div>'+
+    '<div class="cad-info-row"><span>Nível de acesso</span><b style="color:'+info.color+'">'+esc((typeof perfilLabelDe==='function' ? perfilLabelDe(u) : info.label))+'</b></div>'+
     '<div class="cad-explica">'+esc(info.desc)+'</div>'+
     (podeMexer ? '<div class="cad-acao-grid">'+
       '<button class="btn btn-secondary" id="cadAcessoEditar">Alterar nível e permissões</button>'+
@@ -9575,7 +9607,7 @@ function centralAcessosHTML(){
       '<span class="cad-linha-main"><b>'+esc(u.name)+'</b>'+
         '<span class="cad-linha-sub">'+esc(u.email||'')+'</span>'+
       '</span>'+
-      '<span class="cad-eq-chip" style="color:'+info.color+';background:'+info.color+'18">'+esc(info.label)+'</span>'+
+      '<span class="cad-eq-chip" style="color:'+info.color+';background:'+info.color+'18">'+esc((typeof perfilLabelDe==='function' ? perfilLabelDe(u) : info.label))+'</span>'+
       '<span class="cad-linha-seta">›</span>'+
     '</button>';
   }).join('') : '<div class="cad-vazio">Nenhum acesso cadastrado.</div>';
@@ -11264,7 +11296,7 @@ function crmHTML() {
   }
 
   var importBtn = isAdmin(ST.session) ? '<button class="btn-sync" id="btnImportBling">'+icon('trend')+'Importar do Bling</button>' : '';
-  var foco = sid ? esc(storeName(sid)) : (ST.sector==='lojas' ? 'Todas as lojas' : esc(SECTORS[ST.sector].label));
+  var foco = sid ? esc(storeName(sid)) : (deptoComoModelo('lojas') ? 'Todas as lojas' : esc((SECTORS[ST.sector]||{label:ST.sector}).label)); // v113
   var crmStoreFilter = '';
   if (isAdmin(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
     var so='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
@@ -11916,6 +11948,15 @@ function openUserModal(user) {
       '<input class="modal-title-input" id="uName" placeholder="Nome do usuário..." value="'+esc(u.name||'')+'">'+
       emailField + passField +
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Setor</label><select id="uSector">'+sectorOpts+'</select></div><div class="modal-row"><label class="modal-label">Nível de acesso</label><select id="uLevel">'+nivelOpts+'</select></div></div>'+
+      // v113: perfil customizado (só aparece se houver algum cadastrado)
+      ((ST.perfis||[]).length ? (
+        '<div class="modal-row"><label class="modal-label">Perfil de permissão <span class="cad-sub">(opcional — sobrepõe o nível)</span></label>'+
+          '<select id="uPerfil">'+
+            '<option value="">— usar apenas o nível de acesso —</option>'+
+            (ST.perfis||[]).map(function(p){ return '<option value="'+esc(p.id)+'"'+(String(u.profile_id||'')===String(p.id)?' selected':'')+'>'+esc(p.label)+' (baseado em '+esc((NIVEIS[p.base_nivel]||{label:p.base_nivel}).label)+')</option>'; }).join('')+
+          '</select>'+
+        '</div>'
+      ) : '')+
       '<div class="nivel-desc" id="uNivelDesc">'+esc((NIVEIS[nivel]||NIVEIS.colaborador).desc)+'</div>'+
       '<div id="permHolder"></div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
@@ -11956,6 +11997,9 @@ function openUserModal(user) {
       sector_role:(ehAdminSetor?'admin':'user'),
       role:(lvl==='super'?'admin':'user')
     };
+    // v113: perfil customizado — se o dropdown existir e tiver valor, grava; se vazio, limpa
+    var perfilSel = modal.querySelector('#uPerfil');
+    if (perfilSel) rec.profile_id = perfilSel.value || null;
     if (isNew) { rec.email=email; rec.color=u.color||'#3B6FF7'; rec.initials=iniciais(name); }
     if (pass) rec.password_hash = pass; // a tabela guarda a senha em password_hash
     var saveBtn=modal.querySelector('#userSave'); setBusy(saveBtn,true);
@@ -14943,6 +14987,7 @@ function init() {
   });
 }
 init();
+
 
 })();
 </script>
