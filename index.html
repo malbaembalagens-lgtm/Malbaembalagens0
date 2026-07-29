@@ -2555,6 +2555,11 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .pg-alerta-btn { background:transparent; color:var(--u-accent); font-size:11px; font-weight:600; padding:2px 6px; }
 .pg-vazio { color:#16A34A; font-size:12.5px; font-weight:600; padding:8px; text-align:center; background:#16A34A18; border-radius:6px; }
 
+
+/* v118: Tipos de tarefa */
+.task-type-chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:2px 8px; border-radius:6px; }
+.tt-pill { font-weight:600; }
+
 </style>
 </head>
 <body>
@@ -2578,7 +2583,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v117 · 25/07 (Bloco 5: Painel do Gestor no Inicio — 3 cards com rotinas de hoje, equipe presente e alertas; so aparece pra quem tem subordinados diretos, cai silencioso pra outros; usa a hierarquia manager_id do Bloco 4)';
+var APP_BUILD = 'v118 · 25/07 (Bloco 6: task_type explicito — pessoal/loja/equipe/projeto — com validacao, normalizacao e inferencia retrocompativel; label Tipo antigo renomeado para Categoria; linha Equipe condicional que so aparece quando tipo=equipe)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -4372,6 +4377,13 @@ function openTaskModal(task, preset) {
   var stPills=STATUS_ORDER.map(function(k){ return '<button type="button" class="pill st-pill'+(t.status===k?' on':'')+'" data-st="'+k+'" style="color:'+STATUS[k].color+'"><span class="pdot" style="background:'+STATUS[k].color+'"></span>'+STATUS[k].label+'</button>'; }).join('');
   // v79: tipo da tarefa (Normal / POP) — alimenta o filtro da Central de Tarefas
   var kindPills=[['normal','Normal'],['pop','POP']].map(function(k){ return '<button type="button" class="pill kd-pill'+(((t.task_kind||'normal')===k[0])?' on':'')+'" data-kd="'+k[0]+'">'+k[1]+'</button>'; }).join('');
+  // v118: tipo da tarefa (task_type)
+  var ttInicial = (t.task_type) || (typeof inferirTipoTarefa==='function' ? inferirTipoTarefa(t) : 'pessoal');
+  var ttPills = TASK_TYPES.map(function(x){ return '<button type="button" class="pill tt-pill'+(ttInicial===x.key?' on':'')+'" data-tt="'+x.key+'" style="color:'+x.color+'"><span class="pdot" style="background:'+x.color+'"></span>'+x.icon+' '+x.label+'</button>'; }).join('');
+  var eqOpts = '<option value="">— escolher equipe —</option>';
+  (ST.equipes||[]).filter(function(e){ return e.is_active!==false; }).forEach(function(e){
+    eqOpts += '<option value="'+esc(e.id)+'"'+(String(t.equipe_id||'')===String(e.id)?' selected':'')+'>'+esc(e.name)+' ('+((e.membros||[]).length)+' pessoas)</option>';
+  });
   var prPills=['alta','media','baixa'].map(function(k){ return '<button type="button" class="pill pr-pill'+(t.priority===k?' on':'')+'" data-pr="'+k+'" style="color:'+PRIO[k].color+'"><span class="pdot" style="background:'+PRIO[k].color+'"></span>'+PRIO[k].label+'</button>'; }).join('');
   var recPills=REC_ORDER.map(function(k){ return '<button type="button" class="pill rec-pill'+((t.recurrence||'none')===k?' on':'')+'" data-rec="'+k+'">'+REC[k].label+'</button>'; }).join('');
   var userOpts='<option value="">— Ninguém —</option>';
@@ -4387,7 +4399,10 @@ function openTaskModal(task, preset) {
       (ro?'<div class="crm-seg-hint"><span class="crm-seg-x">Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
       '<div class="modal-row"><label class="modal-label">Status</label><div class="pills" id="tStatus">'+stPills+'</div></div>'+
       '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Tipo</label><div class="pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
+      '<div class="modal-row"><label class="modal-label">Categoria</label><div class="pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
+      // v118: Tipo da tarefa (pessoal / loja / equipe / projeto)
+      '<div class="modal-row"><label class="modal-label">Tipo</label><div class="pills'+(ro?' pills-ro':'')+'" id="tType">'+ttPills+'</div></div>'+
+      '<div class="modal-row" id="tEquipeRow" style="display:none"><label class="modal-label">Equipe</label><select id="tEquipe"'+dis+'>'+eqOpts+'</select></div>'+
       '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
       '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
       recManageRow+
@@ -4399,12 +4414,21 @@ function openTaskModal(task, preset) {
     '</div>';
   document.body.appendChild(modal);
 
-  var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none', kdPick=(t.task_kind||'normal');
+  var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none', kdPick=(t.task_kind||'normal'), ttPick=ttInicial; // v118
   var recUntil='', recDiasUteis=false, recWeekdays=[], recSemFim=true; // v70: por padrão a rotina roda pra sempre
   bindPills(modal, '#tStatus .st-pill', 'st', function(v){ stPick=v; });
   if (!ro) {
     bindPills(modal, '#tPrio .pr-pill', 'pr', function(v){ prPick=v; });
     bindPills(modal, '#tKind .kd-pill', 'kd', function(v){ kdPick=v; });
+    bindPills(modal, '#tType .tt-pill', 'tt', function(v){ 
+      ttPick=v;
+      // mostra a linha de equipe só quando tipo=equipe
+      var eqRow = modal.querySelector('#tEquipeRow');
+      if (eqRow) eqRow.style.display = (v==='equipe') ? '' : 'none';
+    });
+    // seta visibilidade inicial da linha da equipe
+    var _eqRowIni = modal.querySelector('#tEquipeRow');
+    if (_eqRowIni) _eqRowIni.style.display = (ttPick==='equipe') ? '' : 'none';
     bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; renderRecOpts(); });
   }
   function renderRecOpts(){
@@ -4489,7 +4513,13 @@ function openTaskModal(task, preset) {
     }
     var title=(modal.querySelector('#tTitle').value||'').trim();
     if (!title) { toast('Informe o título da tarefa','error'); return; }
-    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), task_kind:kdPick, assignee_id:modal.querySelector('#tAssignee').value||null, project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:scopeStore() };
+    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), task_kind:kdPick, task_type:ttPick, assignee_id:modal.querySelector('#tAssignee').value||null, equipe_id:(modal.querySelector('#tEquipe')?(modal.querySelector('#tEquipe').value||null):null), project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:scopeStore() };
+    // v118: normalizar e validar tipo
+    if (typeof normalizarTarefaAoTipo==='function') payload = normalizarTarefaAoTipo(payload);
+    if (typeof validarTipoTarefa==='function'){
+      var _val = validarTipoTarefa(payload);
+      if (!_val.ok){ toast(_val.msg, 'error'); return; }
+    }
     if (subList.length>0 || (task && task.subtasks && task.subtasks.length)) payload.subtasks=subList;
     setBusy(saveBtn,true);
     if (isEdit) {
@@ -11932,6 +11962,109 @@ function bindPainelGestor(){
     navigate(ST.sector+'/config');
     renderPage();
   });
+}
+
+/* ============================================================
+   v118: BLOCO 6 — Tipos explícitos de tarefa
+
+   Cada tarefa ganha um task_type: pessoal | loja | equipe | projeto
+   Isso resolve a ambiguidade "de quem é essa tarefa?" e destrava
+   as Equipes (F4) como consumidoras reais.
+
+   Regras:
+   - pessoal → precisa assignee_id
+   - loja    → precisa store_unit_id, assignee_id opcional (quem
+               estiver na loja executa)
+   - equipe  → precisa equipe_id (novo campo)
+   - projeto → precisa project_id
+
+   Backward compat: tarefas antigas sem task_type são inferidas
+   por inferirTipoTarefa().
+   ============================================================ */
+
+/* ---------- Definição dos tipos ---------- */
+var TASK_TYPES = [
+  { key:'pessoal', label:'Pessoal',  icon:'👤', color:'#3B6FF7', desc:'De uma pessoa específica' },
+  { key:'loja',    label:'Loja',     icon:'🏪', color:'#F59E0B', desc:'Da loja — quem estiver executa' },
+  { key:'equipe',  label:'Equipe',   icon:'👥', color:'#8B5CF6', desc:'De uma equipe' },
+  { key:'projeto', label:'Projeto',  icon:'🚀', color:'#16A34A', desc:'De um projeto' }
+];
+
+function taskTypeInfo(key){
+  return TASK_TYPES.find(function(t){ return t.key===key; }) || TASK_TYPES[0];
+}
+
+/* ---------- Inferência pra tarefas antigas ---------- */
+function inferirTipoTarefa(t){
+  if (!t) return 'pessoal';
+  if (t.task_type) return t.task_type;
+  // Ordem de checagem: projeto > equipe > loja > pessoal
+  if (t.project_id) return 'projeto';
+  if (t.equipe_id)  return 'equipe';
+  if (t.store_unit_id && !t.assignee_id) return 'loja';
+  if (t.store_unit_id && t.assignee_id) return 'pessoal'; // pessoa dentro de loja
+  return 'pessoal';
+}
+
+/* ---------- Validação: um payload de tarefa é consistente com o tipo? ---------- */
+function validarTipoTarefa(payload){
+  var tipo = payload.task_type || 'pessoal';
+  var t = taskTypeInfo(tipo);
+  switch(tipo){
+    case 'pessoal':
+      if (!payload.assignee_id) return { ok:false, msg:'Tarefa pessoal precisa de responsável' };
+      break;
+    case 'loja':
+      if (!payload.store_unit_id) return { ok:false, msg:'Tarefa de loja precisa da loja' };
+      break;
+    case 'equipe':
+      if (!payload.equipe_id) return { ok:false, msg:'Tarefa de equipe precisa da equipe' };
+      break;
+    case 'projeto':
+      if (!payload.project_id) return { ok:false, msg:'Tarefa de projeto precisa do projeto' };
+      break;
+  }
+  return { ok:true };
+}
+
+/* ---------- Ao setar o tipo, ajusta o payload zerando campos que não fazem sentido ---------- */
+function normalizarTarefaAoTipo(payload){
+  var tipo = payload.task_type || 'pessoal';
+  var norm = Object.assign({}, payload);
+  switch(tipo){
+    case 'pessoal':
+      norm.equipe_id = null;
+      // mantém store_unit_id (pode ser pessoa lotada em loja) e project_id (opcional)
+      break;
+    case 'loja':
+      norm.equipe_id = null;
+      // mantém assignee_id opcional (default responsável) e project_id
+      break;
+    case 'equipe':
+      norm.assignee_id = null;  // equipe é dona, não uma pessoa
+      norm.store_unit_id = null;
+      // mantém project_id
+      break;
+    case 'projeto':
+      // mantém tudo — projeto é o contexto principal
+      break;
+  }
+  return norm;
+}
+
+/* ---------- Renderização: mostrar tipo na tarefa (usado em cards/listas) ---------- */
+function chipTipoTarefa(t){
+  var tipo = inferirTipoTarefa(t);
+  var info = taskTypeInfo(tipo);
+  return '<span class="task-type-chip" style="color:'+info.color+';background:'+info.color+'18" title="Tipo: '+esc(info.label)+'">'+
+    info.icon+' '+esc(info.label)+
+  '</span>';
+}
+
+/* ---------- Filtro por tipo ---------- */
+function tarefasDoTipo(lista, tipo){
+  if (!tipo || tipo==='todos') return lista;
+  return (lista||[]).filter(function(t){ return inferirTipoTarefa(t)===tipo; });
 }
 
 function crmHTML() {
