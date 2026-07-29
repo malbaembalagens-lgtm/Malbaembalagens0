@@ -2583,7 +2583,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v118 · 25/07 (Bloco 6: task_type explicito — pessoal/loja/equipe/projeto — com validacao, normalizacao e inferencia retrocompativel; label Tipo antigo renomeado para Categoria; linha Equipe condicional que so aparece quando tipo=equipe)';
+var APP_BUILD = 'v119 · 25/07 (Bloco 7 escalabilidade: boot enxuto com 14 queries lazy (marketing, caixa, bling, comissoes, avaliacoes, loja metricas, content, creativos, notes, checklists); carregarLazyPagina() dispara query so quando pagina consumidora abre; mergeUnique() para atualizar estado sem duplicar; sem impacto em UX)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -2839,10 +2839,10 @@ function loadData() {
     sb.from('malba_vl_milestones').select('*'),
     sb.from('malba_banners').select('*').order('position'),
     sb.from('malba_campaigns').select('*'),
-    sb.from('malba_comissoes').select('*').order('created_at', { ascending:false }),
-    sb.from('malba_avaliacoes').select('*').order('created_at', { ascending:false }),
-    sb.from('malba_bling_estado').select('*'),
-    sb.from('malba_bling_faturamento').select('*')
+    Promise.resolve({data:[]}),  // v119: comissoes agora é lazy
+    Promise.resolve({data:[]}),  // v119: avaliacoes agora é lazy
+    Promise.resolve({data:[]}),  // v119: bling estado agora é lazy
+    Promise.resolve({data:[]})   // v119: bling faturamento agora é lazy
   ]).then(function(r){
     ST.storeUnits = (r[0]&&r[0].data) || [];
     ST.tasks      = (r[1]&&r[1].data) || [];
@@ -2877,39 +2877,20 @@ function loadData() {
     try { rotinasCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v115
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
-    // eventos do calendário (carrega à parte; se a tabela não existir ainda, ignora sem quebrar)
-    ST.events = [];
-    try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario') renderPage(); } }, function(){}); } catch(e){}
-    // vendas registradas pelos colaboradores + solicitações (resiliente)
-    ST.salesEntries = [];
+    // v119 Bloco 7: init arrays vazios; queries auxiliares agora são LAZY
+    ST.events = []; ST.salesEntries = []; ST.requests = []; ST.checkins = []; ST.notes1on1 = []; ST.kudos = [];
+    ST.mktMetas = []; ST.mktBudget = []; ST.contentItems = []; ST.creativos = [];
+    ST.checklistItems = []; ST.checklistDone = []; ST.caixas = [];
+    ST.lojaMetricas = []; ST.lojaProdutos = [];
+    // v119: mantém queries "leves" que aparecem no Início (mural, checkins, kudos, vendas, requests, eventos)
+    try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario'||ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
-    ST.requests = [];
     try { sb.from('malba_requests').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.requests=re.data; if(ST.page==='inicio'||ST.page==='gestao') renderPage(); } }, function(){}); } catch(e){}
     try { loadEstrategia(sector); loadObjetivos(sector); loadEstrategiaAtividade(sector); loadDocs(sector); } catch(e){}
-    ST.checkins = [];
     try { sb.from('malba_checkins').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.checkins=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
-    ST.notes1on1 = [];
-    try { sb.from('malba_notes').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.notes1on1=re.data; } }, function(){}); } catch(e){}
-    ST.kudos = [];
     try { sb.from('malba_kudos').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.kudos=re.data; if(ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
-    ST.mktMetas = [];
-    try { sb.from('malba_mkt_metas').select('*').then(function(re){ if(!re.error && re.data){ ST.mktMetas=re.data; if(ST.page==='metas'||ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
-    ST.mktBudget = [];
-    try { sb.from('malba_mkt_budget').select('*').then(function(re){ if(!re.error && re.data){ ST.mktBudget=re.data; if(ST.page==='orcamento'||ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
-    ST.contentItems = [];
-    try { sb.from('malba_content').select('*').then(function(re){ if(!re.error && re.data){ ST.contentItems=re.data; if(ST.page==='conteudo') renderPage(); } }, function(){}); } catch(e){}
-    ST.creativos = [];
-    try { sb.from('malba_creativos').select('*').then(function(re){ if(!re.error && re.data){ ST.creativos=re.data; if(ST.page==='biblioteca') renderPage(); } }, function(){}); } catch(e){}
-    ST.checklistItems = [];
-    try { sb.from('malba_checklist_items').select('*').then(function(re){ if(!re.error && re.data){ ST.checklistItems=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
-    ST.checklistDone = [];
-    try { sb.from('malba_checklist_done').select('*').gte('work_date', _firstDayMonth()).then(function(re){ if(!re.error && re.data){ ST.checklistDone=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
-    ST.caixas = [];
-    try { sb.from('malba_caixa').select('*').order('work_date', { ascending:false }).then(function(re){ if(!re.error && re.data){ ST.caixas=re.data; if(ST.page==='tarefas') renderPage(); } }, function(){}); } catch(e){}
-    ST.lojaMetricas = [];
-    try { sb.from('malba_loja_metricas').select('*').then(function(re){ if(!re.error && re.data){ ST.lojaMetricas=re.data; if(ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
-    ST.lojaProdutos = [];
-    try { sb.from('malba_loja_produtos').select('*').then(function(re){ if(!re.error && re.data){ ST.lojaProdutos=re.data; if(ST.page==='relatorio') renderPage(); } }, function(){}); } catch(e){}
+    // v119: queries "pesadas" ficam pra carregarLazyPagina() no renderPage
+    // Marketing, Caixa, Bling, Comissões, Avaliações, Loja Métricas, Content, Creativos, Notes, Checklist
   }).catch(function(e){ console.error('[load]', e); ST.loaded = true; });
 }
 
@@ -12067,6 +12048,125 @@ function tarefasDoTipo(lista, tipo){
   return (lista||[]).filter(function(t){ return inferirTipoTarefa(t)===tipo; });
 }
 
+/* ============================================================
+   v119: BLOCO 7 — Escalabilidade (boot enxuto + dedup)
+
+   Move queries auxiliares pra lazy load: elas rodam quando
+   a página que consome é aberta, não no boot inicial.
+
+   Reduz queries no boot de ~15 pra ~7.
+   Zero risco de quebrar: se página é aberta antes da lazy
+   query terminar, mostra o estado vazio (fallback já existe
+   em todo lugar).
+   ============================================================ */
+
+/* ---------- Registro de lazy loads ---------- */
+var LAZY_LOADS = {
+  // chave: nome do "recurso"
+  // page: em qual página ele deve carregar (ou array de páginas)
+  // load: função que dispara a query (chamada com sector)
+  checklistItems: { page:['tarefas'],                   st:'checklistItems',loaded:false },
+  checklistDone:  { page:['tarefas'],                   st:'checklistDone', loaded:false },
+  caixas:     { page:['tarefas','relatorio'],           st:'caixas',        loaded:false },
+  bling:      { page:['relatorio','kpis','gestao'],     st:'bling',         loaded:false },
+  blingFat:   { page:['relatorio','kpis','gestao'],     st:'blingFat',      loaded:false },
+  comissoes:  { page:['equipe','gestao','kpis'],        st:'comissoes',     loaded:false },
+  avaliacoes: { page:['equipe','gestao'],               st:'avaliacoes',    loaded:false },
+  mktMetas:   { page:['metas','relatorio'],             st:'mktMetas',      loaded:false },
+  mktBudget:  { page:['orcamento','relatorio'],         st:'mktBudget',     loaded:false },
+  contentItems:{page:['conteudo'],                      st:'contentItems',  loaded:false },
+  creativos:  { page:['biblioteca'],                    st:'creativos',     loaded:false },
+  lojaMetricas:{page:['relatorio','kpis'],              st:'lojaMetricas',  loaded:false },
+  lojaProdutos:{page:['relatorio','kpis'],              st:'lojaProdutos',  loaded:false },
+  notes1on1:  { page:['equipe','gestao'],               st:'notes1on1',     loaded:false }
+};
+
+/* ---------- Carregar dados lazy pra uma página específica ---------- */
+function carregarLazyPagina(pagina){
+  if (!sb) return;
+  var sector = ST.sector;
+  Object.keys(LAZY_LOADS).forEach(function(key){
+    var lz = LAZY_LOADS[key];
+    var paginas = Array.isArray(lz.page) ? lz.page : [lz.page];
+    if (paginas.indexOf(pagina) === -1) return;
+    if (lz.loaded) return; // já carregou nesta sessão
+    lz.loaded = true; // marca antes pra evitar race — se der erro, remarca
+    
+    // dispara a query específica de cada recurso
+    try {
+      var q = queryLazy(key, sector);
+      if (!q) { lz.loaded = false; return; }
+      q.then(function(re){
+        if (re.error){
+          console.warn('lazy '+key+':', re.error.message||'');
+          lz.loaded = false; // permite tentar de novo
+          return;
+        }
+        if (re.data){
+          ST[lz.st] = re.data;
+          if (ST.page === pagina) renderPage();
+        }
+      }, function(e){ console.warn('lazy '+key,e); lz.loaded=false; });
+    } catch(e){ console.warn('lazy '+key+' throw:', e); lz.loaded=false; }
+  });
+}
+
+/* ---------- Query builder por recurso ---------- */
+function queryLazy(key, sector){
+  if (!sb) return null;
+  switch(key){
+    case 'checklistItems': return sb.from('malba_checklist_items').select('*');
+    case 'checklistDone':  return sb.from('malba_checklist_done').select('*').gte('work_date', _firstDayMonth());
+    case 'caixas':     return sb.from('malba_caixa').select('*').order('work_date',{ascending:false});
+    case 'bling':      return sb.from('malba_bling_estado').select('*');
+    case 'blingFat':   return sb.from('malba_bling_faturamento').select('*');
+    case 'comissoes':  return sb.from('malba_comissoes').select('*').order('created_at',{ascending:false});
+    case 'avaliacoes': return sb.from('malba_avaliacoes').select('*').order('created_at',{ascending:false});
+    case 'mktMetas':   return sb.from('malba_mkt_metas').select('*');
+    case 'mktBudget':  return sb.from('malba_mkt_budget').select('*');
+    case 'contentItems':return sb.from('malba_content').select('*');
+    case 'creativos':  return sb.from('malba_creativos').select('*');
+    case 'lojaMetricas':return sb.from('malba_loja_metricas').select('*');
+    case 'lojaProdutos':return sb.from('malba_loja_produtos').select('*');
+    case 'notes1on1':  return sb.from('malba_notes').select('*').eq('sector', sector);
+  }
+  return null;
+}
+
+/* ---------- Reset ao trocar de setor / sessão ---------- */
+function resetarLazy(){
+  Object.keys(LAZY_LOADS).forEach(function(k){ LAZY_LOADS[k].loaded = false; });
+}
+
+/* ---------- Utilitário: dedup ao mesclar novos itens ---------- */
+/* Uso: ST.tasks = mergeUnique(ST.tasks, novasTarefas, 'id')
+   - Se um item com o mesmo id já existe, atualiza no lugar
+   - Se é novo, adiciona no começo
+   - Se novasTarefas é vazio ou nulo, retorna original inalterado */
+function mergeUnique(atual, novos, key){
+  if (!novos || !novos.length) return atual || [];
+  key = key || 'id';
+  var mapa = {};
+  (atual||[]).forEach(function(x, i){ mapa[String(x[key])] = i; });
+  var resultado = (atual||[]).slice();
+  var adicionar = [];
+  var idxAdicionar = {}; // v119: dedup no próprio input de novos
+  novos.forEach(function(n){
+    var k = String(n[key]);
+    if (mapa[k] !== undefined){
+      // atualiza no lugar (último ganha)
+      resultado[mapa[k]] = Object.assign({}, resultado[mapa[k]], n);
+    } else if (idxAdicionar[k] !== undefined){
+      // já é novo — substitui o novo anterior pelo atual (último ganha)
+      adicionar[idxAdicionar[k]] = n;
+    } else {
+      idxAdicionar[k] = adicionar.length;
+      adicionar.push(n);
+    }
+  });
+  return adicionar.concat(resultado); // novos no topo
+}
+
 function crmHTML() {
   var q = crmBusca.toLowerCase();
   var sid = boardStore();
@@ -15720,6 +15820,7 @@ function postAvisoModal(){
 }
 function renderPage() {
   if (ST.page!=='chat') chatTeardown();
+  if (typeof carregarLazyPagina==='function') carregarLazyPagina(ST.page); // v119: lazy-load da página
   var _lb=document.getElementById('admLote'); if(_lb&&_lb.parentNode) _lb.parentNode.removeChild(_lb); // v81
   // v74: telas de resultado e Ponto abrem SEMPRE dentro do hub (Gestão/Equipe) — navegação unificada + compat de rotas/deep-links
   if (ST.page==='calendario' && pageAllowed('calendario', ST.session)){ ST.taskView='calendario'; ST.page='tarefas'; } // v88
