@@ -2528,6 +2528,33 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .orgh-main b { font-size:13.5px; color:var(--u-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .orgh-sub { font-size:11.5px; color:var(--u-text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
+
+/* v117: Painel do Gestor */
+.pg-wrap { background:var(--u-card); border-radius:var(--radius); padding:20px; box-shadow:var(--u-shadow); margin-bottom:16px; }
+.pg-titulo { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.pg-titulo h3 { font-size:16px; margin:0; color:var(--u-text); }
+.pg-sub { font-size:12px; color:var(--u-text2); }
+.pg-titulo-link { margin-left:auto; background:transparent; color:var(--u-accent); font-size:12px; font-weight:600; padding:6px 0; }
+.pg-titulo-link:hover { text-decoration:underline; }
+.pg-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; }
+.pg-card { background:var(--u-bg2); border-radius:9px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+.pg-card-h { display:flex; align-items:center; gap:8px; }
+.pg-card-h h4 { font-size:13px; margin:0; color:var(--u-text); font-weight:700; }
+.pg-card-ic { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+.pg-card-nums { display:flex; gap:16px; }
+.pg-num { display:flex; flex-direction:column; }
+.pg-num b { font-size:22px; font-weight:800; color:var(--u-text); line-height:1; }
+.pg-num span { font-size:11px; color:var(--u-text2); margin-top:2px; }
+.pg-card-link { background:transparent; color:var(--u-accent); font-size:12px; font-weight:600; text-align:left; padding:2px 0; }
+.pg-card-link:hover { text-decoration:underline; }
+.pg-avs { display:flex; gap:-4px; }
+.pg-alertas { display:flex; flex-direction:column; gap:6px; }
+.pg-alerta { display:flex; align-items:center; gap:8px; background:var(--u-card); padding:8px 10px; border-radius:8px; border-left:3px solid; font-size:12px; }
+.pg-alerta-ic { font-size:14px; }
+.pg-alerta-txt { flex:1; color:var(--u-text); }
+.pg-alerta-btn { background:transparent; color:var(--u-accent); font-size:11px; font-weight:600; padding:2px 6px; }
+.pg-vazio { color:#16A34A; font-size:12.5px; font-weight:600; padding:8px; text-align:center; background:#16A34A18; border-radius:6px; }
+
 </style>
 </head>
 <body>
@@ -2551,7 +2578,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v116 · 25/07 (Bloco 4 fundamento: hierarquia estrutural com manager_id — seletor de chefe direto no modal do usuario, organograma vira arvore de comando real, redistribuicao respeita subordinados diretos, validacao anti-ciclos; aprovacao/escalacao ficam pro 4b)';
+var APP_BUILD = 'v117 · 25/07 (Bloco 5: Painel do Gestor no Inicio — 3 cards com rotinas de hoje, equipe presente e alertas; so aparece pra quem tem subordinados diretos, cai silencioso pra outros; usa a hierarquia manager_id do Bloco 4)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3403,7 +3430,9 @@ function dashboardHTML() {
     var dso='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
     dashStoreSel='<select class="task-filter" id="dashStore" title="Ver loja">'+dso+'</select>';
   }
+  var pgHTML = (typeof painelGestorHTML === 'function') ? painelGestorHTML() : '';
   return ''+
+    pgHTML+
     hero+
     muralHTML()+
     '<div class="dash-sec-h"><h3>Resumo de hoje</h3><span>'+esc(dataExtenso())+' · Setor '+esc(setorLabel)+'</span>'+(dashStoreSel?'<span class="dash-sec-spacer"></span>'+dashStoreSel:'')+'</div>'+
@@ -3515,6 +3544,7 @@ function bindLojaPainel(){
   var tr=app.querySelectorAll('[data-dtask]'); for(var i=0;i<tr.length;i++) tr[i].addEventListener('click', function(){ var t=taskById(this.getAttribute('data-dtask')); if(t) openTaskModal(t); });
 }
 function bindDashboard() {
+  if (typeof bindPainelGestor === 'function') bindPainelGestor(); // v117
   bindMural();
   var dst=document.getElementById('dashStore');
   if (dst) dst.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
@@ -11729,6 +11759,178 @@ function bindCentralOrganogramaHierarquico(){
       org.expandidos[k] = org.expandidos[k] === false ? true : false;
       renderPage();
     });
+  });
+}
+
+/* ============================================================
+   v117: BLOCO 5 — Painel do Gestor
+
+   Um painel adicional que aparece no Início QUANDO o usuário
+   logado é Admin/Gestor E tem subordinados diretos.
+
+   Mostra em ~3 minutos de leitura:
+   - Rotinas de hoje (do próprio time)
+   - Equipe presente (checkins de hoje)
+   - Alertas (tarefas atrasadas do time, docs parados)
+   - "Ver na Central" atalho pro Organograma
+
+   NÃO substitui o dashboard atual — aparece antes dele.
+   Se o gestor não tem subordinados diretos, nada aparece.
+   ============================================================ */
+
+/* ---------- Helpers ---------- */
+function painelGestorAtivo(){
+  if (!ST.session || !ST.session.user) return false;
+  if (typeof subordinadosDiretos !== 'function') return false;
+  var subs = subordinadosDiretos(ST.session.user.id);
+  return subs.length > 0;
+}
+
+function tarefasDoTime(){
+  var u = ST.session && ST.session.user;
+  if (!u) return { deHoje:[], atrasadas:[], todas:[] };
+  var subs = subordinadosDiretos(u.id);
+  var idsTime = new Set([String(u.id)].concat(subs.map(function(s){ return String(s.id); })));
+  var hoje = today();
+  var todas = (ST.tasks||[]).filter(function(t){
+    if (t.is_rule) return false;
+    return idsTime.has(String(t.assignee_id||''));
+  });
+  var deHoje = todas.filter(function(t){
+    var d = (t.due_date||'').slice(0,10);
+    return d === hoje && t.status !== 'feito';
+  });
+  var atrasadas = todas.filter(function(t){
+    var d = (t.due_date||'').slice(0,10);
+    return d && d < hoje && t.status !== 'feito';
+  });
+  return { deHoje:deHoje, atrasadas:atrasadas, todas:todas };
+}
+
+function equipePresenteHoje(){
+  var u = ST.session && ST.session.user;
+  if (!u) return { presentes:[], ausentes:[] };
+  var subs = subordinadosDiretos(u.id);
+  var hoje = today();
+  var checkinsHoje = (ST.checkins||[]).filter(function(c){
+    var d = (c.date || c.checked_at || '').slice(0,10);
+    return d === hoje;
+  });
+  var presentes = [];
+  var ausentes = [];
+  subs.forEach(function(s){
+    var ch = checkinsHoje.find(function(c){ return String(c.user_id||'')===String(s.id); });
+    if (ch) presentes.push(s); else ausentes.push(s);
+  });
+  return { presentes:presentes, ausentes:ausentes };
+}
+
+function docsParadosDoTime(){
+  var u = ST.session && ST.session.user;
+  if (!u) return [];
+  var subs = subordinadosDiretos(u.id);
+  var idsTime = new Set([String(u.id)].concat(subs.map(function(s){ return String(s.id); })));
+  var limite = new Date(); limite.setDate(limite.getDate() - 90);
+  var limStr = limite.toISOString().slice(0,10);
+  return (ST.docs||[]).filter(function(d){
+    if (d.is_deleted) return false;
+    if (!idsTime.has(String(d.author_id||''))) return false;
+    var ult = (d.updated_at || d.created_at || '').slice(0,10);
+    return ult && ult < limStr;
+  });
+}
+
+/* ---------- Painel principal ---------- */
+function painelGestorHTML(){
+  if (!painelGestorAtivo()) return '';
+  var u = ST.session.user;
+  var nome = (u.name||u.email||'').split(' ')[0];
+  var subs = subordinadosDiretos(u.id);
+  var tsk = tarefasDoTime();
+  var pre = equipePresenteHoje();
+  var docsP = docsParadosDoTime();
+
+  // Card 1: Rotinas / tarefas de hoje
+  var hojeCard =
+    '<div class="pg-card">'+
+      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#3B6FF718;color:#3B6FF7">📋</span><h4>Hoje</h4></div>'+
+      '<div class="pg-card-nums">'+
+        '<div class="pg-num"><b>'+tsk.deHoje.length+'</b><span>tarefas para hoje</span></div>'+
+        '<div class="pg-num"><b style="color:'+(tsk.atrasadas.length?'#EF4444':'#16A34A')+'">'+tsk.atrasadas.length+'</b><span>atrasadas</span></div>'+
+      '</div>'+
+      (tsk.deHoje.length ? '<button class="pg-card-link" data-pg-ir="tarefas">Ver tarefas de hoje →</button>' : '')+
+    '</div>';
+
+  // Card 2: Equipe presente
+  var equipeCard =
+    '<div class="pg-card">'+
+      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#16A34A18;color:#16A34A">👥</span><h4>Equipe</h4></div>'+
+      '<div class="pg-card-nums">'+
+        '<div class="pg-num"><b style="color:#16A34A">'+pre.presentes.length+'</b><span>presentes</span></div>'+
+        '<div class="pg-num"><b>'+subs.length+'</b><span>total</span></div>'+
+      '</div>'+
+      (pre.presentes.length ? '<div class="pg-avs">'+ pre.presentes.slice(0,6).map(function(p){
+        return '<span class="cad-eq-mini" style="background:'+esc(p.color||'#64748B')+'" title="'+esc(p.name||'')+'">'+esc(iniciais(p.name||''))+'</span>';
+      }).join('') + (pre.presentes.length>6 ? '<span class="cad-eq-mini extra">+'+(pre.presentes.length-6)+'</span>' : '') +'</div>' : '')+
+    '</div>';
+
+  // Card 3: Alertas
+  var alertas = [];
+  if (tsk.atrasadas.length){
+    alertas.push({ ic:'⚠️', txt: tsk.atrasadas.length+' tarefa'+(tsk.atrasadas.length===1?'':'s')+' atrasada'+(tsk.atrasadas.length===1?'':'s')+' no time', cor:'#EF4444', acao:'tarefas' });
+  }
+  if (docsP.length){
+    alertas.push({ ic:'📄', txt: docsP.length+' documento'+(docsP.length===1?'':'s')+' sem edição há 90+ dias', cor:'#F59E0B', acao:'docs' });
+  }
+  if (pre.ausentes.length && pre.presentes.length){
+    alertas.push({ ic:'📍', txt: pre.ausentes.length+' pessoa'+(pre.ausentes.length===1?'':'s')+' sem check-in hoje', cor:'#F59E0B', acao:null });
+  }
+  var alertasHTML;
+  if (!alertas.length){
+    alertasHTML = '<div class="pg-vazio">✓ Sem alertas hoje</div>';
+  } else {
+    alertasHTML = alertas.map(function(a){
+      return '<div class="pg-alerta" style="border-left-color:'+a.cor+'">'+
+        '<span class="pg-alerta-ic">'+a.ic+'</span>'+
+        '<span class="pg-alerta-txt">'+esc(a.txt)+'</span>'+
+        (a.acao ? '<button class="pg-alerta-btn" data-pg-ir="'+a.acao+'">Ver →</button>' : '')+
+      '</div>';
+    }).join('');
+  }
+  var alertasCard =
+    '<div class="pg-card">'+
+      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#F59E0B18;color:#F59E0B">🔔</span><h4>Alertas</h4></div>'+
+      '<div class="pg-alertas">'+alertasHTML+'</div>'+
+    '</div>';
+
+  return '<div class="pg-wrap">'+
+    '<div class="pg-titulo">'+
+      '<h3>Painel do Gestor</h3>'+
+      '<span class="pg-sub">'+esc(nome)+' · '+subs.length+' pessoa'+(subs.length===1?'':'s')+' na sua equipe</span>'+
+      '<button class="pg-titulo-link" data-pg-org>Ver organograma completo →</button>'+
+    '</div>'+
+    '<div class="pg-grid">'+
+      hojeCard + equipeCard + alertasCard +
+    '</div>'+
+  '</div>';
+}
+
+function bindPainelGestor(){
+  document.querySelectorAll('[data-pg-ir]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var alvo = this.getAttribute('data-pg-ir');
+      ST.page = alvo;
+      navigate(ST.sector+'/'+alvo);
+      renderPage();
+    });
+  });
+  var org = document.querySelector('[data-pg-org]');
+  if (org) org.addEventListener('click', function(){
+    ST.page = 'config';
+    ST.central = ST.central || {};
+    ST.central.nav = 'organograma';
+    navigate(ST.sector+'/config');
+    renderPage();
   });
 }
 
