@@ -2518,6 +2518,16 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .rot-ind { font-weight:700; font-size:11.5px; margin-left:6px; }
 .rot-ind.cinza { color:var(--u-text3); font-weight:500; }
 
+
+/* v116: Organograma hierárquico */
+.orgh-arvore { display:flex; flex-direction:column; gap:2px; margin-top:12px; }
+.orgh-node { display:flex; }
+.orgh-h { display:flex; align-items:center; gap:10px; padding:8px 12px; background:var(--u-card); border-radius:9px; text-align:left; width:100%; min-width:0; box-shadow:var(--u-shadow); }
+.orgh-h:hover { background:var(--u-accent-soft); }
+.orgh-main { flex:1; min-width:0; display:flex; flex-direction:column; }
+.orgh-main b { font-size:13.5px; color:var(--u-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.orgh-sub { font-size:11.5px; color:var(--u-text2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
 </style>
 </head>
 <body>
@@ -2541,7 +2551,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v115 · 25/07 (Bloco 3: Rotinas/POPs em cadastro proprio malba_rotinas — nova aba na Central com categorias, frequencia, responsavel default e indicadores de conclusao do mes; regras antigas (is_rule) continuam intactas em modelo dual)';
+var APP_BUILD = 'v116 · 25/07 (Bloco 4 fundamento: hierarquia estrutural com manager_id — seletor de chefe direto no modal do usuario, organograma vira arvore de comando real, redistribuicao respeita subordinados diretos, validacao anti-ciclos; aprovacao/escalacao ficam pro 4b)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3865,7 +3875,14 @@ function tarefasHTML() {
   if (admin) {
     var meId = String(ST.session.user.id);
     var mineSel = (String(ST.taskAssignee)===meId) ? ' selected' : '';
-    var others = ST.users.filter(function(u){ return String(u.id)!==meId; }).map(function(u){
+    // v116: se o usuário logado tem subordinados diretos, filtro mostra só a equipe dele.
+    // Se não tem, mantém comportamento antigo (todos do setor).
+    var equipe = ST.users;
+    if (!isSuper(ST.session) && typeof subordinadosDiretos==='function'){
+      var subs = subordinadosDiretos(ST.session.user.id);
+      if (subs.length) equipe = subs;
+    }
+    var others = equipe.filter(function(u){ return String(u.id)!==meId; }).map(function(u){
       return '<option value="'+esc(u.id)+'"'+(String(ST.taskAssignee)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>';
     }).join('');
     var opts = '<option value="'+esc(meId)+'"'+mineSel+'>Minhas tarefas</option><option value="">Todos da equipe</option>' + others;
@@ -9383,7 +9400,7 @@ function centralConteudoHTML(){
   if (c.nav==='cargos')  return centralCargosHTML();
   if (c.nav==='departamentos' && isSuper(ST.session)) return centralDepartamentosHTML();
   if (c.nav==='perfis' && isSuper(ST.session)) return centralPerfisHTML();
-  if (c.nav==='organograma') return centralOrganogramaHTML();
+  if (c.nav==='organograma') return organogramaTemHierarquia() ? centralOrganogramaHierarquicoHTML() : centralOrganogramaHTML(); // v116
   if (c.nav==='rotinas-pop') return centralRotinasHTML();
   if (c.nav==='equipe' && c.equipeId) return centralEquipeDetalheHTML(c.equipeId);
   if (c.nav==='equipes')  return centralEquipesHTML();
@@ -9656,7 +9673,9 @@ function bindCentral(){
   if (ST.central && ST.central.nav==='cargos') bindCentralCargos();
   if (ST.central && ST.central.nav==='departamentos') bindCentralDepartamentos();
   if (ST.central && ST.central.nav==='perfis') bindCentralPerfis();
-  if (ST.central && ST.central.nav==='organograma') bindCentralOrganograma();
+  if (ST.central && ST.central.nav==='organograma'){
+    if (organogramaTemHierarquia()) bindCentralOrganogramaHierarquico(); else bindCentralOrganograma();
+  } // v116
   if (ST.central && ST.central.nav==='rotinas-pop') bindCentralRotinas();
   if (ST.central && ST.central.nav==='equipes') bindCentralEquipes();
   if (ST.central && ST.central.nav==='equipe') bindCentralEquipeDetalhe();
@@ -11550,6 +11569,169 @@ function rotinaPopRemover(id){
   });
 }
 
+/* ============================================================
+   v116: BLOCO 4 (fundamento) — Hierarquia estrutural
+
+   Cada usuário ganha um manager_id opcional (chefe direto).
+   Isso destrava:
+   - Organograma como árvore de comando real
+   - Redistribuição só entre subordinados diretos
+   - Validação anti-ciclos (não pode ter chefe circular)
+
+   Fica pra 4b: aprovação em cadeia, escalação automática.
+   ============================================================ */
+
+/* ---------- Lookups da hierarquia ---------- */
+function chefeDireto(user){
+  if (!user || !user.manager_id) return null;
+  return (ST.allUsers||[]).find(function(u){ return String(u.id)===String(user.manager_id); }) || null;
+}
+
+function subordinadosDiretos(userId){
+  if (!userId) return [];
+  return (ST.allUsers||[]).filter(function(u){ return String(u.manager_id||'')===String(userId); });
+}
+
+/* Todos os subordinados, recursivo (usado pra indicadores agregados) */
+function subordinadosTodos(userId, _visitados){
+  var visitados = _visitados || new Set();
+  if (visitados.has(String(userId))) return []; // proteção contra ciclo em runtime
+  visitados.add(String(userId));
+  var diretos = subordinadosDiretos(userId);
+  var out = diretos.slice();
+  diretos.forEach(function(sub){
+    subordinadosTodos(sub.id, visitados).forEach(function(x){ out.push(x); });
+  });
+  return out;
+}
+
+/* Cadeia de comando (do topo até a pessoa) */
+function cadeiaDe(user, _visitados){
+  var visitados = _visitados || new Set();
+  if (!user || visitados.has(String(user.id))) return [];
+  visitados.add(String(user.id));
+  var chefe = chefeDireto(user);
+  if (!chefe) return [user];
+  return cadeiaDe(chefe, visitados).concat([user]);
+}
+
+/* Verifica se atribuir 'possivelChefe' como manager de 'user' geraria ciclo */
+function chefeGeraciclo(user, possivelChefe){
+  if (!user || !possivelChefe) return false;
+  if (String(user.id) === String(possivelChefe.id)) return true; // não pode ser chefe de si mesmo
+  // O possível chefe pode ser subordinado (direto ou indireto) do user?
+  var subs = subordinadosTodos(user.id);
+  return subs.some(function(s){ return String(s.id) === String(possivelChefe.id); });
+}
+
+/* ---------- Regra de redistribuição de tarefa ---------- */
+/* Retorna quem pode receber uma tarefa que o usuário logado quer redistribuir.
+   - Admin geral: qualquer um do setor
+   - Gestor: só subordinados diretos (ou ele mesmo)
+   - Colaborador: só ele mesmo */
+function podeReatribuirPara(session){
+  if (!session || !session.user) return [];
+  if (isSuper(session)){
+    return (ST.allUsers||[]).slice(); // admin geral: todo mundo
+  }
+  if (isAdmin(session)){ // Gestor
+    var subs = subordinadosDiretos(session.user.id);
+    // Se o gestor não tiver ninguém apontando pra ele, cai no comportamento antigo (setor)
+    if (!subs.length){
+      return (ST.allUsers||[]).filter(function(u){ return String(u.sector||'')===String(ST.sector); });
+    }
+    return [session.user].concat(subs);
+  }
+  return [session.user]; // colab: só ele
+}
+
+/* ============================================================
+   ORGANOGRAMA — nova versão em árvore de comando
+   Substitui a árvore flat por uma árvore hierárquica real.
+   Se ninguém tem manager_id ainda, cai no formato antigo.
+   ============================================================ */
+function organogramaTemHierarquia(){
+  return (ST.allUsers||[]).some(function(u){ return !!u.manager_id; });
+}
+
+function centralOrganogramaHierarquicoHTML(){
+  // Encontra "topos": usuários sem manager_id (ou com manager inválido)
+  var users = (ST.allUsers||[]).slice();
+  var mapId = {};
+  users.forEach(function(u){ mapId[String(u.id)] = u; });
+  var topos = users.filter(function(u){ return !u.manager_id || !mapId[String(u.manager_id)]; });
+
+  // Admin geral vê tudo. Gestor cai na sub-árvore dele.
+  if (!isSuper(ST.session)){
+    var me = ST.session && ST.session.user;
+    if (me) topos = [me];
+    else topos = [];
+  }
+
+  // Filtro por setor (opcional)
+  var org = ST.central.org || (ST.central.org = { expandidos:{}, filtroDep:'', q:'' });
+
+  function nodeHTML(u, depth){
+    if (!u) return '';
+    var subs = subordinadosDiretos(u.id).sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+    var expandido = org.expandidos['h:'+u.id] !== false; // padrão: aberto
+    var perfilLb = (typeof perfilLabelDe==='function') ? perfilLabelDe(u) : ((NIVEIS[nivelDe(u)]||{}).label||'');
+    var setLb = u.sector ? ((SECTORS[u.sector]||{label:u.sector}).label) : '';
+    var subCount = subordinadosTodos(u.id).length;
+
+    var indent = 'padding-left:'+(depth*24)+'px';
+    var caret = subs.length ? '<span class="org-caret">'+(expandido?'▾':'▸')+'</span>' : '<span class="org-caret" style="opacity:.3">•</span>';
+
+    var linha = '<div class="orgh-node" style="'+indent+'">'+
+      '<button class="orgh-h" data-orgh-toggle="'+esc(u.id)+'">'+
+        caret+
+        '<span class="cad-eq-av" style="background:'+esc(u.color||'#64748B')+'">'+esc(iniciais(u.name||''))+'</span>'+
+        '<span class="orgh-main">'+
+          '<b>'+esc(u.name||'')+'</b>'+
+          '<span class="orgh-sub">'+esc(perfilLb)+(setLb?' · '+esc(setLb):'')+
+          (subs.length ? ' · '+subs.length+' direto'+(subs.length===1?'':'s')+(subCount>subs.length ? ' ('+subCount+' totais)' : '') : '')+
+          '</span>'+
+        '</span>'+
+      '</button>'+
+    '</div>';
+
+    var sub_html = '';
+    if (expandido && subs.length){
+      sub_html = subs.map(function(s){ return nodeHTML(s, depth+1); }).join('');
+    }
+    return linha + sub_html;
+  }
+
+  var arvoreHTML = topos.length
+    ? topos.map(function(t){ return nodeHTML(t, 0); }).join('')
+    : '<div class="cad-vazio">Nenhum usuário encontrado.</div>';
+
+  // KPIs no topo (reaproveita o cabeçalho antigo)
+  var totalDiretos = (ST.allUsers||[]).filter(function(u){ return !u.manager_id; }).length;
+  var comChefe = (ST.allUsers||[]).filter(function(u){ return !!u.manager_id; }).length;
+
+  return '<div class="cad-titulo"><h3>🗺️ Organograma</h3><span class="cad-sub">Cadeia de comando da empresa</span></div>'+
+    '<div class="cad-kpis">'+
+      '<div class="cad-kpi"><div class="cad-kpi-v" style="color:#3B6FF7">'+(ST.allUsers||[]).length+'</div><div class="cad-kpi-l">Pessoas no total</div></div>'+
+      '<div class="cad-kpi"><div class="cad-kpi-v" style="color:#8B5CF6">'+comChefe+'</div><div class="cad-kpi-l">Com chefe direto</div></div>'+
+      '<div class="cad-kpi"><div class="cad-kpi-v" style="color:#F59E0B">'+totalDiretos+'</div><div class="cad-kpi-l">No topo (sem chefe)</div></div>'+
+    '</div>'+
+    '<p class="cad-explica">Clique no ▸ pra expandir/colapsar. Cada nível mostra quantos subordinados diretos e totais tem.</p>'+
+    '<div class="orgh-arvore">'+arvoreHTML+'</div>';
+}
+
+function bindCentralOrganogramaHierarquico(){
+  document.querySelectorAll('[data-orgh-toggle]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var uid = this.getAttribute('data-orgh-toggle');
+      var org = ST.central.org;
+      var k = 'h:'+uid;
+      org.expandidos[k] = org.expandidos[k] === false ? true : false;
+      renderPage();
+    });
+  });
+}
+
 function crmHTML() {
   var q = crmBusca.toLowerCase();
   var sid = boardStore();
@@ -12271,6 +12453,23 @@ function openUserModal(user) {
           '</select>'+
         '</div>'
       ) : '')+
+      // v116: chefe direto — sempre disponível
+      (function(){
+        // candidatos: qualquer pessoa exceto o próprio usuário e seus subordinados diretos/indiretos
+        var candidatos = (ST.allUsers||[]).filter(function(x){
+          if (String(x.id)===String(u.id||'')) return false;
+          if (u.id && chefeGeraciclo(u, x)) return false;
+          return true;
+        }).sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+        var opts = '<option value="">— sem chefe direto (nível mais alto) —</option>' +
+          candidatos.map(function(x){
+            var setLb = x.sector ? ' ('+((SECTORS[x.sector]||{label:x.sector}).label)+')' : '';
+            return '<option value="'+esc(x.id)+'"'+(String(u.manager_id||'')===String(x.id)?' selected':'')+'>'+esc(x.name||x.email)+esc(setLb)+'</option>';
+          }).join('');
+        return '<div class="modal-row"><label class="modal-label">Chefe direto <span class="cad-sub">(reporta a)</span></label>'+
+          '<select id="uManager">'+opts+'</select>'+
+        '</div>';
+      })()+
       '<div class="nivel-desc" id="uNivelDesc">'+esc((NIVEIS[nivel]||NIVEIS.colaborador).desc)+'</div>'+
       '<div id="permHolder"></div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
@@ -12314,6 +12513,9 @@ function openUserModal(user) {
     // v113: perfil customizado — se o dropdown existir e tiver valor, grava; se vazio, limpa
     var perfilSel = modal.querySelector('#uPerfil');
     if (perfilSel) rec.profile_id = perfilSel.value || null;
+    // v116: chefe direto — grava manager_id (ou null se vazio)
+    var mgrSel = modal.querySelector('#uManager');
+    if (mgrSel) rec.manager_id = mgrSel.value || null;
     if (isNew) { rec.email=email; rec.color=u.color||'#3B6FF7'; rec.initials=iniciais(name); }
     if (pass) rec.password_hash = pass; // a tabela guarda a senha em password_hash
     var saveBtn=modal.querySelector('#userSave'); setBusy(saveBtn,true);
