@@ -2560,6 +2560,27 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .task-type-chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:2px 8px; border-radius:6px; }
 .tt-pill { font-weight:600; }
 
+
+/* v120 Bloco 8: Central agrupada em 3 seções */
+.cad-sec { margin-bottom:8px; }
+.cad-sec-h { display:flex; align-items:center; gap:6px; padding:6px 10px; background:transparent; border:none; width:100%; text-align:left; color:var(--u-text2); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; cursor:pointer; border-radius:6px; }
+.cad-sec-h:hover { background:var(--u-bg2); color:var(--u-text); }
+.cad-sec-caret { display:inline-block; width:12px; font-size:9px; color:var(--u-text3); }
+.cad-sec-lb { flex:1; }
+
+/* v120: barra fixa da aba Trabalho */
+.trab-sticky { position:sticky; top:0; z-index:20; background:var(--u-bg); padding-top:4px; padding-bottom:8px; margin-bottom:12px; box-shadow:0 4px 12px -8px rgba(15,23,42,0.15); }
+.trab-sticky .tasks-head { margin-bottom:0; }
+
+
+/* v121 Bloco 9: sugestão marcar como feito */
+.sug-feito { display:flex; align-items:center; gap:10px; background:#F59E0B18; border:1px solid #F59E0B40; border-radius:9px; padding:10px 12px; margin-top:8px; animation:pulseYellow 2s ease-in-out infinite; }
+.sug-feito-ic { width:24px; height:24px; border-radius:50%; background:#F59E0B; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0; }
+.sug-feito-txt { flex:1; color:var(--u-text); font-size:12.5px; font-weight:600; }
+.sug-feito-btn { background:#16A34A; color:#fff; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:700; cursor:pointer; }
+.sug-feito-btn:hover { background:#128a3f; }
+@keyframes pulseYellow { 0%,100% { box-shadow:0 0 0 0 #F59E0B00; } 50% { box-shadow:0 0 0 4px #F59E0B33; } }
+
 </style>
 </head>
 <body>
@@ -2583,7 +2604,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v119 · 25/07 (Bloco 7 escalabilidade: boot enxuto com 14 queries lazy (marketing, caixa, bling, comissoes, avaliacoes, loja metricas, content, creativos, notes, checklists); carregarLazyPagina() dispara query so quando pagina consumidora abre; mergeUnique() para atualizar estado sem duplicar; sem impacto em UX)';
+var APP_BUILD = 'v121 · 25/07 (Bloco 9: 3 automacoes silenciosas — responsavel auto em setor de 1 pessoa (POP autopreenchido com aviso verde), sugestao pulsante para marcar tarefa como feita quando checklist bate 100%, setor pre-selecionado no modal de novo usuario baseado no contexto)';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -3916,7 +3937,8 @@ function tarefasHTML() {
     // os filtros de tarefa não valem aqui; só a barra de visões, e a tela hospedada traz o próprio título
     return '<div class="view-bar">'+toggle+'</div>' + (view==='calendario' ? calendarioHTML() : projetosHTML());
   }
-  var head = '<div class="tasks-head"><div><h2>Trabalho</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>';
+  // v120: envolve o head com sticky-bar para o filtro não sumir no scroll
+  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Trabalho</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div></div>';
   return head + muralHTML() + (view==='kanban' ? rotinaHojeCardHTML() : '') + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
@@ -4389,7 +4411,7 @@ function openTaskModal(task, preset) {
       recManageRow+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div></div>'+
       '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Responsável</label><select id="tAssignee"'+dis+'>'+userOpts+'</select></div><div class="modal-row"><label class="modal-label">Projeto (opcional)</label><select id="tProj"'+dis+'>'+projOpts+'</select></div></div>'+
-      '<div class="modal-row"><label class="modal-label">Checklist / Subtarefas <span id="tSubCount" class="sub-count"></span></label><div id="tSubs" class="sub-list"></div><div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div></div>'+
+      '<div class="modal-row"><label class="modal-label">Checklist / Subtarefas <span id="tSubCount" class="sub-count"></span></label><div id="tSubs" class="sub-list"></div>'+(typeof sugerirMarcarFeitoHTML==='function'?sugerirMarcarFeitoHTML():'')+'<div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div></div>'+
       '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="tDesc" placeholder="Detalhes da tarefa..."'+dis+'>'+esc(t.description||'')+'</textarea></div>'+
       '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?(ro?'Salvar status':'Salvar'):'Criar tarefa')+'</button></div>'+
     '</div>';
@@ -4454,6 +4476,15 @@ function openTaskModal(task, preset) {
     else {
       var done=0; subList.forEach(function(s){ if(s.done) done++; });
       if(cnt) cnt.textContent=done+'/'+subList.length;
+      // v121: mostra sugestão quando todos os itens estão feitos e a tarefa ainda não está feita
+      var sugBox = modal.querySelector('#sugFeitoBox');
+      if (sugBox){
+        if (typeof checklistCompleto==='function' && checklistCompleto(subList) && stPick!=='feito'){
+          sugBox.style.display='';
+        } else {
+          sugBox.style.display='none';
+        }
+      }
       box.innerHTML=subList.map(function(s,i){
         return '<div class="sub-item'+(s.done?' done':'')+'">'+
           '<button type="button" class="sub-check" data-i="'+i+'" style="border-color:'+(s.done?'#16A34A':'var(--u-border2)')+';background:'+(s.done?'#16A34A':'transparent')+'">'+(s.done?'✓':'')+'</button>'+
@@ -4471,6 +4502,23 @@ function openTaskModal(task, preset) {
     if (e.key!=='Enter') return; e.preventDefault();
     var v=(this.value||'').trim(); if(!v) return;
     subList.push({ id:uid(), text:v, done:false }); this.value=''; renderSubs(); this.focus();
+  });
+
+  // v121: bind do botão de "marcar como feita"
+  var sugBtn = modal.querySelector('#sugFeitoBtn');
+  if (sugBtn) sugBtn.addEventListener('click', function(){
+    stPick = 'feito';
+    // reflete visualmente nas pills
+    var pills = modal.querySelectorAll('#tStatus .st-pill');
+    pills.forEach(function(p){
+      if (p.getAttribute('data-st')==='feito') p.classList.add('on');
+      else p.classList.remove('on');
+    });
+    // esconde a sugestão
+    var sugBox = modal.querySelector('#sugFeitoBox');
+    if (sugBox) sugBox.style.display='none';
+    // dá feedback
+    toast('Marcada como feita. Salve pra confirmar.', 'info');
   });
 
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
@@ -9412,19 +9460,38 @@ function centralArvoreHTML(){
     '<button class="cad-item cad-sub'+(filtroAtual==='inativos'?' on':'')+'" data-cad-nav="colabs" data-cad-filtro="inativos"><span class="cad-item-lb">Inativos</span><span class="cad-count">'+(colabs.length-ativos.length)+'</span></button>'
   ].join('') : '';
 
-  return '<aside class="cad-side">'+
+  // v120: agrupa em 3 seções colapsáveis
+  var secs = c.arvoreSecs || (c.arvoreSecs = { empresa:true, pessoas:true, sistema:true });
+  function secao(key, label, itens){
+    var aberto = secs[key] !== false;
+    return '<div class="cad-sec"><button class="cad-sec-h" data-cad-sec="'+key+'">'+
+      '<span class="cad-sec-caret">'+(aberto?'▾':'▸')+'</span>'+
+      '<span class="cad-sec-lb">'+esc(label)+'</span>'+
+    '</button>' + (aberto ? itens : '') + '</div>';
+  }
+
+  var empresaHTML = 
     item('empresa', '🏢', 'Empresa', null, '', c.nav==='empresa')+
     item('lojas',   '🏪', 'Lojas', lojas.length, '', lojasAbertas)+
     lojasFilhos+
+    (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '');
+
+  var pessoasHTML =
     item('colabs',  '👥', 'Colaboradores', ativos.length, '', colabsAbertos)+
     colabsFilhos+
-    item('acessos', '🔑', 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
     item('cargos',  '💼', 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
     item('equipes', '👥', 'Equipes', equipesVisiveis().length, '', c.nav==='equipes' || c.nav==='equipe-detalhe')+
-    (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '')+
+    item('organograma', '🗺️', 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma');
+
+  var sistemaHTML =
+    item('acessos', '🔑', 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
     (isSuper(ST.session) ? item('perfis', '🎭', 'Perfis de Permissão', (5 + ((ST.perfis||[]).length)), '', c.nav==='perfis') : '')+
-    item('organograma', '🗺️', 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma')+
-    item('rotinas-pop', '📋', 'Rotinas (POPs)', (ST.rotinas||[]).length, '', c.nav==='rotinas-pop')+
+    item('rotinas-pop', '📋', 'Rotinas (POPs)', (ST.rotinas||[]).length, '', c.nav==='rotinas-pop');
+
+  return '<aside class="cad-side">'+
+    secao('empresa', 'Empresa',  empresaHTML) +
+    secao('pessoas', 'Pessoas',  pessoasHTML) +
+    secao('sistema', 'Sistema',  sistemaHTML) +
   '</aside>';
 }
 
@@ -9728,6 +9795,16 @@ function bindCentral(){
       t=setTimeout(function(){ ST.central.q=v; renderPage(); }, 180);
     });
   }
+  // v120: toggle das seções (Empresa/Pessoas/Sistema)
+  document.querySelectorAll('[data-cad-sec]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      var k = this.getAttribute('data-cad-sec');
+      var secs = ST.central.arvoreSecs = ST.central.arvoreSecs || { empresa:true, pessoas:true, sistema:true };
+      secs[k] = secs[k] === false ? true : false;
+      renderPage();
+    });
+  });
   document.querySelectorAll('[data-cad-nav]').forEach(function(b){
     b.addEventListener('click', function(e){
       e.stopPropagation();
@@ -11482,6 +11559,15 @@ function openRotinaPopModal(rotina){
     name:'', categoria:'outros', description:'', sector:ST.sector,
     recurrence:'diaria', assignee_id:null, color:'#3B6FF7'
   }, rotina || {});
+  // v121: se novo POP e o setor tem só 1 pessoa, sugere ela como responsável
+  var autoRespId = null; var autoRespNome = null;
+  if (!ed.id && !ed.assignee_id && typeof autoRespRotina==='function'){
+    autoRespId = autoRespRotina(ed);
+    if (autoRespId){
+      ed.assignee_id = autoRespId;
+      autoRespNome = autoRespRotinaLabel(ed);
+    }
+  }
 
   // deptos com rotinas
   var deptos = (ST.departamentos||[]).filter(function(d){ return d.is_active!==false && (d.tem_rotinas || deptoTemRotinas(d.key)); });
@@ -11524,6 +11610,7 @@ function openRotinaPopModal(rotina){
         '<div class="modal-row"><label class="modal-label">Frequência</label>'+
           '<select id="rotFreq">'+freqOpts+'</select></div>'+
       '</div>'+
+      (autoRespNome ? '<div class="cad-explica" style="border-left:3px solid #16A34A;background:#16A34A0F;padding:8px 10px"><b>✓ Auto-atribuído</b> a '+esc(autoRespNome)+' (única pessoa deste setor). Você pode mudar abaixo.</div>' : '')+
       '<div class="modal-row"><label class="modal-label">Responsável default</label>'+
         '<select id="rotResp">'+pessoasHTML(ed.sector)+'</select>'+
         '<p class="cad-explica">Se marcar uma pessoa, ela será o dono da tarefa gerada. Deixe em "quem estiver" pra tarefa aparecer pra loja toda.</p>'+
@@ -12165,6 +12252,66 @@ function mergeUnique(atual, novos, key){
     }
   });
   return adicionar.concat(resultado); // novos no topo
+}
+
+/* ============================================================
+   v121: BLOCO 9 — Automações silenciosas (3 seguras)
+
+   1) Responsável auto: rotina com equipe de 1 pessoa
+   2) Sugerir "marcar como feito" quando checklist bate 100%
+   3) Setor pré-selecionado na criação de novo usuário
+
+   Todas silenciosas: não bloqueiam ações, só reduzem cliques.
+   ============================================================ */
+
+/* ---------- Auto 1: Responsável default de rotina ---------- */
+/* Retorna o assignee_id se a equipe da rotina tem 1 pessoa;
+   caso contrário, retorna null (mantém escolha manual). */
+function autoRespRotina(rotina){
+  if (!rotina) return null;
+  // Se já tem responsável, respeita
+  if (rotina.assignee_id) return rotina.assignee_id;
+  // Se a rotina é de uma equipe específica (task_type=equipe futura),
+  // não muda. Aqui a rotina POP não tem equipe; usa sector.
+  // Regra: se o setor tem apenas 1 usuário ativo, esse é o auto-responsável.
+  var pplNoSetor = (ST.allUsers||[]).filter(function(u){
+    return String(u.sector||'')===String(rotina.sector||ST.sector);
+  });
+  if (pplNoSetor.length === 1) return pplNoSetor[0].id;
+  return null;
+}
+
+/* Retorna nome/label da pessoa (usado no aviso do modal) */
+function autoRespRotinaLabel(rotina){
+  var id = autoRespRotina(rotina);
+  if (!id) return null;
+  var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(id); });
+  return u ? (u.name||u.email||'') : null;
+}
+
+/* ---------- Auto 2: Sugerir marcar como feito ---------- */
+/* Retorna true se todos os subtasks estão done (checklist 100%). */
+function checklistCompleto(subList){
+  if (!Array.isArray(subList) || subList.length===0) return false;
+  return subList.every(function(s){ return !!s.done; });
+}
+
+/* HTML de "quer marcar como feita?" — aparece no modal quando 100% */
+function sugerirMarcarFeitoHTML(){
+  return '<div class="sug-feito" id="sugFeitoBox" style="display:none">'+
+    '<span class="sug-feito-ic">✓</span>'+
+    '<span class="sug-feito-txt">Todos os itens do checklist estão feitos.</span>'+
+    '<button type="button" class="sug-feito-btn" id="sugFeitoBtn">Marcar tarefa como feita</button>'+
+  '</div>';
+}
+
+/* ---------- Auto 3: Setor pré-selecionado ---------- */
+/* Retorna o setor a usar como default ao criar novo usuário no contexto atual. */
+function setorPreSelecionadoNovoUser(){
+  // Se estamos numa loja específica na Central, usa o setor da loja (sempre 'lojas')
+  if (ST.central && ST.central.nav==='loja' && ST.central.lojaId) return 'lojas';
+  // Contexto padrão: o setor da sessão atual
+  return ST.sector || 'lojas';
 }
 
 function crmHTML() {
@@ -12856,7 +13003,7 @@ function usuariosHTML() {
 function openUserModal(user) {
   if(!canEdit()){ blockManage(); return; }
   var isNew = !user;
-  var u = user || { name:'', email:'', sector:ST.sector, color:'#3B6FF7' };
+  var u = user || { name:'', email:'', sector:(typeof setorPreSelecionadoNovoUser==='function'?setorPreSelecionadoNovoUser():ST.sector), color:'#3B6FF7' }; // v121
   var nivel = isNew ? 'colaborador' : nivelDe(u);
   var seedPerms = userPermMap({ user:u });
   var grantorRank = roleRank(ST.session); // só posso conceder níveis abaixo (ou igual) ao meu
