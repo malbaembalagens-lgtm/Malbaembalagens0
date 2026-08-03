@@ -3616,6 +3616,440 @@ input:disabled, select:disabled, textarea:disabled {
   100% { width: 100%; opacity: 0; }
 }
 
+
+/* ============================================================
+   D5 · TABELAS, LISTAS, FILTROS + POLIMENTO GLOBAL (v127)
+   Último bloco do plano de design.
+   ============================================================ */
+
+/* ---------- Sistema de tabela canônico ---------- */
+.table-x {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--u-card);
+  border-radius: var(--rd-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+}
+.table-x thead th {
+  background: var(--neutral-50);
+  color: var(--u-text2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  border-bottom: 1px solid var(--u-border);
+  white-space: nowrap;
+}
+.table-x thead th.right { text-align: right; }
+.table-x thead th.center { text-align: center; }
+.table-x thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--tr-fast);
+}
+.table-x thead th.sortable:hover { color: var(--u-text); }
+.table-x thead th.sortable::after {
+  content: '↕';
+  font-size: 10px;
+  margin-left: var(--sp-1);
+  opacity: 0.5;
+}
+.table-x thead th.sorted-asc::after { content: '↑'; opacity: 1; color: var(--primary-500); }
+.table-x thead th.sorted-desc::after { content: '↓'; opacity: 1; color: var(--primary-500); }
+
+.table-x tbody td {
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  font-size: var(--fs-md);
+  color: var(--u-text);
+  vertical-align: middle;
+}
+.table-x tbody td.right { text-align: right; }
+.table-x tbody td.center { text-align: center; }
+.table-x tbody td.muted { color: var(--u-text3); }
+.table-x tbody tr {
+  transition: background var(--tr-fast);
+}
+.table-x tbody tr:hover { background: var(--neutral-50); }
+.table-x tbody tr.selected { background: var(--primary-50); }
+.table-x tbody tr:last-child td { border-bottom: none; }
+
+/* Tabela densa (mais compacta) */
+.table-x.dense thead th,
+.table-x.dense tbody td {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+}
+
+/* Wrapper com scroll horizontal responsivo */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--rd-lg);
+  scrollbar-width: thin;
+}
+
+/* ---------- Sistema de lista canônico ---------- */
+.list-x {
+  background: var(--u-card);
+  border-radius: var(--rd-lg);
+  box-shadow: var(--shadow-xs);
+  border: 1px solid var(--u-line);
+  overflow: hidden;
+}
+.list-x-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  transition: background var(--tr-fast);
+  cursor: pointer;
+}
+.list-x-row:last-child { border-bottom: none; }
+.list-x-row:hover { background: var(--neutral-50); }
+.list-x-row.selected { background: var(--primary-50); }
+.list-x-row:focus-visible {
+  outline: none;
+  background: var(--primary-50);
+  box-shadow: inset 3px 0 0 var(--primary-500);
+}
+
+/* Estrutura de célula na row */
+.list-x-ic {
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rd-md);
+  background: var(--neutral-100);
+  color: var(--u-text2);
+  font-size: var(--fs-lg);
+  flex-shrink: 0;
+}
+.list-x-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.list-x-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.list-x-sub {
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+  line-height: var(--lh-snug);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.list-x-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--u-text3);
+  font-size: var(--fs-sm);
+  flex-shrink: 0;
+}
+.list-x-actions {
+  display: flex;
+  gap: var(--sp-1);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--tr-fast);
+}
+.list-x-row:hover .list-x-actions,
+.list-x-row:focus-within .list-x-actions {
+  opacity: 1;
+}
+
+/* Cabeçalho da lista */
+.list-x-h {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--neutral-50);
+  border-bottom: 1px solid var(--u-border);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--u-text2);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* ---------- Filtros canônicos ---------- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  padding: var(--sp-3);
+  background: var(--u-card);
+  border-radius: var(--rd-lg);
+  border: 1px solid var(--u-line);
+}
+.filter-search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  border: 1px solid transparent;
+  min-width: 200px;
+  transition: background var(--tr-fast), border-color var(--tr-fast), box-shadow var(--tr-fast);
+}
+.filter-search:hover { background: var(--neutral-100); }
+.filter-search:focus-within {
+  background: var(--u-card);
+  border-color: var(--primary-500);
+  box-shadow: var(--focus-ring);
+}
+.filter-search input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--fs-md);
+  color: var(--u-text);
+  flex: 1;
+  min-width: 0;
+}
+.filter-search-ic {
+  color: var(--u-text3);
+  flex-shrink: 0;
+  display: flex;
+}
+
+/* Chip de filtro (clicável) */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--u-bg2);
+  border: 1px solid transparent;
+  border-radius: var(--rd-full);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--tr-fast);
+}
+.filter-chip:hover:not(.on) {
+  background: var(--neutral-100);
+  color: var(--u-text);
+}
+.filter-chip.on {
+  background: var(--primary-500);
+  color: var(--neutral-0);
+}
+.filter-chip.on:hover { background: var(--primary-600); }
+.filter-chip:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.filter-chip-count {
+  background: rgba(0,0,0,.1);
+  color: inherit;
+  padding: 0 var(--sp-1);
+  border-radius: var(--rd-full);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  margin-left: var(--sp-1);
+  min-width: 16px;
+  text-align: center;
+}
+.filter-chip.on .filter-chip-count { background: rgba(255,255,255,.25); }
+
+.filter-spacer { flex: 1; }
+
+/* Dropdown de filtro/sort */
+.filter-select {
+  padding: var(--sp-2) var(--sp-3);
+  padding-right: var(--sp-6);
+  border-radius: var(--rd-md);
+  border: 1px solid var(--u-border2);
+  background: var(--u-card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%235A6884' d='M5 6L0 0h10z'/%3E%3C/svg%3E") no-repeat right var(--sp-2) center;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--tr-fast);
+}
+.filter-select:hover { border-color: var(--neutral-300); }
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: var(--focus-ring);
+}
+
+/* Contador de resultados */
+.filter-count {
+  font-size: var(--fs-sm);
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+}
+
+/* Botão de limpar filtros */
+.filter-clear {
+  color: var(--u-text3);
+  background: transparent;
+  border: none;
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  border-radius: var(--rd-md);
+  transition: color var(--tr-fast), background var(--tr-fast);
+}
+.filter-clear:hover {
+  color: var(--danger-600);
+  background: var(--danger-50);
+}
+
+/* ============================================================
+   POLIMENTO GLOBAL
+   ============================================================ */
+
+/* ---------- Scrollbar customizada (webkit + firefox) ---------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--neutral-300) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--neutral-300);
+  border-radius: var(--rd-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background var(--tr-fast);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral-400);
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-corner { background: transparent; }
+
+/* ---------- Seleção de texto ---------- */
+::selection {
+  background: var(--primary-100);
+  color: var(--primary-900);
+}
+::-moz-selection {
+  background: var(--primary-100);
+  color: var(--primary-900);
+}
+
+/* ---------- Prefers reduced motion (a11y) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Print styles ---------- */
+@media print {
+  .side, .top, .btn, button, .form-actions { display: none !important; }
+  .app-shell { display: block !important; }
+  .main { margin: 0 !important; }
+  .content { padding: 0 !important; }
+  * { box-shadow: none !important; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 10px; color: #888; }
+  .card-x, .list-x, .table-x, .dash-panel {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* ---------- Overflow guards globais ---------- */
+/* Impede que qualquer container quebre o layout no mobile */
+.main, .content { min-width: 0; }
+img, video, svg { max-width: 100%; height: auto; }
+
+/* ---------- Estados de foco em elementos genéricos ---------- */
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--rd-xs);
+}
+
+/* ---------- Toast global refinement ---------- */
+#toastWrap {
+  position: fixed;
+  bottom: var(--sp-5);
+  right: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  z-index: var(--z-toast);
+  pointer-events: none;
+}
+#toastWrap .toast {
+  pointer-events: auto;
+}
+
+/* ---------- Ajustes finais em breakpoint mobile ---------- */
+@media (max-width: 640px) {
+  /* Modais respeitam mais o espaço */
+  .modal {
+    padding: var(--sp-4);
+    max-height: 96vh;
+  }
+  .modal-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .modal-tabs::-webkit-scrollbar { display: none; }
+  
+  /* Filter-bar quebra melhor no mobile */
+  .filter-bar { padding: var(--sp-2); }
+  .filter-search { min-width: 100%; }
+  
+  /* Page-x-header stacked no mobile */
+  .page-x-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  /* Summary cards em 2 colunas no mobile */
+  .page-x-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Table wrap com scroll horizontal */
+  .table-wrap { margin: 0 calc(-1 * var(--sp-4)); border-radius: 0; }
+}
+
+@media (max-width: 480px) {
+  .page-x-summary {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3639,7 +4073,7 @@ input:disabled, select:disabled, textarea:disabled {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v126 · D4 Sidebar+Header+Dashboards: nav-item com barra lateral no active + hover translateX + focus-ring; nav-group com border-bottom; side-user com rd-lg; topbar sticky com backdrop-blur; search com hover/focus mais fortes; theme-toggle com scale press; hero com rd-2xl+shadow-md+fs-4xl; panel com hover elevate; sistema canonico .page-x (header+breadcrumb+summary+filters sticky+content+empty); nav-badge com pulse; top-loading bar; TODOS legados intactos';
+var APP_BUILD = 'v127 · D5 Tabelas/Filtros/Polimento: sistema canonico .table-x (sortable, dense, selected, wrap com scroll horizontal); .list-x (row com ic/main/title/sub/meta/actions revealados no hover); .filter-* unificado (bar, search, chip on/off, count, select com seta SVG, clear); scrollbar customizada fina; ::selection primary; prefers-reduced-motion; print styles; overflow guards; toast wrap com z-token; breakpoints 640/480 mobile refinados; PLANO DE DESIGN COMPLETO — 1697 testes';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
