@@ -4064,6 +4064,55 @@ a:focus-visible {
   }
 }
 
+
+/* ============================================================
+   v130 · Lucide Icons — padronização global
+   Tamanho 18-20px, stroke 2px, cor herdada, alinhamento consistente
+   ============================================================ */
+.lc-ic {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  flex-shrink: 0;
+  vertical-align: -0.15em;
+  display: inline-block;
+}
+/* Contextos que precisam ícone maior */
+.nav-item .lc-ic { width: 18px; height: 18px; }
+.side-brand-sec .lc-ic { width: 14px; height: 14px; }
+.top-title .lc-ic { width: 20px; height: 20px; }
+.btn .lc-ic, .btn-new .lc-ic { width: 16px; height: 16px; }
+.top-novo .lc-ic { width: 16px; height: 16px; }
+.top-theme .lc-ic { width: 18px; height: 18px; }
+.docs-side-item .lc-ic { width: 16px; height: 16px; opacity: 0.85; }
+.docs-side-item.on .lc-ic { opacity: 1; }
+.cad-item .lc-ic { width: 16px; height: 16px; opacity: 0.85; }
+.cad-item.on .lc-ic, .cad-item:hover .lc-ic { opacity: 1; }
+.doc-tpl-ic .lc-ic { width: 22px; height: 22px; }
+.cad-kpi-ic .lc-ic { width: 18px; height: 18px; }
+.cad-linha-ic .lc-ic { width: 18px; height: 18px; }
+.tc-late .lc-ic { width: 12px; height: 12px; }
+.act-btn .lc-ic { width: 15px; height: 15px; }
+/* No cabeçalho da sidebar de docs (📂 Pastas) */
+.docs-side-group-h .lc-ic { width: 13px; height: 13px; }
+
+/* Estratégia sidebar */
+.estr-side .estr-side-item .lc-ic { width: 15px; height: 15px; margin-right: 2px; opacity: 0.85; }
+.estr-side .estr-side-item.on .lc-ic { opacity: 1; }
+
+/* Rotina hoje */
+.rh-title .lc-ic { width: 18px; height: 18px; color: var(--warn-500); }
+
+/* Estados de hover */
+.lc-ic { transition: color var(--tr-fast), opacity var(--tr-fast); }
+
+
+/* v130: dots dos grupos de tarefa (substituem emojis 🔴 🔵 ⚪) */
+.grp-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.grp-dot-late { background: var(--danger-500); box-shadow: 0 0 6px rgba(239,68,68,.45); }
+.grp-dot-hoje { background: var(--primary-500); box-shadow: 0 0 6px rgba(59,111,247,.4); }
+.grp-dot-demais { background: var(--neutral-300); }
+
 </style>
 </head>
 <body>
@@ -4087,7 +4136,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v129';
+var APP_BUILD = 'v130';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -4179,11 +4228,101 @@ var ICON_PATHS = {
   archive:   '<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a1 1 0 001 1h14a1 1 0 001-1V8"/><line x1="10" y1="12" x2="14" y2="12"/>',
   pause:     '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
   play:      '<polygon points="6 4 20 12 6 20 6 4"/>',
-  check:     '<polyline points="20 6 9 17 4 12"/>'
+  check:     '<polyline points="20 6 9 17 4 12"/>',
+
+  /* ========== v130: BIBLIOTECA LUCIDE COMPLETA (substitui emojis) ========== */
+  // Trabalho
+  'check-square':   '<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  'kanban':         '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7v7"/><path d="M12 7v10"/><path d="M16 7v5"/>',
+  'calendar-days':  '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/>',
+  'folder-kanban':  '<path d="M6 14v-3"/><path d="M10 14v-2"/><path d="M14 14v-4"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/>',
+  'clipboard-check':'<rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',
+  'flag':           '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+  'grid-2x2':       '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18"/><path d="M12 3v18"/>',
+  'activity':       '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',
+  'bar-chart-3':    '<path d="M3 3v18h18"/><path d="M8 17V9"/><path d="M13 17v-5"/><path d="M18 17V5"/>',
+
+  // CRM
+  'funnel':         '<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>',
+  'history':        '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+  'clipboard-list': '<rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+
+  // Marketing / Estratégia
+  'file-text':      '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>',
+  'folder-open':    '<path d="M6 14l1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/>',
+  'wallet':         '<path d="M20 12V8H6a2 2 0 0 1-2-2v12a2 2 0 0 0 2 2h14v-4"/><path d="M20 12v4h-4a2 2 0 0 1 0-4z"/>',
+  'lightbulb':      '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14A5.99 5.99 0 0 0 18 9a6 6 0 0 0-12 0 5.99 5.99 0 0 0 2.91 5"/>',
+  'clipboard-pen':  '<rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M10.4 22H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6"/><path d="M21.4 13.6a2.1 2.1 0 1 1 3 3L18 23l-4 1 1-4z"/>',
+  'compass':        '<circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+
+  // Documentos
+  'book-open':      '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  'book':           '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  'notebook-pen':   '<path d="M13.4 2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8.4"/><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>',
+
+  // Gestão
+  'briefcase':      '<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+  'trophy':         '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>',
+  'medal':          '<path d="M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15"/><path d="M11 12 5.12 2.2"/><path d="m13 12 5.88-9.8"/><path d="M8 7h8"/><circle cx="12" cy="17" r="5"/><path d="M12 18v-2h-.5"/>',
+  'file-bar-chart': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-4"/><path d="M8 18v-2"/><path d="M16 18v-6"/>',
+
+  // Cadastros
+  'building-2':     '<path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/>',
+  'building':       '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/>',
+  'user-round':     '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  'users-round':    '<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>',
+  'badge-check':    '<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>',
+  'network':        '<rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/>',
+  'shield-check':   '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  'user-cog':       '<circle cx="18" cy="15" r="3"/><circle cx="9" cy="7" r="4"/><path d="M10 15H6a4 4 0 0 0-4 4v2"/><path d="m21.7 16.4-.9-.3"/><path d="m15.2 13.9-.9-.3"/><path d="m16.6 18.7.3-.9"/><path d="m19.1 12.2.3-.9"/><path d="m19.6 18.7-.4-1"/><path d="m16.8 12.3-.4-1"/><path d="m14.3 16.6 1-.4"/><path d="m20.7 13.8 1-.4"/>',
+  'key-round':      '<path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z"/><circle cx="16.5" cy="7.5" r=".5"/>',
+
+  // Comunicação
+  'messages-square':'<path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4c0-1.1.9-2 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/>',
+  'bell-ring':      '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/><path d="M4 2C2.8 3.7 2 5.7 2 8"/><path d="M22 8c0-2.3-.8-4.3-2-6"/>',
+
+  // Financeiro
+  'receipt':        '<path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/>',
+  'hand-coins':     '<path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"/><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/><path d="m2 16 6 6"/><circle cx="16" cy="9" r="2.9"/><circle cx="6" cy="5" r="3"/>',
+  'landmark':       '<line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/>',
+  'badge-dollar':   '<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>',
+
+  // Loja
+  'clock-3':        '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16.5 12"/>',
+  'lock':           '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  'unlock':         '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+
+  // Ações
+  'plug-zap':       '<path d="m6.3 20.3-2.6 2.6c-.4.4-1 .4-1.4 0-.4-.4-.4-1 0-1.4l2.6-2.6"/><path d="m14.3 12.3-2.6-2.6"/><path d="M9.5 20.5 8 22"/><path d="M6.3 14.3l-2.6 2.6c-.4.4-.4 1 0 1.4l1.4 1.4c.4.4 1 .4 1.4 0l2.6-2.6"/><path d="M22 15l-3 3-3-3"/><path d="m10 5-4 4 6 6 4-4z"/>',
+  'link':           '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  'pencil':         '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+  'trash2':         '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
+  'save':           '<path d="M15 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>',
+  'share2':         '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>',
+  'upload':         '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>',
+  'download':       '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>',
+  'filter':         '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
+  'sort':           '<path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/>',
+  'arrow-left':     '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+  'arrow-right':    '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  'x':              '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  'circle-x':       '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/>',
+
+  // Alias e utilitários adicionais
+  'crown':          '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 21h14"/>',
+  'pin':            '<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/>',
+  'party':          '<path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12v0c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-1.98 1.11v0c-.11.7-.72 1.22-1.43 1.22H17"/><path d="m11 2 .33.82c.34.86-.2 1.82-1.11 1.98v0C9.52 4.9 9 5.52 9 6.23V7"/><path d="M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2Z"/>',
+  'sunrise':        '<path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/>',
+  'megaphone-full': '<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+  'warning':        '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+  'star-icon':      '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
+  'wave-hand':      '<path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
+  'zap':            '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  'rocket':         '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>'
 };
 function icon(name) {
   var body = ICON_PATHS[name] || ICON_PATHS.dashboard;
-  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+body+'</svg>';
+  return '<svg class="lc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+body+'</svg>';
 }
 
 /* ========== [4] AUTH & SESSÃO ÚNICA ========== */
@@ -4768,8 +4907,8 @@ function novoContextual() {
   if (pg==='estrategia') {
     if(!estrPodeEditar()) return blockManage();
     if (estrTab()==='objetivos') return openObjetivoModal(null);
-    if (estrTab()==='planejamento' || estrTab()==='projetos'){ toast('Vá em 🎯 Objetivos para criar um novo, ou clique num objetivo aqui para planejar.','info'); return; }
-    if (estrTab()==='dashboard'){ toast('O botão + cria novos itens — vá em 💡 Ideias ou 🎯 Objetivos.','info'); return; }
+    if (estrTab()==='planejamento' || estrTab()==='projetos'){ toast('Vá em Objetivos para criar um novo, ou clique num objetivo aqui para planejar.','info'); return; }
+    if (estrTab()==='dashboard'){ toast('O botão + cria novos itens — vá em Ideias ou Objetivos.','info'); return; }
     return openIdeiaModal(null);
   }
   if (pg==='projetos') { if(ST.openProject) return openTaskModal(null); return openProjectModal(null); }
@@ -4908,7 +5047,7 @@ function dashboardHTML() {
       '<div class="hero-grid"></div>'+
       '<div class="hero-c">'+
         '<span class="hero-tag">'+esc(h.tag)+'</span>'+
-        '<h2>'+esc(h.sa)+' <span class="hero-name">'+esc(nome)+'</span>! 👋</h2>'+
+        '<h2>'+esc(h.sa)+' <span class="hero-name">'+esc(nome)+'</span>!</h2>'+
         '<p>'+esc(h.desc)+'</p>'+
       '</div>'+
     '</div>';
@@ -4942,7 +5081,7 @@ function dashTaskRow(t) {
 function panelTarefasHoje() {
   var ts=visibleTasks().filter(function(t){ return t.status!=='feito' && t.due_date && t.due_date.split('T')[0]<=today(); });
   ts.sort(function(a,b){ return (a.due_date||'').localeCompare(b.due_date||''); });
-  var body = ts.length ? ts.slice(0,6).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje. 🎉</div>';
+  var body = ts.length ? ts.slice(0,6).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje.</div>';
   var act='<button class="dash-panel-act" id="dashGoTasks">ver todas</button>';
   return dashPanel('Tarefas de hoje', icon('tasks'), body, act);
 }
@@ -5011,7 +5150,7 @@ function lojaPainelHTML(){
   var hoje=today();
   var tarefasHoje=visibleTasks().filter(function(t){ return t.status!=='feito' && t.due_date && t.due_date.split('T')[0]<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
   var mm=lojaMetaMes(loja.id); var vHoje=vendasHojeLoja(loja.id);
-  var hero='<div class="loja-hero"><div class="lh-badge"><span class="dot"></span> PAINEL DA LOJA</div><h1 class="lh-title">'+saud+', <span>'+esc(lojaNome)+'</span> 👋</h1><p class="lh-sub">'+esc(dataExtenso())+'</p></div>';
+  var hero='<div class="loja-hero"><div class="lh-badge"><span class="dot"></span> PAINEL DA LOJA</div><h1 class="lh-title">'+saud+', <span>'+esc(lojaNome)+'</span></h1><p class="lh-sub">'+esc(dataExtenso())+'</p></div>';
   function pk(v,l,c,s){ return '<div class="lp-kpi"><span class="lp-kpi-v" style="color:'+c+'">'+v+'</span><span class="lp-kpi-l">'+esc(l)+'</span>'+(s?'<span class="lp-kpi-s">'+esc(s)+'</span>':'')+'</div>'; }
   var kpis='<div class="lp-kpis">'+
     pk(presentes.length+'/'+mems.length, 'Presentes hoje', 'var(--u-accent)', 'ponto do dia')+
@@ -5021,7 +5160,7 @@ function lojaPainelHTML(){
   '</div>';
   var presAvatars = mems.length ? '<div class="lp-pres">'+mems.map(function(m){ var c=checkinHojeDoMembro(m); var on=c&&c.entrada; var out=c&&c.saida; return '<div class="lp-pres-av'+(on?' on':'')+(out?' out':'')+'" title="'+esc(m.name)+(on?(' · entrou '+hhmm(c.entrada)):' · não chegou')+'"><span style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+(on?'<i class="lp-dot"></i>':'')+'</div>'; }).join('')+'</div>' : '<div class="dash-empty">Nenhum funcionário nesta loja.</div>';
   var presPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('users')+'<h3>Presença de hoje</h3><button class="dash-panel-act" id="lpGoPonto">bater ponto</button></div><div class="dash-panel-b">'+presAvatars+'</div></div>';
-  var tBody=tarefasHoje.length ? tarefasHoje.slice(0,7).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje. 🎉</div>';
+  var tBody=tarefasHoje.length ? tarefasHoje.slice(0,7).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje.</div>';
   var tPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('tasks')+'<h3>Tarefas de hoje</h3><button class="dash-panel-act" id="lpGoTasks">ver todas</button></div><div class="dash-panel-b">'+tBody+'</div></div>';
   var metaPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('target')+'<h3>Meta do mês</h3><button class="dash-panel-act" id="lpGoMetas">detalhes</button></div><div class="dash-panel-b">'+(mm.meta>0?('<div class="lp-meta"><div class="lp-meta-bar"><span style="width:'+mm.pct+'%;background:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'"></span></div><div class="lp-meta-sub">'+fmtBRL(mm.real)+' de '+fmtBRL(mm.meta)+' · <b style="color:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'">'+mm.pct+'%</b></div></div>'):'<div class="dash-empty">Sem meta definida para este mês.</div>')+'</div></div>';
   return hero + muralHTML() + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + metaPanel;
@@ -5517,9 +5656,9 @@ function groupedTodoFocus(items){
   rot.sort(function(a,b){ return (pr[a.priority]||1)-(pr[b.priority]||1); });
   demais.sort(function(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); });
   var html='';
-  if(atras.length) html+='<div class="grp grp-late"><span class="grp-l">🔴 Atrasadas</span><span class="grp-n">'+atras.length+'</span></div>'+atras.map(taskCardHTML).join('');
-  if(rot.length)   html+='<div class="grp grp-rot" id="rotinaHojeAnchor"><span class="grp-l">🔵 Rotina de Hoje</span><span class="grp-n">'+rot.length+'</span></div>'+rot.map(taskCardHTML).join('');
-  if(demais.length)html+='<div class="grp"><span class="grp-l">⚪ Demais</span><span class="grp-n">'+demais.length+'</span></div>'+demais.map(taskCardHTML).join('');
+  if(atras.length) html+='<div class="grp grp-late"><span class="grp-l"><span class="grp-dot grp-dot-late"></span>Atrasadas</span><span class="grp-n">'+atras.length+'</span></div>'+atras.map(taskCardHTML).join('');
+  if(rot.length)   html+='<div class="grp grp-rot" id="rotinaHojeAnchor"><span class="grp-l"><span class="grp-dot grp-dot-hoje"></span>Rotina de Hoje</span><span class="grp-n">'+rot.length+'</span></div>'+rot.map(taskCardHTML).join('');
+  if(demais.length)html+='<div class="grp"><span class="grp-l"><span class="grp-dot grp-dot-demais"></span>Demais</span><span class="grp-n">'+demais.length+'</span></div>'+demais.map(taskCardHTML).join('');
   return html || '<div class="col-empty">Nada atrasado ou para hoje. Planeje no Calendário.</div>';
 }
 // v73: estatística das recorrentes de HOJE (usa só dados em memória; não consulta o Supabase)
@@ -5539,9 +5678,9 @@ function rotinaHojeCardHTML(){
   if(s.total===0) return ''; // sem rotina hoje: não polui a tela
   var pct=s.pct, cor = pct>=100 ? 'var(--u-green)' : 'var(--u-accent)';
   var tempo = (s.hasEst && s.pend>0) ? ' · <span class="rh-time">⏱ ~'+fmtDur(s.pendMin)+' restantes</span>' : '';
-  var doneMsg = pct>=100 ? '<div class="rh-done">Rotina de hoje concluída 🎉</div>' : '';
+  var doneMsg = pct>=100 ? '<div class="rh-done">Rotina de hoje concluída</div>' : '';
   return '<div class="rh-card">'+
-    '<div class="rh-top"><div class="rh-title">🌅 Rotina de Hoje</div><button class="rh-btn" id="btnVerRotina">Ver rotina</button></div>'+
+    '<div class="rh-top"><div class="rh-title">'+icon('sunrise')+' Rotina de Hoje</div><button class="rh-btn" id="btnVerRotina">Ver rotina</button></div>'+
     '<div class="rh-stats"><b style="color:'+cor+'">'+s.done+'</b> de <b>'+s.total+'</b> feitas · <b style="color:#F59E0B">'+s.pend+'</b> pendentes · <b>'+pct+'%</b>'+tempo+'</div>'+
     '<div class="rh-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div>'+
     doneMsg+
@@ -5598,13 +5737,13 @@ function taskCardHTML(it) {
   var u=it.assignee_id?userById(it.assignee_id):null;
   var av=u?'<span class="tc-av" style="background:'+(u.color||'#3B6FF7')+'" title="'+esc(u.name)+'">'+esc(iniciais(u.name))+'</span>':'';
   var hoje=today(); var late=it.due && it.due<hoje && it.status!=='feito';
-  var lateChip = late ? '<span class="tc-late">⚠ Atrasada</span>' : '';
+  var lateChip = late ? '<span class="tc-late">'+icon('warning')+'Atrasada</span>' : '';
   var dateChip=it.due?'<span class="tc-date'+(late?' late':'')+'">'+icon('cal')+fmtDate(it.due)+'</span>':'';
   var srcChip = it.source
     ? '<span class="tc-src tc-src-'+(it.source.type==='Projeto'?'proj':'camp')+'">'+esc(it.source.type)+' · '+esc(it.source.name)+'</span>'
     : (it.area?'<span class="tc-chip">'+esc(it.area)+'</span>':'');
   var recBadge = (it.kind==='task' && it.rec && it.rec!=='none') ? '<span class="tc-rec" title="Rotina · repete: '+(REC[it.rec]?REC[it.rec].label:'')+'">↻ Rotina</span>' : '';
-  var subChip = it.sub ? '<span class="tc-sub'+(it.sub.done===it.sub.total?' done':'')+'">✓ '+it.sub.done+'/'+it.sub.total+'</span>' : '';
+  var subChip = it.sub ? '<span class="tc-sub'+(it.sub.done===it.sub.total?' done':'')+'">'+icon('check')+it.sub.done+'/'+it.sub.total+'</span>' : '';
   // v90.1: só quando faz sentido — rotina que ainda não foi concluída hoje
   var quick = (it.kind==='task' && it.rec && it.rec!=='none' && it.status!=='feito') ? '<button class="tc-done" data-done="'+esc(it.id)+'">'+icon('check')+'<span>Concluir hoje</span></button>' : '';
   var drag = it.draggable ? ' draggable="true"' : '';
@@ -5972,7 +6111,7 @@ function openTaskModal(task, preset) {
         return '<div class="sub-item'+(s.done?' done':'')+'">'+
           '<button type="button" class="sub-check" data-i="'+i+'" style="border-color:'+(s.done?'#16A34A':'var(--u-border2)')+';background:'+(s.done?'#16A34A':'transparent')+'">'+(s.done?'✓':'')+'</button>'+
           '<span class="sub-text">'+esc(s.text)+'</span>'+
-          '<button type="button" class="sub-del" data-i="'+i+'" title="Remover">✕</button>'+
+          '<button type="button" class="sub-del" data-i="'+i+'" title="Remover">'+icon('x')+'</button>'+
         '</div>';
       }).join('');
       box.querySelectorAll('.sub-check').forEach(function(b){ b.addEventListener('click', function(){ var i=+this.getAttribute('data-i'); subList[i].done=!subList[i].done; renderSubs(); }); });
@@ -6661,7 +6800,7 @@ function openFichaColaborador(member){
     var el=modal.querySelector('#fiKudo'); var msg=(el.value||'').trim(); if(!msg){ toast('Escreva o reconhecimento','error'); return; }
     var btn=modal.querySelector('#fiSendKudo'); btn.disabled=true; btn.textContent='Enviando...';
     var rec={ sector:ST.sector, member_id:m.id, from_user_id:ST.session.user.id, from_name:ST.session.user.name, message:msg };
-    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado 🎉','success'); draw(); });
+    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado','success'); draw(); });
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   function draw(){ modal.innerHTML=fichaHTML(); bind(); }
@@ -7782,12 +7921,12 @@ function estrategiaHTML(){
   var contProj   = (ST.projects||[]).filter(function(p){ return p.source_objetivo_id; }).length;
   var contArq    = (ST.ideias||[]).filter(function(i){ return i.status==='arquivada'; }).length;
   var side = '<aside class="estr-side">'+
-    estrSideItem('dashboard',  '📊 Dashboard',    '',         tab)+ // v94: painel de indicadores
-    estrSideItem('ideias',     '💡 Ideias',       contIdeias, tab)+
-    estrSideItem('objetivos',  '🎯 Objetivos',    contObj,    tab)+
-    estrSideItem('planejamento','📋 Planejamento', contPlan,   tab)+ // v93: funcional
-    estrSideItem('projetos',   '🚀 Projetos',     contProj,   tab)+ // v93: funcional
-    estrSideItem('arquivadas', '📂 Arquivadas',   contArq,    tab)+
+    estrSideItem('dashboard',  icon('bar-chart-3')+' Dashboard',    '',         tab)+ // v94: painel de indicadores
+    estrSideItem('ideias',     icon('lightbulb')+' Ideias',       contIdeias, tab)+
+    estrSideItem('objetivos',  icon('target')+' Objetivos',    contObj,    tab)+
+    estrSideItem('planejamento',icon('clipboard-pen')+' Planejamento', contPlan,   tab)+ // v93: funcional
+    estrSideItem('projetos',   icon('rocket')+' Projetos',     contProj,   tab)+ // v93: funcional
+    estrSideItem('arquivadas', icon('folder-open')+' Arquivadas',   contArq,    tab)+
   '</aside>';
 
   var body;
@@ -7813,7 +7952,7 @@ function estrSideItem(id, label, count, atual, soon){
 }
 
 function estrEmBreveHTML(tab){
-  var titulos = { objetivos:'🎯 Objetivos', planejamento:'📋 Planejamento', projetos:'🚀 Projetos' };
+  var titulos = { objetivos:'Objetivos', planejamento:'Planejamento', projetos:'Projetos' };
   var textos = {
     objetivos:'Aqui vão morar os objetivos derivados das ideias aprovadas — com indicadores, prazo e resultado esperado.',
     planejamento:'Aqui você vai estruturar como cada objetivo será executado — checklists, etapas, dependências, documentos.',
@@ -7962,7 +8101,7 @@ function openIdeiaModal(ideia){
     var vincHTML = vinculados.length ? '<div class="ideia-vinc"><b>Objetivos que nasceram desta ideia:</b><ul>'+vinculados.map(function(o){ return '<li>'+esc(o.title)+' <span style="color:'+(OBJ_STATUS[o.status||"ativo"]||OBJ_STATUS.ativo).color+'">('+(OBJ_STATUS[o.status||"ativo"]||OBJ_STATUS.ativo).label+')</span></li>'; }).join('')+'</ul></div>' : '';
     body += '<div class="ideia-conv">'+
       vincHTML+
-      '<button type="button" class="btn btn-secondary" id="idToObjetivo">🎯 Transformar em Objetivo</button>'+
+      '<button type="button" class="btn btn-secondary" id="idToObjetivo">'+icon('target')+'Transformar em Objetivo</button>'+
     '</div>';
   }
 
@@ -8109,7 +8248,7 @@ function objetivoCard(o){
   var origem = '';
   if (o.source_ideia_id){
     var ideia = (ST.ideias||[]).find(function(x){ return String(x.id)===String(o.source_ideia_id); });
-    if (ideia) origem = '<span class="obj-origem" title="Nasceu de: '+esc(ideia.title)+'">💡 '+esc(ideia.title.slice(0,32))+(ideia.title.length>32?'…':'')+'</span>';
+    if (ideia) origem = '<span class="obj-origem" title="Nasceu de: '+esc(ideia.title)+'">'+icon('lightbulb')+esc(ideia.title.slice(0,32))+(ideia.title.length>32?'…':'')+'</span>';
   }
   return '<div class="estr-card" data-obj-id="'+esc(o.id)+'">'+
     '<div class="estr-card-top">'+
@@ -8167,7 +8306,7 @@ function openObjetivoModal(objeto, sourceIdeia){
   }).join('');
   var ideiasList = (ST.ideias||[]).filter(function(i){ return i.status!=='arquivada'; });
   var ideiaOpts = '<option value="">— nenhuma (independente) —</option>' + ideiasList.map(function(i){
-    return '<option value="'+esc(i.id)+'"'+(String(o.source_ideia_id)===String(i.id)?' selected':'')+'>💡 '+esc(i.title)+'</option>';
+    return '<option value="'+esc(i.id)+'"'+(String(o.source_ideia_id)===String(i.id)?' selected':'')+'>'+esc(i.title)+'</option>';
   }).join('');
 
   var body =
@@ -8290,7 +8429,7 @@ function estrPlanejamentoHTML(){
     return filtros + emptyState({
       icon:'target',
       title: q ? 'Nenhum objetivo com esse filtro' : 'Nenhum objetivo ativo para planejar',
-      text: 'Crie um objetivo primeiro (aba 🎯 Objetivos). Depois volte aqui pra dividir a execução em etapas.',
+      text: 'Crie um objetivo primeiro (aba Objetivos). Depois volte aqui pra dividir a execução em etapas.',
       span:true
     });
   }
@@ -8310,7 +8449,7 @@ function planCardHTML(o){
   var jaConvertido = (ST.projects||[]).some(function(p){ return String(p.source_objetivo_id||'')===String(o.id); });
   var btnProj = jaConvertido
     ? '<span class="plan-conv-done">✓ Projeto criado</span>'
-    : (total>0 && estrPodeEditar() ? '<button class="plan-conv" data-plan-conv="'+esc(o.id)+'">🚀 Transformar em Projeto</button>' : '');
+    : (total>0 && estrPodeEditar() ? '<button class="plan-conv" data-plan-conv="'+esc(o.id)+'">'+icon('rocket')+'Transformar em Projeto</button>' : '');
 
   return '<div class="plan-card" data-plan-id="'+esc(o.id)+'">'+
     '<div class="plan-card-head">'+
@@ -8347,7 +8486,7 @@ function openPlanejamentoModal(objetivo){
   var body =
     '<div class="plan-modal-head">'+
       '<div class="plan-modal-title">Planejamento do objetivo</div>'+
-      '<div class="plan-modal-obj">🎯 '+esc(o.title||'')+'</div>'+
+      '<div class="plan-modal-obj">'+icon('target')+esc(o.title||'')+'</div>'+
     '</div>'+
     '<div id="planEtapasWrap">'+etapasHTML()+'</div>'+
     '<div class="plan-add">'+
@@ -8428,7 +8567,7 @@ function estrProjetosHTML(){
 
   var cards = '<div class="estr-cards">'+lista.map(function(p){
     var o = (ST.objetivos||[]).find(function(x){ return String(x.id)===String(p.source_objetivo_id); });
-    var origem = o ? '<span class="obj-origem" title="Objetivo de origem">🎯 '+esc((o.title||'').slice(0,32))+((o.title||'').length>32?'…':'')+'</span>' : '';
+    var origem = o ? '<span class="obj-origem" title="Objetivo de origem">'+icon('target')+esc((o.title||'').slice(0,32))+((o.title||'').length>32?'…':'')+'</span>' : '';
     var membros = (p.members||[]).slice(0,3).map(function(uid){
       var u = userById(uid);
       return u ? '<span class="crm-av" style="background:'+(u.color||'#3B6FF7')+'22;color:'+(u.color||'#3B6FF7')+';margin-left:-4px">'+esc(iniciais(u.name))+'</span>' : '';
@@ -8970,22 +9109,22 @@ function docsSideHTML(){
 
   var contVinc = docs.filter(function(d){ return !d.is_archived && docLinksDe(d).length>0; }).length; // v100
   var g1 = '<div class="docs-side-group">'+
-    item('dashboard','Painel', '', '📊')+
-    item('todos','Todos os documentos', contTotal, '📁')+
-    item('meus','Meus documentos', contMeus, '👤')+
-    item('compartilhados','Compartilhados comigo', contComp, '👥')+
-    item('privados','Privados', contPriv, '🔒')+
-    item('atas','Atas de reunião', contAtas, '📝')+
-    item('vinculados','Vinculados', contVinc, '🔗')+
-    item('arquivados','Arquivados', contArqu, '🗂')+
+    item('dashboard','Painel', '', icon('bar-chart-3'))+
+    item('todos','Todos os documentos', contTotal, icon('folder-open'))+
+    item('meus','Meus documentos', contMeus, icon('user-round'))+
+    item('compartilhados','Compartilhados comigo', contComp, icon('users'))+
+    item('privados','Privados', contPriv, icon('lock'))+
+    item('atas','Atas de reunião', contAtas, icon('notebook-pen'))+
+    item('vinculados','Vinculados', contVinc, icon('link'))+
+    item('arquivados','Arquivados', contArqu, icon('archive'))+
   '</div>';
   var g2 = '<div class="docs-side-group">'+
-    item('favoritos','Favoritos', contFav, '⭐')+
-    item('recentes','Recentes', contRec, '🕓')+
+    item('favoritos','Favoritos', contFav, icon('star-icon'))+
+    item('recentes','Recentes', contRec, icon('clock'))+
   '</div>';
 
   // pastas — nested; renderiza a raiz e chama recursivo
-  var g3Head = '<div class="docs-side-group-h">📂 Pastas'+(docPodeCriar()?' <button class="docs-side-add" id="btnNovaPasta" title="Nova pasta">+</button>':'')+'</div>';
+  var g3Head = '<div class="docs-side-group-h">'+icon('folder')+' Pastas'+(docPodeCriar()?' <button class="docs-side-add" id="btnNovaPasta" title="Nova pasta">+</button>':'')+'</div>';
   var g3Body = docsFolderTreeHTML(null, 0);
   var g3 = '<div class="docs-side-group folders">'+g3Head+g3Body+'</div>';
 
@@ -9009,7 +9148,7 @@ function docsFolderTreeHTML(parentId, depth){
     return '<div class="docs-folder-row">'+
       '<div class="docs-folder-item'+on+'" data-folder-id="'+esc(f.id)+'">'+
         expander+
-        '<span class="docs-folder-lb">📁 '+esc(f.name)+'</span>'+
+        '<span class="docs-folder-lb">'+icon('folder')+esc(f.name)+'</span>'+
         '<span class="docs-folder-c">'+docCount+'</span>'+
       '</div>'+
       (expanded && childCount>0 ? docsFolderTreeHTML(f.id, depth+1) : '')+
@@ -9019,13 +9158,13 @@ function docsFolderTreeHTML(parentId, depth){
 
 /* ---------- Templates (Parte C usa isso pra criar doc estruturado) ---------- */
 var DOC_TEMPLATES = [
-  { key:'branco', icon:'📌', label:'Em branco', doc_type:'geral', body: null },
-  { key:'ata', icon:'📋', label:'Ata de reunião', doc_type:'ata', body: docTplAta() },
-  { key:'pop', icon:'📑', label:'POP', doc_type:'pop', body: docTplPOP() },
-  { key:'manual', icon:'📘', label:'Manual', doc_type:'manual', body: docTplManual() },
-  { key:'wiki', icon:'📚', label:'Wiki', doc_type:'wiki', body: docTplWiki() },
-  { key:'planejamento', icon:'📊', label:'Planejamento', doc_type:'planejamento', body: docTplPlanejamento() },
-  { key:'estrategia', icon:'📈', label:'Estratégia', doc_type:'estrategia', body: docTplEstrategia() }
+  { key:'branco', icon:'pin', label:'Em branco', doc_type:'geral', body: null },
+  { key:'ata', icon:'notebook-pen', label:'Ata de reunião', doc_type:'ata', body: docTplAta() },
+  { key:'pop', icon:'clipboard-list', label:'POP', doc_type:'pop', body: docTplPOP() },
+  { key:'manual', icon:'book', label:'Manual', doc_type:'manual', body: docTplManual() },
+  { key:'wiki', icon:'book-open', label:'Wiki', doc_type:'wiki', body: docTplWiki() },
+  { key:'planejamento', icon:'clipboard-pen', label:'Planejamento', doc_type:'planejamento', body: docTplPlanejamento() },
+  { key:'estrategia', icon:'compass', label:'Estratégia', doc_type:'estrategia', body: docTplEstrategia() }
 ];
 
 /* ---------- Lista principal ---------- */
@@ -9085,7 +9224,7 @@ function docsTableHTML(lista){
     var quem = au ? au.name : '—';
     var fav = Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
     var pasta = d.folder_id ? (ST.docFolders||[]).find(function(f){ return String(f.id)===String(d.folder_id); }) : null;
-    var pastaLb = pasta ? '📁 '+esc(pasta.name) : '—';
+    var pastaLb = pasta ? esc(pasta.name) : '—';
     var vis = docShareLabel(d); // v97
     var upd = d.updated_at ? esc(tempoRelativo(d.updated_at)) : '—';
     var tipoIc = docTipoIcon(d.doc_type);
@@ -9094,12 +9233,12 @@ function docsTableHTML(lista){
     var trecho = (ST.docHits && ST.docHits[d.id]) ? '<div class="doc-trecho">'+docDestacar(ST.docHits[d.id], docQ())+'</div>' : '';
     // v99: quantos comentários em aberto
     var nc = (ST.docCommentCount && ST.docCommentCount[d.id]) || docComentariosAbertos(d.id);
-    var badge = nc ? ' <span class="doc-lista-coment" title="'+nc+' comentário'+(nc>1?'s':'')+' em aberto">💬 '+nc+'</span>' : '';
+    var badge = nc ? ' <span class="doc-lista-coment" title="'+nc+' comentário'+(nc>1?'s':'')+' em aberto">'+icon('chat')+nc+'</span>' : '';
     // v100: vínculos na linha
     var nl = docLinksDe(d).length;
-    if (nl) badge += ' <span class="doc-lista-coment" title="'+nl+' vínculo'+(nl>1?'s':'')+'">🔗 '+nl+'</span>';
+    if (nl) badge += ' <span class="doc-lista-coment" title="'+nl+' vínculo'+(nl>1?'s':'')+'">'+icon('link')+nl+'</span>';
     return '<tr data-doc-id="'+esc(d.id)+'">'+
-      '<td class="doc-td-star"><button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+(fav?'★':'☆')+'</button></td>'+
+      '<td class="doc-td-star"><button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+icon('star-icon')+'</button></td>'+
       '<td class="doc-td-title"><span class="doc-tipo-ic">'+tipoIc+'</span><b>'+esc(d.title||'(sem título)')+'</b>'+badge+' <span class="doc-tags-inline">'+tags+'</span>'+trecho+'</td>'+
       '<td>'+pastaLb+'</td>'+
       '<td>'+esc(quem)+'</td>'+
@@ -9122,7 +9261,7 @@ function docCardHTML(d){
   return '<div class="doc-card" data-doc-id="'+esc(d.id)+'">'+
     '<div class="doc-card-top">'+
       '<span class="doc-tipo-ic">'+tipoIc+'</span>'+
-      '<button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+(fav?'★':'☆')+'</button>'+
+      '<button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+icon('star-icon')+'</button>'+
     '</div>'+
     '<h4 class="doc-card-title">'+esc(d.title||'(sem título)')+'</h4>'+
     '<div class="doc-card-foot"><span>'+esc(au?au.name:'—')+'</span><span>'+esc(upd)+'</span></div>'+
@@ -9130,7 +9269,7 @@ function docCardHTML(d){
 }
 
 function docTipoIcon(t){
-  return { ata:'📝', pop:'📑', manual:'📘', wiki:'📚', planejamento:'📊', estrategia:'📈' }[t] || '📄';
+  return { ata:'notebook-pen', pop:'clipboard-list', manual:'book', wiki:'book-open', planejamento:'clipboard-pen', estrategia:'compass' }[t] || 'file-text';
 }
 
 /* ---------- Templates: geram o JSON inicial do EditorJS ---------- */
@@ -9482,7 +9621,7 @@ function docsAtualizarBadgeComentarios(docId){
   var btn = document.getElementById('docComent');
   if (!btn) return;
   var n = docComentariosAbertos(docId);
-  btn.innerHTML = '💬 Comentários' + (n ? ' <b class="doc-coment-badge">'+n+'</b>' : '');
+  btn.innerHTML = icon('chat')+'Comentários' + (n ? ' <b class="doc-coment-badge">'+n+'</b>' : '');
 }
 
 function docEditorTools(){
@@ -9568,15 +9707,15 @@ function docsEditorHTML(){
   var selo = podeEd
     ? ''
     : '<span class="doc-perm-selo">'+DOC_PERMS[perm].ic+' Somente '+esc(DOC_PERMS[perm].label.toLowerCase())+'</span>';
-  var btnShare = docPodeAdmin(d) ? '<button class="doc-editor-share" id="docShare" title="Compartilhar">🔗 Compartilhar</button>' : '';
-  var btnHist = '<button class="doc-editor-share" id="docHist" title="Histórico de versões">🕓 Histórico</button>'; // v98
+  var btnShare = docPodeAdmin(d) ? '<button class="doc-editor-share" id="docShare" title="Compartilhar">'+icon('share2')+'Compartilhar</button>' : '';
+  var btnHist = '<button class="doc-editor-share" id="docHist" title="Histórico de versões">'+icon('history')+'Histórico</button>'; // v98
   // v99: comentários e (na ata) pendências
   var nAbertos = docComentariosAbertos(d.id);
-  var btnComent = '<button class="doc-editor-share'+(ST.docPainelComentarios?' on':'')+'" id="docComent" title="Comentários">💬 Comentários'+(nAbertos?' <b class="doc-coment-badge">'+nAbertos+'</b>':'')+'</button>';
+  var btnComent = '<button class="doc-editor-share'+(ST.docPainelComentarios?' on':'')+'" id="docComent" title="Comentários">'+icon('chat')+'Comentários'+(nAbertos?' <b class="doc-coment-badge">'+nAbertos+'</b>':'')+'</button>';
   var nLinks = docLinksDe(d).length; // v100
-  var btnLink = docPodeEditar(d) ? '<button class="doc-editor-share" id="docLink" title="Vincular a projeto, tarefa, cliente...">🔗 Vínculos'+(nLinks?' <b class="doc-link-badge">'+nLinks+'</b>':'')+'</button>' : '';
+  var btnLink = docPodeEditar(d) ? '<button class="doc-editor-share" id="docLink" title="Vincular a projeto, tarefa, cliente...">'+icon('link')+'Vínculos'+(nLinks?' <b class="doc-link-badge">'+nLinks+'</b>':'')+'</button>' : '';
   var btnPend = (d.doc_type==='ata' && docPodeVer(d))
-    ? '<button class="doc-editor-share destaque" id="docPend" title="Criar tarefas a partir das pendências">✅ Pendências → tarefas</button>' : '';
+    ? '<button class="doc-editor-share destaque" id="docPend" title="Criar tarefas a partir das pendências">'+icon('check')+'Pendências → tarefas</button>' : '';
   return '<div class="doc-editor-wrap">'+
     '<div class="doc-editor-head">'+
       '<button class="doc-editor-back" id="docBack">← Voltar</button>'+
@@ -9732,14 +9871,14 @@ function docsAbrirMenuAcoes(anchor, id){
   var moverRow = podeEd
     ? '<div class="modal-row"><label class="modal-label">Mover para pasta</label><select id="acMover">'+pastas+'</select></div>'
     : '<p class="modal-note">Você tem acesso de leitura neste documento. Peça ao autor para liberar edição.</p>';
-  var botoes = '<button class="doc-acao" data-acao="duplicar">📄 Duplicar</button>'+
-               '<button class="doc-acao" data-acao="historico">🕓 Histórico</button>';
-  if (podeEd) botoes += '<button class="doc-acao" data-acao="vinculos">🔗 Vínculos</button>'; // v100
-  if (d.doc_type==='ata') botoes += '<button class="doc-acao" data-acao="pendencias">✅ Pendências → tarefas</button>'; // v99
+  var botoes = '<button class="doc-acao" data-acao="duplicar">'+icon('file-text')+'Duplicar</button>'+
+               '<button class="doc-acao" data-acao="historico">'+icon('history')+'Histórico</button>';
+  if (podeEd) botoes += '<button class="doc-acao" data-acao="vinculos">'+icon('link')+'Vínculos</button>'; // v100
+  if (d.doc_type==='ata') botoes += '<button class="doc-acao" data-acao="pendencias">'+icon('check')+'Pendências → tarefas</button>'; // v99
   if (podeAd){
-    botoes += '<button class="doc-acao" data-acao="compartilhar">🔗 Compartilhar</button>'+
-              '<button class="doc-acao" data-acao="arquivar">'+(d.is_archived?'♻️ Restaurar':'🗂 Arquivar')+'</button>'+
-              '<button class="doc-acao danger" data-acao="excluir">🗑 Excluir</button>';
+    botoes += '<button class="doc-acao" data-acao="compartilhar">'+icon('share2')+'Compartilhar</button>'+
+              '<button class="doc-acao" data-acao="arquivar">'+(d.is_archived?icon('history')+'Restaurar':icon('archive')+'Arquivar')+'</button>'+
+              '<button class="doc-acao danger" data-acao="excluir">'+icon('trash2')+'Excluir</button>';
   }
   makeModal({
     title:'Ações do documento', width:420,
@@ -9780,18 +9919,18 @@ function docsAbrirMenuAcoes(anchor, id){
    ============================================================ */
 
 var DOC_PERMS = {
-  visualizar: { label:'Visualizar', rank:1, ic:'👁' },
-  comentar:   { label:'Comentar',   rank:2, ic:'💬' },
-  editar:     { label:'Editar',     rank:3, ic:'✏️' },
-  admin:      { label:'Admin',      rank:4, ic:'🔑' }
+  visualizar: { label:'Visualizar', rank:1, ic:icon('folder-open') },
+  comentar:   { label:'Comentar',   rank:2, ic:icon('chat') },
+  editar:     { label:'Editar',     rank:3, ic:icon('pencil') },
+  admin:      { label:'Admin',      rank:4, ic:icon('key-round') }
 };
 var DOC_PERM_ORDER = ['visualizar','comentar','editar','admin'];
 
 var DOC_VIS = {
-  privado: { label:'Privado',             ic:'🔒', desc:'Só você e quem convidar' },
-  unidade: { label:'Minha unidade',       ic:'🏪', desc:'Quem trabalha na mesma loja' },
-  setor:   { label:'Setor inteiro',       ic:'👥', desc:'Todo mundo do setor' },
-  pessoas: { label:'Pessoas específicas', ic:'🙋', desc:'Só quem estiver na lista' }
+  privado: { label:'Privado',             ic:icon('lock'), desc:'Só você e quem convidar' },
+  unidade: { label:'Minha unidade',       ic:icon('store'), desc:'Quem trabalha na mesma loja' },
+  setor:   { label:'Setor inteiro',       ic:icon('users'), desc:'Todo mundo do setor' },
+  pessoas: { label:'Pessoas específicas', ic:icon('user-round'), desc:'Só quem estiver na lista' }
 };
 var DOC_VIS_ORDER = ['privado','unidade','setor','pessoas'];
 
@@ -9851,10 +9990,10 @@ function docShareLabel(d){
   var vis = d.visibility || 'setor';
   var n = (Array.isArray(d.shares) ? d.shares : []).length;
   var extra = n ? ' +'+n : '';
-  if (vis==='privado') return '🔒 Privado'+extra;
-  if (vis==='pessoas') return '🙋 '+n+' pessoa'+(n===1?'':'s');
-  if (vis==='unidade') return '🏪 Unidade'+extra;
-  return '👥 Setor'+extra;
+  if (vis==='privado') return icon('lock')+'Privado'+extra;
+  if (vis==='pessoas') return icon('user-round')+n+' pessoa'+(n===1?'':'s');
+  if (vis==='unidade') return icon('store')+'Unidade'+extra;
+  return icon('users')+'Setor'+extra;
 }
 
 /* ---------- Modal de compartilhamento ---------- */
@@ -9900,15 +10039,15 @@ function docsCompartilhar(id){
   function nomeDoAlvo(s){
     if (s.type==='unidade'){
       var un = unidades.find(function(x){ return String(x.id)===String(s.id); });
-      return { ic:'🏪', nome: un ? un.name : 'Unidade removida' };
+      return { ic:icon('store'), nome: un ? un.name : 'Unidade removida' };
     }
     // v113: compartilhamento com equipe
     if (s.type==='equipe'){
       var eq = (ST.equipes||[]).find(function(x){ return String(x.id)===String(s.id); });
-      return { ic:'👥', nome: eq ? (eq.name+' ('+((eq.membros||[]).length)+' pessoas)') : 'Equipe removida' };
+      return { ic:icon('users'), nome: eq ? (eq.name+' ('+((eq.membros||[]).length)+' pessoas)') : 'Equipe removida' };
     }
     var pe = (ST.allUsers||ST.users||[]).find(function(x){ return String(x.id)===String(s.id); });
-    return { ic:'👤', nome: pe ? pe.name : 'Usuário removido' };
+    return { ic:icon('user-round'), nome: pe ? pe.name : 'Usuário removido' };
   }
 
   function listaHTML(){
@@ -9926,15 +10065,15 @@ function docsCompartilhar(id){
   function addHTML(){
     var jaTem = shares.map(function(s){ return s.type+':'+s.id; });
     var optsP = pessoas.filter(function(u){ return jaTem.indexOf('user:'+u.id)===-1; })
-      .map(function(u){ return '<option value="user:'+esc(u.id)+'">👤 '+esc(u.name)+'</option>'; }).join('');
+      .map(function(u){ return '<option value="user:'+esc(u.id)+'">'+esc(u.name)+'</option>'; }).join('');
     var optsU = unidades.filter(function(x){ return jaTem.indexOf('unidade:'+x.id)===-1; })
-      .map(function(x){ return '<option value="unidade:'+esc(x.id)+'">🏪 '+esc(x.name)+'</option>'; }).join('');
+      .map(function(x){ return '<option value="unidade:'+esc(x.id)+'">'+esc(x.name)+'</option>'; }).join('');
     // v113: equipes visíveis no compartilhamento
     var equipesAptas = (typeof equipesVisiveis==='function' ? equipesVisiveis() : (ST.equipes||[])).filter(function(e){ return e.is_active!==false; });
     var optsE = equipesAptas.filter(function(e){ return jaTem.indexOf('equipe:'+e.id)===-1; })
       .map(function(e){
         var n = (e.membros||[]).length;
-        return '<option value="equipe:'+esc(e.id)+'">👥 '+esc(e.name)+' ('+n+')</option>';
+        return '<option value="equipe:'+esc(e.id)+'">'+esc(e.name)+' ('+n+')</option>';
       }).join('');
     if (!optsP && !optsU && !optsE) return '<div class="doc-share-vazio">Todo mundo do setor já está na lista.</div>';
     return '<div class="doc-share-add">'+
@@ -10101,7 +10240,7 @@ function docsAbrirHistorico(docId){
     title: 'Histórico de versões',
     width: 560,
     body: '<div class="doc-hist-doc">'+docTipoIcon(d.doc_type)+' <b>'+esc(d.title||'Sem título')+'</b></div>'+
-          (podeRestaurar ? '<button type="button" class="btn btn-secondary doc-hist-marcar" id="dhMarcar">📌 Marcar versão agora</button>' : '')+
+          (podeRestaurar ? '<button type="button" class="btn btn-secondary doc-hist-marcar" id="dhMarcar">'+icon('pin')+'Marcar versão agora</button>' : '')+
           '<div id="dhLista"><div class="doc-hist-load">Carregando histórico…</div></div>',
     hideFoot: true
   });
@@ -10640,11 +10779,11 @@ function docsPendenciasEmTarefas(docId){
 
 /* ---------- (A) Tipos de entidade que aceitam vínculo ---------- */
 var DOC_LINK_TIPOS = {
-  projeto:  { label:'Projeto',   ic:'🚀', lista:function(){ return (ST.projects||[]).map(function(p){ return { id:p.id, nome:p.name }; }); } },
-  tarefa:   { label:'Tarefa',    ic:'✅', lista:function(){ return (ST.tasks||[]).filter(function(t){ return String(t.sector||'')===String(ST.sector); }).map(function(t){ return { id:t.id, nome:t.title }; }); } },
-  cliente:  { label:'Cliente',   ic:'🤝', lista:function(){ return (ST.clients||[]).map(function(c){ return { id:c.id, nome:c.name || c.nome }; }); } },
-  ideia:    { label:'Ideia',     ic:'💡', lista:function(){ return (ST.ideias||[]).map(function(i){ return { id:i.id, nome:i.title }; }); } },
-  objetivo: { label:'Objetivo',  ic:'🎯', lista:function(){ return (ST.objetivos||[]).map(function(o){ return { id:o.id, nome:o.title }; }); } }
+  projeto:  { label:'Projeto',   ic:icon('rocket'), lista:function(){ return (ST.projects||[]).map(function(p){ return { id:p.id, nome:p.name }; }); } },
+  tarefa:   { label:'Tarefa',    ic:icon('check-square'), lista:function(){ return (ST.tasks||[]).filter(function(t){ return String(t.sector||'')===String(ST.sector); }).map(function(t){ return { id:t.id, nome:t.title }; }); } },
+  cliente:  { label:'Cliente',   ic:icon('users'), lista:function(){ return (ST.clients||[]).map(function(c){ return { id:c.id, nome:c.name || c.nome }; }); } },
+  ideia:    { label:'Ideia',     ic:icon('lightbulb'), lista:function(){ return (ST.ideias||[]).map(function(i){ return { id:i.id, nome:i.title }; }); } },
+  objetivo: { label:'Objetivo',  ic:icon('target'), lista:function(){ return (ST.objetivos||[]).map(function(o){ return { id:o.id, nome:o.title }; }); } }
 };
 var DOC_LINK_ORDER = ['projeto','tarefa','cliente','ideia','objetivo'];
 
@@ -10672,7 +10811,7 @@ function docsDaEntidade(tipo, entidadeId){
 
 /* ---------- (A) Chip de vínculo ---------- */
 function docLinkChipHTML(link, comRemover){
-  var t = DOC_LINK_TIPOS[link.type] || { ic:'🔗', label:'Vínculo' };
+  var t = DOC_LINK_TIPOS[link.type] || { ic:icon('link'), label:'Vínculo' };
   var rm = comRemover ? '<button type="button" class="doc-link-del" data-link-del="'+esc(link.type+':'+link.id)+'" title="Desvincular">×</button>' : '';
   return '<span class="doc-link-chip" title="'+esc(t.label)+'">'+t.ic+' '+esc(docLinkNome(link))+rm+'</span>';
 }
@@ -10763,7 +10902,7 @@ function docsVinculadosBlocoHTML(tipo, entidadeId){
   var lista = docsDaEntidade(tipo, entidadeId);
   if (!lista.length) return '';
   return '<div class="doc-vinc-bloco">'+
-    '<label class="modal-label">📄 Documentos vinculados ('+lista.length+')</label>'+
+    '<label class="modal-label">'+icon('file-text')+'Documentos vinculados ('+lista.length+')</label>'+
     '<div class="doc-vinc-lista">'+lista.map(function(d){
       return '<button type="button" class="doc-vinc-item" data-abrir-doc="'+esc(d.id)+'">'+
         docTipoIcon(d.doc_type)+' <span>'+esc(d.title||'Sem título')+'</span>'+
@@ -10842,7 +10981,7 @@ function docsDashboardHTML(){
     ? paradosOrd.map(function(d){
         return '<div class="estr-rec-row" data-dash-doc="'+esc(d.id)+'"><span class="estr-rec-status" style="background:#F59E0B"></span><b>'+esc(d.title||'Sem título')+'</b><span class="estr-rec-cat">'+esc(tempoRelativo(d.updated_at))+'</span></div>';
       }).join('')
-    : '<div class="estr-rec-empty">Nenhum documento parado há mais de 90 dias. 👏</div>';
+    : '<div class="estr-rec-empty">Nenhum documento parado há mais de 90 dias.</div>';
   var boxParados = '<div class="estr-box"><h4>Sem atualização há 90+ dias'+(parados.length>6?' (6 de '+parados.length+')':'')+'</h4><div class="estr-rec">'+paradosHTML+'</div></div>';
 
   return '<div class="estr-dash">'+kpis+'<div class="estr-dash-2col">'+boxTipos+boxParados+'</div></div>';
@@ -10954,22 +11093,22 @@ function centralArvoreHTML(){
   }
 
   var empresaHTML = 
-    item('empresa', '🏢', 'Empresa', null, '', c.nav==='empresa')+
-    item('lojas',   '🏪', 'Lojas', lojas.length, '', lojasAbertas)+
+    item('empresa', icon('building-2'), 'Empresa', null, '', c.nav==='empresa')+
+    item('lojas',   icon('store'), 'Lojas', lojas.length, '', lojasAbertas)+
     lojasFilhos+
-    (isSuper(ST.session) ? item('departamentos', '🏢', 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '');
+    (isSuper(ST.session) ? item('departamentos', icon('building'), 'Departamentos', (ST.departamentos||[]).length, '', c.nav==='departamentos') : '');
 
   var pessoasHTML =
-    item('colabs',  '👥', 'Colaboradores', ativos.length, '', colabsAbertos)+
+    item('colabs',  icon('user-round'), 'Colaboradores', ativos.length, '', colabsAbertos)+
     colabsFilhos+
-    item('cargos',  '💼', 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
-    item('equipes', '👥', 'Equipes', equipesVisiveis().length, '', c.nav==='equipes' || c.nav==='equipe-detalhe')+
-    item('organograma', '🗺️', 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma');
+    item('cargos',  icon('badge-check'), 'Cargos', (ST.cargos||[]).length, '', c.nav==='cargos')+
+    item('equipes', icon('users-round'), 'Equipes', equipesVisiveis().length, '', c.nav==='equipes' || c.nav==='equipe-detalhe')+
+    item('organograma', icon('network'), 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma');
 
   var sistemaHTML =
-    item('acessos', '🔑', 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
-    (isSuper(ST.session) ? item('perfis', '🎭', 'Perfis de Permissão', (5 + ((ST.perfis||[]).length)), '', c.nav==='perfis') : '')+
-    item('rotinas-pop', '📋', 'Rotinas (POPs)', (ST.rotinas||[]).length, '', c.nav==='rotinas-pop');
+    item('acessos', icon('key-round'), 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
+    (isSuper(ST.session) ? item('perfis', icon('user-cog'), 'Perfis de Permissão', (5 + ((ST.perfis||[]).length)), '', c.nav==='perfis') : '')+
+    item('rotinas-pop', icon('clipboard-check'), 'Rotinas (POPs)', (ST.rotinas||[]).length, '', c.nav==='rotinas-pop');
 
   return '<aside class="cad-side">'+
     secao('empresa', 'Empresa',  empresaHTML) +
@@ -11011,10 +11150,10 @@ function centralVisaoEmpresaHTML(){
     return '<div class="cad-kpi"><div class="cad-kpi-h"><span class="cad-kpi-ic" style="background:'+cor+'18;color:'+cor+'">'+ic+'</span></div><div class="cad-kpi-v" style="color:'+cor+'">'+n+'</div><div class="cad-kpi-l">'+esc(l)+'</div></div>';
   }
   var kpis = '<div class="cad-kpis">'+
-    box(lojas.length, 'Lojas', '#3B6FF7', '🏪')+
-    box(colabs.length, 'Colaboradores ativos', '#16A34A', '👥')+
-    box(comAcesso, 'Com acesso ao sistema', '#8B5CF6', '🔑')+
-    box(gestores, 'Gestores', '#F59E0B', '👑')+
+    box(lojas.length, 'Lojas', '#3B6FF7', icon('store'))+
+    box(colabs.length, 'Colaboradores ativos', '#16A34A', icon('users'))+
+    box(comAcesso, 'Com acesso ao sistema', '#8B5CF6', icon('key-round'))+
+    box(gestores, 'Gestores', '#F59E0B', icon('crown'))+
   '</div>';
 
   // Grade das lojas com resumo
@@ -11022,7 +11161,7 @@ function centralVisaoEmpresaHTML(){
     var totalM = centralColabsDaLoja(l.id).filter(function(m){ return m.is_active!==false; }).length;
     var gestor = l.user_id ? (ST.allUsers||[]).find(function(u){ return String(u.id)===String(l.user_id); }) : null;
     return '<button class="cad-loja-card" data-cad-nav="loja" data-cad-loja="'+esc(l.id)+'">'+
-      '<div class="cad-loja-h">🏪 <b>'+esc(l.name || ('Loja '+l.store_number))+'</b></div>'+
+      '<div class="cad-loja-h">'+icon('store')+'<b>'+esc(l.name || ('Loja '+l.store_number))+'</b></div>'+
       '<div class="cad-loja-info">'+totalM+' pessoa'+(totalM===1?'':'s')+(gestor?' · Gestor: '+esc(gestor.name):'')+'</div>'+
     '</button>';
   }).join('') : '<div class="cad-vazio">Nenhuma loja cadastrada ainda.</div>';
@@ -11042,7 +11181,7 @@ function centralListaLojasHTML(){
     var totalM = centralColabsDaLoja(l.id).filter(function(m){ return m.is_active!==false; }).length;
     var gestor = l.user_id ? (ST.allUsers||[]).find(function(u){ return String(u.id)===String(l.user_id); }) : null;
     return '<button class="cad-linha" data-cad-nav="loja" data-cad-loja="'+esc(l.id)+'">'+
-      '<span class="cad-linha-ic">🏪</span>'+
+      '<span class="cad-linha-ic">'+icon('store')+'</span>'+
       '<span class="cad-linha-main"><b>'+esc(l.name || ('Loja '+l.store_number))+'</b>'+
         '<span class="cad-linha-sub">'+totalM+' pessoa'+(totalM===1?'':'s')+(gestor?' · Gestor: '+esc(gestor.name):'')+'</span>'+
       '</span>'+
@@ -11071,7 +11210,7 @@ function centralLojaHTML(lojaId){
 
   var equipe = ativos.length ? '<div class="cad-eq-lista">'+ativos.map(function(m){
     var u = centralUserDoColab(m);
-    var chip = u ? '<span class="cad-eq-chip">🔑 tem acesso</span>' : '';
+    var chip = u ? '<span class="cad-eq-chip">'+icon('key-round')+'tem acesso</span>' : '';
     return '<button class="cad-eq-item" data-cad-nav="colab" data-cad-colab="'+esc(m.id)+'">'+
       '<span class="cad-eq-av" style="background:'+esc(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+
       '<span class="cad-eq-main"><b>'+esc(m.name)+'</b><span class="cad-eq-sub">'+esc(m.role||'sem cargo')+'</span></span>'+
@@ -11081,7 +11220,7 @@ function centralLojaHTML(lojaId){
 
   var acoes = podeEditar ? '<button class="btn btn-secondary" id="cadLojaEditar">Editar loja</button>' : '';
 
-  return '<div class="cad-titulo"><button class="cad-voltar" data-cad-nav="lojas">← Lojas</button><h3>🏪 '+esc(l.name || ('Loja '+l.store_number))+'</h3>'+acoes+'</div>'+
+  return '<div class="cad-titulo"><button class="cad-voltar" data-cad-nav="lojas">← Lojas</button><h3>'+icon('store')+esc(l.name || ('Loja '+l.store_number))+'</h3>'+acoes+'</div>'+
     '<div class="cad-2col">'+
       '<div class="cad-bloco"><h4>Informações</h4>'+infoLinhas+'</div>'+
       '<div class="cad-bloco"><h4>Indicadores</h4>'+
@@ -11111,7 +11250,7 @@ function centralListaColabsHTML(){
     var u = centralUserDoColab(m);
     var loja = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(m.store_unit_id); });
     var lojaLb = loja ? (loja.name || ('Loja '+loja.store_number)) : 'sem loja';
-    var acesso = u ? '<span class="cad-eq-chip">🔑 '+esc((NIVEIS[nivelDe(u)]||NIVEIS.colaborador).label)+'</span>' : '<span class="cad-eq-chip cinza">sem acesso</span>';
+    var acesso = u ? '<span class="cad-eq-chip">'+icon('key-round')+esc((NIVEIS[nivelDe(u)]||NIVEIS.colaborador).label)+'</span>' : '<span class="cad-eq-chip cinza">sem acesso</span>';
     var inat = m.is_active===false ? ' inativo' : '';
     return '<button class="cad-linha'+inat+'" data-cad-nav="colab" data-cad-colab="'+esc(m.id)+'">'+
       '<span class="cad-eq-av" style="background:'+esc(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+
@@ -11123,7 +11262,7 @@ function centralListaColabsHTML(){
     '</button>';
   }).join('') : '<div class="cad-vazio">Nenhum colaborador nesta lista.</div>';
   var titulos = { todos:'Todos os colaboradores ativos', comacesso:'Com acesso ao sistema', semacesso:'Sem acesso ao sistema', inativos:'Inativos' };
-  return '<div class="cad-titulo"><h3>👥 '+esc(titulos[filtro])+'</h3><span class="cad-sub">'+list.length+' pessoa(s)</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('users-round')+esc(titulos[filtro])+'</h3><span class="cad-sub">'+list.length+' pessoa(s)</span>'+btn+'</div>'+
     '<div class="cad-lista">'+linhas+'</div>';
 }
 
@@ -11169,7 +11308,7 @@ function centralColabHTML(colabId){
 function centralColabAcessoHTML(m, u){
   if (!u){
     var podeCriar = isAdmin(ST.session);
-    return '<div class="cad-bloco"><h4>🔑 Acesso ao Sistema</h4>'+
+    return '<div class="cad-bloco"><h4>'+icon('key-round')+'Acesso ao Sistema</h4>'+
       '<p class="cad-explica">Esta pessoa <b>não tem acesso</b> ao sistema. Ela existe como colaboradora, aparece em ponto e ranking, mas não faz login.</p>'+
       (podeCriar ? '<div class="cad-acao-grid">'+
         '<button class="btn btn-primary" id="cadCriarAcesso">Criar acesso agora</button>'+
@@ -11180,7 +11319,7 @@ function centralColabAcessoHTML(m, u){
   var nv = nivelDe(u);
   var info = NIVEIS[nv] || NIVEIS.colaborador;
   var podeMexer = isAdmin(ST.session) && String(u.id)!==String(ST.session.user.id); // não mexe no próprio
-  return '<div class="cad-bloco"><h4>🔑 Acesso ao Sistema</h4>'+
+  return '<div class="cad-bloco"><h4>'+icon('key-round')+'Acesso ao Sistema</h4>'+
     '<div class="cad-info-row"><span>E-mail de login</span><b>'+esc(u.email||'—')+'</b></div>'+
     '<div class="cad-info-row"><span>Nível de acesso</span><b style="color:'+info.color+'">'+esc((typeof perfilLabelDe==='function' ? perfilLabelDe(u) : info.label))+'</b></div>'+
     '<div class="cad-explica">'+esc(info.desc)+'</div>'+
@@ -11227,7 +11366,7 @@ function centralAcessosHTML(){
       '<span class="cad-linha-seta">›</span>'+
     '</button>';
   }).join('') : '<div class="cad-vazio">Nenhum acesso cadastrado.</div>';
-  return '<div class="cad-titulo"><h3>🔑 Acessos e Permissões</h3><span class="cad-sub">'+users.length+' pessoa(s) com login</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('key-round')+'Acessos e Permissões</h3><span class="cad-sub">'+users.length+' pessoa(s) com login</span>'+btn+'</div>'+
     '<p class="cad-explica">Cada linha é uma pessoa que faz login. O nível define o que ela pode fazer.</p>'+
     '<div class="cad-lista">'+linhas+'</div>';
 }
@@ -11245,7 +11384,7 @@ function centralPesquisaHTML(termo){
   function bloco(titulo, itens, tipo){
     if (!itens.length) return '';
     return '<div class="cad-bloco"><h4>'+esc(titulo)+' ('+itens.length+')</h4><div class="cad-lista">'+itens.slice(0,20).map(function(x){
-      if (tipo==='loja') return '<button class="cad-linha" data-cad-nav="loja" data-cad-loja="'+esc(x.id)+'"><span class="cad-linha-ic">🏪</span><span class="cad-linha-main"><b>'+esc(x.name||('Loja '+x.store_number))+'</b></span></button>';
+      if (tipo==='loja') return '<button class="cad-linha" data-cad-nav="loja" data-cad-loja="'+esc(x.id)+'"><span class="cad-linha-ic">'+icon('store')+'</span><span class="cad-linha-main"><b>'+esc(x.name||('Loja '+x.store_number))+'</b></span></button>';
       if (tipo==='colab') return '<button class="cad-linha" data-cad-nav="colab" data-cad-colab="'+esc(x.id)+'"><span class="cad-eq-av" style="background:'+esc(x.color||'#3B6FF7')+'">'+esc(iniciais(x.name))+'</span><span class="cad-linha-main"><b>'+esc(x.name)+'</b><span class="cad-linha-sub">'+esc(x.role||'sem cargo')+'</span></span></button>';
       return '<button class="cad-linha" data-cad-usuario="'+esc(x.id)+'"><span class="cad-eq-av" style="background:'+esc(x.color||'#3B6FF7')+'">'+esc(iniciais(x.name))+'</span><span class="cad-linha-main"><b>'+esc(x.name)+'</b><span class="cad-linha-sub">'+esc(x.email||'')+'</span></span></button>';
     }).join('')+'</div></div>';
@@ -11504,12 +11643,12 @@ function centralCargosHTML(){
     var emUso = (ST.members||[]).filter(function(m){ return (m.role||'')===c.name; }).length;
     var acao = podeMexer
       ? '<span class="cad-linha-acoes">'+
-          '<button class="cad-linha-btn" data-cargo-edit="'+esc(c.id)+'">✎</button>'+
+          '<button class="cad-linha-btn" data-cargo-edit="'+esc(c.id)+'">'+icon('pencil')+'</button>'+
           '<button class="cad-linha-btn danger" data-cargo-del="'+esc(c.id)+'">×</button>'+
         '</span>'
       : '';
     return '<div class="cad-linha">'+
-      '<span class="cad-linha-ic">💼</span>'+
+      '<span class="cad-linha-ic">'+icon('badge-check')+'</span>'+
       '<span class="cad-linha-main"><b>'+esc(c.name)+'</b>'+
         '<span class="cad-linha-sub">'+esc(setLb)+' · '+emUso+' funcionário'+(emUso===1?'':'s')+'</span>'+
       '</span>'+
@@ -11517,9 +11656,9 @@ function centralCargosHTML(){
     '</div>';
   }).join('') : '<div class="cad-vazio">Nenhum cargo cadastrado ainda.</div>';
   var info = todos.some(function(c){ return String(c.id||'').indexOf('seed-')===0; })
-    ? '<p class="cad-explica">⚠️ Os cargos mostrados são os padrões antigos. Rode o SQL da Fase 2 no Supabase para começar a editar.</p>'
+    ? '<p class="cad-explica">'+icon('warning')+'Os cargos mostrados são os padrões antigos. Rode o SQL da Fase 2 no Supabase para começar a editar.</p>'
     : '';
-  return '<div class="cad-titulo"><h3>💼 Cargos</h3><span class="cad-sub">'+todos.length+' cargo(s)</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('badge-check')+'Cargos</h3><span class="cad-sub">'+todos.length+' cargo(s)</span>'+btn+'</div>'+
     '<p class="cad-explica">Cargos padronizam o que aparece na lista quando você cadastra um funcionário. Um cargo "compartilhado" aparece em todos os setores.</p>'+
     info +
     '<div class="cad-lista">'+linhas+'</div>';
@@ -11703,7 +11842,7 @@ function centralDepartamentosHTML(){
   var linhas = deps.length ? deps.map(function(d, idx){
     var cor = d.color || '#64748B';
     var status = d.is_active===false ? '<span class="cad-eq-chip cinza">desativado</span>' : '';
-    var prot = d.is_protegido ? '<span class="cad-eq-chip" title="Departamento protegido — não pode ser apagado">🛡 padrão</span>' : '';
+    var prot = d.is_protegido ? '<span class="cad-eq-chip" title="Departamento protegido — não pode ser apagado">'+icon('shield-check')+'padrão</span>' : '';
     var caps = [];
     if (d.tem_crm)     caps.push('CRM');
     if (d.tem_rotinas) caps.push('Rotinas');
@@ -11712,7 +11851,7 @@ function centralDepartamentosHTML(){
     var acoes = podeMexer ? '<span class="cad-linha-acoes">'+
       (idx>0 ? '<button class="cad-linha-btn" data-depto-cima="'+esc(d.id||d.key)+'" title="Subir">↑</button>' : '<span class="cad-linha-btn placeholder"></span>')+
       (idx<deps.length-1 ? '<button class="cad-linha-btn" data-depto-baixo="'+esc(d.id||d.key)+'" title="Descer">↓</button>' : '<span class="cad-linha-btn placeholder"></span>')+
-      '<button class="cad-linha-btn" data-depto-edit="'+esc(d.id||d.key)+'" title="Editar">✎</button>'+
+      '<button class="cad-linha-btn" data-depto-edit="'+esc(d.id||d.key)+'" title="Editar">'+icon('pencil')+'</button>'+
       (d.is_protegido
         ? '<button class="cad-linha-btn" data-depto-toggle="'+esc(d.id||d.key)+'" title="'+(d.is_active===false?'Ativar':'Desativar')+'">'+(d.is_active===false?'✓':'⏸')+'</button>'
         : '<button class="cad-linha-btn danger" data-depto-del="'+esc(d.id||d.key)+'" title="Remover">×</button>')+
@@ -11727,7 +11866,7 @@ function centralDepartamentosHTML(){
     '</div>';
   }).join('') : '<div class="cad-vazio">Nenhum departamento cadastrado.</div>';
 
-  return '<div class="cad-titulo"><h3>🏢 Departamentos</h3><span class="cad-sub">'+deps.length+' no total</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('building')+'Departamentos</h3><span class="cad-sub">'+deps.length+' no total</span>'+btn+'</div>'+
     '<p class="cad-explica">Cada departamento é um portal com seu próprio menu. Novos departamentos aparecem na tela "Quem está acessando?" e podem clonar o menu de qualquer um existente.</p>'+
     '<div class="cad-lista">'+linhas+'</div>';
 }
@@ -11788,7 +11927,7 @@ function openDepartamentoModal(d){
   var travadoProt = ed.is_protegido;
 
   var protInfo = travadoProt
-    ? '<p class="cad-explica" style="color:#F59E0B">🛡 Este é um departamento padrão. Você pode editar aparência e capacidades, mas não pode remover nem trocar o identificador — o sistema depende dele para os dados existentes.</p>'
+    ? '<p class="cad-explica" style="color:#F59E0B">'+icon('shield-check')+'Este é um departamento padrão. Você pode editar aparência e capacidades, mas não pode remover nem trocar o identificador — o sistema depende dele para os dados existentes.</p>'
     : '';
 
   var m = makeModal({
@@ -12066,7 +12205,7 @@ function centralEquipesHTML(){
     var qtd = (e.membros||[]).length;
     var escopo = e.sector ? (SECTORS[e.sector]||{label:e.sector}).label : 'Cruzada';
     var status = e.is_active===false ? '<span class="cad-eq-chip cinza">desativada</span>' : '';
-    var chipEsc = e.sector ? '<span class="cad-eq-chip">'+esc(escopo)+'</span>' : '<span class="cad-eq-chip" style="color:#8B5CF6;background:#8B5CF618">🔗 cruzada</span>';
+    var chipEsc = e.sector ? '<span class="cad-eq-chip">'+esc(escopo)+'</span>' : '<span class="cad-eq-chip" style="color:#8B5CF6;background:#8B5CF618">'+icon('link')+'cruzada</span>';
     var avatares = (e.membros||[]).slice(0,4).map(function(uid){
       var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
       if (!u) return '';
@@ -12084,7 +12223,7 @@ function centralEquipesHTML(){
     '</button>';
   }).join('') : '<div class="cad-vazio">Nenhuma equipe cadastrada ainda.</div>';
 
-  return '<div class="cad-titulo"><h3>👥 Equipes</h3><span class="cad-sub">'+lista.length+' equipe(s)</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('users-round')+'Equipes</h3><span class="cad-sub">'+lista.length+' equipe(s)</span>'+btn+'</div>'+
     '<p class="cad-explica">Equipes agrupam pessoas para compartilhar documentos, receber tarefas em conjunto ou aparecer em relatórios. Uma equipe pode ser de um departamento ou <b>cruzada</b> (aceita qualquer pessoa).</p>'+
     '<div class="cad-lista">'+linhas+'</div>';
 }
@@ -12439,7 +12578,7 @@ function centralPerfisHTML(){
     if (rems) mods.push('−'+rems);
     var chip = mods.length ? '<span class="cad-eq-chip" style="color:'+cor+';background:'+cor+'18">'+mods.join(' · ')+' caps</span>' : '';
     var acao = podeMexer ? '<span class="cad-linha-acoes">'+
-      '<button class="cad-linha-btn" data-perfil-edit="'+esc(p.id)+'" title="Editar">✎</button>'+
+      '<button class="cad-linha-btn" data-perfil-edit="'+esc(p.id)+'" title="Editar">'+icon('pencil')+'</button>'+
       '<button class="cad-linha-btn danger" data-perfil-del="'+esc(p.id)+'" title="Remover">×</button>'+
     '</span>' : '';
     return '<div class="cad-linha">'+
@@ -12452,7 +12591,7 @@ function centralPerfisHTML(){
     '</div>';
   }).join('') : '<div class="cad-vazio">Nenhum perfil customizado ainda. Os 5 níveis padrão continuam funcionando pra todo mundo.</div>';
 
-  return '<div class="cad-titulo"><h3>🎭 Perfis de Permissão</h3><span class="cad-sub">'+(5+lista.length)+' perfis no total</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('user-cog')+'Perfis de Permissão</h3><span class="cad-sub">'+(5+lista.length)+' perfis no total</span>'+btn+'</div>'+
     '<p class="cad-explica">Os 5 níveis padrão (Visualizador → Administrador) são a base. Perfis customizados <b>partem de um nível</b> e adicionam ou removem capacidades específicas.</p>'+
     '<div class="cad-bloco"><h4>Níveis padrão</h4>'+
       '<div class="cad-lista">'+fixos+'</div>'+
@@ -12785,7 +12924,7 @@ function centralOrganogramaHTML(){
   if (isSuper(ST.session)){
     var cruzadas = orgEquipesCruzadas();
     if (cruzadas.length){
-      cruzadasSecao = '<div class="org-cruzadas"><h4>🔗 Equipes cruzadas ('+cruzadas.length+')</h4>'+
+      cruzadasSecao = '<div class="org-cruzadas"><h4>'+icon('link')+'Equipes cruzadas ('+cruzadas.length+')</h4>'+
         '<p class="cad-explica">Não pertencem a um departamento — aceitam pessoas de qualquer setor.</p>'+
         cruzadas.map(function(e){
           var membros = usuariosDaEquipe(e.id);
@@ -12805,7 +12944,7 @@ function centralOrganogramaHTML(){
     }
   }
 
-  return '<div class="cad-titulo"><h3>🗺️ Organograma</h3><span class="cad-sub">Como a empresa está organizada agora</span></div>'+
+  return '<div class="cad-titulo"><h3>'+icon('network')+'Organograma</h3><span class="cad-sub">Como a empresa está organizada agora</span></div>'+
     kpis+
     filtroHTML+
     '<div class="org-arvore">'+arvore+'</div>'+
@@ -12887,12 +13026,12 @@ function bindCentralOrganograma(){
 
 /* ---------- Categorias padrão (editáveis pelo admin depois) ---------- */
 var ROTINA_CATEGORIAS = [
-  { key:'abertura',  label:'Abertura de loja',    icon:'🌅', color:'#F59E0B' },
-  { key:'durante',   label:'Durante o dia',        icon:'☀️', color:'#3B6FF7' },
-  { key:'fechamento',label:'Fechamento de loja',   icon:'🌙', color:'#8B5CF6' },
-  { key:'semanal',   label:'Semanal',              icon:'📅', color:'#0EA5E9' },
-  { key:'mensal',    label:'Mensal',               icon:'🗓️', color:'#16A34A' },
-  { key:'outros',    label:'Outros',               icon:'📌', color:'#64748B' }
+  { key:'abertura',  label:'Abertura de loja',    icon:'sunrise', color:'#F59E0B' },
+  { key:'durante',   label:'Durante o dia',        icon:'sun', color:'#3B6FF7' },
+  { key:'fechamento',label:'Fechamento de loja',   icon:'moon', color:'#8B5CF6' },
+  { key:'semanal',   label:'Semanal',              icon:'cal', color:'#0EA5E9' },
+  { key:'mensal',    label:'Mensal',               icon:'calendar-days', color:'#16A34A' },
+  { key:'outros',    label:'Outros',               icon:'pin', color:'#64748B' }
 ];
 
 function categoriaDe(key){
@@ -12997,7 +13136,7 @@ function centralRotinasHTML(){
           var taxaCor = ind.taxa >= 80 ? '#16A34A' : (ind.taxa >= 50 ? '#F59E0B' : '#EF4444');
           var indicHTML = ind.total ? '<span class="rot-ind" style="color:'+taxaCor+'">'+ind.feito+'/'+ind.total+' · '+ind.taxa+'%</span>' : '<span class="rot-ind cinza">sem execuções ainda</span>';
           var acao = podeMexer ? '<span class="cad-linha-acoes">'+
-            '<button class="cad-linha-btn" data-rot-edit="'+esc(r.id)+'" title="Editar">✎</button>'+
+            '<button class="cad-linha-btn" data-rot-edit="'+esc(r.id)+'" title="Editar">'+icon('pencil')+'</button>'+
             '<button class="cad-linha-btn danger" data-rot-del="'+esc(r.id)+'" title="Remover">×</button>'+
           '</span>' : '';
           return '<div class="cad-linha">'+
@@ -13017,7 +13156,7 @@ function centralRotinasHTML(){
     linhasHTML = '<div class="cad-vazio">Nenhum POP cadastrado ainda. Clique em "Novo POP" pra começar.</div>';
   }
 
-  return '<div class="cad-titulo"><h3>📋 Rotinas (POPs)</h3><span class="cad-sub">'+lista.length+' POP(s) no total</span>'+btn+'</div>'+
+  return '<div class="cad-titulo"><h3>'+icon('clipboard-check')+'Rotinas (POPs)</h3><span class="cad-sub">'+lista.length+' POP(s) no total</span>'+btn+'</div>'+
     '<p class="cad-explica">Um <b>POP</b> (Procedimento Operacional Padrão) é uma rotina catalogada — abertura da loja, fechamento, conferência de caixa, limpeza. As tarefas do dia a dia geradas por esta rotina aparecem no <b>Trabalho → Rotina do Dia</b>.</p>'+
     linhasHTML;
 }
@@ -13099,7 +13238,7 @@ function openRotinaPopModal(rotina){
         '<select id="rotResp">'+pessoasHTML(ed.sector)+'</select>'+
         '<p class="cad-explica">Se marcar uma pessoa, ela será o dono da tarefa gerada. Deixe em "quem estiver" pra tarefa aparecer pra loja toda.</p>'+
       '</div>'+
-      (isNew ? '' : '<div class="cad-explica">📊 <b>'+(function(){ var i=rotinaIndicadores(ed); return i.total ? i.feito+'/'+i.total+' concluídas neste mês ('+i.taxa+'%)' : 'sem execuções ainda'; })()+'</b></div>'),
+      (isNew ? '' : '<div class="cad-explica">'+icon('bar-chart-3')+'<b>'+(function(){ var i=rotinaIndicadores(ed); return i.total ? i.feito+'/'+i.total+' concluídas neste mês ('+i.taxa+'%)' : 'sem execuções ainda'; })()+'</b></div>'),
     saveLabel: isNew ? 'Criar POP' : 'Salvar',
     onSave: function(close, root){
       var payload = {
@@ -13322,7 +13461,7 @@ function centralOrganogramaHierarquicoHTML(){
   var totalDiretos = (ST.allUsers||[]).filter(function(u){ return !u.manager_id; }).length;
   var comChefe = (ST.allUsers||[]).filter(function(u){ return !!u.manager_id; }).length;
 
-  return '<div class="cad-titulo"><h3>🗺️ Organograma</h3><span class="cad-sub">Cadeia de comando da empresa</span></div>'+
+  return '<div class="cad-titulo"><h3>'+icon('network')+'Organograma</h3><span class="cad-sub">Cadeia de comando da empresa</span></div>'+
     '<div class="cad-kpis">'+
       '<div class="cad-kpi"><div class="cad-kpi-v" style="color:#3B6FF7">'+(ST.allUsers||[]).length+'</div><div class="cad-kpi-l">Pessoas no total</div></div>'+
       '<div class="cad-kpi"><div class="cad-kpi-v" style="color:#8B5CF6">'+comChefe+'</div><div class="cad-kpi-l">Com chefe direto</div></div>'+
@@ -13435,7 +13574,7 @@ function painelGestorHTML(){
   // Card 1: Rotinas / tarefas de hoje
   var hojeCard =
     '<div class="pg-card">'+
-      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#3B6FF718;color:#3B6FF7">📋</span><h4>Hoje</h4></div>'+
+      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#3B6FF718;color:#3B6FF7">'+icon('clipboard-check')+'</span><h4>Hoje</h4></div>'+
       '<div class="pg-card-nums">'+
         '<div class="pg-num"><b>'+tsk.deHoje.length+'</b><span>tarefas para hoje</span></div>'+
         '<div class="pg-num"><b style="color:'+(tsk.atrasadas.length?'#EF4444':'#16A34A')+'">'+tsk.atrasadas.length+'</b><span>atrasadas</span></div>'+
@@ -13446,7 +13585,7 @@ function painelGestorHTML(){
   // Card 2: Equipe presente
   var equipeCard =
     '<div class="pg-card">'+
-      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#16A34A18;color:#16A34A">👥</span><h4>Equipe</h4></div>'+
+      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#16A34A18;color:#16A34A">'+icon('users')+'</span><h4>Equipe</h4></div>'+
       '<div class="pg-card-nums">'+
         '<div class="pg-num"><b style="color:#16A34A">'+pre.presentes.length+'</b><span>presentes</span></div>'+
         '<div class="pg-num"><b>'+subs.length+'</b><span>total</span></div>'+
@@ -13459,13 +13598,13 @@ function painelGestorHTML(){
   // Card 3: Alertas
   var alertas = [];
   if (tsk.atrasadas.length){
-    alertas.push({ ic:'⚠️', txt: tsk.atrasadas.length+' tarefa'+(tsk.atrasadas.length===1?'':'s')+' atrasada'+(tsk.atrasadas.length===1?'':'s')+' no time', cor:'#EF4444', acao:'tarefas' });
+    alertas.push({ ic:icon('warning'), txt: tsk.atrasadas.length+' tarefa'+(tsk.atrasadas.length===1?'':'s')+' atrasada'+(tsk.atrasadas.length===1?'':'s')+' no time', cor:'#EF4444', acao:'tarefas' });
   }
   if (docsP.length){
-    alertas.push({ ic:'📄', txt: docsP.length+' documento'+(docsP.length===1?'':'s')+' sem edição há 90+ dias', cor:'#F59E0B', acao:'docs' });
+    alertas.push({ ic:icon('file-text'), txt: docsP.length+' documento'+(docsP.length===1?'':'s')+' sem edição há 90+ dias', cor:'#F59E0B', acao:'docs' });
   }
   if (pre.ausentes.length && pre.presentes.length){
-    alertas.push({ ic:'📍', txt: pre.ausentes.length+' pessoa'+(pre.ausentes.length===1?'':'s')+' sem check-in hoje', cor:'#F59E0B', acao:null });
+    alertas.push({ ic:icon('warning'), txt: pre.ausentes.length+' pessoa'+(pre.ausentes.length===1?'':'s')+' sem check-in hoje', cor:'#F59E0B', acao:null });
   }
   var alertasHTML;
   if (!alertas.length){
@@ -13481,7 +13620,7 @@ function painelGestorHTML(){
   }
   var alertasCard =
     '<div class="pg-card">'+
-      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#F59E0B18;color:#F59E0B">🔔</span><h4>Alertas</h4></div>'+
+      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#F59E0B18;color:#F59E0B">'+icon('bell')+'</span><h4>Alertas</h4></div>'+
       '<div class="pg-alertas">'+alertasHTML+'</div>'+
     '</div>';
 
@@ -13536,10 +13675,10 @@ function bindPainelGestor(){
 
 /* ---------- Definição dos tipos ---------- */
 var TASK_TYPES = [
-  { key:'pessoal', label:'Pessoal',  icon:'👤', color:'#3B6FF7', desc:'De uma pessoa específica' },
-  { key:'loja',    label:'Loja',     icon:'🏪', color:'#F59E0B', desc:'Da loja — quem estiver executa' },
-  { key:'equipe',  label:'Equipe',   icon:'👥', color:'#8B5CF6', desc:'De uma equipe' },
-  { key:'projeto', label:'Projeto',  icon:'🚀', color:'#16A34A', desc:'De um projeto' }
+  { key:'pessoal', label:'Pessoal',  icon:'user-round', color:'#3B6FF7', desc:'De uma pessoa específica' },
+  { key:'loja',    label:'Loja',     icon:'store', color:'#F59E0B', desc:'Da loja — quem estiver executa' },
+  { key:'equipe',  label:'Equipe',   icon:'users', color:'#8B5CF6', desc:'De uma equipe' },
+  { key:'projeto', label:'Projeto',  icon:'rocket', color:'#16A34A', desc:'De um projeto' }
 ];
 
 function taskTypeInfo(key){
@@ -14239,7 +14378,7 @@ var expandedMs = null; // id da etapa com painel de passos aberto
 function subtaskPanelHTML(m) {
   var subs = m.subtasks || [];
   var items = subs.length ? subs.map(function(s,idx){
-    return '<label class="ms-sub"><input type="checkbox" data-subtoggle="'+esc(m.id)+':'+idx+'"'+(s.done?' checked':'')+'><span'+(s.done?' class="done"':'')+'>'+esc(s.title)+'</span><button class="ms-sub-del" data-subdel="'+esc(m.id)+':'+idx+'">✕</button></label>';
+    return '<label class="ms-sub"><input type="checkbox" data-subtoggle="'+esc(m.id)+':'+idx+'"'+(s.done?' checked':'')+'><span'+(s.done?' class="done"':'')+'>'+esc(s.title)+'</span><button class="ms-sub-del" data-subdel="'+esc(m.id)+':'+idx+'">'+icon('x')+'</button></label>';
   }).join('') : '<div class="ms-sub-empty">Nenhum passo ainda.</div>';
   return '<div class="ms-subs">'+items+'<div class="ms-sub-add"><input type="text" data-subinput="'+esc(m.id)+'" placeholder="Novo passo..."><button class="btn btn-ghost" data-subadd="'+esc(m.id)+'">+ Add</button></div></div>';
 }
@@ -14695,10 +14834,10 @@ function lojasHTML() {
       var blConn = bl && bl.connected;
       var blLabel = blConn ? 'Bling conectado' : ((bl && bl.client_id) ? 'Conectar Bling' : 'Configurar Bling');
       var blBtn = '<button class="bling-btn'+(blConn?' on':'')+'" data-bling="'+esc(s.id)+'">'+icon(blConn?'trend':'plus')+blLabel+'</button>';
-      var errLine = (bl && bl.last_error) ? '<div class="bling-err">⚠️ Último erro: '+esc(String(bl.last_error))+'</div>' : '';
+      var errLine = (bl && bl.last_error) ? '<div class="bling-err">'+icon('warning')+'Último erro: '+esc(String(bl.last_error))+'</div>' : '';
       rows += '<div class="cfg-row bling-row" data-sid="'+esc(s.id)+'">'+
         '<span class="crm-av" style="background:var(--u-accent-soft);color:var(--u-accent)">'+icon('store')+'</span>'+
-        '<div class="crm-main"><b>'+esc(s.name||('Loja '+s.store_number))+(s.is_site?' <span class="site-badge">🌐 Site</span>':'')+'</b><i>'+(s.district?esc(s.district)+' · ':'')+'<span style="color:'+vincCor+'">'+vinc+'</span></i>'+errLine+'</div>'+
+        '<div class="crm-main"><b>'+esc(s.name||('Loja '+s.store_number))+(s.is_site?' <span class="site-badge">'+icon('link')+'Site</span>':'')+'</b><i>'+(s.district?esc(s.district)+' · ':'')+'<span style="color:'+vincCor+'">'+vinc+'</span></i>'+errLine+'</div>'+
         blBtn+
         '<span class="crm-status" style="color:var(--u-text2);background:var(--u-bg2)">#'+esc(s.store_number||'?')+'</span>'+
       '</div>';
@@ -15103,7 +15242,7 @@ function openCampaignModal(camp) {
         '<span class="camp-task-t">'+esc(tk.title)+'</span>'+
         '<input type="date" class="camp-task-date" data-dueidx="'+idx+'" value="'+esc((tk.due||'').slice(0,10))+'" title="Data">'+
         '<select class="camp-task-resp" data-respidx="'+idx+'" title="Responsável">'+respOpts(tk.assignee_id)+'</select>'+
-        '<button type="button" class="camp-task-del" data-idx="'+idx+'">✕</button>'+
+        '<button type="button" class="camp-task-del" data-idx="'+idx+'">'+icon('x')+'</button>'+
       '</div>';
     }).join('');
     box.querySelectorAll('.camp-task-check').forEach(function(b){ b.addEventListener('click', function(){ var i=+this.getAttribute('data-idx'); taskList[i].done=!taskList[i].done; renderTaskList(); }); });
@@ -15438,7 +15577,7 @@ function admLinhaRegraHTML(r){
 function admGrupoHTML(id, titulo, arr){
   var n=admNav();
   var aberto=(ST.admClosed||{})[id]!==true; // v89.2: ABERTO por padrão — fechar é opção, não obrigação
-  var head='<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">🔁 <span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span>'+
+  var head='<div class="adm-group-h"><button class="agh-lb" data-admtoggle="'+id+'">'+icon('history')+'<span>'+esc(titulo)+'</span></button><span class="agh-c">'+arr.length+'</span><span class="agh-sp"></span>'+
     (arr.length?'<button class="agh-ar" data-admtoggle="'+id+'">'+icon('cal')+'</button>':'')+'</div>';
   if(!arr.length) return '<div class="adm-group vazio">'+head+'</div>';
   if(!aberto) return '<div class="adm-group closed">'+head+'</div>'; // fechado: não renderiza nada dentro
@@ -16436,7 +16575,7 @@ function openAvaliacaoModal(aval, preset) {
           '<div class="aval-crit-tools">'+
             '<button type="button" class="aval-crit-mv" data-mvup="'+idx+'" title="Subir"'+(idx===0?' disabled':'')+'>↑</button>'+
             '<button type="button" class="aval-crit-mv" data-mvdn="'+idx+'" title="Descer"'+(idx===critList.length-1?' disabled':'')+'>↓</button>'+
-            '<button type="button" class="aval-crit-del" data-rmcrit="'+idx+'" title="Remover critério">✕</button>'+
+            '<button type="button" class="aval-crit-del" data-rmcrit="'+idx+'" title="Remover critério">'+icon('x')+'</button>'+
           '</div>'+
         '</div>'+
         (c.nota>0?'<div class="aval-crit-lb">'+SCALE_LABELS[c.nota]+'</div>':'')+
@@ -16744,7 +16883,7 @@ function registrarCheckin(tipo){
   if(tipo==='entrada'){
     if(existing && existing.entrada){ toast('Você já registrou entrada hoje','info'); return; }
     if(existing){ sb.from('malba_checkins').update({ entrada:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.entrada=nowIso; toast('Entrada registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
-    else { var mid=meuMemberId(); var sid=meuStoreId(); sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }).select().single().then(function(r){ if(!r.error && r.data){ ST.checkins.push(r.data); auditLog('Check-in (entrada)'); toast('Bom trabalho! Entrada registrada 👋','success'); renderPage(); } else { toast('Não consegui registrar (peça ao admin para rodar o SQL de acompanhamento).','error'); console.error(r.error); } }); }
+    else { var mid=meuMemberId(); var sid=meuStoreId(); sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }).select().single().then(function(r){ if(!r.error && r.data){ ST.checkins.push(r.data); auditLog('Check-in (entrada)'); toast('Bom trabalho! Entrada registrada','success'); renderPage(); } else { toast('Não consegui registrar (peça ao admin para rodar o SQL de acompanhamento).','error'); console.error(r.error); } }); }
   } else {
     if(!existing){ toast('Registre a entrada primeiro','info'); return; }
     sb.from('malba_checkins').update({ saida:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.saida=nowIso; auditLog('Check-in (saída)'); toast('Até amanhã! Saída registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); });
@@ -16789,7 +16928,7 @@ function colaboradorInicioHTML(){
   var u=ST.session.user, me=String(u.id), hoje=today();
   var nome=(u.name||'').split(' ')[0];
   var heroSub = (ST.sector==='lojas') ? 'Seu espaço pessoal: sua meta, comissões, avaliações e pedidos.' : 'Seu espaço: suas vendas, sua meta e suas tarefas do dia.';
-  var hero='<div class="cab-hero"><div class="cab-hero-badge"><span class="dot"></span> MEU PAINEL</div><h1 class="cab-hero-title">Bom te ver, <span>'+esc(nome)+'</span>! 👋</h1><p class="cab-hero-sub">'+heroSub+'</p></div>';
+  var hero='<div class="cab-hero"><div class="cab-hero-badge"><span class="dot"></span> MEU PAINEL</div><h1 class="cab-hero-title">Bom te ver, <span>'+esc(nome)+'</span></h1><p class="cab-hero-sub">'+heroSub+'</p></div>';
   var actions='<div class="cab-actions">'+
     '<button class="cab-act venda" id="cRegVenda"><span class="cab-ic">'+icon('dollar')+'</span><span class="cab-tx"><b>Registrar venda</b><i>Soma na sua meta</i></span></button>'+
     '<button class="cab-act pedir" id="cPedir"><span class="cab-ic">'+icon('bell')+'</span><span class="cab-tx"><b>Pedir algo</b><i>Folga, troca, material…</i></span></button>'+
@@ -16801,7 +16940,7 @@ function colaboradorInicioHTML(){
     : '<div class="cab-meta"><div class="cab-meta-top"><span>Vendas registradas em '+MESES[_ymNow().m-1]+'</span><b>'+fmtBRL(vend)+'</b></div><div class="cab-meta-sub">Seu gestor ainda não definiu uma meta sua.</div></div>';
   var mine=filtrarRecorrentesHoje(ST.tasks.filter(function(t){ return String(t.assignee_id)===me; }));
   var foco=mine.filter(function(t){ var d=(t.due_date||'').slice(0,10); return t.status!=='feito'&&d&&d<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
-  var tHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada para hoje. 👏</div>';
+  var tHTML = foco.length ? foco.map(function(t){ var pr=PRIO[t.priority]||PRIO.media; var late=(t.due_date||'').slice(0,10)<hoje; return '<button class="me-task" data-tid="'+esc(t.id)+'"><span class="me-dot" style="background:'+pr.color+'"></span><span class="me-task-t">'+esc(t.title)+'</span><span class="me-task-d'+(late?' late':'')+'">'+fmtDate(t.due_date)+'</span></button>'; }).join('') : '<div class="col-empty">Nada para hoje.</div>';
   var myReqs=(ST.requests||[]).filter(function(r){return String(r.user_id)===me;}).sort(function(a,b){return (b.created_at||'').localeCompare(a.created_at||'');}).slice(0,5);
   var rHTML = myReqs.length ? myReqs.map(function(r){ return '<div class="cab-req"><span class="cab-req-k">'+esc(r.kind||'')+(r.title?(' · '+esc(r.title)):'')+'</span>'+reqStatusChip(r.status||'pendente')+'</div>'; }).join('') : '<div class="col-empty">Nenhum pedido. Use "Pedir algo".</div>';
   // check-in do turno
@@ -16811,7 +16950,7 @@ function colaboradorInicioHTML(){
   else { ciCard='<div class="cab-checkin done"><div class="cci-info"><b>Turno registrado ✓</b><i>Entrada '+hhmm(ci.entrada)+' · Saída '+hhmm(ci.saida)+'</i></div><span class="cci-check">'+icon('tasks')+'</span></div>'; }
   // reconhecimentos recebidos
   var kud=kudosDoUser().slice(0,4);
-  var kudCard = kud.length ? ('<div class="cab-panel"><div class="cab-panel-h">'+icon('target')+'<span>Reconhecimentos 🎉</span></div><div class="cab-kudos">'+kud.map(function(k){ return '<div class="cab-kudo"><span class="ck-msg">'+esc(k.message||'')+'</span><span class="ck-from">— '+esc(k.from_name||'Gestão')+'</span></div>'; }).join('')+'</div></div>') : '';
+  var kudCard = kud.length ? ('<div class="cab-panel"><div class="cab-panel-h">'+icon('trophy')+'<span>Reconhecimentos</span></div><div class="cab-kudos">'+kud.map(function(k){ return '<div class="cab-kudo"><span class="ck-msg">'+esc(k.message||'')+'</span><span class="ck-from">— '+esc(k.from_name||'Gestão')+'</span></div>'; }).join('')+'</div></div>') : '';
   // v78: agenda dos próximos 7 dias — vinha do painel "Meu Espaço" (solto); agora vive no Dashboard único
   var ate=addDays(hoje,7), agenda=[];
   (ST.events||[]).forEach(function(ev){ var d=(ev.date||'').slice(0,10); if(!(d>=hoje&&d<=ate))return; if(String(ev.sector||'')!==ST.sector)return; if(ev.scope==='me'&&String(ev.created_by)!==me)return; agenda.push({d:d,hora:ev.hora||'',label:ev.title,color:ev.color||'#0EA5E9',kind:'ev',scope:ev.scope,id:ev.id}); });
@@ -17098,7 +17237,7 @@ function openDiaModal(ds){
       if(camps.length){ body+='<div class="dia-sec-h">'+icon('megaphone')+'<span>Campanhas</span><i>'+camps.length+'</i></div>'+camps.map(row).join(''); }
     }
     var addBtns='<div class="dia-actions">'+(podeTarefa?'<button class="btn btn-primary" id="diaAddTask">'+icon('plus')+'Tarefa</button>':'')+'<button class="btn '+(podeTarefa?'btn-ghost':'btn-primary')+'" id="diaAddEvt">'+icon('plus')+'Evento</button></div>';
-    modal.innerHTML='<div class="modal dia-modal"><div class="dia-head"><div><div class="dia-title">'+esc(diaLabelCal(ds))+'</div><div class="dia-sub">'+items.length+' item(ns) neste dia</div></div><button class="dia-close" id="diaClose">✕</button></div><div class="dia-body">'+body+'</div>'+addBtns+'</div>';
+    modal.innerHTML='<div class="modal dia-modal"><div class="dia-head"><div><div class="dia-title">'+esc(diaLabelCal(ds))+'</div><div class="dia-sub">'+items.length+' item(ns) neste dia</div></div><button class="dia-close" id="diaClose">'+icon('x')+'</button></div><div class="dia-body">'+body+'</div>'+addBtns+'</div>';
     bind();
   }
   function bind(){
@@ -17480,7 +17619,7 @@ function muralHTML(){
   if (avisos.length===0 && !canPost) return '';
   var btn = canPost ? '<button class="mural-add" id="btnNovoAviso">'+icon('plus')+'Aviso à equipe</button>' : '';
   var items = avisos.length ? avisos.slice(0,4).map(function(ev){
-    var del = (canPost||String(ev.created_by)===String(ST.session.user.id)) ? '<button class="mural-del" data-avdel="'+esc(ev.id)+'" title="Remover">✕</button>' : '';
+    var del = (canPost||String(ev.created_by)===String(ST.session.user.id)) ? '<button class="mural-del" data-avdel="'+esc(ev.id)+'" title="Remover">'+icon('x')+'</button>' : '';
     return '<div class="mural-item"><span class="mural-ic">'+icon('bell')+'</span><div class="mural-body"><div class="mural-msg">'+esc(ev.title)+'</div><div class="mural-meta">'+esc(ev.created_by_name||'Equipe')+' · '+fmtDate(ev.date)+'</div></div>'+del+'</div>';
   }).join('') : '<div class="mural-empty">Nenhum aviso agora. Use "Aviso à equipe" para comunicar algo importante a todos.</div>';
   return '<div class="mural"><div class="mural-head"><span class="mural-title">'+icon('bell')+'Mural de avisos</span>'+btn+'</div><div class="mural-list">'+items+'</div></div>';
