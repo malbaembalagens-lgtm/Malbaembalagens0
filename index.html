@@ -4277,6 +4277,231 @@ a:focus-visible {
 .stat-trend.down { color: var(--danger-600); }
 .stat-trend.flat { color: var(--u-text3); font-weight: var(--fw-semibold); }
 
+
+/* ============================================================
+   v135 · TIMELINE VISUAL DE TAREFAS
+   ============================================================ */
+.tl {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--sp-2) 0;
+}
+.tl-item {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: var(--rd-md);
+  position: relative;
+  cursor: pointer;
+  transition: background var(--tr-fast);
+}
+.tl-item:hover { background: var(--neutral-50); }
+.tl-item.feito { opacity: 0.55; }
+.tl-item.feito .tl-title { text-decoration: line-through; }
+
+/* Coluna esquerda: hora + trilho vertical */
+.tl-hora-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-top: 2px;
+}
+.tl-hora {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.tl-hora-vazia { color: var(--u-text3); font-weight: var(--fw-medium); }
+.tl-track {
+  position: relative;
+  flex: 1;
+  width: 2px;
+  background: var(--u-line);
+  border-radius: 1px;
+  display: flex;
+  justify-content: center;
+  min-height: 30px;
+}
+.tl-item:last-child .tl-track { background: transparent; }
+.tl-dot {
+  position: absolute;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--u-card);
+  box-shadow: 0 0 0 1px currentColor;
+}
+.tl-item:hover .tl-dot {
+  transform: scale(1.2);
+  transition: transform var(--tr-fast);
+}
+
+/* Corpo da tarefa */
+.tl-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  min-width: 0;
+  position: relative;
+}
+.tl-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.tl-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text);
+  line-height: var(--lh-snug);
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+.tl-restante {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--fs-xs);
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.tl-restante.late {
+  color: var(--danger-600);
+  font-weight: var(--fw-bold);
+}
+.tl-restante .lc-ic { width: 12px; height: 12px; }
+
+/* Metadados: avatar + responsável + chips */
+.tl-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+}
+.tl-av {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: var(--neutral-0);
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.2px;
+}
+.tl-av-empty {
+  background: var(--neutral-100);
+  color: var(--u-text3);
+}
+.tl-av-empty .lc-ic { width: 12px; height: 12px; }
+.tl-resp {
+  font-weight: var(--fw-semibold);
+  color: var(--u-text);
+}
+
+.tl-chips {
+  display: inline-flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-left: 2px;
+}
+.tl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px var(--sp-2);
+  border-radius: var(--rd-sm);
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.tl-chip-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.tl-chip-loja {
+  background: var(--neutral-100);
+  color: var(--u-text2);
+}
+.tl-chip-loja .lc-ic { width: 11px; height: 11px; opacity: 0.8; }
+
+/* Ações rápidas — só no hover */
+.tl-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: flex;
+  gap: 3px;
+  padding: 2px;
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity var(--tr-fast), transform var(--tr-fast);
+}
+.tl-item:hover .tl-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.tl-act {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--rd-sm);
+  background: transparent;
+  border: none;
+  color: var(--u-text2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--tr-fast), color var(--tr-fast);
+}
+.tl-act .lc-ic { width: 14px; height: 14px; }
+.tl-act:hover {
+  background: var(--u-bg2);
+  color: var(--u-text);
+}
+.tl-act-done:hover {
+  background: var(--success-50);
+  color: var(--success-600);
+}
+
+/* Mobile: ações sempre visíveis, hora à esquerda menor */
+@media (max-width: 640px) {
+  .tl-item { grid-template-columns: 48px 1fr; }
+  .tl-actions {
+    position: static;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    margin-top: var(--sp-2);
+    justify-content: flex-start;
+    box-shadow: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4300,7 +4525,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v134';
+var APP_BUILD = 'v135';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -5383,6 +5608,223 @@ function dashboardHTML() {
 function dashPanel(title, ic, body, action) {
   return '<div class="dash-panel"><div class="dash-panel-h">'+ic+'<h3>'+esc(title)+'</h3>'+(action||'')+'</div><div class="dash-panel-b">'+body+'</div></div>';
 }
+/* ============================================================
+   v135: BLOCO 3 — TIMELINE VISUAL DE TAREFAS
+
+   Substitui a listinha do painel "Tarefas de hoje" por uma
+   TIMELINE VERTICAL com hora, avatar, tags e ações rápidas
+   no hover (concluir sem abrir modal, editar, comentar).
+
+   Onde: painéis dashPanels() do Início (Tarefas de hoje +
+   Próximas tarefas).
+   Compat: rota antiga (data-dtask=id) preservada — clicar
+   no card ainda abre o modal.
+   ============================================================ */
+
+/* Hora no formato HH:MM a partir de due_date (se tiver hora); '—' senão */
+function tlHora(t){
+  // Se tem due_date com hora (T09:00 etc), pega HH:MM
+  if (t.due_date){
+    var d = String(t.due_date);
+    if (d.indexOf('T') > 0){
+      var hm = d.split('T')[1].slice(0,5);
+      if (hm && hm.length >= 4) return hm;
+    }
+  }
+  // rec_hora (rotinas) — formato HH:MM (funciona mesmo sem due_date)
+  if (t.rec_hora) return String(t.rec_hora).slice(0,5);
+  return '';
+}
+
+/* Tempo restante humano ("em 2h", "amanhã", "atrasada há 3d") */
+function tlTempoRestante(t){
+  if (!t.due_date || t.status==='feito') return '';
+  var hoje = today();
+  var dt = t.due_date.split('T')[0];
+  if (dt < hoje){
+    var dias = Math.round((new Date(hoje) - new Date(dt))/86400000);
+    return dias===1 ? 'atrasada 1d' : 'atrasada '+dias+'d';
+  }
+  if (dt === hoje) return 'hoje';
+  var difDias = Math.round((new Date(dt) - new Date(hoje))/86400000);
+  if (difDias === 1) return 'amanhã';
+  if (difDias <= 7) return 'em '+difDias+'d';
+  return fmtDate(t.due_date);
+}
+
+/* Nome do responsável (primeiro nome) — inclui allUsers */
+function tlRespNome(t){
+  if (!t.assignee_id) return 'Sem responsável';
+  var u = userById(t.assignee_id) || (typeof userByIdAll==='function' ? userByIdAll(t.assignee_id) : null);
+  if (!u) return 'Sem responsável';
+  return (u.name||'').split(' ')[0];
+}
+
+/* Avatar circular do responsável (iniciais + cor) */
+function tlAvatar(t){
+  if (!t.assignee_id) return '<span class="tl-av tl-av-empty" title="Sem responsável">'+icon('user-round')+'</span>';
+  var u = userById(t.assignee_id) || (typeof userByIdAll==='function' ? userByIdAll(t.assignee_id) : null);
+  if (!u) return '<span class="tl-av tl-av-empty">?</span>';
+  var cor = u.color || '#3B6FF7';
+  return '<span class="tl-av" style="background:'+cor+'" title="'+esc(u.name)+'">'+esc(iniciais(u.name))+'</span>';
+}
+
+/* Chip do projeto (se pertencer a algum) */
+function tlChipProjeto(t){
+  if (!t.project_id) return '';
+  var p = (ST.projects||[]).find(function(x){ return String(x.id)===String(t.project_id); });
+  if (!p) return '';
+  var cor = p.color || '#3B6FF7';
+  return '<span class="tl-chip tl-chip-proj" style="color:'+cor+';background:'+cor+'18" title="Projeto"><span class="tl-chip-dot" style="background:'+cor+'"></span>'+esc(p.name)+'</span>';
+}
+
+/* Chip da loja (se atrelado a alguma) */
+function tlChipLoja(t){
+  if (!t.store_unit_id) return '';
+  var s = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(t.store_unit_id); });
+  if (!s) return '';
+  return '<span class="tl-chip tl-chip-loja" title="Loja">'+icon('store')+esc(s.name || ('Loja '+s.store_number))+'</span>';
+}
+
+/* UM item da timeline (uma tarefa) */
+function tlItem(t){
+  var pr = PRIO[t.priority] || PRIO.media;
+  var hoje = today();
+  var dt = (t.due_date||'').split('T')[0];
+  var late = dt && dt < hoje && t.status!=='feito';
+  var hora = tlHora(t);
+  var restante = tlTempoRestante(t);
+  var feito = t.status === 'feito';
+
+  var chips = tlChipProjeto(t) + tlChipLoja(t);
+  var restanteHTML = restante
+    ? '<span class="tl-restante'+(late?' late':'')+'">'+(late?icon('warning'):'')+esc(restante)+'</span>'
+    : '';
+
+  return '<div class="tl-item'+(feito?' feito':'')+(late?' atrasada':'')+'" data-dtask="'+esc(t.id)+'">'+
+    // Coluna esquerda: hora + track
+    '<div class="tl-hora-col">'+
+      '<span class="tl-hora">'+(hora || '<span class="tl-hora-vazia">—</span>')+'</span>'+
+      '<span class="tl-track"><span class="tl-dot" style="background:'+pr.color+'" title="Prioridade: '+esc(pr.label)+'"></span></span>'+
+    '</div>'+
+    // Coluna direita: conteúdo
+    '<div class="tl-body">'+
+      '<div class="tl-top">'+
+        '<span class="tl-title">'+esc(t.title||'(sem título)')+'</span>'+
+        restanteHTML+
+      '</div>'+
+      '<div class="tl-meta">'+
+        tlAvatar(t)+
+        '<span class="tl-resp">'+esc(tlRespNome(t))+'</span>'+
+        (chips ? '<span class="tl-chips">'+chips+'</span>' : '')+
+      '</div>'+
+      // Ações rápidas — só no hover
+      '<div class="tl-actions">'+
+        (feito
+          ? '<button class="tl-act" data-tl-reopen="'+esc(t.id)+'" title="Reabrir">'+icon('history')+'</button>'
+          : '<button class="tl-act tl-act-done" data-tl-done="'+esc(t.id)+'" title="Concluir">'+icon('check')+'</button>'
+        )+
+        '<button class="tl-act" data-tl-edit="'+esc(t.id)+'" title="Editar">'+icon('pencil')+'</button>'+
+        '<button class="tl-act" data-tl-comment="'+esc(t.id)+'" title="Comentários">'+icon('chat')+'</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* Renderiza a timeline inteira (lista de tarefas) */
+function tarefasTimelineHTML(tasks){
+  if (!tasks || tasks.length===0) return '<div class="dash-empty">Nada pendente para hoje.</div>';
+  // Ordena: atrasadas primeiro, depois por hora crescente
+  var ordenadas = tasks.slice().sort(function(a,b){
+    var da=(a.due_date||''), db=(b.due_date||'');
+    return da.localeCompare(db);
+  });
+  return '<div class="tl">'+ordenadas.map(tlItem).join('')+'</div>';
+}
+
+/* Marcar como concluída (sem abrir modal) — otimista, com rollback em erro */
+function tlConcluirTarefa(id){
+  var t = null;
+  for (var i=0;i<ST.tasks.length;i++){
+    if (String(ST.tasks[i].id)===String(id)){ t = ST.tasks[i]; break; }
+  }
+  if (!t) return;
+  var prev = t.status;
+  t.status = 'feito';
+  t.updated_at = new Date().toISOString();
+  renderPage();
+  if (!sb) return;
+  sb.from('malba_vl_tasks').update({ status:'feito' }).eq('id', t.id).then(function(r){
+    if (r.error){
+      t.status = prev;
+      renderPage();
+      toast('Não consegui concluir: '+(r.error.message||'erro'),'error');
+      return;
+    }
+    toast('Concluída!','success');
+  });
+}
+
+/* Reabrir tarefa concluída (volta pra 'todo') */
+function tlReabrirTarefa(id){
+  var t = null;
+  for (var i=0;i<ST.tasks.length;i++){
+    if (String(ST.tasks[i].id)===String(id)){ t = ST.tasks[i]; break; }
+  }
+  if (!t) return;
+  var prev = t.status;
+  t.status = 'todo';
+  renderPage();
+  if (!sb) return;
+  sb.from('malba_vl_tasks').update({ status:'todo' }).eq('id', t.id).then(function(r){
+    if (r.error){
+      t.status = prev;
+      renderPage();
+      toast('Não consegui reabrir: '+(r.error.message||'erro'),'error');
+      return;
+    }
+    toast('Tarefa reaberta','info');
+  });
+}
+
+/* Bind das ações rápidas — deve ser chamado após render do dashboard */
+function bindTimeline(){
+  // Concluir
+  document.querySelectorAll('[data-tl-done]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      tlConcluirTarefa(this.getAttribute('data-tl-done'));
+    });
+  });
+  // Reabrir
+  document.querySelectorAll('[data-tl-reopen]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      tlReabrirTarefa(this.getAttribute('data-tl-reopen'));
+    });
+  });
+  // Editar (abre modal completo)
+  document.querySelectorAll('[data-tl-edit]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var id = this.getAttribute('data-tl-edit');
+      var t = null;
+      for (var i=0;i<ST.tasks.length;i++) if (String(ST.tasks[i].id)===String(id)){ t=ST.tasks[i]; break; }
+      if (t && typeof openTaskModal==='function') openTaskModal(t);
+    });
+  });
+  // Comentários (abre modal na aba comentários se existir; senão modal padrão)
+  document.querySelectorAll('[data-tl-comment]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var id = this.getAttribute('data-tl-comment');
+      var t = null;
+      for (var i=0;i<ST.tasks.length;i++) if (String(ST.tasks[i].id)===String(id)){ t=ST.tasks[i]; break; }
+      if (t && typeof openTaskModal==='function') openTaskModal(t, { tab:'comentarios' });
+    });
+  });
+}
+
 function dashTaskRow(t) {
   var pr=PRIO[t.priority]||PRIO.media;
   var late = t.due_date && t.due_date<today() && t.status!=='feito';
@@ -5391,9 +5833,10 @@ function dashTaskRow(t) {
 function panelTarefasHoje() {
   var ts=visibleTasks().filter(function(t){ return t.status!=='feito' && t.due_date && t.due_date.split('T')[0]<=today(); });
   ts.sort(function(a,b){ return (a.due_date||'').localeCompare(b.due_date||''); });
-  var body = ts.length ? ts.slice(0,6).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje.</div>';
+  // v135: timeline visual em vez de lista chapada
+  var body = tarefasTimelineHTML(ts.slice(0,6));
   var act='<button class="dash-panel-act" id="dashGoTasks">ver todas</button>';
-  return dashPanel('Tarefas de hoje', icon('tasks'), body, act);
+  return dashPanel('Tarefas de hoje', icon('check-square'), body, act);
 }
 function panelSetor() {
   var s=ST.sector;
@@ -5416,8 +5859,9 @@ function panelSetor() {
   }
   var up=visibleTasks().filter(function(t){ return t.status!=='feito' && t.due_date && t.due_date.split('T')[0]>today(); });
   up.sort(function(a,b){ return (a.due_date||'').localeCompare(b.due_date||''); });
-  var body2=up.length ? up.slice(0,6).map(dashTaskRow).join('') : '<div class="dash-empty">Sem tarefas futuras.</div>';
-  return dashPanel('Próximas tarefas', icon('cal'), body2);
+  // v135: timeline visual (limita 6)
+  var body2 = up.length ? tarefasTimelineHTML(up.slice(0,6)) : '<div class="dash-empty">Sem tarefas futuras.</div>';
+  return dashPanel('Próximas tarefas', icon('calendar-days'), body2);
 }
 function panelProjetos() {
   var ps=(ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).slice(0,4);
@@ -5485,6 +5929,7 @@ function bindLojaPainel(){
 function bindDashboard() {
   if (typeof bindPainelGestor === 'function') bindPainelGestor(); // v117
   if (typeof bindHeroAdaptativo === 'function') bindHeroAdaptativo(); // v133
+  if (typeof bindTimeline === 'function') bindTimeline();             // v135
   bindMural();
   var dst=document.getElementById('dashStore');
   if (dst) dst.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
