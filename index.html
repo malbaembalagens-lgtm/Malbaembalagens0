@@ -4136,7 +4136,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v131';
+var APP_BUILD = 'v132';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -7947,7 +7947,7 @@ function estrSideItem(id, label, count, atual, soon){
   var on = id===atual ? ' on' : '';
   var cs = soon ? '<span class="estr-soon">em breve</span>' : '<span class="estr-count">'+count+'</span>';
   return '<button class="estr-side-item'+on+(soon?' soon':'')+'" data-estr-tab="'+id+'">'+
-    '<span>'+esc(label)+'</span>'+cs+
+    '<span>'+(label||'')+'</span>'+cs+
   '</button>';
 }
 
