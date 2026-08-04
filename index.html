@@ -4136,7 +4136,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v130';
+var APP_BUILD = 'v131';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -6004,7 +6004,7 @@ function openTaskModal(task, preset) {
   var kindPills=[['normal','Normal'],['pop','POP']].map(function(k){ return '<button type="button" class="pill kd-pill'+(((t.task_kind||'normal')===k[0])?' on':'')+'" data-kd="'+k[0]+'">'+k[1]+'</button>'; }).join('');
   // v118: tipo da tarefa (task_type)
   var ttInicial = (t.task_type) || (typeof inferirTipoTarefa==='function' ? inferirTipoTarefa(t) : 'pessoal');
-  var ttPills = TASK_TYPES.map(function(x){ return '<button type="button" class="pill tt-pill'+(ttInicial===x.key?' on':'')+'" data-tt="'+x.key+'" style="color:'+x.color+'"><span class="pdot" style="background:'+x.color+'"></span>'+x.icon+' '+x.label+'</button>'; }).join('');
+  var ttPills = TASK_TYPES.map(function(x){ return '<button type="button" class="pill tt-pill'+(ttInicial===x.key?' on':'')+'" data-tt="'+x.key+'" style="color:'+x.color+'"><span class="pdot" style="background:'+x.color+'"></span>'+icon(x.icon)+' '+x.label+'</button>'; }).join('');
   var eqOpts = '<option value="">— escolher equipe —</option>';
   (ST.equipes||[]).filter(function(e){ return e.is_active!==false; }).forEach(function(e){
     eqOpts += '<option value="'+esc(e.id)+'"'+(String(t.equipe_id||'')===String(e.id)?' selected':'')+'>'+esc(e.name)+' ('+((e.membros||[]).length)+' pessoas)</option>';
@@ -9104,7 +9104,7 @@ function docsSideHTML(){
 
   function item(id, label, count, icone){
     var on = id===tab ? ' on' : '';
-    return '<button class="docs-side-item'+on+'" data-doc-tab="'+id+'"><span>'+esc(icone||'')+' '+esc(label)+'</span><span class="docs-count">'+count+'</span></button>';
+    return '<button class="docs-side-item'+on+'" data-doc-tab="'+id+'"><span>'+(icone||'')+esc(label)+'</span><span class="docs-count">'+count+'</span></button>';
   }
 
   var contVinc = docs.filter(function(d){ return !d.is_archived && docLinksDe(d).length>0; }).length; // v100
@@ -9183,7 +9183,7 @@ function docsListHTML(){
 
   // barra: templates + busca + toggle de visão
   var templates = docPodeCriar() ? '<div class="doc-tpls">'+DOC_TEMPLATES.map(function(t){
-    return '<button class="doc-tpl" data-tpl="'+t.key+'"><span class="doc-tpl-ic">'+t.icon+'</span><span>'+esc(t.label)+'</span></button>';
+    return '<button class="doc-tpl" data-tpl="'+t.key+'"><span class="doc-tpl-ic">'+icon(t.icon)+'</span><span>'+esc(t.label)+'</span></button>';
   }).join('')+'</div>' : '';
   var busca = '<input type="search" class="task-filter" id="docQ" placeholder="Buscar no título, tags e dentro dos documentos..." value="'+esc(docQ())+'">';
   var vt = docView();
@@ -9269,7 +9269,8 @@ function docCardHTML(d){
 }
 
 function docTipoIcon(t){
-  return { ata:'notebook-pen', pop:'clipboard-list', manual:'book', wiki:'book-open', planejamento:'clipboard-pen', estrategia:'compass' }[t] || 'file-text';
+  var slug = { ata:'notebook-pen', pop:'clipboard-list', manual:'book', wiki:'book-open', planejamento:'clipboard-pen', estrategia:'compass' }[t] || 'file-text';
+  return icon(slug);
 }
 
 /* ---------- Templates: geram o JSON inicial do EditorJS ---------- */
@@ -10832,7 +10833,7 @@ function docsVincular(docId){
   function addHTML(){
     var tipoSel = ST.docLinkTipo || 'projeto';
     var tipos = DOC_LINK_ORDER.map(function(k){
-      return '<option value="'+k+'"'+(tipoSel===k?' selected':'')+'>'+DOC_LINK_TIPOS[k].ic+' '+DOC_LINK_TIPOS[k].label+'</option>';
+      return '<option value="'+k+'"'+(tipoSel===k?' selected':'')+'>'+DOC_LINK_TIPOS[k].label+'</option>';
     }).join('');
     var jaTem = links.map(function(l){ return l.type+':'+l.id; });
     var itens = DOC_LINK_TIPOS[tipoSel].lista().filter(function(e){
@@ -13124,7 +13125,7 @@ function centralRotinasHTML(){
     if (!rr.length) return '';
     return '<div class="cad-bloco">'+
       '<h4 style="display:flex;align-items:center;gap:8px">'+
-        '<span style="color:'+cat.color+'">'+cat.icon+'</span> '+esc(cat.label)+
+        '<span style="color:'+cat.color+'">'+icon(cat.icon)+'</span>'+esc(cat.label)+
         ' <span class="cad-sub">('+rr.length+')</span>'+
       '</h4>'+
       '<div class="cad-lista">'+
@@ -13140,7 +13141,7 @@ function centralRotinasHTML(){
             '<button class="cad-linha-btn danger" data-rot-del="'+esc(r.id)+'" title="Remover">×</button>'+
           '</span>' : '';
           return '<div class="cad-linha">'+
-            '<span class="cad-linha-ic" style="background:'+cat.color+'18;color:'+cat.color+'">'+cat.icon+'</span>'+
+            '<span class="cad-linha-ic" style="background:'+cat.color+'18;color:'+cat.color+'">'+icon(cat.icon)+'</span>'+
             '<span class="cad-linha-main">'+
               '<b>'+esc(r.name)+'</b> <span class="cad-eq-chip">'+esc(freq)+'</span> '+indicHTML+
               '<span class="cad-linha-sub">'+esc(setLb)+' · Responsável: '+esc(respNome)+'</span>'+
@@ -13203,7 +13204,7 @@ function openRotinaPopModal(rotina){
   }).join('');
 
   var catOpts = ROTINA_CATEGORIAS.map(function(c){
-    return '<option value="'+esc(c.key)+'"'+(ed.categoria===c.key?' selected':'')+'>'+c.icon+' '+esc(c.label)+'</option>';
+    return '<option value="'+esc(c.key)+'"'+(ed.categoria===c.key?' selected':'')+'>'+esc(c.label)+'</option>';
   }).join('');
 
   var freqOpts = [
@@ -13748,7 +13749,7 @@ function chipTipoTarefa(t){
   var tipo = inferirTipoTarefa(t);
   var info = taskTypeInfo(tipo);
   return '<span class="task-type-chip" style="color:'+info.color+';background:'+info.color+'18" title="Tipo: '+esc(info.label)+'">'+
-    info.icon+' '+esc(info.label)+
+    icon(info.icon)+esc(info.label)+
   '</span>';
 }
 
