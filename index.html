@@ -4113,6 +4113,170 @@ a:focus-visible {
 .grp-dot-hoje { background: var(--primary-500); box-shadow: 0 0 6px rgba(59,111,247,.4); }
 .grp-dot-demais { background: var(--neutral-300); }
 
+
+/* ============================================================
+   v133 · HERO ADAPTATIVO INTELIGENTE
+   ============================================================ */
+.hero-ad {
+  position: relative;
+  border-radius: var(--rd-2xl);
+  padding: var(--sp-6) var(--sp-8);
+  margin-bottom: var(--sp-5);
+  overflow: hidden;
+  color: var(--neutral-0);
+  box-shadow: var(--shadow-md);
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-ad-bg {
+  position: absolute; inset: 0;
+  background: var(--u-grad-hero);
+  z-index: 0;
+}
+.hero-ad-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(139,92,246,.4), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(59,111,247,.3), transparent 55%);
+  animation: heroGlow 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlow {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+/* Tints por nível de urgência */
+.hero-ad-critico .hero-ad-bg { background: linear-gradient(120deg, #3d0a12, #6b1220 45%, #46101d); }
+.hero-ad-critico .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(239,68,68,.5), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(239,68,68,.25), transparent 55%);
+}
+.hero-ad-atencao .hero-ad-bg { background: linear-gradient(120deg, #3d2a05, #6b4a0a 45%, #46330a); }
+.hero-ad-atencao .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(245,158,11,.5), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(245,158,11,.25), transparent 55%);
+}
+.hero-ad-ok .hero-ad-bg { background: linear-gradient(120deg, #052e18, #0a5c2e 45%, #08432a); }
+.hero-ad-ok .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(22,163,74,.45), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(22,163,74,.22), transparent 55%);
+}
+
+.hero-ad-c { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--sp-3); }
+
+.hero-ad-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.hero-ad-saud { font-size: var(--fs-lg); opacity: 0.9; font-weight: var(--fw-medium); }
+.hero-ad-saud b { font-weight: var(--fw-extrabold); }
+.hero-ad-data { font-size: var(--fs-sm); opacity: 0.65; text-transform: capitalize; }
+
+.hero-ad-main {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.hero-ad-ic {
+  width: 44px; height: 44px;
+  border-radius: var(--rd-lg);
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.hero-ad-ic .lc-ic { width: 22px; height: 22px; }
+.hero-ad-main h2 {
+  font-family: var(--u-font-display);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-tight);
+  margin: 0;
+  flex: 1;
+  min-width: 200px;
+  letter-spacing: -0.3px;
+}
+.hero-ad-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  height: 40px;
+  border-radius: var(--rd-md);
+  background: rgba(255,255,255,.92);
+  color: var(--neutral-900);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  border: none;
+  transition: transform var(--tr-fast), background var(--tr-fast), box-shadow var(--tr-fast);
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  flex-shrink: 0;
+}
+.hero-ad-cta:hover {
+  background: var(--neutral-0);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.hero-ad-cta .lc-ic { width: 15px; height: 15px; }
+
+.hero-ad-sec {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-top: var(--sp-3);
+  border-top: 1px solid rgba(255,255,255,.12);
+  font-size: var(--fs-md);
+  opacity: 0.85;
+}
+.hero-ad-sec .lc-ic { width: 15px; height: 15px; opacity: 0.8; }
+.hero-ad-sec-link {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: opacity var(--tr-fast);
+  margin-left: var(--sp-1);
+}
+.hero-ad-sec-link:hover { opacity: 1; }
+
+@media (max-width: 640px) {
+  .hero-ad { padding: var(--sp-4) var(--sp-5); }
+  .hero-ad-main h2 { font-size: var(--fs-2xl); }
+  .hero-ad-cta { width: 100%; justify-content: center; }
+}
+
+
+/* v134: trend chip nos KPI cards */
+.stat-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  margin-top: 2px;
+}
+.stat-trend.up   { color: var(--success-600); }
+.stat-trend.down { color: var(--danger-600); }
+.stat-trend.flat { color: var(--u-text3); font-weight: var(--fw-semibold); }
+
 </style>
 </head>
 <body>
@@ -4136,7 +4300,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v132';
+var APP_BUILD = 'v134';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -5026,6 +5190,160 @@ function bindTopbar() {
 }
 
 /* ========== [9] DASHBOARD ========== */
+/* ============================================================
+   v133: HERO ADAPTATIVO INTELIGENTE
+
+   Substitui o hero estático. Um hero que mostra O MAIS
+   IMPORTANTE AGORA — sem rotação, sem imagens, sem espera.
+
+   Prioridade dos estados (1º que casar, ganha):
+   1. CRÍTICO   — tarefas atrasadas (mostra vermelho)
+   2. ATENÇÃO   — muitas tarefas pra hoje (âmbar)
+   3. INFO      — meta em andamento / evento próximo (azul)
+   4. TRANQUILO — tudo em dia (verde suave)
+
+   O sub-insight (linha de baixo) roda entre infos secundárias:
+   meta do mês, docs parados, próximo evento — mas SEM carrossel:
+   mostra o mais relevante fixo.
+   ============================================================ */
+
+/* Coleta os insights do momento. Retorna lista ordenada por urgência. */
+function heroInsights(){
+  var out = [];
+  var hoje = today();
+  var vt = visibleTasks();
+
+  // 1) Tarefas atrasadas (CRÍTICO)
+  var atrasadas = vt.filter(function(t){ return t.due_date && t.due_date.split('T')[0] < hoje && t.status!=='feito'; });
+  if (atrasadas.length > 0){
+    out.push({
+      nivel: 'critico',
+      ic: 'warning',
+      txt: atrasadas.length===1 ? '1 tarefa atrasada exige atenção' : atrasadas.length+' tarefas atrasadas exigem atenção',
+      cta: { label:'Ver atrasadas', acao:'tarefas' }
+    });
+  }
+
+  // 2) Tarefas de hoje (ATENÇÃO se muitas)
+  var deHoje = vt.filter(function(t){ return t.due_date && t.due_date.split('T')[0]===hoje && t.status!=='feito'; });
+  if (deHoje.length >= 5){
+    out.push({
+      nivel: 'atencao',
+      ic: 'clock',
+      txt: deHoje.length+' tarefas vencem hoje',
+      cta: { label:'Ver o dia', acao:'tarefas' }
+    });
+  } else if (deHoje.length > 0){
+    out.push({
+      nivel: 'info',
+      ic: 'check-square',
+      txt: deHoje.length===1 ? '1 tarefa pra concluir hoje' : deHoje.length+' tarefas pra concluir hoje',
+      cta: { label:'Ver o dia', acao:'tarefas' }
+    });
+  }
+
+  // 3) Meta do mês (INFO)
+  var y=new Date().getFullYear(), m=new Date().getMonth()+1;
+  var gs=(visibleGoals()||[]).filter(function(g){ return g.month===m && g.year===y; });
+  var meta=gs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
+  var real=gs.reduce(function(s,g){ return s+realizadoMeta(g); },0);
+  if (meta > 0){
+    var pct = Math.min(100, Math.round(real/meta*100));
+    var falta = meta - real;
+    out.push({
+      nivel: pct>=100 ? 'ok' : 'info',
+      ic: 'target',
+      txt: pct>=100 ? 'Meta do mês batida! '+pct+'%' : 'Meta do mês: '+pct+'%'+(falta>0 ? ' — faltam '+brlShort(falta) : ''),
+      cta: { label:'Ver metas', acao:'metas' }
+    });
+  }
+
+  // 4) Docs parados (só gestores)
+  if (typeof docsParadosDoTime==='function' && typeof subordinadosDiretos==='function'){
+    var subs = subordinadosDiretos(ST.session.user.id);
+    if (subs.length > 0){
+      var dp = docsParadosDoTime();
+      if (dp.length > 0){
+        out.push({
+          nivel: 'info',
+          ic: 'file-text',
+          txt: dp.length===1 ? '1 documento sem revisão há 90+ dias' : dp.length+' documentos sem revisão há 90+ dias',
+          cta: { label:'Ver documentos', acao:'docs' }
+        });
+      }
+    }
+  }
+
+  // 5) Tudo tranquilo (fallback)
+  if (out.length === 0){
+    out.push({
+      nivel: 'ok',
+      ic: 'check',
+      txt: 'Nada crítico agora. Bom trabalho!',
+      cta: null
+    });
+  }
+
+  return out;
+}
+
+/* Renderiza o hero adaptativo */
+function heroAdaptativoHTML(){
+  var u = ST.session.user;
+  var nome = (u.name||'').split(' ')[0];
+  var hora = new Date().getHours();
+  var saud = hora<12 ? 'Bom dia' : (hora<18 ? 'Boa tarde' : 'Boa noite');
+
+  var insights = heroInsights();
+  var principal = insights[0];
+  var secundario = insights.length > 1 ? insights[1] : null;
+
+  var nivelCls = {
+    critico: 'hero-ad-critico',
+    atencao: 'hero-ad-atencao',
+    info:    'hero-ad-info',
+    ok:      'hero-ad-ok'
+  }[principal.nivel] || 'hero-ad-info';
+
+  var ctaHTML = principal.cta
+    ? '<button class="hero-ad-cta" data-hero-acao="'+esc(principal.cta.acao)+'">'+esc(principal.cta.label)+' '+icon('arrow-right')+'</button>'
+    : '';
+
+  var secHTML = secundario
+    ? '<div class="hero-ad-sec">'+icon(secundario.ic)+'<span>'+esc(secundario.txt)+'</span>'+
+      (secundario.cta ? '<button class="hero-ad-sec-link" data-hero-acao="'+esc(secundario.cta.acao)+'">'+esc(secundario.cta.label)+'</button>' : '')+
+      '</div>'
+    : '';
+
+  return '<div class="hero-ad '+nivelCls+'">'+
+    '<div class="hero-ad-bg"></div>'+
+    '<div class="hero-ad-c">'+
+      '<div class="hero-ad-top">'+
+        '<span class="hero-ad-saud">'+esc(saud)+', <b>'+esc(nome)+'</b></span>'+
+        '<span class="hero-ad-data">'+esc(dataExtenso())+'</span>'+
+      '</div>'+
+      '<div class="hero-ad-main">'+
+        '<span class="hero-ad-ic">'+icon(principal.ic)+'</span>'+
+        '<h2>'+esc(principal.txt)+'</h2>'+
+        ctaHTML+
+      '</div>'+
+      secHTML+
+    '</div>'+
+  '</div>';
+}
+
+/* Bind do CTA do hero */
+function bindHeroAdaptativo(){
+  document.querySelectorAll('[data-hero-acao]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var acao = this.getAttribute('data-hero-acao');
+      if (acao === 'tarefas'){ ST.page='tarefas'; if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); }
+      else if (acao === 'metas'){ ST.page='metas'; if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); }
+      else if (acao === 'docs'){ ST.page='docs'; if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); }
+    });
+  });
+}
+
 function dashboardHTML() {
   var u=ST.session.user; var ts=visibleTasks(); var hoje=today();
   var cTodo=0,cFaz=0,cFeito=0,cHoje=0,cAtras=0;
@@ -5040,17 +5358,9 @@ function dashboardHTML() {
   var banner = sectorBanner();
   var hero;
   if (banner) {
-    hero = bannerHeroHTML(banner);
+    hero = bannerHeroHTML(banner);   // banners custom do admin continuam tendo prioridade
   } else {
-    var h = HERO[ST.sector] || { tag:'Painel', sa:saud+',', desc:'Seu centro de operação.' };
-    hero = '<div class="dash-hero hero-pro">'+
-      '<div class="hero-grid"></div>'+
-      '<div class="hero-c">'+
-        '<span class="hero-tag">'+esc(h.tag)+'</span>'+
-        '<h2>'+esc(h.sa)+' <span class="hero-name">'+esc(nome)+'</span>!</h2>'+
-        '<p>'+esc(h.desc)+'</p>'+
-      '</div>'+
-    '</div>';
+    hero = heroAdaptativoHTML();     // v133: hero adaptativo inteligente
   }
   var counts={ todo:cTodo, faz:cFaz, feito:cFeito, hoje:cHoje, atras:cAtras };
   var cards = sectorStatCards(counts).map(statCardPro).join('');
@@ -5174,6 +5484,7 @@ function bindLojaPainel(){
 }
 function bindDashboard() {
   if (typeof bindPainelGestor === 'function') bindPainelGestor(); // v117
+  if (typeof bindHeroAdaptativo === 'function') bindHeroAdaptativo(); // v133
   bindMural();
   var dst=document.getElementById('dashStore');
   if (dst) dst.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
@@ -5198,7 +5509,120 @@ var HERO = {
   marketing: { tag:'Painel de Marketing', sa:'E aí,',               desc:'Campanhas, conteúdos e resultados — transforme ideias em engajamento.' }
 };
 // cards de resumo específicos por setor — cada setor mostra o que importa
+/* ============================================================
+   v134: BLOCO 2 — SPARKLINES COM DADOS REAIS + TREND
+
+   O miniSpark decorativo (seno fake) ganha dados reais:
+   - Tarefas concluídas por dia (updated_at das feitas)
+   - Tarefas criadas por dia (created_at)
+   - Faturamento por dia (blingFat.ref_date/total)
+   - Clientes novos por dia (created_at/updated_at)
+
+   E cada card ganha um TREND: comparação dos últimos 7 dias
+   vs os 7 anteriores (↑ 12% / ↓ 5% / = estável).
+
+   Compat: card sem c.serie continua com spark decorativo.
+   ============================================================ */
+
+/* Lista de datas ISO (YYYY-MM-DD) dos últimos n dias, hoje incluso, ordem cronológica */
+function ultimosDias(n){
+  var out = [];
+  var d = new Date();
+  for (var i = n-1; i >= 0; i--){
+    var x = new Date(d);
+    x.setDate(d.getDate() - i);
+    out.push(x.toISOString().split('T')[0]);
+  }
+  return out;
+}
+
+/* Conta itens de lista por dia usando extrator de data. Retorna array alinhado a dias[]. */
+function seriePorDia(lista, dias, getData, getValor){
+  var mapa = {};
+  dias.forEach(function(d){ mapa[d] = 0; });
+  (lista||[]).forEach(function(item){
+    var dt = getData(item);
+    if (!dt) return;
+    var dia = String(dt).slice(0,10);
+    if (mapa[dia] === undefined) return;
+    mapa[dia] += getValor ? (Number(getValor(item))||0) : 1;
+  });
+  return dias.map(function(d){ return mapa[d]; });
+}
+
+/* Séries específicas (14 dias: 7 exibidos + 7 pra comparação) */
+function serieTarefasConcluidas(){
+  var dias = ultimosDias(14);
+  var feitas = visibleTasks().filter(function(t){ return t.status==='feito'; });
+  return { dias: dias, valores: seriePorDia(feitas, dias, function(t){ return t.updated_at || t.created_at; }) };
+}
+function serieTarefasCriadas(){
+  var dias = ultimosDias(14);
+  return { dias: dias, valores: seriePorDia(visibleTasks(), dias, function(t){ return t.created_at; }) };
+}
+function serieFaturamento(){
+  var dias = ultimosDias(14);
+  var _ds = boardStore();
+  var fat = (ST.blingFat||[]).filter(function(f){ return !_ds || String(f.store_unit_id)===String(_ds); });
+  return { dias: dias, valores: seriePorDia(fat, dias, function(f){ return f.ref_date; }, function(f){ return f.total; }) };
+}
+function serieClientesNovos(){
+  var dias = ultimosDias(14);
+  var _ds = boardStore();
+  var cls = (ST.clients||[]).filter(function(c){ return !_ds || String(c.store_unit_id)===String(_ds); });
+  return { dias: dias, valores: seriePorDia(cls, dias, function(c){ return c.created_at || c.updated_at; }) };
+}
+
+/* Trend: soma últimos 7 vs 7 anteriores. Retorna { pct, dir } */
+function trendDaSerie(valores){
+  if (!valores || valores.length < 14) return null;
+  var ant = 0, atu = 0;
+  for (var i=0;i<7;i++) ant += valores[i];
+  for (var j=7;j<14;j++) atu += valores[j];
+  if (ant === 0 && atu === 0) return { pct: 0, dir: 'flat' };
+  if (ant === 0) return { pct: 100, dir: 'up' };
+  var pct = Math.round(((atu - ant) / ant) * 100);
+  return { pct: Math.abs(pct), dir: pct > 0 ? 'up' : (pct < 0 ? 'down' : 'flat') };
+}
+
+/* Spark REAL: desenha SVG a partir dos últimos 7 valores */
+function sparkReal(valores, color){
+  var vals = valores.slice(-7);
+  var w=140, h=34;
+  var max = Math.max.apply(null, vals);
+  var min = Math.min.apply(null, vals);
+  var range = (max - min) || 1;
+  var coords = vals.map(function(v, i){
+    var x = (i/(vals.length-1))*w;
+    var y = h - (((v - min)/range)*(h-8)) - 4;
+    return [x, y];
+  });
+  var d = coords.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' ');
+  var id = 'spr'+Math.random().toString(36).slice(2,6);
+  // Ponto final destacado (valor de hoje)
+  var last = coords[coords.length-1];
+  return '<svg class="stat-spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none">'+
+    '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+color+'" stop-opacity=".22"/><stop offset="1" stop-color="'+color+'" stop-opacity="0"/></linearGradient></defs>'+
+    '<path d="'+d+' L '+w+' '+h+' L 0 '+h+' Z" fill="url(#'+id+')"/>'+
+    '<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<circle cx="'+last[0].toFixed(1)+'" cy="'+last[1].toFixed(1)+'" r="3" fill="'+color+'"/>'+
+  '</svg>';
+}
+
+/* Chip de trend renderizado (↑ 12% vs semana passada) */
+function trendChipHTML(trend){
+  if (!trend) return '';
+  if (trend.dir === 'flat') return '<span class="stat-trend flat">= estável vs sem. passada</span>';
+  var seta = trend.dir === 'up' ? '↑' : '↓';
+  var cls = trend.dir === 'up' ? 'up' : 'down';
+  return '<span class="stat-trend '+cls+'">'+seta+' '+trend.pct+'% vs sem. passada</span>';
+}
+
 function sectorStatCards(c) {
+  // v134: séries reais pra sparklines (14 dias: 7 exibidos + 7 comparação)
+  var _sFat  = serieFaturamento().valores;
+  var _sConc = serieTarefasConcluidas().valores;
+  var _sCli  = serieClientesNovos().valores;
   var hojeStr=today();
   var vt=visibleTasks();
   var hojeTasks=vt.filter(function(t){ return t.due_date && t.due_date.split('T')[0]===hojeStr; });
@@ -5223,26 +5647,26 @@ function sectorStatCards(c) {
   var fatConn=(ST.bling||[]).some(function(b){ return b.connected; });
 
   if (ST.sector==='lojas') return [
-    { label:'Faturamento hoje', val:(temFat?brlShort(fatHoje):'—'), sub:(temFat?'atualizado pelo Bling':(fatConn?'Aguardando 1ª sincronização':'Conecte o Bling')), subColor:(temFat?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark' },
+    { label:'Faturamento hoje', val:(temFat?brlShort(fatHoje):'—'), sub:(temFat?'atualizado pelo Bling':(fatConn?'Aguardando 1ª sincronização':'Conecte o Bling')), subColor:(temFat?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark', serie:_sFat },
     { label:'Meta do mês',      val:metaPct+'%',    sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'Defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
     { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
-    { label:'Clientes ativos',  val:clientesAtivos.toLocaleString('pt-BR'), sub:clientList.length+' no CRM', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
+    { label:'Clientes ativos',  val:clientesAtivos.toLocaleString('pt-BR'), sub:clientList.length+' no CRM', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark', serie:_sCli }
   ];
   if (deptoComoModelo('vendas')) return [
-    { label:'Vendas do mês',  val:(real>0?brlShort(real):'—'), sub:(real>0?'meta '+brlShort(meta):'via Bling / metas'), subColor:(real>0?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark' },
+    { label:'Vendas do mês',  val:(real>0?brlShort(real):'—'), sub:(real>0?'meta '+brlShort(meta):'via Bling / metas'), subColor:(real>0?'var(--u-green)':'var(--u-text3)'), color:'#3B6FF7', icon:'dollar', viz:'spark', serie:_sFat },
     { label:'Meta do mês',    val:metaPct+'%', sub:(meta>0?brlShort(real)+' / '+brlShort(meta):'Defina as metas'), subColor:(meta>0?'var(--u-green)':'var(--u-text3)'), color:'#16A34A', icon:'target', viz:'bar', barPct:metaPct },
     { label:'Tarefas do dia', val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#FB8C00', icon:'tasks', viz:'bar', barPct:pctHoje },
-    { label:'Clientes',       val:clientList.length.toLocaleString('pt-BR'), sub:clientesAtivos+' ativos', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark' }
+    { label:'Clientes',       val:clientList.length.toLocaleString('pt-BR'), sub:clientesAtivos+' ativos', subColor:'#8B5CF6', color:'#8B5CF6', icon:'users', viz:'spark', serie:_sCli }
   ];
   if (deptoComoModelo('marketing')) {
     var mkArr=[
       { label:'Campanhas ativas', val:campAtivas, sub:(ST.campaigns||[]).length+' no total', subColor:'#8B5CF6', color:'#8B5CF6', icon:'megaphone', viz:'spark' },
       { label:'Tarefas do dia',   val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#3B6FF7', icon:'tasks', viz:'bar', barPct:pctHoje },
       { label:'Projetos ativos',  val:projAtivos, sub:(ST.projects||[]).length+' no total', subColor:'#FB8C00', color:'#FB8C00', icon:'folder', viz:'bar', barPct:((ST.projects||[]).length?Math.round(projAtivos/(ST.projects||[]).length*100):0) },
-      { label:'Concluídas',       val:c.feito, sub:'tarefas feitas', subColor:'var(--u-green)', color:'#16A34A', icon:'dashboard', viz:'spark' }
+      { label:'Concluídas',       val:c.feito, sub:'tarefas feitas', subColor:'var(--u-green)', color:'#16A34A', icon:'dashboard', viz:'spark', serie:_sConc }
     ];
     if (siteUnits().length) {
-      mkArr.unshift({ label:'Faturamento do site (mês)', val:brlShort(siteFatMes()), sub:'site · via Bling', subColor:'var(--u-green)', color:'#16A34A', icon:'dollar', viz:'spark' });
+      mkArr.unshift({ label:'Faturamento do site (mês)', val:brlShort(siteFatMes()), sub:'site · via Bling', subColor:'var(--u-green)', color:'#16A34A', icon:'dollar', viz:'spark', serie:_sFat });
     }
     return mkArr;
   }
@@ -5250,19 +5674,22 @@ function sectorStatCards(c) {
   return [
     { label:'Tarefas do dia', val:hojeTasks.length, sub:hojeDone+' concluídas', subColor:'var(--u-green)', color:'#3B6FF7', icon:'tasks', viz:'bar', barPct:pctHoje },
     { label:'Em andamento',   val:c.faz, sub:'em progresso', subColor:'var(--u-text3)', color:'#FB8C00', icon:'dashboard', viz:'bar', barPct:(totalT?Math.round(c.faz/totalT*100):0) },
-    { label:'Concluídas',     val:c.feito, sub:'no total', subColor:'var(--u-green)', color:'#16A34A', icon:'target', viz:'spark' },
+    { label:'Concluídas',     val:c.feito, sub:'no total', subColor:'var(--u-green)', color:'#16A34A', icon:'target', viz:'spark', serie:_sConc },
     { label:'Atrasadas',      val:c.atras, sub:(c.atras>0?'precisam de atenção':'tudo em dia'), subColor:(c.atras>0?'var(--u-red)':'var(--u-green)'), color:'#EF4444', icon:'bell', viz:'spark' }
   ];
 }
 function statCardPro(c, i) {
+  // v134: spark com dados reais quando c.serie existe; senão decorativo (compat)
+  var temSerie = Array.isArray(c.serie) && c.serie.length >= 7 && c.serie.some(function(v){ return v > 0; });
   var viz = (c.viz==='bar')
     ? '<div class="stat-pro-bar"><span style="width:'+(c.barPct||0)+'%;background:'+c.color+'"></span></div>'
-    : miniSpark(c.color, (i||0)+2);
+    : (temSerie ? sparkReal(c.serie, c.color) : miniSpark(c.color, (i||0)+2));
+  var trend = temSerie ? trendChipHTML(trendDaSerie(c.serie)) : '';
   var sub = c.sub ? '<div class="stat-pro-sub" style="color:'+(c.subColor||'var(--u-text3)')+'">'+esc(c.sub)+'</div>' : '';
   return '<div class="stat-pro">'+
     '<div class="stat-pro-top"><div class="stat-pro-meta"><div class="stat-pro-l">'+esc(c.label)+'</div><div class="stat-pro-v">'+c.val+'</div></div>'+
     '<span class="stat-pro-ico" style="background:'+c.color+'18;color:'+c.color+'">'+icon(c.icon)+'</span></div>'+
-    sub + viz +
+    sub + trend + viz +
   '</div>';
 }
 // mini-gráfico decorativo (visual; ganha dados reais com histórico/Bling)
