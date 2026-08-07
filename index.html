@@ -4502,6 +4502,602 @@ a:focus-visible {
   }
 }
 
+
+/* ============================================================
+   v136 · SKELETON LOADING
+   Placeholders animados que mostram a forma do conteúdo
+   ============================================================ */
+.skel-bar {
+  display: inline-block;
+  height: 12px;
+  width: 100%;
+  vertical-align: middle;
+}
+.skel-circ {
+  display: inline-block;
+  border-radius: 50% !important;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Skeleton do Hero */
+.skel-hero {
+  border-radius: var(--rd-2xl);
+  padding: var(--sp-6) var(--sp-8);
+  margin-bottom: var(--sp-5);
+  background: var(--neutral-100);
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-3);
+  position: relative;
+  overflow: hidden;
+}
+.skel-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.5), transparent);
+  animation: skelShimmer 1.8s infinite;
+  transform: translateX(-100%);
+}
+@keyframes skelShimmer {
+  to { transform: translateX(100%); }
+}
+.skel-hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-3);
+  position: relative;
+  z-index: 1;
+}
+.skel-hero-main {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Skeleton KPI card */
+.skel-kpi {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  pointer-events: none;
+}
+.skel-kpi .skel {
+  background: linear-gradient(90deg, var(--neutral-100) 25%, var(--neutral-200) 50%, var(--neutral-100) 75%);
+  background-size: 200% 100%;
+}
+
+/* Skeleton timeline */
+.skel-tl-item {
+  cursor: default !important;
+  pointer-events: none;
+}
+.skel-tl-item .tl-body {
+  gap: var(--sp-1);
+}
+.skel-tl-dot {
+  position: absolute;
+  top: 4px;
+  width: 10px !important;
+  height: 10px !important;
+  border: 2px solid var(--u-card);
+}
+
+/* Row genérica em painel */
+.skel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--u-line);
+}
+.skel-row:last-child { border-bottom: none; }
+
+/* Skeleton de painel */
+.skel-panel {
+  pointer-events: none;
+}
+.skel-panel .dp-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--u-line);
+  margin-bottom: var(--sp-2);
+}
+
+/* @media (prefers-reduced-motion): shimmer para */
+@media (prefers-reduced-motion: reduce) {
+  .skel, .skel-hero::after {
+    animation: none !important;
+    background: var(--neutral-100) !important;
+  }
+}
+
+
+/* ============================================================
+   v137 · FEED DE ATIVIDADES RECENTES
+   ============================================================ */
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-1) 0;
+}
+.feed-item {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-2);
+  border-radius: var(--rd-md);
+  align-items: start;
+  cursor: pointer;
+  transition: background var(--tr-fast);
+}
+.feed-item:hover { background: var(--neutral-50); }
+.feed-item + .feed-item { border-top: 1px solid var(--u-line); }
+.feed-item:first-child { border-top: none; }
+
+.feed-av {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--neutral-0);
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.2px;
+  flex-shrink: 0;
+}
+
+.feed-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.feed-line {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-snug);
+  color: var(--u-text);
+  overflow-wrap: break-word;
+}
+.feed-line b {
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+}
+.feed-verbo {
+  color: var(--u-text2);
+  font-weight: var(--fw-medium);
+}
+.feed-ent {
+  font-weight: var(--fw-bold);
+}
+.feed-time {
+  font-size: var(--fs-xs);
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+  margin-top: 1px;
+}
+
+.feed-ic {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--rd-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.feed-ic .lc-ic { width: 14px; height: 14px; }
+
+/* Modo compacto quando estreito */
+@media (max-width: 640px) {
+  .feed-item { grid-template-columns: 24px 1fr auto; gap: var(--sp-2); }
+  .feed-av { width: 24px; height: 24px; font-size: 10px; }
+  .feed-ic { width: 24px; height: 24px; }
+}
+
+
+/* ============================================================
+   v138 · CHECKLIST DO GESTOR
+   ============================================================ */
+
+/* Grid do painel do gestor com 4 cards */
+.pg-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+}
+
+/* Card do checklist */
+.pg-card-chk {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.pg-card-ic-chk {
+  background: transparent !important;
+  padding: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+}
+.pg-card-h {
+  align-items: center;
+}
+.chk-count {
+  margin-left: auto;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--u-text2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Progresso circular */
+.prog-circ { display: block; }
+.prog-circ circle:nth-child(2) {
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.prog-circ-t {
+  font-family: var(--u-font-display);
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  fill: var(--u-text);
+}
+
+/* Lista */
+.chk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: -4px 0;
+}
+.chk-empty {
+  padding: var(--sp-3) 0;
+  color: var(--u-text3);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+/* Item */
+.chk-item {
+  display: grid;
+  grid-template-columns: 20px 4px 1fr auto auto;
+  gap: var(--sp-2);
+  align-items: center;
+  padding: var(--sp-2) 4px;
+  border-radius: var(--rd-sm);
+  transition: background var(--tr-fast);
+}
+.chk-item:hover {
+  background: var(--neutral-50);
+}
+.chk-item.done .chk-title {
+  color: var(--u-text3);
+  text-decoration: line-through;
+}
+.chk-item.done .chk-prio {
+  opacity: 0.4;
+}
+
+/* Checkbox custom */
+.chk-box {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--rd-sm);
+  border: 2px solid var(--neutral-300);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--tr-fast);
+}
+.chk-box:hover {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+}
+.chk-box.on {
+  background: var(--success-500);
+  border-color: var(--success-500);
+  color: var(--neutral-0);
+  animation: chkPop 0.3s ease-out;
+}
+.chk-box.on .lc-ic { width: 12px; height: 12px; }
+@keyframes chkPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* Barra de prioridade */
+.chk-prio {
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+  transition: opacity var(--tr-fast);
+}
+
+/* Título */
+.chk-title {
+  font-size: var(--fs-sm);
+  color: var(--u-text);
+  line-height: var(--lh-snug);
+  overflow-wrap: break-word;
+  min-width: 0;
+  font-weight: var(--fw-medium);
+}
+
+/* Tempo previsto */
+.chk-tempo {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--fs-xs);
+  color: var(--u-text3);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.chk-tempo .lc-ic { width: 12px; height: 12px; }
+
+/* Botão remover — só aparece no hover */
+.chk-del {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--rd-sm);
+  background: transparent;
+  border: none;
+  color: var(--u-text3);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--tr-fast), background var(--tr-fast), color var(--tr-fast);
+}
+.chk-del .lc-ic { width: 13px; height: 13px; }
+.chk-item:hover .chk-del {
+  opacity: 1;
+}
+.chk-del:hover {
+  background: var(--danger-50);
+  color: var(--danger-600);
+}
+
+/* Formulário de adicionar */
+.chk-add {
+  display: grid;
+  grid-template-columns: 78px 1fr 60px 32px;
+  gap: var(--sp-1);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--u-line);
+  margin-top: var(--sp-1);
+}
+.chk-prio-sel,
+.chk-input,
+.chk-min {
+  height: 32px;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-sm);
+  font-size: var(--fs-sm);
+  background: var(--u-card);
+  color: var(--u-text);
+}
+.chk-prio-sel:focus,
+.chk-input:focus,
+.chk-min:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: var(--focus-ring);
+}
+.chk-add-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rd-sm);
+  background: var(--primary-500);
+  color: var(--neutral-0);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--tr-fast);
+}
+.chk-add-btn:hover { background: var(--primary-600); }
+.chk-add-btn .lc-ic { width: 14px; height: 14px; }
+
+@media (max-width: 640px) {
+  .chk-add {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: var(--sp-2);
+  }
+  .chk-prio-sel { grid-column: 1; grid-row: 1; }
+  .chk-min { grid-column: 2; grid-row: 1; }
+  .chk-input { grid-column: 1 / 3; grid-row: 2; }
+  .chk-add-btn { grid-column: 1 / 3; grid-row: 3; width: 100%; }
+}
+
+
+/* ============================================================
+   v139 · CARDS DE PROJETO PREMIUM
+   ============================================================ */
+.proj-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--sp-3);
+  padding: var(--sp-1) 0;
+}
+.proj-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  cursor: pointer;
+  text-align: left;
+  transition: transform var(--tr-fast), box-shadow var(--tr-fast), border-color var(--tr-fast);
+  min-width: 0;
+}
+.proj-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-200);
+}
+.proj-card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Topo: círculo + nome + status */
+.proj-card-top {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: var(--sp-3);
+  align-items: center;
+  min-width: 0;
+}
+.proj-card-prog {
+  display: block;
+  flex-shrink: 0;
+}
+.proj-card-prog .prog-circ-t {
+  font-size: 11px;
+}
+.proj-card-title {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.proj-card-name {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  line-height: var(--lh-snug);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.proj-card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.proj-card-status { display: flex; }
+.proj-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--sp-2);
+  border-radius: var(--rd-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  line-height: 1.5;
+}
+
+/* Meio: prazo humano */
+.proj-card-prazo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  padding: var(--sp-2) 0;
+  border-top: 1px solid var(--u-line);
+  border-bottom: 1px solid var(--u-line);
+}
+.proj-card-prazo.neutro {
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+}
+.proj-card-prazo .lc-ic { width: 14px; height: 14px; }
+
+/* Rodapé: avatares + última atualização */
+.proj-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-height: 24px;
+}
+
+/* Avatares empilhados */
+.pc-avs {
+  display: flex;
+  align-items: center;
+}
+.pc-av {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--neutral-0);
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--u-card);
+  letter-spacing: -0.2px;
+  transition: transform var(--tr-fast);
+}
+.pc-av + .pc-av {
+  margin-left: -8px;
+}
+.proj-card:hover .pc-av {
+  transform: translateY(-1px);
+}
+.pc-av-unknown {
+  background: var(--neutral-300);
+  color: var(--u-text2);
+}
+.pc-av-extra {
+  background: var(--neutral-100);
+  color: var(--u-text2);
+  font-weight: var(--fw-bold);
+}
+.pc-avs-empty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--neutral-100);
+  color: var(--u-text3);
+}
+.pc-avs-empty .lc-ic { width: 12px; height: 12px; }
+
+/* Última atualização */
+.proj-card-ult {
+  font-size: var(--fs-xs);
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+  font-style: italic;
+}
+
+/* Mobile: cards um por linha */
+@media (max-width: 640px) {
+  .proj-cards-grid { grid-template-columns: 1fr; }
+  .proj-card-top { grid-template-columns: 44px 1fr; }
+  .proj-card-prog svg { width: 44px !important; height: 44px !important; }
+}
+
 </style>
 </head>
 <body>
@@ -4525,7 +5121,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v135';
+var APP_BUILD = 'v139';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -4834,7 +5430,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -4915,6 +5511,8 @@ function loadData() {
     ST.checklistItems = []; ST.checklistDone = []; ST.caixas = [];
     ST.lojaMetricas = []; ST.lojaProdutos = [];
     // v119: mantém queries "leves" que aparecem no Início (mural, checkins, kudos, vendas, requests, eventos)
+    try { carregarAtividades(function(){ if(ST.page==='inicio') renderPage(); }); } catch(e){} // v137: feed atividades
+    try { carregarChecklistGestor(function(){ if(ST.page==='inicio') renderPage(); }); } catch(e){} // v138: checklist gestor
     try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario'||ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
     try { sb.from('malba_requests').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.requests=re.data; if(ST.page==='inicio'||ST.page==='gestao') renderPage(); } }, function(){}); } catch(e){}
@@ -5569,7 +6167,143 @@ function bindHeroAdaptativo(){
   });
 }
 
+/* ============================================================
+   v136: BLOCO 4 — SKELETON LOADING
+
+   Placeholders animados que mostram a FORMA do conteúdo que
+   está carregando. Sensação de velocidade muito maior que
+   "Carregando..." textual — o cérebro reconhece a estrutura
+   antes dos dados chegarem.
+
+   Padrão de uso:
+     if (!ST.loaded) return skelDashboardHTML();
+
+   Ou dentro de painéis:
+     var body = carregando ? skelPanelBody(3) : conteudoReal();
+
+   ============================================================ */
+
+/* Barra genérica de skeleton com largura/altura/margem opcionais */
+function skelBar(w, h, mt){
+  var estilo = [];
+  if (w)  estilo.push('width:'+w);
+  if (h)  estilo.push('height:'+h);
+  if (mt) estilo.push('margin-top:'+mt);
+  return '<span class="skel skel-bar" style="'+estilo.join(';')+'"></span>';
+}
+
+/* Círculo skeleton (para avatares) */
+function skelCirc(size){
+  var s = size || '22px';
+  return '<span class="skel skel-circ" style="width:'+s+';height:'+s+'"></span>';
+}
+
+/* Skeleton pro Hero Adaptativo — 130px de altura, saudação + main + sec */
+function skelHero(){
+  return '<div class="skel-hero">'+
+    '<div class="skel-hero-top">'+
+      skelBar('160px','14px')+
+      skelBar('120px','12px')+
+    '</div>'+
+    '<div class="skel-hero-main">'+
+      skelCirc('44px')+
+      skelBar('60%','28px')+
+    '</div>'+
+    skelBar('40%','12px','8px')+
+  '</div>';
+}
+
+/* Skeleton pra UM KPI card (número + trend + spark) */
+function skelKpiCard(){
+  return '<div class="stat-pro skel-kpi">'+
+    '<div class="stat-pro-top">'+
+      '<div class="stat-pro-meta">'+
+        skelBar('80px','11px')+
+        skelBar('50px','24px','6px')+
+      '</div>'+
+      skelCirc('32px')+
+    '</div>'+
+    skelBar('70px','11px','4px')+
+    '<span class="skel skel-bar" style="width:100%;height:34px;margin-top:6px"></span>'+
+  '</div>';
+}
+
+/* Grid de KPI cards (N cards) */
+function skelKpisGrid(n){
+  n = n || 4;
+  var out = '';
+  for (var i=0; i<n; i++) out += skelKpiCard();
+  return '<div class="stats-grid-pro">'+out+'</div>';
+}
+
+/* Skeleton pra UM item da timeline (hora + linha + corpo) */
+function skelTimelineItem(){
+  return '<div class="tl-item skel-tl-item">'+
+    '<div class="tl-hora-col">'+
+      skelBar('28px','12px')+
+      '<span class="tl-track"><span class="skel skel-circ skel-tl-dot"></span></span>'+
+    '</div>'+
+    '<div class="tl-body">'+
+      skelBar('75%','14px')+
+      '<div class="tl-meta" style="margin-top:6px">'+
+        skelCirc('22px')+
+        skelBar('80px','11px')+
+        skelBar('60px','11px')+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* Timeline vazia com N items */
+function skelTimeline(n){
+  n = n || 4;
+  var out = '';
+  for (var i=0; i<n; i++) out += skelTimelineItem();
+  return '<div class="tl">'+out+'</div>';
+}
+
+/* Body genérico de painel (N linhas simples) */
+function skelPanelBody(n){
+  n = n || 3;
+  var out = '';
+  for (var i=0; i<n; i++){
+    out += '<div class="skel-row">'+
+      skelBar('75%','12px')+
+      skelBar('40px','10px')+
+    '</div>';
+  }
+  return out;
+}
+
+/* Skeleton de painel completo (header + body) */
+function skelPanel(nRows){
+  return '<section class="dash-panel skel-panel">'+
+    '<div class="dp-head">'+
+      skelCirc('18px')+
+      skelBar('120px','14px')+
+    '</div>'+
+    skelPanelBody(nRows||3)+
+  '</section>';
+}
+
+/* Skeleton do Dashboard inteiro */
+function skelDashboardHTML(){
+  return '<div class="cont">'+
+    skelHero()+
+    skelKpisGrid(4)+
+    '<div class="dash-grid2" style="margin-top:20px">'+
+      '<section class="dash-panel skel-panel">'+
+        '<div class="dp-head">'+skelCirc('18px')+skelBar('140px','14px')+'</div>'+
+        skelTimeline(4)+
+      '</section>'+
+      skelPanel(3)+
+    '</div>'+
+  '</div>';
+}
+
 function dashboardHTML() {
+  // v136: skeleton enquanto o boot inicial ainda carrega
+  if (!ST.loaded) return skelDashboardHTML();
   var u=ST.session.user; var ts=visibleTasks(); var hoje=today();
   var cTodo=0,cFaz=0,cFeito=0,cHoje=0,cAtras=0;
   ts.forEach(function(t){
@@ -5762,6 +6496,7 @@ function tlConcluirTarefa(id){
       return;
     }
     toast('Concluída!','success');
+    logAtividade('task.completed', 'task', t.id, t.title); // v137
   });
 }
 
@@ -5863,6 +6598,151 @@ function panelSetor() {
   var body2 = up.length ? tarefasTimelineHTML(up.slice(0,6)) : '<div class="dash-empty">Sem tarefas futuras.</div>';
   return dashPanel('Próximas tarefas', icon('calendar-days'), body2);
 }
+/* ============================================================
+   v139: BLOCO 7 — CARDS DE PROJETO PREMIUM
+
+   Substitui os cards achatados de "Projetos em andamento" por
+   cards ricos: progresso circular, avatares empilhados, risco
+   baseado em prazo, status pill, tempo relativo da última
+   atualização.
+
+   Reaproveita:
+   - progCirc() do Bloco 6
+   - tempoRelativo() do Bloco 5
+   - projProgress() existente
+   - PRIO/STATUS canônicos
+   ============================================================ */
+
+/* ---------- Risco de prazo do projeto ----------
+   Retorna { pct, dir, dias, nivel, label, cor }
+   - Sem end_date: neutro
+   - +14 dias e progresso saudável: em dia
+   - 7-14 dias: alerta amarelo (só se progresso baixo)
+   - <7 dias: alerta se progresso < 90%
+   - Passou do prazo: atrasado
+*/
+function projRisco(p){
+  if (!p.end_date) return { nivel:'sem-prazo', label:'Sem prazo', cor:'var(--u-text2)', dias:null };
+  var hoje = today();
+  var fim = String(p.end_date).slice(0,10);
+  var msDia = 86400000;
+  var dias = Math.round((new Date(fim) - new Date(hoje)) / msDia);
+  var pct = projProgress(p.id);
+
+  // Já passou do prazo
+  if (dias < 0){
+    if (pct >= 100){
+      return { nivel:'ok', label:'Concluído', cor:'#16A34A', dias: dias };
+    }
+    return { nivel:'atrasado', label:'Atrasado', cor:'#EF4444', dias: dias };
+  }
+  // Concluído com prazo futuro
+  if (pct >= 100){
+    return { nivel:'ok', label:'Concluído', cor:'#16A34A', dias: dias };
+  }
+  // Em dia: prazo confortável ou ritmo saudável
+  // Regra: se progresso >= 100 - (dias/duracao*100) ele tá "em dia"
+  // Simplificação: até 7 dias com pct < 90 vira atenção; até 14 dias com pct < 50 também
+  if (dias < 3 && pct < 90){
+    return { nivel:'critico', label:'Crítico', cor:'#EF4444', dias: dias };
+  }
+  if (dias <= 7 && pct < 80){
+    return { nivel:'atencao', label:'Atenção', cor:'#F59E0B', dias: dias };
+  }
+  if (dias <= 14 && pct < 50){
+    return { nivel:'atencao', label:'Atenção', cor:'#F59E0B', dias: dias };
+  }
+  return { nivel:'ok', label:'Em dia', cor:'#16A34A', dias: dias };
+}
+
+/* ---------- Texto humano de prazo ---------- */
+function projPrazoHumano(dias){
+  if (dias === null || dias === undefined) return '';
+  if (dias < 0){
+    var d = Math.abs(dias);
+    return d===1 ? 'venceu ontem' : (d+' dias atrasado');
+  }
+  if (dias === 0) return 'vence hoje';
+  if (dias === 1) return 'vence amanhã';
+  if (dias <= 7) return dias+' dias restantes';
+  if (dias <= 30) return dias+' dias';
+  var meses = Math.round(dias/30);
+  return meses+' '+(meses===1?'mês':'meses');
+}
+
+/* ---------- Stack de avatares dos membros ---------- */
+function projMembrosStack(p, max){
+  max = max || 3;
+  var membros = Array.isArray(p.members) ? p.members : [];
+  if (membros.length === 0){
+    return '<span class="pc-avs-empty">'+icon('user-round')+'</span>';
+  }
+  var visiveis = membros.slice(0, max);
+  var extra = membros.length - visiveis.length;
+  var html = '<div class="pc-avs">';
+  visiveis.forEach(function(uid){
+    var u = (typeof userById==='function' ? userById(uid) : null) ||
+            (typeof userByIdAll==='function' ? userByIdAll(uid) : null);
+    if (!u){
+      html += '<span class="pc-av pc-av-unknown" title="Membro">?</span>';
+      return;
+    }
+    var cor = u.color || '#9AA1AD';
+    html += '<span class="pc-av" style="background:'+cor+'" title="'+esc(u.name||'')+'">'+esc(iniciais(u.name||''))+'</span>';
+  });
+  if (extra > 0){
+    html += '<span class="pc-av pc-av-extra" title="Mais '+extra+' membro(s)">+'+extra+'</span>';
+  }
+  html += '</div>';
+  return html;
+}
+
+/* ---------- Um card de projeto premium ---------- */
+function projCardPremium(p){
+  var pct = projProgress(p.id);
+  var cor = p.color || '#3B6FF7';
+  var risco = projRisco(p);
+  var prazoTxt = projPrazoHumano(risco.dias);
+  var ultAtu = p.updated_at ? tempoRelativo(p.updated_at) : '';
+
+  return '<button class="proj-card" data-dproj="'+esc(p.id)+'">'+
+    // Topo: progresso circular + nome + status
+    '<div class="proj-card-top">'+
+      '<span class="proj-card-prog">'+progCirc(pct, 52, cor)+'</span>'+
+      '<div class="proj-card-title">'+
+        '<div class="proj-card-name">'+
+          '<span class="proj-card-dot" style="background:'+cor+'"></span>'+
+          esc(p.name||'(sem nome)')+
+        '</div>'+
+        '<div class="proj-card-status">'+
+          '<span class="proj-status-pill" style="color:'+risco.cor+';background:'+risco.cor+'18">'+esc(risco.label)+'</span>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    // Meio: prazo humano se tiver
+    (prazoTxt
+      ? '<div class="proj-card-prazo" style="color:'+risco.cor+'">'+icon('clock')+esc(prazoTxt)+'</div>'
+      : '<div class="proj-card-prazo neutro">'+icon('clock')+'Sem prazo definido</div>')+
+    // Rodapé: membros + última atualização
+    '<div class="proj-card-foot">'+
+      projMembrosStack(p, 3)+
+      (ultAtu ? '<span class="proj-card-ult">atualizado '+esc(ultAtu)+'</span>' : '')+
+    '</div>'+
+  '</button>';
+}
+
+/* ---------- Painel dos projetos (substitui panelProjetos) ---------- */
+function panelProjetosPremium(){
+  var ps = (ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).slice(0, 4);
+  if (ps.length === 0){
+    return dashPanel('Projetos em andamento', icon('folder-kanban'),
+      '<div class="dash-empty">Sem projetos ativos. Vá em Estratégia para criar.</div>'
+    );
+  }
+  var body = '<div class="proj-cards-grid">'+ps.map(projCardPremium).join('')+'</div>';
+  return dashPanel('Projetos em andamento', icon('folder-kanban'), body);
+}
+
 function panelProjetos() {
   var ps=(ST.projects||[]).filter(function(p){ return p.status!=='concluido'; }).slice(0,4);
   if (ps.length===0) return '';
@@ -5892,7 +6772,7 @@ function panelFaturamento(){
 }
 function dashPanels() {
   var fat = deptoTemCRM(ST.sector) ? panelFaturamento() : ''; // v106
-  return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+fat+panelProjetos();
+  return '<div class="dash-grid2">'+panelTarefasHoje()+panelSetor()+'</div>'+fat+panelProjetosPremium()+panelAtividades(); // v137: feed / v139: cards premium
 }
 /* ----- Painel da loja (posto de trabalho, dia a dia) ----- */
 function vendasHojeLoja(storeId){ var t=today(); var s=0; (ST.blingFat||[]).forEach(function(f){ if(String(f.store_unit_id)===String(storeId) && String(f.ref_date).slice(0,10)===t) s+=Number(f.total)||0; }); return s; }
@@ -5930,6 +6810,7 @@ function bindDashboard() {
   if (typeof bindPainelGestor === 'function') bindPainelGestor(); // v117
   if (typeof bindHeroAdaptativo === 'function') bindHeroAdaptativo(); // v133
   if (typeof bindTimeline === 'function') bindTimeline();             // v135
+  if (typeof bindFeed === 'function') bindFeed();                     // v137
   bindMural();
   var dst=document.getElementById('dashStore');
   if (dst) dst.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
@@ -6629,6 +7510,7 @@ function concluirRotinaHoje(t){
   var prev=t.status; t.status='feito'; renderPage();
   sb.from('malba_vl_tasks').update({ status:'feito' }).eq('id', t.id).then(function(r){
     if(r.error){ t.status=prev; console.error(r.error); toast('Não consegui concluir: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); return; }
+    logAtividade('task.completed', 'task', t.id, t.title); // v137
     // marcou como feita — agora cria a próxima ocorrência como nova tarefa
     if(!isRecurring(t)) { toast('Concluída!','success'); return; }
     var nd = nextDate(t.recurrence);
@@ -10259,7 +11141,7 @@ function docsCriar(tplKey, folderId){
   sb.from('malba_docs').insert(payload).select().single().then(function(r){
     if (r.error || !r.data){ toast('Não consegui criar: '+(r.error && r.error.message || ''),'error'); return; }
     if (!ST.docs) ST.docs=[];
-    ST.docs.unshift(r.data);
+    ST.docs.unshift(r.data); logAtividade('doc.created', 'doc', r.data.id, r.data.title); // v137
     toast('Documento criado','success');
     openDocEditor(r.data);
   });
@@ -11114,7 +11996,7 @@ function docsAbrirHistorico(docId){
     width: 560,
     body: '<div class="doc-hist-doc">'+docTipoIcon(d.doc_type)+' <b>'+esc(d.title||'Sem título')+'</b></div>'+
           (podeRestaurar ? '<button type="button" class="btn btn-secondary doc-hist-marcar" id="dhMarcar">'+icon('pin')+'Marcar versão agora</button>' : '')+
-          '<div id="dhLista"><div class="doc-hist-load">Carregando histórico…</div></div>',
+          '<div id="dhLista">'+skelPanelBody(3)+'</div>',
     hideFoot: true
   });
 
@@ -11373,7 +12255,7 @@ function docsPainelComentariosHTML(docId){
       '<label class="doc-coment-toggle"><input type="checkbox" id="dcMostrarResolvidos"'+(ST.docMostrarResolvidos?' checked':'')+'> mostrar resolvidos</label>'+
       '<button class="doc-coment-fechar" id="dcFechar" title="Fechar">×</button>'+
     '</div>'+
-    '<div id="dcCorpo" class="doc-coment-corpo"><div class="doc-coment-load">Carregando…</div></div>'+
+    '<div id="dcCorpo" class="doc-coment-corpo">'+skelPanelBody(3)+'</div>'+
   '</aside>';
 }
 
@@ -14161,6 +15043,7 @@ function rotinaPopSalvar(rotina, cb){
         return;
       }
       ST.rotinas = (ST.rotinas||[]).concat([r.data]);
+      logAtividade('rotina.created', 'rotina', r.data.id, r.data.title||r.data.name); // v137
       if (cb) cb();
       toast('POP criado ✓','success'); renderPage();
     });
@@ -14434,7 +15317,375 @@ function docsParadosDoTime(){
   });
 }
 
+/* ============================================================
+   v137: BLOCO 5 — FEED DE ATIVIDADES RECENTES
+
+   Registra ações importantes numa tabela dedicada e mostra
+   como feed no dashboard. Não substitui logs de audit — só
+   os eventos que importam pra "o que aconteceu hoje na MALBA".
+
+   Tabela: malba_activity_log (sector, actor, action, entity,
+   metadata). Logging é feito pelo cliente após cada mutação
+   importante — se falhar, silencioso (não bloqueia a ação).
+   ============================================================ */
+
+/* ---------- Catálogo de ações ---------- */
+var ACT_LABELS = {
+  'task.completed':  { verbo: 'concluiu',    entidade: 'tarefa',    ic: 'check-square', cor: '#16A34A' },
+  'task.created':    { verbo: 'criou',       entidade: 'tarefa',    ic: 'plus',         cor: '#3B6FF7' },
+  'doc.created':     { verbo: 'criou',       entidade: 'documento', ic: 'file-text',    cor: '#8B5CF6' },
+  'doc.version':     { verbo: 'marcou versão de', entidade: 'documento', ic: 'pin',     cor: '#F59E0B' },
+  'client.created':  { verbo: 'cadastrou',   entidade: 'cliente',   ic: 'user-round',   cor: '#8B5CF6' },
+  'user.created':    { verbo: 'cadastrou',   entidade: 'colaborador', ic: 'users',      cor: '#3B6FF7' },
+  'store.created':   { verbo: 'cadastrou',   entidade: 'loja',      ic: 'store',        cor: '#3B6FF7' },
+  'rotina.created':  { verbo: 'criou',       entidade: 'rotina',    ic: 'clipboard-check', cor: '#FB8C00' },
+  'project.completed': { verbo: 'concluiu',  entidade: 'projeto',   ic: 'rocket',       cor: '#16A34A' },
+  'goal.updated':    { verbo: 'atualizou meta de', entidade: 'vendas', ic: 'target',    cor: '#8B5CF6' }
+};
+
+/* ---------- Log helper (dispare-e-esqueça) ---------- */
+function logAtividade(action, entity_type, entity_id, entity_label, metadata){
+  try {
+    if (!ST.session || !ST.session.user) return;
+    var u = ST.session.user;
+    var payload = {
+      sector: ST.sector || u.sector || 'geral',
+      actor_id: u.id,
+      actor_name: u.name || null,
+      action: action,
+      entity_type: entity_type,
+      entity_id: entity_id ? String(entity_id) : null,
+      entity_label: entity_label || null,
+      metadata: metadata || {}
+    };
+    sb.from('malba_activity_log').insert(payload).then(function(r){
+      if (r && r.error) return; // silencioso — não bloqueia
+      // append no estado local pra atualização imediata
+      if (r && r.data && r.data[0]){
+        ST.activityLog = ST.activityLog || [];
+        ST.activityLog.unshift(r.data[0]);
+        if (ST.activityLog.length > 50) ST.activityLog.length = 50;
+      }
+    }, function(){});
+  } catch(e){}
+}
+
+/* ---------- Tempo relativo ("há 8 min") ---------- */
+function tempoRelativo(iso){
+  if (!iso) return '';
+  var t = new Date(iso).getTime();
+  var agora = Date.now();
+  var diff = Math.floor((agora - t)/1000);
+  if (diff < 0) return 'agora';
+  if (diff < 60) return 'agora';
+  if (diff < 3600) { var m = Math.floor(diff/60); return 'há '+m+' min'; }
+  if (diff < 86400) { var h = Math.floor(diff/3600); return 'há '+h+'h'; }
+  if (diff < 172800) return 'ontem';
+  if (diff < 604800) { var d = Math.floor(diff/86400); return 'há '+d+' dias'; }
+  var dt = new Date(iso);
+  return dt.getDate()+'/'+(dt.getMonth()+1);
+}
+
+/* ---------- Avatar do actor (iniciais) ---------- */
+function actorAvatar(actor_id, actor_name){
+  var nome = actor_name || 'Sistema';
+  var cor = '#9AA1AD';
+  if (actor_id && typeof userById === 'function'){
+    var u = userById(actor_id) || (typeof userByIdAll === 'function' ? userByIdAll(actor_id) : null);
+    if (u) { cor = u.color || cor; nome = u.name || nome; }
+  }
+  return '<span class="feed-av" style="background:'+cor+'" title="'+esc(nome)+'">'+esc(iniciais(nome))+'</span>';
+}
+
+/* ---------- Item do feed ---------- */
+function feedItem(log){
+  var meta = ACT_LABELS[log.action] || { verbo: log.action.split('.')[1]||'agiu em', entidade: log.entity_type, ic: 'activity', cor: '#9AA1AD' };
+  var primeiroNome = (log.actor_name || 'Sistema').split(' ')[0];
+  var label = log.entity_label || ('(sem título)');
+  return '<div class="feed-item" data-feed-entity="'+esc(log.entity_type)+'" data-feed-id="'+esc(log.entity_id||'')+'">'+
+    actorAvatar(log.actor_id, log.actor_name)+
+    '<div class="feed-body">'+
+      '<div class="feed-line">'+
+        '<b>'+esc(primeiroNome)+'</b> '+
+        '<span class="feed-verbo">'+esc(meta.verbo)+' '+esc(meta.entidade)+'</span> '+
+        '<span class="feed-ent" style="color:'+meta.cor+'">'+esc(label)+'</span>'+
+      '</div>'+
+      '<div class="feed-time">'+tempoRelativo(log.created_at)+'</div>'+
+    '</div>'+
+    '<span class="feed-ic" style="background:'+meta.cor+'18;color:'+meta.cor+'">'+icon(meta.ic)+'</span>'+
+  '</div>';
+}
+
+/* ---------- Painel de atividades recentes ---------- */
+function panelAtividades(){
+  var logs = (ST.activityLog||[]).slice(0, 8);
+  if (logs.length === 0){
+    var body = '<div class="dash-empty">Nada por aqui ainda. As ações da equipe aparecem por aqui.</div>';
+    return dashPanel('Atividades recentes', icon('activity'), body);
+  }
+  var body = '<div class="feed-list">'+logs.map(feedItem).join('')+'</div>';
+  return dashPanel('Atividades recentes', icon('activity'), body);
+}
+
+/* ---------- Carregar do banco ---------- */
+function carregarAtividades(cb){
+  if (!ST.sector) { if (cb) cb(); return; }
+  sb.from('malba_activity_log')
+    .select('*')
+    .eq('sector', ST.sector)
+    .order('created_at', { ascending: false })
+    .limit(50)
+    .then(function(r){
+      if (!r.error && r.data){
+        ST.activityLog = r.data;
+      } else {
+        ST.activityLog = ST.activityLog || [];
+      }
+      if (cb) cb();
+    }, function(){
+      ST.activityLog = ST.activityLog || [];
+      if (cb) cb();
+    });
+}
+
+/* ---------- Bind clicks no feed ---------- */
+function bindFeed(){
+  document.querySelectorAll('[data-feed-entity]').forEach(function(el){
+    el.addEventListener('click', function(){
+      var tipo = this.getAttribute('data-feed-entity');
+      var id = this.getAttribute('data-feed-id');
+      if (!id) return;
+      // Roteia por tipo
+      if (tipo === 'task'){
+        var t = null;
+        for (var i=0;i<ST.tasks.length;i++) if (String(ST.tasks[i].id)===String(id)){ t=ST.tasks[i]; break; }
+        if (t && typeof openTaskModal==='function') openTaskModal(t);
+      } else if (tipo === 'doc'){
+        var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(id); });
+        if (d && typeof abrirDoc==='function') abrirDoc(d);
+      } else if (tipo === 'client'){
+        ST.page = 'crm'; if (typeof sincronizarURL==='function') sincronizarURL(); renderPage();
+      }
+    });
+  });
+}
+
 /* ---------- Painel principal ---------- */
+/* ============================================================
+   v138: BLOCO 6 — CHECKLIST DO GESTOR
+
+   Lista pessoal do gestor pra o dia — coisas fora do fluxo de
+   tarefas normal ("Revisar metas semanais", "Falar com Ligia
+   sobre estoque"). Só o dono vê o próprio checklist.
+
+   Recursos:
+   - Progresso circular animado (SVG stroke-dashoffset)
+   - Prioridade colorida (alta/media/baixa)
+   - Tempo previsto opcional (em minutos)
+   - Add/remove/marcar em linha (sem modal)
+   - Otimista com rollback
+   ============================================================ */
+
+/* ---------- Carregar do banco (gestor logado) ---------- */
+function carregarChecklistGestor(cb){
+  if (!ST.session || !ST.session.user){ if (cb) cb(); return; }
+  var hoje = today();
+  sb.from('malba_manager_checklist')
+    .select('*')
+    .eq('user_id', ST.session.user.id)
+    .eq('work_date', hoje)
+    .order('order_key', { ascending: true })
+    .then(function(r){
+      if (!r.error && r.data){
+        ST.gestorChecklist = r.data;
+      } else {
+        ST.gestorChecklist = ST.gestorChecklist || [];
+      }
+      if (cb) cb();
+    }, function(){
+      ST.gestorChecklist = ST.gestorChecklist || [];
+      if (cb) cb();
+    });
+}
+
+/* ---------- Progresso ---------- */
+function checklistPct(items){
+  if (!items || items.length===0) return 0;
+  var feitos = items.filter(function(i){ return i.done; }).length;
+  return Math.round(feitos / items.length * 100);
+}
+
+/* ---------- SVG progresso circular ---------- */
+function progCirc(pct, size, cor){
+  size = size || 44;
+  cor = cor || '#3B6FF7';
+  var r = (size - 6) / 2;                // raio (deixa 3px pra stroke em cada lado)
+  var cx = size / 2;
+  var circ = 2 * Math.PI * r;
+  var offset = circ - (pct/100) * circ;
+  return '<svg class="prog-circ" width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">'+
+    // trilha de fundo
+    '<circle cx="'+cx+'" cy="'+cx+'" r="'+r+'" fill="none" stroke="var(--neutral-100)" stroke-width="3"/>'+
+    // progresso
+    '<circle cx="'+cx+'" cy="'+cx+'" r="'+r+'" fill="none" stroke="'+cor+'" stroke-width="3" stroke-linecap="round" '+
+      'stroke-dasharray="'+circ.toFixed(2)+'" stroke-dashoffset="'+offset.toFixed(2)+'" '+
+      'transform="rotate(-90 '+cx+' '+cx+')"/>'+
+    '<text x="'+cx+'" y="'+cx+'" text-anchor="middle" dy="0.35em" class="prog-circ-t">'+pct+'%</text>'+
+  '</svg>';
+}
+
+/* ---------- UM item do checklist ---------- */
+function checklistItem(it){
+  var pr = PRIO[it.priority] || PRIO.media;
+  var tempo = it.estimated_minutes ? '<span class="chk-tempo">'+icon('clock')+it.estimated_minutes+'min</span>' : '';
+  return '<div class="chk-item'+(it.done?' done':'')+'" data-chk-id="'+esc(it.id)+'">'+
+    '<button class="chk-box'+(it.done?' on':'')+'" data-chk-toggle="'+esc(it.id)+'" title="'+(it.done?'Reabrir':'Concluir')+'">'+
+      (it.done ? icon('check') : '')+
+    '</button>'+
+    '<span class="chk-prio" style="background:'+pr.color+'" title="'+esc(pr.label)+'"></span>'+
+    '<span class="chk-title">'+esc(it.title)+'</span>'+
+    tempo+
+    '<button class="chk-del" data-chk-del="'+esc(it.id)+'" title="Remover">'+icon('x')+'</button>'+
+  '</div>';
+}
+
+/* ---------- Card do checklist no painel do gestor ---------- */
+function checklistGestorCard(){
+  var items = ST.gestorChecklist || [];
+  var pct = checklistPct(items);
+  var feitos = items.filter(function(i){ return i.done; }).length;
+
+  var body = items.length
+    ? '<div class="chk-list">'+items.map(checklistItem).join('')+'</div>'
+    : '<div class="chk-empty">Nenhum item para hoje. Adicione o primeiro abaixo.</div>';
+
+  var addForm = '<form class="chk-add" id="chkAddForm">'+
+    '<select class="chk-prio-sel" id="chkAddPrio">'+
+      '<option value="media">Média</option>'+
+      '<option value="alta">Alta</option>'+
+      '<option value="baixa">Baixa</option>'+
+    '</select>'+
+    '<input type="text" class="chk-input" id="chkAddInput" placeholder="Adicionar item para hoje..." maxlength="200"/>'+
+    '<input type="number" class="chk-min" id="chkAddMin" placeholder="min" min="1" max="480" title="Tempo previsto (opcional)"/>'+
+    '<button type="submit" class="chk-add-btn" title="Adicionar">'+icon('plus')+'</button>'+
+  '</form>';
+
+  return '<div class="pg-card pg-card-chk">'+
+    '<div class="pg-card-h">'+
+      '<span class="pg-card-ic pg-card-ic-chk">'+progCirc(pct, 40, pct===100?'#16A34A':'#8B5CF6')+'</span>'+
+      '<h4>Meu checklist</h4>'+
+      (items.length ? '<span class="chk-count">'+feitos+'/'+items.length+'</span>' : '')+
+    '</div>'+
+    body +
+    addForm +
+  '</div>';
+}
+
+/* ---------- Ações CRUD (otimistas com rollback) ---------- */
+function chkToggle(id){
+  var it = (ST.gestorChecklist||[]).find(function(x){ return String(x.id)===String(id); });
+  if (!it) return;
+  var prev = it.done;
+  it.done = !prev;
+  it.done_at = it.done ? new Date().toISOString() : null;
+  renderPage();
+  sb.from('malba_manager_checklist').update({ done: it.done, done_at: it.done_at }).eq('id', id).then(function(r){
+    if (r.error){
+      it.done = prev; it.done_at = null;
+      renderPage();
+      toast('Não consegui salvar','error');
+    }
+  });
+}
+
+function chkDelete(id){
+  var idx = (ST.gestorChecklist||[]).findIndex(function(x){ return String(x.id)===String(id); });
+  if (idx<0) return;
+  var backup = ST.gestorChecklist[idx];
+  ST.gestorChecklist.splice(idx,1);
+  renderPage();
+  sb.from('malba_manager_checklist').delete().eq('id', id).then(function(r){
+    if (r.error){
+      ST.gestorChecklist.splice(idx, 0, backup);
+      renderPage();
+      toast('Não consegui remover','error');
+    }
+  });
+}
+
+function chkAdd(title, priority, minutes){
+  title = (title||'').trim();
+  if (!title) return;
+  var u = ST.session.user;
+  var order = (ST.gestorChecklist||[]).length ? Math.max.apply(null, ST.gestorChecklist.map(function(x){return x.order_key||0;}))+1 : 0;
+  var payload = {
+    user_id: u.id,
+    sector: ST.sector || u.sector || null,
+    title: title,
+    priority: priority || 'media',
+    estimated_minutes: minutes ? Number(minutes) : null,
+    order_key: order,
+    done: false,
+    work_date: today()
+  };
+  // otimista: adiciona local com id temporário
+  var tempId = 'tmp-'+Math.random().toString(36).slice(2,8);
+  var optimistic = Object.assign({id: tempId, created_at: new Date().toISOString()}, payload);
+  ST.gestorChecklist = ST.gestorChecklist || [];
+  ST.gestorChecklist.push(optimistic);
+  renderPage();
+  sb.from('malba_manager_checklist').insert(payload).select().single().then(function(r){
+    if (r.error || !r.data){
+      // rollback: remove o temporário
+      ST.gestorChecklist = ST.gestorChecklist.filter(function(x){ return x.id !== tempId; });
+      renderPage();
+      toast('Não consegui adicionar','error');
+      return;
+    }
+    // substituir o temp pelo real
+    for (var i=0;i<ST.gestorChecklist.length;i++){
+      if (ST.gestorChecklist[i].id === tempId){
+        ST.gestorChecklist[i] = r.data;
+        break;
+      }
+    }
+    renderPage();
+  });
+}
+
+/* ---------- Binds ---------- */
+function bindChecklistGestor(){
+  // Toggle done
+  document.querySelectorAll('[data-chk-toggle]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      chkToggle(this.getAttribute('data-chk-toggle'));
+    });
+  });
+  // Delete
+  document.querySelectorAll('[data-chk-del]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      chkDelete(this.getAttribute('data-chk-del'));
+    });
+  });
+  // Add form
+  var form = document.getElementById('chkAddForm');
+  if (form){
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var input = document.getElementById('chkAddInput');
+      var prio = document.getElementById('chkAddPrio');
+      var min = document.getElementById('chkAddMin');
+      var title = input.value;
+      if (!title.trim()) return;
+      chkAdd(title, prio.value, min.value);
+      input.value = ''; min.value = '';
+      input.focus();
+    });
+  }
+}
+
 function painelGestorHTML(){
   if (!painelGestorAtivo()) return '';
   var u = ST.session.user;
@@ -14497,19 +15748,22 @@ function painelGestorHTML(){
       '<div class="pg-alertas">'+alertasHTML+'</div>'+
     '</div>';
 
+  var chkCard = checklistGestorCard(); // v138
+
   return '<div class="pg-wrap">'+
     '<div class="pg-titulo">'+
       '<h3>Painel do Gestor</h3>'+
       '<span class="pg-sub">'+esc(nome)+' · '+subs.length+' pessoa'+(subs.length===1?'':'s')+' na sua equipe</span>'+
       '<button class="pg-titulo-link" data-pg-org>Ver organograma completo →</button>'+
     '</div>'+
-    '<div class="pg-grid">'+
-      hojeCard + equipeCard + alertasCard +
+    '<div class="pg-grid pg-grid-4">'+
+      hojeCard + equipeCard + alertasCard + chkCard +
     '</div>'+
   '</div>';
 }
 
 function bindPainelGestor(){
+  if (typeof bindChecklistGestor === 'function') bindChecklistGestor(); // v138
   document.querySelectorAll('[data-pg-ir]').forEach(function(b){
     b.addEventListener('click', function(){
       var alvo = this.getAttribute('data-pg-ir');
@@ -15163,7 +16417,7 @@ function openClientModal(client) {
     if (isNew) {
       sb.from('malba_crm_clients').insert(rec).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao salvar cliente','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar'; return; }
-        ST.clients.unshift(r.data); auditLog('Criou cliente', name); close(); toast('Cliente criado','success'); renderPage();
+        ST.clients.unshift(r.data); auditLog('Criou cliente', name); logAtividade('client.created', 'client', r.data.id, r.data.name); close(); toast('Cliente criado','success'); renderPage(); // v137
       });
     } else {
       sb.from('malba_crm_clients').update(rec).eq('id', c.id).then(function(r){
@@ -15810,7 +17064,7 @@ function openStoreModal(store) {
     if (isNew) {
       sb.from('malba_store_units').insert(rec).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao criar loja','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar loja'; return; }
-        ST.storeUnits.push(r.data); aplicarSite(r.data.id); close(); toast('Loja criada','success'); renderPage();
+        ST.storeUnits.push(r.data); logAtividade('store.created', 'store', r.data.id, r.data.name||('Loja '+r.data.store_number)); // v137 aplicarSite(r.data.id); close(); toast('Loja criada','success'); renderPage();
       });
     } else {
       sb.from('malba_store_units').update(rec).eq('id', s.id).then(function(r){
@@ -17145,7 +18399,7 @@ function visaoGeralHTML(){
 function atividadeHTML() {
   var escopo = isTopAdmin(ST.session) ? 'Todas as ações registradas no sistema' : ('Ações do setor '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:''));
   return '<div class="cfg-sec-head"><span>Histórico de atividades</span><span style="font-size:12px;color:var(--u-text3)">'+escopo+'</span></div>'+
-    '<div id="atvList" class="atv-list"><div class="atv-loading">Carregando atividades…</div></div>';
+    '<div id="atvList" class="atv-list">'+skelPanelBody(4)+'</div>';
 }
 
 /* ----- Comissões ----- */
