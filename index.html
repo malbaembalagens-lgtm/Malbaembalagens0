@@ -5121,7 +5121,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v139';
+var APP_BUILD = 'v140';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -7522,7 +7522,22 @@ function concluirRotinaHoje(t){
       recur_group: t.recur_group||null, is_rule: false, rec_hora: t.rec_hora||null
     };
     sb.from('malba_vl_tasks').insert(proxima).select().single().then(function(r2){
-      if(r2.error){ console.error(r2.error); toast('Concluída, mas não consegui criar a próxima: '+(r2.error.message||''),'error'); return; }
+      if(r2.error){
+        // v140: unique constraint = próxima já existe (outro dispositivo, dup click, realtime).
+        // Isso NÃO é erro — a tarefa principal foi concluída com sucesso.
+        var msg = String(r2.error.message||'').toLowerCase();
+        var jaExiste = msg.indexOf('uidx_vl_tasks_occ_unica')>=0 ||
+                       msg.indexOf('duplicate key')>=0 ||
+                       r2.error.code==='23505';
+        if (jaExiste){
+          console.info('próxima ocorrência já existia — ok', r2.error.code);
+          toast('Concluída!','success');
+          return;
+        }
+        console.error(r2.error);
+        toast('Concluída (não consegui criar a próxima ocorrência)','info');
+        return;
+      }
       if(r2.data) ST.tasks.push(r2.data);
       toast('Concluída! Próxima em '+fmtDate(nd),'success');
       renderPage();
