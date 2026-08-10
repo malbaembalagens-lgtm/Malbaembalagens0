@@ -5098,6 +5098,204 @@ a:focus-visible {
   .proj-card-prog svg { width: 44px !important; height: 44px !important; }
 }
 
+
+/* ============================================================
+   v141 · MODAL DE TAREFA — Redesign do formulário
+   Compacto, hierárquico, elegante. Preserva IDs pra bind.
+   ============================================================ */
+.tform {
+  padding: var(--sp-5) var(--sp-6);
+  max-width: 560px;
+}
+
+/* Título — hero do modal (Notion-style) */
+.tform-hero {
+  margin: 0 calc(-1 * var(--sp-6)) var(--sp-4);
+  padding: 0 var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.tform-title {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--u-font-display);
+  font-size: var(--fs-3xl);
+  font-weight: var(--fw-extrabold);
+  letter-spacing: -0.4px;
+  color: var(--u-text);
+  line-height: var(--lh-tight);
+  padding: 0;
+}
+.tform-title::placeholder {
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+  font-style: italic;
+}
+.tform-title:focus::placeholder {
+  color: var(--neutral-200);
+}
+
+/* Hint quando readonly */
+.tform-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--warn-50);
+  color: var(--warn-700);
+  border-radius: var(--rd-md);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-4);
+}
+.tform-hint .lc-ic { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* Campo genérico */
+.tform-field {
+  margin-bottom: var(--sp-4);
+  min-width: 0;
+}
+.tform-field-hidden { display: none !important; }
+
+/* Grid 2 colunas — pra grupos lado a lado */
+.tform-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+.tform-2col .tform-field { margin-bottom: 0; }
+
+/* Labels — discretas, uppercase */
+.tform-label {
+  display: block;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--u-text3);
+  margin-bottom: var(--sp-2);
+}
+.tform-opt {
+  text-transform: none;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0;
+  color: var(--u-text3);
+  opacity: 0.7;
+  font-size: 10px;
+}
+
+/* Inputs, selects e textarea — visual unificado */
+.tform-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  background: var(--u-card);
+  font-size: var(--fs-md);
+  color: var(--u-text);
+  transition: border-color var(--tr-fast), box-shadow var(--tr-fast);
+  font-family: inherit;
+}
+select.tform-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239aa1ad' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-3) center;
+  padding-right: 32px;
+}
+.tform-input:hover { border-color: var(--neutral-300); }
+.tform-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: var(--focus-ring);
+}
+.tform-textarea {
+  height: auto;
+  min-height: 80px;
+  padding: var(--sp-3);
+  line-height: var(--lh-normal);
+  resize: vertical;
+}
+
+/* Pills do formulário — compactos, elegantes */
+.tform-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tform-pills .pill {
+  padding: 6px 12px;
+  border-radius: var(--rd-full);
+  border: 1px solid var(--u-line);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text2);
+  height: 32px;
+  gap: 6px;
+  transition: all var(--tr-fast);
+  cursor: pointer;
+}
+.tform-pills .pill:hover:not(.on) {
+  background: var(--neutral-50);
+  border-color: var(--neutral-300);
+  color: var(--u-text);
+}
+.tform-pills .pill.on {
+  border-color: currentColor;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  font-weight: var(--fw-bold);
+}
+.tform-pills .pill .pdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tform-pills .pill .lc-ic {
+  width: 14px;
+  height: 14px;
+}
+
+/* Pills grandes (Tipo — mais importante) */
+.tform-pills-lg .pill {
+  padding: 8px 14px;
+  height: 38px;
+  font-size: var(--fs-md);
+}
+.tform-pills-lg .pill .lc-ic { width: 15px; height: 15px; }
+
+/* Rodapé */
+.tform-foot {
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: flex-end;
+  padding-top: var(--sp-4);
+  margin-top: var(--sp-4);
+  border-top: 1px solid var(--u-line);
+}
+.tform-foot .btn-del-wrap { margin-right: auto; }
+
+/* Sub-count no label do checklist */
+.sub-count {
+  text-transform: none;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0;
+  color: var(--u-text3);
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .tform { padding: var(--sp-4); }
+  .tform-title { font-size: var(--fs-2xl); }
+  .tform-2col { grid-template-columns: 1fr; gap: var(--sp-4); }
+  .tform-hero { margin: 0 calc(-1 * var(--sp-4)) var(--sp-3); padding: 0 var(--sp-4) var(--sp-3); }
+}
+
 </style>
 </head>
 <body>
@@ -5121,7 +5319,7 @@ a:focus-visible {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v140';
+var APP_BUILD = 'v141';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -7788,23 +7986,59 @@ function openTaskModal(task, preset) {
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
-    '<div class="modal" id="taskModal">'+
-      '<input class="modal-title-input" id="tTitle" placeholder="Título da tarefa..." value="'+esc(t.title)+'"'+dis+'>'+
-      (ro?'<div class="crm-seg-hint"><span class="crm-seg-x">Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
-      '<div class="modal-row"><label class="modal-label">Status</label><div class="pills" id="tStatus">'+stPills+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Prioridade</label><div class="pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
-      '<div class="modal-row"><label class="modal-label">Categoria</label><div class="pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
-      // v118: Tipo da tarefa (pessoal / loja / equipe / projeto)
-      '<div class="modal-row"><label class="modal-label">Tipo</label><div class="pills'+(ro?' pills-ro':'')+'" id="tType">'+ttPills+'</div></div>'+
-      '<div class="modal-row" id="tEquipeRow" style="display:none"><label class="modal-label">Equipe</label><select id="tEquipe"'+dis+'>'+eqOpts+'</select></div>'+
-      '<div class="modal-row"><label class="modal-label">Repetição</label><div class="pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
+    '<div class="modal tform" id="taskModal">'+
+      // Título — hero do modal
+      '<div class="tform-hero">'+
+        '<input class="tform-title" id="tTitle" placeholder="Nome desta tarefa" value="'+esc(t.title)+'"'+dis+'>'+
+      '</div>'+
+      (ro?'<div class="tform-hint">'+icon('lock')+'<span>Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
+
+      // Grupo 1: Status + Prioridade (juntos, o essencial)
+      '<div class="tform-2col">'+
+        '<div class="tform-field"><label class="tform-label">Status</label><div class="pills tform-pills" id="tStatus">'+stPills+'</div></div>'+
+        '<div class="tform-field"><label class="tform-label">Prioridade</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
+      '</div>'+
+
+      // Grupo 2: Tipo (destaque próprio — decide o resto do fluxo)
+      '<div class="tform-field"><label class="tform-label">Tipo</label><div class="pills tform-pills tform-pills-lg'+(ro?' pills-ro':'')+'" id="tType">'+ttPills+'</div></div>'+
+      '<div class="tform-field tform-field-hidden" id="tEquipeRow"><label class="tform-label">Equipe</label><select id="tEquipe"'+dis+'>'+eqOpts+'</select></div>'+
+
+      // Grupo 3: Categoria + Repetição (metadados de organização)
+      '<div class="tform-2col">'+
+        '<div class="tform-field"><label class="tform-label">Categoria</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
+        '<div class="tform-field"><label class="tform-label">Repetição</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
+      '</div>'+
       '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
       recManageRow+
-      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Data</label><input type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div><div class="modal-row"><label class="modal-label">Área / etiqueta</label><input type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div></div>'+
-      '<div class="modal-grid2"><div class="modal-row"><label class="modal-label">Responsável</label><select id="tAssignee"'+dis+'>'+userOpts+'</select></div><div class="modal-row"><label class="modal-label">Projeto (opcional)</label><select id="tProj"'+dis+'>'+projOpts+'</select></div></div>'+
-      '<div class="modal-row"><label class="modal-label">Checklist / Subtarefas <span id="tSubCount" class="sub-count"></span></label><div id="tSubs" class="sub-list"></div>'+(typeof sugerirMarcarFeitoHTML==='function'?sugerirMarcarFeitoHTML():'')+'<div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div></div>'+
-      '<div class="modal-row"><label class="modal-label">Descrição</label><textarea id="tDesc" placeholder="Detalhes da tarefa..."'+dis+'>'+esc(t.description||'')+'</textarea></div>'+
-      '<div class="modal-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?(ro?'Salvar status':'Salvar'):'Criar tarefa')+'</button></div>'+
+
+      // Grupo 4: Data + Área (quando/onde)
+      '<div class="tform-2col">'+
+        '<div class="tform-field"><label class="tform-label">Data</label><input class="tform-input" type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div>'+
+        '<div class="tform-field"><label class="tform-label">Área / etiqueta</label><input class="tform-input" type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div>'+
+      '</div>'+
+
+      // Grupo 5: Responsável + Projeto (quem/onde encaixa)
+      '<div class="tform-2col">'+
+        '<div class="tform-field"><label class="tform-label">Responsável</label><select class="tform-input" id="tAssignee"'+dis+'>'+userOpts+'</select></div>'+
+        '<div class="tform-field"><label class="tform-label">Projeto <span class="tform-opt">(opcional)</span></label><select class="tform-input" id="tProj"'+dis+'>'+projOpts+'</select></div>'+
+      '</div>'+
+
+      // Grupo 6: Checklist
+      '<div class="tform-field">'+
+        '<label class="tform-label">Checklist <span id="tSubCount" class="sub-count"></span></label>'+
+        '<div id="tSubs" class="sub-list"></div>'+
+        (typeof sugerirMarcarFeitoHTML==='function'?sugerirMarcarFeitoHTML():'')+
+        '<div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div>'+
+      '</div>'+
+
+      // Grupo 7: Descrição
+      '<div class="tform-field">'+
+        '<label class="tform-label">Descrição <span class="tform-opt">(opcional)</span></label>'+
+        '<textarea class="tform-input tform-textarea" id="tDesc" placeholder="Detalhes desta tarefa..."'+dis+'>'+esc(t.description||'')+'</textarea>'+
+      '</div>'+
+
+      // Rodapé
+      '<div class="modal-foot tform-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?(ro?'Salvar status':'Salvar'):'Criar tarefa')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
 
@@ -7818,11 +8052,11 @@ function openTaskModal(task, preset) {
       ttPick=v;
       // mostra a linha de equipe só quando tipo=equipe
       var eqRow = modal.querySelector('#tEquipeRow');
-      if (eqRow) eqRow.style.display = (v==='equipe') ? '' : 'none';
+      if (eqRow) eqRow.classList.toggle('tform-field-hidden', v!=='equipe');
     });
     // seta visibilidade inicial da linha da equipe
     var _eqRowIni = modal.querySelector('#tEquipeRow');
-    if (_eqRowIni) _eqRowIni.style.display = (ttPick==='equipe') ? '' : 'none';
+    if (_eqRowIni) _eqRowIni.classList.toggle('tform-field-hidden', ttPick!=='equipe');
     bindPills(modal, '#tRec .rec-pill', 'rec', function(v){ recPick=v; renderRecOpts(); });
   }
   function renderRecOpts(){
