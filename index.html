@@ -5296,6 +5296,48 @@ select.tform-input {
   .tform-hero { margin: 0 calc(-1 * var(--sp-4)) var(--sp-3); padding: 0 var(--sp-4) var(--sp-3); }
 }
 
+
+/* ============================================================
+   v142 · MODAL DE TAREFA — Abas Simples | Avançado
+   Progressive disclosure: cria com poucos campos, edita com todos
+   ============================================================ */
+
+/* Abas */
+.tform-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--neutral-100);
+  border-radius: var(--rd-md);
+  margin-bottom: var(--sp-4);
+}
+.tform-tab-btn {
+  flex: 1;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--u-text2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  border-radius: calc(var(--rd-md) - 2px);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  font-family: inherit;
+}
+.tform-tab-btn:hover:not(.on) {
+  color: var(--u-text);
+}
+.tform-tab-btn.on {
+  background: var(--u-card);
+  color: var(--u-text);
+  font-weight: var(--fw-bold);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Mostrar/esconder por modo — simples esconde .tform-advanced, avançado esconde .tform-simple */
+.tform-modo-simples .tform-advanced { display: none; }
+.tform-modo-avancado .tform-simple { display: none; }
+
 </style>
 </head>
 <body>
@@ -5319,7 +5361,7 @@ select.tform-input {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v141';
+var APP_BUILD = 'v142';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -7986,61 +8028,89 @@ function openTaskModal(task, preset) {
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
-    '<div class="modal tform" id="taskModal">'+
+    '<div class="modal tform '+((isEdit||ro)?'tform-modo-avancado':'tform-modo-simples')+'" id="taskModal">'+
       // Título — hero do modal
       '<div class="tform-hero">'+
         '<input class="tform-title" id="tTitle" placeholder="Nome desta tarefa" value="'+esc(t.title)+'"'+dis+'>'+
       '</div>'+
       (ro?'<div class="tform-hint">'+icon('lock')+'<span>Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
 
-      // Grupo 1: Status + Prioridade (juntos, o essencial)
-      '<div class="tform-2col">'+
-        '<div class="tform-field"><label class="tform-label">Status</label><div class="pills tform-pills" id="tStatus">'+stPills+'</div></div>'+
-        '<div class="tform-field"><label class="tform-label">Prioridade</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
+      // Abas (progressive disclosure) — escondidas quando readonly (não faz sentido)
+      (ro ? '' : '<div class="tform-tabs" id="tformTabs">'+
+        '<button type="button" class="tform-tab-btn" data-tf-tab="simples">Simples</button>'+
+        '<button type="button" class="tform-tab-btn" data-tf-tab="avancado">Avançado</button>'+
+      '</div>')+
+
+      // ============ MODO SIMPLES ============
+      // Data + Responsável (2col) + Tipo (destaque)
+      '<div class="tform-simple">'+
+        '<div class="tform-2col">'+
+          '<div class="tform-field"><label class="tform-label">Data</label><input class="tform-input" type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div>'+
+          '<div class="tform-field"><label class="tform-label">Responsável</label><select class="tform-input" id="tAssignee"'+dis+'>'+userOpts+'</select></div>'+
+        '</div>'+
+        '<div class="tform-field"><label class="tform-label">Tipo</label><div class="pills tform-pills tform-pills-lg'+(ro?' pills-ro':'')+'" id="tType">'+ttPills+'</div></div>'+
+        '<div class="tform-field tform-field-hidden" id="tEquipeRow"><label class="tform-label">Equipe</label><select class="tform-input" id="tEquipe"'+dis+'>'+eqOpts+'</select></div>'+
       '</div>'+
 
-      // Grupo 2: Tipo (destaque próprio — decide o resto do fluxo)
-      '<div class="tform-field"><label class="tform-label">Tipo</label><div class="pills tform-pills tform-pills-lg'+(ro?' pills-ro':'')+'" id="tType">'+ttPills+'</div></div>'+
-      '<div class="tform-field tform-field-hidden" id="tEquipeRow"><label class="tform-label">Equipe</label><select id="tEquipe"'+dis+'>'+eqOpts+'</select></div>'+
+      // ============ MODO AVANÇADO ============
+      '<div class="tform-advanced">'+
+        // Status + Prioridade
+        '<div class="tform-2col">'+
+          '<div class="tform-field"><label class="tform-label">Status</label><div class="pills tform-pills" id="tStatus">'+stPills+'</div></div>'+
+          '<div class="tform-field"><label class="tform-label">Prioridade</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tPrio">'+prPills+'</div></div>'+
+        '</div>'+
 
-      // Grupo 3: Categoria + Repetição (metadados de organização)
-      '<div class="tform-2col">'+
-        '<div class="tform-field"><label class="tform-label">Categoria</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
-        '<div class="tform-field"><label class="tform-label">Repetição</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
-      '</div>'+
-      '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
-      recManageRow+
+        // Categoria + Repetição
+        '<div class="tform-2col">'+
+          '<div class="tform-field"><label class="tform-label">Categoria</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
+          '<div class="tform-field"><label class="tform-label">Repetição</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
+        '</div>'+
+        '<div id="tRecOpts" class="rec-opts" style="display:none"></div>'+
+        recManageRow+
 
-      // Grupo 4: Data + Área (quando/onde)
-      '<div class="tform-2col">'+
-        '<div class="tform-field"><label class="tform-label">Data</label><input class="tform-input" type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div>'+
-        '<div class="tform-field"><label class="tform-label">Área / etiqueta</label><input class="tform-input" type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div>'+
-      '</div>'+
+        // Área + Projeto
+        '<div class="tform-2col">'+
+          '<div class="tform-field"><label class="tform-label">Área / etiqueta</label><input class="tform-input" type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div>'+
+          '<div class="tform-field"><label class="tform-label">Projeto <span class="tform-opt">(opcional)</span></label><select class="tform-input" id="tProj"'+dis+'>'+projOpts+'</select></div>'+
+        '</div>'+
 
-      // Grupo 5: Responsável + Projeto (quem/onde encaixa)
-      '<div class="tform-2col">'+
-        '<div class="tform-field"><label class="tform-label">Responsável</label><select class="tform-input" id="tAssignee"'+dis+'>'+userOpts+'</select></div>'+
-        '<div class="tform-field"><label class="tform-label">Projeto <span class="tform-opt">(opcional)</span></label><select class="tform-input" id="tProj"'+dis+'>'+projOpts+'</select></div>'+
-      '</div>'+
+        // Checklist
+        '<div class="tform-field">'+
+          '<label class="tform-label">Checklist <span id="tSubCount" class="sub-count"></span></label>'+
+          '<div id="tSubs" class="sub-list"></div>'+
+          (typeof sugerirMarcarFeitoHTML==='function'?sugerirMarcarFeitoHTML():'')+
+          '<div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div>'+
+        '</div>'+
 
-      // Grupo 6: Checklist
-      '<div class="tform-field">'+
-        '<label class="tform-label">Checklist <span id="tSubCount" class="sub-count"></span></label>'+
-        '<div id="tSubs" class="sub-list"></div>'+
-        (typeof sugerirMarcarFeitoHTML==='function'?sugerirMarcarFeitoHTML():'')+
-        '<div class="sub-add"><input type="text" id="tSubInput" placeholder="+ adicionar item (Enter)" maxlength="140" autocomplete="off"></div>'+
-      '</div>'+
-
-      // Grupo 7: Descrição
-      '<div class="tform-field">'+
-        '<label class="tform-label">Descrição <span class="tform-opt">(opcional)</span></label>'+
-        '<textarea class="tform-input tform-textarea" id="tDesc" placeholder="Detalhes desta tarefa..."'+dis+'>'+esc(t.description||'')+'</textarea>'+
+        // Descrição
+        '<div class="tform-field">'+
+          '<label class="tform-label">Descrição <span class="tform-opt">(opcional)</span></label>'+
+          '<textarea class="tform-input tform-textarea" id="tDesc" placeholder="Detalhes desta tarefa..."'+dis+'>'+esc(t.description||'')+'</textarea>'+
+        '</div>'+
       '</div>'+
 
       // Rodapé
       '<div class="modal-foot tform-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?(ro?'Salvar status':'Salvar'):'Criar tarefa')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
+
+  // v142: bind das abas Simples/Avançado (progressive disclosure)
+  (function(){
+    var tformEl = modal.querySelector('#taskModal'); // as classes tform-modo-* ficam AQUI, não no modal-bg
+    if (!tformEl) return;
+    var tabs = modal.querySelectorAll('[data-tf-tab]');
+    if (!tabs.length) return;
+    var modoInicial = tformEl.classList.contains('tform-modo-avancado') ? 'avancado' : 'simples';
+    tabs.forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-tf-tab')===modoInicial);
+      b.addEventListener('click', function(){
+        var alvo = this.getAttribute('data-tf-tab');
+        tformEl.classList.remove('tform-modo-simples','tform-modo-avancado');
+        tformEl.classList.add('tform-modo-'+alvo);
+        tabs.forEach(function(x){ x.classList.toggle('on', x===b); });
+      });
+    });
+  })();
 
   var stPick=t.status, prPick=t.priority, recPick=t.recurrence||'none', kdPick=(t.task_kind||'normal'), ttPick=ttInicial; // v118
   var recUntil='', recDiasUteis=false, recWeekdays=[], recSemFim=true; // v70: por padrão a rotina roda pra sempre
