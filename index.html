@@ -256,6 +256,34 @@ svg { width: 1em; height: 1em; display: block; }
 .brand-mark-lg .brand-1 { font-size: 44px; }
 .brand-mark-lg .brand-2 { font-size: 19px; padding: 8px 18px; }
 html.dark .brand-2 { color: #0B1220; }
+
+/* ===== v144 · Overrides que faltaram no dark ===== */
+/* Topbar: estava com rgba(255,255,255,.88) hardcoded */
+html.dark .top {
+  background: rgba(26,35,54,.85);  /* --u-card com transparência pra manter o blur */
+  border-bottom-color: var(--u-border);
+}
+/* Badge no nav-item ativo (círculo com número) — no light era #fff, no dark isso brilha demais */
+html.dark .nav-item.active .nav-badge {
+  background: var(--u-card);
+  color: var(--u-red);
+}
+/* Chip do "Ver rotina" na Rotina de Hoje — no light tem borda azul e fundo branco */
+html.dark .rh-btn {
+  background: var(--u-accent-soft);
+  color: var(--u-accent);
+  border-color: transparent;
+}
+/* Callouts com fundo claro fixo — usa --primary-50 override que já criei */
+html.dark .callout-info {
+  background: var(--primary-50);
+  border-color: var(--primary-200);
+}
+/* Filtros contadores brancos hardcoded */
+html.dark .filter-chip.on .filter-chip-count {
+  background: rgba(255,255,255,.20);
+  color: #fff;
+}
 .screen-title { margin: 30px 0 28px; font-family: var(--u-font-display); font-size: 20px; font-weight: 700; color: var(--u-text2); }
 .sector-grid { display: grid; grid-template-columns: repeat(var(--sector-cols, 4), minmax(0, 1fr)); gap: 18px; width: 100%; max-width: calc(var(--sector-cols, 4) * 240px); margin: 0 auto; justify-content: center; }
 .sector-card { min-width: 0; }
@@ -5419,7 +5447,7 @@ select.tform-input {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v143';
+var APP_BUILD = 'v144';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
