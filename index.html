@@ -7083,6 +7083,191 @@ html.dark .geo-btn-detect-wrap { background: rgba(90,133,255,.10); border-color:
   .geo-field-row { grid-template-columns: 1fr; }
 }
 
+
+/* ============================================================
+   v154 · ALERTAS INTELIGENTES + COMPARATIVOS
+   ============================================================ */
+
+/* --- Painel de alertas --- */
+.al-panel {
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  box-shadow: var(--u-shadow);
+}
+.al-panel-h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--sp-3);
+}
+.al-panel-h .lc-ic { width: 16px; height: 16px; color: var(--warn-600); }
+.al-panel-h h3 {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text);
+  margin: 0;
+  flex: 1;
+}
+.al-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--warn-500);
+  color: #fff;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+}
+.al-panel-b {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* --- Item de alerta --- */
+.al-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--rd-md);
+  border-left: 3px solid var(--u-line);
+  background: var(--u-bg2);
+  transition: transform var(--tr-fast);
+}
+.al-item:hover { transform: translateX(2px); }
+
+.al-item.al-info { border-left-color: var(--u-accent); background: rgba(90,133,255,.06); }
+.al-item.al-warn { border-left-color: var(--warn-500); background: rgba(245,158,11,.06); }
+.al-item.al-danger { border-left-color: var(--danger-500); background: rgba(239,68,68,.06); }
+
+.al-item-ic {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--rd-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--u-card);
+  flex-shrink: 0;
+}
+.al-item-ic .lc-ic { width: 18px; height: 18px; }
+.al-item.al-info .al-item-ic { color: var(--u-accent); }
+.al-item.al-warn .al-item-ic { color: var(--warn-600); }
+.al-item.al-danger .al-item-ic { color: var(--danger-600); }
+
+.al-item-c {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.al-item-c b {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  line-height: 1.3;
+}
+.al-item-c span {
+  font-size: 12px;
+  color: var(--u-text2);
+  line-height: 1.4;
+}
+.al-item-act {
+  height: 32px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--rd-md);
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  color: var(--u-text);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: border-color var(--tr-fast), background var(--tr-fast);
+  font-family: inherit;
+  flex-shrink: 0;
+}
+.al-item-act:hover { border-color: var(--primary-500); background: var(--primary-50); color: var(--primary-500); }
+
+/* --- Estado "tudo em ordem" --- */
+.al-panel-ok {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(22,163,74,.08);
+  border: 1px solid rgba(22,163,74,.20);
+  border-radius: var(--rd-lg);
+  margin-bottom: var(--sp-4);
+}
+.al-ok-ico {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--u-green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.al-ok-ico .lc-ic { width: 20px; height: 20px; }
+.al-panel-ok b {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--u-green);
+  display: block;
+  line-height: 1.2;
+}
+.al-panel-ok span {
+  font-size: 12px;
+  color: var(--u-text2);
+}
+
+/* --- Comparativos temporais nos KPIs --- */
+.lp-kpi-trend {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--u-line);
+}
+.lp-kpi-trend b {
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 0.2px;
+}
+.lp-kpi-trend span {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+}
+.lp-kpi-trend.tr-up b { color: var(--u-green); }
+.lp-kpi-trend.tr-down b { color: var(--u-red); }
+.lp-kpi-trend.tr-flat b { color: var(--u-text3); }
+
+/* Mobile: menor */
+@media (max-width: 640px) {
+  .al-item { flex-wrap: wrap; }
+  .al-item-act { width: 100%; margin-top: 4px; }
+  .lp-kpi-trend { border-top: none; padding-top: 3px; }
+}
+
+/* Dark overrides */
+html.dark .al-item.al-info { background: rgba(90,133,255,.10); }
+html.dark .al-item.al-warn { background: rgba(251,191,36,.10); }
+html.dark .al-item.al-danger { background: rgba(248,113,113,.10); }
+html.dark .al-item-act:hover { background: rgba(90,133,255,.14); color: #7B9DFF; }
+html.dark .al-panel-ok { background: rgba(34,197,94,.10); border-color: rgba(34,197,94,.25); }
+
 </style>
 </head>
 <body>
@@ -7106,7 +7291,7 @@ html.dark .geo-btn-detect-wrap { background: rgba(90,133,255,.10); border-color:
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v153';
+var APP_BUILD = 'v154';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -8763,6 +8948,303 @@ function dashPanels() {
 }
 /* ----- Painel da loja (posto de trabalho, dia a dia) ----- */
 function vendasHojeLoja(storeId){ var t=today(); var s=0; (ST.blingFat||[]).forEach(function(f){ if(String(f.store_unit_id)===String(storeId) && String(f.ref_date).slice(0,10)===t) s+=Number(f.total)||0; }); return s; }
+/* ============================================================
+   v154: ALERTAS INTELIGENTES DO PAINEL DA LOJA (B.2)
+   Regras automáticas que rodam ao carregar. Sem SQL.
+   ============================================================ */
+
+/* Retorna array de alertas ativos pra uma loja
+   { sev, ico, title, desc, act? } */
+function alertasDaLoja(storeId){
+  var out = [];
+  var loja = null;
+  for (var i=0;i<(ST.storeUnits||[]).length;i++){
+    if (String(ST.storeUnits[i].id)===String(storeId)){ loja = ST.storeUnits[i]; break; }
+  }
+  if (!loja) return out;
+
+  var hoje = new Date();
+  var t = today();
+  var agoraMin = hoje.getHours()*60 + hoje.getMinutes();
+  var mems = (typeof membrosDaLoja==='function') ? membrosDaLoja(storeId) : [];
+  mems = mems.filter(function(m){ return m.is_active !== false; });
+
+  // ---- 1) Atrasos de ponto ----
+  var atrasados = [];
+  var esperadosSemBater = 0;
+  mems.forEach(function(m){
+    var shift = (typeof shiftEsperadoHoje==='function') ? shiftEsperadoHoje(m.id) : null;
+    if (!shift || shift.folga || !shift.expected_entrada) return;
+    var partes = String(shift.expected_entrada).split(':');
+    var esperadoMin = Number(partes[0])*60 + Number(partes[1]);
+    var tol = Number(shift.tolerancia_min || 5);
+    if (agoraMin < esperadoMin + tol) return;   // ainda não passou do horário
+    var ci = (typeof checkinHojeDoMembro==='function') ? checkinHojeDoMembro(m) : null;
+    if (ci && ci.entrada) return;               // já bateu — talvez atrasado, mas não é alerta ATIVO
+    var atraso = agoraMin - esperadoMin;
+    atrasados.push({ mem:m, atraso:atraso });
+    esperadosSemBater++;
+  });
+  if (atrasados.length){
+    atrasados.sort(function(a,b){ return b.atraso - a.atraso; });
+    var nomes = atrasados.slice(0,3).map(function(x){ return x.mem.name.split(' ')[0]; });
+    var extra = atrasados.length > 3 ? ' +'+(atrasados.length-3) : '';
+    var pior = atrasados[0].atraso;
+    var sev = pior > 30 ? 'danger' : 'warn';
+    out.push({
+      sev: sev,
+      ico: 'clock',
+      title: (atrasados.length===1 ? nomes[0]+' não bateu ponto' : atrasados.length+' pessoas sem bater ponto'),
+      desc: (atrasados.length===1
+        ? ('Atraso de '+fmtMin(pior)+' pra entrada esperada')
+        : (nomes.join(', ')+extra+' · pior atraso '+fmtMin(pior))),
+      act: { label:'Abrir ponto', page:'ponto' }
+    });
+  }
+
+  // ---- 2) Sem venda há muito tempo ----
+  var vendasHoje = [];
+  (ST.salesEntries||[]).forEach(function(v){
+    if (String(v.store_unit_id)!==String(storeId)) return;
+    if (String(v.sale_date).slice(0,10) !== t) return;
+    vendasHoje.push(v);
+  });
+  var horaComercial = agoraMin >= 9*60 && agoraMin <= 19*60;
+  if (horaComercial){
+    if (vendasHoje.length === 0){
+      // Nada hoje — se já passou de 11h, é alerta
+      if (agoraMin >= 11*60){
+        var sevVend = agoraMin >= 14*60 ? 'danger' : 'warn';
+        out.push({
+          sev: sevVend,
+          ico: 'dollar',
+          title: 'Nenhuma venda registrada hoje',
+          desc: 'Loja aberta há '+fmtMin(agoraMin - 9*60)+' sem venda no sistema',
+          act: { label:'Ver vendas', page:'kpis' }
+        });
+      }
+    } else {
+      // Ordena por created_at ou sale_date + hora se tiver
+      vendasHoje.sort(function(a,b){ return (b.created_at||b.sale_date||'').localeCompare(a.created_at||a.sale_date||''); });
+      var ultima = vendasHoje[0];
+      if (ultima.created_at){
+        var minDesde = Math.round((hoje.getTime() - new Date(ultima.created_at).getTime())/60000);
+        if (minDesde >= 120){
+          out.push({
+            sev: minDesde >= 180 ? 'warn' : 'info',
+            ico: 'dollar',
+            title: 'Sem venda há '+fmtMin(minDesde),
+            desc: 'Última venda de '+fmtBRL(Number(ultima.value)||0)+' às '+hhmm(ultima.created_at),
+            act: { label:'Ver vendas', page:'kpis' }
+          });
+        }
+      }
+    }
+  }
+
+  // ---- 3) Meta atrás do esperado ----
+  if (typeof lojaMetaMes==='function'){
+    var mm = lojaMetaMes(storeId);
+    if (mm && mm.meta > 0){
+      var diaDoMes = hoje.getDate();
+      var diasNoMes = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0).getDate();
+      var esperadoPct = Math.round((diaDoMes / diasNoMes) * 100);
+      if (mm.pct < esperadoPct - 15){
+        var gap = esperadoPct - mm.pct;
+        out.push({
+          sev: gap > 25 ? 'danger' : 'warn',
+          ico: 'target',
+          title: 'Meta '+gap+' pontos atrás do esperado',
+          desc: 'Estamos em '+mm.pct+'% e o linear do dia '+diaDoMes+' seria '+esperadoPct+'%',
+          act: { label:'Ver metas', page:'metas' }
+        });
+      }
+    }
+  }
+
+  // ---- 4) Justificativas pendentes (só admin/gestor) ----
+  var admin = (typeof isAdmin==='function') ? isAdmin(ST.session) : false;
+  var gestor = (typeof isGestor==='function') ? isGestor(ST.session) : false;
+  if (admin || gestor){
+    var pend = (typeof justifsPendentes==='function') ? justifsPendentes() : [];
+    // filtrar só da loja
+    var pendLoja = pend.filter(function(j){
+      var m = null;
+      for (var k=0;k<(ST.members||[]).length;k++) if (String(ST.members[k].id)===String(j.member_id)){ m=ST.members[k]; break; }
+      return m && String(m.store_unit_id)===String(storeId);
+    });
+    if (pendLoja.length){
+      out.push({
+        sev: 'info',
+        ico: 'bell',
+        title: pendLoja.length===1 ? '1 justificativa aguardando' : pendLoja.length+' justificativas aguardando',
+        desc: 'Colaboradores explicaram atrasos ou faltas',
+        act: { label:'Ver fila', page:'ponto', tab:'justif' }
+      });
+    }
+  }
+
+  return out;
+}
+
+/* Painel de alertas + estado "tudo em ordem" */
+function alertasPanelHTML(storeId){
+  var arr = alertasDaLoja(storeId);
+  if (!arr.length){
+    return '<div class="al-panel-ok">'+
+      '<span class="al-ok-ico">'+icon('check')+'</span>'+
+      '<div><b>Tudo em ordem</b><span>Nenhum alerta na loja agora</span></div>'+
+    '</div>';
+  }
+  var items = arr.map(function(a, i){
+    var actBtn = a.act ? '<button class="al-item-act" data-al-act="'+esc(a.act.page)+(a.act.tab?'|'+esc(a.act.tab):'')+'">'+esc(a.act.label)+' →</button>' : '';
+    return '<div class="al-item al-'+esc(a.sev)+'">'+
+      '<span class="al-item-ic">'+icon(a.ico||'bell')+'</span>'+
+      '<div class="al-item-c"><b>'+esc(a.title)+'</b><span>'+esc(a.desc)+'</span></div>'+
+      actBtn+
+    '</div>';
+  }).join('');
+  return '<div class="al-panel">'+
+    '<div class="al-panel-h">'+icon('bell')+'<h3>Alertas do dia</h3><span class="al-count">'+arr.length+'</span></div>'+
+    '<div class="al-panel-b">'+items+'</div>'+
+  '</div>';
+}
+
+/* Bind das ações dos alertas */
+function bindAlertasPanel(){
+  var app_el = document.getElementById('app') || document.body;
+  app_el.querySelectorAll('[data-al-act]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var raw = this.getAttribute('data-al-act').split('|');
+      var pg = raw[0], tab = raw[1] || null;
+      ST.page = pg;
+      if (tab) ST.pontoTab = tab;
+      navigate(ST.sector+'/'+pg);
+      renderPage();
+    });
+  });
+}
+
+/* ============================================================
+   v154: COMPARATIVOS TEMPORAIS DOS KPIs (B.1)
+   ============================================================ */
+
+/* Compara vendas de hoje vs mesmo dia da semana passada.
+   Retorna { delta, pct, direcao, label } ou null */
+function compVendasVsSemanaPassada(storeId){
+  var hoje = new Date();
+  var hojeStr = today();
+  var vHoje = 0;
+  (ST.blingFat||[]).forEach(function(f){
+    if (String(f.store_unit_id)!==String(storeId)) return;
+    if (String(f.ref_date).slice(0,10) === hojeStr) vHoje += Number(f.total)||0;
+  });
+
+  var semAtras = new Date(hoje.getTime() - 7*86400000);
+  var semAtrasStr = semAtras.getFullYear()+'-'+String(semAtras.getMonth()+1).padStart(2,'0')+'-'+String(semAtras.getDate()).padStart(2,'0');
+  var vAntes = 0;
+  (ST.blingFat||[]).forEach(function(f){
+    if (String(f.store_unit_id)!==String(storeId)) return;
+    if (String(f.ref_date).slice(0,10) === semAtrasStr) vAntes += Number(f.total)||0;
+  });
+
+  if (vAntes <= 0) return null;
+  var pct = Math.round(((vHoje - vAntes) / vAntes) * 100);
+  return {
+    delta: vHoje - vAntes,
+    pct: pct,
+    direcao: pct > 3 ? 'up' : (pct < -3 ? 'down' : 'flat'),
+    label: 'vs '+diaSemanaAbrev(semAtras.getDay())+' passada'
+  };
+}
+
+/* Compara meta atual vs mesmo dia do mês passado (proporção) */
+function compMetaVsMesPassado(storeId){
+  var hoje = new Date();
+  var diaHoje = hoje.getDate();
+  var mesAtual = hoje.getMonth();
+  var anoAtual = hoje.getFullYear();
+  var mesPass = mesAtual===0 ? 11 : mesAtual-1;
+  var anoPass = mesAtual===0 ? anoAtual-1 : anoAtual;
+
+  var mmAtual = (typeof lojaMetaValorMes==='function') ? lojaMetaValorMes(storeId, mesAtual, anoAtual) : null;
+  var mmPass = (typeof lojaMetaValorMes==='function') ? lojaMetaValorMes(storeId, mesPass, anoPass) : null;
+  if (!mmAtual || !mmPass) return null;
+
+  // Proporção do mês passado no MESMO dia
+  var diasNoMesPass = new Date(anoPass, mesPass+1, 0).getDate();
+  var pctPassNoMesmoDia = mmPass.meta > 0
+    ? Math.min(100, Math.round((mmPass.real / mmPass.meta) * 100 * (diaHoje / diasNoMesPass)))
+    : 0;
+  if (mmPass.meta <= 0) return null;
+
+  var atualPct = mmAtual.pct || 0;
+  var pctDelta = atualPct - pctPassNoMesmoDia;
+  return {
+    pct: pctDelta,
+    direcao: pctDelta > 3 ? 'up' : (pctDelta < -3 ? 'down' : 'flat'),
+    label: 'vs mesmo dia mês passado'
+  };
+}
+
+/* Compara presença atual vs média histórica na mesma hora */
+function compPresencaMediaHistorica(storeId){
+  var hoje = new Date();
+  var mems = (typeof membrosDaLoja==='function') ? membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;}) : [];
+  if (!mems.length) return null;
+
+  var t = today();
+  var presentes = 0;
+  mems.forEach(function(m){
+    var ci = (typeof checkinHojeDoMembro==='function') ? checkinHojeDoMembro(m) : null;
+    if (ci && ci.entrada) presentes++;
+  });
+  var pctAgora = Math.round((presentes / mems.length) * 100);
+
+  // Média dos últimos 14 dias na mesma hora
+  var somaPct = 0, dias = 0;
+  var wdHoje = hoje.getDay();
+  for (var d=1; d<=14; d++){
+    var data = new Date(hoje.getTime() - d*86400000);
+    if (data.getDay() !== wdHoje) continue; // só compara mesmos dias da semana
+    var dStr = data.getFullYear()+'-'+String(data.getMonth()+1).padStart(2,'0')+'-'+String(data.getDate()).padStart(2,'0');
+    var pDia = 0;
+    mems.forEach(function(m){
+      var acheiPra = false;
+      (ST.checkins||[]).forEach(function(c){
+        if (acheiPra) return;
+        if (String(c.member_id)===String(m.id) && String(c.work_date).slice(0,10)===dStr && c.entrada) acheiPra=true;
+      });
+      if (acheiPra) pDia++;
+    });
+    somaPct += Math.round((pDia / mems.length) * 100);
+    dias++;
+  }
+  if (dias === 0) return null;
+  var media = Math.round(somaPct/dias);
+  var delta = pctAgora - media;
+  return {
+    pct: delta,
+    direcao: delta > 3 ? 'up' : (delta < -3 ? 'down' : 'flat'),
+    label: 'vs média das últimas '+diaSemanaAbrev(wdHoje)+'s'
+  };
+}
+
+function diaSemanaAbrev(wd){
+  return ['dom','seg','ter','qua','qui','sex','sáb'][wd];
+}
+
+/* HTML do delta compacto (setinha + %) */
+function trendMiniHTML(comp){
+  if (!comp) return '';
+  var sinal = comp.pct > 0 ? '+' : (comp.pct < 0 ? '' : '');
+  var seta = comp.direcao === 'up' ? '↑' : (comp.direcao === 'down' ? '↓' : '→');
+  return '<span class="lp-kpi-trend tr-'+esc(comp.direcao)+'">'+
+    '<b>'+seta+' '+sinal+comp.pct+'%</b>'+
+    '<span>'+esc(comp.label||'')+'</span>'+
+  '</span>';
+}
+
 function lojaPainelHTML(){
   var loja=ST.store; var lojaNome=loja.name||('Loja '+loja.store_number);
   var hora=new Date().getHours(); var saud=hora<12?'Bom dia':(hora<18?'Boa tarde':'Boa noite');
@@ -8772,22 +9254,31 @@ function lojaPainelHTML(){
   var tarefasHoje=visibleTasks().filter(function(t){ return t.status!=='feito' && t.due_date && t.due_date.split('T')[0]<=hoje; }).sort(function(a,b){return (a.due_date||'').localeCompare(b.due_date||'');});
   var mm=lojaMetaMes(loja.id); var vHoje=vendasHojeLoja(loja.id);
   var hero='<div class="loja-hero"><div class="lh-badge"><span class="dot"></span> PAINEL DA LOJA</div><h1 class="lh-title">'+saud+', <span>'+esc(lojaNome)+'</span></h1><p class="lh-sub">'+esc(dataExtenso())+'</p></div>';
-  function pk(v,l,c,s){ return '<div class="lp-kpi"><span class="lp-kpi-v" style="color:'+c+'">'+v+'</span><span class="lp-kpi-l">'+esc(l)+'</span>'+(s?'<span class="lp-kpi-s">'+esc(s)+'</span>':'')+'</div>'; }
+  // v154: comparativos temporais
+  var trendPres = compPresencaMediaHistorica(loja.id);
+  var trendMeta = compMetaVsMesPassado(loja.id);
+  var trendVend = compVendasVsSemanaPassada(loja.id);
+
+  function pk(v,l,c,s,trend){ return '<div class="lp-kpi"><span class="lp-kpi-v" style="color:'+c+'">'+v+'</span><span class="lp-kpi-l">'+esc(l)+'</span>'+(s?'<span class="lp-kpi-s">'+esc(s)+'</span>':'')+(trend?trendMiniHTML(trend):'')+'</div>'; }
   var kpis='<div class="lp-kpis">'+
-    pk(presentes.length+'/'+mems.length, 'Presentes hoje', 'var(--u-accent)', 'ponto do dia')+
-    pk(tarefasHoje.length, 'Tarefas de hoje', tarefasHoje.length?'#F59E0B':'#16A34A', tarefasHoje.length?'a fazer':'tudo em dia')+
-    pk(mm.meta>0?(mm.pct+'%'):'—', 'Meta do mês', mm.pct>=100?'#16A34A':'var(--u-accent)', mm.meta>0?fmtBRL(mm.real):'sem meta')+
-    pk(brlShort(vHoje), 'Vendas hoje', 'var(--u-green)', 'via Bling')+
+    pk(presentes.length+'/'+mems.length, 'Presentes hoje', 'var(--u-accent)', 'ponto do dia', trendPres)+
+    pk(tarefasHoje.length, 'Tarefas de hoje', tarefasHoje.length?'#F59E0B':'#16A34A', tarefasHoje.length?'a fazer':'tudo em dia', null)+
+    pk(mm.meta>0?(mm.pct+'%'):'—', 'Meta do mês', mm.pct>=100?'#16A34A':'var(--u-accent)', mm.meta>0?fmtBRL(mm.real):'sem meta', trendMeta)+
+    pk(brlShort(vHoje), 'Vendas hoje', 'var(--u-green)', 'via Bling', trendVend)+
   '</div>';
+
+  // v154: alertas inteligentes
+  var alertasHTML = alertasPanelHTML(loja.id);
   var presAvatars = mems.length ? '<div class="lp-pres">'+mems.map(function(m){ var c=checkinHojeDoMembro(m); var on=c&&c.entrada; var out=c&&c.saida; return '<div class="lp-pres-av'+(on?' on':'')+(out?' out':'')+'" title="'+esc(m.name)+(on?(' · entrou '+hhmm(c.entrada)):' · não chegou')+'"><span style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+(on?'<i class="lp-dot"></i>':'')+'</div>'; }).join('')+'</div>' : '<div class="dash-empty">Nenhum funcionário nesta loja.</div>';
   var presPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('users')+'<h3>Presença de hoje</h3><button class="dash-panel-act" id="lpGoPonto">bater ponto</button></div><div class="dash-panel-b">'+presAvatars+'</div></div>';
   var tBody=tarefasHoje.length ? tarefasHoje.slice(0,7).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje.</div>';
   var tPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('tasks')+'<h3>Tarefas de hoje</h3><button class="dash-panel-act" id="lpGoTasks">ver todas</button></div><div class="dash-panel-b">'+tBody+'</div></div>';
   var metaPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('target')+'<h3>Meta do mês</h3><button class="dash-panel-act" id="lpGoMetas">detalhes</button></div><div class="dash-panel-b">'+(mm.meta>0?('<div class="lp-meta"><div class="lp-meta-bar"><span style="width:'+mm.pct+'%;background:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'"></span></div><div class="lp-meta-sub">'+fmtBRL(mm.real)+' de '+fmtBRL(mm.meta)+' · <b style="color:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'">'+mm.pct+'%</b></div></div>'):'<div class="dash-empty">Sem meta definida para este mês.</div>')+'</div></div>';
-  return hero + muralHTML() + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + metaPanel;
+  return hero + muralHTML() + alertasHTML + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + metaPanel;
 }
 function bindLojaPainel(){
   bindMural();
+  if (typeof bindAlertasPanel === 'function') bindAlertasPanel();
   var gp=document.getElementById('lpGoPonto'); if(gp) gp.addEventListener('click', function(){ ST.page='ponto'; navigate(ST.sector+'/ponto'); renderPage(); });
   var gt=document.getElementById('lpGoTasks'); if(gt) gt.addEventListener('click', function(){ ST.page='tarefas'; navigate(ST.sector+'/tarefas'); renderPage(); });
   var gm=document.getElementById('lpGoMetas'); if(gm) gm.addEventListener('click', function(){ ST.page='metas'; navigate(ST.sector+'/metas'); renderPage(); });
