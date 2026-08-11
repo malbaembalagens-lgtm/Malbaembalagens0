@@ -5484,6 +5484,186 @@ select.tform-input {
 .tform-modo-simples .tform-advanced { display: none; }
 .tform-modo-avancado .tform-simple { display: none; }
 
+
+/* ============================================================
+   v147 · PONTO 4 BATIDAS
+   ============================================================ */
+.ponto-list-v2 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 720px;
+}
+.ponto-row-v2 {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: var(--sp-3);
+  align-items: center;
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-3) var(--sp-4);
+  box-shadow: var(--u-shadow);
+  transition: border-color var(--tr-fast);
+}
+.ponto-row-v2:hover {
+  border-color: var(--primary-200);
+}
+.ponto-row-v2.completo {
+  background: var(--success-50);
+  border-color: rgba(22,163,74,.25);
+}
+
+/* Avatar */
+.ponto-row-v2 .pt-av {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: var(--fw-extrabold);
+  font-size: 14px;
+  letter-spacing: -0.3px;
+}
+
+/* Info: nome + slots */
+.ponto-row-v2 .pt-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pt-nome {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  line-height: 1.3;
+}
+
+/* 4 slots em linha */
+.pt-slots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  max-width: 460px;
+}
+.pt-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  background: var(--u-bg2);
+  border: 1px dashed var(--u-line);
+  border-radius: var(--rd-sm);
+  min-width: 0;
+}
+.pt-slot.on {
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-style: solid;
+}
+.ponto-row-v2.completo .pt-slot.on {
+  background: rgba(22,163,74,.14);
+  border-color: rgba(22,163,74,.30);
+}
+.pt-slot-lbl {
+  font-size: 9px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.pt-slot.on .pt-slot-lbl {
+  color: var(--u-accent);
+}
+.ponto-row-v2.completo .pt-slot.on .pt-slot-lbl {
+  color: var(--u-green);
+}
+.pt-slot-t {
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+}
+.pt-slot:not(.on) .pt-slot-t {
+  color: var(--u-text3);
+}
+
+/* Total de horas */
+.pt-horas {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  color: var(--u-green);
+  margin-top: 2px;
+}
+.pt-horas .lc-ic { width: 12px; height: 12px; }
+
+/* Botão de ação — adaptativo */
+.ponto-row-v2 .pt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 var(--sp-4);
+  border-radius: var(--rd-md);
+  color: #fff;
+  border: none;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: transform var(--tr-fast), box-shadow var(--tr-fast), filter var(--tr-fast);
+  flex-shrink: 0;
+}
+.pt-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.pt-btn:active { transform: translateY(0); }
+.pt-btn .lc-ic { width: 15px; height: 15px; }
+.pt-btn-in { background: var(--primary-500); }
+.pt-btn-in:hover { background: var(--primary-600); }
+.pt-btn-meio { background: var(--warn-500); }
+.pt-btn-meio:hover { filter: brightness(1.08); }
+.pt-btn-out { background: var(--success-500); }
+.pt-btn-out:hover { background: var(--success-600); }
+
+.ponto-row-v2 .pt-done {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--success-50);
+  color: var(--success-600);
+  flex-shrink: 0;
+}
+.ponto-row-v2 .pt-done .lc-ic { width: 18px; height: 18px; }
+
+/* Mobile: slots empilham em duas colunas */
+@media (max-width: 640px) {
+  .ponto-row-v2 { grid-template-columns: 36px 1fr; grid-template-rows: auto auto; }
+  .ponto-row-v2 .pt-av { width: 36px; height: 36px; font-size: 12px; }
+  .ponto-row-v2 .pt-btn, .ponto-row-v2 .pt-done { grid-column: 1 / -1; width: 100%; justify-content: center; }
+  .pt-slots { grid-template-columns: repeat(2, 1fr); max-width: 100%; }
+}
+
+/* Overrides dark pra ficar bonito */
+html.dark .pt-slot.on {
+  background: rgba(90,133,255,.14);
+  border-color: rgba(90,133,255,.30);
+}
+html.dark .ponto-row-v2.completo {
+  background: rgba(34,197,94,.10);
+  border-color: rgba(34,197,94,.28);
+}
+html.dark .ponto-row-v2.completo .pt-slot.on {
+  background: rgba(34,197,94,.14);
+  border-color: rgba(34,197,94,.28);
+}
+
 </style>
 </head>
 <body>
@@ -5507,7 +5687,7 @@ select.tform-input {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v146';
+var APP_BUILD = 'v147';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -19464,30 +19644,253 @@ function solicitacoesHTML(){
   return head+'<div class="req-list">'+rows+'</div>';
 }
 function hhmm(ts){ if(!ts) return '—'; try{ var d=new Date(ts); var h=d.getHours(), m=d.getMinutes(); return (h<10?'0':'')+h+':'+(m<10?'0':'')+m; }catch(e){ return '—'; } }
+/* ============================================================
+   v147: PONTO — 4 BATIDAS (padrão CLT)
+   Entrada → Saída almoço → Volta almoço → Saída
+
+   Comportamento adaptativo: o botão principal sempre mostra
+   o próximo passo esperado. Backwards compat: quem já tinha
+   só entrada+saída no banco continua funcionando (as colunas
+   novas ficam null).
+   ============================================================ */
+
+/* Slots em ordem canônica */
+var PONTO_SLOTS = [
+  { key:'entrada',      label:'Entrada',       btn:'Cheguei',  icon:'sunrise'   },
+  { key:'saida_almoco', label:'Almoço',        btn:'Almoço',   icon:'clock'     },
+  { key:'volta_almoco', label:'Volta',         btn:'Volta',    icon:'clock'     },
+  { key:'saida',        label:'Saída',         btn:'Saída',    icon:'moon'      }
+];
+
+/* Próximo campo a ser preenchido no ponto (retorna slot ou null se completo) */
+function proximoSlotPonto(ci){
+  if (!ci) return PONTO_SLOTS[0];
+  for (var i=0; i<PONTO_SLOTS.length; i++){
+    if (!ci[PONTO_SLOTS[i].key]) return PONTO_SLOTS[i];
+  }
+  return null; // tudo batido
+}
+
+/* Quantos slots preenchidos (0-4) */
+function slotsPontoBatidos(ci){
+  if (!ci) return 0;
+  var n = 0;
+  for (var i=0; i<PONTO_SLOTS.length; i++) if (ci[PONTO_SLOTS[i].key]) n++;
+  return n;
+}
+
+/* Horas trabalhadas no dia (só quando 4 batidas prontas OU quando pulou almoço).
+   Retorna { minutos, texto, completo }. */
+function horasTrabalhadasDia(ci){
+  if (!ci || !ci.entrada) return { minutos:0, texto:'—', completo:false };
+  var e  = ci.entrada  ? new Date(ci.entrada).getTime()  : null;
+  var sa = ci.saida_almoco ? new Date(ci.saida_almoco).getTime() : null;
+  var va = ci.volta_almoco ? new Date(ci.volta_almoco).getTime() : null;
+  var s  = ci.saida    ? new Date(ci.saida).getTime()    : null;
+
+  // Padrão CLT — 4 batidas
+  if (e && sa && va && s) {
+    var trab = (sa - e) + (s - va);
+    var min = Math.max(0, Math.round(trab / 60000));
+    return { minutos: min, texto: fmtDuracao(min), completo: true };
+  }
+  // Dia curto — só entrada + saída (sem almoço)
+  if (e && s && !sa && !va) {
+    var min2 = Math.max(0, Math.round((s - e) / 60000));
+    return { minutos: min2, texto: fmtDuracao(min2)+' (sem almoço)', completo: true };
+  }
+  // Em andamento
+  return { minutos:0, texto:'em andamento', completo:false };
+}
+
+/* Formatar duração em minutos como "8h 15min" */
+function fmtDuracao(min){
+  if (!min || min<=0) return '0min';
+  var h = Math.floor(min/60);
+  var m = min % 60;
+  if (h===0) return m+'min';
+  if (m===0) return h+'h';
+  return h+'h '+String(m).padStart(2,'0')+'min';
+}
+
+/* Registrar o próximo slot no ponto de um membro.
+   Substitui togglePontoMembro (compat: mesmo nome).
+   Se o membro não tem checkin do dia, cria com entrada.
+   Se já tem, avança pro próximo slot vazio. */
+function togglePontoMembro(member){
+  var ci = checkinHojeDoMembro(member);
+  var nowIso = new Date().toISOString();
+  var u = userDoMembro(member);
+  var uid = u ? u.id : null;
+  var t = today();
+  var nome = (member.name||'').split(' ')[0];
+
+  // Sem checkin ainda: cria com entrada
+  if (!ci){
+    sb.from('malba_checkins').insert({
+      sector: ST.sector,
+      store_unit_id: member.store_unit_id,
+      user_id: uid,
+      member_id: member.id,
+      work_date: t,
+      entrada: nowIso
+    }).select().single().then(function(r){
+      if (r.error) {
+        toast('Não consegui registrar (peça para rodar o SQL da migração).','error');
+        console.error(r.error);
+        return;
+      }
+      ST.checkins.push(r.data);
+      auditLog('Ponto entrada', member.name);
+      toast(nome+' — entrada '+hhmm(nowIso),'success');
+      renderPage();
+    });
+    return;
+  }
+
+  // Já tem: descobre o próximo slot
+  var prox = proximoSlotPonto(ci);
+  if (!prox){
+    toast(nome+' — todas as batidas do dia registradas','info');
+    return;
+  }
+  var patch = {};
+  patch[prox.key] = nowIso;
+  sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
+    if (r.error){
+      toast('Erro ao registrar','error');
+      console.error(r.error);
+      return;
+    }
+    ci[prox.key] = nowIso;
+    auditLog('Ponto '+prox.label.toLowerCase(), member.name);
+    toast(nome+' — '+prox.label.toLowerCase()+' '+hhmm(nowIso),'success');
+    renderPage();
+  });
+}
+
+/* Registrar o ponto pessoal (o próprio colab bate).
+   Compat: aceita tipo='entrada' ou 'saida' (velho) e resolve.
+   Comportamento novo: se sem tipo, avança automático. */
+function registrarCheckin(tipo){
+  var u = ST.session.user;
+  var me = u.id;
+  var t = today();
+  var existing = checkinHojeDoUser();
+  var nowIso = new Date().toISOString();
+
+  // Se sem tipo: avança automático
+  if (!tipo){
+    var prox = proximoSlotPonto(existing);
+    if (!prox){
+      toast('Você já registrou todas as batidas de hoje','info');
+      return;
+    }
+    tipo = prox.key;
+  }
+
+  // Compat: 'entrada' velho ainda funciona
+  if (tipo==='entrada'){
+    if (existing && existing.entrada){
+      toast('Você já registrou entrada hoje','info');
+      return;
+    }
+    if (existing){
+      sb.from('malba_checkins').update({ entrada: nowIso }).eq('id', existing.id).then(function(r){
+        if (!r.error){ existing.entrada=nowIso; toast('Entrada registrada','success'); renderPage(); }
+        else toast('Erro ao registrar','error');
+      });
+    } else {
+      var mid = meuMemberId(), sid = meuStoreId();
+      sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }).select().single().then(function(r){
+        if (!r.error && r.data){
+          ST.checkins.push(r.data);
+          auditLog('Check-in (entrada)');
+          toast('Bom trabalho! Entrada registrada','success');
+          renderPage();
+        } else {
+          toast('Não consegui registrar (peça ao admin para rodar o SQL de acompanhamento).','error');
+          console.error(r.error);
+        }
+      });
+    }
+    return;
+  }
+
+  // Novo: outros tipos (saida_almoco, volta_almoco, saida)
+  if (!existing){
+    toast('Registre a entrada primeiro','info');
+    return;
+  }
+  if (existing[tipo]){
+    var slot = PONTO_SLOTS.find(function(s){ return s.key===tipo; });
+    toast('Você já registrou '+(slot?slot.label.toLowerCase():tipo)+' hoje','info');
+    return;
+  }
+  var patch2 = {}; patch2[tipo] = nowIso;
+  sb.from('malba_checkins').update(patch2).eq('id', existing.id).then(function(r){
+    if (r.error){ toast('Erro ao registrar','error'); return; }
+    existing[tipo] = nowIso;
+    var slot2 = PONTO_SLOTS.find(function(s){ return s.key===tipo; });
+    var msg = slot2 ? (slot2.label+' registrada') : 'Registrado';
+    auditLog('Check-in ('+tipo+')');
+    toast(msg,'success');
+    renderPage();
+  });
+}
+
+/* Renderiza a linha de UM membro com 4 slots */
+function pontoRowHTML(m){
+  var ci = checkinHojeDoMembro(m);
+  var prox = proximoSlotPonto(ci);
+  var ini = iniciais(m.name);
+  var completo = slotsPontoBatidos(ci) >= 2 && !prox;
+  var horas = horasTrabalhadasDia(ci);
+
+  // Grid de 4 slots
+  var slotsHTML = PONTO_SLOTS.map(function(s){
+    var val = ci ? ci[s.key] : null;
+    var on = !!val;
+    return '<div class="pt-slot'+(on?' on':'')+'" title="'+esc(s.label)+'">'+
+      '<span class="pt-slot-lbl">'+esc(s.label)+'</span>'+
+      '<span class="pt-slot-t">'+(on ? hhmm(val) : '—')+'</span>'+
+    '</div>';
+  }).join('');
+
+  // Botão de ação
+  var actionHTML;
+  if (!prox){
+    actionHTML = '<span class="pt-done" title="Dia completo">'+icon('check')+'</span>';
+  } else {
+    var kind = (prox.key==='entrada') ? 'in' : (prox.key==='saida' ? 'out' : 'meio');
+    actionHTML = '<button class="pt-btn pt-btn-'+kind+'" data-ponto="'+esc(m.id)+'">'+
+      icon(prox.icon)+'<span>'+esc(prox.btn)+'</span>'+
+    '</button>';
+  }
+
+  // Total de horas do dia (quando completo)
+  var horasHTML = completo && horas.completo
+    ? '<div class="pt-horas">'+icon('clock')+esc(horas.texto)+'</div>'
+    : '';
+
+  return '<div class="ponto-row-v2'+(completo?' completo':'')+'">'+
+    '<span class="pt-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
+    '<div class="pt-info">'+
+      '<div class="pt-nome">'+esc(m.name)+'</div>'+
+      '<div class="pt-slots">'+slotsHTML+'</div>'+
+      horasHTML+
+    '</div>'+
+    actionHTML+
+  '</div>';
+}
+
 function checkinHojeDoUser(){ var me=String(ST.session.user.id); var t=today(); var found=null; (ST.checkins||[]).forEach(function(c){ if(String(c.user_id)===me && String(c.work_date).slice(0,10)===t) found=c; }); return found; }
 function checkinsDoMembro(member, n){ if(!member) return []; var u=userDoMembro(member); var uid=u?u.id:null; var mid=member.id; var arr=(ST.checkins||[]).filter(function(c){ return (uid&&String(c.user_id)===String(uid))||(mid&&String(c.member_id)===String(mid)); }); arr.sort(function(a,b){ return String(b.work_date).localeCompare(String(a.work_date)); }); return n?arr.slice(0,n):arr; }
 function presencaMes(member){ var c=0; checkinsDoMembro(member).forEach(function(x){ if(x.entrada && _inMonth(x.work_date)) c++; }); return c; }
 function notasDoMembro(member){ if(!member) return []; return (ST.notes1on1||[]).filter(function(x){ return String(x.member_id)===String(member.id); }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
 function kudosDoMembro(member){ if(!member) return []; return (ST.kudos||[]).filter(function(x){ return String(x.member_id)===String(member.id); }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
 function kudosDoUser(){ var mids=meusMemberIds(); return (ST.kudos||[]).filter(function(x){ return mids.indexOf(String(x.member_id))!==-1; }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
-function registrarCheckin(tipo){
-  var u=ST.session.user; var me=u.id; var t=today(); var existing=checkinHojeDoUser(); var nowIso=new Date().toISOString();
-  if(tipo==='entrada'){
-    if(existing && existing.entrada){ toast('Você já registrou entrada hoje','info'); return; }
-    if(existing){ sb.from('malba_checkins').update({ entrada:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.entrada=nowIso; toast('Entrada registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
-    else { var mid=meuMemberId(); var sid=meuStoreId(); sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }).select().single().then(function(r){ if(!r.error && r.data){ ST.checkins.push(r.data); auditLog('Check-in (entrada)'); toast('Bom trabalho! Entrada registrada','success'); renderPage(); } else { toast('Não consegui registrar (peça ao admin para rodar o SQL de acompanhamento).','error'); console.error(r.error); } }); }
-  } else {
-    if(!existing){ toast('Registre a entrada primeiro','info'); return; }
-    sb.from('malba_checkins').update({ saida:nowIso }).eq('id',existing.id).then(function(r){ if(!r.error){ existing.saida=nowIso; auditLog('Check-in (saída)'); toast('Até amanhã! Saída registrada','success'); renderPage(); } else toast('Erro ao registrar','error'); });
-  }
-}
 function checkinHojeDoMembro(member){ if(!member) return null; var t=today(); var u=userDoMembro(member); var uid=u?u.id:null; var found=null; (ST.checkins||[]).forEach(function(c){ if(String(c.work_date).slice(0,10)!==t) return; if((String(c.member_id)===String(member.id)) || (uid&&String(c.user_id)===String(uid))) found=c; }); return found; }
-function togglePontoMembro(member){
-  var ci=checkinHojeDoMembro(member); var nowIso=new Date().toISOString(); var u=userDoMembro(member); var uid=u?u.id:null; var t=today(); var nome=(member.name||'').split(' ')[0];
-  if(!ci){ sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:member.store_unit_id, user_id:uid, member_id:member.id, work_date:t, entrada:nowIso }).select().single().then(function(r){ if(!r.error&&r.data){ ST.checkins.push(r.data); auditLog('Ponto entrada', member.name); toast(nome+' — entrada '+hhmm(nowIso),'success'); renderPage(); } else { toast('Não consegui registrar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); } }); }
-  else if(!ci.entrada){ sb.from('malba_checkins').update({ entrada:nowIso }).eq('id',ci.id).then(function(r){ if(!r.error){ ci.entrada=nowIso; toast(nome+' — entrada '+hhmm(nowIso),'success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
-  else if(ci.entrada && !ci.saida){ sb.from('malba_checkins').update({ saida:nowIso }).eq('id',ci.id).then(function(r){ if(!r.error){ ci.saida=nowIso; auditLog('Ponto saída', member.name); toast(nome+' — saída '+hhmm(nowIso),'success'); renderPage(); } else toast('Erro ao registrar','error'); }); }
-}
 function pontoHTML(){
   var lojas = lojasGestao();
   var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
@@ -19500,13 +19903,8 @@ function pontoHTML(){
   if(!storeId){ rows='<div class="empty-page"><div class="ep-ico">'+icon('clock')+'</div><h3>Escolha a loja</h3><p>Selecione a loja para bater o ponto da equipe.</p></div>'; }
   else if(!mems.length){ rows='<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem funcionários ativos</h3><p>Cadastre a equipe desta loja em Equipe.</p></div>'; }
   else {
-    rows='<div class="ponto-list">'+mems.map(function(m){
-      var ci=checkinHojeDoMembro(m); var ini=iniciais(m.name); var statusHTML, btnHTML;
-      if(!ci || !ci.entrada){ statusHTML='<span class="pt-status none">ainda não chegou</span>'; btnHTML='<button class="pt-btn in" data-ponto="'+esc(m.id)+'">Cheguei</button>'; }
-      else if(ci.entrada && !ci.saida){ statusHTML='<span class="pt-status in">entrou '+hhmm(ci.entrada)+'</span>'; btnHTML='<button class="pt-btn out" data-ponto="'+esc(m.id)+'">Saída</button>'; }
-      else { statusHTML='<span class="pt-status done">'+hhmm(ci.entrada)+' → '+hhmm(ci.saida)+'</span>'; btnHTML='<span class="pt-done">'+icon('tasks')+'</span>'; }
-      return '<div class="ponto-row"><span class="pt-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span><div class="pt-info"><b>'+esc(m.name)+'</b>'+statusHTML+'</div>'+btnHTML+'</div>';
-    }).join('')+'</div>';
+    // v147: 4 batidas
+    rows='<div class="ponto-list-v2">'+mems.map(pontoRowHTML).join('')+'</div>';
   }
   var presentes = storeId ? mems.filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; }).length : 0;
   return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+esc(dataStr)+' · '+presentes+' presente(s)</div></div>'+selHTML+'</div>'+rows;
