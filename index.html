@@ -7268,6 +7268,532 @@ html.dark .al-item.al-danger { background: rgba(248,113,113,.10); }
 html.dark .al-item-act:hover { background: rgba(90,133,255,.14); color: #7B9DFF; }
 html.dark .al-panel-ok { background: rgba(34,197,94,.10); border-color: rgba(34,197,94,.25); }
 
+
+/* ============================================================
+   v155 · RANKING DO DIA (pódio + lista)
+   ============================================================ */
+
+.rk-panel .dash-panel-h .lc-ic { color: var(--warn-600); }
+
+.rk-tag {
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-left: auto;
+  padding: 3px 8px;
+  border-radius: var(--rd-sm);
+  background: var(--u-bg2);
+}
+
+/* Pódio */
+.rk-podio {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: var(--sp-2);
+  align-items: end;
+  padding: var(--sp-3) var(--sp-2) var(--sp-4);
+}
+.rk-podio:has(.rk-lugar:only-child) {
+  grid-template-columns: 1fr;
+}
+
+.rk-lugar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--sp-3) var(--sp-2) var(--sp-4);
+  border-radius: var(--rd-lg);
+  background: var(--u-bg2);
+  border: 1px solid var(--u-line);
+  gap: 4px;
+  position: relative;
+}
+
+.rk-lugar.rk-ouro {
+  background: linear-gradient(180deg, rgba(245,158,11,.14) 0%, var(--u-bg2) 100%);
+  border-color: rgba(245,158,11,.35);
+  padding-top: var(--sp-5);
+  transform: translateY(-8px);
+  box-shadow: 0 4px 16px rgba(245,158,11,.15);
+}
+.rk-lugar.rk-prata {
+  background: linear-gradient(180deg, rgba(148,160,184,.14) 0%, var(--u-bg2) 100%);
+  border-color: rgba(148,160,184,.30);
+}
+.rk-lugar.rk-bronze {
+  background: linear-gradient(180deg, rgba(217,119,6,.12) 0%, var(--u-bg2) 100%);
+  border-color: rgba(217,119,6,.30);
+}
+
+.rk-medal {
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.rk-ouro .rk-medal { font-size: 30px; }
+
+.rk-av {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-extrabold);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.rk-ouro .rk-av {
+  width: 52px;
+  height: 52px;
+  font-size: 17px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+  border: 3px solid rgba(245,158,11,.35);
+}
+
+.rk-nome {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  text-align: center;
+  line-height: 1.2;
+}
+.rk-ouro .rk-nome { font-size: var(--fs-lg); }
+
+.rk-total {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-extrabold);
+  color: var(--u-green);
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+.rk-ouro .rk-total { font-size: var(--fs-lg); }
+
+.rk-count {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-semibold);
+}
+
+/* Lista com os "extras" (4º em diante) */
+.rk-resto {
+  border-top: 1px dashed var(--u-line);
+  padding-top: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rk-linha {
+  display: grid;
+  grid-template-columns: 24px 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: var(--rd-sm);
+  transition: background var(--tr-fast);
+}
+.rk-linha:hover { background: var(--u-bg2); }
+.rk-pos {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+}
+.rk-av-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-extrabold);
+  font-size: 11px;
+}
+.rk-nome-mini {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text);
+}
+.rk-total-mini {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mobile: pódio empilha ou fica mais compacto */
+@media (max-width: 640px) {
+  .rk-podio {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+    padding: var(--sp-2);
+  }
+  .rk-lugar { padding: var(--sp-2); }
+  .rk-lugar.rk-ouro { transform: translateY(-4px); padding-top: var(--sp-3); }
+  .rk-medal { font-size: 20px; }
+  .rk-ouro .rk-medal { font-size: 24px; }
+  .rk-av { width: 32px; height: 32px; font-size: 11px; }
+  .rk-ouro .rk-av { width: 40px; height: 40px; font-size: 13px; }
+  .rk-nome { font-size: var(--fs-sm); }
+  .rk-ouro .rk-nome { font-size: var(--fs-md); }
+  .rk-total { font-size: var(--fs-sm); }
+  .rk-ouro .rk-total { font-size: var(--fs-md); }
+}
+
+/* Dark */
+html.dark .rk-lugar.rk-ouro { background: linear-gradient(180deg, rgba(251,191,36,.18) 0%, var(--u-bg2) 100%); }
+html.dark .rk-lugar.rk-prata { background: linear-gradient(180deg, rgba(166,178,200,.14) 0%, var(--u-bg2) 100%); }
+html.dark .rk-lugar.rk-bronze { background: linear-gradient(180deg, rgba(251,146,60,.14) 0%, var(--u-bg2) 100%); }
+
+
+/* ============================================================
+   v156 · ÚLTIMA VENDA (card compacto com pulso quando recente)
+   ============================================================ */
+
+.uv-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px var(--sp-4);
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: var(--rd-lg);
+  margin-bottom: var(--sp-4);
+  box-shadow: var(--u-shadow);
+  font-size: var(--fs-sm);
+  transition: border-color var(--tr-fast);
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.uv-ico {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(22,163,74,.10);
+  color: var(--u-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.uv-ico .lc-ic { width: 15px; height: 15px; }
+
+.uv-lbl {
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.uv-val {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-extrabold);
+  color: var(--u-green);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.4px;
+}
+
+.uv-sep {
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+  opacity: .55;
+}
+
+.uv-when {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--u-text2);
+}
+
+.uv-quem {
+  font-size: 12px;
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+  margin-left: auto;
+}
+
+/* Recente = pulso verde e borda destacada */
+.uv-card.uv-recente {
+  border-color: rgba(22,163,74,.35);
+  background: linear-gradient(90deg, rgba(22,163,74,.06) 0%, var(--u-card) 40%);
+}
+.uv-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--u-green);
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  box-shadow: 0 0 0 0 rgba(22,163,74,.55);
+  animation: uvPulse 1.8s ease-out infinite;
+}
+@keyframes uvPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(22,163,74,.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(22,163,74,0); }
+  100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .uv-card { padding: 8px 12px; gap: 8px; }
+  .uv-val { font-size: var(--fs-md); }
+  .uv-quem { width: 100%; margin-left: 42px; margin-top: 0; }
+}
+
+/* Dark */
+html.dark .uv-ico { background: rgba(34,197,94,.14); color: #4ADE80; }
+html.dark .uv-val { color: #4ADE80; }
+html.dark .uv-card.uv-recente {
+  border-color: rgba(34,197,94,.35);
+  background: linear-gradient(90deg, rgba(34,197,94,.08) 0%, var(--u-card) 40%);
+}
+html.dark .uv-pulse { background: #4ADE80; box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+html.dark @keyframes uvPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(34,197,94,.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+  100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+}
+
+
+/* ============================================================
+   v157 · TIMELINE DO DIA (3 pistas + marcador AGORA)
+   ============================================================ */
+
+.tl-panel { }
+.tl-panel .dash-panel-h .lc-ic { color: var(--u-accent); }
+
+.tl-summary {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+.tl-tag {
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 8px;
+  border-radius: var(--rd-sm);
+  background: var(--u-bg2);
+  color: var(--u-text3);
+}
+.tl-tag-ponto { background: rgba(59,111,247,.12); color: var(--u-accent); }
+.tl-tag-venda { background: rgba(22,163,74,.14); color: var(--u-green); }
+.tl-tag-caixa { background: rgba(245,158,11,.14); color: var(--warn-600); }
+
+/* Escala com marcas de hora */
+.tl-scale {
+  position: relative;
+  height: 20px;
+  border-bottom: 1px dashed var(--u-line);
+  margin-left: 78px;
+  margin-bottom: 8px;
+}
+.tl-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+}
+
+/* Corpo da timeline com 3 pistas */
+.tl-body {
+  position: relative;
+  padding: 8px 0 8px 78px;
+  min-height: 108px;
+}
+
+.tl-pista {
+  position: absolute;
+  left: 0;
+  right: 8px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+.tl-pista-lbl {
+  position: absolute;
+  left: 0;
+  width: 70px;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.tl-pista-lbl .lc-ic { width: 12px; height: 12px; }
+.tl-track {
+  margin-left: 78px;
+  flex: 1;
+  height: 2px;
+  background: var(--u-line);
+  border-radius: 999px;
+}
+
+/* Marca AGORA */
+.tl-agora {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--u-red);
+  transform: translateX(-1px);
+  z-index: 2;
+  opacity: .7;
+}
+.tl-agora span {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--u-red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: var(--rd-sm);
+  white-space: nowrap;
+}
+
+/* Dots dos eventos */
+.tl-dot {
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 3;
+  cursor: help;
+  transition: transform var(--tr-fast);
+}
+.tl-dot:hover { transform: translateX(-50%) scale(1.3); z-index: 4; }
+
+.tl-dot-inner {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--u-card);
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+.tl-dot-av {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--fw-extrabold);
+  border: 2px solid var(--u-card);
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+
+/* Tooltip nativo via data-tl-title (hover show CSS ::after) */
+.tl-dot::after {
+  content: attr(data-tl-title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: var(--u-text);
+  color: var(--u-card);
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  padding: 4px 8px;
+  border-radius: var(--rd-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--tr-fast);
+  z-index: 10;
+}
+.tl-dot:hover::after { opacity: 1; }
+
+/* Mobile: pistas empilhadas verticalmente com scroll horizontal */
+@media (max-width: 640px) {
+  .tl-scale { margin-left: 60px; }
+  .tl-body { padding-left: 60px; }
+  .tl-pista-lbl { width: 55px; font-size: 10px; }
+  .tl-track { margin-left: 60px; }
+  .tl-dot::after { font-size: 10px; }
+}
+
+/* Dark overrides */
+html.dark .tl-tag-ponto { background: rgba(90,133,255,.14); color: #7B9DFF; }
+html.dark .tl-tag-venda { background: rgba(34,197,94,.14); color: #4ADE80; }
+html.dark .tl-tag-caixa { background: rgba(251,191,36,.14); color: #FBBF24; }
+html.dark .tl-agora { background: #FCA5A5; }
+html.dark .tl-agora span { background: #FCA5A5; color: #0F172A; }
+html.dark .tl-dot::after { background: var(--u-card); color: var(--u-text); border: 1px solid var(--u-line); }
+
+
+/* ============================================================
+   v158 · Destaque "você" no ranking + linha fora do top
+   ============================================================ */
+
+.rk-eu-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: var(--rd-sm);
+  background: var(--u-accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.rk-lugar.rk-eu {
+  outline: 2px solid var(--u-accent);
+  outline-offset: -1px;
+  animation: rkEuGlow 2s ease-in-out infinite;
+}
+
+.rk-linha.rk-eu {
+  background: rgba(59,111,247,.08);
+  border-left: 3px solid var(--u-accent);
+  padding-left: 6px;
+  border-radius: var(--rd-sm);
+}
+
+.rk-eu-fora {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rk-fora-sep {
+  text-align: center;
+  color: var(--u-text3);
+  font-weight: var(--fw-extrabold);
+  font-size: 14px;
+  letter-spacing: 4px;
+  opacity: 0.5;
+}
+
+@keyframes rkEuGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59,111,247,.35); }
+  50% { box-shadow: 0 0 0 6px rgba(59,111,247,0); }
+}
+
+/* Dark */
+html.dark .rk-linha.rk-eu { background: rgba(90,133,255,.14); }
+html.dark .rk-eu-tag { background: #7B9DFF; color: #0F172A; }
+
 </style>
 </head>
 <body>
@@ -7291,7 +7817,7 @@ html.dark .al-panel-ok { background: rgba(34,197,94,.10); border-color: rgba(34,
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v154';
+var APP_BUILD = 'v158';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -8963,6 +9489,10 @@ function alertasDaLoja(storeId){
   }
   if (!loja) return out;
 
+  // v158: colaborador só vê alertas que envolvem a própria pessoa
+  var soPessoal = (typeof can==='function') ? !can('redistribuir') : false;
+  var meuMid = (typeof meuMemberId==='function') ? meuMemberId() : null;
+
   var hoje = new Date();
   var t = today();
   var agoraMin = hoje.getHours()*60 + hoje.getMinutes();
@@ -8985,7 +9515,20 @@ function alertasDaLoja(storeId){
     atrasados.push({ mem:m, atraso:atraso });
     esperadosSemBater++;
   });
-  if (atrasados.length){
+  if (soPessoal && meuMid){
+    // Colaborador: mostra alerta APENAS se ele mesmo está atrasado
+    var meuAtraso = atrasados.find(function(a){ return String(a.mem.id)===String(meuMid); });
+    if (meuAtraso){
+      var sevP = meuAtraso.atraso > 30 ? 'danger' : 'warn';
+      out.push({
+        sev: sevP,
+        ico: 'clock',
+        title: 'Você está atrasado '+fmtMin(meuAtraso.atraso),
+        desc: 'Bata o ponto assim que chegar',
+        act: { label:'Abrir ponto', page:'ponto' }
+      });
+    }
+  } else if (atrasados.length){
     atrasados.sort(function(a,b){ return b.atraso - a.atraso; });
     var nomes = atrasados.slice(0,3).map(function(x){ return x.mem.name.split(' ')[0]; });
     var extra = atrasados.length > 3 ? ' +'+(atrasados.length-3) : '';
@@ -9002,7 +9545,8 @@ function alertasDaLoja(storeId){
     });
   }
 
-  // ---- 2) Sem venda há muito tempo ----
+  // ---- 2) Sem venda há muito tempo (só se pode ver a operação) ----
+  if (!soPessoal){
   var vendasHoje = [];
   (ST.salesEntries||[]).forEach(function(v){
     if (String(v.store_unit_id)!==String(storeId)) return;
@@ -9042,8 +9586,10 @@ function alertasDaLoja(storeId){
     }
   }
 
-  // ---- 3) Meta atrás do esperado ----
-  if (typeof lojaMetaMes==='function'){
+  }  // fim if (!soPessoal) do bloco vendas
+
+  // ---- 3) Meta atrás do esperado (só operação) ----
+  if (!soPessoal && typeof lojaMetaMes==='function'){
     var mm = lojaMetaMes(storeId);
     if (mm && mm.meta > 0){
       var diaDoMes = hoje.getDate();
@@ -9062,10 +9608,9 @@ function alertasDaLoja(storeId){
     }
   }
 
-  // ---- 4) Justificativas pendentes (só admin/gestor) ----
-  var admin = (typeof isAdmin==='function') ? isAdmin(ST.session) : false;
-  var gestor = (typeof isGestor==='function') ? isGestor(ST.session) : false;
-  if (admin || gestor){
+  // ---- 4) Justificativas pendentes (só quem pode gerir) ----
+  var podeGerir = (typeof can==='function') ? can('equipe') : false;
+  if (podeGerir){
     var pend = (typeof justifsPendentes==='function') ? justifsPendentes() : [];
     // filtrar só da loja
     var pendLoja = pend.filter(function(j){
@@ -9245,6 +9790,432 @@ function trendMiniHTML(comp){
   '</span>';
 }
 
+/* ============================================================
+   v155: RANKING DO DIA (B.3)
+   Top vendedores da loja no dia, com pódio visual.
+   ============================================================ */
+
+/* Retorna array ordenado de vendedores da loja com totais.
+   [{ member, total, count }] */
+function rankingVendedoresDia(storeId, dateStr){
+  var t = dateStr || today();
+  var acc = {};
+  (ST.salesEntries||[]).forEach(function(v){
+    if (String(v.store_unit_id)!==String(storeId)) return;
+    if (String(v.sale_date).slice(0,10) !== t) return;
+    var mid = String(v.member_id||v.user_id||'?');
+    if (!acc[mid]) acc[mid] = { total:0, count:0 };
+    acc[mid].total += Number(v.value)||0;
+    acc[mid].count++;
+  });
+  var arr = [];
+  Object.keys(acc).forEach(function(mid){
+    // Achar o membro
+    var mem = null;
+    for (var i=0;i<(ST.members||[]).length;i++){
+      if (String(ST.members[i].id)===mid){ mem = ST.members[i]; break; }
+    }
+    // Se não achar por member_id, tentar por user_id
+    if (!mem){
+      for (var j=0;j<(ST.members||[]).length;j++){
+        if (typeof userDoMembro==='function'){
+          var u = userDoMembro(ST.members[j]);
+          if (u && String(u.id)===mid){ mem = ST.members[j]; break; }
+        }
+      }
+    }
+    arr.push({
+      member: mem,
+      memberId: mid,
+      total: acc[mid].total,
+      count: acc[mid].count
+    });
+  });
+  arr.sort(function(a,b){ return b.total - a.total; });
+  return arr;
+}
+
+/* HTML do painel de ranking — pódio pra top 3 + lista extra se houver */
+function rankingPanelHTML(storeId){
+  var arr = rankingVendedoresDia(storeId);
+  if (!arr.length){
+    return '<div class="dash-panel rk-panel">'+
+      '<div class="dash-panel-h">'+icon('target')+'<h3>Ranking de hoje</h3></div>'+
+      '<div class="dash-panel-b">'+
+        '<div class="dash-empty">Nenhuma venda registrada hoje ainda.</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  // v158: identifica minha posição no ranking
+  var meuMid = (typeof meuMemberId==='function') ? meuMemberId() : null;
+  var minhaPos = -1;
+  if (meuMid){
+    for (var iP=0;iP<arr.length;iP++){
+      if (String(arr[iP].memberId)===String(meuMid)){ minhaPos = iP; break; }
+    }
+  }
+
+  var top3 = arr.slice(0,3);
+  var restante = arr.slice(3, 8);
+
+  // Se estou fora do top 8 mas participo, força uma linha "..." + eu no rk-resto
+  var estouForaDoTop8 = (minhaPos >= 8);
+  if (estouForaDoTop8){
+    restante = restante.slice(0, 4); // deixa espaço pra minha linha
+  }
+
+  var podioOrder = top3.length >= 3 ? [1, 0, 2] : (top3.length === 2 ? [1, 0] : [0]);
+  var podioClasses = { 0:'ouro', 1:'prata', 2:'bronze' };
+  var podioMedals = { 0:'🥇', 1:'🥈', 2:'🥉' };
+
+  var podioHTML = '<div class="rk-podio">' + podioOrder.map(function(idx){
+    var e = top3[idx];
+    if (!e) return '';
+    var nome = e.member ? e.member.name : '(sem cadastro)';
+    var cor = e.member && e.member.color ? e.member.color : '#3B6FF7';
+    var ini = e.member ? iniciais(e.member.name) : '?';
+    var euAqui = meuMid && String(e.memberId)===String(meuMid);
+    return '<div class="rk-lugar rk-'+podioClasses[idx]+(euAqui?' rk-eu':'')+'">'+
+      '<div class="rk-medal">'+podioMedals[idx]+'</div>'+
+      '<div class="rk-av" style="background:'+cor+'">'+esc(ini)+'</div>'+
+      '<div class="rk-nome">'+esc(nome.split(' ')[0])+(euAqui?' <span class="rk-eu-tag">você</span>':'')+'</div>'+
+      '<div class="rk-total">'+esc(fmtBRL(e.total))+'</div>'+
+      '<div class="rk-count">'+e.count+' venda'+(e.count!==1?'s':'')+'</div>'+
+    '</div>';
+  }).join('') + '</div>';
+
+  var restanteHTML = restante.length ? '<div class="rk-resto">'+ restante.map(function(e, i){
+    var nome = e.member ? e.member.name : '(sem cadastro)';
+    var cor = e.member && e.member.color ? e.member.color : '#3B6FF7';
+    var ini = e.member ? iniciais(e.member.name) : '?';
+    var euAqui = meuMid && String(e.memberId)===String(meuMid);
+    return '<div class="rk-linha'+(euAqui?' rk-eu':'')+'">'+
+      '<span class="rk-pos">'+(i+4)+'º</span>'+
+      '<div class="rk-av-mini" style="background:'+cor+'">'+esc(ini)+'</div>'+
+      '<span class="rk-nome-mini">'+esc(nome.split(' ')[0])+(euAqui?' <span class="rk-eu-tag">você</span>':'')+'</span>'+
+      '<span class="rk-total-mini">'+esc(fmtBRL(e.total))+'</span>'+
+    '</div>';
+  }).join('') +'</div>' : '';
+
+  // Se estou fora do top 8, mostra minha linha após separador
+  var euForaHTML = '';
+  if (estouForaDoTop8 && arr[minhaPos]){
+    var meu = arr[minhaPos];
+    var nomeM = meu.member ? meu.member.name : '(sem cadastro)';
+    var corM = meu.member && meu.member.color ? meu.member.color : '#3B6FF7';
+    var iniM = meu.member ? iniciais(meu.member.name) : '?';
+    euForaHTML = '<div class="rk-eu-fora">'+
+      '<span class="rk-fora-sep">···</span>'+
+      '<div class="rk-linha rk-eu">'+
+        '<span class="rk-pos">'+(minhaPos+1)+'º</span>'+
+        '<div class="rk-av-mini" style="background:'+corM+'">'+esc(iniM)+'</div>'+
+        '<span class="rk-nome-mini">'+esc(nomeM.split(' ')[0])+' <span class="rk-eu-tag">você</span></span>'+
+        '<span class="rk-total-mini">'+esc(fmtBRL(meu.total))+'</span>'+
+      '</div>'+
+    '</div>';
+  }
+
+  return '<div class="dash-panel rk-panel">'+
+    '<div class="dash-panel-h">'+icon('target')+'<h3>Ranking de hoje</h3><span class="rk-tag">'+arr.length+' vendedor'+(arr.length!==1?'es':'')+'</span></div>'+
+    '<div class="dash-panel-b">'+podioHTML+restanteHTML+euForaHTML+'</div>'+
+  '</div>';
+}
+
+/* ============================================================
+   v156: ÚLTIMA VENDA REGISTRADA (B.4)
+   Card compacto "R$ X há Ymin por Fulano" no painel da loja.
+   ============================================================ */
+
+/* Retorna dados da última venda da loja HOJE.
+   { value, when, memberName, minutosAtras } ou null se não teve. */
+function ultimaVendaDaLoja(storeId){
+  var t = today();
+  var candidatas = [];
+  (ST.salesEntries||[]).forEach(function(v){
+    if (String(v.store_unit_id)!==String(storeId)) return;
+    if (String(v.sale_date).slice(0,10) !== t) return;
+    candidatas.push(v);
+  });
+  if (!candidatas.length) return null;
+
+  // Preferir created_at (timestamp real), fallback pra sale_date
+  candidatas.sort(function(a,b){
+    return (b.created_at||b.sale_date||'').localeCompare(a.created_at||a.sale_date||'');
+  });
+  var ult = candidatas[0];
+
+  // Achar nome do vendedor
+  var nome = '';
+  if (ult.member_id){
+    for (var i=0;i<(ST.members||[]).length;i++){
+      if (String(ST.members[i].id)===String(ult.member_id)){
+        nome = ST.members[i].name.split(' ')[0];
+        break;
+      }
+    }
+  }
+  if (!nome && ult.user_id){
+    // Fallback via userDoMembro se disponível
+    for (var j=0;j<(ST.members||[]).length;j++){
+      if (typeof userDoMembro==='function'){
+        var u = userDoMembro(ST.members[j]);
+        if (u && String(u.id)===String(ult.user_id)){
+          nome = ST.members[j].name.split(' ')[0];
+          break;
+        }
+      }
+    }
+  }
+  if (!nome && (ST.users||[]).length){
+    for (var k=0;k<ST.users.length;k++){
+      if (String(ST.users[k].id)===String(ult.user_id)){
+        nome = String(ST.users[k].name||'').split(' ')[0];
+        break;
+      }
+    }
+  }
+
+  // Calcular há quanto tempo
+  var min = null;
+  if (ult.created_at){
+    min = Math.max(0, Math.round((new Date().getTime() - new Date(ult.created_at).getTime())/60000));
+  }
+
+  return {
+    value: Number(ult.value)||0,
+    when: ult.created_at || ult.sale_date,
+    memberName: nome,
+    minutosAtras: min
+  };
+}
+
+/* Formata "há X" — smart entre agora / minutos / horas */
+function fmtHaQuanto(min){
+  if (min == null) return 'hoje';
+  if (min < 1) return 'agora mesmo';
+  if (min < 60) return 'há '+min+' min';
+  var h = Math.floor(min/60);
+  var restoMin = min % 60;
+  if (h === 1 && restoMin === 0) return 'há 1 hora';
+  if (restoMin === 0) return 'há '+h+' horas';
+  return 'há '+h+'h '+restoMin+'min';
+}
+
+/* HTML do card compacto. Vazio se sem venda hoje. */
+function ultimaVendaCardHTML(storeId){
+  var u = ultimaVendaDaLoja(storeId);
+  if (!u) return '';
+  var recente = (u.minutosAtras != null && u.minutosAtras <= 5);
+  var horaTxt = fmtHaQuanto(u.minutosAtras);
+  var quem = u.memberName ? ('por '+u.memberName) : '';
+  return '<div class="uv-card'+(recente?' uv-recente':'')+'">'+
+    '<span class="uv-ico">'+icon('dollar')+'</span>'+
+    '<span class="uv-lbl">Última venda</span>'+
+    '<span class="uv-val">'+esc(fmtBRL(u.value))+'</span>'+
+    '<span class="uv-sep">·</span>'+
+    '<span class="uv-when">'+esc(horaTxt)+'</span>'+
+    (quem ? '<span class="uv-quem">'+esc(quem)+'</span>' : '')+
+    (recente ? '<span class="uv-pulse" title="Recém-registrada"></span>' : '')+
+  '</div>';
+}
+
+/* ============================================================
+   v157: TIMELINE DO DIA (B.5)
+   Linha do tempo horizontal da loja com 3 pistas:
+   Ponto | Vendas | Caixa
+   ============================================================ */
+
+/* Escala fixa da timeline: 7h às 22h (15h de range) */
+var TL_START_MIN = 7 * 60;
+var TL_END_MIN   = 22 * 60;
+var TL_RANGE     = TL_END_MIN - TL_START_MIN;  // 900 min
+
+/* Converte HH:MM ou ISO em minutos-do-dia */
+function _minDoDia(v){
+  if (!v) return null;
+  var s = String(v);
+  if (s.indexOf('T') >= 0){
+    var d = new Date(s);
+    return d.getHours()*60 + d.getMinutes();
+  }
+  if (/^\d{2}:\d{2}/.test(s)){
+    return Number(s.slice(0,2))*60 + Number(s.slice(3,5));
+  }
+  return null;
+}
+
+/* Retorna evento -> {tipo:'ponto|venda|caixa|almoco', min, hhmm, titulo, sub, cor} */
+function eventosDoDiaDaLoja(storeId){
+  var t = today();
+  var out = [];
+
+  // v158: colaborador só vê os próprios eventos
+  var soPessoal = (typeof can==='function') ? !can('redistribuir') : false;
+  var meuMid = (typeof meuMemberId==='function') ? meuMemberId() : null;
+
+  // 1) Batidas de ponto
+  (ST.checkins||[]).forEach(function(ci){
+    if (String(ci.store_unit_id)!==String(storeId)) return;
+    if (String(ci.work_date).slice(0,10) !== t) return;
+    if (soPessoal && meuMid && String(ci.member_id)!==String(meuMid)) return;
+    var mem = null;
+    for (var i=0;i<(ST.members||[]).length;i++){
+      if (String(ST.members[i].id)===String(ci.member_id)){ mem = ST.members[i]; break; }
+    }
+    if (!mem && ci.user_id){
+      for (var j=0;j<(ST.members||[]).length;j++){
+        if (typeof userDoMembro==='function'){
+          var u = userDoMembro(ST.members[j]);
+          if (u && String(u.id)===String(ci.user_id)){ mem = ST.members[j]; break; }
+        }
+      }
+    }
+    var nome = mem ? mem.name.split(' ')[0] : '?';
+    var cor = mem && mem.color ? mem.color : '#3B6FF7';
+    if (ci.entrada){
+      var m = _minDoDia(ci.entrada);
+      if (m!=null) out.push({ tipo:'ponto', pista:0, min:m, hhmm:hhmm(ci.entrada), titulo:nome+' entrou', sub:'Entrada às '+hhmm(ci.entrada), cor:cor, avatar:mem });
+    }
+    if (ci.saida_almoco){
+      var m2 = _minDoDia(ci.saida_almoco);
+      if (m2!=null) out.push({ tipo:'almoco', pista:0, min:m2, hhmm:hhmm(ci.saida_almoco), titulo:nome+' saiu p/ almoçar', sub:'Saída do almoço', cor:'#8B5CF6', avatar:mem });
+    }
+    if (ci.volta_almoco){
+      var m3 = _minDoDia(ci.volta_almoco);
+      if (m3!=null) out.push({ tipo:'almoco', pista:0, min:m3, hhmm:hhmm(ci.volta_almoco), titulo:nome+' voltou do almoço', sub:'Volta do almoço', cor:'#8B5CF6', avatar:mem });
+    }
+    if (ci.saida){
+      var m4 = _minDoDia(ci.saida);
+      if (m4!=null) out.push({ tipo:'ponto', pista:0, min:m4, hhmm:hhmm(ci.saida), titulo:nome+' saiu', sub:'Saída às '+hhmm(ci.saida), cor:cor, avatar:mem });
+    }
+  });
+
+  // 2) Vendas
+  (ST.salesEntries||[]).forEach(function(v){
+    if (String(v.store_unit_id)!==String(storeId)) return;
+    if (String(v.sale_date).slice(0,10) !== t) return;
+    // v158: colaborador só as próprias
+    if (soPessoal && meuMid && String(v.member_id||'')!==String(meuMid)) return;
+    var m = v.created_at ? _minDoDia(v.created_at) : null;
+    if (m==null) return;  // sem created_at, não dá pra posicionar
+    var nome = '?';
+    if (v.member_id){
+      for (var i=0;i<(ST.members||[]).length;i++){
+        if (String(ST.members[i].id)===String(v.member_id)){ nome = ST.members[i].name.split(' ')[0]; break; }
+      }
+    }
+    out.push({
+      tipo:'venda', pista:1, min:m,
+      hhmm: v.created_at ? hhmm(v.created_at) : '',
+      titulo: fmtBRL(Number(v.value)||0),
+      sub: 'Venda '+(nome!=='?'?'por '+nome:''),
+      cor: '#16A34A'
+    });
+  });
+
+  // 3) Fechamento de caixa (só operação vê)
+  var cx = null;
+  if (!soPessoal){
+  (ST.caixas||[]).forEach(function(c){
+    if (String(c.store_unit_id)===String(storeId) && String(c.work_date).slice(0,10)===t) cx = c;
+  });
+  }
+  if (cx && cx.closed_at){
+    var mm = _minDoDia(cx.closed_at);
+    if (mm!=null) out.push({
+      tipo:'caixa', pista:2, min:mm,
+      hhmm:hhmm(cx.closed_at),
+      titulo:'Caixa fechado',
+      sub: cx.done_by_name ? ('por '+cx.done_by_name.split(' ')[0]) : '',
+      cor:'#F59E0B'
+    });
+  }
+
+  out.sort(function(a,b){ return a.min - b.min; });
+  return out;
+}
+
+/* Calcula posição em % do dot na timeline */
+function _posPct(min){
+  if (min <= TL_START_MIN) return 0;
+  if (min >= TL_END_MIN) return 100;
+  return Math.round(((min - TL_START_MIN) / TL_RANGE) * 100 * 100)/100;
+}
+
+/* Painel timeline. Retorna string vazia se sem eventos. */
+function timelinePanelHTML(storeId){
+  var evs = eventosDoDiaDaLoja(storeId);
+  if (!evs.length){
+    return '<div class="dash-panel tl-panel">'+
+      '<div class="dash-panel-h">'+icon('cal')+'<h3>Timeline de hoje</h3></div>'+
+      '<div class="dash-panel-b"><div class="dash-empty">Aguardando primeiro evento do dia.</div></div>'+
+    '</div>';
+  }
+
+  // Contadores
+  var nPonto = evs.filter(function(e){ return e.tipo==='ponto' || e.tipo==='almoco'; }).length;
+  var nVenda = evs.filter(function(e){ return e.tipo==='venda'; }).length;
+  var nCaixa = evs.filter(function(e){ return e.tipo==='caixa'; }).length;
+
+  // Ticks de hora (a cada 2h: 8, 10, 12, 14, 16, 18, 20)
+  var ticksHTML = '';
+  for (var h=8; h<=20; h+=2){
+    var pct = _posPct(h*60);
+    ticksHTML += '<div class="tl-tick" style="left:'+pct+'%"><span>'+h+'h</span></div>';
+  }
+
+  // Marca "AGORA"
+  var agora = new Date();
+  var agoraMin = agora.getHours()*60 + agora.getMinutes();
+  var agoraPct = _posPct(agoraMin);
+  var agoraHTML = (agoraMin >= TL_START_MIN && agoraMin <= TL_END_MIN)
+    ? '<div class="tl-agora" style="left:'+agoraPct+'%" title="Agora: '+String(agora.getHours()).padStart(2,'0')+':'+String(agora.getMinutes()).padStart(2,'0')+'"><span>agora</span></div>'
+    : '';
+
+  // Pistas (labels na esquerda)
+  var pistas = [
+    { key:'ponto', label:'Ponto',  icon:'clock',   y:0 },
+    { key:'venda', label:'Vendas', icon:'dollar',  y:1 },
+    { key:'caixa', label:'Caixa',  icon:'target',  y:2 }
+  ];
+
+  // Dots por pista
+  var dotsHTML = evs.map(function(e){
+    var pct = _posPct(e.min);
+    var cls = 'tl-dot tl-tipo-'+e.tipo;
+    var titleAttr = e.hhmm + ' · ' + e.titulo + (e.sub?' · '+e.sub:'');
+    var av = '';
+    if (e.avatar){
+      av = '<span class="tl-dot-av" style="background:'+e.cor+'">'+esc(iniciais(e.avatar.name).slice(0,1))+'</span>';
+    } else {
+      av = '<span class="tl-dot-inner" style="background:'+e.cor+'"></span>';
+    }
+    return '<div class="'+cls+'" style="left:'+pct+'%; top:'+(e.pista*32 + 8)+'px" data-tl-title="'+esc(titleAttr)+'">'+av+'</div>';
+  }).join('');
+
+  var pistasHTML = pistas.map(function(p){
+    return '<div class="tl-pista" style="top:'+(p.y*32 + 4)+'px">'+
+      '<span class="tl-pista-lbl">'+icon(p.icon)+p.label+'</span>'+
+      '<div class="tl-track"></div>'+
+    '</div>';
+  }).join('');
+
+  var summary = '<div class="tl-summary">'+
+    '<span class="tl-tag tl-tag-ponto">'+nPonto+' batida'+(nPonto!==1?'s':'')+'</span>'+
+    '<span class="tl-tag tl-tag-venda">'+nVenda+' venda'+(nVenda!==1?'s':'')+'</span>'+
+    (nCaixa ? '<span class="tl-tag tl-tag-caixa">caixa fechado</span>' : '')+
+  '</div>';
+
+  return '<div class="dash-panel tl-panel">'+
+    '<div class="dash-panel-h">'+icon('cal')+'<h3>Timeline de hoje</h3>'+summary+'</div>'+
+    '<div class="dash-panel-b">'+
+      '<div class="tl-scale">'+ticksHTML+'</div>'+
+      '<div class="tl-body">'+pistasHTML+agoraHTML+dotsHTML+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
 function lojaPainelHTML(){
   var loja=ST.store; var lojaNome=loja.name||('Loja '+loja.store_number);
   var hora=new Date().getHours(); var saud=hora<12?'Bom dia':(hora<18?'Boa tarde':'Boa noite');
@@ -9274,7 +10245,13 @@ function lojaPainelHTML(){
   var tBody=tarefasHoje.length ? tarefasHoje.slice(0,7).map(dashTaskRow).join('') : '<div class="dash-empty">Nada pendente para hoje.</div>';
   var tPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('tasks')+'<h3>Tarefas de hoje</h3><button class="dash-panel-act" id="lpGoTasks">ver todas</button></div><div class="dash-panel-b">'+tBody+'</div></div>';
   var metaPanel='<div class="dash-panel"><div class="dash-panel-h">'+icon('target')+'<h3>Meta do mês</h3><button class="dash-panel-act" id="lpGoMetas">detalhes</button></div><div class="dash-panel-b">'+(mm.meta>0?('<div class="lp-meta"><div class="lp-meta-bar"><span style="width:'+mm.pct+'%;background:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'"></span></div><div class="lp-meta-sub">'+fmtBRL(mm.real)+' de '+fmtBRL(mm.meta)+' · <b style="color:'+(mm.pct>=100?'#16A34A':'var(--u-accent)')+'">'+mm.pct+'%</b></div></div>'):'<div class="dash-empty">Sem meta definida para este mês.</div>')+'</div></div>';
-  return hero + muralHTML() + alertasHTML + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + metaPanel;
+  // v155: ranking do dia
+  var rankingHTML = rankingPanelHTML(loja.id);
+  // v156: última venda
+  var uvHTML = ultimaVendaCardHTML(loja.id);
+  // v157: timeline do dia
+  var tlHTML = timelinePanelHTML(loja.id);
+  return hero + muralHTML() + alertasHTML + uvHTML + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + '<div class="dash-grid2">'+rankingHTML+metaPanel+'</div>' + tlHTML;
 }
 function bindLojaPainel(){
   bindMural();
@@ -11372,19 +12349,23 @@ function openFichaColaborador(member){
     var body;
     if (fiTab==='acompanhamento') { body = acompanhamentoHTML(); }
     else {
-      // v152: seção PIN de ponto
-      var pin = m.pin_ponto || '';
-      var pinBadge = pin ? '<span class="fi-pin-tag has">PIN definido</span>' : '<span class="fi-pin-tag none">sem PIN</span>';
-      var pinSec = '<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('clock')+'PIN do ponto</span>'+pinBadge+'</div>'+
-        '<div class="fi-pin-body">'+
-          '<p class="fi-pin-desc">O colaborador usa esse PIN pra bater ponto pelo QR da loja, sem precisar de app.</p>'+
-          '<div class="fi-pin-form">'+
-            '<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" id="fiPinInput" placeholder="4-6 dígitos" value="'+esc(pin)+'">'+
-            '<button class="fi-link" id="fiPinGen">Gerar aleatório</button>'+
-            '<button class="btn btn-primary" id="fiPinSave">Salvar PIN</button>'+
+      // v152 + v158: seção PIN só pra quem pode gerir (admin+gestor)
+      var podeGerirEquipe = can('equipe');
+      var pinSec = '';
+      if (podeGerirEquipe){
+        var pin = m.pin_ponto || '';
+        var pinBadge = pin ? '<span class="fi-pin-tag has">PIN definido</span>' : '<span class="fi-pin-tag none">sem PIN</span>';
+        pinSec = '<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('clock')+'PIN do ponto</span>'+pinBadge+'</div>'+
+          '<div class="fi-pin-body">'+
+            '<p class="fi-pin-desc">O colaborador usa esse PIN pra bater ponto pelo QR da loja, sem precisar de app.</p>'+
+            '<div class="fi-pin-form">'+
+              '<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" id="fiPinInput" placeholder="4-6 dígitos" value="'+esc(pin)+'">'+
+              '<button class="fi-link" id="fiPinGen">Gerar aleatório</button>'+
+              '<button class="btn btn-primary" id="fiPinSave">Salvar PIN</button>'+
+            '</div>'+
           '</div>'+
-        '</div>'+
-      '</div>';
+        '</div>';
+      }
       body = kpis +
         '<div class="fi-sec first"><div class="fi-sec-h"><span>'+icon('users')+'Acesso ao sistema</span></div>'+acesso+'</div>'+
         pinSec+
@@ -11394,7 +12375,7 @@ function openFichaColaborador(member){
       '<div class="fi-head"><span class="fi-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
         '<div class="fi-id"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+' · '+esc(loja)+'</i></div>'+
         '<span class="fi-sit '+(inativo?'off':'on')+'">'+(inativo?'Inativo':'Ativo')+'</span>'+
-        '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>'+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
+        (can('equipe') ? '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>' : '')+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
       '</div>'+ tabs + body +
       '<div class="modal-foot"><button class="btn btn-ghost" id="fiClose">Fechar</button></div>'+
     '</div>';
@@ -22926,32 +23907,31 @@ function espelhoRenderHTML(memberId, month, year){
 
 /* Painel de espelho na página de ponto (com filtros) */
 function espelhoPanelHTML(){
-  var admin = (typeof isAdmin==='function') ? isAdmin(ST.session) : false;
+  // v158: hierarquia
+  var podeVerOutros = can('indicadores');  // admin + gestor + supervisor
   var e = ST.espelho = ST.espelho || {};
   var hoje = new Date();
   var month = (e.month===undefined || e.month===null) ? hoje.getMonth() : e.month;
   var year = e.year || hoje.getFullYear();
   var memberId = e.memberId || '';
 
-  // Membros disponíveis (da loja atual OU todos ativos)
+  // Membros disponíveis (da loja atual)
   var membros = (ST.members||[]).filter(function(m){ return m.is_active !== false; });
   var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
-  if (storeId && admin){
+  if (storeId){
     membros = membros.filter(function(m){ return String(m.store_unit_id)===String(storeId); });
   }
 
-  // Auto-selecionar se só tem 1 membro OU se o próprio colab (não admin) tá vendo
-  if (!memberId){
-    if (!admin && ST.session && ST.session.user){
-      // Colab vê o próprio
-      var meuMembro = membros.find(function(m){
-        var u = (typeof userDoMembro==='function') ? userDoMembro(m) : null;
-        return u && String(u.id)===String(ST.session.user.id);
-      });
-      if (meuMembro) memberId = meuMembro.id;
-    } else if (membros.length===1){
-      memberId = membros[0].id;
-    }
+  // Descobrir meu próprio membro
+  var meuMid = (typeof meuMemberId==='function') ? meuMemberId() : null;
+
+  // Se NÃO pode ver outros: força pro próprio, ignora seleção salva
+  if (!podeVerOutros){
+    memberId = meuMid || '';
+    membros = meuMid ? membros.filter(function(m){ return String(m.id)===String(meuMid); }) : [];
+  } else {
+    // Pode ver outros — auto-seleciona se só 1 membro
+    if (!memberId && membros.length===1){ memberId = membros[0].id; }
   }
 
   // Filtros
@@ -22968,15 +23948,22 @@ function espelhoPanelHTML(){
     yearOpts += '<option value="'+y+'"'+(Number(year)===y?' selected':'')+'>'+y+'</option>';
   }
 
+  // Filtro de membro só aparece se tem escolha real (podeVerOutros AND múltiplos)
+  var mostraSelectMembro = podeVerOutros && membros.length > 1;
   var filtros = '<div class="esp-filtros no-print">'+
-    (admin ? '<select id="espMember" class="task-filter">'+memOpts+'</select>' : '')+
+    (mostraSelectMembro ? '<select id="espMember" class="task-filter">'+memOpts+'</select>' : '')+
     '<select id="espMonth" class="task-filter">'+monthOpts+'</select>'+
     '<select id="espYear" class="task-filter">'+yearOpts+'</select>'+
   '</div>';
 
-  var body = memberId
-    ? espelhoRenderHTML(memberId, Number(month), Number(year))
-    : '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Selecione um colaborador</h3><p>Escolha na barra acima para ver o espelho.</p></div>';
+  var body;
+  if (memberId){
+    body = espelhoRenderHTML(memberId, Number(month), Number(year));
+  } else if (!podeVerOutros){
+    body = '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Você não está vinculado a esta loja</h3><p>Peça pro gestor cadastrar você como membro pra ver seu espelho aqui.</p></div>';
+  } else {
+    body = '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Selecione um colaborador</h3><p>Escolha na barra acima para ver o espelho.</p></div>';
+  }
 
   return filtros + body;
 }
@@ -23007,39 +23994,68 @@ function pontoHTML(){
   var selHTML='';
   if(!ST.store && lojas.length>1){ var op='<option value="">Selecione a loja</option>'+lojas.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(storeId)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join(''); selHTML='<select class="task-filter" id="pontoLoja">'+op+'</select>'; }
   else if(!ST.store && lojas.length===1){ storeId=lojas[0].id; }
-  var mems = storeId ? membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;}) : [];
   var hoje = new Date(); var dataStr = hoje.getDate()+' de '+MESES[hoje.getMonth()]+' de '+hoje.getFullYear();
 
-  // v150: aba interna do ponto (hoje | justificativas)
-  var pTab = ST.pontoTab || 'hoje';
-  var admin = isAdmin(ST.session);
-  var nPend = justifsPendentes().length;
-  var abaBar = admin ? ('<div class="cfg-tabs pt-tabs">'+
-    '<button class="cfg-tab'+(pTab==='hoje'?' on':'')+'" data-ptab="hoje">'+icon('clock')+'Hoje</button>'+
-    '<button class="cfg-tab'+(pTab==='justif'?' on':'')+'" data-ptab="justif">'+icon('bell')+'Justificativas'+(nPend?' <span class="pt-tab-count">'+nPend+'</span>':'')+'</button>'+
-    '<button class="cfg-tab'+(pTab==='espelho'?' on':'')+'" data-ptab="espelho">'+icon('tasks')+'Espelho</button>'+
-  '</div>') : '';
+  // v158: hierarquia por rank
+  var podeGerir = can('equipe');            // admin + gestor
+  var podeVerEquipe = can('redistribuir');  // + supervisor
+  var podeVerEspelhoOutros = can('indicadores'); // + supervisor
+  var meuMid = (typeof meuMemberId==='function') ? meuMemberId() : null;
 
-  if (pTab==='justif' && admin){
+  // Lista de membros conforme rank
+  var mems = [];
+  if (storeId){
+    var todos = membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;});
+    if (podeVerEquipe){
+      mems = todos;
+    } else if (meuMid){
+      // Colaborador vê só a própria linha
+      mems = todos.filter(function(m){ return String(m.id)===String(meuMid); });
+    }
+  }
+
+  // v150+v158: aba interna do ponto
+  var pTab = ST.pontoTab || 'hoje';
+  var nPend = justifsPendentes().length;
+  // Aba justificativas → apenas quem pode gerir (admin+gestor)
+  // Aba espelho → sempre disponível pra qualquer nível (colab vê o próprio)
+  var abas = [];
+  abas.push({key:'hoje', label:'Hoje', icon:'clock'});
+  if (podeGerir) abas.push({key:'justif', label:'Justificativas', icon:'bell', count:nPend});
+  abas.push({key:'espelho', label:'Espelho', icon:'tasks'});
+  var abaBar = abas.length > 1 ? ('<div class="cfg-tabs pt-tabs">'+abas.map(function(a){
+    return '<button class="cfg-tab'+(pTab===a.key?' on':'')+'" data-ptab="'+esc(a.key)+'">'+icon(a.icon)+esc(a.label)+(a.count?' <span class="pt-tab-count">'+a.count+'</span>':'')+'</button>';
+  }).join('')+'</div>') : '';
+
+  if (pTab==='justif' && podeGerir){
     return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">Aprovar justificativas dos colaboradores</div></div></div>'+abaBar+justifsPanelHTML();
   }
-  if (pTab==='espelho' && admin){
+  if (pTab==='espelho'){
     return '<div class="tasks-head no-print"><div><h2>Ponto</h2><div class="sub">Espelho de ponto mensal · exportar PDF</div></div></div>'+abaBar+espelhoPanelHTML();
   }
 
   var rows;
   if(!storeId){ rows='<div class="empty-page"><div class="ep-ico">'+icon('clock')+'</div><h3>Escolha a loja</h3><p>Selecione a loja para bater o ponto da equipe.</p></div>'; }
-  else if(!mems.length){ rows='<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem funcionários ativos</h3><p>Cadastre a equipe desta loja em Equipe.</p></div>'; }
+  else if(!mems.length){
+    if (!podeVerEquipe && !meuMid){
+      rows='<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Você não está vinculado a esta loja</h3><p>Peça pro gestor cadastrar você como membro para bater ponto por aqui.</p></div>';
+    } else {
+      rows='<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem funcionários ativos</h3><p>Cadastre a equipe desta loja em Equipe.</p></div>';
+    }
+  }
   else {
-    // v147: 4 batidas
     rows='<div class="ponto-list-v2">'+mems.map(pontoRowHTML).join('')+'</div>';
   }
-  var presentes = storeId ? mems.filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; }).length : 0;
-  // v152: botão QR (só admin + loja selecionada)
-  var qrBtn = (admin && storeId) ? '<button class="btn btn-ghost pt-qr-btn" id="pontoBtnQR" title="Gerar QR pra bater ponto sem login">'+icon('gear')+'<span>QR do ponto</span></button>' : '';
-  var geoBtn = (admin && storeId) ? '<button class="btn btn-ghost pt-geo-btn" id="pontoBtnGeo" title="Configurar localização da loja">'+icon('sun')+'<span>Localização</span></button>' : '';
-  qrBtn = qrBtn + geoBtn;
-  return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+esc(dataStr)+' · '+presentes+' presente(s)</div></div>'+qrBtn+selHTML+'</div>'+abaBar+rows;
+  var presentes = storeId ? membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;}).filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; }).length : 0;
+  var totalLoja = storeId ? membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;}).length : 0;
+  var subTxt = podeVerEquipe ? (esc(dataStr)+' · '+presentes+' de '+totalLoja+' presente(s)') : esc(dataStr);
+
+  // v152+v158: botões QR + Localização só pra quem pode gerir
+  var qrBtn = (podeGerir && storeId) ? '<button class="btn btn-ghost pt-qr-btn" id="pontoBtnQR" title="Gerar QR pra bater ponto sem login">'+icon('gear')+'<span>QR do ponto</span></button>' : '';
+  var geoBtn = (podeGerir && storeId) ? '<button class="btn btn-ghost pt-geo-btn" id="pontoBtnGeo" title="Configurar localização da loja">'+icon('sun')+'<span>Localização</span></button>' : '';
+  var actionsBtns = qrBtn + geoBtn;
+
+  return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+subTxt+'</div></div>'+actionsBtns+selHTML+'</div>'+abaBar+rows;
 }
 function bindPonto(){
   var sel=document.getElementById('pontoLoja'); if(sel) sel.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
