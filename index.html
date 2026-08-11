@@ -6947,6 +6947,142 @@ body.is-kiosk .kiosk-loading {
   .kiosk-nome-big { font-size: 22px; }
 }
 
+
+/* ============================================================
+   v153 · GEOLOCALIZAÇÃO no ponto
+   ============================================================ */
+
+/* Modal de configuração */
+.geo-modal {
+  max-width: 520px;
+  padding: 0;
+  overflow: hidden;
+}
+.geo-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.geo-head h3 {
+  font-family: var(--u-font-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  margin: 0;
+}
+.geo-sub {
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+  margin: 4px 0 0;
+  line-height: 1.5;
+}
+.geo-body {
+  padding: var(--sp-5) var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.geo-loja-nome {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  display: inline-block;
+  align-self: flex-start;
+}
+.geo-btn-detect-wrap {
+  padding: var(--sp-4);
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-radius: var(--rd-md);
+}
+.geo-btn-detect-wrap .btn {
+  width: 100%;
+  justify-content: center;
+}
+.geo-hint {
+  font-size: 12px;
+  color: var(--u-text2);
+  margin: var(--sp-2) 0 0;
+  line-height: 1.4;
+}
+.geo-hint strong { color: var(--u-text); font-weight: var(--fw-bold); }
+
+.geo-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.geo-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.geo-field-row:last-child {
+  grid-template-columns: 1fr;
+}
+.geo-field { display: flex; flex-direction: column; gap: 4px; }
+
+.geo-status {
+  font-size: var(--fs-sm);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--rd-md);
+  font-weight: var(--fw-semibold);
+  min-height: 20px;
+  display: none;
+}
+.geo-status:not(:empty) { display: block; }
+.geo-status.info { background: var(--primary-50); color: var(--u-accent); }
+.geo-status.ok { background: var(--success-50); color: var(--u-green); }
+.geo-status.err { background: var(--danger-50); color: var(--u-red); }
+
+.geo-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-top: 1px solid var(--u-line);
+  background: var(--u-bg2);
+}
+.geo-foot .btn-ghost:first-child {
+  margin-right: auto;
+  color: var(--u-text3);
+}
+
+/* Botão no header do Ponto */
+.pt-geo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pt-geo-btn .lc-ic { width: 14px; height: 14px; }
+
+/* Badge de geo dentro do slot */
+.pt-geo-pin {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+  vertical-align: middle;
+  filter: grayscale(1);
+  opacity: 0.55;
+  cursor: help;
+}
+.pt-geo-pin.ok { filter: none; opacity: 1; color: var(--u-green); }
+.pt-geo-pin.off { filter: none; opacity: 1; color: var(--u-red); font-weight: var(--fw-extrabold); }
+
+/* Dark: inputs de geo ficam bem visíveis */
+html.dark .geo-btn-detect-wrap { background: rgba(90,133,255,.10); border-color: rgba(90,133,255,.25); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .geo-modal { max-width: 100%; }
+  .geo-field-row { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -6970,7 +7106,7 @@ body.is-kiosk .kiosk-loading {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v152';
+var APP_BUILD = 'v153';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -21651,9 +21787,17 @@ function pontoRowHTML(m){
       }
     }
     if (on) slotClasses += ' on';
+    // v153: badge de geo
+    var lojaGeo = null;
+    if (ci){
+      for (var iL=0;iL<(ST.storeUnits||[]).length;iL++){
+        if (String(ST.storeUnits[iL].id)===String(ci.store_unit_id)){ lojaGeo = ST.storeUnits[iL]; break; }
+      }
+    }
+    var geoBadge = on ? geoBadgeSlotHTML(m.id, ci, s.key, lojaGeo) : '';
     return '<div class="'+slotClasses+'" title="'+esc(s.label)+
       (on && shift ? ' · esperado '+(shift['expected_'+s.key]||'—') : '')+'">'+
-      '<span class="pt-slot-lbl">'+esc(s.label)+'</span>'+
+      '<span class="pt-slot-lbl">'+esc(s.label)+geoBadge+'</span>'+
       '<span class="pt-slot-t">'+(on ? hhmm(val) : '—')+'</span>'+
       statusHTML+
       justifBadge+
@@ -22402,6 +22546,8 @@ function pontoHTML(){
   var presentes = storeId ? mems.filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; }).length : 0;
   // v152: botão QR (só admin + loja selecionada)
   var qrBtn = (admin && storeId) ? '<button class="btn btn-ghost pt-qr-btn" id="pontoBtnQR" title="Gerar QR pra bater ponto sem login">'+icon('gear')+'<span>QR do ponto</span></button>' : '';
+  var geoBtn = (admin && storeId) ? '<button class="btn btn-ghost pt-geo-btn" id="pontoBtnGeo" title="Configurar localização da loja">'+icon('sun')+'<span>Localização</span></button>' : '';
+  qrBtn = qrBtn + geoBtn;
   return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+esc(dataStr)+' · '+presentes+' presente(s)</div></div>'+qrBtn+selHTML+'</div>'+abaBar+rows;
 }
 function bindPonto(){
@@ -22420,6 +22566,16 @@ function bindPonto(){
     var loja = null;
     for (var i=0;i<(ST.storeUnits||[]).length;i++) if (String(ST.storeUnits[i].id)===String(storeId)){ loja = ST.storeUnits[i]; break; }
     if (loja) openQRLojaModal(loja);
+  });
+
+  // v153: botão Localização
+  var geoB = document.getElementById('pontoBtnGeo');
+  if (geoB) geoB.addEventListener('click', function(){
+    var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
+    if (!storeId) { toast('Selecione uma loja','info'); return; }
+    var loja = null;
+    for (var i=0;i<(ST.storeUnits||[]).length;i++) if (String(ST.storeUnits[i].id)===String(storeId)){ loja = ST.storeUnits[i]; break; }
+    if (loja) openGeoLojaModal(loja);
   });
 
   // v150: botões de justificar em slots atrasados
@@ -23690,6 +23846,290 @@ function iconKiosk(name){
     'x':     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
   };
   return svgs[name] || '';
+}
+
+/* ============================================================
+   v153: GEOLOCALIZAÇÃO no ponto
+   Captura coordenada do navegador ao bater, valida contra raio
+   da loja e mostra badge visual.
+   ============================================================ */
+
+/* Captura posição do navegador. Retorna Promise que RESOLVE (nunca rejeita):
+   { lat, lng, accuracy, ts, ok:true } se conseguiu
+   { ok:false, motivo:'...' } se falhou/negado */
+function capturarGeo(){
+  return new Promise(function(resolve){
+    if (!navigator.geolocation){
+      resolve({ ok:false, motivo:'sem_suporte' });
+      return;
+    }
+    var done = false;
+    var timer = setTimeout(function(){
+      if (done) return;
+      done = true;
+      resolve({ ok:false, motivo:'timeout' });
+    }, 8000);
+    navigator.geolocation.getCurrentPosition(
+      function(pos){
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        resolve({
+          ok: true,
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: Math.round(pos.coords.accuracy || 0),
+          ts: new Date().toISOString()
+        });
+      },
+      function(err){
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        var motivo = (err && err.code===1) ? 'negado' : ((err && err.code===3) ? 'timeout' : 'erro');
+        resolve({ ok:false, motivo: motivo });
+      },
+      { enableHighAccuracy: true, timeout: 7000, maximumAge: 30000 }
+    );
+  });
+}
+
+/* Distância em METROS entre duas coordenadas via fórmula haversine.
+   Retorna number (arredondado). */
+function distanciaHaversine(lat1, lng1, lat2, lng2){
+  if (lat1==null || lng1==null || lat2==null || lng2==null) return null;
+  var R = 6371000; // raio da Terra em metros
+  var toRad = function(d){ return d * Math.PI / 180; };
+  var dLat = toRad(lat2 - lat1);
+  var dLng = toRad(lng2 - lng1);
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+          Math.sin(dLng/2) * Math.sin(dLng/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return Math.round(R * c);
+}
+
+/* Valida se uma geo bateu dentro do raio da loja.
+   Retorna { dentro:bool, distancia:m, ok:bool, motivo? } */
+function validarRaioLoja(geo, loja){
+  if (!geo || !geo.ok) return { ok:false, motivo:'sem_geo', dentro:false };
+  if (!loja || loja.geo_lat==null || loja.geo_lng==null){
+    return { ok:true, motivo:'loja_sem_geo', dentro:true, distancia:null };
+  }
+  var raio = Number(loja.geo_raio_m || 200);
+  var dist = distanciaHaversine(geo.lat, geo.lng, loja.geo_lat, loja.geo_lng);
+  return {
+    ok: true,
+    distancia: dist,
+    dentro: dist <= raio,
+    raio: raio
+  };
+}
+
+/* Formata metros pra "50m" / "1.2km" */
+function fmtMetros(m){
+  if (m==null) return '—';
+  if (m < 1000) return m+'m';
+  return (m/1000).toFixed(1)+'km';
+}
+
+/* ============ MODAL: configurar localização da loja ============ */
+function openGeoLojaModal(loja){
+  if (!loja){ return; }
+  var lat = loja.geo_lat!=null ? loja.geo_lat : '';
+  var lng = loja.geo_lng!=null ? loja.geo_lng : '';
+  var raio = loja.geo_raio_m || 200;
+  var nome = loja.name || ('Loja '+loja.store_number);
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.innerHTML =
+    '<div class="modal geo-modal">'+
+      '<div class="geo-head">'+
+        '<div>'+
+          '<h3>Localização da loja</h3>'+
+          '<p class="geo-sub">Define o ponto onde a equipe bate ponto. Batidas fora do raio ficam marcadas.</p>'+
+        '</div>'+
+        '<button class="modal-close" id="geoClose" title="Fechar">×</button>'+
+      '</div>'+
+
+      '<div class="geo-body">'+
+        '<div class="geo-loja-nome">'+esc(nome)+'</div>'+
+
+        '<div class="geo-btn-detect-wrap">'+
+          '<button class="btn btn-primary" id="geoDetect">'+icon('sun')+'Usar minha localização agora</button>'+
+          '<p class="geo-hint">Abra este link no celular <strong>enquanto está dentro da loja</strong> pra pegar a coordenada exata.</p>'+
+        '</div>'+
+
+        '<div class="geo-fields">'+
+          '<div class="geo-field-row">'+
+            '<div class="geo-field"><label class="modal-label">Latitude</label><input type="text" id="geoLat" class="tform-input" placeholder="-23.53456" value="'+esc(lat)+'"></div>'+
+            '<div class="geo-field"><label class="modal-label">Longitude</label><input type="text" id="geoLng" class="tform-input" placeholder="-46.63321" value="'+esc(lng)+'"></div>'+
+          '</div>'+
+          '<div class="geo-field-row">'+
+            '<div class="geo-field"><label class="modal-label">Raio de tolerância (metros)</label><input type="number" id="geoRaio" class="tform-input" min="50" max="1000" step="50" value="'+esc(raio)+'"></div>'+
+          '</div>'+
+        '</div>'+
+
+        '<div id="geoStatus" class="geo-status"></div>'+
+      '</div>'+
+
+      '<div class="modal-foot geo-foot">'+
+        '<button class="btn btn-ghost" id="geoLimpar">Limpar</button>'+
+        '<button class="btn btn-ghost" id="geoCancel">Cancelar</button>'+
+        '<button class="btn btn-primary" id="geoSave">Salvar</button>'+
+      '</div>'+
+    '</div>';
+
+  document.body.appendChild(modal);
+
+  var latEl = modal.querySelector('#geoLat');
+  var lngEl = modal.querySelector('#geoLng');
+  var raioEl = modal.querySelector('#geoRaio');
+  var statusEl = modal.querySelector('#geoStatus');
+
+  function close(){ modal.remove(); }
+  modal.addEventListener('click', function(ev){ if (ev.target===modal) close(); });
+  modal.querySelector('#geoClose').addEventListener('click', close);
+  modal.querySelector('#geoCancel').addEventListener('click', close);
+
+  modal.querySelector('#geoDetect').addEventListener('click', function(){
+    var b = this;
+    b.disabled = true;
+    statusEl.className = 'geo-status info';
+    statusEl.textContent = 'Detectando... permita o acesso à localização quando pedir.';
+    capturarGeo().then(function(g){
+      b.disabled = false;
+      if (!g.ok){
+        statusEl.className = 'geo-status err';
+        statusEl.textContent = 'Não consegui detectar ('+g.motivo+'). Preencha manualmente ou tente pelo celular na loja.';
+        return;
+      }
+      latEl.value = g.lat.toFixed(6);
+      lngEl.value = g.lng.toFixed(6);
+      statusEl.className = 'geo-status ok';
+      statusEl.textContent = 'Detectado com precisão de ±'+g.accuracy+'m. Salve pra confirmar.';
+    });
+  });
+
+  modal.querySelector('#geoLimpar').addEventListener('click', function(){
+    latEl.value = '';
+    lngEl.value = '';
+    statusEl.className = 'geo-status';
+    statusEl.textContent = '';
+  });
+
+  modal.querySelector('#geoSave').addEventListener('click', function(){
+    var latV = (latEl.value||'').trim();
+    var lngV = (lngEl.value||'').trim();
+    var raioV = Number(raioEl.value||200);
+    var patch = { geo_raio_m: raioV };
+    if (latV === '' && lngV === ''){
+      patch.geo_lat = null;
+      patch.geo_lng = null;
+    } else {
+      var lat = parseFloat(latV);
+      var lng = parseFloat(lngV);
+      if (isNaN(lat) || isNaN(lng)){
+        toast('Coordenadas inválidas','error');
+        return;
+      }
+      patch.geo_lat = lat;
+      patch.geo_lng = lng;
+    }
+    sb.from('malba_store_units').update(patch).eq('id', loja.id).then(function(r){
+      if (r.error){ toast('Erro ao salvar','error'); console.error(r.error); return; }
+      // Atualiza local
+      Object.assign(loja, patch);
+      for (var i=0;i<(ST.storeUnits||[]).length;i++){
+        if (String(ST.storeUnits[i].id)===String(loja.id)) Object.assign(ST.storeUnits[i], patch);
+      }
+      if (typeof auditLog==='function') auditLog('Localização da loja atualizada', loja.name);
+      toast('Localização salva','success');
+      close();
+      renderPage();
+    });
+  });
+}
+
+/* ============ HOOKS DE CAPTURA NA BATIDA NORMAL ============ */
+/* Quando togglePontoMembro roda, aciona geo em paralelo e adiciona ao payload.
+   Faço aqui uma versão que WRAP a original, transparente. */
+(function(){
+  if (typeof togglePontoMembro !== 'function') return;
+  var _orig = togglePontoMembro;
+  window.togglePontoMembro = function(member){
+    // Descobre o próximo slot antes (pra saber onde colocar a geo)
+    var ci = (typeof checkinHojeDoMembro==='function') ? checkinHojeDoMembro(member) : null;
+    var prox = (typeof proximoSlotPonto==='function') ? proximoSlotPonto(ci) : null;
+    if (!prox){ _orig(member); return; }
+    // Captura geo em paralelo — se demorar demais, segue sem
+    capturarGeo().then(function(g){
+      // Interceptar a próxima chamada de sb.from('malba_checkins').update/insert
+      // pra injetar geo_<slot>. Como o original faz insert/update via SB, o approach
+      // mais simples é: chamar o original e depois FAZER UM UPDATE separado com a geo.
+      _orig(member);
+      // Aguardar o registro terminar e então gravar geo
+      if (!g.ok) return;
+      setTimeout(function(){
+        var ci2 = (typeof checkinHojeDoMembro==='function') ? checkinHojeDoMembro(member) : null;
+        if (!ci2 || !ci2.id) return;
+        var geoCol = 'geo_'+prox.key;
+        var patch = {};
+        patch[geoCol] = { lat:g.lat, lng:g.lng, accuracy:g.accuracy, ts:g.ts };
+        sb.from('malba_checkins').update(patch).eq('id', ci2.id).then(function(rr){
+          if (!rr.error){ ci2[geoCol] = patch[geoCol]; }
+        });
+      }, 800);
+    });
+  };
+})();
+
+/* ============ HOOK NO KIOSK ============ */
+(function(){
+  if (typeof registrarViaKiosk !== 'function') return;
+  var _orig = registrarViaKiosk;
+  window.registrarViaKiosk = function(){
+    var m = KIOSK_STATE.memberIdent;
+    var ci = KIOSK_STATE.ci;
+    var prox = proximoSlotPonto(ci);
+    if (!prox){ _orig(); return; }
+    capturarGeo().then(function(g){
+      _orig();
+      if (!g.ok) return;
+      // Aguarda alguns segundos e faz update com geo
+      setTimeout(function(){
+        var refreshed = null;
+        for (var i=0;i<KIOSK_STATE.checkins.length;i++){
+          if (String(KIOSK_STATE.checkins[i].member_id)===String(m.id)){ refreshed = KIOSK_STATE.checkins[i]; break; }
+        }
+        if (!refreshed || !refreshed.id) return;
+        var geoCol = 'geo_'+prox.key;
+        var patch = {};
+        patch[geoCol] = { lat:g.lat, lng:g.lng, accuracy:g.accuracy, ts:g.ts };
+        sb.from('malba_checkins').update(patch).eq('id', refreshed.id).then(function(rr){
+          if (!rr.error) refreshed[geoCol] = patch[geoCol];
+        });
+      }, 900);
+    });
+  };
+})();
+
+/* ============ BADGE DE GEO NO SLOT ============ */
+/* Chamada por pontoRowHTML pra decorar cada slot que tem geo com um pin
+   colorido conforme dentro/fora do raio. */
+function geoBadgeSlotHTML(memberId, ci, slotKey, loja){
+  if (!ci) return '';
+  var geo = ci['geo_'+slotKey];
+  if (!geo || geo.lat==null) return '';
+  var v = validarRaioLoja({ok:true, lat:geo.lat, lng:geo.lng}, loja);
+  if (!v.ok || v.motivo === 'loja_sem_geo'){
+    return '<span class="pt-geo-pin" title="Registrado (loja sem localização configurada)">📍</span>';
+  }
+  if (v.dentro){
+    return '<span class="pt-geo-pin ok" title="Registrado a '+fmtMetros(v.distancia)+' da loja (dentro do raio de '+v.raio+'m)">📍</span>';
+  }
+  return '<span class="pt-geo-pin off" title="Registrado a '+fmtMetros(v.distancia)+' da loja (fora do raio de '+v.raio+'m)">⚠</span>';
 }
 
 function init() {
