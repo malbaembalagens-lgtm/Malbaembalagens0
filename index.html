@@ -284,6 +284,59 @@ html.dark .filter-chip.on .filter-chip-count {
   background: rgba(255,255,255,.20);
   color: #fff;
 }
+
+/* ===== v145 · Hero adaptativo no dark ===== */
+/* Botão CTA "Ver o dia" — fundo branco + texto que era --neutral-900 (invertido no dark → branco!) */
+html.dark .hero-ad-cta {
+  color: #0F172A;  /* força texto escuro sobre fundo branco */
+}
+html.dark .hero-ad-cta:hover {
+  color: #0F172A;
+}
+/* Reduzir intensidade das radial-gradients no dark (estavam queimando o âmbar) */
+html.dark .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(139,92,246,.28), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(59,111,247,.22), transparent 55%);
+}
+html.dark .hero-ad-critico .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(239,68,68,.32), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(239,68,68,.18), transparent 55%);
+}
+html.dark .hero-ad-atencao .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(245,158,11,.30), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(245,158,11,.16), transparent 55%);
+}
+html.dark .hero-ad-ok .hero-ad-bg::after {
+  background:
+    radial-gradient(600px 320px at 85% 15%, rgba(22,163,74,.28), transparent 60%),
+    radial-gradient(500px 280px at 10% 90%, rgba(22,163,74,.14), transparent 55%);
+}
+/* Reduzir amplitude da animação heroGlow no dark (menos "pulso") */
+html.dark .hero-ad-bg::after {
+  animation: heroGlowDark 8s ease-in-out infinite alternate;
+}
+@keyframes heroGlowDark {
+  from { opacity: 0.65; }
+  to { opacity: 0.85; }
+}
+
+/* Cadastros/CRM: badges com fundo branco fixo */
+html.dark .cci-check { background: var(--u-card2); }
+html.dark .aval-lock-ic { background: var(--u-card2); }
+html.dark .aval-lock-tag { background: var(--u-accent-soft); }
+/* Sidebar estratégia — contador do item ativo (era #fff / var(--u-accent)) */
+html.dark .estr-side-item.on .estr-count {
+  background: rgba(255,255,255,.15);
+  color: #fff;
+}
+/* Botão .btn-primary — no dark o texto claro sobre azul fica bom mas se tiver hardcode... */
+/* KPI cards: garantir cor do trend chip verde/vermelho legível */
+html.dark .stat-trend.up { color: #34D399; background: rgba(52,211,153,.14); }
+html.dark .stat-trend.down { color: #F87171; background: rgba(248,113,113,.14); }
+html.dark .stat-trend.flat { color: var(--u-text3); background: var(--u-bg2); }
 .screen-title { margin: 30px 0 28px; font-family: var(--u-font-display); font-size: 20px; font-weight: 700; color: var(--u-text2); }
 .sector-grid { display: grid; grid-template-columns: repeat(var(--sector-cols, 4), minmax(0, 1fr)); gap: 18px; width: 100%; max-width: calc(var(--sector-cols, 4) * 240px); margin: 0 auto; justify-content: center; }
 .sector-card { min-width: 0; }
@@ -5447,7 +5500,7 @@ select.tform-input {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v144';
+var APP_BUILD = 'v145';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
