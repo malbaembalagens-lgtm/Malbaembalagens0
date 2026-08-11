@@ -5664,6 +5664,1289 @@ html.dark .ponto-row-v2.completo .pt-slot.on {
   border-color: rgba(34,197,94,.28);
 }
 
+
+/* ============================================================
+   v148 · MODAL DE ESCALA (SHIFTS)
+   ============================================================ */
+.sf-modal {
+  max-width: 780px;
+  padding: 0;
+  overflow: hidden;
+}
+.sf-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.sf-head h3 {
+  font-family: var(--u-font-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+.sf-sub {
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+  margin: 4px 0 0;
+}
+.sf-head .modal-close {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rd-sm);
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: var(--u-text3);
+  cursor: pointer;
+  transition: background var(--tr-fast), color var(--tr-fast);
+}
+.sf-head .modal-close:hover {
+  background: var(--u-bg2);
+  color: var(--u-text);
+}
+
+/* Templates de escala */
+.sf-tpls {
+  padding: var(--sp-4) var(--sp-6);
+  background: var(--u-bg2);
+  border-bottom: 1px solid var(--u-line);
+}
+.sf-tpls-l {
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: var(--sp-2);
+}
+.sf-tpls-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-2);
+}
+.sf-tpl-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  font-family: inherit;
+}
+.sf-tpl-btn:hover {
+  border-color: var(--primary-500);
+  background: var(--primary-50);
+}
+.sf-tpl-btn b {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+}
+.sf-tpl-btn span {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+}
+
+/* Tabela de escala */
+.sf-table-wrap {
+  padding: var(--sp-4) var(--sp-6);
+  overflow-x: auto;
+  max-height: 60vh;
+}
+.sf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+.sf-table th {
+  text-align: left;
+  padding: 6px 8px 8px;
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-bottom: 1px solid var(--u-line);
+}
+.sf-table td {
+  padding: 6px 4px;
+  vertical-align: middle;
+}
+.sf-row {
+  transition: background var(--tr-fast);
+}
+.sf-row:hover:not(.sf-row-folga) {
+  background: var(--u-bg2);
+}
+.sf-row-folga {
+  background: rgba(148,160,184,.08);
+}
+.sf-row-folga td:not(.sf-actions):not(.sf-day) {
+  opacity: 0.35;
+}
+
+.sf-day {
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  min-width: 68px;
+}
+.sf-day-full {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-weight: var(--fw-medium);
+}
+
+.sf-time {
+  width: 100%;
+  height: 34px;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-sm);
+  background: var(--u-card);
+  color: var(--u-text);
+  font-size: var(--fs-sm);
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  transition: border-color var(--tr-fast), box-shadow var(--tr-fast);
+}
+.sf-time:hover:not(:disabled) { border-color: var(--neutral-300); }
+.sf-time:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: var(--focus-ring);
+}
+.sf-time:disabled {
+  background: var(--u-bg2);
+  cursor: not-allowed;
+}
+
+.sf-actions {
+  width: 80px;
+}
+.sf-folga-lbl {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--rd-sm);
+  cursor: pointer;
+  user-select: none;
+  color: var(--u-text2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  transition: background var(--tr-fast);
+}
+.sf-folga-lbl:hover { background: var(--u-bg2); }
+.sf-folga-lbl input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--warn-500);
+  cursor: pointer;
+}
+.sf-row-folga .sf-folga-lbl {
+  color: var(--warn-600);
+  font-weight: var(--fw-bold);
+}
+
+/* Rodapé */
+.sf-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-top: 1px solid var(--u-line);
+  background: var(--u-bg2);
+}
+
+/* Botão da ficha */
+.fi-btn-escala {
+  color: var(--warn-600);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .sf-modal { max-width: 100%; }
+  .sf-head { padding: var(--sp-4); }
+  .sf-tpls { padding: var(--sp-3) var(--sp-4); }
+  .sf-table-wrap { padding: var(--sp-3) var(--sp-4); }
+  .sf-foot { padding: var(--sp-3) var(--sp-4); }
+  .sf-tpls-list { grid-template-columns: 1fr; }
+  .sf-day { min-width: 50px; }
+  .sf-day-full { display: none; }
+}
+
+
+/* ============================================================
+   v149 · DETECÇÃO DE ATRASO — badges no ponto
+   ============================================================ */
+
+/* Badge dentro de cada slot */
+.pt-slot-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: var(--fw-extrabold);
+  padding: 1px 5px;
+  border-radius: var(--rd-sm);
+  margin-top: 2px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.pt-slot-badge.cor-ok {
+  background: rgba(22,163,74,.14);
+  color: var(--u-green);
+}
+.pt-slot-badge.cor-bom {
+  background: rgba(59,111,247,.14);
+  color: var(--u-accent);
+}
+.pt-slot-badge.cor-atencao {
+  background: rgba(245,158,11,.14);
+  color: var(--warn-600);
+}
+.pt-slot-badge.cor-ruim {
+  background: rgba(239,68,68,.14);
+  color: var(--danger-600);
+}
+.pt-slot-badge.cor-neutro {
+  background: var(--u-bg2);
+  color: var(--u-text3);
+}
+
+/* Recolorir borda do slot conforme cor do badge (mais visual) */
+.pt-slot.on:has(.pt-slot-badge.cor-atencao) {
+  border-color: rgba(245,158,11,.35);
+  background: rgba(245,158,11,.08);
+}
+.pt-slot.on:has(.pt-slot-badge.cor-ruim) {
+  border-color: rgba(239,68,68,.35);
+  background: rgba(239,68,68,.08);
+}
+
+/* Estado folga */
+.ponto-row-v2.folga {
+  background: linear-gradient(135deg, rgba(139,92,246,.10), rgba(59,111,247,.06));
+  border-color: rgba(139,92,246,.25);
+}
+.pt-folga-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--fs-sm);
+  color: var(--u-purple);
+  font-weight: var(--fw-bold);
+  margin-top: 4px;
+}
+.pt-folga-tag .lc-ic { width: 14px; height: 14px; }
+.pt-folga-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(139,92,246,.14);
+  color: var(--u-purple);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pt-folga-ic .lc-ic { width: 18px; height: 18px; }
+
+/* Aviso quando não tem escala definida */
+.pt-sem-escala {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-style: italic;
+  font-weight: var(--fw-medium);
+  margin-top: 2px;
+}
+
+/* Dark overrides pra badges */
+html.dark .pt-slot-badge.cor-ok {
+  background: rgba(34,197,94,.20);
+  color: #4ADE80;
+}
+html.dark .pt-slot-badge.cor-atencao {
+  background: rgba(251,191,36,.20);
+  color: #FBBF24;
+}
+html.dark .pt-slot-badge.cor-ruim {
+  background: rgba(248,113,113,.20);
+  color: #FCA5A5;
+}
+html.dark .pt-slot-badge.cor-neutro {
+  background: rgba(148,160,184,.15);
+  color: var(--u-text2);
+}
+html.dark .pt-slot-badge.cor-bom {
+  background: rgba(90,133,255,.22);
+  color: #7B9DFF;
+}
+html.dark .ponto-row-v2.folga {
+  background: linear-gradient(135deg, rgba(167,139,250,.10), rgba(90,133,255,.06));
+  border-color: rgba(167,139,250,.30);
+}
+
+
+/* ============================================================
+   v150 · JUSTIFICATIVAS DE PONTO
+   ============================================================ */
+
+/* Botão pequeno "+" pra justificar dentro do slot atrasado */
+.pt-slot-justif-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--u-card);
+  color: var(--u-accent);
+  border: 1px solid var(--u-line);
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform var(--tr-fast), background var(--tr-fast);
+  opacity: 0.7;
+}
+.pt-slot-justif-btn:hover {
+  opacity: 1;
+  background: var(--u-accent);
+  color: #fff;
+  transform: scale(1.1);
+}
+.pt-slot { position: relative; }
+
+/* Slot justificado aprovado — fica verde suave */
+.pt-slot-justif-ok {
+  border-color: rgba(22,163,74,.35) !important;
+  background: rgba(22,163,74,.10) !important;
+}
+
+/* Tabs internas do ponto */
+.pt-tabs { max-width: 480px; margin-bottom: var(--sp-4); }
+.pt-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--danger-500);
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  margin-left: 4px;
+}
+
+/* Modal de justificativa */
+.jf-modal { max-width: 480px; padding: 0; overflow: hidden; }
+.jf-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.jf-head h3 {
+  font-family: var(--u-font-display);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-extrabold);
+  margin: 0;
+}
+.jf-sub {
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+  margin: 4px 0 0;
+}
+.jf-body {
+  padding: var(--sp-5) var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.jf-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-top: 1px solid var(--u-line);
+  background: var(--u-bg2);
+}
+
+/* Fila de justificativas */
+.jf-sec {
+  margin-bottom: var(--sp-6);
+}
+.jf-sec h4 {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text);
+  margin: 0 0 var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.jf-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--danger-500);
+  color: #fff;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+}
+.jf-count.zero { background: var(--u-bg2); color: var(--u-text3); }
+
+.jf-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 720px;
+}
+.jf-card {
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+  box-shadow: var(--u-shadow);
+  transition: border-color var(--tr-fast);
+}
+.jf-card.jf-pendente { border-left: 3px solid var(--warn-500); }
+.jf-card.jf-aprovada { border-left: 3px solid var(--success-500); opacity: 0.85; }
+.jf-card.jf-rejeitada { border-left: 3px solid var(--danger-500); opacity: 0.7; }
+
+.jf-card-h {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+.jf-av {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--rd-sm);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--fw-extrabold);
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.jf-card-id { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.jf-card-id b { font-size: var(--fs-md); font-weight: var(--fw-bold); color: var(--u-text); }
+.jf-card-id span { font-size: 11px; color: var(--u-text3); font-weight: var(--fw-medium); }
+.jf-motivo {
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 3px 8px;
+  border-radius: var(--rd-sm);
+  background: var(--u-bg2);
+}
+
+.jf-desc {
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+  line-height: 1.5;
+  padding: var(--sp-2) 0;
+  border-top: 1px dashed var(--u-line);
+  border-bottom: 1px dashed var(--u-line);
+  margin: var(--sp-2) 0;
+}
+.jf-review-note {
+  font-size: 11px;
+  color: var(--u-text3);
+  padding: 6px 8px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-sm);
+  margin-bottom: var(--sp-2);
+}
+.jf-review-note b { color: var(--u-text2); }
+
+.jf-actions {
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: flex-end;
+}
+.jf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  height: 32px;
+  border-radius: var(--rd-md);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  border: none;
+  transition: transform var(--tr-fast);
+  font-family: inherit;
+}
+.jf-btn:hover { transform: translateY(-1px); }
+.jf-btn .lc-ic { width: 14px; height: 14px; }
+.jf-btn.ok { background: var(--success-500); color: #fff; }
+.jf-btn.ok:hover { background: var(--success-600); }
+.jf-btn.no { background: var(--u-bg2); color: var(--u-text2); }
+.jf-btn.no:hover { background: var(--danger-500); color: #fff; }
+
+.jf-st {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  padding: 4px 10px;
+  border-radius: var(--rd-md);
+}
+.jf-st.aprov { background: var(--success-50); color: var(--success-600); }
+.jf-st.rej { background: var(--danger-50); color: var(--danger-600); }
+.jf-st .lc-ic { width: 12px; height: 12px; }
+
+/* Dark overrides */
+html.dark .pt-slot-justif-ok {
+  border-color: rgba(34,197,94,.35) !important;
+  background: rgba(34,197,94,.12) !important;
+}
+html.dark .jf-st.aprov { background: rgba(34,197,94,.14); color: #4ADE80; }
+html.dark .jf-st.rej { background: rgba(248,113,113,.14); color: #FCA5A5; }
+html.dark .jf-motivo { background: rgba(255,255,255,.06); }
+
+
+/* ============================================================
+   v151 · ESPELHO DE PONTO + IMPRESSÃO
+   ============================================================ */
+
+.esp-filtros {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  flex-wrap: wrap;
+}
+.esp-filtros select {
+  min-width: 140px;
+}
+
+.esp-wrap {
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-6);
+  box-shadow: var(--u-shadow);
+  margin-bottom: var(--sp-4);
+}
+
+.esp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-bottom: 2px solid var(--u-line);
+  margin-bottom: var(--sp-4);
+  flex-wrap: wrap;
+}
+.esp-title {
+  font-family: var(--u-font-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  margin: 0 0 6px;
+  color: var(--u-text);
+  letter-spacing: -0.3px;
+}
+.esp-sub {
+  font-size: var(--fs-md);
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+  margin: 0 0 2px;
+}
+.esp-per {
+  font-size: var(--fs-sm);
+  color: var(--u-text3);
+  margin: 0;
+}
+.esp-per b { color: var(--u-text); font-weight: var(--fw-extrabold); }
+
+/* Tabela */
+.esp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+}
+.esp-table thead th {
+  text-align: left;
+  padding: 10px 8px;
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  background: var(--u-bg2);
+  border-bottom: 2px solid var(--u-line);
+  white-space: nowrap;
+}
+.esp-table tbody td {
+  padding: 8px;
+  border-bottom: 1px solid var(--u-line);
+  vertical-align: middle;
+}
+.esp-row:hover td { background: var(--u-bg2); }
+.esp-row.esp-fds td { background: var(--u-bg2); color: var(--u-text2); }
+.esp-row.esp-folga td { background: rgba(139,92,246,.06); }
+.esp-row.esp-falta td { background: rgba(239,68,68,.06); }
+
+.esp-td-day {
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text);
+  width: 40px;
+}
+.esp-td-wd {
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+  width: 40px;
+}
+.esp-td-esp, .esp-td-real {
+  color: var(--u-text);
+  font-size: 12px;
+}
+.esp-td-horas {
+  font-weight: var(--fw-bold);
+  color: var(--u-accent);
+  min-width: 70px;
+}
+.esp-td-status { min-width: 90px; }
+.esp-td-jf { min-width: 100px; }
+
+/* Badges de status na tabela */
+.esp-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--rd-sm);
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+}
+.esp-status-ok { background: rgba(22,163,74,.14); color: var(--u-green); }
+.esp-status-atencao { background: rgba(245,158,11,.14); color: var(--warn-600); }
+.esp-status-ruim { background: rgba(239,68,68,.14); color: var(--danger-600); }
+.esp-status-neutro { background: var(--u-bg2); color: var(--u-text3); }
+.esp-status-bom { background: rgba(59,111,247,.14); color: var(--u-accent); }
+
+.esp-jf {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: var(--rd-sm);
+  font-weight: var(--fw-bold);
+}
+.esp-jf.ok { background: rgba(22,163,74,.14); color: var(--u-green); }
+.esp-jf.pend { background: rgba(245,158,11,.14); color: var(--warn-600); }
+.esp-jf .lc-ic { width: 12px; height: 12px; }
+
+/* Rodapé de totais */
+.esp-tot {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 2px solid var(--u-line);
+}
+.esp-tot-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--sp-3);
+}
+.esp-tot-cell {
+  padding: var(--sp-3);
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.esp-tot-cell span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+}
+.esp-tot-cell b {
+  font-size: var(--fs-lg);
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+}
+.esp-tot-cell.danger b { color: var(--u-red); }
+.esp-tot-cell.warn b { color: var(--warn-600); }
+.esp-tot-cell.ok b { color: var(--u-green); }
+.esp-tot-jf {
+  margin-top: var(--sp-3);
+  font-size: 12px;
+  color: var(--u-text3);
+  text-align: right;
+}
+
+/* Assinaturas — só na impressão */
+.esp-sign {
+  display: none;
+  margin-top: 40px;
+  gap: 60px;
+  padding-top: 20px;
+}
+.esp-sign-box {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  color: #444;
+}
+.esp-sign-line {
+  border-top: 1px solid #444;
+  margin-bottom: 6px;
+  height: 40px;
+}
+
+/* Utilitário: elementos só de impressão / só de tela */
+.print-only { display: none; }
+
+/* ============================================================
+   IMPRESSÃO / PDF — layout limpo em preto e branco
+   ============================================================ */
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .no-print, .side, .top, .modal-bg, .sf-modal, .jf-modal, .esp-filtros { display: none !important; }
+  .print-only { display: block !important; }
+  .esp-sign { display: flex !important; }
+
+  .app-shell, .main, .content { display: block !important; padding: 0 !important; margin: 0 !important; background: #fff !important; }
+  .tasks-head, .cfg-tabs, .pt-tabs { display: none !important; }
+
+  .esp-wrap {
+    background: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    color: #000 !important;
+  }
+  .esp-title, .esp-sub, .esp-per { color: #000 !important; }
+  .esp-per b { color: #000 !important; }
+
+  .esp-table { font-size: 10px !important; }
+  .esp-table thead th {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+    border-bottom: 1px solid #000 !important;
+  }
+  .esp-table tbody td {
+    color: #000 !important;
+    border-bottom: 1px solid #ccc !important;
+    padding: 5px 4px !important;
+  }
+  .esp-row.esp-fds td { background: #fafafa !important; color: #444 !important; }
+  .esp-row.esp-folga td { background: #f5f0ff !important; }
+  .esp-row.esp-falta td { background: #fff0f0 !important; }
+  .esp-td-horas { color: #000 !important; }
+
+  .esp-status {
+    background: transparent !important;
+    padding: 0 !important;
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+  .esp-status-ok::before { content: "✓ "; }
+  .esp-status-ruim::before { content: "✗ "; }
+  .esp-status-atencao::before { content: "! "; }
+
+  .esp-jf.ok { background: transparent !important; color: #000 !important; }
+  .esp-jf.ok::before { content: "✓ "; }
+  .esp-jf.pend { background: transparent !important; color: #000 !important; }
+
+  .esp-tot {
+    border-top: 1px solid #000 !important;
+    margin-top: 15px !important;
+  }
+  .esp-tot-cell {
+    background: #f8f8f8 !important;
+    border: 1px solid #ddd !important;
+  }
+  .esp-tot-cell span, .esp-tot-cell b { color: #000 !important; }
+
+  @page { size: A4; margin: 15mm; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .esp-wrap { padding: var(--sp-4); }
+  .esp-head { flex-direction: column; }
+  .esp-table thead th, .esp-table tbody td { padding: 6px 4px; font-size: 10px; }
+  .esp-td-esp, .esp-td-real { font-size: 10px; }
+  .esp-tot-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* Dark overrides */
+html.dark .esp-row.esp-fds td { background: rgba(148,160,184,.06); }
+html.dark .esp-row.esp-folga td { background: rgba(167,139,250,.08); }
+html.dark .esp-row.esp-falta td { background: rgba(248,113,113,.08); }
+html.dark .esp-status-ok { background: rgba(34,197,94,.14); color: #4ADE80; }
+html.dark .esp-status-atencao { background: rgba(251,191,36,.14); color: #FBBF24; }
+html.dark .esp-status-ruim { background: rgba(248,113,113,.14); color: #FCA5A5; }
+html.dark .esp-status-bom { background: rgba(90,133,255,.14); color: #7B9DFF; }
+html.dark .esp-jf.ok { background: rgba(34,197,94,.14); color: #4ADE80; }
+html.dark .esp-jf.pend { background: rgba(251,191,36,.14); color: #FBBF24; }
+
+
+/* ============================================================
+   v152 · KIOSK PONTO (QR + PIN sem login) + MODAL QR
+   ============================================================ */
+
+/* Modo kiosk: página inteira dedicada */
+body.is-kiosk { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); overflow: hidden; }
+body.is-kiosk .kiosk-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+}
+.kiosk {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-family: var(--u-font-body);
+  padding: 0;
+}
+.kiosk-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.15);
+}
+.kiosk-brand {
+  font-family: var(--u-font-display);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.kiosk-brand span {
+  font-size: 12px;
+  background: linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-left: 6px;
+  font-weight: 800;
+}
+.kiosk-loja {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,.75);
+  letter-spacing: -0.2px;
+}
+.kiosk-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  gap: 24px;
+}
+
+/* Tela PIN */
+.kiosk-pin-wrap {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+.kiosk-headline {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+}
+.kiosk-dots {
+  display: flex;
+  gap: 14px;
+  padding: 20px 0;
+}
+.kiosk-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.14);
+  border: 2px solid rgba(255,255,255,.20);
+  transition: transform .12s;
+}
+.kiosk-dot.on {
+  background: #3B6FF7;
+  border-color: #3B6FF7;
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(59,111,247,.55);
+}
+.kiosk-err {
+  background: rgba(239,68,68,.20);
+  color: #FCA5A5;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+}
+.kiosk-busy {
+  color: rgba(255,255,255,.55);
+  font-size: 14px;
+}
+.kiosk-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
+}
+.kiosk-key {
+  height: 78px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.10);
+  color: #fff;
+  font-size: 30px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,.10);
+  cursor: pointer;
+  transition: transform .08s, background .12s;
+  font-family: inherit;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.kiosk-key:hover { background: rgba(255,255,255,.16); }
+.kiosk-key:active { transform: scale(.92); background: rgba(255,255,255,.24); }
+.kiosk-key.back { color: rgba(255,255,255,.55); background: rgba(255,255,255,.05); font-size: 26px; }
+.kiosk-key.ok { background: #16A34A; color: #fff; }
+.kiosk-key.ok:active { background: #128A3F; }
+
+/* Tela confirmar batida */
+.kiosk-conf-wrap {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.kiosk-av-big {
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3);
+}
+.kiosk-nome-big {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+}
+.kiosk-next {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255,255,255,.50);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 12px;
+}
+.kiosk-slot-name {
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.6px;
+}
+.kiosk-clock {
+  font-size: 46px;
+  font-weight: 900;
+  color: #5A85FF;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -1px;
+}
+.kiosk-info-loja {
+  color: rgba(255,255,255,.55);
+  font-size: 14px;
+}
+.kiosk-big-btn {
+  min-width: 240px;
+  height: 76px;
+  padding: 0 32px;
+  margin-top: 24px;
+  border-radius: 22px;
+  border: none;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform .12s, box-shadow .12s;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.kiosk-big-btn.ok { background: #16A34A; color: #fff; box-shadow: 0 10px 30px rgba(22,163,74,.35); }
+.kiosk-big-btn.ok:active { transform: scale(.97); }
+.kiosk-big-btn.ghost { background: rgba(255,255,255,.10); color: #fff; }
+.kiosk-big-btn svg { width: 22px; height: 22px; }
+.kiosk-back-link {
+  color: rgba(255,255,255,.50);
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-family: inherit;
+}
+.kiosk-back-link:hover { color: rgba(255,255,255,.85); }
+
+/* Tela sucesso */
+.kiosk-msg {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+.kiosk-msg h2 {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+.kiosk-msg p {
+  font-size: 17px;
+  color: rgba(255,255,255,.75);
+  line-height: 1.5;
+}
+.kiosk-msg-ico {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.kiosk-msg.ok .kiosk-msg-ico { background: #16A34A; box-shadow: 0 12px 36px rgba(22,163,74,.45); }
+.kiosk-msg.err .kiosk-msg-ico { background: #EF4444; box-shadow: 0 12px 36px rgba(239,68,68,.45); }
+.kiosk-msg-ico svg { width: 44px; height: 44px; }
+.kiosk-auto-back {
+  margin-top: 14px;
+  font-size: 13px;
+  color: rgba(255,255,255,.45);
+}
+
+/* Modal do QR */
+.qr-modal { max-width: 440px; padding: 0; overflow: hidden; }
+.qr-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.qr-head h3 {
+  font-family: var(--u-font-display);
+  font-size: var(--fs-2xl);
+  font-weight: var(--fw-extrabold);
+  margin: 0;
+}
+.qr-sub {
+  font-size: var(--fs-sm);
+  color: var(--u-text2);
+  margin: 4px 0 0;
+}
+.qr-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-6);
+  border-top: 1px solid var(--u-line);
+  background: var(--u-bg2);
+}
+.qr-print-area {
+  padding: var(--sp-6);
+  text-align: center;
+  background: #fff;
+  color: #0F172A;
+}
+.qr-print-brand {
+  font-family: var(--u-font-display);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+  color: #0F172A;
+}
+.qr-print-brand span {
+  font-size: 11px;
+  background: linear-gradient(135deg, #4F7CFF 0%, #8B5CF6 100%);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+.qr-print-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0F172A;
+  margin: 18px 0 4px;
+  letter-spacing: -0.4px;
+}
+.qr-print-loja {
+  font-size: 16px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 24px;
+}
+.qr-img {
+  display: block;
+  margin: 0 auto;
+  width: 320px;
+  height: 320px;
+  border: 4px solid #0F172A;
+  border-radius: 12px;
+  background: #fff;
+}
+.qr-print-inst {
+  font-size: 14px;
+  color: #475569;
+  margin-top: 20px;
+  font-weight: 600;
+}
+.qr-print-url {
+  font-size: 10px;
+  color: #94A3B8;
+  margin-top: 8px;
+  font-family: monospace;
+  word-break: break-all;
+  padding: 0 16px;
+}
+
+/* Impressão QR: mostra só a print-area */
+@media print {
+  body.printing-qr .app-shell,
+  body.printing-qr .side,
+  body.printing-qr .top,
+  body.printing-qr .modal-bg,
+  body.printing-qr .qr-head,
+  body.printing-qr .qr-foot { display: none !important; }
+  body.printing-qr .qr-modal { position: static; box-shadow: none; border: none; max-width: 100%; }
+  body.printing-qr .qr-print-area { padding: 40px; }
+  body.printing-qr { background: #fff !important; }
+  @page { size: A4; margin: 20mm; }
+}
+
+/* PIN na ficha */
+.fi-pin-tag {
+  margin-left: auto;
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.fi-pin-tag.has { background: rgba(22,163,74,.14); color: var(--u-green); }
+.fi-pin-tag.none { background: var(--u-bg2); color: var(--u-text3); }
+.fi-pin-body { display: flex; flex-direction: column; gap: var(--sp-3); }
+.fi-pin-desc { font-size: var(--fs-sm); color: var(--u-text2); margin: 0; }
+.fi-pin-form {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.fi-pin-form input {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 14px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  background: var(--u-card);
+  color: var(--u-text);
+  font-size: 18px;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 3px;
+  text-align: center;
+  font-family: inherit;
+}
+.fi-pin-form input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: var(--focus-ring);
+}
+
+/* Botão QR na página de ponto */
+.pt-qr-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.pt-qr-btn .lc-ic { width: 14px; height: 14px; }
+
+/* Mobile: teclado ainda maior */
+@media (max-width: 480px) {
+  .kiosk-h { padding: 14px 16px; }
+  .kiosk-brand { font-size: 18px; }
+  .kiosk-loja { font-size: 13px; }
+  .kiosk-body { padding: 20px 16px; gap: 18px; }
+  .kiosk-headline { font-size: 22px; }
+  .kiosk-key { height: 68px; font-size: 26px; border-radius: 16px; }
+  .kiosk-pad { gap: 10px; }
+  .kiosk-slot-name { font-size: 28px; }
+  .kiosk-clock { font-size: 40px; }
+  .kiosk-big-btn { min-width: 200px; height: 68px; font-size: 18px; }
+  .kiosk-av-big { width: 76px; height: 76px; font-size: 28px; }
+  .kiosk-nome-big { font-size: 22px; }
+}
+
 </style>
 </head>
 <body>
@@ -5687,7 +6970,7 @@ html.dark .ponto-row-v2.completo .pt-slot.on {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v147';
+var APP_BUILD = 'v152';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -5996,7 +7279,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -6078,6 +7361,8 @@ function loadData() {
     ST.lojaMetricas = []; ST.lojaProdutos = [];
     // v119: mantém queries "leves" que aparecem no Início (mural, checkins, kudos, vendas, requests, eventos)
     try { carregarAtividades(function(){ if(ST.page==='inicio') renderPage(); }); } catch(e){} // v137: feed atividades
+    try { carregarShifts(function(){ if(ST.page==='inicio'||ST.page==='ponto'||ST.page==='equipe') renderPage(); }); } catch(e){} // v148: escalas
+    try { carregarJustificativas(function(){ if(ST.page==='ponto'||ST.page==='equipe') renderPage(); }); } catch(e){} // v150: justificativas
     try { carregarChecklistGestor(function(){ if(ST.page==='inicio') renderPage(); }); } catch(e){} // v138: checklist gestor
     try { sb.from('malba_events').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.events=re.data; if(ST.page==='calendario'||ST.page==='inicio') renderPage(); } }, function(){}); } catch(e){}
     try { sb.from('malba_sales_entries').select('*').eq('sector', sector).then(function(re){ if(!re.error && re.data){ ST.salesEntries=re.data; if(ST.page==='inicio'||ST.page==='gestao'||ST.page==='metas'||ST.page==='kpis') renderPage(); } }, function(){}); } catch(e){}
@@ -9108,6 +10393,302 @@ function rankVendasMembro(member){
   return { pos:pos, total:arr.length };
 }
 
+/* ============================================================
+   v148: ESCALAS/TURNOS ESPERADOS
+   Cada membro tem 7 dias configuráveis (weekday 0=dom, 6=sáb)
+   Templates prontos pra facilitar setup em massa.
+   ============================================================ */
+
+/* Dias da semana em ordem "visual" (seg → dom) */
+var WEEKDAYS = [
+  { wd:1, short:'Seg', full:'Segunda' },
+  { wd:2, short:'Ter', full:'Terça' },
+  { wd:3, short:'Qua', full:'Quarta' },
+  { wd:4, short:'Qui', full:'Quinta' },
+  { wd:5, short:'Sex', full:'Sexta' },
+  { wd:6, short:'Sáb', full:'Sábado' },
+  { wd:0, short:'Dom', full:'Domingo' }
+];
+
+/* Templates de escala prontos */
+var SHIFT_TEMPLATES = [
+  {
+    id: 'comercial',
+    label: 'Comercial padrão',
+    desc: 'Seg-Sex 08-12/13-17 · Sáb 08-12 · Dom folga',
+    aplicar: function(memberId){
+      var out = [];
+      [1,2,3,4,5].forEach(function(wd){
+        out.push({ weekday:wd, expected_entrada:'08:00', expected_saida_almoco:'12:00', expected_volta_almoco:'13:00', expected_saida:'17:00', folga:false });
+      });
+      out.push({ weekday:6, expected_entrada:'08:00', expected_saida_almoco:null, expected_volta_almoco:null, expected_saida:'12:00', folga:false });
+      out.push({ weekday:0, folga:true });
+      return out;
+    }
+  },
+  {
+    id: 'lojas-padrao',
+    label: 'Loja padrão',
+    desc: 'Seg-Sáb 09-13/14-18 · Dom folga',
+    aplicar: function(memberId){
+      var out = [];
+      [1,2,3,4,5,6].forEach(function(wd){
+        out.push({ weekday:wd, expected_entrada:'09:00', expected_saida_almoco:'13:00', expected_volta_almoco:'14:00', expected_saida:'18:00', folga:false });
+      });
+      out.push({ weekday:0, folga:true });
+      return out;
+    }
+  },
+  {
+    id: 'meio-manha',
+    label: 'Meio período manhã',
+    desc: 'Seg-Sáb 08-12 · Dom folga',
+    aplicar: function(memberId){
+      var out = [];
+      [1,2,3,4,5,6].forEach(function(wd){
+        out.push({ weekday:wd, expected_entrada:'08:00', expected_saida_almoco:null, expected_volta_almoco:null, expected_saida:'12:00', folga:false });
+      });
+      out.push({ weekday:0, folga:true });
+      return out;
+    }
+  },
+  {
+    id: 'meio-tarde',
+    label: 'Meio período tarde',
+    desc: 'Seg-Sáb 14-18 · Dom folga',
+    aplicar: function(memberId){
+      var out = [];
+      [1,2,3,4,5,6].forEach(function(wd){
+        out.push({ weekday:wd, expected_entrada:'14:00', expected_saida_almoco:null, expected_volta_almoco:null, expected_saida:'18:00', folga:false });
+      });
+      out.push({ weekday:0, folga:true });
+      return out;
+    }
+  }
+];
+
+/* Carregar shifts do banco */
+function carregarShifts(cb){
+  if (!ST.sector){ if (cb) cb(); return; }
+  sb.from('malba_shifts').select('*').eq('sector', ST.sector).then(function(r){
+    if (!r.error && r.data) ST.shifts = r.data;
+    else ST.shifts = ST.shifts || [];
+    if (cb) cb();
+  }, function(){ ST.shifts = ST.shifts || []; if (cb) cb(); });
+}
+
+/* Retorna o shift esperado de um membro num weekday específico */
+function shiftDoMembroNoDia(memberId, weekday){
+  var arr = ST.shifts || [];
+  for (var i=0;i<arr.length;i++){
+    if (String(arr[i].member_id)===String(memberId) && Number(arr[i].weekday)===Number(weekday)){
+      return arr[i];
+    }
+  }
+  return null;
+}
+
+/* Shift esperado hoje (para o membro) */
+function shiftEsperadoHoje(memberId){
+  var wd = new Date().getDay();
+  return shiftDoMembroNoDia(memberId, wd);
+}
+
+/* Salva um shift (upsert por member_id + weekday) */
+function salvarShift(memberId, shift, cb){
+  var existente = shiftDoMembroNoDia(memberId, shift.weekday);
+  var payload = {
+    member_id: memberId,
+    sector: ST.sector,
+    weekday: shift.weekday,
+    expected_entrada: shift.expected_entrada || null,
+    expected_saida_almoco: shift.expected_saida_almoco || null,
+    expected_volta_almoco: shift.expected_volta_almoco || null,
+    expected_saida: shift.expected_saida || null,
+    folga: !!shift.folga,
+    tolerancia_min: Number(shift.tolerancia_min || 5)
+  };
+  // Anexar store_unit_id do membro se existir
+  var mem = null;
+  for (var i=0;i<(ST.members||[]).length;i++){
+    if (String(ST.members[i].id)===String(memberId)) { mem = ST.members[i]; break; }
+  }
+  if (mem && mem.store_unit_id) payload.store_unit_id = mem.store_unit_id;
+  if (mem && typeof userDoMembro==='function'){
+    var u = userDoMembro(mem);
+    if (u) payload.user_id = u.id;
+  }
+
+  if (existente){
+    sb.from('malba_shifts').update(payload).eq('id', existente.id).then(function(r){
+      if (r.error){ if (cb) cb(r.error); toast('Erro ao salvar escala','error'); return; }
+      Object.assign(existente, payload);
+      if (cb) cb(null, existente);
+    });
+  } else {
+    sb.from('malba_shifts').insert(payload).select().single().then(function(r){
+      if (r.error){ if (cb) cb(r.error); toast('Erro ao salvar escala','error'); return; }
+      ST.shifts = ST.shifts || [];
+      ST.shifts.push(r.data);
+      if (cb) cb(null, r.data);
+    });
+  }
+}
+
+/* Aplicar template a um membro (batch upsert) */
+function aplicarTemplateShift(memberId, templateId, cb){
+  var tpl = SHIFT_TEMPLATES.find(function(t){ return t.id===templateId; });
+  if (!tpl){ if (cb) cb(new Error('template não encontrado')); return; }
+  var linhas = tpl.aplicar(memberId);
+  var pend = linhas.length;
+  var erros = [];
+  if (pend===0){ if (cb) cb(); return; }
+  linhas.forEach(function(l){
+    salvarShift(memberId, l, function(err){
+      if (err) erros.push(err);
+      pend--;
+      if (pend===0){
+        if (cb) cb(erros.length ? erros[0] : null);
+      }
+    });
+  });
+}
+
+/* Renderiza uma linha da tabela de escala do membro (dentro do modal) */
+function shiftRowHTML(memberId, wdInfo){
+  var s = shiftDoMembroNoDia(memberId, wdInfo.wd) || { weekday: wdInfo.wd };
+  var isFolga = !!s.folga;
+  var disabled = isFolga ? 'disabled' : '';
+  return '<tr class="sf-row'+(isFolga?' sf-row-folga':'')+'" data-wd="'+wdInfo.wd+'">'+
+    '<td class="sf-day">'+esc(wdInfo.short)+'<div class="sf-day-full">'+esc(wdInfo.full)+'</div></td>'+
+    '<td><input type="time" class="sf-time" data-fld="expected_entrada" value="'+(s.expected_entrada||'').slice(0,5)+'" '+disabled+'></td>'+
+    '<td><input type="time" class="sf-time" data-fld="expected_saida_almoco" value="'+(s.expected_saida_almoco||'').slice(0,5)+'" '+disabled+'></td>'+
+    '<td><input type="time" class="sf-time" data-fld="expected_volta_almoco" value="'+(s.expected_volta_almoco||'').slice(0,5)+'" '+disabled+'></td>'+
+    '<td><input type="time" class="sf-time" data-fld="expected_saida" value="'+(s.expected_saida||'').slice(0,5)+'" '+disabled+'></td>'+
+    '<td class="sf-actions">'+
+      '<label class="sf-folga-lbl" title="Marcar folga">'+
+        '<input type="checkbox" data-sf-folga="'+wdInfo.wd+'"'+(isFolga?' checked':'')+'>'+
+        '<span>Folga</span>'+
+      '</label>'+
+    '</td>'+
+  '</tr>';
+}
+
+/* Modal de edição de escala */
+function openShiftModal(member){
+  if (!canEdit()){ if (typeof blockManage==='function') blockManage(); return; }
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+
+  var tplsHTML = SHIFT_TEMPLATES.map(function(t){
+    return '<button type="button" class="sf-tpl-btn" data-tpl="'+esc(t.id)+'"><b>'+esc(t.label)+'</b><span>'+esc(t.desc)+'</span></button>';
+  }).join('');
+
+  var rowsHTML = WEEKDAYS.map(function(w){ return shiftRowHTML(member.id, w); }).join('');
+
+  modal.innerHTML =
+    '<div class="modal sf-modal" id="shiftModal">'+
+      '<div class="sf-head">'+
+        '<div>'+
+          '<h3>Escala de '+esc(member.name)+'</h3>'+
+          '<p class="sf-sub">Horários esperados por dia da semana. A tolerância padrão é de 5min.</p>'+
+        '</div>'+
+        '<button class="modal-close" id="sfClose" title="Fechar">×</button>'+
+      '</div>'+
+
+      '<div class="sf-tpls">'+
+        '<div class="sf-tpls-l">Aplicar template rápido:</div>'+
+        '<div class="sf-tpls-list">'+tplsHTML+'</div>'+
+      '</div>'+
+
+      '<div class="sf-table-wrap">'+
+        '<table class="sf-table">'+
+          '<thead><tr>'+
+            '<th>Dia</th>'+
+            '<th>Entrada</th>'+
+            '<th>Almoço</th>'+
+            '<th>Volta</th>'+
+            '<th>Saída</th>'+
+            '<th></th>'+
+          '</tr></thead>'+
+          '<tbody id="sfTbody">'+rowsHTML+'</tbody>'+
+        '</table>'+
+      '</div>'+
+
+      '<div class="modal-foot sf-foot">'+
+        '<button class="btn btn-ghost" id="sfCancel">Fechar</button>'+
+        '<button class="btn btn-primary" id="sfSave">Salvar escala</button>'+
+      '</div>'+
+    '</div>';
+
+  document.body.appendChild(modal);
+
+  function close(){ modal.remove(); }
+  modal.addEventListener('click', function(ev){ if (ev.target===modal) close(); });
+  modal.querySelector('#sfClose').addEventListener('click', close);
+  modal.querySelector('#sfCancel').addEventListener('click', close);
+
+  // Toggle folga por dia
+  modal.querySelectorAll('[data-sf-folga]').forEach(function(cb){
+    cb.addEventListener('change', function(){
+      var wd = Number(this.getAttribute('data-sf-folga'));
+      var row = modal.querySelector('.sf-row[data-wd="'+wd+'"]');
+      var isFolga = this.checked;
+      row.classList.toggle('sf-row-folga', isFolga);
+      row.querySelectorAll('.sf-time').forEach(function(inp){ inp.disabled = isFolga; if (isFolga) inp.value = ''; });
+    });
+  });
+
+  // Aplicar template
+  modal.querySelectorAll('.sf-tpl-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var tplId = this.getAttribute('data-tpl');
+      var tpl = SHIFT_TEMPLATES.find(function(t){ return t.id===tplId; });
+      if (!tpl) return;
+      var linhas = tpl.aplicar(member.id);
+      linhas.forEach(function(l){
+        var row = modal.querySelector('.sf-row[data-wd="'+l.weekday+'"]');
+        if (!row) return;
+        var chkFolga = row.querySelector('[data-sf-folga]');
+        chkFolga.checked = !!l.folga;
+        row.classList.toggle('sf-row-folga', !!l.folga);
+        var inps = row.querySelectorAll('.sf-time');
+        ['expected_entrada','expected_saida_almoco','expected_volta_almoco','expected_saida'].forEach(function(f, i){
+          inps[i].value = l[f] || '';
+          inps[i].disabled = !!l.folga;
+        });
+      });
+      toast('Template "'+tpl.label+'" aplicado (revise e salve)','info');
+    });
+  });
+
+  // Salvar tudo
+  modal.querySelector('#sfSave').addEventListener('click', function(){
+    var rows = modal.querySelectorAll('.sf-row');
+    var pend = rows.length;
+    var erros = 0;
+    var done = function(err){
+      if (err) erros++;
+      pend--;
+      if (pend===0){
+        if (erros){ toast('Salvou com '+erros+' erro(s)','error'); }
+        else { toast('Escala salva!','success'); close(); renderPage(); }
+      }
+    };
+    rows.forEach(function(row){
+      var wd = Number(row.getAttribute('data-wd'));
+      var isFolga = row.querySelector('[data-sf-folga]').checked;
+      var shift = { weekday: wd, folga: isFolga };
+      if (!isFolga){
+        row.querySelectorAll('.sf-time').forEach(function(inp){
+          shift[inp.getAttribute('data-fld')] = inp.value || null;
+        });
+      }
+      salvarShift(member.id, shift, done);
+    });
+  });
+}
+
 function openFichaColaborador(member){
   if(!canEdit()){ blockManage(); return; }
   var m = member; var showReset=false; var fiTab='resumo';
@@ -9164,15 +10745,29 @@ function openFichaColaborador(member){
     var body;
     if (fiTab==='acompanhamento') { body = acompanhamentoHTML(); }
     else {
+      // v152: seção PIN de ponto
+      var pin = m.pin_ponto || '';
+      var pinBadge = pin ? '<span class="fi-pin-tag has">PIN definido</span>' : '<span class="fi-pin-tag none">sem PIN</span>';
+      var pinSec = '<div class="fi-sec"><div class="fi-sec-h"><span>'+icon('clock')+'PIN do ponto</span>'+pinBadge+'</div>'+
+        '<div class="fi-pin-body">'+
+          '<p class="fi-pin-desc">O colaborador usa esse PIN pra bater ponto pelo QR da loja, sem precisar de app.</p>'+
+          '<div class="fi-pin-form">'+
+            '<input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" id="fiPinInput" placeholder="4-6 dígitos" value="'+esc(pin)+'">'+
+            '<button class="fi-link" id="fiPinGen">Gerar aleatório</button>'+
+            '<button class="btn btn-primary" id="fiPinSave">Salvar PIN</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
       body = kpis +
         '<div class="fi-sec first"><div class="fi-sec-h"><span>'+icon('users')+'Acesso ao sistema</span></div>'+acesso+'</div>'+
+        pinSec+
         metaSec+perfSec+comSec+reqSec;
     }
     return '<div class="modal fi-modal">'+
       '<div class="fi-head"><span class="fi-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
         '<div class="fi-id"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+' · '+esc(loja)+'</i></div>'+
         '<span class="fi-sit '+(inativo?'off':'on')+'">'+(inativo?'Inativo':'Ativo')+'</span>'+
-        '<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
+        '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>'+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
       '</div>'+ tabs + body +
       '<div class="modal-foot"><button class="btn btn-ghost" id="fiClose">Fechar</button></div>'+
     '</div>';
@@ -9231,6 +10826,34 @@ function openFichaColaborador(member){
   function bind(){
     modal.querySelector('#fiClose').addEventListener('click', close);
     var tb=modal.querySelectorAll('[data-fitab]'); for(var k=0;k<tb.length;k++) tb[k].addEventListener('click', function(){ fiTab=this.getAttribute('data-fitab'); draw(); });
+    var esc_btn = modal.querySelector('#fiEscala'); if(esc_btn) esc_btn.addEventListener('click', function(){ openShiftModal(m); });
+    // v152: PIN de ponto
+    var pinInp = modal.querySelector('#fiPinInput');
+    var pinGen = modal.querySelector('#fiPinGen');
+    var pinSave = modal.querySelector('#fiPinSave');
+    if (pinInp){
+      pinInp.addEventListener('input', function(){ this.value = this.value.replace(/[^0-9]/g,'').slice(0,6); });
+    }
+    if (pinGen){
+      pinGen.addEventListener('click', function(){
+        var p = String(Math.floor(1000 + Math.random()*9000));
+        pinInp.value = p;
+      });
+    }
+    if (pinSave){
+      pinSave.addEventListener('click', function(){
+        var v = (pinInp.value||'').trim();
+        if (v && v.length < 4){ toast('PIN precisa de pelo menos 4 dígitos','info'); return; }
+        sb.from('malba_store_members').update({ pin_ponto: v || null }).eq('id', m.id).then(function(rr){
+          if (rr.error){ toast('Erro ao salvar PIN','error'); return; }
+          m.pin_ponto = v || null;
+          for (var i=0;i<ST.members.length;i++) if (String(ST.members[i].id)===String(m.id)){ ST.members[i].pin_ponto = v || null; break; }
+          if (typeof auditLog==='function') auditLog('PIN de ponto atualizado', m.name);
+          toast(v ? 'PIN salvo' : 'PIN removido','success');
+          draw();
+        });
+      });
+    }
     var an=modal.querySelector('#fiAddNota'); if(an) an.addEventListener('click', addNota1on1);
     var sk=modal.querySelector('#fiSendKudo'); if(sk) sk.addEventListener('click', enviarKudos);
     var ed=modal.querySelector('#fiEdit'); if(ed) ed.addEventListener('click', function(){ close(); openMemberModal(m); });
@@ -19839,21 +21462,201 @@ function registrarCheckin(tipo){
   });
 }
 
-/* Renderiza a linha de UM membro com 4 slots */
+/* ============================================================
+   v149: DETECÇÃO DE ATRASO/ADIANTAMENTO
+   Compara batidas reais com escala esperada (A.2) e mostra
+   badge visual em cada slot.
+   ============================================================ */
+
+/* Compara real vs esperado. Retorna minutos (+ atrasado / - adiantado). */
+function diffMinutosBatida(iso_real, hhmm_esperado){
+  if (!iso_real || !hhmm_esperado) return null;
+  var d = new Date(iso_real);
+  var partes = String(hhmm_esperado).split(':');
+  if (partes.length < 2) return null;
+  var esp = new Date(d);
+  esp.setHours(Number(partes[0]));
+  esp.setMinutes(Number(partes[1]));
+  esp.setSeconds(0);
+  esp.setMilliseconds(0);
+  return Math.round((d.getTime() - esp.getTime()) / 60000);
+}
+
+/* Determina o status de UMA batida.
+   slotKey: 'entrada' | 'saida_almoco' | 'volta_almoco' | 'saida'
+   Retorna { status, minutos, texto, cor } ou null se sem dado suficiente.
+
+   Regras:
+   - Entrada: chegou depois = atrasado (ruim); antes = adiantado (bom/neutro)
+   - Saída almoço: sair antes = adiantado (folga); sair depois = ficou trabalhando (neutro)
+   - Volta almoço: voltar antes = adiantado; voltar depois = atrasou o almoço (ruim)
+   - Saída: sair depois = hora extra (bom); sair antes = saiu antes (ruim)
+*/
+function statusBatida(slotKey, iso_real, shift){
+  if (!iso_real || !shift) return null;
+  var esperado_key = 'expected_'+slotKey;
+  var esperado = shift[esperado_key];
+  if (!esperado) return null;
+  var min = diffMinutosBatida(iso_real, esperado);
+  if (min === null) return null;
+  var tol = Number(shift.tolerancia_min || 5);
+
+  // Dentro da tolerância = ok
+  if (Math.abs(min) <= tol){
+    return { status:'no_horario', minutos:min, texto:'no horário', cor:'ok' };
+  }
+
+  // Slots onde "atrasar" (min positivo, depois do esperado) é RUIM
+  var atrasoRuim = { entrada:true, volta_almoco:true }[slotKey];
+  // Slots onde "adiantar" (min negativo, antes do esperado) é RUIM
+  var adiantoRuim = { saida:true, saida_almoco:false }[slotKey];
+
+  if (min > 0){
+    // Depois do esperado
+    if (slotKey==='entrada' || slotKey==='volta_almoco'){
+      var muito = min > 30;
+      return {
+        status:'atrasado',
+        minutos:min,
+        texto:'+'+fmtMin(min),
+        cor: muito ? 'ruim' : 'atencao'
+      };
+    }
+    // Saída depois = hora extra (bom)
+    if (slotKey==='saida'){
+      return { status:'extra', minutos:min, texto:'+'+fmtMin(min)+' extra', cor:'bom' };
+    }
+    // Saída almoço depois = ficou trabalhando (neutro leve)
+    if (slotKey==='saida_almoco'){
+      return { status:'atrasado_almoco', minutos:min, texto:'+'+fmtMin(min), cor:'neutro' };
+    }
+  } else {
+    // Antes do esperado (min negativo)
+    var minAbs = Math.abs(min);
+    if (slotKey==='saida'){
+      var muitoAntes = minAbs > 30;
+      return {
+        status:'saiu_antes',
+        minutos:min,
+        texto:'-'+fmtMin(minAbs)+' antes',
+        cor: muitoAntes ? 'ruim' : 'atencao'
+      };
+    }
+    if (slotKey==='entrada'){
+      return { status:'adiantado', minutos:min, texto:'-'+fmtMin(minAbs), cor:'neutro' };
+    }
+    if (slotKey==='saida_almoco'){
+      // Saiu pro almoço antes = comeu mais cedo (neutro/adiantado)
+      return { status:'adiantado', minutos:min, texto:'-'+fmtMin(minAbs), cor:'neutro' };
+    }
+    if (slotKey==='volta_almoco'){
+      // Voltou do almoço antes = veio antes (bom)
+      return { status:'adiantado', minutos:min, texto:'-'+fmtMin(minAbs), cor:'bom' };
+    }
+  }
+  return null;
+}
+
+/* Formata minutos como "15min" ou "1h 20min" ou "2h" */
+function fmtMin(min){
+  if (min < 60) return min+'min';
+  var h = Math.floor(min/60);
+  var m = min % 60;
+  if (m===0) return h+'h';
+  return h+'h '+m+'min';
+}
+
+/* Resumo mensal de pontualidade de um membro */
+function resumoPontualidadeMembro(memberId, month, year){
+  var hoje = new Date();
+  month = (month === undefined) ? hoje.getMonth() : month;
+  year = year || hoje.getFullYear();
+  var stats = { diasComPonto:0, noHorario:0, atrasos:0, minutosAtraso:0, faltas:0, horasExtras:0 };
+  var mem = null;
+  for (var i=0;i<(ST.members||[]).length;i++){
+    if (String(ST.members[i].id)===String(memberId)){ mem = ST.members[i]; break; }
+  }
+  if (!mem) return stats;
+
+  var uid = null;
+  if (typeof userDoMembro==='function'){ var u = userDoMembro(mem); if (u) uid = u.id; }
+
+  (ST.checkins||[]).forEach(function(c){
+    if (String(c.member_id)!==String(memberId) && (!uid || String(c.user_id)!==String(uid))) return;
+    var d = new Date(String(c.work_date).slice(0,10)+'T00:00:00');
+    if (d.getMonth()!==month || d.getFullYear()!==year) return;
+    if (!c.entrada) return;
+    stats.diasComPonto++;
+    var wd = d.getDay();
+    var shift = shiftDoMembroNoDia(memberId, wd);
+    if (!shift || shift.folga) return; // dia sem escala ou folga: não conta
+    var st = statusBatida('entrada', c.entrada, shift);
+    if (st){
+      if (st.status==='no_horario') stats.noHorario++;
+      else if (st.status==='atrasado'){ stats.atrasos++; stats.minutosAtraso += st.minutos; }
+    }
+    if (c.saida){
+      var sSt = statusBatida('saida', c.saida, shift);
+      if (sSt && sSt.status==='extra') stats.horasExtras += sSt.minutos;
+    }
+  });
+  return stats;
+}
+
+/* NOVA versão do pontoRowHTML — agora com badges de status.
+   Substitui a v147. Usa shiftEsperadoHoje pro membro. */
 function pontoRowHTML(m){
   var ci = checkinHojeDoMembro(m);
   var prox = proximoSlotPonto(ci);
   var ini = iniciais(m.name);
   var completo = slotsPontoBatidos(ci) >= 2 && !prox;
   var horas = horasTrabalhadasDia(ci);
+  var shift = shiftEsperadoHoje(m.id);
 
-  // Grid de 4 slots
+  // Se folga hoje, mostra badge de folga
+  if (shift && shift.folga){
+    return '<div class="ponto-row-v2 folga">'+
+      '<span class="pt-av" style="background:'+(m.color||'#9aa1ad')+'">'+esc(ini)+'</span>'+
+      '<div class="pt-info">'+
+        '<div class="pt-nome">'+esc(m.name)+'</div>'+
+        '<div class="pt-folga-tag">'+icon('sun')+'Folga hoje</div>'+
+      '</div>'+
+      '<span class="pt-folga-ic">'+icon('moon')+'</span>'+
+    '</div>';
+  }
+
+  // Grid de 4 slots com badge de status
   var slotsHTML = PONTO_SLOTS.map(function(s){
     var val = ci ? ci[s.key] : null;
     var on = !!val;
-    return '<div class="pt-slot'+(on?' on':'')+'" title="'+esc(s.label)+'">'+
+    var statusHTML = '';
+    var justifBadge = '';
+    var slotClasses = 'pt-slot';
+    var wdKey = ci ? String(ci.work_date).slice(0,10) : today();
+    if (on && shift){
+      var st = statusBatida(s.key, val, shift);
+      var jAprov = justifAprovadaSlot(m.id, wdKey, s.key);
+      var jPend = justifPendenteSlot(m.id, wdKey, s.key);
+      if (jAprov){
+        statusHTML = '<span class="pt-slot-badge cor-ok" title="Justificado">✓ justificado</span>';
+        slotClasses += ' pt-slot-justif-ok';
+      } else if (jPend){
+        statusHTML = (st ? '<span class="pt-slot-badge cor-'+esc(st.cor)+'">'+esc(st.texto)+'</span>' : '')+
+          '<span class="pt-slot-badge cor-neutro" title="Aguardando aprovação">⏳ justif.</span>';
+      } else if (st){
+        statusHTML = '<span class="pt-slot-badge cor-'+esc(st.cor)+'">'+esc(st.texto)+'</span>';
+        if (st.cor==='atencao' || st.cor==='ruim'){
+          justifBadge = '<button class="pt-slot-justif-btn" data-jf-slot="'+esc(m.id)+'|'+esc(s.key)+'|'+esc(wdKey)+'|'+(ci?esc(ci.id):'')+'" title="Justificar">+</button>';
+        }
+      }
+    }
+    if (on) slotClasses += ' on';
+    return '<div class="'+slotClasses+'" title="'+esc(s.label)+
+      (on && shift ? ' · esperado '+(shift['expected_'+s.key]||'—') : '')+'">'+
       '<span class="pt-slot-lbl">'+esc(s.label)+'</span>'+
       '<span class="pt-slot-t">'+(on ? hhmm(val) : '—')+'</span>'+
+      statusHTML+
+      justifBadge+
     '</div>';
   }).join('');
 
@@ -19873,16 +21676,23 @@ function pontoRowHTML(m){
     ? '<div class="pt-horas">'+icon('clock')+esc(horas.texto)+'</div>'
     : '';
 
+  // Aviso quando não tem escala
+  var semEscalaHTML = !shift && ci
+    ? '<div class="pt-sem-escala" title="Configure a escala em Ficha → Escala">sem escala definida</div>'
+    : '';
+
   return '<div class="ponto-row-v2'+(completo?' completo':'')+'">'+
     '<span class="pt-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
     '<div class="pt-info">'+
       '<div class="pt-nome">'+esc(m.name)+'</div>'+
       '<div class="pt-slots">'+slotsHTML+'</div>'+
       horasHTML+
+      semEscalaHTML+
     '</div>'+
     actionHTML+
   '</div>';
 }
+
 
 function checkinHojeDoUser(){ var me=String(ST.session.user.id); var t=today(); var found=null; (ST.checkins||[]).forEach(function(c){ if(String(c.user_id)===me && String(c.work_date).slice(0,10)===t) found=c; }); return found; }
 function checkinsDoMembro(member, n){ if(!member) return []; var u=userDoMembro(member); var uid=u?u.id:null; var mid=member.id; var arr=(ST.checkins||[]).filter(function(c){ return (uid&&String(c.user_id)===String(uid))||(mid&&String(c.member_id)===String(mid)); }); arr.sort(function(a,b){ return String(b.work_date).localeCompare(String(a.work_date)); }); return n?arr.slice(0,n):arr; }
@@ -19891,6 +21701,671 @@ function notasDoMembro(member){ if(!member) return []; return (ST.notes1on1||[])
 function kudosDoMembro(member){ if(!member) return []; return (ST.kudos||[]).filter(function(x){ return String(x.member_id)===String(member.id); }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
 function kudosDoUser(){ var mids=meusMemberIds(); return (ST.kudos||[]).filter(function(x){ return mids.indexOf(String(x.member_id))!==-1; }).sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); }); }
 function checkinHojeDoMembro(member){ if(!member) return null; var t=today(); var u=userDoMembro(member); var uid=u?u.id:null; var found=null; (ST.checkins||[]).forEach(function(c){ if(String(c.work_date).slice(0,10)!==t) return; if((String(c.member_id)===String(member.id)) || (uid&&String(c.user_id)===String(uid))) found=c; }); return found; }
+/* ============================================================
+   v150: JUSTIFICATIVAS DE PONTO
+   Colab (ou gestor) explica atrasos/faltas → gestor aprova/nega.
+   ============================================================ */
+
+var JUSTIF_MOTIVOS = [
+  { key:'atraso',            label:'Atraso na entrada',    icon:'clock',   cor:'#F59E0B' },
+  { key:'saida_antecipada',  label:'Saída antecipada',     icon:'moon',    cor:'#F59E0B' },
+  { key:'almoco_estendido',  label:'Almoço estendido',     icon:'clock',   cor:'#F59E0B' },
+  { key:'falta',             label:'Falta do dia inteiro', icon:'x',       cor:'#EF4444' },
+  { key:'outro',             label:'Outro motivo',         icon:'bell',    cor:'#8B5CF6' }
+];
+
+function motivoLabel(k){
+  var m = JUSTIF_MOTIVOS.find(function(x){ return x.key===k; });
+  return m ? m.label : k;
+}
+function motivoCor(k){
+  var m = JUSTIF_MOTIVOS.find(function(x){ return x.key===k; });
+  return m ? m.cor : '#6E7C96';
+}
+
+/* Carrega justificativas do banco */
+function carregarJustificativas(cb){
+  if (!ST.sector){ if (cb) cb(); return; }
+  sb.from('malba_ponto_justif').select('*').eq('sector', ST.sector).order('created_at', {ascending:false}).then(function(r){
+    if (!r.error && r.data) ST.justifs = r.data;
+    else ST.justifs = ST.justifs || [];
+    if (cb) cb();
+  }, function(){ ST.justifs = ST.justifs || []; if (cb) cb(); });
+}
+
+/* Todas as justificativas de um membro num dia (qualquer status) */
+function justifDoDia(memberId, workDate){
+  var wd = String(workDate).slice(0,10);
+  return (ST.justifs||[]).filter(function(j){
+    return String(j.member_id)===String(memberId) && String(j.work_date).slice(0,10)===wd;
+  });
+}
+
+/* Justificativa aprovada de UM slot num dia (pra recolorir badge) */
+function justifAprovadaSlot(memberId, workDate, slotKey){
+  var wd = String(workDate).slice(0,10);
+  return (ST.justifs||[]).find(function(j){
+    return String(j.member_id)===String(memberId)
+      && String(j.work_date).slice(0,10)===wd
+      && j.slot_key===slotKey
+      && j.status==='aprovada';
+  }) || null;
+}
+
+/* Justificativa PENDENTE do slot (indicador de aguardando) */
+function justifPendenteSlot(memberId, workDate, slotKey){
+  var wd = String(workDate).slice(0,10);
+  return (ST.justifs||[]).find(function(j){
+    return String(j.member_id)===String(memberId)
+      && String(j.work_date).slice(0,10)===wd
+      && j.slot_key===slotKey
+      && j.status==='pendente';
+  }) || null;
+}
+
+/* Todas as pendentes (fila do gestor) */
+function justifsPendentes(){
+  return (ST.justifs||[]).filter(function(j){ return j.status==='pendente'; });
+}
+
+/* Criar justificativa */
+function criarJustificativa(payload, cb){
+  var me = ST.session && ST.session.user ? ST.session.user.id : null;
+  var mem = null;
+  for (var i=0;i<(ST.members||[]).length;i++){
+    if (String(ST.members[i].id)===String(payload.member_id)){ mem = ST.members[i]; break; }
+  }
+  var uid = null;
+  if (mem && typeof userDoMembro==='function'){ var u = userDoMembro(mem); if (u) uid = u.id; }
+
+  var row = {
+    checkin_id: payload.checkin_id || null,
+    member_id: payload.member_id,
+    user_id: uid,
+    store_unit_id: mem ? mem.store_unit_id : null,
+    sector: ST.sector,
+    work_date: payload.work_date,
+    slot_key: payload.slot_key,
+    motivo: payload.motivo,
+    descricao: payload.descricao,
+    status: 'pendente',
+    created_by: me
+  };
+  sb.from('malba_ponto_justif').insert(row).select().single().then(function(r){
+    if (r.error){
+      if (cb) cb(r.error);
+      toast('Erro ao enviar justificativa','error');
+      console.error(r.error);
+      return;
+    }
+    ST.justifs = ST.justifs || [];
+    ST.justifs.unshift(r.data);
+    if (typeof auditLog==='function') auditLog('Justificativa criada', mem ? mem.name : '');
+    toast('Justificativa enviada para aprovação','success');
+    if (cb) cb(null, r.data);
+    renderPage();
+  });
+}
+
+/* Aprovar */
+function aprovarJustificativa(id, cb){
+  var me = ST.session && ST.session.user ? ST.session.user.id : null;
+  sb.from('malba_ponto_justif').update({
+    status:'aprovada',
+    reviewed_by: me,
+    reviewed_at: new Date().toISOString()
+  }).eq('id', id).then(function(r){
+    if (r.error){ if (cb) cb(r.error); toast('Erro ao aprovar','error'); return; }
+    var j = (ST.justifs||[]).find(function(x){ return String(x.id)===String(id); });
+    if (j){ j.status='aprovada'; j.reviewed_by=me; j.reviewed_at=new Date().toISOString(); }
+    if (typeof auditLog==='function') auditLog('Justificativa aprovada');
+    toast('Aprovada','success');
+    if (cb) cb();
+    renderPage();
+  });
+}
+
+/* Rejeitar (com observação opcional) */
+function rejeitarJustificativa(id, note, cb){
+  var me = ST.session && ST.session.user ? ST.session.user.id : null;
+  sb.from('malba_ponto_justif').update({
+    status:'rejeitada',
+    reviewed_by: me,
+    reviewed_at: new Date().toISOString(),
+    review_note: note || null
+  }).eq('id', id).then(function(r){
+    if (r.error){ if (cb) cb(r.error); toast('Erro ao rejeitar','error'); return; }
+    var j = (ST.justifs||[]).find(function(x){ return String(x.id)===String(id); });
+    if (j){ j.status='rejeitada'; j.reviewed_by=me; j.reviewed_at=new Date().toISOString(); j.review_note=note||null; }
+    if (typeof auditLog==='function') auditLog('Justificativa rejeitada');
+    toast('Rejeitada','info');
+    if (cb) cb();
+    renderPage();
+  });
+}
+
+/* Modal de nova justificativa */
+function openJustifModal(opts){
+  // opts: { member, workDate, slotKey (opcional), checkinId (opcional) }
+  var member = opts.member;
+  var workDate = opts.workDate || today();
+  var slotKeyDefault = opts.slotKey || 'entrada';
+  var checkinId = opts.checkinId || null;
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+
+  var slotOpts = [
+    { key:'entrada',      label:'Entrada' },
+    { key:'saida_almoco', label:'Saída para o almoço' },
+    { key:'volta_almoco', label:'Volta do almoço' },
+    { key:'saida',        label:'Saída' },
+    { key:'dia_todo',     label:'Dia todo (falta)' }
+  ].map(function(s){
+    return '<option value="'+esc(s.key)+'"'+(s.key===slotKeyDefault?' selected':'')+'>'+esc(s.label)+'</option>';
+  }).join('');
+
+  var motivoOpts = JUSTIF_MOTIVOS.map(function(m){
+    return '<option value="'+esc(m.key)+'">'+esc(m.label)+'</option>';
+  }).join('');
+
+  modal.innerHTML =
+    '<div class="modal jf-modal">'+
+      '<div class="jf-head">'+
+        '<div>'+
+          '<h3>Justificar</h3>'+
+          '<p class="jf-sub">'+esc(member.name)+' · '+esc(fmtDate ? fmtDate(workDate) : workDate)+'</p>'+
+        '</div>'+
+        '<button class="modal-close" id="jfClose" title="Fechar">×</button>'+
+      '</div>'+
+
+      '<div class="jf-body">'+
+        '<div class="modal-row">'+
+          '<label class="modal-label">Qual batida</label>'+
+          '<select id="jfSlot" class="tform-input">'+slotOpts+'</select>'+
+        '</div>'+
+        '<div class="modal-row">'+
+          '<label class="modal-label">Motivo</label>'+
+          '<select id="jfMotivo" class="tform-input">'+motivoOpts+'</select>'+
+        '</div>'+
+        '<div class="modal-row">'+
+          '<label class="modal-label">Explique o que aconteceu</label>'+
+          '<textarea id="jfDesc" class="tform-input tform-textarea" placeholder="Ex: Ônibus atrasou por causa de acidente..." rows="4"></textarea>'+
+        '</div>'+
+      '</div>'+
+
+      '<div class="modal-foot jf-foot">'+
+        '<button class="btn btn-ghost" id="jfCancel">Cancelar</button>'+
+        '<button class="btn btn-primary" id="jfSubmit">Enviar</button>'+
+      '</div>'+
+    '</div>';
+
+  document.body.appendChild(modal);
+  function close(){ modal.remove(); }
+  modal.addEventListener('click', function(ev){ if (ev.target===modal) close(); });
+  modal.querySelector('#jfClose').addEventListener('click', close);
+  modal.querySelector('#jfCancel').addEventListener('click', close);
+
+  // Auto-ajusta motivo quando muda o slot
+  modal.querySelector('#jfSlot').addEventListener('change', function(){
+    var sk = this.value;
+    var m = modal.querySelector('#jfMotivo');
+    if (sk==='dia_todo') m.value = 'falta';
+    else if (sk==='saida') m.value = 'saida_antecipada';
+    else if (sk==='volta_almoco') m.value = 'almoco_estendido';
+    else m.value = 'atraso';
+  });
+
+  modal.querySelector('#jfSubmit').addEventListener('click', function(){
+    var slot = modal.querySelector('#jfSlot').value;
+    var motivo = modal.querySelector('#jfMotivo').value;
+    var desc = (modal.querySelector('#jfDesc').value || '').trim();
+    if (!desc){ toast('Explique o motivo','info'); return; }
+    criarJustificativa({
+      member_id: member.id,
+      work_date: workDate,
+      slot_key: slot,
+      motivo: motivo,
+      descricao: desc,
+      checkin_id: checkinId
+    }, function(err){
+      if (!err) close();
+    });
+  });
+}
+
+/* Renderiza um card de justificativa (usado na fila do gestor) */
+function justifCardHTML(j){
+  var mem = null;
+  for (var i=0;i<(ST.members||[]).length;i++){
+    if (String(ST.members[i].id)===String(j.member_id)){ mem = ST.members[i]; break; }
+  }
+  var nome = mem ? mem.name : '(desconhecido)';
+  var ini = mem ? iniciais(mem.name) : '?';
+  var cor = mem && mem.color ? mem.color : '#3B6FF7';
+  var statusClass = j.status;
+  var podeAcao = (j.status==='pendente') && canEdit();
+  var dt = fmtDate ? fmtDate(j.work_date) : j.work_date;
+  var slotLbl = ({
+    entrada:'Entrada', saida_almoco:'Saída almoço', volta_almoco:'Volta almoço',
+    saida:'Saída', dia_todo:'Dia todo'
+  })[j.slot_key] || j.slot_key;
+
+  var actions = '';
+  if (podeAcao){
+    actions = '<div class="jf-actions">'+
+      '<button class="jf-btn ok" data-jf-ok="'+esc(j.id)+'">'+icon('check')+'Aprovar</button>'+
+      '<button class="jf-btn no" data-jf-no="'+esc(j.id)+'">Rejeitar</button>'+
+    '</div>';
+  } else if (j.status==='aprovada'){
+    actions = '<span class="jf-st aprov">'+icon('check')+'Aprovada</span>';
+  } else if (j.status==='rejeitada'){
+    actions = '<span class="jf-st rej">Rejeitada</span>';
+  }
+
+  return '<div class="jf-card jf-'+statusClass+'">'+
+    '<div class="jf-card-h">'+
+      '<span class="jf-av" style="background:'+cor+'">'+esc(ini)+'</span>'+
+      '<div class="jf-card-id"><b>'+esc(nome)+'</b><span>'+esc(dt)+' · '+esc(slotLbl)+'</span></div>'+
+      '<span class="jf-motivo" style="color:'+motivoCor(j.motivo)+'">'+esc(motivoLabel(j.motivo))+'</span>'+
+    '</div>'+
+    '<div class="jf-desc">'+esc(j.descricao||'')+'</div>'+
+    (j.review_note ? '<div class="jf-review-note"><b>Nota do gestor:</b> '+esc(j.review_note)+'</div>' : '')+
+    actions+
+  '</div>';
+}
+
+/* Aba de justificativas na página de ponto (só gestor) */
+function justifsPanelHTML(){
+  var todas = ST.justifs || [];
+  var pend = todas.filter(function(j){ return j.status==='pendente'; });
+  var recentes = todas.slice(0, 30);
+  if (!todas.length){
+    return '<div class="empty-page"><div class="ep-ico">'+icon('bell')+'</div><h3>Sem justificativas</h3><p>Quando alguém justificar um atraso ou falta, aparece aqui pra você aprovar.</p></div>';
+  }
+  var pendHTML = pend.length
+    ? '<div class="jf-sec"><h4>Pendentes <span class="jf-count">'+pend.length+'</span></h4><div class="jf-list">'+pend.map(justifCardHTML).join('')+'</div></div>'
+    : '<div class="jf-sec"><h4>Pendentes <span class="jf-count zero">0</span></h4><div class="dash-empty">Nenhuma pendente ✓</div></div>';
+  var histor = todas.filter(function(j){ return j.status!=='pendente'; });
+  var histHTML = histor.length
+    ? '<div class="jf-sec"><h4>Histórico recente</h4><div class="jf-list">'+histor.slice(0,10).map(justifCardHTML).join('')+'</div></div>'
+    : '';
+  return pendHTML + histHTML;
+}
+
+/* Bind da aba de justificativas */
+function bindJustifsPanel(){
+  var app_el = document.getElementById('app') || document.body;
+  app_el.querySelectorAll('[data-jf-ok]').forEach(function(b){
+    b.addEventListener('click', function(){
+      aprovarJustificativa(this.getAttribute('data-jf-ok'));
+    });
+  });
+  app_el.querySelectorAll('[data-jf-no]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = this.getAttribute('data-jf-no');
+      var note = prompt('Motivo da rejeição (opcional):') || '';
+      rejeitarJustificativa(id, note.trim());
+    });
+  });
+}
+
+/* ============================================================
+   v151: ESPELHO DE PONTO MENSAL
+   Tabela detalhada dia-a-dia com totais + impressão/PDF.
+   ============================================================ */
+
+/* Gera array com todas as datas de um mês */
+function diasDoMes(month, year){
+  var out = [];
+  var d = new Date(year, month, 1);
+  while (d.getMonth() === month){
+    out.push({
+      dateStr: d.toISOString().split('T')[0],
+      day: d.getDate(),
+      wd: d.getDay(),
+      wdShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()],
+      wdFull: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][d.getDay()]
+    });
+    d.setDate(d.getDate()+1);
+  }
+  return out;
+}
+
+/* Formata "HH:MM" a partir de ISO ou de "HH:MM:SS" */
+function hhmmSmart(v){
+  if (!v) return '—';
+  if (String(v).indexOf('T')>=0 || String(v).indexOf('-')>=0){
+    try { return hhmm(v); } catch(e) { return String(v).slice(11,16); }
+  }
+  return String(v).slice(0,5);
+}
+
+/* Retorna checkin de um membro num dia específico */
+function checkinDoDia(memberId, dateStr){
+  var uid = null;
+  var mem = null;
+  for (var i=0;i<(ST.members||[]).length;i++){
+    if (String(ST.members[i].id)===String(memberId)){ mem = ST.members[i]; break; }
+  }
+  if (mem && typeof userDoMembro==='function'){
+    var u = userDoMembro(mem);
+    if (u) uid = u.id;
+  }
+  var found = null;
+  (ST.checkins||[]).forEach(function(c){
+    if (String(c.work_date).slice(0,10) !== dateStr) return;
+    if (String(c.member_id)===String(memberId)) found = c;
+    else if (uid && String(c.user_id)===String(uid)) found = c;
+  });
+  return found;
+}
+
+/* Retorna o objeto de dados de UMA linha do espelho pra um dia.
+   { date, wdShort, esperadoTxt, realTxt, horasTxt, status, statusCor, justif } */
+function linhaEspelhoDia(memberId, diaInfo){
+  var shift = shiftDoMembroNoDia(memberId, diaInfo.wd);
+  var ci = checkinDoDia(memberId, diaInfo.dateStr);
+  var justifs = (typeof justifDoDia==='function') ? justifDoDia(memberId, diaInfo.dateStr) : [];
+
+  // Formatar esperado
+  var esperadoTxt = '—';
+  var isFolga = shift && shift.folga;
+  if (isFolga){
+    esperadoTxt = 'FOLGA';
+  } else if (shift){
+    var e  = (shift.expected_entrada||'').slice(0,5);
+    var sa = (shift.expected_saida_almoco||'').slice(0,5);
+    var va = (shift.expected_volta_almoco||'').slice(0,5);
+    var s  = (shift.expected_saida||'').slice(0,5);
+    if (e && s){
+      if (sa && va) esperadoTxt = e+' - '+sa+' / '+va+' - '+s;
+      else esperadoTxt = e+' - '+s;
+    }
+  }
+
+  // Formatar real
+  var realTxt = '—';
+  if (ci){
+    var re = hhmmSmart(ci.entrada);
+    var rsa = hhmmSmart(ci.saida_almoco);
+    var rva = hhmmSmart(ci.volta_almoco);
+    var rs = hhmmSmart(ci.saida);
+    var partes = [];
+    if (re !== '—') partes.push(re);
+    if (rsa !== '—') partes.push(rsa);
+    if (rva !== '—') partes.push(rva);
+    if (rs !== '—') partes.push(rs);
+    if (partes.length) realTxt = partes.join(' · ');
+  }
+
+  // Horas trabalhadas
+  var horas = ci ? horasTrabalhadasDia(ci) : { minutos:0, texto:'—', completo:false };
+  var horasTxt = ci ? (horas.texto || '—') : '—';
+
+  // Status geral do dia
+  var status, statusCor;
+  if (isFolga){
+    status = 'Folga'; statusCor = 'neutro';
+  } else if (!ci){
+    // sem checkin. Se tinha escala esperada = falta
+    if (shift && shift.expected_entrada) { status = 'Falta'; statusCor = 'ruim'; }
+    else { status = '—'; statusCor = 'neutro'; }
+  } else if (shift && shift.expected_entrada){
+    // Verificar status da entrada
+    var st = statusBatida('entrada', ci.entrada, shift);
+    if (!st){ status = 'Registrado'; statusCor = 'neutro'; }
+    else if (st.status==='no_horario') { status = 'No horário'; statusCor = 'ok'; }
+    else if (st.status==='atrasado') { status = 'Atrasado '+st.texto; statusCor = st.cor; }
+    else if (st.status==='adiantado') { status = 'Adiantado'; statusCor = 'neutro'; }
+    else { status = 'Registrado'; statusCor = 'neutro'; }
+  } else {
+    // Sem escala
+    status = 'Sem escala'; statusCor = 'neutro';
+  }
+
+  // Se tem justificativa aprovada de qualquer slot, marca
+  var justifAprov = justifs.filter(function(j){ return j.status==='aprovada'; });
+  var justifPend = justifs.filter(function(j){ return j.status==='pendente'; });
+
+  return {
+    date: diaInfo.dateStr,
+    day: diaInfo.day,
+    wdShort: diaInfo.wdShort,
+    esperadoTxt: esperadoTxt,
+    realTxt: realTxt,
+    horasTxt: horasTxt,
+    horasMin: horas.minutos || 0,
+    status: status,
+    statusCor: statusCor,
+    justifAprov: justifAprov,
+    justifPend: justifPend,
+    isFolga: isFolga,
+    isFalta: (status==='Falta'),
+    ci: ci,
+    shift: shift
+  };
+}
+
+/* Totais do mês: horas trabalhadas, horas esperadas, faltas, atrasos totais, HE */
+function totalizarMes(memberId, month, year){
+  var dias = diasDoMes(month, year);
+  var totais = {
+    diasEsperados: 0, diasTrabalhados: 0, folgas: 0, faltas: 0,
+    minutosTrabalhados: 0, minutosEsperados: 0,
+    atrasos: 0, minutosAtraso: 0,
+    minutosHE: 0,
+    justifsAprovadas: 0, justifsPendentes: 0
+  };
+  dias.forEach(function(d){
+    var l = linhaEspelhoDia(memberId, d);
+    if (l.isFolga){ totais.folgas++; return; }
+    if (l.shift && l.shift.expected_entrada){
+      totais.diasEsperados++;
+      // Estimar minutos esperados: soma dos períodos
+      var e = l.shift.expected_entrada, sa = l.shift.expected_saida_almoco;
+      var va = l.shift.expected_volta_almoco, s = l.shift.expected_saida;
+      var mExp = 0;
+      if (e && s){
+        if (sa && va) mExp = _hmDiff(e, sa) + _hmDiff(va, s);
+        else mExp = _hmDiff(e, s);
+      }
+      totais.minutosEsperados += Math.max(0, mExp);
+    }
+    if (l.isFalta) totais.faltas++;
+    if (l.ci) totais.diasTrabalhados++;
+    if (l.horasMin > 0) totais.minutosTrabalhados += l.horasMin;
+    // Atrasos entrada
+    if (l.ci && l.shift && l.shift.expected_entrada){
+      var st = statusBatida('entrada', l.ci.entrada, l.shift);
+      if (st && st.status==='atrasado'){ totais.atrasos++; totais.minutosAtraso += st.minutos; }
+    }
+    // Horas extras
+    if (l.ci && l.ci.saida && l.shift && l.shift.expected_saida){
+      var sSt = statusBatida('saida', l.ci.saida, l.shift);
+      if (sSt && sSt.status==='extra') totais.minutosHE += sSt.minutos;
+    }
+    totais.justifsAprovadas += l.justifAprov.length;
+    totais.justifsPendentes += l.justifPend.length;
+  });
+  return totais;
+}
+
+/* Diff em minutos entre duas horas "HH:MM" */
+function _hmDiff(hm1, hm2){
+  var p1 = hm1.split(':'), p2 = hm2.split(':');
+  return (Number(p2[0])*60+Number(p2[1])) - (Number(p1[0])*60+Number(p1[1]));
+}
+
+/* HTML do espelho — usado tanto na tela quanto na impressão */
+function espelhoRenderHTML(memberId, month, year){
+  var mem = null;
+  for (var i=0;i<(ST.members||[]).length;i++){
+    if (String(ST.members[i].id)===String(memberId)){ mem = ST.members[i]; break; }
+  }
+  if (!mem){
+    return '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Selecione um colaborador</h3><p>Escolha na barra acima para ver o espelho de ponto.</p></div>';
+  }
+
+  var dias = diasDoMes(month, year);
+  var totais = totalizarMes(memberId, month, year);
+  var loja = (typeof storeName==='function') ? storeName(mem.store_unit_id) : '';
+  var periodo = MESES[month]+' / '+year;
+
+  // Rows da tabela
+  var rows = dias.map(function(d){
+    var l = linhaEspelhoDia(memberId, d);
+    var isFimSemana = (d.wd===0 || d.wd===6);
+    var classes = 'esp-row';
+    if (l.isFolga) classes += ' esp-folga';
+    else if (l.isFalta) classes += ' esp-falta';
+    else if (isFimSemana) classes += ' esp-fds';
+
+    var statusBadge = '<span class="esp-status esp-status-'+esc(l.statusCor)+'">'+esc(l.status)+'</span>';
+    var justifCol = '';
+    if (l.justifAprov.length){
+      justifCol = '<span class="esp-jf ok" title="'+esc(l.justifAprov[0].descricao||'')+'">'+icon('check')+'justificado</span>';
+    } else if (l.justifPend.length){
+      justifCol = '<span class="esp-jf pend" title="Aguardando aprovação">⏳ pendente</span>';
+    }
+
+    return '<tr class="'+classes+'">'+
+      '<td class="esp-td-day">'+d.day.toString().padStart(2,'0')+'</td>'+
+      '<td class="esp-td-wd">'+esc(d.wdShort)+'</td>'+
+      '<td class="esp-td-esp">'+esc(l.esperadoTxt)+'</td>'+
+      '<td class="esp-td-real">'+esc(l.realTxt)+'</td>'+
+      '<td class="esp-td-horas">'+esc(l.horasTxt)+'</td>'+
+      '<td class="esp-td-status">'+statusBadge+'</td>'+
+      '<td class="esp-td-jf">'+justifCol+'</td>'+
+    '</tr>';
+  }).join('');
+
+  var tabela = '<table class="esp-table">'+
+    '<thead><tr>'+
+      '<th>Dia</th>'+
+      '<th></th>'+
+      '<th>Esperado</th>'+
+      '<th>Batidas</th>'+
+      '<th>Horas</th>'+
+      '<th>Status</th>'+
+      '<th>Justif.</th>'+
+    '</tr></thead>'+
+    '<tbody>'+rows+'</tbody>'+
+  '</table>';
+
+  // Cabeçalho do espelho
+  var head = '<div class="esp-head">'+
+    '<div class="esp-head-l">'+
+      '<h3 class="esp-title">Espelho de Ponto</h3>'+
+      '<p class="esp-sub">'+esc(mem.name)+(mem.role?' · '+esc(mem.role):'')+(loja?' · '+esc(loja):'')+'</p>'+
+      '<p class="esp-per">Período: <b>'+esc(periodo)+'</b></p>'+
+    '</div>'+
+    '<div class="esp-head-r no-print">'+
+      '<button class="btn btn-primary" id="espPrint">'+icon('down')+'Exportar PDF</button>'+
+    '</div>'+
+  '</div>';
+
+  // Rodapé com totais
+  var rodape = '<div class="esp-tot">'+
+    '<div class="esp-tot-row">'+
+      '<div class="esp-tot-cell"><span>Dias trabalhados</span><b>'+totais.diasTrabalhados+' / '+totais.diasEsperados+'</b></div>'+
+      '<div class="esp-tot-cell"><span>Horas trabalhadas</span><b>'+fmtDuracao(totais.minutosTrabalhados)+'</b></div>'+
+      '<div class="esp-tot-cell"><span>Horas esperadas</span><b>'+fmtDuracao(totais.minutosEsperados)+'</b></div>'+
+      '<div class="esp-tot-cell'+(totais.faltas>0?' danger':'')+'"><span>Faltas</span><b>'+totais.faltas+'</b></div>'+
+      '<div class="esp-tot-cell"><span>Folgas</span><b>'+totais.folgas+'</b></div>'+
+      '<div class="esp-tot-cell'+(totais.atrasos>0?' warn':'')+'"><span>Atrasos</span><b>'+totais.atrasos+' · '+fmtDuracao(totais.minutosAtraso)+'</b></div>'+
+      '<div class="esp-tot-cell'+(totais.minutosHE>0?' ok':'')+'"><span>Horas extras</span><b>'+fmtDuracao(totais.minutosHE)+'</b></div>'+
+    '</div>'+
+    (totais.justifsAprovadas + totais.justifsPendentes > 0
+      ? '<div class="esp-tot-jf">'+totais.justifsAprovadas+' justificativa(s) aprovada(s)'+(totais.justifsPendentes?' · '+totais.justifsPendentes+' pendente(s)':'')+'</div>'
+      : '')+
+  '</div>';
+
+  var assinaturas = '<div class="esp-sign print-only">'+
+    '<div class="esp-sign-box"><div class="esp-sign-line"></div><span>Assinatura do colaborador</span></div>'+
+    '<div class="esp-sign-box"><div class="esp-sign-line"></div><span>Assinatura da gestão</span></div>'+
+  '</div>';
+
+  return '<div class="esp-wrap">'+head+tabela+rodape+assinaturas+'</div>';
+}
+
+/* Painel de espelho na página de ponto (com filtros) */
+function espelhoPanelHTML(){
+  var admin = (typeof isAdmin==='function') ? isAdmin(ST.session) : false;
+  var e = ST.espelho = ST.espelho || {};
+  var hoje = new Date();
+  var month = (e.month===undefined || e.month===null) ? hoje.getMonth() : e.month;
+  var year = e.year || hoje.getFullYear();
+  var memberId = e.memberId || '';
+
+  // Membros disponíveis (da loja atual OU todos ativos)
+  var membros = (ST.members||[]).filter(function(m){ return m.is_active !== false; });
+  var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
+  if (storeId && admin){
+    membros = membros.filter(function(m){ return String(m.store_unit_id)===String(storeId); });
+  }
+
+  // Auto-selecionar se só tem 1 membro OU se o próprio colab (não admin) tá vendo
+  if (!memberId){
+    if (!admin && ST.session && ST.session.user){
+      // Colab vê o próprio
+      var meuMembro = membros.find(function(m){
+        var u = (typeof userDoMembro==='function') ? userDoMembro(m) : null;
+        return u && String(u.id)===String(ST.session.user.id);
+      });
+      if (meuMembro) memberId = meuMembro.id;
+    } else if (membros.length===1){
+      memberId = membros[0].id;
+    }
+  }
+
+  // Filtros
+  var memOpts = '<option value="">Selecione o colaborador</option>' + membros.map(function(m){
+    return '<option value="'+esc(m.id)+'"'+(String(memberId)===String(m.id)?' selected':'')+'>'+esc(m.name)+'</option>';
+  }).join('');
+
+  var monthOpts = MESES.map(function(nm, i){
+    return '<option value="'+i+'"'+(Number(month)===i?' selected':'')+'>'+esc(nm)+'</option>';
+  }).join('');
+
+  var yearOpts = '';
+  for (var y = hoje.getFullYear(); y >= hoje.getFullYear()-2; y--){
+    yearOpts += '<option value="'+y+'"'+(Number(year)===y?' selected':'')+'>'+y+'</option>';
+  }
+
+  var filtros = '<div class="esp-filtros no-print">'+
+    (admin ? '<select id="espMember" class="task-filter">'+memOpts+'</select>' : '')+
+    '<select id="espMonth" class="task-filter">'+monthOpts+'</select>'+
+    '<select id="espYear" class="task-filter">'+yearOpts+'</select>'+
+  '</div>';
+
+  var body = memberId
+    ? espelhoRenderHTML(memberId, Number(month), Number(year))
+    : '<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Selecione um colaborador</h3><p>Escolha na barra acima para ver o espelho.</p></div>';
+
+  return filtros + body;
+}
+
+/* Bind dos filtros e botão de PDF */
+function bindEspelhoPanel(){
+  var app_el = document.getElementById('app') || document.body;
+  ST.espelho = ST.espelho || {};
+  var mSel = app_el.querySelector('#espMember');
+  if (mSel) mSel.addEventListener('change', function(){ ST.espelho.memberId = this.value; renderPage(); });
+  var moSel = app_el.querySelector('#espMonth');
+  if (moSel) moSel.addEventListener('change', function(){ ST.espelho.month = Number(this.value); renderPage(); });
+  var ySel = app_el.querySelector('#espYear');
+  if (ySel) ySel.addEventListener('change', function(){ ST.espelho.year = Number(this.value); renderPage(); });
+  var pBtn = app_el.querySelector('#espPrint');
+  if (pBtn) pBtn.addEventListener('click', function(){
+    document.body.classList.add('printing-esp');
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){ document.body.classList.remove('printing-esp'); }, 500);
+    }, 100);
+  });
+}
+
 function pontoHTML(){
   var lojas = lojasGestao();
   var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
@@ -19899,6 +22374,24 @@ function pontoHTML(){
   else if(!ST.store && lojas.length===1){ storeId=lojas[0].id; }
   var mems = storeId ? membrosDaLoja(storeId).filter(function(m){return m.is_active!==false;}) : [];
   var hoje = new Date(); var dataStr = hoje.getDate()+' de '+MESES[hoje.getMonth()]+' de '+hoje.getFullYear();
+
+  // v150: aba interna do ponto (hoje | justificativas)
+  var pTab = ST.pontoTab || 'hoje';
+  var admin = isAdmin(ST.session);
+  var nPend = justifsPendentes().length;
+  var abaBar = admin ? ('<div class="cfg-tabs pt-tabs">'+
+    '<button class="cfg-tab'+(pTab==='hoje'?' on':'')+'" data-ptab="hoje">'+icon('clock')+'Hoje</button>'+
+    '<button class="cfg-tab'+(pTab==='justif'?' on':'')+'" data-ptab="justif">'+icon('bell')+'Justificativas'+(nPend?' <span class="pt-tab-count">'+nPend+'</span>':'')+'</button>'+
+    '<button class="cfg-tab'+(pTab==='espelho'?' on':'')+'" data-ptab="espelho">'+icon('tasks')+'Espelho</button>'+
+  '</div>') : '';
+
+  if (pTab==='justif' && admin){
+    return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">Aprovar justificativas dos colaboradores</div></div></div>'+abaBar+justifsPanelHTML();
+  }
+  if (pTab==='espelho' && admin){
+    return '<div class="tasks-head no-print"><div><h2>Ponto</h2><div class="sub">Espelho de ponto mensal · exportar PDF</div></div></div>'+abaBar+espelhoPanelHTML();
+  }
+
   var rows;
   if(!storeId){ rows='<div class="empty-page"><div class="ep-ico">'+icon('clock')+'</div><h3>Escolha a loja</h3><p>Selecione a loja para bater o ponto da equipe.</p></div>'; }
   else if(!mems.length){ rows='<div class="empty-page"><div class="ep-ico">'+icon('users')+'</div><h3>Sem funcionários ativos</h3><p>Cadastre a equipe desta loja em Equipe.</p></div>'; }
@@ -19907,10 +22400,45 @@ function pontoHTML(){
     rows='<div class="ponto-list-v2">'+mems.map(pontoRowHTML).join('')+'</div>';
   }
   var presentes = storeId ? mems.filter(function(m){ var c=checkinHojeDoMembro(m); return c&&c.entrada; }).length : 0;
-  return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+esc(dataStr)+' · '+presentes+' presente(s)</div></div>'+selHTML+'</div>'+rows;
+  // v152: botão QR (só admin + loja selecionada)
+  var qrBtn = (admin && storeId) ? '<button class="btn btn-ghost pt-qr-btn" id="pontoBtnQR" title="Gerar QR pra bater ponto sem login">'+icon('gear')+'<span>QR do ponto</span></button>' : '';
+  return '<div class="tasks-head"><div><h2>Ponto</h2><div class="sub">'+esc(dataStr)+' · '+presentes+' presente(s)</div></div>'+qrBtn+selHTML+'</div>'+abaBar+rows;
 }
 function bindPonto(){
   var sel=document.getElementById('pontoLoja'); if(sel) sel.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
+
+  // v150: abas Hoje / Justificativas
+  app.querySelectorAll('[data-ptab]').forEach(function(b){
+    b.addEventListener('click', function(){ ST.pontoTab=this.getAttribute('data-ptab'); renderPage(); });
+  });
+
+  // v152: botão QR do ponto
+  var qrB = document.getElementById('pontoBtnQR');
+  if (qrB) qrB.addEventListener('click', function(){
+    var storeId = ST.store ? ST.store.id : (ST.taskStore||'');
+    if (!storeId) { toast('Selecione uma loja','info'); return; }
+    var loja = null;
+    for (var i=0;i<(ST.storeUnits||[]).length;i++) if (String(ST.storeUnits[i].id)===String(storeId)){ loja = ST.storeUnits[i]; break; }
+    if (loja) openQRLojaModal(loja);
+  });
+
+  // v150: botões de justificar em slots atrasados
+  app.querySelectorAll('[data-jf-slot]').forEach(function(b){
+    b.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      var raw = this.getAttribute('data-jf-slot').split('|');
+      var memberId = raw[0], slotKey = raw[1], workDate = raw[2], checkinId = raw[3]||null;
+      var mem = null;
+      for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(memberId)){ mem=ST.members[k]; break; }
+      if (!mem) return;
+      openJustifModal({ member:mem, workDate:workDate, slotKey:slotKey, checkinId:checkinId });
+    });
+  });
+
+  // v150: bind da fila de aprovação (se estiver na aba)
+  if ((ST.pontoTab||'')==='justif') bindJustifsPanel();
+  if ((ST.pontoTab||'')==='espelho') bindEspelhoPanel();
+
   var btns=app.querySelectorAll('[data-ponto]');
   for(var i=0;i<btns.length;i++) btns[i].addEventListener('click', function(){ var id=this.getAttribute('data-ponto'); var m=null; for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(id)){m=ST.members[k];break;} if(m) togglePontoMembro(m); });
 }
@@ -20758,7 +23286,420 @@ function boot() {
   else { syncSessionPerms(); renderPage(); flushBlingMsg(); }
 }
 function flushBlingMsg(){ if (window._blingMsg) { var m=window._blingMsg; window._blingMsg=null; setTimeout(function(){ toast(m[0], m[1]); }, 300); } }
+/* ============================================================
+   v152: QR + PIN — bater ponto sem login
+   Colab escaneia QR → tela sem cadastro → digita PIN → registra.
+   ============================================================ */
+
+/* Detecta se URL atual é o modo kiosk. Retorna token da loja ou null. */
+function kioskTokenDaURL(){
+  var h = String(location.hash || '');
+  if (h.indexOf('#/ponto') !== 0) return null;
+  var qs = h.split('?')[1] || '';
+  var params = {};
+  qs.split('&').forEach(function(p){
+    var kv = p.split('=');
+    if (kv[0]) params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1]||'');
+  });
+  return params.loja || null;
+}
+
+/* URL do QR: usa o mesmo host+path da app, muda o hash pra #/ponto?loja=<token> */
+function urlQRDaLoja(token){
+  var base = location.origin + location.pathname;
+  return base + '#/ponto?loja=' + encodeURIComponent(token);
+}
+
+/* URL do serviço público de QR (image). Facilmente trocável por lib local depois. */
+function qrImgSrc(url, size){
+  size = size || 320;
+  return 'https://api.qrserver.com/v1/create-qr-code/?size='+size+'x'+size+'&data='+encodeURIComponent(url);
+}
+
+/* ============ MODAL PRO ADMIN: gerar QR pra imprimir ============ */
+function openQRLojaModal(loja){
+  if (!loja || !loja.ponto_token){
+    toast('Loja sem token. Rode o SQL v152 no Supabase pra gerar.','error');
+    return;
+  }
+  var url = urlQRDaLoja(loja.ponto_token);
+  var nome = loja.name || ('Loja '+loja.store_number);
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.innerHTML =
+    '<div class="modal qr-modal" id="qrModal">'+
+      '<div class="qr-head no-print">'+
+        '<div>'+
+          '<h3>QR do ponto</h3>'+
+          '<p class="qr-sub">Imprima e cole na loja. Colaboradores escaneiam pra bater ponto.</p>'+
+        '</div>'+
+        '<button class="modal-close" id="qrClose" title="Fechar">×</button>'+
+      '</div>'+
+
+      '<div class="qr-print-area">'+
+        '<div class="qr-print-brand">MALBA <span>EMBALAGENS</span></div>'+
+        '<div class="qr-print-title">Bater ponto</div>'+
+        '<div class="qr-print-loja">'+esc(nome)+'</div>'+
+        '<img class="qr-img" src="'+esc(qrImgSrc(url, 480))+'" alt="QR do ponto" width="320" height="320">'+
+        '<div class="qr-print-inst">Aponte a câmera do celular pra escanear</div>'+
+        '<div class="qr-print-url">'+esc(url)+'</div>'+
+      '</div>'+
+
+      '<div class="modal-foot qr-foot no-print">'+
+        '<button class="btn btn-ghost" id="qrCancel">Fechar</button>'+
+        '<button class="btn btn-primary" id="qrPrint">'+icon('down')+'Imprimir</button>'+
+      '</div>'+
+    '</div>';
+
+  document.body.appendChild(modal);
+  function close(){ modal.remove(); }
+  modal.addEventListener('click', function(ev){ if (ev.target===modal) close(); });
+  modal.querySelector('#qrClose').addEventListener('click', close);
+  modal.querySelector('#qrCancel').addEventListener('click', close);
+  modal.querySelector('#qrPrint').addEventListener('click', function(){
+    document.body.classList.add('printing-qr');
+    setTimeout(function(){
+      window.print();
+      setTimeout(function(){ document.body.classList.remove('printing-qr'); }, 500);
+    }, 100);
+  });
+}
+
+/* ============ TELA KIOSK: colab bate ponto sem login ============ */
+
+var KIOSK_STATE = {
+  token: null,
+  loja: null,
+  members: [],
+  shifts: [],
+  pinBuffer: '',
+  memberIdent: null,   // membro identificado após validar PIN
+  ci: null,            // checkin do dia (se houver)
+  step: 'pin',         // 'pin' | 'confirm' | 'done' | 'err'
+  msg: '',
+  busy: false
+};
+
+/* Ponto de entrada: rende toda a tela dedicada. NÃO passa pelo shell normal. */
+function renderKioskPonto(token){
+  KIOSK_STATE.token = token;
+  KIOSK_STATE.step = 'loading';
+  var app_el = document.getElementById('app');
+  if (!app_el){ document.body.innerHTML = '<div id="app"></div>'; app_el = document.getElementById('app'); }
+  document.body.classList.add('is-kiosk');
+  drawKiosk('<div class="kiosk-loading">Carregando...</div>');
+
+  // Buscar loja pelo token
+  sb.from('malba_store_units').select('id, name, store_number, ponto_token').eq('ponto_token', token).maybeSingle().then(function(r){
+    if (r.error || !r.data){
+      KIOSK_STATE.step = 'err';
+      KIOSK_STATE.msg = 'QR inválido ou loja não encontrada.';
+      renderKioskUI();
+      return;
+    }
+    KIOSK_STATE.loja = r.data;
+
+    // Buscar membros + escalas + checkins de hoje em paralelo
+    var t = todayKiosk();
+    Promise.all([
+      sb.from('malba_store_members').select('*').eq('store_unit_id', r.data.id).then(function(rm){ return rm.data||[]; }),
+      sb.from('malba_shifts').select('*').eq('store_unit_id', r.data.id).then(function(rs){ return rs.data||[]; }),
+      sb.from('malba_checkins').select('*').eq('store_unit_id', r.data.id).eq('work_date', t).then(function(rc){ return rc.data||[]; })
+    ]).then(function(results){
+      KIOSK_STATE.members = (results[0]||[]).filter(function(m){ return m.is_active !== false; });
+      KIOSK_STATE.shifts = results[1] || [];
+      KIOSK_STATE.checkins = results[2] || [];
+      KIOSK_STATE.step = 'pin';
+      renderKioskUI();
+    }).catch(function(e){
+      console.error(e);
+      KIOSK_STATE.step = 'err';
+      KIOSK_STATE.msg = 'Erro ao carregar dados da loja.';
+      renderKioskUI();
+    });
+  }, function(){
+    KIOSK_STATE.step = 'err';
+    KIOSK_STATE.msg = 'Falha de conexão.';
+    renderKioskUI();
+  });
+}
+
+function todayKiosk(){
+  var d = new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+/* Renderiza o HTML da tela e faz bind */
+function renderKioskUI(){
+  var html;
+  if (KIOSK_STATE.step === 'err'){
+    html = '<div class="kiosk-msg err"><div class="kiosk-msg-ico">'+iconKiosk('x')+'</div>'+
+      '<h2>Ops</h2><p>'+esc(KIOSK_STATE.msg||'')+'</p></div>';
+  } else if (KIOSK_STATE.step === 'done'){
+    html = renderKioskDone();
+  } else if (KIOSK_STATE.step === 'confirm'){
+    html = renderKioskConfirm();
+  } else {
+    html = renderKioskPin();
+  }
+  drawKiosk(html);
+  bindKiosk();
+}
+
+function drawKiosk(inner){
+  var loja = KIOSK_STATE.loja;
+  var app_el = document.getElementById('app') || document.body;
+  app_el.innerHTML = '<div class="kiosk">'+
+    '<header class="kiosk-h">'+
+      '<div class="kiosk-brand">MALBA <span>WORK OS</span></div>'+
+      (loja ? '<div class="kiosk-loja">'+esc(loja.name || ('Loja '+loja.store_number))+'</div>' : '')+
+    '</header>'+
+    '<main class="kiosk-body">'+inner+'</main>'+
+  '</div>';
+}
+
+function renderKioskPin(){
+  var buf = KIOSK_STATE.pinBuffer || '';
+  // Dots representando os 4-6 dígitos digitados
+  var maxPin = 6;
+  var dots = '';
+  for (var i=0; i<maxPin; i++){
+    dots += '<span class="kiosk-dot'+(i<buf.length?' on':'')+'"></span>';
+  }
+  var keys = ['1','2','3','4','5','6','7','8','9','←','0','✓'];
+  var keyHTML = keys.map(function(k){
+    var cls = 'kiosk-key';
+    if (k==='←') cls += ' back';
+    if (k==='✓') cls += ' ok';
+    return '<button class="'+cls+'" data-key="'+esc(k)+'">'+esc(k)+'</button>';
+  }).join('');
+  var errMsg = (KIOSK_STATE.step === 'pin' && KIOSK_STATE.msg)
+    ? '<div class="kiosk-err">'+esc(KIOSK_STATE.msg)+'</div>' : '';
+  var hint = KIOSK_STATE.busy ? '<div class="kiosk-busy">Verificando...</div>' : '';
+  return '<div class="kiosk-pin-wrap">'+
+    '<div class="kiosk-headline">Digite seu PIN</div>'+
+    '<div class="kiosk-dots">'+dots+'</div>'+
+    errMsg + hint +
+    '<div class="kiosk-pad">'+keyHTML+'</div>'+
+  '</div>';
+}
+
+function renderKioskConfirm(){
+  var m = KIOSK_STATE.memberIdent;
+  var ci = KIOSK_STATE.ci;
+  var prox = proximoSlotPonto(ci);
+  var wd = new Date().getDay();
+  var shift = null;
+  for (var i=0;i<KIOSK_STATE.shifts.length;i++){
+    if (String(KIOSK_STATE.shifts[i].member_id)===String(m.id) && Number(KIOSK_STATE.shifts[i].weekday)===wd){
+      shift = KIOSK_STATE.shifts[i]; break;
+    }
+  }
+  var isFolga = shift && shift.folga;
+  var body;
+  if (isFolga){
+    body = '<div class="kiosk-info-loja">Hoje é sua folga.</div>'+
+      '<button class="kiosk-big-btn ghost" data-kiosk-act="back">Voltar</button>';
+  } else if (!prox){
+    body = '<div class="kiosk-info-loja">Todas as batidas do dia registradas ✓</div>'+
+      '<button class="kiosk-big-btn ghost" data-kiosk-act="back">Voltar</button>';
+  } else {
+    var esperado = shift && shift['expected_'+prox.key] ? ' · esperado '+shift['expected_'+prox.key].slice(0,5) : '';
+    var horaAgora = new Date().toTimeString().slice(0,5);
+    body =
+      '<div class="kiosk-next">Próxima batida</div>'+
+      '<div class="kiosk-slot-name">'+esc(prox.label)+'</div>'+
+      '<div class="kiosk-clock">'+esc(horaAgora)+'</div>'+
+      (esperado ? '<div class="kiosk-info-loja">esperado '+esc(shift['expected_'+prox.key].slice(0,5))+'</div>' : '')+
+      '<button class="kiosk-big-btn ok" data-kiosk-act="registrar">'+iconKiosk('check')+'Registrar '+esc(prox.label)+'</button>'+
+      '<button class="kiosk-back-link" data-kiosk-act="back">← não sou eu, voltar</button>';
+  }
+  return '<div class="kiosk-conf-wrap">'+
+    '<div class="kiosk-av-big" style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciaisKiosk(m.name))+'</div>'+
+    '<div class="kiosk-nome-big">'+esc(m.name)+'</div>'+
+    body +
+  '</div>';
+}
+
+function renderKioskDone(){
+  var m = KIOSK_STATE.memberIdent;
+  var slot = KIOSK_STATE.slotRegistrada;
+  return '<div class="kiosk-msg ok">'+
+    '<div class="kiosk-msg-ico">'+iconKiosk('check')+'</div>'+
+    '<h2>Registrado!</h2>'+
+    '<p><b>'+esc(m ? m.name : '')+'</b> · '+esc(slot||'')+' às '+esc(new Date().toTimeString().slice(0,5))+'</p>'+
+    '<div class="kiosk-auto-back">Voltando em <span id="kioskCount">3</span>s...</div>'+
+  '</div>';
+}
+
+function bindKiosk(){
+  var app_el = document.getElementById('app') || document.body;
+  if (KIOSK_STATE.step === 'pin'){
+    app_el.querySelectorAll('[data-key]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var k = this.getAttribute('data-key');
+        if (KIOSK_STATE.busy) return;
+        if (k==='←'){
+          KIOSK_STATE.pinBuffer = KIOSK_STATE.pinBuffer.slice(0,-1);
+          KIOSK_STATE.msg = '';
+        } else if (k==='✓'){
+          if (KIOSK_STATE.pinBuffer.length < 4){
+            KIOSK_STATE.msg = 'PIN precisa de pelo menos 4 dígitos';
+          } else {
+            return validarPinKiosk();
+          }
+        } else {
+          if (KIOSK_STATE.pinBuffer.length < 6){
+            KIOSK_STATE.pinBuffer += k;
+            KIOSK_STATE.msg = '';
+            // auto-validar quando atinge 4 (pra facilitar)
+            if (KIOSK_STATE.pinBuffer.length === 4){
+              renderKioskUI();
+              return validarPinKiosk();
+            }
+          }
+        }
+        renderKioskUI();
+      });
+    });
+  } else if (KIOSK_STATE.step === 'confirm'){
+    app_el.querySelectorAll('[data-kiosk-act]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var a = this.getAttribute('data-kiosk-act');
+        if (a==='back'){
+          KIOSK_STATE.step = 'pin';
+          KIOSK_STATE.pinBuffer = '';
+          KIOSK_STATE.memberIdent = null;
+          KIOSK_STATE.ci = null;
+          KIOSK_STATE.msg = '';
+          renderKioskUI();
+        } else if (a==='registrar'){
+          registrarViaKiosk();
+        }
+      });
+    });
+  } else if (KIOSK_STATE.step === 'done'){
+    var n = 3;
+    var el = document.getElementById('kioskCount');
+    var iv = setInterval(function(){
+      n--;
+      if (el) el.textContent = n;
+      if (n <= 0){
+        clearInterval(iv);
+        KIOSK_STATE.step = 'pin';
+        KIOSK_STATE.pinBuffer = '';
+        KIOSK_STATE.memberIdent = null;
+        KIOSK_STATE.ci = null;
+        KIOSK_STATE.slotRegistrada = null;
+        KIOSK_STATE.msg = '';
+        renderKioskUI();
+      }
+    }, 1000);
+  }
+}
+
+/* Validar o PIN e localizar o membro */
+function validarPinKiosk(){
+  KIOSK_STATE.busy = true;
+  KIOSK_STATE.msg = '';
+  renderKioskUI();
+  var pin = KIOSK_STATE.pinBuffer;
+  var achado = null;
+  for (var i=0; i<KIOSK_STATE.members.length; i++){
+    if (String(KIOSK_STATE.members[i].pin_ponto||'').trim() === pin){
+      achado = KIOSK_STATE.members[i];
+      break;
+    }
+  }
+  if (!achado){
+    KIOSK_STATE.busy = false;
+    KIOSK_STATE.pinBuffer = '';
+    KIOSK_STATE.msg = 'PIN inválido — tente de novo';
+    // Vibração leve se disponível
+    if (navigator.vibrate) navigator.vibrate(120);
+    setTimeout(renderKioskUI, 100);
+    return;
+  }
+  // Achado — procurar checkin do dia
+  var ci = null;
+  for (var j=0;j<KIOSK_STATE.checkins.length;j++){
+    if (String(KIOSK_STATE.checkins[j].member_id)===String(achado.id)){
+      ci = KIOSK_STATE.checkins[j]; break;
+    }
+  }
+  KIOSK_STATE.memberIdent = achado;
+  KIOSK_STATE.ci = ci;
+  KIOSK_STATE.busy = false;
+  KIOSK_STATE.step = 'confirm';
+  renderKioskUI();
+}
+
+/* Gravar a próxima batida via kiosk */
+function registrarViaKiosk(){
+  var m = KIOSK_STATE.memberIdent;
+  var ci = KIOSK_STATE.ci;
+  var prox = proximoSlotPonto(ci);
+  if (!prox){ toast('Já batido','info'); return; }
+  var nowIso = new Date().toISOString();
+  var t = todayKiosk();
+
+  var slotRegistrada = prox.label;
+  if (!ci){
+    // Cria novo checkin com entrada
+    var row = {
+      sector: 'lojas',
+      store_unit_id: KIOSK_STATE.loja.id,
+      user_id: null,
+      member_id: m.id,
+      work_date: t,
+      entrada: nowIso
+    };
+    sb.from('malba_checkins').insert(row).select().single().then(function(r){
+      if (r.error){ KIOSK_STATE.msg='Erro ao registrar. Tente novamente.'; KIOSK_STATE.step='pin'; KIOSK_STATE.pinBuffer=''; renderKioskUI(); return; }
+      KIOSK_STATE.checkins.push(r.data);
+      KIOSK_STATE.slotRegistrada = slotRegistrada;
+      KIOSK_STATE.step = 'done';
+      renderKioskUI();
+    });
+  } else {
+    var patch = {};
+    patch[prox.key] = nowIso;
+    sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
+      if (r.error){ KIOSK_STATE.msg='Erro ao registrar. Tente novamente.'; KIOSK_STATE.step='pin'; KIOSK_STATE.pinBuffer=''; renderKioskUI(); return; }
+      ci[prox.key] = nowIso;
+      KIOSK_STATE.slotRegistrada = slotRegistrada;
+      KIOSK_STATE.step = 'done';
+      renderKioskUI();
+    });
+  }
+}
+
+/* Helpers isolados pro kiosk (não depende do resto do sistema tá inicializado) */
+function iniciaisKiosk(nome){
+  var partes = String(nome||'').trim().split(/\s+/);
+  if (!partes[0]) return '?';
+  var a = partes[0][0];
+  var b = partes.length>1 ? partes[partes.length-1][0] : '';
+  return (a+b).toUpperCase();
+}
+
+function iconKiosk(name){
+  var svgs = {
+    'check': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+    'x':     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
+  };
+  return svgs[name] || '';
+}
+
 function init() {
+  // v152: kiosk mode — rota #/ponto?loja=<token> renderiza tela sem login
+  var kioskToken = kioskTokenDaURL();
+  if (kioskToken){
+    if (!sb) { document.body.innerHTML = '<div class="kiosk"><div class="kiosk-msg err"><h2>Erro</h2><p>Biblioteca não carregou.</p></div></div>'; return; }
+    renderKioskPonto(kioskToken);
+    return;
+  }
   startSplash();
   render('<div class="screen"><div class="spinner"></div></div>');
   if (!sb) { render('<div class="screen"><div class="screen-inner"><div class="login-card"><h1 class="login-h">Erro</h1><p class="login-sub">Biblioteca do Supabase não carregou.</p></div></div></div>'); return; }
