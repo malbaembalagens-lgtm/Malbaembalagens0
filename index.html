@@ -8153,6 +8153,356 @@ html.dark .rk-com-mini { color: #4ADE80; }
 html.dark .rk-com-bonus,
 html.dark .rk-com-mini i { background: rgba(74,222,128,.14); color: #4ADE80; }
 
+
+/* ============================================================
+   v161 · RELATÓRIOS Bloco F — Comissões + Vendas dia + Export CSV
+   ============================================================ */
+
+/* Botão Export CSV no header do card */
+.rep-btn-csv {
+  margin-left: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.rep-btn-csv .lc-ic { width: 14px; height: 14px; }
+
+/* Tabela do relatório — base */
+.rep-tbl-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: var(--sp-2);
+}
+.rep-dia-scroll { max-height: 420px; overflow-y: auto; }
+
+.rep-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.rep-tbl th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--u-text3);
+  background: var(--u-bg2);
+  border-bottom: 2px solid var(--u-line);
+  white-space: nowrap;
+}
+.rep-tbl td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--u-line);
+  color: var(--u-text);
+  vertical-align: middle;
+}
+.rep-tbl tbody tr:hover { background: var(--u-bg2); }
+.rep-tbl-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rep-tbl-dim { color: var(--u-text3); }
+
+.rep-tbl-vis { width: 30%; min-width: 100px; }
+
+/* Rodapé (totais) */
+.rep-tbl tfoot td {
+  padding: 12px;
+  background: var(--u-bg2);
+  border-top: 2px solid var(--u-line);
+  border-bottom: 0;
+  font-weight: var(--fw-extrabold);
+  font-size: 12px;
+}
+.rep-tbl-foot-lbl {
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+}
+.rep-tbl-foot { color: var(--u-text); }
+.rep-tbl-total-cel {
+  color: var(--u-green);
+  font-size: 14px;
+}
+
+/* Total por linha */
+.rep-tbl-total {
+  color: var(--u-green);
+  font-weight: var(--fw-extrabold);
+  font-size: 13px;
+}
+
+/* Pill de % da meta */
+.rep-pct-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+/* Tag "+ bônus" */
+.rep-com-bonus-tag {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: var(--rd-sm);
+  background: rgba(22,163,74,.14);
+  color: var(--u-green);
+  font-size: 9px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* Avatar mini com iniciais na coluna de vendedor */
+.rep-av-mini {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Barras de volume na tabela dia a dia */
+.rep-dia-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--u-line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.rep-dia-bar span {
+  display: block;
+  height: 100%;
+  background: var(--u-accent);
+  border-radius: 999px;
+  transition: width var(--tr-base);
+}
+.rep-dia-lbl {
+  font-variant-numeric: tabular-nums;
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+.rep-tr-vazio td { opacity: 0.5; }
+
+/* Mobile — encolhe padding, esconde barrinha visual */
+@media (max-width: 700px) {
+  .rep-tbl th, .rep-tbl td { padding: 8px 6px; font-size: 12px; }
+  .rep-av-mini { width: 20px; height: 20px; font-size: 9px; margin-right: 4px; }
+  .rep-tbl-vis { display: none; }
+  .rep-tbl th.rep-tbl-vis { display: none; }
+  .rep-com-bonus-tag { display: block; margin: 2px 0 0 0; }
+  .rep-btn-csv span { display: none; }
+  .rep-btn-csv { padding: 6px 8px; }
+}
+
+/* @media print — cuidar da tabela em A4 */
+@media print {
+  .rep-btn-csv { display: none !important; }
+  .rep-dia-scroll { max-height: none; overflow: visible; }
+  .rep-tbl th, .rep-tbl td { padding: 6px 8px; font-size: 10.5px; }
+  .rep-tbl thead { display: table-header-group; }
+  .rep-tbl tfoot { display: table-row-group; }
+  .rep-tbl tr { page-break-inside: avoid; }
+  .rep-com-card, .rep-dia-card { page-break-inside: auto; break-inside: auto; }
+  .rep-tbl-total-cel, .rep-tbl-total, .rep-com-bonus-tag { color: #16A34A !important; -webkit-print-color-adjust: exact; }
+}
+
+/* Dark */
+html.dark .rep-tbl th { background: rgba(255,255,255,.03); color: var(--u-text3); }
+html.dark .rep-tbl tfoot td { background: rgba(255,255,255,.03); }
+html.dark .rep-tbl-total-cel,
+html.dark .rep-tbl-total { color: #4ADE80; }
+html.dark .rep-com-bonus-tag { background: rgba(74,222,128,.14); color: #4ADE80; }
+
+
+/* ============================================================
+   v162 · BLOCO D — Rotina no Painel + Item Crítico
+   ============================================================ */
+
+/* --- Card resumo da rotina no painel da loja --- */
+.rot-loja-card { }
+.rot-loja-card .rlc-geral {
+  font-size: 20px;
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  margin-left: var(--sp-2);
+}
+.rlc-done-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(22,163,74,.14);
+  color: var(--u-green);
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-left: 6px;
+}
+.rlc-btn {
+  margin-left: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.rlc-btn .lc-ic { width: 14px; height: 14px; }
+
+.rlc-turnos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+.rlc-turno {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rlc-turno-h {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+}
+.rlc-turno-h .lc-ic { width: 14px; height: 14px; color: var(--u-text3); }
+.rlc-turno-h b {
+  margin-left: auto;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--fw-extrabold);
+}
+.rlc-bar {
+  height: 6px;
+  background: var(--u-bg2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.rlc-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width var(--tr-base);
+}
+.rlc-crit-tag {
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 6px;
+  border-radius: var(--rd-sm);
+  background: rgba(239,68,68,.14);
+  color: #EF4444;
+}
+.rlc-crit-tag.rlc-crit-ok {
+  background: rgba(22,163,74,.14);
+  color: var(--u-green);
+}
+
+/* Empty state — sem rotina configurada */
+.rot-loja-empty {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--u-bg2);
+  border: 1px dashed var(--u-line);
+  border-radius: var(--rd-lg);
+}
+.rlc-ic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--u-line);
+  color: var(--u-text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rlc-tx b { display: block; font-size: 13px; color: var(--u-text); }
+.rlc-tx i { display: block; font-size: 12px; color: var(--u-text3); font-style: normal; margin-top: 2px; }
+
+/* --- Modal openRotinaConfig: checkbox crítico --- */
+.rc-crit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--rd-sm);
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-semibold);
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+.rc-crit:hover { background: var(--u-bg2); color: var(--u-text2); }
+.rc-crit input { margin: 0; cursor: pointer; }
+.rc-item[data-crit] .rc-crit {
+  background: rgba(239,68,68,.14);
+  color: #EF4444;
+}
+.rc-item[data-crit] .rc-input {
+  border-left: 3px solid #EF4444;
+  padding-left: 8px;
+}
+
+/* --- rotinaHTML: item marcado como crítico --- */
+.rot-crit-ico {
+  color: #EF4444;
+  font-weight: var(--fw-extrabold);
+  margin-right: 4px;
+  font-size: 14px;
+}
+.rot-item.rot-crit:not(.done) {
+  border-left: 3px solid #EF4444;
+  padding-left: calc(var(--sp-3) - 3px);
+}
+.rot-item.rot-crit.done .rot-crit-ico {
+  color: var(--u-green);
+  opacity: 0.6;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .rlc-turnos { grid-template-columns: 1fr; gap: var(--sp-3); }
+  .rlc-btn span { display: none; }
+  .rlc-btn { padding: 6px 8px; }
+}
+
+/* Dark */
+html.dark .rlc-done-tag { background: rgba(74,222,128,.14); color: #4ADE80; }
+html.dark .rlc-crit-tag { background: rgba(248,113,113,.14); color: #F87171; }
+html.dark .rlc-crit-tag.rlc-crit-ok { background: rgba(74,222,128,.14); color: #4ADE80; }
+html.dark .rc-item[data-crit] .rc-crit { background: rgba(248,113,113,.14); color: #F87171; }
+html.dark .rc-item[data-crit] .rc-input { border-left-color: #F87171; }
+html.dark .rot-crit-ico { color: #F87171; }
+html.dark .rot-item.rot-crit:not(.done) { border-left-color: #F87171; }
+
 </style>
 </head>
 <body>
@@ -8176,7 +8526,7 @@ html.dark .rk-com-mini i { background: rgba(74,222,128,.14); color: #4ADE80; }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v160';
+var APP_BUILD = 'v163';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -9988,6 +10338,12 @@ function alertasDaLoja(storeId){
     }
   }
 
+  // v162: alertas de rotina do dia (respeita hierarquia)
+  if (typeof alertasRotinaDaLoja==='function'){
+    var alertasRot = alertasRotinaDaLoja(storeId, { soPessoal: soPessoal, meuMid: meuMid });
+    for (var iR=0; iR<alertasRot.length; iR++) out.push(alertasRot[iR]);
+  }
+
   return out;
 }
 
@@ -10714,11 +11070,20 @@ function lojaPainelHTML(){
   var uvHTML = ultimaVendaCardHTML(loja.id);
   // v157: timeline do dia
   var tlHTML = timelinePanelHTML(loja.id);
-  return hero + muralHTML() + alertasHTML + uvHTML + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + '<div class="dash-grid2">'+rankingHTML+metaPanel+'</div>' + tlHTML;
+  // v162: card da rotina do dia
+  var rotCard = (typeof rotinaLojaCardHTML==='function') ? rotinaLojaCardHTML(loja.id) : '';
+  return hero + muralHTML() + alertasHTML + rotCard + uvHTML + kpis + '<div class="dash-grid2">'+presPanel+tPanel+'</div>' + '<div class="dash-grid2">'+rankingHTML+metaPanel+'</div>' + tlHTML;
 }
 function bindLojaPainel(){
   bindMural();
   if (typeof bindAlertasPanel === 'function') bindAlertasPanel();
+  // v162: botão "Abrir" da rotina no painel → vai pra Trabalho > Rotina do dia
+  var rlcGo = document.getElementById('rlcGoRotina');
+  if (rlcGo) rlcGo.addEventListener('click', function(){
+    ST.page = 'tarefas'; ST.taskView = 'rotina';
+    if (typeof navigate==='function') navigate(ST.sector+'/tarefas/rotina');
+    renderPage();
+  });
   // v160: toggle Hoje | Mês do ranking
   var togBtns = app.querySelectorAll('[data-rk-per]');
   for (var iT=0;iT<togBtns.length;iT++){
@@ -11354,6 +11719,149 @@ function rotinaHojeStats(){
   rec.forEach(function(t){ if(t.status==='feito') done++; else { var e=estMinTarefa(t); if(e>0){ hasEst=true; pendMin+=e; } } });
   return { total:total, done:done, pend:total-done, pct: total?Math.round(done/total*100):0, pendMin:pendMin, hasEst:hasEst };
 }
+/* ============================================================
+   v162 · BLOCO D — Rotina no Painel + Alertas + Item Crítico
+   ============================================================ */
+
+/* Estatísticas de rotina do dia POR LOJA (retorna por turno) */
+function rotinaLojaStats(sid, dateStr){
+  var d = dateStr || today();
+  var out = { total:0, done:0, criticoTotal:0, criticoDone:0, turnos:{} };
+  CHECK_TURNOS.forEach(function(t){
+    var itens = checklistItemsDoTurno(t.key);
+    var doneCount = 0, critTotal = 0, critDone = 0;
+    itens.forEach(function(it){
+      var dr = checklistDoneFor(it.id, sid, d);
+      var done = !!(dr && dr.done);
+      if (done) doneCount++;
+      if (it.is_critico){
+        critTotal++;
+        if (done) critDone++;
+      }
+    });
+    out.turnos[t.key] = { total: itens.length, done: doneCount, criticoTotal: critTotal, criticoDone: critDone };
+    out.total += itens.length;
+    out.done  += doneCount;
+    out.criticoTotal += critTotal;
+    out.criticoDone  += critDone;
+  });
+  return out;
+}
+
+/* Card resumo da rotina no PAINEL DA LOJA */
+function rotinaLojaCardHTML(sid){
+  if (!sid) return '';
+  var s = rotinaLojaStats(sid);
+  if (s.total === 0){
+    // sem checklist configurado — mostra chamada pra configurar (só gestor)
+    if (typeof can==='function' && can('equipe')){
+      return '<div class="rot-loja-card rot-loja-empty">'+
+        '<div class="rlc-ic">'+icon('clock')+'</div>'+
+        '<div class="rlc-tx"><b>Rotina do dia não configurada</b><i>Cadastre itens de abertura e fechamento em Trabalho → Rotina do dia.</i></div>'+
+      '</div>';
+    }
+    return '';
+  }
+
+  var pctGeral = Math.round(s.done / s.total * 100);
+  var corGeral = pctGeral >= 100 ? '#16A34A' : (pctGeral >= 50 ? '#3B6FF7' : '#F59E0B');
+  var doneGeralMsg = pctGeral >= 100
+    ? '<span class="rlc-done-tag">Concluída</span>'
+    : '';
+
+  // Blocos por turno
+  var blocos = CHECK_TURNOS.map(function(t){
+    var st = s.turnos[t.key];
+    if (st.total === 0) return '';
+    var pct = Math.round(st.done / st.total * 100);
+    var cor = pct >= 100 ? '#16A34A' : (pct >= 50 ? '#3B6FF7' : '#F59E0B');
+    var critInfo = st.criticoTotal > 0
+      ? '<span class="rlc-crit-tag'+(st.criticoDone===st.criticoTotal?' rlc-crit-ok':'')+'">'+
+          (st.criticoDone===st.criticoTotal?'✓ críticos':'⚠ '+(st.criticoTotal-st.criticoDone)+' crítico'+(st.criticoTotal-st.criticoDone!==1?'s':'')+' pendente'+(st.criticoTotal-st.criticoDone!==1?'s':''))+
+        '</span>'
+      : '';
+    return '<div class="rlc-turno">'+
+      '<div class="rlc-turno-h">'+icon(t.icon)+'<span>'+esc(t.label)+'</span>'+
+        '<b style="color:'+cor+'">'+st.done+'/'+st.total+'</b>'+
+      '</div>'+
+      '<div class="rlc-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div>'+
+      critInfo+
+    '</div>';
+  }).join('');
+
+  return '<div class="dash-panel rot-loja-card">'+
+    '<div class="dash-panel-h">'+icon('clock')+'<h3>Rotina do dia</h3>'+
+      '<span class="rlc-geral" style="color:'+corGeral+'">'+pctGeral+'%</span>'+
+      doneGeralMsg+
+      '<button class="btn btn-ghost rlc-btn" id="rlcGoRotina" title="Ver checklist completa">'+icon('arrow')+'<span>Abrir</span></button>'+
+    '</div>'+
+    '<div class="dash-panel-b">'+
+      '<div class="rlc-turnos">'+blocos+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* Detecta se um turno deveria estar pronto por hora do dia
+   (abertura → antes das 11h; fechamento → passou 30min após 19h) */
+function turnoJaDeveriaEstarPronto(turnoKey, now){
+  now = now || new Date();
+  var h = now.getHours(), mm = now.getMinutes();
+  var minAgora = h*60 + mm;
+  if (turnoKey === 'abertura'){
+    // Depois das 11h e a loja ainda tá aberta (antes das 22h)
+    return minAgora >= 11*60 && minAgora < 22*60;
+  }
+  if (turnoKey === 'fechamento'){
+    // Depois das 19h30
+    return minAgora >= 19*60 + 30;
+  }
+  return false;
+}
+
+/* Alertas relacionados à rotina.
+   Recebe { soPessoal, meuMid } pra respeitar hierarquia v158. */
+function alertasRotinaDaLoja(storeId, ctx){
+  ctx = ctx || {};
+  var soPessoal = !!ctx.soPessoal;
+  if (soPessoal) return [];  // colab não vê alerta de rotina da loja
+
+  var out = [];
+  var s = rotinaLojaStats(storeId);
+  if (s.total === 0) return out;
+
+  CHECK_TURNOS.forEach(function(t){
+    var st = s.turnos[t.key];
+    if (st.total === 0) return;
+    if (st.done === st.total) return;  // tudo feito — nada a alertar
+    if (!turnoJaDeveriaEstarPronto(t.key)) return;
+
+    // Item crítico pesa mais
+    var faltamCriticos = st.criticoTotal - st.criticoDone;
+    var faltamOutros = (st.total - st.done) - faltamCriticos;
+    var sev = faltamCriticos > 0 ? 'danger' : 'warn';
+
+    var titulo, desc;
+    if (faltamCriticos > 0){
+      titulo = faltamCriticos+' item'+(faltamCriticos!==1?'s':'')+' crítico'+(faltamCriticos!==1?'s':'')+' de '+t.label.toLowerCase()+' pendente'+(faltamCriticos!==1?'s':'');
+      desc = 'A rotina de '+t.label.toLowerCase()+' tem crítico'+(faltamCriticos!==1?'s':'')+' não feito'+(faltamCriticos!==1?'s':'')+
+        (faltamOutros>0?(' e mais '+faltamOutros+' item'+(faltamOutros!==1?'ns':'')+' comum'+(faltamOutros!==1?'ns':'')):'');
+    } else {
+      var faltam = st.total - st.done;
+      titulo = 'Rotina de '+t.label.toLowerCase()+' incompleta';
+      desc = faltam+' item'+(faltam!==1?'ns':'')+' faltando ('+st.done+'/'+st.total+')';
+    }
+    out.push({
+      sev: sev,
+      ico: 'clock',
+      title: titulo,
+      desc: desc,
+      act: { label: 'Ver rotina', page: 'tarefas', tab: 'rotina' }
+    });
+  });
+
+  return out;
+}
+
 function rotinaHojeCardHTML(){
   var s=rotinaHojeStats();
   if(s.total===0) return ''; // sem rotina hoje: não polui a tela
@@ -13496,7 +14004,7 @@ function rotinaHTML(){
     var rows = items.length ? items.map(function(it){
       var dr = checklistDoneFor(it.id, sid, d); var done = dr && dr.done;
       var who = done ? ('<span class="rot-who">'+esc((dr.done_by_name||'').split(' ')[0])+' · '+hhmm(dr.done_at)+'</span>') : '';
-      return '<button class="rot-item'+(done?' done':'')+'" data-check="'+esc(it.id)+'"><span class="rot-box">'+(done?icon('tasks'):'')+'</span><span class="rot-label">'+esc(it.label)+'</span>'+who+'</button>';
+      var critIco = it.is_critico ? '<span class="rot-crit-ico" title="Item crítico — alerta se não for feito">⚠</span>' : ''; return '<button class="rot-item'+(done?' done':'')+(it.is_critico?' rot-crit':'')+'" data-check="'+esc(it.id)+'"><span class="rot-box">'+(done?icon('tasks'):'')+'</span>'+critIco+'<span class="rot-label">'+esc(it.label)+'</span>'+who+'</button>';
     }).join('') : '<div class="col-empty">Nenhum item neste turno.'+(canManage()?' Use "Editar rotina".':'')+'</div>';
     var pct = items.length ? Math.round(doneCount/items.length*100) : 0;
     return '<div class="rot-block"><div class="rot-block-h">'+icon(t.icon)+'<b>'+t.label+'</b><span class="rot-prog'+(items.length&&doneCount===items.length?' full':'')+'">'+doneCount+'/'+items.length+'</span></div><div class="rot-bar"><span style="width:'+pct+'%"></span></div><div class="rot-items">'+rows+'</div></div>';
@@ -13519,7 +14027,7 @@ function openRotinaConfig(){
   function draw(){
     var blocks=CHECK_TURNOS.map(function(t){
       var items=checklistItemsDoTurno(t.key);
-      var rows=items.length ? items.map(function(it){ return '<div class="rc-item"><input type="text" class="rc-input" data-itemid="'+esc(it.id)+'" value="'+esc(it.label)+'"><button class="rc-del" data-delitem="'+esc(it.id)+'" title="Remover">'+icon('logout')+'</button></div>'; }).join('') : '<div class="col-empty" style="margin:4px 0">Sem itens ainda.</div>';
+      var rows=items.length ? items.map(function(it){ return '<div class="rc-item"'+(it.is_critico?' data-crit':'')+'><input type="text" class="rc-input" data-itemid="'+esc(it.id)+'" value="'+esc(it.label)+'"><label class="rc-crit" title="Marcar como crítico: alerta se não for feito"><input type="checkbox" data-critid="'+esc(it.id)+'"'+(it.is_critico?' checked':'')+'><span>⚠ crítico</span></label><button class="rc-del" data-delitem="'+esc(it.id)+'" title="Remover">'+icon('logout')+'</button></div>'; }).join('') : '<div class="col-empty" style="margin:4px 0">Sem itens ainda.</div>';
       return '<div class="rc-block"><div class="rc-block-h">'+icon(t.icon)+t.label+'</div><div class="rc-items">'+rows+'</div><div class="rc-add"><input type="text" class="rc-new" id="rcNew_'+t.key+'" placeholder="Novo item de '+t.label.toLowerCase()+'..."><button class="btn btn-primary rc-addbtn" data-addturno="'+t.key+'">Adicionar</button></div></div>';
     }).join('');
     modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Editar rotina da loja</div><div class="modal-note">Estes itens valem para <b>todas as lojas</b>. A equipe marca o que foi feito a cada dia. Edite o texto direto no campo.</div>'+blocks+'<div class="modal-foot"><button class="btn btn-primary" id="rcClose">Concluído</button></div></div>';
@@ -13533,6 +14041,29 @@ function openRotinaConfig(){
     for(var d=0;d<dels.length;d++) dels[d].addEventListener('click', function(){ var id=this.getAttribute('data-delitem'); confirmDelete('Remover este item da rotina?', function(){ sb.from('malba_checklist_items').delete().eq('id',id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.checklistItems=ST.checklistItems.filter(function(x){return String(x.id)!==String(id);}); draw(); }); }); });
     var inputs=modal.querySelectorAll('.rc-input');
     for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('change', function(){ var id=this.getAttribute('data-itemid'); var label=(this.value||'').trim(); if(!label){ this.value=''; return; } sb.from('malba_checklist_items').update({ label:label }).eq('id',id).then(function(r){ if(!r.error){ for(var k=0;k<ST.checklistItems.length;k++) if(String(ST.checklistItems[k].id)===String(id)) ST.checklistItems[k].label=label; } else toast('Erro ao salvar','error'); }); });
+    // v162: checkbox de crítico
+    var crits = modal.querySelectorAll('[data-critid]');
+    for (var ic=0; ic<crits.length; ic++){
+      crits[ic].addEventListener('change', function(){
+        var id = this.getAttribute('data-critid');
+        var val = !!this.checked;
+        var box = this;
+        sb.from('malba_checklist_items').update({ is_critico: val }).eq('id', id).then(function(r){
+          if (r.error){
+            var msg=(r.error.message||'').toLowerCase();
+            if (msg.indexOf('is_critico')>=0 || msg.indexOf('column')>=0){
+              toast('Rode o SQL is_critico primeiro','error');
+            } else toast('Erro ao salvar','error');
+            box.checked = !val;  // desfaz visual
+            return;
+          }
+          for (var k=0;k<ST.checklistItems.length;k++) if (String(ST.checklistItems[k].id)===String(id)) ST.checklistItems[k].is_critico = val;
+          // Atualizar visual do rc-item pai
+          var parent = box.closest('.rc-item');
+          if (parent){ if (val) parent.setAttribute('data-crit',''); else parent.removeAttribute('data-crit'); }
+        });
+      });
+    }
   }
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   document.body.appendChild(modal); draw();
@@ -13604,6 +14135,291 @@ function lrSetMes(delta){ var r=lrMesRef(); var m=r.m+delta, y=r.y; while(m<1){m
 function lrFmtItens(v){ return (Math.round(v*10)/10).toLocaleString('pt-BR'); }
 function lrFmtConv(v){ return (Math.round(v*10)/10).toLocaleString('pt-BR')+'%'; }
 
+/* ============================================================
+   v161 · RELATÓRIOS: COMISSÕES + VENDAS POR DIA + EXPORT CSV (Bloco F)
+   ============================================================ */
+
+/* Utility: download string como arquivo local via Blob */
+function downloadCSV(filename, content){
+  try{
+    var blob = new Blob(["\ufeff" + content], { type: 'text/csv;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+    return true;
+  } catch(e){
+    console.error('downloadCSV falhou:', e);
+    if (typeof toast==='function') toast('Erro ao gerar CSV: '+e.message, 'error');
+    return false;
+  }
+}
+
+/* Escapa valor pra célula CSV (aspas duplas se contém vírgula/aspas/newline) */
+function csvCell(v){
+  if (v == null) return '';
+  var s = String(v);
+  if (/[",\n;]/.test(s)) return '"' + s.replace(/"/g,'""') + '"';
+  return s;
+}
+
+/* Vendas do membro NESTA loja específica no mês (filtra também por store) */
+function vendasMembroLojaMes(member, sid, m, y){
+  if (!member) return 0;
+  var u = (typeof userDoMembro==='function') ? userDoMembro(member) : null;
+  var uid = u ? u.id : null;
+  var mid = member.id;
+  var s = 0;
+  (ST.salesEntries||[]).forEach(function(e){
+    if (String(e.store_unit_id)!==String(sid)) return;
+    var d = (e.sale_date||'').slice(0,10);
+    var p = d.split('-');
+    if (Number(p[0])!==Number(y) || Number(p[1])!==Number(m)) return;
+    if ((mid && String(e.member_id)===String(mid)) || (uid && String(e.user_id)===String(uid)))
+      s += Number(e.value)||0;
+  });
+  return s;
+}
+
+/* CSV: comissões da loja no mês (usa ; como separador, padrão BR) */
+function csvComissoesMes(sid, m, y){
+  var linhas = [];
+  linhas.push(['Vendedor','Loja','Mês','Ano','Vendido (R$)','Meta (R$)','% Atingido','% Base','% Bônus','Comissão Base (R$)','Comissão Bônus (R$)','Comissão Total (R$)'].map(csvCell).join(';'));
+  var mems = (ST.members||[]).filter(function(x){ return x.is_active!==false && String(x.store_unit_id)===String(sid); });
+  var storeNm = (typeof storeName==='function') ? (storeName(sid)||'Loja') : 'Loja';
+  var totalBase=0, totalBonus=0, totalGeral=0;
+  mems.forEach(function(mem){
+    var vendido = vendasMembroLojaMes(mem, sid, m, y);
+    if (vendido <= 0) return;  // só vendedores com movimento
+    var goal = (typeof metaIndividualDo==='function') ? metaIndividualDo(mem.id, m, y) : null;
+    var meta = goal ? (Number(goal.goal_value)||0) : 0;
+    var pctA = meta > 0 ? (vendido/meta*100) : 0;
+    var comInfo = goal ? comissaoEstimada(goal, vendido) : { comBase:0, comBonus:0, comTotal:0 };
+    totalBase  += comInfo.comBase;
+    totalBonus += comInfo.comBonus;
+    totalGeral += comInfo.comTotal;
+    linhas.push([
+      mem.name,
+      storeNm,
+      MESES[m-1],
+      y,
+      vendido.toFixed(2).replace('.',','),
+      meta.toFixed(2).replace('.',','),
+      pctA.toFixed(1).replace('.',','),
+      (Number(goal && goal.commission_pct)||0).toFixed(2).replace('.',','),
+      (Number(goal && goal.commission_bonus_pct)||0).toFixed(2).replace('.',','),
+      comInfo.comBase.toFixed(2).replace('.',','),
+      comInfo.comBonus.toFixed(2).replace('.',','),
+      comInfo.comTotal.toFixed(2).replace('.',',')
+    ].map(csvCell).join(';'));
+  });
+  // Linha de totais
+  linhas.push(['','','','','','','','','TOTAIS',
+    totalBase.toFixed(2).replace('.',','),
+    totalBonus.toFixed(2).replace('.',','),
+    totalGeral.toFixed(2).replace('.',',')
+  ].map(csvCell).join(';'));
+  return linhas.join('\n');
+}
+
+/* Agrega vendas por dia do mês */
+function vendasPorDiaLojaMes(sid, m, y){
+  var dias = {};
+  (ST.salesEntries||[]).forEach(function(e){
+    if (String(e.store_unit_id)!==String(sid)) return;
+    var d = String(e.sale_date||'').slice(0,10);
+    var p = d.split('-');
+    if (Number(p[0])!==Number(y) || Number(p[1])!==Number(m)) return;
+    var dia = Number(p[2]);
+    if (!dias[dia]) dias[dia] = { count:0, total:0 };
+    dias[dia].count += 1;
+    dias[dia].total += Number(e.value)||0;
+  });
+  return dias;
+}
+
+/* CSV de vendas por dia da loja no mês */
+function csvVendasDiaMes(sid, m, y){
+  var storeNm = (typeof storeName==='function') ? (storeName(sid)||'Loja') : 'Loja';
+  var linhas = [];
+  linhas.push(['Data','Loja','Vendas (qtd)','Valor Total (R$)'].map(csvCell).join(';'));
+  var dias = vendasPorDiaLojaMes(sid, m, y);
+  // Total de dias no mês
+  var lastDay = new Date(y, m, 0).getDate();
+  var totQ=0, totV=0;
+  for (var d=1; d<=lastDay; d++){
+    var info = dias[d] || { count:0, total:0 };
+    totQ += info.count;
+    totV += info.total;
+    var data = String(d).padStart(2,'0')+'/'+String(m).padStart(2,'0')+'/'+y;
+    linhas.push([data, storeNm, info.count, info.total.toFixed(2).replace('.',',')].map(csvCell).join(';'));
+  }
+  linhas.push(['','TOTAIS', totQ, totV.toFixed(2).replace('.',',')].map(csvCell).join(';'));
+  return linhas.join('\n');
+}
+
+/* ============================================================
+   RENDER: Seção "Comissões e metas individuais" (visual)
+   ============================================================ */
+function lojaReportComissoesHTML(sid, m, y){
+  var mems = (ST.members||[]).filter(function(x){
+    return x.is_active!==false && String(x.store_unit_id)===String(sid);
+  });
+  // Monta lista com vendas + meta + comissão
+  var linhas = mems.map(function(mem){
+    var vendido = vendasMembroLojaMes(mem, sid, m, y);
+    var goal = (typeof metaIndividualDo==='function') ? metaIndividualDo(mem.id, m, y) : null;
+    var meta = goal ? (Number(goal.goal_value)||0) : 0;
+    var pctA = meta > 0 ? (vendido/meta*100) : null;
+    var comInfo = null;
+    if (goal){
+      var cp = Number(goal.commission_pct)||0, cb = Number(goal.commission_bonus_pct)||0;
+      if (cp>0 || cb>0) comInfo = comissaoEstimada(goal, vendido);
+    }
+    return { mem:mem, vendido:vendido, meta:meta, pctA:pctA, comInfo:comInfo, goal:goal };
+  }).filter(function(x){ return x.vendido > 0 || x.meta > 0; })
+    .sort(function(a,b){
+      // primeiro por comissão total desc, depois por vendido desc
+      var ta = a.comInfo ? a.comInfo.comTotal : 0;
+      var tb = b.comInfo ? b.comInfo.comTotal : 0;
+      if (tb !== ta) return tb - ta;
+      return b.vendido - a.vendido;
+    });
+
+  if (!linhas.length){
+    return '<div class="rep-card rep-com-card"><div class="rep-card-h">'+icon('dollar')+'<h3>Comissões e metas individuais</h3></div>'+
+      '<div class="dash-empty">Nenhum vendedor tem venda ou meta registrada neste mês.</div>'+
+    '</div>';
+  }
+
+  // Totais
+  var totBase=0, totBonus=0, totGeral=0, temAlgumaComissao=false;
+  linhas.forEach(function(x){
+    if (x.comInfo){
+      totBase += x.comInfo.comBase;
+      totBonus += x.comInfo.comBonus;
+      totGeral += x.comInfo.comTotal;
+      temAlgumaComissao = true;
+    }
+  });
+
+  var podeExportar = (typeof can==='function') && can('indicadores');
+  var btnCsv = podeExportar
+    ? '<button class="btn btn-ghost rep-btn-csv" id="lrCsvCom" title="Exportar comissões em CSV (abre no Excel)">'+icon('folder')+'<span>Exportar CSV</span></button>'
+    : '';
+
+  var thead = '<thead><tr>'+
+    '<th>Vendedor</th>'+
+    '<th class="rep-tbl-num">Vendido</th>'+
+    '<th class="rep-tbl-num">Meta</th>'+
+    '<th class="rep-tbl-num">Atingido</th>'+
+    '<th class="rep-tbl-num">Base</th>'+
+    '<th class="rep-tbl-num">Bônus</th>'+
+    '<th class="rep-tbl-num">Comissão</th>'+
+  '</tr></thead>';
+
+  var tbody = '<tbody>'+linhas.map(function(x){
+    var st = (x.pctA != null && typeof statusMetaCor==='function') ? statusMetaCor(x.pctA) : null;
+    var pctCell = x.pctA != null
+      ? '<span class="rep-pct-pill" style="background:'+st.cor+'22;color:'+st.cor+'">'+x.pctA.toFixed(1).replace('.0','')+'%</span>'
+      : '<span class="rep-tbl-dim">—</span>';
+    var comBase = x.comInfo ? fmtBRL(x.comInfo.comBase) : '<span class="rep-tbl-dim">—</span>';
+    var comBonus = x.comInfo && x.comInfo.comBonus>0 ? fmtBRL(x.comInfo.comBonus) : '<span class="rep-tbl-dim">—</span>';
+    var comTotal = x.comInfo
+      ? '<b class="rep-tbl-total">'+fmtBRL(x.comInfo.comTotal)+'</b>'+(x.comInfo.atingiu100?' <span class="rep-com-bonus-tag">+ bônus</span>':'')
+      : '<span class="rep-tbl-dim">—</span>';
+    return '<tr>'+
+      '<td><span class="rep-av-mini" style="background:'+(x.mem.color||'#3B6FF7')+'">'+esc(iniciais(x.mem.name))+'</span>'+esc(x.mem.name)+'</td>'+
+      '<td class="rep-tbl-num">'+fmtBRL(x.vendido)+'</td>'+
+      '<td class="rep-tbl-num">'+(x.meta>0?fmtBRL(x.meta):'<span class="rep-tbl-dim">—</span>')+'</td>'+
+      '<td class="rep-tbl-num">'+pctCell+'</td>'+
+      '<td class="rep-tbl-num">'+comBase+'</td>'+
+      '<td class="rep-tbl-num">'+comBonus+'</td>'+
+      '<td class="rep-tbl-num">'+comTotal+'</td>'+
+    '</tr>';
+  }).join('')+'</tbody>';
+
+  var tfoot = temAlgumaComissao ? ('<tfoot><tr>'+
+    '<td colspan="4" class="rep-tbl-foot-lbl">TOTAIS</td>'+
+    '<td class="rep-tbl-num rep-tbl-foot">'+fmtBRL(totBase)+'</td>'+
+    '<td class="rep-tbl-num rep-tbl-foot">'+fmtBRL(totBonus)+'</td>'+
+    '<td class="rep-tbl-num rep-tbl-foot rep-tbl-total-cel">'+fmtBRL(totGeral)+'</td>'+
+  '</tr></tfoot>') : '';
+
+  return '<div class="rep-card rep-com-card">'+
+    '<div class="rep-card-h">'+icon('dollar')+'<h3>Comissões e metas individuais</h3>'+btnCsv+'</div>'+
+    '<div class="rep-tbl-wrap">'+
+      '<table class="rep-tbl rep-tbl-com">'+thead+tbody+tfoot+'</table>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ============================================================
+   RENDER: Seção "Vendas por dia"
+   ============================================================ */
+function lojaReportVendasDiaHTML(sid, m, y){
+  var dias = vendasPorDiaLojaMes(sid, m, y);
+  var lastDay = new Date(y, m, 0).getDate();
+  var linhas = [];
+  var totQ=0, totV=0, maxV=0;
+  for (var d=1; d<=lastDay; d++){
+    var info = dias[d] || { count:0, total:0 };
+    totQ += info.count;
+    totV += info.total;
+    if (info.total > maxV) maxV = info.total;
+    linhas.push({ dia:d, count:info.count, total:info.total });
+  }
+  if (totQ === 0){
+    return '<div class="rep-card rep-dia-card"><div class="rep-card-h">'+icon('cal')+'<h3>Vendas por dia</h3></div>'+
+      '<div class="dash-empty">Nenhuma venda registrada neste mês.</div>'+
+    '</div>';
+  }
+
+  var podeExportar = (typeof can==='function') && can('indicadores');
+  var btnCsv = podeExportar
+    ? '<button class="btn btn-ghost rep-btn-csv" id="lrCsvDia" title="Exportar vendas por dia em CSV">'+icon('folder')+'<span>Exportar CSV</span></button>'
+    : '';
+
+  var thead = '<thead><tr>'+
+    '<th>Dia</th>'+
+    '<th class="rep-tbl-num">Vendas</th>'+
+    '<th class="rep-tbl-num">Total</th>'+
+    '<th class="rep-tbl-vis">Volume</th>'+
+  '</tr></thead>';
+
+  var tbody = '<tbody>'+linhas.map(function(x){
+    var pctBar = maxV > 0 ? (x.total/maxV*100) : 0;
+    var barra = pctBar > 0
+      ? '<div class="rep-dia-bar"><span style="width:'+pctBar.toFixed(1)+'%"></span></div>'
+      : '<span class="rep-tbl-dim">—</span>';
+    var diaTxt = String(x.dia).padStart(2,'0')+'/'+String(m).padStart(2,'0');
+    var vazio = x.count === 0 ? ' rep-tr-vazio' : '';
+    return '<tr class="'+vazio.trim()+'">'+
+      '<td class="rep-dia-lbl">'+esc(diaTxt)+'</td>'+
+      '<td class="rep-tbl-num">'+(x.count>0?x.count:'<span class="rep-tbl-dim">0</span>')+'</td>'+
+      '<td class="rep-tbl-num">'+(x.total>0?fmtBRL(x.total):'<span class="rep-tbl-dim">—</span>')+'</td>'+
+      '<td class="rep-tbl-vis">'+barra+'</td>'+
+    '</tr>';
+  }).join('')+'</tbody>';
+
+  var tfoot = '<tfoot><tr>'+
+    '<td class="rep-tbl-foot-lbl">TOTAL</td>'+
+    '<td class="rep-tbl-num rep-tbl-foot">'+totQ+'</td>'+
+    '<td class="rep-tbl-num rep-tbl-foot rep-tbl-total-cel">'+fmtBRL(totV)+'</td>'+
+    '<td></td>'+
+  '</tr></tfoot>';
+
+  return '<div class="rep-card rep-dia-card">'+
+    '<div class="rep-card-h">'+icon('cal')+'<h3>Vendas por dia</h3>'+btnCsv+'</div>'+
+    '<div class="rep-tbl-wrap rep-dia-scroll">'+
+      '<table class="rep-tbl rep-tbl-dia">'+thead+tbody+tfoot+'</table>'+
+    '</div>'+
+  '</div>';
+}
+
 function relatorioLojasHTML(){
   var r=lrMesRef(); var m=r.m, y=r.y;
   var lojas=(ST.storeUnits||[]).filter(function(s){ return !s.is_site; });
@@ -13643,7 +14459,10 @@ function lojaReportSingle(sid, m, y){
   // ranking vendedores da loja
   var mems=(ST.members||[]).filter(function(x){ return x.is_active!==false && String(x.store_unit_id)===String(sid); }).map(function(x){ return { m:x, v:vendasMembroMesAno(x, m, y) }; }).filter(function(x){ return x.v>0; }).sort(function(a,b){ return b.v-a.v; }).slice(0,5);
   var rankSec = mems.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('users')+'<h3>Ranking de vendedores</h3></div><div class="lr-rank">'+mems.map(function(x,i){ return '<div class="lr-rank-row"><span class="lr-rank-pos">'+(i+1)+'º</span><span class="lr-rank-av" style="background:'+(x.m.color||'#3B6FF7')+'">'+esc(iniciais(x.m.name))+'</span><span class="lr-rank-nm">'+esc(x.m.name)+'</span><b>'+brlShort(x.v)+'</b></div>'; }).join('')+'</div></div>') : '';
-  return kpis + fatSec + '<div class="rep-grid2">'+metaSec+volSec+'</div>' + produtoSecHTML(sid, m, y) + rankSec;
+  // v161: Comissões e vendas por dia
+  var comSec = (typeof lojaReportComissoesHTML==='function') ? lojaReportComissoesHTML(sid, m, y) : '';
+  var diaSec = (typeof lojaReportVendasDiaHTML==='function') ? lojaReportVendasDiaHTML(sid, m, y) : '';
+  return kpis + fatSec + '<div class="rep-grid2">'+metaSec+volSec+'</div>' + produtoSecHTML(sid, m, y) + rankSec + comSec + diaSec;
 }
 function lojaReportConsolidado(lojas, m, y){
   var pm=(m===1?12:m-1), py=(m===1?y-1:y);
@@ -13669,6 +14488,27 @@ function bindRelatorioLojas(){
   var pv=document.getElementById('lrPrev'); if(pv) pv.addEventListener('click', function(){ lrSetMes(-1); });
   var nx=document.getElementById('lrNext'); if(nx) nx.addEventListener('click', function(){ lrSetMes(1); });
   var pr=document.getElementById('lrPrint'); if(pr) pr.addEventListener('click', function(){ window.print(); });
+  // v161: exports CSV
+  var _r161 = lrMesRef();
+  var _sid161 = ST.store ? ST.store.id : ST.lrStore;
+  var csvCom = document.getElementById('lrCsvCom');
+  if (csvCom) csvCom.addEventListener('click', function(){
+    if (!_sid161){ toast('Selecione uma loja','error'); return; }
+    var conteudo = csvComissoesMes(_sid161, _r161.m, _r161.y);
+    var nomeLoja = (typeof storeName==='function' ? storeName(_sid161) : 'loja') || 'loja';
+    var slug = nomeLoja.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    var nome = 'comissoes-'+slug+'-'+String(_r161.m).padStart(2,'0')+'-'+_r161.y+'.csv';
+    if (downloadCSV(nome, conteudo)) toast('CSV baixado: '+nome, 'success');
+  });
+  var csvDia = document.getElementById('lrCsvDia');
+  if (csvDia) csvDia.addEventListener('click', function(){
+    if (!_sid161){ toast('Selecione uma loja','error'); return; }
+    var conteudo = csvVendasDiaMes(_sid161, _r161.m, _r161.y);
+    var nomeLoja = (typeof storeName==='function' ? storeName(_sid161) : 'loja') || 'loja';
+    var slug = nomeLoja.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    var nome = 'vendas-dia-'+slug+'-'+String(_r161.m).padStart(2,'0')+'-'+_r161.y+'.csv';
+    if (downloadCSV(nome, conteudo)) toast('CSV baixado: '+nome, 'success');
+  });
   var r=lrMesRef();
   var lc=document.getElementById('lrLancar'); if(lc) lc.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openMetricasModal(sid, r.m, r.y); });
   var lp=document.getElementById('lrProdutos'); if(lp) lp.addEventListener('click', function(){ var sid=ST.store?ST.store.id:ST.lrStore; if(sid) openProdutosModal(sid, r.m, r.y); });
@@ -20691,6 +21531,8 @@ function crmHTML() {
   }
 
   var importBtn = isAdmin(ST.session) ? '<button class="btn-sync" id="btnImportBling">'+icon('trend')+'Importar do Bling</button>' : '';
+  // v163: Exportar CSV com filtros ativos
+  var exportBtn = canEdit() ? '<button class="btn-sync" id="btnCrmExport" title="Exportar clientes visíveis para CSV (abre no Excel)">'+icon('folder')+'Exportar CSV</button>' : '';
   var foco = sid ? esc(storeName(sid)) : (deptoComoModelo('lojas') ? 'Todas as lojas' : esc((SECTORS[ST.sector]||{label:ST.sector}).label)); // v113
   var crmStoreFilter = '';
   if (isAdmin(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
@@ -20698,7 +21540,7 @@ function crmHTML() {
     crmStoreFilter='<select class="task-filter" id="crmStore" title="Ver loja">'+so+'</select>';
   }
   return ''+
-    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+crmStoreFilter+importBtn+(canEdit()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
+    '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+crmStoreFilter+exportBtn+importBtn+(canEdit()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
     summary+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
@@ -20739,9 +21581,136 @@ function crmRowHTML(c) {
   '</div>';
 }
 
+/* ============================================================
+   v163 · CRM — Exportar clientes filtrados para CSV
+   Respeita os filtros ativos: setor, loja, segmento, busca.
+   Reutiliza downloadCSV + csvCell da v161.
+   ============================================================ */
+
+/* Gera CSV dos clientes.
+   Recebe a lista JÁ FILTRADA (respeitando busca/segmento/loja/setor).
+   Colunas: todas as informações relevantes por cliente. */
+function csvClientes(lista){
+  var linhas = [];
+  linhas.push([
+    'Nome',
+    'Empresa',
+    'Telefone',
+    'E-mail',
+    'Tipo',
+    'Segmento',
+    'Última compra',
+    'Dias desde última compra',
+    'Ciclo de recompra (dias)',
+    'Total gasto (R$)',
+    'Qtd. compras',
+    'Loja',
+    'Último contato',
+    'Cadastrado em',
+    'Atualizado em',
+    'WhatsApp',
+    'Observações'
+  ].map(csvCell).join(';'));
+
+  (lista||[]).forEach(function(c){
+    var seg = (typeof crmSegment==='function') ? crmSegment(c) : '';
+    var segLabel = (CRM_SEG && CRM_SEG[seg]) ? CRM_SEG[seg].label : seg;
+    var tipoLabel = (c.status === 'prospecto') ? 'Prospecto' : 'Cliente';
+    var lb = (c.last_purchase||'').slice(0,10);
+    var dias = lb ? (typeof crmDaysSince==='function' ? crmDaysSince(lb) : '') : '';
+    var lojaNm = c.store_unit_id
+      ? ((typeof storeName==='function' && storeName(c.store_unit_id)) || '')
+      : '';
+    var total = Number(c.total_spent)||0;
+    var orders = Number(c.orders_count)||0;
+    var wa = (typeof crmWhatsLink==='function') ? (crmWhatsLink(c)||'') : '';
+    var lc = c.last_contact ? String(c.last_contact).slice(0,10) : '';
+    var cr = c.created_at ? String(c.created_at).slice(0,10) : '';
+    var up = c.updated_at ? String(c.updated_at).slice(0,10) : '';
+
+    linhas.push([
+      c.name || '',
+      c.company || '',
+      c.phone || '',
+      c.email || '',
+      tipoLabel,
+      segLabel,
+      lb || '',
+      dias!=null && dias!=='' ? dias : '',
+      c.purchase_cycle_days || '',
+      total > 0 ? total.toFixed(2).replace('.',',') : '',
+      orders > 0 ? orders : '',
+      lojaNm,
+      lc,
+      cr,
+      up,
+      wa,
+      (c.notes||'').replace(/\r?\n/g,' ')  // notas em linha só pra CSV ficar bonito
+    ].map(csvCell).join(';'));
+  });
+
+  return linhas.join('\n');
+}
+
+/* Nome do arquivo baseado nos filtros ativos.
+   meta = { seg, storeId, busca }. */
+function nomeArquivoClientes(meta){
+  meta = meta || {};
+  var partes = ['clientes'];
+  if (meta.storeId && typeof storeName==='function'){
+    var nm = storeName(meta.storeId) || 'loja';
+    partes.push(nm.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''));
+  }
+  if (meta.seg && meta.seg!=='todos') partes.push(meta.seg);
+  if (meta.busca){
+    var q = meta.busca.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    if (q) partes.push('busca-'+q.slice(0,20));
+  }
+  var hoje = new Date();
+  var dataStr = hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
+  partes.push(dataStr);
+  return partes.filter(Boolean).join('-') + '.csv';
+}
+
+/* Aplica os filtros ativos e retorna a lista visível.
+   Espelha a lógica de crmHTML pra garantir consistência. */
+function clientesFiltrados(){
+  var q = (typeof crmBusca==='string' ? crmBusca : '').toLowerCase();
+  var sid = (typeof boardStore==='function') ? boardStore() : null;
+  var all = (ST.clients || []).filter(typeof crmPertenceSetor==='function' ? crmPertenceSetor : function(){return true;});
+  if (sid) all = all.filter(function(c){ return String(c.store_unit_id)===String(sid); });
+  var seg = (typeof crmSeg==='string') ? crmSeg : 'todos';
+  var list = all.filter(function(c){
+    if (seg!=='todos' && crmSegment(c)!==seg) return false;
+    if (!q) return true;
+    return (c.name||'').toLowerCase().indexOf(q)!==-1 ||
+           (c.company||'').toLowerCase().indexOf(q)!==-1 ||
+           (c.phone||'').toLowerCase().indexOf(q)!==-1 ||
+           (c.email||'').toLowerCase().indexOf(q)!==-1;
+  });
+  return { list:list, meta:{ seg:seg, storeId:sid, busca:q } };
+}
+
+/* Executa o export do CRM com os filtros ativos. */
+function exportarClientesCSV(){
+  var r = clientesFiltrados();
+  if (!r.list.length){
+    if (typeof toast==='function') toast('Nenhum cliente pra exportar com esse filtro', 'error');
+    return;
+  }
+  var conteudo = csvClientes(r.list);
+  var nome = nomeArquivoClientes(r.meta);
+  if (downloadCSV(nome, conteudo)){
+    if (typeof toast==='function') toast(r.list.length+' cliente(s) exportado(s): '+nome, 'success');
+  }
+}
+
 function bindCRM() {
   var novo = document.getElementById('btnNovoCliente');
   if (novo) novo.addEventListener('click', function(){ openClientModal(null); });
+  // v163: export CSV com filtros ativos
+  var exp = document.getElementById('btnCrmExport');
+  if (exp) exp.addEventListener('click', function(){ exportarClientesCSV(); });
   var crmStore = document.getElementById('crmStore');
   if (crmStore) crmStore.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   var imp = document.getElementById('btnImportBling');
