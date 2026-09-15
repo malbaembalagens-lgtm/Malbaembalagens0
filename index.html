@@ -8503,6 +8503,729 @@ html.dark .rc-item[data-crit] .rc-input { border-left-color: #F87171; }
 html.dark .rot-crit-ico { color: #F87171; }
 html.dark .rot-item.rot-crit:not(.done) { border-left-color: #F87171; }
 
+
+/* ============================================================
+   v164 · CRM — Métricas globais + Faixas de esfriamento
+   ============================================================ */
+
+/* Painel de métricas do topo */
+.crm-met-panel {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--sp-3);
+  margin: var(--sp-4) 0;
+}
+.crm-met-card {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-3) var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--tr-fast), box-shadow var(--tr-fast);
+}
+.crm-met-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.cmp-lbl {
+  font-size: 10px;
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--fw-bold);
+}
+.cmp-val {
+  font-size: 22px;
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  color: var(--u-text);
+  line-height: 1.1;
+}
+.cmp-sub {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-style: normal;
+  font-weight: var(--fw-semibold);
+}
+
+/* Painel de faixas de esfriamento */
+.crm-faixas-panel {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+  margin: var(--sp-4) 0;
+}
+.crm-faixas-h {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--sp-3);
+}
+.crm-faixas-h .lc-ic { color: var(--u-accent); width: 16px; height: 16px; }
+.crm-faixas-h h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--u-text);
+}
+.cfx-tot {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.crm-faixas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-3);
+}
+.crm-faixa-card {
+  background: var(--u-bg2);
+  border: 2px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--tr-fast);
+  position: relative;
+  font: inherit;
+}
+.crm-faixa-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.cfx-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.cfx-n {
+  font-size: 32px;
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.cfx-lbl {
+  font-size: 13px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text);
+  margin-top: 4px;
+}
+.cfx-desc {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-style: normal;
+  font-weight: var(--fw-semibold);
+}
+.cfx-open {
+  margin-top: var(--sp-2);
+  font-size: 11px;
+  color: var(--u-accent);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Modal de listagem por faixa */
+.fx-modal {
+  max-width: 900px;
+  width: 92vw;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.fx-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.fx-head-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.fx-head-tx {
+  flex: 1;
+  min-width: 0;
+}
+.fx-head-tx b {
+  display: block;
+  font-size: 15px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.fx-head-tx i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 2px;
+}
+.fx-csv {
+  padding: 6px 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.fx-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--u-bg2);
+  border: 0;
+  color: var(--u-text3);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  font-weight: var(--fw-bold);
+  transition: all var(--tr-fast);
+}
+.fx-close:hover { background: var(--u-line); color: var(--u-text); }
+
+.fx-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-2) var(--sp-4) var(--sp-4);
+}
+
+.fx-row {
+  display: grid;
+  grid-template-columns: 32px 2fr 100px 90px 80px 32px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2);
+  border-radius: var(--rd-md);
+  cursor: pointer;
+  transition: background var(--tr-fast);
+}
+.fx-row:hover { background: var(--u-bg2); }
+.fx-av {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--u-accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+}
+.fx-main { min-width: 0; }
+.fx-main b {
+  display: block;
+  font-size: 13px;
+  color: var(--u-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-main i {
+  display: block;
+  font-size: 11px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-total, .fx-orders {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--u-text2);
+  text-align: right;
+  font-weight: var(--fw-semibold);
+}
+.fx-seg {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: var(--fw-extrabold);
+  text-align: center;
+  white-space: nowrap;
+}
+.fx-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: var(--u-bg2);
+  color: var(--u-text2);
+  transition: all var(--tr-fast);
+}
+.fx-mini.wa { color: #25D366; }
+.fx-mini:hover { background: rgba(37,211,102,.14); transform: scale(1.05); }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .crm-met-panel { grid-template-columns: repeat(3, 1fr); }
+  .crm-faixas-grid { grid-template-columns: 1fr; }
+  .fx-row { grid-template-columns: 32px 1fr 80px 32px; }
+  .fx-orders, .fx-seg { display: none; }
+}
+@media (max-width: 600px) {
+  .crm-met-panel { grid-template-columns: repeat(2, 1fr); }
+  .cmp-val { font-size: 18px; }
+  .cfx-n { font-size: 26px; }
+}
+
+/* Dark */
+html.dark .crm-faixa-card { background: rgba(255,255,255,.03); }
+html.dark .fx-close { background: rgba(255,255,255,.05); }
+html.dark .fx-close:hover { background: rgba(255,255,255,.1); }
+
+
+/* ============================================================
+   v165 · CRM Ficha Completa — Classificação AAA/AA/A
+   ============================================================ */
+
+/* Grid dos KPIs vira 4 colunas (era 3) */
+.clf-kpis {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+@media (max-width: 700px){
+  .clf-kpis { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* Card de classificação — destaque visual */
+.clf-kpi-cls {
+  position: relative;
+  border-left: 4px solid var(--cls-cor, var(--u-line));
+}
+.clf-kpi-cls-aaa {
+  background: linear-gradient(135deg, rgba(22,163,74,.08) 0%, transparent 100%);
+}
+.clf-kpi-cls-aa {
+  background: linear-gradient(135deg, rgba(59,111,247,.08) 0%, transparent 100%);
+}
+.clf-kpi-cls-a {
+  background: linear-gradient(135deg, rgba(148,163,184,.08) 0%, transparent 100%);
+}
+.clf-kpi-sem { opacity: 0.7; }
+
+.clf-cls-v {
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 1px;
+  font-size: 22px !important;
+}
+
+/* Dark */
+html.dark .clf-kpi-cls-aaa { background: linear-gradient(135deg, rgba(74,222,128,.10) 0%, transparent 100%); }
+html.dark .clf-kpi-cls-aa  { background: linear-gradient(135deg, rgba(123,157,255,.10) 0%, transparent 100%); }
+html.dark .clf-kpi-cls-a   { background: linear-gradient(135deg, rgba(148,163,184,.10) 0%, transparent 100%); }
+
+
+/* ============================================================
+   v166 · CRM Fatia 4 — Composição de Faturamento
+   ============================================================ */
+
+.crm-comp-panel {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+  margin: var(--sp-4) 0;
+}
+.cco-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+.cco-head .lc-ic { color: var(--u-accent); width: 16px; height: 16px; }
+.cco-head h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--u-text);
+}
+.cco-toggle {
+  display: inline-flex;
+  background: var(--u-bg2);
+  border-radius: 999px;
+  padding: 2px;
+  margin-left: var(--sp-2);
+}
+.cco-tg {
+  border: 0;
+  background: transparent;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text3);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+}
+.cco-tg.on {
+  background: var(--u-card);
+  color: var(--u-text);
+  box-shadow: var(--shadow-xs);
+}
+.cco-csv {
+  margin-left: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cco-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--sp-4);
+  align-items: start;
+}
+.cco-viz {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.cco-svg {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  display: block;
+}
+.cco-slice {
+  transition: opacity var(--tr-fast), transform var(--tr-fast);
+  transform-origin: 100px 100px;
+  cursor: default;
+}
+.cco-slice:hover {
+  opacity: 0.85;
+  transform: scale(1.02);
+}
+.cco-total {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cco-total-lbl {
+  font-size: 10px;
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--fw-bold);
+}
+.cco-total-v {
+  font-size: 22px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.cco-total-sub {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-style: normal;
+  font-weight: var(--fw-semibold);
+}
+
+.cco-lista {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.cco-row {
+  display: grid;
+  grid-template-columns: 24px 12px 1fr 90px 50px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 8px;
+  border-radius: var(--rd-md);
+  transition: background var(--tr-fast);
+  border-bottom: 1px dashed var(--u-line);
+}
+.cco-row:last-child { border-bottom: 0; }
+.cco-row-cli { cursor: pointer; }
+.cco-row-cli:hover { background: var(--u-bg2); }
+.cco-row-outros {
+  background: rgba(148,163,184,.06);
+  margin-top: 4px;
+  border-top: 1px solid var(--u-line);
+}
+.cco-rank {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.cco-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+.cco-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.cco-main b {
+  font-size: 12px;
+  color: var(--u-text);
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cco-main i {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-style: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cco-val {
+  font-size: 12px;
+  color: var(--u-text2);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+.cco-pct {
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Mobile */
+@media (max-width: 800px){
+  .cco-grid { grid-template-columns: 1fr; }
+  .cco-viz { padding-bottom: var(--sp-3); border-bottom: 1px solid var(--u-line); }
+  .cco-lista { max-height: 400px; }
+  .cco-csv span { display: none; }
+  .cco-csv { padding: 6px 8px; }
+}
+@media (max-width: 500px){
+  .cco-row { grid-template-columns: 20px 10px 1fr 70px 44px; gap: 6px; padding: 6px 4px; }
+  .cco-main b { font-size: 11px; }
+  .cco-val { font-size: 11px; }
+  .cco-pct { font-size: 11px; }
+}
+
+/* Dark */
+html.dark .cco-tg.on { background: rgba(255,255,255,.08); }
+html.dark .cco-row-outros { background: rgba(255,255,255,.03); }
+
+
+/* ============================================================
+   v167 · CRM Fatia 5 — Cards de Aquisição + Modal de Investimento
+   ============================================================ */
+
+.crm-aq-panel {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+  margin: var(--sp-4) 0;
+}
+.caq-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+  flex-wrap: wrap;
+}
+.caq-head .lc-ic { color: var(--u-accent); width: 16px; height: 16px; }
+.caq-head h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--u-text);
+}
+.caq-per {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  background: var(--u-bg2);
+  border-radius: 999px;
+}
+.caq-toggle {
+  display: inline-flex;
+  background: var(--u-bg2);
+  border-radius: 999px;
+  padding: 2px;
+  margin-left: var(--sp-2);
+}
+.caq-tg {
+  border: 0;
+  background: transparent;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text3);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+}
+.caq-tg.on {
+  background: var(--u-card);
+  color: var(--u-text);
+  box-shadow: var(--shadow-xs);
+}
+.caq-invest {
+  margin-left: auto;
+  padding: 6px 12px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.crm-aq-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+}
+.crm-cac-card {
+  border-left: 4px solid var(--u-accent);
+}
+.cmp-val-empty { color: var(--u-text3); }
+
+/* Modal de investimento */
+.inv-modal {
+  max-width: 480px;
+  width: 92vw;
+  max-height: 85vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.inv-head {
+  display: flex;
+  align-items: center;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-2);
+}
+.inv-head b {
+  display: block;
+  font-size: 15px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.inv-head i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 2px;
+}
+.inv-head > div:first-child { flex: 1; min-width: 0; }
+.inv-body {
+  padding: var(--sp-3) var(--sp-4);
+  overflow-y: auto;
+  flex: 1;
+}
+.inv-hint {
+  font-size: 12px;
+  color: var(--u-text3);
+  margin-bottom: var(--sp-3);
+  padding: var(--sp-2);
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  line-height: 1.4;
+}
+.inv-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 50px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--u-line);
+}
+.inv-row:last-child { border-bottom: 0; }
+.inv-mes {
+  font-size: 13px;
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+}
+.inv-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.inv-cur {
+  position: absolute;
+  left: 8px;
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+  pointer-events: none;
+}
+.inv-input {
+  width: 100%;
+  padding: 6px 6px 6px 30px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 13px;
+  background: var(--u-card);
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  transition: border-color var(--tr-fast);
+}
+.inv-input:focus {
+  outline: none;
+  border-color: var(--u-accent);
+}
+.inv-status {
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  text-align: center;
+}
+.inv-saving { color: var(--u-text3); }
+.inv-ok { color: var(--u-green); font-size: 16px; }
+.inv-err { color: #EF4444; }
+
+/* Mobile */
+@media (max-width: 800px){
+  .crm-aq-cards { grid-template-columns: repeat(2, 1fr); }
+  .caq-invest span { display: none; }
+  .caq-invest { padding: 6px 8px; }
+}
+@media (max-width: 500px){
+  .inv-row { grid-template-columns: 100px 1fr 40px; }
+  .inv-mes { font-size: 12px; }
+}
+
+/* Dark */
+html.dark .caq-tg.on { background: rgba(255,255,255,.08); }
+
 </style>
 </head>
 <body>
@@ -8526,7 +9249,7 @@ html.dark .rot-item.rot-crit:not(.done) { border-left-color: #F87171; }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v163';
+var APP_BUILD = 'v167';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -8875,7 +9598,12 @@ function loadData() {
     Promise.resolve({data:[]}),  // v119: comissoes agora é lazy
     Promise.resolve({data:[]}),  // v119: avaliacoes agora é lazy
     Promise.resolve({data:[]}),  // v119: bling estado agora é lazy
-    Promise.resolve({data:[]})   // v119: bling faturamento agora é lazy
+    Promise.resolve({data:[]}),  // v119: bling faturamento agora é lazy
+    sb.from('malba_marketing_investment').select('*').then(function(rr){
+      // v167: silent fail se tabela não existe (SQL não rodado)
+      if (rr && rr.error) return { data:[] };
+      return rr;
+    })
   ]).then(function(r){
     ST.storeUnits = (r[0]&&r[0].data) || [];
     ST.tasks      = (r[1]&&r[1].data) || [];
@@ -8895,6 +9623,7 @@ function loadData() {
     ST.avaliacoes = (r[11]&&r[11].data) || [];
     ST.bling      = (r[12]&&r[12].data) || [];
     ST.blingFat   = (r[13]&&r[13].data) || [];
+    ST.mktInvest  = (r[14]&&r[14].data) || [];  // v167
     ST.store = null;
     if (sector==='lojas' && ST.session.user) {
       for (var i=0;i<ST.storeUnits.length;i++) {
@@ -21539,9 +22268,20 @@ function crmHTML() {
     var so='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
     crmStoreFilter='<select class="task-filter" id="crmStore" title="Ver loja">'+so+'</select>';
   }
+  // v164: métricas globais + faixas de esfriamento
+  var metPanel  = (typeof crmMetricasPanelHTML==='function') ? crmMetricasPanelHTML() : '';
+  var faixasPanel = (typeof crmFaixasPanelHTML==='function') ? crmFaixasPanelHTML() : '';
+  // v166: composição de faturamento (top 20 + Outros)
+  var composicaoPanel = (typeof crmComposicaoPanelHTML==='function') ? crmComposicaoPanelHTML() : '';
+  // v167: cards de aquisição (novos/LTV/CAC)
+  var aquisicaoPanel = (typeof crmAquisicaoPanelHTML==='function') ? crmAquisicaoPanelHTML() : '';
   return ''+
     '<div class="tasks-head"><div><h2>CRM</h2><div class="sub">'+all.length+' cliente(s) · '+foco+'</div></div><div class="cfg-head-btns">'+crmStoreFilter+exportBtn+importBtn+(canEdit()?'<button class="btn-new" id="btnNovoCliente">'+icon('plus')+'Novo cliente</button>':'')+'</div></div>'+
+    metPanel+
+    aquisicaoPanel+
     summary+
+    faixasPanel+
+    composicaoPanel+
     contatarPanel+
     '<div class="crm-chips">'+chips+'</div>'+
     '<div class="crm-search">'+icon('search')+'<input id="crmSearch" placeholder="Buscar por nome, empresa, telefone ou e-mail..." value="'+esc(crmBusca)+'"></div>'+
@@ -21590,6 +22330,695 @@ function crmRowHTML(c) {
 /* Gera CSV dos clientes.
    Recebe a lista JÁ FILTRADA (respeitando busca/segmento/loja/setor).
    Colunas: todas as informações relevantes por cliente. */
+/* ============================================================
+   v164 · CRM — Métricas globais + Faixas de clientes esfriando
+   Bloco: Malba Lovers → Work OS (Fatia 1 + Fatia 3)
+   ============================================================ */
+
+/* Filtra clientes do escopo atual (setor + loja se aplicável). Reutilizada em todas as métricas. */
+function crmClientesDoEscopo(){
+  var sid = (typeof boardStore==='function') ? boardStore() : null;
+  var all = (ST.clients||[]).filter(typeof crmPertenceSetor==='function' ? crmPertenceSetor : function(){return true;});
+  if (sid) all = all.filter(function(c){ return String(c.store_unit_id)===String(sid); });
+  return all;
+}
+
+/* Métricas globais da base de clientes.
+   Retorna { total, ativos60d, tickerMedio, ltvMedio, novosMes, recompraMes } */
+function crmMetricasGlobais(lista){
+  var arr = lista || crmClientesDoEscopo();
+  var total = arr.length;
+  var hoje = new Date();
+  var d60ms = 60*24*60*60*1000;
+  var somaLtv = 0, cntLtv = 0;
+  var somaTicket = 0, cntTicket = 0;
+  var ativos60d = 0;
+  var novosMes = 0, recompraMes = 0;
+  var ymAtual = hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0');
+  arr.forEach(function(c){
+    var totalSpent = Number(c.total_spent)||0;
+    var orders = Number(c.orders_count)||0;
+    if (totalSpent > 0){ somaLtv += totalSpent; cntLtv++; }
+    if (totalSpent > 0 && orders > 0){ somaTicket += (totalSpent/orders); cntTicket++; }
+    var lp = c.last_purchase ? new Date(String(c.last_purchase).slice(0,10)+'T00:00:00') : null;
+    if (lp && (hoje - lp) <= d60ms) ativos60d++;
+    var fp = c.first_purchase ? String(c.first_purchase).slice(0,7) : null;
+    if (fp === ymAtual) novosMes++;
+    // recomprou = tem last no mês atual E first < mês atual (não é primeira compra do mês)
+    var lpYm = c.last_purchase ? String(c.last_purchase).slice(0,7) : null;
+    if (lpYm === ymAtual && fp && fp < ymAtual) recompraMes++;
+  });
+  return {
+    total: total,
+    ativos60d: ativos60d,
+    ticketMedio: cntTicket ? somaTicket / cntTicket : 0,
+    ltvMedio:    cntLtv    ? somaLtv    / cntLtv    : 0,
+    novosMes: novosMes,
+    recompraMes: recompraMes
+  };
+}
+
+/* Faixa a que um cliente pertence hoje.
+   Retorna 'd30' (30-45), 'd45' (45-90), 'd90' (>=90) ou null (<30 ou sem última compra) */
+function crmFaixaEsfriamento(c){
+  if (!c || !c.last_purchase) return null;
+  var d = new Date(today()+'T00:00:00') - new Date(String(c.last_purchase).slice(0,10)+'T00:00:00');
+  var dias = Math.round(d/86400000);
+  if (dias < 30) return null;
+  if (dias < 45) return 'd30';
+  if (dias < 90) return 'd45';
+  return 'd90';
+}
+
+/* Contagem por faixa. */
+function crmEsfriamentoContagem(lista){
+  var arr = lista || crmClientesDoEscopo();
+  var out = { d30:0, d45:0, d90:0 };
+  arr.forEach(function(c){
+    var f = crmFaixaEsfriamento(c);
+    if (f) out[f]++;
+  });
+  return out;
+}
+
+/* Lista de clientes em uma faixa, ordenada por dias sem comprar (menor→maior dentro do intervalo). */
+function crmClientesPorFaixa(faixa, lista){
+  var arr = lista || crmClientesDoEscopo();
+  var filtrados = arr.filter(function(c){ return crmFaixaEsfriamento(c) === faixa; });
+  filtrados.sort(function(a,b){
+    var da = new Date(today()+'T00:00:00') - new Date(String(a.last_purchase).slice(0,10)+'T00:00:00');
+    var db = new Date(today()+'T00:00:00') - new Date(String(b.last_purchase).slice(0,10)+'T00:00:00');
+    return da - db;
+  });
+  return filtrados;
+}
+
+/* ============================================================
+   RENDER: Painel de métricas globais no topo do CRM
+   ============================================================ */
+function crmMetricasPanelHTML(){
+  var m = crmMetricasGlobais();
+  var pctAtivos = m.total > 0 ? Math.round(m.ativos60d / m.total * 100) : 0;
+  return '<div class="crm-met-panel">'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Base</span><b class="cmp-val">'+m.total+'</b><i class="cmp-sub">cliente'+(m.total!==1?'s':'')+' cadastrado'+(m.total!==1?'s':'')+'</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Ativos 60d</span><b class="cmp-val">'+m.ativos60d+'</b><i class="cmp-sub">'+pctAtivos+'% da base</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Ticket médio</span><b class="cmp-val">'+fmtBRL(m.ticketMedio)+'</b><i class="cmp-sub">por compra</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">LTV médio</span><b class="cmp-val">'+fmtBRL(m.ltvMedio)+'</b><i class="cmp-sub">total por cliente</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Novos no mês</span><b class="cmp-val">'+m.novosMes+'</b><i class="cmp-sub">1ª compra em '+MESES[new Date().getMonth()]+'</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Recompra no mês</span><b class="cmp-val">'+m.recompraMes+'</b><i class="cmp-sub">clientes já da base</i></div>'+
+  '</div>';
+}
+
+/* ============================================================
+   RENDER: 3 cards de faixa de esfriamento — clicáveis
+   ============================================================ */
+var CRM_FAIXAS = [
+  { key:'d30', label:'30 a 45 dias',  desc:'Sem comprar há mais de 30 dias', cor:'#0EA5E9' },
+  { key:'d45', label:'45 a 90 dias',  desc:'Sem comprar há mais de 45 dias', cor:'#F59E0B' },
+  { key:'d90', label:'Mais de 90 dias', desc:'Sem comprar há muito tempo',   cor:'#EF4444' }
+];
+
+function crmFaixasPanelHTML(){
+  var c = crmEsfriamentoContagem();
+  var totalF = c.d30 + c.d45 + c.d90;
+  var head = '<div class="crm-faixas-h">'+icon('bell')+'<h3>Clientes esfriando</h3><span class="cfx-tot">'+totalF+' pra reativar</span></div>';
+  var cards = CRM_FAIXAS.map(function(f){
+    var n = c[f.key];
+    return '<button class="crm-faixa-card" data-faixa="'+esc(f.key)+'" style="border-color:'+f.cor+'44">'+
+      '<span class="cfx-dot" style="background:'+f.cor+'"></span>'+
+      '<b class="cfx-n" style="color:'+f.cor+'">'+n+'</b>'+
+      '<span class="cfx-lbl">'+esc(f.label)+'</span>'+
+      '<i class="cfx-desc">'+esc(f.desc)+'</i>'+
+      '<span class="cfx-open">Ver lista →</span>'+
+    '</button>';
+  }).join('');
+  return '<div class="crm-faixas-panel">'+head+'<div class="crm-faixas-grid">'+cards+'</div></div>';
+}
+
+/* ============================================================
+   MODAL: lista de clientes de uma faixa + export CSV
+   ============================================================ */
+function crmDiasSemComprar(c){
+  if (!c || !c.last_purchase) return null;
+  var d = new Date(today()+'T00:00:00') - new Date(String(c.last_purchase).slice(0,10)+'T00:00:00');
+  return Math.round(d/86400000);
+}
+
+function csvClientesFaixa(faixa, lista){
+  var linhas = [];
+  linhas.push(['Nome','Empresa','Telefone','E-mail','Dias sem comprar','Última compra','Total gasto (R$)','Qtd. compras','Loja','WhatsApp'].map(csvCell).join(';'));
+  (lista||[]).forEach(function(c){
+    var dias = crmDiasSemComprar(c);
+    var lb = (c.last_purchase||'').slice(0,10);
+    var total = Number(c.total_spent)||0;
+    var orders = Number(c.orders_count)||0;
+    var lojaNm = c.store_unit_id && typeof storeName==='function' ? (storeName(c.store_unit_id)||'') : '';
+    var wa = typeof crmWhatsLink==='function' ? (crmWhatsLink(c)||'') : '';
+    linhas.push([
+      c.name||'', c.company||'', c.phone||'', c.email||'',
+      dias==null?'':dias,
+      lb, total>0?total.toFixed(2).replace('.',','):'',
+      orders>0?orders:'',
+      lojaNm, wa
+    ].map(csvCell).join(';'));
+  });
+  return linhas.join('\n');
+}
+
+function openFaixaEsfriamentoModal(faixaKey){
+  var faixa = null;
+  for (var i=0;i<CRM_FAIXAS.length;i++) if (CRM_FAIXAS[i].key===faixaKey) faixa = CRM_FAIXAS[i];
+  if (!faixa) return;
+  var lista = crmClientesPorFaixa(faixaKey);
+
+  var modal = document.createElement('div'); modal.className='modal-bg';
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+
+  var linhas = lista.map(function(c){
+    var dias = crmDiasSemComprar(c);
+    var ini = iniciais(c.name||'?');
+    var seg = crmSegment(c); var sg = CRM_SEG[seg];
+    var wa = crmWhatsLink(c);
+    var waBtn = wa ? '<a class="fx-mini wa" href="'+wa+'" target="_blank" rel="noopener">'+icon('chat')+'</a>' : '';
+    var totalTx = (Number(c.total_spent)||0)>0 ? fmtBRL(c.total_spent) : '—';
+    var ordersTx = (Number(c.orders_count)||0)>0 ? (c.orders_count+' compra'+(c.orders_count!==1?'s':'')) : '—';
+    return '<div class="fx-row" data-clienteid="'+esc(c.id)+'">'+
+      '<span class="fx-av">'+esc(ini)+'</span>'+
+      '<div class="fx-main"><b>'+esc(c.name||'?')+'</b><i>'+dias+' dias sem comprar'+(c.company?' · '+esc(c.company):'')+'</i></div>'+
+      '<span class="fx-total">'+totalTx+'</span>'+
+      '<span class="fx-orders">'+ordersTx+'</span>'+
+      '<span class="fx-seg" style="color:'+sg.color+';background:'+sg.color+'18">'+sg.label+'</span>'+
+      waBtn+
+    '</div>';
+  }).join('');
+
+  var vazioMsg = '<div class="dash-empty">Nenhum cliente nessa faixa.</div>';
+  var body = lista.length ? linhas : vazioMsg;
+
+  modal.innerHTML = '<div class="modal fx-modal">'+
+    '<div class="fx-head">'+
+      '<span class="fx-head-dot" style="background:'+faixa.cor+'"></span>'+
+      '<div class="fx-head-tx"><b>'+esc(faixa.label)+'</b><i>'+esc(faixa.desc)+' · '+lista.length+' cliente'+(lista.length!==1?'s':'')+'</i></div>'+
+      '<button class="btn btn-ghost fx-csv" id="fxCsv" '+(lista.length===0?'disabled':'')+'>'+icon('folder')+'Exportar CSV</button>'+
+      '<button class="fx-close" id="fxClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="fx-body">'+body+'</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+  modal.querySelector('#fxClose').addEventListener('click', close);
+
+  var csvBtn = modal.querySelector('#fxCsv');
+  if (csvBtn && lista.length){
+    csvBtn.addEventListener('click', function(){
+      var conteudo = csvClientesFaixa(faixaKey, lista);
+      var hoje = new Date();
+      var dtStr = hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
+      var nome = 'clientes-esfriando-'+faixaKey+'-'+dtStr+'.csv';
+      if (downloadCSV(nome, conteudo)) toast(lista.length+' cliente(s) exportado(s): '+nome, 'success');
+    });
+  }
+
+  // Clicar numa linha abre a ficha do cliente
+  var rows = modal.querySelectorAll('[data-clienteid]');
+  for (var r=0;r<rows.length;r++){
+    rows[r].addEventListener('click', function(e){
+      if (e.target.closest('.wa') || e.target.closest('.fx-mini')) return;
+      var id = this.getAttribute('data-clienteid');
+      var cli = null;
+      for (var i=0;i<ST.clients.length;i++) if (String(ST.clients[i].id)===String(id)){ cli = ST.clients[i]; break; }
+      if (cli && typeof openClienteFicha==='function'){
+        close();
+        openClienteFicha(cli);
+      }
+    });
+  }
+}
+
+/* ============================================================
+   v166 · CRM Fatia 4 — Composição de Faturamento (Yosef Malba Lovers)
+   Top 20 clientes por total_spent + "Outros" agrupado, em rosca SVG.
+   Sem SQL. Sem dependência externa. Reusa downloadCSV + csvCell da v161.
+   ============================================================ */
+
+/* Paleta de cores pra rosca — 20 cores distinguíveis + cinza pra "Outros". */
+var CRM_COMP_CORES = [
+  '#3B6FF7','#16A34A','#F59E0B','#EF4444','#8B5CF6',
+  '#EC4899','#0EA5E9','#F97316','#22C55E','#A855F7',
+  '#F43F5E','#06B6D4','#84CC16','#D946EF','#14B8A6',
+  '#EAB308','#6366F1','#78716C','#0891B2','#DC2626'
+];
+var CRM_COMP_COR_OUTROS = '#94A3B8';
+
+/* Estado local da composição (filtro só ativos vs todos + salvo em ST). */
+function crmCompFiltro(){
+  if (!ST.crmComp) ST.crmComp = { soAtivos:false };
+  return ST.crmComp;
+}
+
+/* Calcula top 20 + Outros a partir da lista de clientes.
+   Aplica escopo + filtro soAtivos.
+   Retorna { fatias:[{label,valor,pct,cor,cliId,orders}], totalGeral, temOutros } */
+function crmComposicaoDados(){
+  var lista = crmClientesDoEscopo();
+  var filtro = crmCompFiltro();
+  if (filtro.soAtivos){
+    var hj = new Date();
+    var d60ms = 60*24*60*60*1000;
+    lista = lista.filter(function(c){
+      if (!c.last_purchase) return false;
+      var lp = new Date(String(c.last_purchase).slice(0,10)+'T00:00:00');
+      return (hj - lp) <= d60ms;
+    });
+  }
+  // Só considera quem tem gasto > 0
+  var comGasto = lista.filter(function(c){ return (Number(c.total_spent)||0) > 0; });
+  comGasto.sort(function(a,b){ return (Number(b.total_spent)||0) - (Number(a.total_spent)||0); });
+  var totalGeral = 0;
+  comGasto.forEach(function(c){ totalGeral += Number(c.total_spent)||0; });
+  if (totalGeral === 0){
+    return { fatias:[], totalGeral:0, temOutros:false };
+  }
+  var TOP_N = 20;
+  var top = comGasto.slice(0, TOP_N);
+  var resto = comGasto.slice(TOP_N);
+  var fatias = top.map(function(c, i){
+    var v = Number(c.total_spent)||0;
+    return {
+      label: c.name || '?',
+      valor: v,
+      pct: v / totalGeral * 100,
+      cor: CRM_COMP_CORES[i % CRM_COMP_CORES.length],
+      cliId: c.id,
+      empresa: c.company||'',
+      orders: Number(c.orders_count)||0
+    };
+  });
+  var temOutros = false;
+  if (resto.length > 0){
+    var somaResto = 0;
+    resto.forEach(function(c){ somaResto += Number(c.total_spent)||0; });
+    fatias.push({
+      label: 'Outros ('+resto.length+' cliente'+(resto.length!==1?'s':'')+')',
+      valor: somaResto,
+      pct: somaResto / totalGeral * 100,
+      cor: CRM_COMP_COR_OUTROS,
+      cliId: null,
+      empresa: '',
+      orders: 0,
+      isOutros: true
+    });
+    temOutros = true;
+  }
+  return { fatias:fatias, totalGeral:totalGeral, temOutros:temOutros };
+}
+
+/* Constrói o SVG da rosca com base nas fatias.
+   Rosca: raio externo 90, interno 55, centro 100,100. viewBox 200x200.
+   Retorna string SVG. */
+function crmRoscaSVG(fatias){
+  if (!fatias || fatias.length === 0){
+    return '<svg viewBox="0 0 200 200" class="cco-svg"><circle cx="100" cy="100" r="90" fill="none" stroke="var(--u-line)" stroke-width="2"/></svg>';
+  }
+  var cx=100, cy=100, r=90, rInner=55;
+  var acum = 0;
+  var paths = [];
+  fatias.forEach(function(f, i){
+    var pct = f.pct;
+    if (pct <= 0) return;
+    var startAngle = acum/100 * 2*Math.PI - Math.PI/2;
+    var endAngle   = (acum+pct)/100 * 2*Math.PI - Math.PI/2;
+    acum += pct;
+    var x1 = cx + r*Math.cos(startAngle), y1 = cy + r*Math.sin(startAngle);
+    var x2 = cx + r*Math.cos(endAngle),   y2 = cy + r*Math.sin(endAngle);
+    var xi1 = cx + rInner*Math.cos(startAngle), yi1 = cy + rInner*Math.sin(startAngle);
+    var xi2 = cx + rInner*Math.cos(endAngle),   yi2 = cy + rInner*Math.sin(endAngle);
+    var largeArc = pct > 50 ? 1 : 0;
+    // Se pct = 100 exatamente, precisa desenhar círculo completo (evita glitch de 0-graus arc)
+    var d;
+    if (pct >= 99.999){
+      d = 'M '+cx+' '+(cy-r)+' A '+r+' '+r+' 0 1 1 '+(cx-0.01)+' '+(cy-r)+
+          ' L '+(cx-0.01)+' '+(cy-rInner)+
+          ' A '+rInner+' '+rInner+' 0 1 0 '+cx+' '+(cy-rInner)+' Z';
+    } else {
+      d = 'M '+x1.toFixed(3)+' '+y1.toFixed(3)+
+          ' A '+r+' '+r+' 0 '+largeArc+' 1 '+x2.toFixed(3)+' '+y2.toFixed(3)+
+          ' L '+xi2.toFixed(3)+' '+yi2.toFixed(3)+
+          ' A '+rInner+' '+rInner+' 0 '+largeArc+' 0 '+xi1.toFixed(3)+' '+yi1.toFixed(3)+' Z';
+    }
+    paths.push('<path d="'+d+'" fill="'+f.cor+'" class="cco-slice" data-slice="'+i+'"><title>'+esc(f.label)+' — '+fmtBRL(f.valor)+' ('+f.pct.toFixed(1)+'%)</title></path>');
+  });
+  return '<svg viewBox="0 0 200 200" class="cco-svg">'+paths.join('')+'</svg>';
+}
+
+/* Painel completo (rosca + lista + botão CSV + toggle filtro). */
+function crmComposicaoPanelHTML(){
+  var dados = crmComposicaoDados();
+  var filtro = crmCompFiltro();
+  var toggleAt = '<div class="cco-toggle">'+
+    '<button class="cco-tg'+(!filtro.soAtivos?' on':'')+'" data-comptg="todos">Todos</button>'+
+    '<button class="cco-tg'+(filtro.soAtivos?' on':'')+'" data-comptg="ativos">Só ativos 60d</button>'+
+  '</div>';
+
+  var head = '<div class="cco-head">'+icon('trend')+'<h3>Composição de faturamento</h3>'+toggleAt+
+    (dados.totalGeral > 0 && canEdit()
+      ? '<button class="btn btn-ghost cco-csv" id="ccoCsv">'+icon('folder')+'<span>Exportar CSV</span></button>'
+      : '')+
+  '</div>';
+
+  if (dados.totalGeral === 0){
+    return '<div class="crm-comp-panel">'+head+
+      '<div class="dash-empty">Nenhum cliente com gasto registrado nesse filtro.</div>'+
+    '</div>';
+  }
+
+  var totalTx = '<div class="cco-total">'+
+    '<span class="cco-total-lbl">Total geral</span>'+
+    '<b class="cco-total-v">'+fmtBRL(dados.totalGeral)+'</b>'+
+    '<i class="cco-total-sub">Top '+Math.min(20, dados.fatias.length - (dados.temOutros?1:0))+(dados.temOutros?' + outros':'')+'</i>'+
+  '</div>';
+
+  var svgRosca = crmRoscaSVG(dados.fatias);
+
+  // Lista lateral: cada fatia com bolinha colorida + nome + valor + %
+  var linhas = dados.fatias.map(function(f, i){
+    var clickable = f.cliId ? ' data-cliid="'+esc(f.cliId)+'"' : '';
+    return '<div class="cco-row'+(f.cliId?' cco-row-cli':'')+(f.isOutros?' cco-row-outros':'')+'"'+clickable+'>'+
+      '<span class="cco-rank">'+(f.isOutros?'':(i+1))+'</span>'+
+      '<span class="cco-dot" style="background:'+f.cor+'"></span>'+
+      '<div class="cco-main"><b>'+esc(f.label)+'</b>'+(f.empresa?'<i>'+esc(f.empresa)+'</i>':'')+'</div>'+
+      '<span class="cco-val">'+fmtBRL(f.valor)+'</span>'+
+      '<span class="cco-pct" style="color:'+f.cor+'">'+f.pct.toFixed(1)+'%</span>'+
+    '</div>';
+  }).join('');
+
+  return '<div class="crm-comp-panel">'+head+
+    '<div class="cco-grid">'+
+      '<div class="cco-viz">'+svgRosca+totalTx+'</div>'+
+      '<div class="cco-lista">'+linhas+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* CSV da composição. */
+function csvComposicaoFaturamento(dados){
+  var d = dados || crmComposicaoDados();
+  var linhas = [];
+  linhas.push(['Posição','Nome','Empresa','Total gasto (R$)','% do faturamento','Qtd. compras'].map(csvCell).join(';'));
+  d.fatias.forEach(function(f, i){
+    linhas.push([
+      f.isOutros ? '' : (i+1),
+      f.label,
+      f.empresa || '',
+      f.valor.toFixed(2).replace('.',','),
+      f.pct.toFixed(2).replace('.',','),
+      f.orders > 0 ? f.orders : ''
+    ].map(csvCell).join(';'));
+  });
+  linhas.push(['','','TOTAL', d.totalGeral.toFixed(2).replace('.',','), '100,00', ''].map(csvCell).join(';'));
+  return linhas.join('\n');
+}
+
+/* Executa export. */
+function exportarComposicaoCSV(){
+  var dados = crmComposicaoDados();
+  if (dados.totalGeral === 0){
+    if (typeof toast==='function') toast('Nenhum dado pra exportar', 'error');
+    return;
+  }
+  var filtro = crmCompFiltro();
+  var conteudo = csvComposicaoFaturamento(dados);
+  var hoje = new Date();
+  var dtStr = hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
+  var suf = filtro.soAtivos ? '-ativos' : '';
+  var nome = 'composicao-faturamento'+suf+'-'+dtStr+'.csv';
+  if (downloadCSV(nome, conteudo)){
+    if (typeof toast==='function') toast('CSV exportado: '+nome, 'success');
+  }
+}
+
+/* ============================================================
+   v167 · CRM Fatia 5 — Cards de Aquisição (Yosef Malba Lovers)
+   Novos / LTV médio / CAC + investimento em marketing por mês.
+   ============================================================ */
+
+/* Estado local: período selecionado. */
+function crmAqFiltro(){
+  if (!ST.crmAq) ST.crmAq = { tipo:'30d' };  // padrão: últimos 30 dias
+  return ST.crmAq;
+}
+
+/* Resolve o filtro em { ini:Date, fim:Date, label } */
+function crmAqIntervalo(){
+  var f = crmAqFiltro();
+  var hoje = new Date();
+  hoje.setHours(0,0,0,0);
+  var fim = new Date(hoje); fim.setHours(23,59,59,999);
+  var ini;
+  var label;
+  switch(f.tipo){
+    case 'hoje':
+      ini = new Date(hoje);
+      label = 'hoje';
+      break;
+    case '7d':
+      ini = new Date(hoje); ini.setDate(ini.getDate()-6);
+      label = 'últimos 7 dias';
+      break;
+    case 'mes':
+      ini = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+      fim = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0, 23,59,59,999);
+      label = MESES[hoje.getMonth()]+'/'+hoje.getFullYear();
+      break;
+    case '30d':
+    default:
+      ini = new Date(hoje); ini.setDate(ini.getDate()-29);
+      label = 'últimos 30 dias';
+      break;
+  }
+  return { ini:ini, fim:fim, label:label };
+}
+
+/* Novos clientes no período: first_purchase entre ini e fim. */
+function crmAqNovos(ini, fim, lista){
+  var arr = lista || crmClientesDoEscopo();
+  return arr.filter(function(c){
+    if (!c.first_purchase) return false;
+    var fp = new Date(String(c.first_purchase).slice(0,10)+'T12:00:00');
+    return fp >= ini && fp <= fim;
+  });
+}
+
+/* Clientes que compraram no período: last_purchase entre ini e fim. */
+function crmAqCompraram(ini, fim, lista){
+  var arr = lista || crmClientesDoEscopo();
+  return arr.filter(function(c){
+    if (!c.last_purchase) return false;
+    var lp = new Date(String(c.last_purchase).slice(0,10)+'T12:00:00');
+    return lp >= ini && lp <= fim;
+  });
+}
+
+/* LTV médio dos que compraram no período: média de total_spent. */
+function crmAqLTVMedio(ini, fim, lista){
+  var compraram = crmAqCompraram(ini, fim, lista);
+  if (compraram.length === 0) return 0;
+  var soma = 0;
+  compraram.forEach(function(c){ soma += (Number(c.total_spent)||0); });
+  return soma / compraram.length;
+}
+
+/* Investimento em marketing no período (soma por mês/ano cobertos). */
+function crmAqInvestimento(ini, fim){
+  var inv = ST.mktInvest || [];
+  var sector = ST.sector;
+  var total = 0;
+  inv.forEach(function(r){
+    if ((r.sector||'lojas') !== sector) return;
+    // Considera o mês/ano do registro cai dentro do período (usa dia 15 como âncora)
+    var d = new Date(Number(r.year), Number(r.month)-1, 15, 12, 0, 0);
+    if (d >= ini && d <= fim) total += (Number(r.value)||0);
+  });
+  return total;
+}
+
+/* CAC = investimento / novos. Retorna número ou null se não faz sentido. */
+function crmAqCAC(ini, fim, lista){
+  var novos = crmAqNovos(ini, fim, lista).length;
+  var invest = crmAqInvestimento(ini, fim);
+  if (novos === 0) return null;  // sem base
+  return invest / novos;
+}
+
+/* ============================================================
+   RENDER: Painel de cards de aquisição
+   ============================================================ */
+var CRM_AQ_PERIODOS = [
+  { key:'hoje', label:'Hoje' },
+  { key:'7d',   label:'7 dias' },
+  { key:'30d',  label:'30 dias' },
+  { key:'mes',  label:'Mês' }
+];
+
+function crmAquisicaoPanelHTML(){
+  var intv = crmAqIntervalo();
+  var f = crmAqFiltro();
+  var lista = crmClientesDoEscopo();
+  var novos = crmAqNovos(intv.ini, intv.fim, lista);
+  var ltv = crmAqLTVMedio(intv.ini, intv.fim, lista);
+  var invest = crmAqInvestimento(intv.ini, intv.fim);
+  var cac = crmAqCAC(intv.ini, intv.fim, lista);
+
+  var toggleAt = '<div class="caq-toggle">'+CRM_AQ_PERIODOS.map(function(p){
+    return '<button class="caq-tg'+(f.tipo===p.key?' on':'')+'" data-aqperiodo="'+esc(p.key)+'">'+esc(p.label)+'</button>';
+  }).join('')+'</div>';
+
+  var editBtn = canEdit()
+    ? '<button class="btn btn-ghost caq-invest" id="caqInvest">'+icon('dollar')+'<span>Investimento em ads</span></button>'
+    : '';
+
+  var head = '<div class="caq-head">'+icon('users')+'<h3>Aquisição</h3>'+
+    '<span class="caq-per">'+esc(intv.label)+'</span>'+
+    toggleAt+editBtn+
+  '</div>';
+
+  var cacTx = cac == null
+    ? '<b class="cmp-val cmp-val-empty">—</b><i class="cmp-sub">sem novos no período</i>'
+    : '<b class="cmp-val">'+fmtBRL(cac)+'</b><i class="cmp-sub">custo por novo cliente</i>';
+
+  var novosSub = novos.length === 0
+    ? 'nenhum novo cliente'
+    : '1ª compra registrada';
+
+  var ltvSub = ltv === 0
+    ? 'nenhum comprou no período'
+    : 'gasto médio total';
+
+  var investSub = invest > 0
+    ? 'gasto em marketing'
+    : (canEdit() ? 'clique em "Investimento em ads" pra registrar' : 'sem gasto registrado');
+
+  return '<div class="crm-aq-panel">'+head+
+    '<div class="crm-aq-cards">'+
+      '<div class="crm-met-card"><span class="cmp-lbl">Novos</span><b class="cmp-val">'+novos.length+'</b><i class="cmp-sub">'+novosSub+'</i></div>'+
+      '<div class="crm-met-card"><span class="cmp-lbl">LTV médio</span><b class="cmp-val">'+fmtBRL(ltv)+'</b><i class="cmp-sub">'+ltvSub+'</i></div>'+
+      '<div class="crm-met-card"><span class="cmp-lbl">Investimento</span><b class="cmp-val">'+fmtBRL(invest)+'</b><i class="cmp-sub">'+investSub+'</i></div>'+
+      '<div class="crm-met-card crm-cac-card"><span class="cmp-lbl">CAC</span>'+cacTx+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ============================================================
+   MODAL: Editar investimento em marketing por mês
+   ============================================================ */
+function crmInvestRegistro(sector, y, m){
+  var arr = ST.mktInvest || [];
+  for (var i=0;i<arr.length;i++){
+    var r = arr[i];
+    if ((r.sector||'lojas')===sector && Number(r.year)===Number(y) && Number(r.month)===Number(m)) return r;
+  }
+  return null;
+}
+
+function openInvestimentoAdsModal(){
+  if (!canEdit()){ blockManage(); return; }
+  var sector = ST.sector;
+  var modal = document.createElement('div'); modal.className='modal-bg';
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+
+  var hoje = new Date();
+  var mesesLinhas = [];
+  // Últimos 12 meses (mais recente primeiro)
+  for (var i=0; i<12; i++){
+    var d = new Date(hoje.getFullYear(), hoje.getMonth()-i, 1);
+    var y = d.getFullYear(), m = d.getMonth()+1;
+    var reg = crmInvestRegistro(sector, y, m);
+    var val = reg ? (Number(reg.value)||0) : 0;
+    var mesLabel = MESES[m-1]+'/'+y;
+    mesesLinhas.push('<div class="inv-row" data-y="'+y+'" data-m="'+m+'">'+
+      '<span class="inv-mes">'+esc(mesLabel)+'</span>'+
+      '<div class="inv-input-wrap">'+
+        '<span class="inv-cur">R$</span>'+
+        '<input type="number" step="0.01" min="0" class="inv-input" data-invval placeholder="0,00" value="'+(val>0?val.toFixed(2):'')+'">'+
+      '</div>'+
+      '<span class="inv-status" data-invstatus></span>'+
+    '</div>');
+  }
+
+  modal.innerHTML = '<div class="modal inv-modal">'+
+    '<div class="inv-head">'+
+      '<div><b>Investimento em ads</b><i>Setor: '+(SECTORS[sector]?SECTORS[sector].label:sector)+' · Últimos 12 meses</i></div>'+
+      '<button class="fx-close" id="invClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="inv-body">'+
+      '<div class="inv-hint">Registre quanto foi gasto em anúncios em cada mês. Isso alimenta o cálculo de CAC (custo por novo cliente).</div>'+
+      mesesLinhas.join('')+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+  modal.querySelector('#invClose').addEventListener('click', close);
+
+  // Bind: salva em blur/enter
+  var inputs = modal.querySelectorAll('[data-invval]');
+  for (var iI=0; iI<inputs.length; iI++){
+    (function(inp){
+      var row = inp.closest('.inv-row');
+      var status = row.querySelector('[data-invstatus]');
+      var yr = Number(row.getAttribute('data-y'));
+      var mn = Number(row.getAttribute('data-m'));
+      function salvar(){
+        var v = parseFloat((inp.value||'0').replace(',','.'));
+        if (isNaN(v) || v < 0) v = 0;
+        status.textContent = 'salvando…';
+        status.className = 'inv-status inv-saving';
+        var reg = crmInvestRegistro(sector, yr, mn);
+        var payload = { sector:sector, year:yr, month:mn, value:v, updated_at:new Date().toISOString() };
+        if (reg){
+          sb.from('malba_marketing_investment').update(payload).eq('id', reg.id).then(function(r){
+            if (r.error){
+              status.textContent = 'erro';
+              status.className = 'inv-status inv-err';
+              var msg=(r.error.message||'').toLowerCase();
+              if (msg.indexOf('malba_marketing_investment')>=0 || msg.indexOf('relation')>=0){
+                toast('Rode o SQL de marketing_investment primeiro','error');
+              } else toast('Erro ao salvar','error');
+              return;
+            }
+            reg.value = v; reg.updated_at = payload.updated_at;
+            status.textContent = '✓';
+            status.className = 'inv-status inv-ok';
+            setTimeout(function(){ status.textContent=''; status.className='inv-status'; }, 1500);
+          });
+        } else {
+          sb.from('malba_marketing_investment').insert(payload).select().single().then(function(r){
+            if (r.error || !r.data){
+              status.textContent = 'erro';
+              status.className = 'inv-status inv-err';
+              var msg=((r.error&&r.error.message)||'').toLowerCase();
+              if (msg.indexOf('malba_marketing_investment')>=0 || msg.indexOf('relation')>=0){
+                toast('Rode o SQL de marketing_investment primeiro','error');
+              } else toast('Erro ao salvar','error');
+              return;
+            }
+            if (!ST.mktInvest) ST.mktInvest = [];
+            ST.mktInvest.push(r.data);
+            status.textContent = '✓';
+            status.className = 'inv-status inv-ok';
+            setTimeout(function(){ status.textContent=''; status.className='inv-status'; }, 1500);
+          });
+        }
+      }
+      inp.addEventListener('blur', salvar);
+      inp.addEventListener('keydown', function(e){
+        if (e.key==='Enter'){ inp.blur(); }
+      });
+    })(inputs[iI]);
+  }
+}
+
 function csvClientes(lista){
   var linhas = [];
   linhas.push([
@@ -21711,6 +23140,42 @@ function bindCRM() {
   // v163: export CSV com filtros ativos
   var exp = document.getElementById('btnCrmExport');
   if (exp) exp.addEventListener('click', function(){ exportarClientesCSV(); });
+  // v164: cards de faixa de esfriamento — abre modal com lista + export
+  var faixaBtns = app.querySelectorAll('[data-faixa]');
+  for (var fB=0; fB<faixaBtns.length; fB++){
+    faixaBtns[fB].addEventListener('click', function(){
+      openFaixaEsfriamentoModal(this.getAttribute('data-faixa'));
+    });
+  }
+  // v167: cards de aquisição — toggle período + botão investimento
+  var aqTgs = app.querySelectorAll('[data-aqperiodo]');
+  for (var at=0; at<aqTgs.length; at++){
+    aqTgs[at].addEventListener('click', function(){
+      crmAqFiltro().tipo = this.getAttribute('data-aqperiodo');
+      renderPage();
+    });
+  }
+  var invBtn = document.getElementById('caqInvest');
+  if (invBtn) invBtn.addEventListener('click', function(){ openInvestimentoAdsModal(); });
+  // v166: composição de faturamento — toggle todos/ativos + export + click nas rows
+  var compTgs = app.querySelectorAll('[data-comptg]');
+  for (var ct=0; ct<compTgs.length; ct++){
+    compTgs[ct].addEventListener('click', function(){
+      crmCompFiltro().soAtivos = (this.getAttribute('data-comptg')==='ativos');
+      renderPage();
+    });
+  }
+  var compCsv = document.getElementById('ccoCsv');
+  if (compCsv) compCsv.addEventListener('click', function(){ exportarComposicaoCSV(); });
+  var compRows = app.querySelectorAll('.cco-row-cli[data-cliid]');
+  for (var cr=0; cr<compRows.length; cr++){
+    compRows[cr].addEventListener('click', function(){
+      var id = this.getAttribute('data-cliid');
+      var cli = null;
+      for (var i=0;i<ST.clients.length;i++) if (String(ST.clients[i].id)===String(id)){ cli = ST.clients[i]; break; }
+      if (cli && typeof openClienteFicha==='function') openClienteFicha(cli);
+    });
+  }
   var crmStore = document.getElementById('crmStore');
   if (crmStore) crmStore.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   var imp = document.getElementById('btnImportBling');
@@ -21770,6 +23235,90 @@ function crmRegistrarCompra(id){
   });
 }
 
+/* ============================================================
+   v165 · CRM Ficha Completa — Fatia 2 (Yosef Malba Lovers)
+   Classificação AAA/AA/A + Intervalo entre compras + Tempo como cliente.
+   Sem SQL: first_purchase já vem da v164.
+   ============================================================ */
+
+/* Meses como cliente = diff em meses do first_purchase até hoje.
+   Retorna número ou null se sem first. */
+function crmMesesComoCliente(c){
+  if (!c || !c.first_purchase) return null;
+  var fp = new Date(String(c.first_purchase).slice(0,10)+'T00:00:00');
+  var hoje = new Date(today()+'T00:00:00');
+  var diffMs = hoje - fp;
+  if (diffMs < 0) return 0;
+  var meses = diffMs / (1000*60*60*24*30.4375);
+  return Math.round(meses*10)/10;  // 1 casa decimal
+}
+
+/* Intervalo médio entre compras em dias.
+   Só faz sentido com orders_count > 1.
+   Fórmula: (last - first) / (orders - 1). */
+function crmIntervaloMedioCompras(c){
+  if (!c || !c.first_purchase || !c.last_purchase) return null;
+  var orders = Number(c.orders_count)||0;
+  if (orders < 2) return null;
+  var fp = new Date(String(c.first_purchase).slice(0,10)+'T00:00:00');
+  var lp = new Date(String(c.last_purchase).slice(0,10)+'T00:00:00');
+  var diffDias = Math.round((lp - fp) / (1000*60*60*24));
+  if (diffDias <= 0) return null;
+  return Math.round(diffDias / (orders - 1));
+}
+
+/* Classificação AAA/AA/A baseada em faturamento por mês
+   (adaptada do Yosef Malba Lovers: fatur_ano ÷ meses decorridos).
+   No Work OS sem histórico detalhado, usa total_spent ÷ meses_como_cliente.
+   Se meses < 1 (cliente novo), usa 1 mês como base.
+   Retorna { key, label, cor, valorMes }. */
+function crmClassificacao(c){
+  if (!c || !c.first_purchase || !((Number(c.total_spent)||0) > 0)){
+    return { key:'sem_dados', label:'—', cor:'#94A3B8', valorMes:0 };
+  }
+  var meses = crmMesesComoCliente(c);
+  if (meses == null) return { key:'sem_dados', label:'—', cor:'#94A3B8', valorMes:0 };
+  var base = Math.max(1, meses);  // se cliente novo (menos de 1 mês), usa 1
+  var valorMes = (Number(c.total_spent)||0) / base;
+  if (valorMes >= 3000) return { key:'aaa', label:'AAA', cor:'#16A34A', valorMes:valorMes };
+  if (valorMes >= 1000) return { key:'aa',  label:'AA',  cor:'#3B6FF7', valorMes:valorMes };
+  return { key:'a', label:'A', cor:'#94A3B8', valorMes:valorMes };
+}
+
+/* Frase amigável do tempo como cliente. */
+function crmTempoClienteTxt(c){
+  var m = crmMesesComoCliente(c);
+  if (m == null) return '—';
+  if (m < 1) return 'menos de 1 mês';
+  if (m < 12){
+    var mi = Math.round(m);
+    return mi + ' m' + (mi!==1?'eses':'ês');
+  }
+  var anos = m/12;
+  if (anos < 2) return 'quase 1 ano';
+  return Math.floor(anos) + ' anos';
+}
+
+/* Frase amigável do intervalo. */
+function crmIntervaloTxt(c){
+  var d = crmIntervaloMedioCompras(c);
+  if (d == null){
+    var orders = Number(c && c.orders_count)||0;
+    if (orders < 2) return 'só 1 compra registrada';
+    return '—';
+  }
+  if (d < 7) return d + ' dia' + (d!==1?'s':'');
+  if (d < 30){
+    var sem = Math.round(d/7);
+    return 'a cada ' + sem + ' semana' + (sem!==1?'s':'');
+  }
+  if (d < 365){
+    var mm = Math.round(d/30);
+    return 'a cada ' + mm + ' m' + (mm!==1?'eses':'ês');
+  }
+  return 'a cada ' + (Math.round(d/365*10)/10) + ' anos';
+}
+
 function openClienteFicha(client){
   var c=client; if(!c) return;
   var modal=document.createElement('div'); modal.className='modal-bg';
@@ -21784,16 +23333,25 @@ function openClienteFicha(client){
       (phone?'<a class="clf-act call" href="tel:'+esc(phone)+'">'+icon('bell')+'Ligar</a>':'')+
       (canEdit()?'<button class="clf-act buy" id="clfBuy">'+icon('dollar')+'Comprou hoje</button>':'')+
     '</div>';
+    // v165: 4º KPI — classificação AAA/AA/A
+    var cls = crmClassificacao(c);
+    var clsCard = cls.key==='sem_dados'
+      ? '<div class="clf-kpi clf-kpi-cls clf-kpi-sem"><span class="clf-kpi-v">—</span><span class="clf-kpi-l">Classificação</span></div>'
+      : '<div class="clf-kpi clf-kpi-cls clf-kpi-cls-'+cls.key+'" style="--cls-cor:'+cls.cor+'"><span class="clf-kpi-v clf-cls-v" style="color:'+cls.cor+'">'+cls.label+'</span><span class="clf-kpi-l">Classificação · '+brlShort(cls.valorMes)+'/mês</span></div>';
     var resumo='<div class="clf-kpis">'+
       '<div class="clf-kpi"><span class="clf-kpi-v">'+brlShort(total)+'</span><span class="clf-kpi-l">Total gasto</span></div>'+
       '<div class="clf-kpi"><span class="clf-kpi-v">'+orders+'</span><span class="clf-kpi-l">Compras</span></div>'+
       '<div class="clf-kpi"><span class="clf-kpi-v">'+brlShort(ticket)+'</span><span class="clf-kpi-l">Ticket médio</span></div>'+
+      clsCard+
     '</div>';
     var infoRows='<div class="clf-info">'+
       '<div class="clf-ir"><span>Última compra</span><b>'+(c.last_purchase?(fmtDate(c.last_purchase)+' · '+esc(crmRecencia(c))):'—')+'</b></div>'+
       (c.email?('<div class="clf-ir"><span>E-mail</span><b>'+esc(c.email)+'</b></div>'):'')+
       (c.phone?('<div class="clf-ir"><span>Telefone</span><b>'+esc(c.phone)+'</b></div>'):'')+
       (c.store_unit_id?('<div class="clf-ir"><span>Loja</span><b>'+esc(storeName(c.store_unit_id))+'</b></div>'):'')+
+            // v165: Cliente desde + Intervalo entre compras
+      (c.first_purchase ? '<div class="clf-ir"><span>Cliente desde</span><b>'+fmtDate(c.first_purchase)+' · '+esc(crmTempoClienteTxt(c))+'</b></div>' : '')+
+      '<div class="clf-ir"><span>Intervalo entre compras</span><b>'+esc(crmIntervaloTxt(c))+'</b></div>'+
       '<div class="clf-ir"><span>Ciclo de recompra</span><b>'+crmCycle(c)+' dias</b></div>'+
     '</div>';
     var notas = c.notes ? ('<div class="clf-notes"><h5>Observações</h5><p>'+esc(c.notes)+'</p></div>') : '';
