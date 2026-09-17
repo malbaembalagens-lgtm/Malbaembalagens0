@@ -9226,6 +9226,346 @@ html.dark .cco-row-outros { background: rgba(255,255,255,.03); }
 /* Dark */
 html.dark .caq-tg.on { background: rgba(255,255,255,.08); }
 
+
+/* ============================================================
+   v168 · Central de Rotinas — toggle Por pessoa/loja + empty state
+   ============================================================ */
+
+/* Toggle Por pessoa | Por loja */
+.adm-modo-toggle {
+  display: inline-flex;
+  background: var(--u-bg2);
+  border-radius: 999px;
+  padding: 3px;
+  margin: 0 0 var(--sp-3) 0;
+  gap: 2px;
+}
+.amt-tg {
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text3);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.amt-tg .lc-ic { width: 14px; height: 14px; }
+.amt-tg:hover { color: var(--u-text2); }
+.amt-tg.on {
+  background: var(--u-card);
+  color: var(--u-text);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Empty state amigável no nível 2 (pessoa/loja sem rotinas) */
+.adm-empty-rot {
+  background: var(--u-card);
+  border: 2px dashed var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-6) var(--sp-4);
+  text-align: center;
+  margin: var(--sp-4) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.aer-ic {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--u-bg2);
+  color: var(--u-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.aer-ic .lc-ic { width: 28px; height: 28px; }
+.adm-empty-rot h4 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.adm-empty-rot p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--u-text2);
+  max-width: 480px;
+  line-height: 1.5;
+}
+.adm-empty-rot p b { color: var(--u-accent); }
+.adm-empty-rot p i {
+  color: var(--u-text3);
+  font-style: normal;
+  font-size: 12px;
+}
+.adm-empty-rot .btn {
+  margin-top: var(--sp-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Dark */
+html.dark .amt-tg.on { background: rgba(255,255,255,.08); }
+html.dark .adm-empty-rot { background: rgba(255,255,255,.02); }
+
+
+/* ============================================================
+   v169 · KPIs de Tarefas — painel completo
+   ============================================================ */
+.kpit-panel {
+  padding: var(--sp-4) 0;
+}
+.kpit-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  flex-wrap: wrap;
+}
+.kpit-head h2 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.kpit-head .sub {
+  font-size: 12px;
+  color: var(--u-text3);
+  margin-top: 2px;
+}
+.kpit-toggle {
+  display: inline-flex;
+  background: var(--u-bg2);
+  border-radius: 999px;
+  padding: 2px;
+  margin-left: var(--sp-2);
+}
+.kpit-tg {
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  color: var(--u-text3);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+}
+.kpit-tg.on {
+  background: var(--u-card);
+  color: var(--u-text);
+  box-shadow: var(--shadow-xs);
+}
+.kpit-csv {
+  margin-left: auto;
+  padding: 8px 14px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kpit-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.kpit-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+.kpit-dist {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+}
+.kpit-dist h4 {
+  margin: 0 0 var(--sp-3) 0;
+  font-size: 13px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.kpit-bar-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 40px;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-bottom: 8px;
+}
+.kpit-bl {
+  font-size: 12px;
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+}
+.kpit-bar {
+  height: 8px;
+  background: var(--u-bg2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.kpit-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  transition: width var(--tr-slow);
+}
+.kpit-bar-row b {
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  text-align: right;
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ranking */
+.kpit-ranking {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-4);
+}
+.kpit-ranking h4 {
+  margin: 0 0 var(--sp-3) 0;
+  font-size: 13px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.kpit-rk-head, .kpit-row {
+  display: grid;
+  grid-template-columns: 32px 32px 1fr 70px 70px 90px 140px 100px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 8px 0;
+}
+.kpit-rk-head {
+  border-bottom: 1px solid var(--u-line);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+.kpit-hl, .kpit-hn, .kpit-htx {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.kpit-hn { text-align: right; }
+.kpit-htx { text-align: center; }
+.kpit-row {
+  border-bottom: 1px dashed var(--u-line);
+}
+.kpit-row:last-child { border-bottom: 0; }
+.kpit-pos {
+  text-align: center;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+.kpit-nome {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.kpit-nome b {
+  font-size: 13px;
+  color: var(--u-text);
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kpit-nome i {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-style: normal;
+}
+.kpit-num {
+  font-size: 13px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--fw-semibold);
+  color: var(--u-text2);
+}
+.kpit-taxa {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.kpit-taxa-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--u-bg2);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.kpit-taxa-bar > span {
+  display: block;
+  height: 100%;
+  transition: width var(--tr-slow);
+}
+.kpit-taxa b {
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  min-width: 40px;
+  text-align: right;
+}
+.kpit-atr {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: var(--rd-md);
+  background: rgba(239,68,68,.1);
+  color: #EF4444;
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Mobile */
+@media (max-width: 800px){
+  .kpit-cards { grid-template-columns: repeat(2, 1fr); }
+  .kpit-2col { grid-template-columns: 1fr; }
+  .kpit-rk-head { display: none; }
+  .kpit-row {
+    grid-template-columns: 32px 32px 1fr 60px 100px;
+    grid-template-areas: "pos av nome atr taxa" "pos av nums nums nums";
+    row-gap: 4px;
+  }
+  .kpit-row > :nth-child(1) { grid-area: pos; }
+  .kpit-row > :nth-child(2) { grid-area: av; }
+  .kpit-row > :nth-child(3) { grid-area: nome; }
+  .kpit-row > :nth-child(4),
+  .kpit-row > :nth-child(5),
+  .kpit-row > :nth-child(6) { grid-area: nums; text-align: left; padding-right: 8px; display: inline-block; }
+  .kpit-row > :nth-child(7) { grid-area: taxa; }
+  .kpit-row > :nth-child(8) { grid-area: atr; }
+  .kpit-csv span { display: none; }
+  .kpit-csv { padding: 8px; margin-left: 0; }
+}
+
+/* Dark */
+html.dark .kpit-tg.on { background: rgba(255,255,255,.08); }
+html.dark .kpit-atr { background: rgba(239,68,68,.15); }
+
 </style>
 </head>
 <body>
@@ -9249,7 +9589,7 @@ html.dark .caq-tg.on { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v167';
+var APP_BUILD = 'v169';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -12926,7 +13266,7 @@ function materializarRecorrencias(){
 function openTaskModal(task, preset) {
   var isEdit=!!task;
   preset = preset || {};
-  var t=task||{ title:'', description:'', priority:'media', status:'todo', due_date:(preset.due||today()), area:'', assignee_id:(preset.assignee||'') };
+  var t=task||{ title:'', description:'', priority:'media', status:'todo', due_date:(preset.due||today()), area:'', assignee_id:(preset.assignee||''), store_unit_id:(preset.store||''), recurrence:(preset.recurrence||'none') };
   var canMng=canEdit();
   var occRule=(isEdit && task && task.recur_group && !task.is_rule && canMng) ? ruleForOccurrence(task) : null; // v72
   var recManageRow = occRule ? ('<div class="rec-manage"><span class="rec-manage-l">↻ Faz parte de uma rotina'+(occRule.rec_paused?' · pausada':'')+'</span><div class="rec-manage-btns"><button type="button" class="btn btn-ghost rec-mini" id="recEdit">Editar rotina</button><button type="button" class="btn btn-ghost rec-mini" id="recSkip">Pular este dia</button></div></div>') : '';
@@ -12973,6 +13313,14 @@ function openTaskModal(task, preset) {
           '<div class="tform-field"><label class="tform-label">Data</label><input class="tform-input" type="date" id="tDate" value="'+esc((t.due_date||'').split('T')[0])+'"'+dis+'></div>'+
           '<div class="tform-field"><label class="tform-label">Responsável</label><select class="tform-input" id="tAssignee"'+dis+'>'+userOpts+'</select></div>'+
         '</div>'+
+        // v168: Loja (setor lojas + admin/gestor) — pra rotinas atreladas a unidades
+        (ST.sector==='lojas' && canMng ? (function(){
+          var lojaOpts='<option value="">— Sem loja específica —</option>';
+          (ST.storeUnits||[]).forEach(function(su){
+            lojaOpts += '<option value="'+esc(su.id)+'"'+(String(t.store_unit_id||'')===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+(su.store_number||'')))+'</option>';
+          });
+          return '<div class="tform-field"><label class="tform-label">Loja <span class="tform-opt">(opcional)</span></label><select class="tform-input" id="tLoja"'+dis+'>'+lojaOpts+'</select></div>';
+        })() : '')+
         '<div class="tform-field"><label class="tform-label">Tipo</label><div class="pills tform-pills tform-pills-lg'+(ro?' pills-ro':'')+'" id="tType">'+ttPills+'</div></div>'+
         '<div class="tform-field tform-field-hidden" id="tEquipeRow"><label class="tform-label">Equipe</label><select class="tform-input" id="tEquipe"'+dis+'>'+eqOpts+'</select></div>'+
       '</div>'+
@@ -13162,7 +13510,7 @@ function openTaskModal(task, preset) {
     }
     var title=(modal.querySelector('#tTitle').value||'').trim();
     if (!title) { toast('Informe o título da tarefa','error'); return; }
-    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), task_kind:kdPick, task_type:ttPick, assignee_id:modal.querySelector('#tAssignee').value||null, equipe_id:(modal.querySelector('#tEquipe')?(modal.querySelector('#tEquipe').value||null):null), project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:ST.store?ST.store.id:scopeStore() };
+    var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), task_kind:kdPick, task_type:ttPick, assignee_id:modal.querySelector('#tAssignee').value||null, equipe_id:(modal.querySelector('#tEquipe')?(modal.querySelector('#tEquipe').value||null):null), project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:(modal.querySelector('#tLoja')?(modal.querySelector('#tLoja').value||null):(ST.store?ST.store.id:scopeStore())) };
     // v118: normalizar e validar tipo
     if (typeof normalizarTarefaAoTipo==='function') payload = normalizarTarefaAoTipo(payload);
     if (typeof validarTipoTarefa==='function'){
@@ -23019,6 +23367,301 @@ function openInvestimentoAdsModal(){
   }
 }
 
+/* ============================================================
+   v169 · KPIs Tarefas — Relatório completo do sistema de tarefas
+   ============================================================ */
+
+/* Estado local do filtro de período */
+function kpiTarefasFiltro(){
+  if (!ST.kpiTarefas) ST.kpiTarefas = { periodo:'30d' };
+  return ST.kpiTarefas;
+}
+
+var KPI_TAREFAS_PERIODOS = [
+  { key:'hoje', label:'Hoje' },
+  { key:'7d',   label:'7 dias' },
+  { key:'30d',  label:'30 dias' },
+  { key:'mes',  label:'Este mês' }
+];
+
+/* Resolve intervalo do período. */
+function kpiTarefasIntervalo(){
+  var f = kpiTarefasFiltro();
+  var hoje = new Date(); hoje.setHours(0,0,0,0);
+  var fim = new Date(hoje); fim.setHours(23,59,59,999);
+  var ini;
+  switch(f.periodo){
+    case 'hoje': ini = new Date(hoje); break;
+    case '7d':   ini = new Date(hoje); ini.setDate(ini.getDate()-6); break;
+    case 'mes':
+      ini = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+      fim = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0, 23,59,59,999);
+      break;
+    case '30d':
+    default:     ini = new Date(hoje); ini.setDate(ini.getDate()-29); break;
+  }
+  return { ini:ini, fim:fim, label:(KPI_TAREFAS_PERIODOS.filter(function(p){return p.key===f.periodo;})[0]||{}).label };
+}
+
+/* Tarefas do setor atual — não regras (is_rule=false), só ocorrências. */
+function kpiTarefasDoSetor(){
+  return (ST.tasks||[]).filter(function(t){
+    if (t.sector && t.sector !== ST.sector) return false;
+    return !t.is_rule;  // só ocorrências, não as regras
+  });
+}
+
+/* Regras (rotinas) do setor. */
+function kpiRotinasDoSetor(){
+  return (ST.tasks||[]).filter(function(t){
+    if (t.sector && t.sector !== ST.sector) return false;
+    return !!t.is_rule;
+  });
+}
+
+/* Atrasada = due_date < hoje && não feita */
+function kpiTarefaAtrasada(t){
+  if (!t || t.status==='feito') return false;
+  var due = (t.due_date||'').slice(0,10);
+  if (!due) return false;
+  return due < today();
+}
+
+/* Concluída no período — usa updated_at ou due_date */
+function kpiTarefaConcluidaNoPeriodo(t, ini, fim){
+  if (t.status !== 'feito') return false;
+  var d = t.updated_at || t.due_date;
+  if (!d) return false;
+  var dt = new Date(String(d).slice(0,10)+'T12:00:00');
+  return dt >= ini && dt <= fim;
+}
+
+/* Métricas globais consolidadas do sistema */
+function kpiGlobal(){
+  var intv = kpiTarefasIntervalo();
+  var tarefas = kpiTarefasDoSetor();
+  var rotinas = kpiRotinasDoSetor();
+  var ativas = tarefas.filter(function(t){ return t.status !== 'feito'; }).length;
+  var concluidas = tarefas.filter(function(t){ return kpiTarefaConcluidaNoPeriodo(t, intv.ini, intv.fim); }).length;
+  var atrasadas = tarefas.filter(kpiTarefaAtrasada).length;
+  var totalPeriodo = tarefas.filter(function(t){
+    if (kpiTarefaConcluidaNoPeriodo(t, intv.ini, intv.fim)) return true;
+    var due = (t.due_date||'').slice(0,10);
+    if (!due) return false;
+    var dt = new Date(due+'T12:00:00');
+    return dt >= intv.ini && dt <= intv.fim;
+  }).length;
+  var taxa = totalPeriodo > 0 ? Math.round(concluidas / totalPeriodo * 100) : 0;
+
+  // Distribuição por status
+  var porStatus = { todo:0, fazendo:0, feito:0 };
+  tarefas.forEach(function(t){ if (porStatus[t.status]!==undefined) porStatus[t.status]++; });
+
+  // Distribuição por tipo de rotina
+  var porTipo = { diaria:0, semanal:0, mensal:0, unica:0 };
+  rotinas.forEach(function(r){
+    if (r.recurrence==='diaria') porTipo.diaria++;
+    else if (r.recurrence==='semanal') porTipo.semanal++;
+    else if (r.recurrence==='mensal') porTipo.mensal++;
+  });
+  porTipo.unica = tarefas.filter(function(t){ return !t.recur_group; }).length;
+
+  return {
+    ativas:ativas, concluidas:concluidas, atrasadas:atrasadas,
+    totalPeriodo:totalPeriodo, taxa:taxa,
+    porStatus:porStatus, porTipo:porTipo,
+    totalTarefas:tarefas.length, totalRotinas:rotinas.length,
+    intv:intv
+  };
+}
+
+/* Ranking por pessoa */
+function kpiRankingPessoas(){
+  var intv = kpiTarefasIntervalo();
+  var tarefas = kpiTarefasDoSetor();
+  var rotinas = kpiRotinasDoSetor();
+  var pessoas = (ST.users||[]).filter(function(u){ return u.sector === ST.sector || !u.sector; });
+
+  var linhas = pessoas.map(function(u){
+    var minhas = tarefas.filter(function(t){ return String(t.assignee_id||'') === String(u.id); });
+    var minhasRotinas = rotinas.filter(function(r){ return String(r.assignee_id||'') === String(u.id); });
+    var concluidas = minhas.filter(function(t){ return kpiTarefaConcluidaNoPeriodo(t, intv.ini, intv.fim); }).length;
+    var atrasadas = minhas.filter(kpiTarefaAtrasada).length;
+    var ativas = minhas.filter(function(t){ return t.status !== 'feito'; }).length;
+    var noPeriodo = minhas.filter(function(t){
+      if (kpiTarefaConcluidaNoPeriodo(t, intv.ini, intv.fim)) return true;
+      var due = (t.due_date||'').slice(0,10);
+      if (!due) return false;
+      var dt = new Date(due+'T12:00:00');
+      return dt >= intv.ini && dt <= intv.fim;
+    }).length;
+    var taxa = noPeriodo > 0 ? Math.round(concluidas / noPeriodo * 100) : 0;
+    return {
+      id:u.id, nome:u.name, cor:u.color||'#3B6FF7',
+      totalAtribuidas:minhas.length,
+      rotinas:minhasRotinas.length,
+      ativas:ativas,
+      concluidas:concluidas,
+      atrasadas:atrasadas,
+      noPeriodo:noPeriodo,
+      taxa:taxa
+    };
+  });
+
+  // Ordenar: quem tem mais atividade primeiro (concluídas + ativas), atrasadas primeiro em empate
+  linhas.sort(function(a,b){
+    var totA = a.concluidas + a.ativas, totB = b.concluidas + b.ativas;
+    if (totB !== totA) return totB - totA;
+    return b.atrasadas - a.atrasadas;
+  });
+
+  return linhas;
+}
+
+/* Cor da taxa de conclusão */
+function kpiTaxaCor(taxa){
+  if (taxa >= 80) return '#16A34A';   // verde
+  if (taxa >= 50) return '#F59E0B';   // âmbar
+  return '#EF4444';                    // vermelho
+}
+
+/* Painel principal */
+function kpiTarefasHTML(){
+  if (!isAdmin(ST.session)) return emptyState({ icon:'gear', title:'Acesso restrito', text:'KPIs de Tarefas é exclusivo de administradores do setor.' });
+  var g = kpiGlobal();
+  var ranking = kpiRankingPessoas();
+  var f = kpiTarefasFiltro();
+
+  var toggle = '<div class="kpit-toggle">'+KPI_TAREFAS_PERIODOS.map(function(p){
+    return '<button class="kpit-tg'+(f.periodo===p.key?' on':'')+'" data-kpiper="'+esc(p.key)+'">'+esc(p.label)+'</button>';
+  }).join('')+'</div>';
+
+  var csvBtn = '<button class="btn btn-ghost kpit-csv" id="kpitCsv">'+icon('folder')+'<span>Exportar CSV</span></button>';
+
+  var head = '<div class="kpit-head">'+
+    '<div><h2>KPIs de Tarefas</h2><div class="sub">Visão consolidada · '+esc(g.intv.label||'período')+'</div></div>'+
+    toggle+csvBtn+
+  '</div>';
+
+  // Cards resumo
+  var cards = '<div class="kpit-cards">'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Ativas no sistema</span><b class="cmp-val">'+g.ativas+'</b><i class="cmp-sub">'+g.totalTarefas+' tarefas totais</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Concluídas</span><b class="cmp-val" style="color:#16A34A">'+g.concluidas+'</b><i class="cmp-sub">no período</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Atrasadas</span><b class="cmp-val" style="color:'+(g.atrasadas>0?'#EF4444':'var(--u-text)')+'">'+g.atrasadas+'</b><i class="cmp-sub">'+(g.atrasadas>0?'precisa atenção':'em dia')+'</i></div>'+
+    '<div class="crm-met-card"><span class="cmp-lbl">Taxa de conclusão</span><b class="cmp-val" style="color:'+kpiTaxaCor(g.taxa)+'">'+g.taxa+'%</b><i class="cmp-sub">'+g.concluidas+' / '+g.totalPeriodo+'</i></div>'+
+  '</div>';
+
+  // Distribuição por status — barras horizontais
+  var totalSt = g.porStatus.todo + g.porStatus.fazendo + g.porStatus.feito;
+  function pctSt(n){ return totalSt>0 ? (n/totalSt*100).toFixed(1) : 0; }
+  var distStatus = '<div class="kpit-dist">'+
+    '<h4>Distribuição por status</h4>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">A fazer</span><div class="kpit-bar"><span style="width:'+pctSt(g.porStatus.todo)+'%;background:#9aa1ad"></span></div><b>'+g.porStatus.todo+'</b></div>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">Em andamento</span><div class="kpit-bar"><span style="width:'+pctSt(g.porStatus.fazendo)+'%;background:#3B6FF7"></span></div><b>'+g.porStatus.fazendo+'</b></div>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">Concluídas</span><div class="kpit-bar"><span style="width:'+pctSt(g.porStatus.feito)+'%;background:#16A34A"></span></div><b>'+g.porStatus.feito+'</b></div>'+
+  '</div>';
+
+  // Distribuição por tipo de rotina
+  var totalTp = g.porTipo.diaria + g.porTipo.semanal + g.porTipo.mensal;
+  function pctTp(n){ return totalTp>0 ? (n/totalTp*100).toFixed(1) : 0; }
+  var distTipo = '<div class="kpit-dist">'+
+    '<h4>Rotinas ativas por tipo</h4>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">Diárias</span><div class="kpit-bar"><span style="width:'+pctTp(g.porTipo.diaria)+'%;background:#3B6FF7"></span></div><b>'+g.porTipo.diaria+'</b></div>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">Semanais</span><div class="kpit-bar"><span style="width:'+pctTp(g.porTipo.semanal)+'%;background:#8B5CF6"></span></div><b>'+g.porTipo.semanal+'</b></div>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">Mensais</span><div class="kpit-bar"><span style="width:'+pctTp(g.porTipo.mensal)+'%;background:#EC4899"></span></div><b>'+g.porTipo.mensal+'</b></div>'+
+    '<div class="kpit-bar-row"><span class="kpit-bl">Únicas</span><div class="kpit-bar"><span style="width:'+((g.porTipo.unica/Math.max(1,g.totalTarefas))*100).toFixed(1)+'%;background:#F59E0B"></span></div><b>'+g.porTipo.unica+'</b></div>'+
+  '</div>';
+
+  // Ranking por pessoa — tabela
+  var linhasRk;
+  if (!ranking.length){
+    linhasRk = '<div class="dash-empty">Nenhum colaborador no setor.</div>';
+  } else {
+    linhasRk = ranking.map(function(r, i){
+      var pos = '<span class="kpit-pos">'+(i+1)+'</span>';
+      var barTaxaPct = Math.max(0, Math.min(100, r.taxa));
+      var barCor = kpiTaxaCor(r.taxa);
+      var atrTag = r.atrasadas > 0 ? '<span class="kpit-atr">'+r.atrasadas+' atrasada'+(r.atrasadas>1?'s':'')+'</span>' : '';
+      return '<div class="kpit-row">'+
+        pos+
+        '<span class="ar-av" style="background:'+r.cor+'">'+esc(iniciais(r.nome))+'</span>'+
+        '<div class="kpit-nome"><b>'+esc(r.nome)+'</b>'+(r.rotinas>0?'<i>'+r.rotinas+' rotina'+(r.rotinas>1?'s':'')+'</i>':'')+'</div>'+
+        '<span class="kpit-num">'+r.totalAtribuidas+'</span>'+
+        '<span class="kpit-num" style="color:#3B6FF7">'+r.ativas+'</span>'+
+        '<span class="kpit-num" style="color:#16A34A">'+r.concluidas+'</span>'+
+        '<div class="kpit-taxa">'+
+          '<div class="kpit-taxa-bar"><span style="width:'+barTaxaPct+'%;background:'+barCor+'"></span></div>'+
+          '<b style="color:'+barCor+'">'+r.taxa+'%</b>'+
+        '</div>'+
+        atrTag+
+      '</div>';
+    }).join('');
+  }
+  var ranking_head = '<div class="kpit-rk-head">'+
+    '<span></span><span></span>'+
+    '<span class="kpit-hl">Pessoa</span>'+
+    '<span class="kpit-hn">Total</span>'+
+    '<span class="kpit-hn">Ativas</span>'+
+    '<span class="kpit-hn">Concluídas</span>'+
+    '<span class="kpit-htx">Taxa</span>'+
+    '<span></span>'+
+  '</div>';
+  var rankingBloco = '<div class="kpit-ranking">'+
+    '<h4>Ranking por colaborador — período: '+esc(g.intv.label||'')+'</h4>'+
+    ranking_head+linhasRk+
+  '</div>';
+
+  return '<div class="kpit-panel">'+head+cards+
+    '<div class="kpit-2col">'+distStatus+distTipo+'</div>'+
+    rankingBloco+
+  '</div>';
+}
+
+function bindKpiTarefas(){
+  if (!isAdmin(ST.session)) return;
+  var tgs = app.querySelectorAll('[data-kpiper]');
+  for (var i=0; i<tgs.length; i++){
+    tgs[i].addEventListener('click', function(){
+      kpiTarefasFiltro().periodo = this.getAttribute('data-kpiper');
+      renderPage();
+    });
+  }
+  var csv = document.getElementById('kpitCsv');
+  if (csv) csv.addEventListener('click', function(){ exportarKpiTarefasCSV(); });
+}
+
+/* CSV do ranking por pessoa */
+function csvKpiTarefas(){
+  var ranking = kpiRankingPessoas();
+  var g = kpiGlobal();
+  var linhas = [];
+  linhas.push(['Posição','Nome','Total atribuídas','Rotinas','Ativas','Concluídas ('+esc(g.intv.label||'')+')','Atrasadas','Taxa de conclusão (%)'].map(csvCell).join(';'));
+  ranking.forEach(function(r, i){
+    linhas.push([
+      i+1, r.nome, r.totalAtribuidas, r.rotinas, r.ativas, r.concluidas, r.atrasadas, r.taxa
+    ].map(csvCell).join(';'));
+  });
+  // Totais
+  var tot = { atrib:0, rot:0, at:0, cn:0, atr:0 };
+  ranking.forEach(function(r){
+    tot.atrib+=r.totalAtribuidas; tot.rot+=r.rotinas; tot.at+=r.ativas;
+    tot.cn+=r.concluidas; tot.atr+=r.atrasadas;
+  });
+  linhas.push(['','TOTAL', tot.atrib, tot.rot, tot.at, tot.cn, tot.atr, g.taxa].map(csvCell).join(';'));
+  return linhas.join('\n');
+}
+
+function exportarKpiTarefasCSV(){
+  var conteudo = csvKpiTarefas();
+  var hoje = new Date();
+  var dtStr = hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
+  var f = kpiTarefasFiltro();
+  var nome = 'kpis-tarefas-'+ST.sector+'-'+f.periodo+'-'+dtStr+'.csv';
+  if (downloadCSV(nome, conteudo)){
+    if (typeof toast==='function') toast('CSV exportado: '+nome, 'success');
+  }
+}
+
 function csvClientes(lista){
   var linhas = [];
   linhas.push([
@@ -24589,7 +25232,7 @@ var ADM_PG_PESSOAS = 24;  // colaboradores por página
 var ADM_PG_REGRAS  = 25;  // regras por grupo antes do "carregar mais"
 
 function admNav(){
-  if(!ST.admNav) ST.admNav={ setor:ST.sector, pessoa:null, qP:'', qR:'', limP:ADM_PG_PESSOAS, limG:{}, freq:'', sit:'' };
+  if(!ST.admNav) ST.admNav={ setor:ST.sector, modo:'pessoa', pessoa:null, loja:null, qP:'', qR:'', limP:ADM_PG_PESSOAS, limG:{}, freq:'', sit:'' };
   return ST.admNav;
 }
 function admEhUnica(t){ return !t.is_rule && !t.recur_group; }
@@ -24738,10 +25381,81 @@ function admGrupoHTML(id, titulo, arr){
   var mais = arr.length>lim ? '<button class="adm-more" data-admmore="'+id+'">Carregar mais ('+(arr.length-lim)+' restantes)</button>' : '';
   return '<div class="adm-group" data-admg="'+id+'">'+head+'<div class="adm-list">'+arr.slice(0,lim).map(admLinhaRegraHTML).join('')+mais+'</div></div>';
 }
+function admNivelLojasHTML(regs){
+  // v168: nível 1 no modo LOJA — cards de storeUnits
+  var n=admNav(), q=(n.qP||'').toLowerCase().trim();
+  var lojas = (ST.storeUnits||[]).slice();
+  if (q) lojas = lojas.filter(function(l){ return (l.name||'').toLowerCase().indexOf(q)!==-1; });
+  lojas.sort(function(a,b){ return String(a.name||'').localeCompare(String(b.name||'')); });
+  if (!lojas.length) return emptyState({ icon:'grid', title:'Nenhuma loja cadastrada', text:'Cadastre lojas em Configurações → Lojas.' });
+  // Contagem de rotinas por loja
+  var mapa = {};
+  regs.forEach(function(r){
+    var sid = String(r.store_unit_id||'');
+    if (!sid) return;
+    if (!mapa[sid]) mapa[sid] = { d:0, s:0, m:0, u:0, pausadas:0, total:0 };
+    mapa[sid].total++;
+    if (!r.is_rule) mapa[sid].u++;
+    else if (r.recurrence==='diaria') mapa[sid].d++;
+    else if (r.recurrence==='semanal') mapa[sid].s++;
+    else if (r.recurrence==='mensal') mapa[sid].m++;
+    if (r.rec_paused) mapa[sid].pausadas++;
+  });
+  var lim = Math.min(n.limP, lojas.length);
+  var linhas = lojas.slice(0,lim).map(function(l){
+    var c = mapa[String(l.id)] || { d:0, s:0, m:0, u:0, pausadas:0, total:0 };
+    var chips='';
+    if (c.d) chips += '<span class="pp-chip rot">'+c.d+' diária'+(c.d>1?'s':'')+'</span>';
+    if (c.s) chips += '<span class="pp-chip rot">'+c.s+(c.s>1?' semanais':' semanal')+'</span>';
+    if (c.m) chips += '<span class="pp-chip rot">'+c.m+(c.m>1?' mensais':' mensal')+'</span>';
+    if (c.u) chips += '<span class="pp-chip">'+c.u+' única'+(c.u>1?'s':'')+'</span>';
+    if (c.pausadas) chips += '<span class="pp-chip pause">'+c.pausadas+' pausada'+(c.pausadas>1?'s':'')+'</span>';
+    if (!c.total) chips = '<span class="pp-chip free">sem rotinas</span>';
+    var iniLoja = (l.name||'?').substring(0,2).toUpperCase();
+    return '<button class="pp-card" data-admloja="'+esc(l.id)+'">'+
+      '<span class="ar-av" style="background:#F59E0B">'+esc(iniLoja)+'</span>'+
+      '<span class="pp-mid"><span class="pp-n">'+esc(l.name||'Loja')+'</span><span class="pp-chips">'+chips+'</span></span>'+
+      '<span class="pp-go">'+icon('cal')+'</span>'+
+    '</button>';
+  }).join('');
+  var mais = lojas.length>lim ? '<button class="adm-more" id="admMaisP">Carregar mais lojas ('+(lojas.length-lim)+' restantes)</button>' : '';
+  return '<div class="pp-list">'+linhas+'</div>'+mais;
+}
+
+function admTarefasNovaRotinaPreset(){
+  // v168: monta preset pro botão "+ Nova rotina" com contexto atual
+  var n = admNav();
+  var preset = { recurrence:'diaria' };  // sugere diária como padrão (é a Central de Rotinas)
+  if (n.pessoa && n.pessoa !== '_sem') preset.assignee = n.pessoa;
+  if (n.loja) preset.store = n.loja;
+  return preset;
+}
+
 function admNivelCategoriasHTML(regs){
   var n=admNav();
   var pid=n.pessoa;
-  var minhas=admFiltraRegras(regs.filter(function(r){ return pid==='_sem' ? !r.assignee_id : String(r.assignee_id)===String(pid); }));
+  var lid=n.loja;
+  // v168: filtra por pessoa OU loja dependendo do modo
+  var minhas = admFiltraRegras(regs.filter(function(r){
+    if (lid){
+      // modo loja: só as que têm store_unit_id = lid
+      return String(r.store_unit_id||'') === String(lid);
+    }
+    return pid==='_sem' ? !r.assignee_id : String(r.assignee_id)===String(pid);
+  }));
+  // v168: empty state amigável se não tem NADA
+  if (!minhas.length){
+    var qNome = lid
+      ? (function(){ for (var i=0;i<(ST.storeUnits||[]).length;i++) if (String(ST.storeUnits[i].id)===String(lid)) return ST.storeUnits[i].name; return 'esta loja'; })()
+      : (pid==='_sem' ? 'os sem responsável' : (function(){ var u=userById(pid); return u?u.name:'este colaborador'; })());
+    var contexto = lid ? 'esta loja' : (pid==='_sem' ? 'colaboradores sem responsável' : qNome.split(' ')[0]);
+    return '<div class="adm-empty-rot">'+
+      '<div class="aer-ic">'+icon('cal')+'</div>'+
+      '<h4>Nenhuma rotina cadastrada'+(lid?' pra '+esc(qNome):'')+'</h4>'+
+      '<p>Clique em <b>+ Nova rotina</b> pra cadastrar a primeira rotina de '+esc(contexto)+'.<br><i>Rotinas são tarefas que se repetem — diárias, semanais ou mensais.</i></p>'+
+      '<button class="btn btn-primary" id="admEmptyNova">'+icon('plus')+'Nova rotina</button>'+
+    '</div>';
+  }
   var R={ diaria:[], semanal:[], mensal:[], unica:[] };
   minhas.forEach(function(r){ if(!r.is_rule) R.unica.push(r); else if(R[r.recurrence]) R[r.recurrence].push(r); });
   var ord=function(a,b){ return String(a.title||'').localeCompare(String(b.title||'')); };
@@ -24766,9 +25480,20 @@ function admTarefasHTML(){
     : '<span class="bc-fixo">'+esc((SECTORS[n.setor]||{}).label||n.setor)+'</span>';
 
   var pessoa = n.pessoa ? (n.pessoa==='_sem' ? {name:'Sem responsável'} : userById(n.pessoa)) : null;
+  // v168: também trata loja
+  var loja = n.loja ? (function(){ for (var i=0;i<(ST.storeUnits||[]).length;i++) if (String(ST.storeUnits[i].id)===String(n.loja)) return ST.storeUnits[i]; return null; })() : null;
+  var atual = pessoa || loja;
+  var voltarLbl = loja ? 'Lojas' : 'Colaboradores';
   var trilha='<div class="adm-bc">'+icon('grid')+selSetor+
-    (pessoa?('<span class="bc-sep">›</span><button class="bc-link" id="bcVoltar">Colaboradores</button><span class="bc-sep">›</span><b>'+esc(pessoa.name||'')+'</b>'):'')+
+    (atual?('<span class="bc-sep">›</span><button class="bc-link" id="bcVoltar">'+voltarLbl+'</button><span class="bc-sep">›</span><b>'+esc((atual.name||''))+'</b>'):'')+
   '</div>';
+  // v168: toggle Por pessoa | Por loja (só no nível 1 e só se tem lojas)
+  var modoToggle = (!atual && ST.sector==='lojas' && (ST.storeUnits||[]).length > 0) ? (
+    '<div class="adm-modo-toggle">'+
+      '<button class="amt-tg'+(n.modo!=='loja'?' on':'')+'" data-admmodo="pessoa">'+icon('users')+'Por colaborador</button>'+
+      '<button class="amt-tg'+(n.modo==='loja'?' on':'')+'" data-admmodo="loja">'+icon('grid')+'Por loja</button>'+
+    '</div>'
+  ) : '';
 
   var filtros='<div class="adm-bar2">'+
     (pessoa
@@ -24779,11 +25504,22 @@ function admTarefasHTML(){
     '<button class="btn btn-primary btn-sm" id="admNovaRotina">'+icon('plus')+'Nova rotina</button>'+
   '</div>';
 
-  var corpo = pessoa ? admNivelCategoriasHTML(regs) : admNivelPessoasHTML(admFiltraRegras(regs));
-  var sub = pessoa ? 'Rotinas de '+esc((pessoa.name||'').split(' ')[0])+' — as ocorrências do dia a dia ficam no Kanban e no Calendário.'
-                   : 'Escolha um colaborador para ver e configurar as rotinas dele.';
+  // v168: escolhe entre pessoa/loja
+  var corpo;
+  if (atual){
+    corpo = admNivelCategoriasHTML(regs);
+  } else if (n.modo === 'loja' && ST.sector === 'lojas'){
+    corpo = admNivelLojasHTML(admFiltraRegras(regs));
+  } else {
+    corpo = admNivelPessoasHTML(admFiltraRegras(regs));
+  }
+  var sub;
+  if (pessoa) sub = 'Rotinas de '+esc((pessoa.name||'').split(' ')[0])+' — as ocorrências do dia a dia ficam no Kanban e no Calendário.';
+  else if (loja) sub = 'Rotinas da loja '+esc(loja.name||'')+' — tarefas que se repetem nesta unidade.';
+  else if (n.modo === 'loja') sub = 'Escolha uma loja para ver e configurar as rotinas dela.';
+  else sub = 'Escolha um colaborador para ver e configurar as rotinas dele.';
   return '<div class="tasks-head"><div><h2>Central de Rotinas</h2><div class="sub">'+sub+'</div></div></div>'+
-    trilha + filtros + corpo;
+    trilha + modoToggle + filtros + corpo;
 }
 
 function bindAdmTarefas(){
@@ -24791,9 +25527,9 @@ function bindAdmTarefas(){
   var n=admNav();
   function upd(){ renderPage(); }
   var ss=document.getElementById('admSetor');
-  if(ss) ss.addEventListener('change', function(){ n.setor=this.value; n.pessoa=null; n.limP=ADM_PG_PESSOAS; ST.admSel={}; upd(); });
+  if(ss) ss.addEventListener('change', function(){ n.setor=this.value; n.pessoa=null; n.loja=null; n.limP=ADM_PG_PESSOAS; ST.admSel={}; upd(); });
   var bv=document.getElementById('bcVoltar');
-  if(bv) bv.addEventListener('click', function(){ n.pessoa=null; n.qR=''; ST.admSel={}; upd(); });
+  if(bv) bv.addEventListener('click', function(){ n.pessoa=null; n.loja=null; n.qR=''; ST.admSel={}; upd(); });
   var pcs=app.querySelectorAll('[data-admpessoa]');
   for(var i=0;i<pcs.length;i++) pcs[i].addEventListener('click', function(){ n.pessoa=this.getAttribute('data-admpessoa'); ST.admClosed={}; n.limG={}; ST.admSel={}; upd(); });
   var mp=document.getElementById('admMaisP');
@@ -24806,7 +25542,24 @@ function bindAdmTarefas(){
   var sf=document.getElementById('admFreq'); if(sf) sf.addEventListener('change', function(){ n.freq=this.value; upd(); });
   var si=document.getElementById('admSit');  if(si) si.addEventListener('change', function(){ n.sit=this.value; upd(); });
   var nv=document.getElementById('admNovaRotina');
-  if(nv) nv.addEventListener('click', function(){ openTaskModal(null); });
+  if(nv) nv.addEventListener('click', function(){ openTaskModal(null, admTarefasNovaRotinaPreset()); });
+  // v168: botão do empty state faz o mesmo
+  var nvE=document.getElementById('admEmptyNova');
+  if(nvE) nvE.addEventListener('click', function(){ openTaskModal(null, admTarefasNovaRotinaPreset()); });
+  // v168: toggle Por pessoa | Por loja
+  var mts=app.querySelectorAll('[data-admmodo]');
+  for(var mm=0;mm<mts.length;mm++) mts[mm].addEventListener('click', function(){
+    n.modo=this.getAttribute('data-admmodo');
+    n.pessoa=null; n.loja=null; n.limP=ADM_PG_PESSOAS; ST.admSel={};
+    upd();
+  });
+  // v168: cards de loja
+  var lcs=app.querySelectorAll('[data-admloja]');
+  for(var lc=0;lc<lcs.length;lc++) lcs[lc].addEventListener('click', function(){
+    n.loja=this.getAttribute('data-admloja'); n.pessoa=null;
+    ST.admClosed={}; n.limG={}; ST.admSel={};
+    upd();
+  });
   var tg=app.querySelectorAll('[data-admtoggle]');
   for(var j=0;j<tg.length;j++) tg[j].addEventListener('click', function(){
     var id=this.getAttribute('data-admtoggle'); if(!ST.admClosed) ST.admClosed={};
@@ -25329,6 +26082,7 @@ function gestaoTabsForSector(){
   var s=ST.sector, T=[];
   function add(id,label,ic){ T.push({id:id,label:label,icon:ic}); }
   if(isAdmin(ST.session)) add('tarefas','Rotinas da equipe','tasks'); // v79: central de administração de tarefas
+  if(isAdmin(ST.session)) add('kpis','KPIs Tarefas','trend'); // v169: relatório de KPIs de tarefas
   if(s==='lojas'){ add('visao','Visão geral','dashboard'); add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('comissoes','Comissões','dollar'); add('avaliacoes','Avaliações','target'); add('solicitacoes','Solicitações','bell'); add('atividade','Atividade','search'); }
   else if(s==='marketing'){ add('metas','Metas','target'); add('relatorio','Relatório','trend'); add('orcamento','Orçamento','dollar'); add('atividade','Atividade','search'); }
   else if(s==='vendas'){ add('metas','Metas','target'); add('ranking','Ranking','trend'); add('atividade','Atividade','search'); }
@@ -25349,6 +26103,7 @@ function gestaoHTML() {
   }).join('')+'</div>';
   var body;
   if (tab==='tarefas') body=admTarefasHTML();
+  else if (tab==='kpis') body=kpiTarefasHTML();
   else if (tab==='metas') body=metasHTML();
   else if (tab==='relatorio') body=(ST.sector==='lojas'?relatorioLojasHTML():relatorioHTML());
   else if (tab==='ranking') body=rankingHTML();
@@ -25927,6 +26682,7 @@ function bindGestao() {
   // v74: liga os eventos da tela aninhada na aba ativa
   var gt=ST.gestaoTab||'';
   if (gt==='tarefas'){ bindAdmTarefas(); }
+  else if (gt==='kpis'){ bindKpiTarefas(); }
   else if (gt==='metas'){ if(typeof bindMetas==='function') bindMetas(); }
   else if (gt==='relatorio'){ if(ST.sector==='lojas'){ if(typeof bindRelatorioLojas==='function') bindRelatorioLojas(); } else { if(typeof bindRelatorio==='function') bindRelatorio(); } }
   else if (gt==='orcamento'){ if(typeof bindOrcamento==='function') bindOrcamento(); }
