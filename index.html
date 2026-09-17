@@ -9781,6 +9781,50 @@ html.dark .kpit-atr { background: rgba(239,68,68,.15); }
 html.dark .kpp-item-atr { background: rgba(239,68,68,.08); }
 html.dark .kpp-atr-tag { background: rgba(239,68,68,.15); }
 
+
+/* ============================================================
+   v171 · Melhorias no modal — dedup + pontualidade + CSV
+   ============================================================ */
+
+/* Contador Nx nas concluídas agrupadas */
+.kpp-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(22,163,74,.12);
+  color: #16A34A;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  margin-left: 4px;
+}
+
+/* Botão CSV no header do modal */
+.kpp-csv {
+  padding: 6px 8px;
+  color: var(--u-text3);
+  background: transparent;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  flex-shrink: 0;
+}
+.kpp-csv:hover {
+  color: var(--u-accent);
+  border-color: var(--u-accent);
+}
+.kpp-csv .lc-ic { width: 14px; height: 14px; }
+
+/* Summary: agora tem 4 cards em vez de 3 */
+.kpp-summary {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Dark */
+html.dark .kpp-count { background: rgba(22,163,74,.2); }
+
 </style>
 </head>
 <body>
@@ -9804,7 +9848,7 @@ html.dark .kpp-atr-tag { background: rgba(239,68,68,.15); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v170';
+var APP_BUILD = 'v171';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -23852,7 +23896,88 @@ function bindKpiTarefas(){
   }
 }
 
-/* v170: Modal com detalhes de tarefas de uma pessoa (concluídas + atrasadas) */
+/* v170/v171: Modal com detalhes de tarefas de uma pessoa
+   v171: deduplica concluídas por rotina; atrasadas mostram cada instância com data de vencimento;
+         KPIs de pontualidade + tempo médio de atraso; export CSV */
+
+/* Agrupa concluídas por rotina (recur_group). Tarefas únicas viram grupo próprio. */
+function kpiAgrupaConcluidas(tarefas){
+  var grupos = {}; // chave -> { titulo, count, ultima, priority, area, isRotina, tarefas:[] }
+  tarefas.forEach(function(t){
+    var chave = t.recur_group ? ('g:'+t.recur_group) : ('u:'+t.id);
+    if (!grupos[chave]){
+      grupos[chave] = {
+        titulo: t.title || 'Sem título',
+        count: 0,
+        ultima: null,
+        priority: t.priority || 'media',
+        area: t.area || '',
+        isRotina: !!t.recur_group,
+        tarefas: []
+      };
+    }
+    var g = grupos[chave];
+    g.count++;
+    g.tarefas.push(t);
+    var d = t.updated_at || t.due_date;
+    if (d){
+      if (!g.ultima || d > g.ultima) g.ultima = d;
+    }
+  });
+  // Ordena por: mais concluídas primeiro (produtividade), desempate por última data desc
+  var arr = Object.keys(grupos).map(function(k){ return grupos[k]; });
+  arr.sort(function(a,b){
+    if (b.count !== a.count) return b.count - a.count;
+    return (b.ultima||'').localeCompare(a.ultima||'');
+  });
+  return arr;
+}
+
+/* Pontualidade: % de concluídas fechadas até o due_date */
+function kpiPontualidade(concluidas){
+  if (!concluidas.length) return null;
+  var noPrazo = 0, base = 0;
+  concluidas.forEach(function(t){
+    var due = (t.due_date||'').slice(0,10);
+    if (!due) return;  // sem due não dá pra aferir — não conta
+    base++;
+    var upd = (t.updated_at||'').slice(0,10);
+    if (!upd || upd <= due) noPrazo++;
+  });
+  if (base === 0) return null;  // nenhuma tinha due_date
+  return Math.round(noPrazo / base * 100);
+}
+
+/* Tempo médio de atraso (só das atrasadas): dias */
+function kpiTempoMedioAtraso(atrasadas){
+  if (!atrasadas.length) return 0;
+  var hj = new Date();
+  var total = 0;
+  atrasadas.forEach(function(t){
+    var due = (t.due_date||'').slice(0,10);
+    if (!due) return;
+    var dias = Math.floor((hj - new Date(due+'T12:00:00'))/(24*60*60*1000));
+    if (dias > 0) total += dias;
+  });
+  return Math.round(total / atrasadas.length);
+}
+
+/* CSV das tarefas de uma pessoa */
+function csvKpiPessoa(u, concluidas, atrasadas){
+  var linhas = [];
+  linhas.push(['Tipo','Título','Área','Prioridade','Data','Rotina?'].map(csvCell).join(';'));
+  concluidas.forEach(function(t){
+    var d = t.updated_at || t.due_date || '';
+    linhas.push(['Concluída', t.title||'', t.area||'', (PRIO[t.priority]||{}).label||'', d.slice(0,10), t.recur_group?'Sim':''].map(csvCell).join(';'));
+  });
+  atrasadas.forEach(function(t){
+    var due = (t.due_date||'').slice(0,10);
+    var dias = due ? Math.floor((new Date() - new Date(due+'T12:00:00'))/(24*60*60*1000)) : '';
+    linhas.push(['Atrasada '+dias+'d', t.title||'', t.area||'', (PRIO[t.priority]||{}).label||'', due, t.recur_group?'Sim':''].map(csvCell).join(';'));
+  });
+  return linhas.join('\n');
+}
+
 function openKpiPessoaModal(uid){
   var u = userById(uid);
   if (!u){ if (typeof toast==='function') toast('Colaborador não encontrado','error'); return; }
@@ -23860,49 +23985,72 @@ function openKpiPessoaModal(uid){
   var todasT = kpiTarefasDoSetor().filter(function(t){ return String(t.assignee_id||'') === String(uid); });
   var concluidas = todasT.filter(function(t){ return kpiTarefaConcluidaNoPeriodo(t, intv.ini, intv.fim); });
   var atrasadas = todasT.filter(kpiTarefaAtrasada);
-  // Ordena concluídas por data desc, atrasadas por atraso desc
-  concluidas.sort(function(a,b){
-    var da = a.updated_at || a.due_date || '';
-    var db = b.updated_at || b.due_date || '';
-    return db.localeCompare(da);
-  });
-  atrasadas.sort(function(a,b){
-    return (a.due_date||'').localeCompare(b.due_date||'');
-  });
 
-  function linhaTarefa(t, atrasada){
-    var prio = PRIO[t.priority] || PRIO.media;
-    var quando;
-    if (atrasada){
-      var due = (t.due_date||'').slice(0,10);
-      var diaMs = 24*60*60*1000;
-      var diasAtr = Math.floor((new Date() - new Date(due+'T12:00:00'))/diaMs);
-      quando = '<span class="kpp-atr-tag">'+diasAtr+'d atrasada</span>';
-    } else {
-      var d = t.updated_at || t.due_date;
-      var dd = d ? new Date(String(d).slice(0,10)+'T12:00:00') : null;
-      quando = dd ? '<span class="kpp-dt">'+fmtDate(dd)+'</span>' : '<span class="kpp-dt">—</span>';
-    }
-    var rotinaTag = t.recur_group ? '<span class="kpp-rot">🔁 rotina</span>' : '';
-    var areaTag = t.area ? '<span class="kpp-area">'+esc(t.area)+'</span>' : '';
-    var icon2 = atrasada ? '<span class="kpp-ic-atr">!</span>' : '<span class="kpp-ic-ok">✓</span>';
-    return '<div class="kpp-item'+(atrasada?' kpp-item-atr':'')+'">'+
-      icon2+
+  // v171: agrupa concluídas (rotina 12x vira 1 linha "12x")
+  var gruposC = kpiAgrupaConcluidas(concluidas);
+
+  // v171: atrasadas ordena pelas mais antigas primeiro (mais críticas)
+  atrasadas.sort(function(a,b){ return (a.due_date||'').localeCompare(b.due_date||''); });
+
+  // v171: KPIs derivados
+  var pontualidade = kpiPontualidade(concluidas);
+  var tempoAtrasoMed = kpiTempoMedioAtraso(atrasadas);
+
+  function linhaGrupoConcluida(g){
+    var prio = PRIO[g.priority] || PRIO.media;
+    var ultimaTx = g.ultima
+      ? '<span class="kpp-dt">'+(g.count>1?'última ':'')+fmtDate(new Date(String(g.ultima).slice(0,10)+'T12:00:00'))+'</span>'
+      : '<span class="kpp-dt">—</span>';
+    var countTag = g.count>1 ? '<span class="kpp-count">'+g.count+'×</span>' : '';
+    var rotinaTag = g.isRotina ? '<span class="kpp-rot">🔁 rotina</span>' : '';
+    var areaTag = g.area ? '<span class="kpp-area">'+esc(g.area)+'</span>' : '';
+    return '<div class="kpp-item">'+
+      '<span class="kpp-ic-ok">✓</span>'+
       '<div class="kpp-body">'+
-        '<div class="kpp-t"><b>'+esc(t.title||'Sem título')+'</b><span class="kpp-prio" style="background:'+prio.color+'"></span></div>'+
-        '<div class="kpp-meta">'+quando+areaTag+rotinaTag+'</div>'+
+        '<div class="kpp-t"><b>'+esc(g.titulo)+'</b>'+countTag+'<span class="kpp-prio" style="background:'+prio.color+'"></span></div>'+
+        '<div class="kpp-meta">'+ultimaTx+areaTag+rotinaTag+'</div>'+
       '</div>'+
     '</div>';
   }
 
-  var htmlConcluidas = concluidas.length > 0
-    ? concluidas.map(function(t){ return linhaTarefa(t, false); }).join('')
+  function linhaAtrasada(t){
+    var prio = PRIO[t.priority] || PRIO.media;
+    var due = (t.due_date||'').slice(0,10);
+    var diasAtr = 0;
+    if (due){
+      var diaMs = 24*60*60*1000;
+      diasAtr = Math.floor((new Date() - new Date(due+'T12:00:00'))/diaMs);
+    }
+    var dueTx = due ? '<span class="kpp-dt">vencia '+fmtDate(new Date(due+'T12:00:00'))+'</span>' : '';
+    var atrTag = '<span class="kpp-atr-tag">'+diasAtr+'d atrasada</span>';
+    var rotinaTag = t.recur_group ? '<span class="kpp-rot">🔁 rotina</span>' : '';
+    var areaTag = t.area ? '<span class="kpp-area">'+esc(t.area)+'</span>' : '';
+    return '<div class="kpp-item kpp-item-atr">'+
+      '<span class="kpp-ic-atr">!</span>'+
+      '<div class="kpp-body">'+
+        '<div class="kpp-t"><b>'+esc(t.title||'Sem título')+'</b><span class="kpp-prio" style="background:'+prio.color+'"></span></div>'+
+        '<div class="kpp-meta">'+atrTag+dueTx+areaTag+rotinaTag+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  var htmlConcluidas = gruposC.length > 0
+    ? gruposC.map(linhaGrupoConcluida).join('')
     : '<div class="kpp-vazio">Nenhuma tarefa concluída no período.</div>';
 
   var htmlAtrasadas = atrasadas.length > 0
     ? '<div class="kpp-sec-h"><h4>⚠ Atrasadas</h4><span>'+atrasadas.length+'</span></div>'+
-      atrasadas.map(function(t){ return linhaTarefa(t, true); }).join('')
+      atrasadas.map(linhaAtrasada).join('')
     : '';
+
+  // v171: pontualidade colorida
+  function pontCor(p){ if (p==null) return 'var(--u-text3)'; if (p>=80) return '#16A34A'; if (p>=50) return '#F59E0B'; return '#EF4444'; }
+  var pontTx = pontualidade == null
+    ? '<b style="color:var(--u-text3)">—</b><i>sem base</i>'
+    : '<b style="color:'+pontCor(pontualidade)+'">'+pontualidade+'%</b><i>pontualidade</i>';
+  var atrasoTx = atrasadas.length > 0
+    ? '<b style="color:#EF4444">'+tempoAtrasoMed+'d</b><i>atraso médio</i>'
+    : '<b style="color:var(--u-text3)">—</b><i>sem atrasos</i>';
 
   var modal = document.createElement('div'); modal.className='modal-bg';
   function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
@@ -23914,15 +24062,17 @@ function openKpiPessoaModal(uid){
         '<b>'+esc(u.name||'')+'</b>'+
         '<i>Tarefas · '+esc(intv.label||'período')+'</i>'+
       '</div>'+
+      '<button class="btn btn-ghost kpp-csv" id="kppCsv" title="Exportar CSV">'+icon('folder')+'</button>'+
       '<button class="fx-close" id="kppClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="kpp-summary">'+
       '<div class="kpp-sm"><b style="color:#16A34A">'+concluidas.length+'</b><i>concluída'+(concluidas.length!==1?'s':'')+'</i></div>'+
       '<div class="kpp-sm"><b style="color:'+(atrasadas.length>0?'#EF4444':'var(--u-text3)')+'">'+atrasadas.length+'</b><i>atrasada'+(atrasadas.length!==1?'s':'')+'</i></div>'+
-      '<div class="kpp-sm"><b>'+todasT.length+'</b><i>total atribuídas</i></div>'+
+      '<div class="kpp-sm">'+pontTx+'</div>'+
+      '<div class="kpp-sm">'+atrasoTx+'</div>'+
     '</div>'+
     '<div class="kpp-body-wrap">'+
-      (concluidas.length > 0 ? '<div class="kpp-sec-h"><h4>✓ Concluídas</h4><span>'+concluidas.length+'</span></div>' : '')+
+      (gruposC.length > 0 ? '<div class="kpp-sec-h"><h4>✓ Concluídas</h4><span>'+concluidas.length+' ocorrência'+(concluidas.length!==1?'s':'')+' em '+gruposC.length+' tarefa'+(gruposC.length!==1?'s':'')+'</span></div>' : '')+
       htmlConcluidas+
       htmlAtrasadas+
     '</div>'+
@@ -23931,6 +24081,21 @@ function openKpiPessoaModal(uid){
   document.body.appendChild(modal);
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
   modal.querySelector('#kppClose').addEventListener('click', close);
+
+  // v171: export CSV desta pessoa
+  var csvBtn = modal.querySelector('#kppCsv');
+  if (csvBtn){
+    csvBtn.addEventListener('click', function(){
+      var conteudo = csvKpiPessoa(u, concluidas, atrasadas);
+      var hoje = new Date();
+      var dtStr = hoje.getFullYear()+'-'+String(hoje.getMonth()+1).padStart(2,'0')+'-'+String(hoje.getDate()).padStart(2,'0');
+      var slug = (u.name||'pessoa').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      var nome = 'tarefas-'+slug+'-'+dtStr+'.csv';
+      if (downloadCSV(nome, conteudo)){
+        if (typeof toast==='function') toast('CSV exportado','success');
+      }
+    });
+  }
 }
 
 /* CSV do ranking por pessoa */
