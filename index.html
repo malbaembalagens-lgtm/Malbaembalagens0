@@ -9566,6 +9566,221 @@ html.dark .adm-empty-rot { background: rgba(255,255,255,.02); }
 html.dark .kpit-tg.on { background: rgba(255,255,255,.08); }
 html.dark .kpit-atr { background: rgba(239,68,68,.15); }
 
+
+/* ============================================================
+   v170 · Modal de tarefas por pessoa (clique na row do ranking)
+   ============================================================ */
+.kpit-row-cli {
+  cursor: pointer;
+  transition: background var(--tr-fast);
+  border-radius: var(--rd-md);
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.kpit-row-cli:hover {
+  background: var(--u-bg2);
+}
+
+.kpp-modal {
+  max-width: 640px;
+  width: 92vw;
+  max-height: 85vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.kpp-head {
+  display: flex;
+  align-items: center;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-3);
+}
+.kpp-av {
+  width: 44px;
+  height: 44px;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.kpp-head-mid {
+  flex: 1;
+  min-width: 0;
+}
+.kpp-head-mid b {
+  display: block;
+  font-size: 16px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.kpp-head-mid i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 2px;
+}
+.kpp-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--u-bg2);
+  border-bottom: 1px solid var(--u-line);
+}
+.kpp-sm {
+  text-align: center;
+}
+.kpp-sm b {
+  display: block;
+  font-size: 22px;
+  font-weight: var(--fw-extrabold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.kpp-sm i {
+  display: block;
+  font-size: 10px;
+  color: var(--u-text3);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--fw-bold);
+  margin-top: 4px;
+}
+.kpp-body-wrap {
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  overflow-y: auto;
+  flex: 1;
+}
+.kpp-sec-h {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) 0;
+  margin-top: var(--sp-3);
+}
+.kpp-sec-h:first-child { margin-top: 0; }
+.kpp-sec-h h4 {
+  margin: 0;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-weight: var(--fw-extrabold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.kpp-sec-h span {
+  font-size: 11px;
+  color: var(--u-text3);
+  background: var(--u-bg2);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: var(--fw-bold);
+}
+.kpp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: 10px 8px;
+  border-bottom: 1px dashed var(--u-line);
+}
+.kpp-item:last-child { border-bottom: 0; }
+.kpp-item-atr {
+  background: rgba(239,68,68,.04);
+  border-radius: var(--rd-md);
+  border-bottom: 0;
+  margin-bottom: 4px;
+}
+.kpp-ic-ok, .kpp-ic-atr {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.kpp-ic-ok { background: #16A34A; }
+.kpp-ic-atr { background: #EF4444; }
+.kpp-body {
+  flex: 1;
+  min-width: 0;
+}
+.kpp-t {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.kpp-t b {
+  font-size: 13px;
+  color: var(--u-text);
+  font-weight: var(--fw-semibold);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.kpp-prio {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.kpp-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+  flex-wrap: wrap;
+}
+.kpp-dt, .kpp-atr-tag, .kpp-area, .kpp-rot {
+  font-size: 11px;
+  color: var(--u-text3);
+}
+.kpp-atr-tag {
+  background: rgba(239,68,68,.1);
+  color: #EF4444;
+  padding: 2px 8px;
+  border-radius: var(--rd-md);
+  font-weight: var(--fw-bold);
+}
+.kpp-area {
+  background: var(--u-bg2);
+  padding: 2px 8px;
+  border-radius: var(--rd-md);
+  color: var(--u-text2);
+  font-weight: var(--fw-semibold);
+}
+.kpp-rot {
+  color: var(--u-accent);
+  font-weight: var(--fw-semibold);
+}
+.kpp-vazio {
+  padding: var(--sp-4);
+  text-align: center;
+  color: var(--u-text3);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* Mobile */
+@media (max-width: 500px){
+  .kpp-modal { max-height: 90vh; }
+  .kpp-head { padding: var(--sp-3); }
+  .kpp-av { width: 36px; height: 36px; font-size: 13px; }
+  .kpp-head-mid b { font-size: 14px; }
+  .kpp-summary { padding: var(--sp-2); }
+  .kpp-sm b { font-size: 18px; }
+}
+
+/* Dark */
+html.dark .kpp-item-atr { background: rgba(239,68,68,.08); }
+html.dark .kpp-atr-tag { background: rgba(239,68,68,.15); }
+
 </style>
 </head>
 <body>
@@ -9589,7 +9804,7 @@ html.dark .kpit-atr { background: rgba(239,68,68,.15); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v169';
+var APP_BUILD = 'v170';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -23582,7 +23797,7 @@ function kpiTarefasHTML(){
       var barTaxaPct = Math.max(0, Math.min(100, r.taxa));
       var barCor = kpiTaxaCor(r.taxa);
       var atrTag = r.atrasadas > 0 ? '<span class="kpit-atr">'+r.atrasadas+' atrasada'+(r.atrasadas>1?'s':'')+'</span>' : '';
-      return '<div class="kpit-row">'+
+      return '<div class="kpit-row kpit-row-cli" data-kpipessoa="'+esc(r.id)+'" title="Ver tarefas de '+esc(r.nome)+'">'+
         pos+
         '<span class="ar-av" style="background:'+r.cor+'">'+esc(iniciais(r.nome))+'</span>'+
         '<div class="kpit-nome"><b>'+esc(r.nome)+'</b>'+(r.rotinas>0?'<i>'+r.rotinas+' rotina'+(r.rotinas>1?'s':'')+'</i>':'')+'</div>'+
@@ -23628,6 +23843,94 @@ function bindKpiTarefas(){
   }
   var csv = document.getElementById('kpitCsv');
   if (csv) csv.addEventListener('click', function(){ exportarKpiTarefasCSV(); });
+  // v170: click na row do ranking abre modal com detalhes
+  var pRows = app.querySelectorAll('[data-kpipessoa]');
+  for (var pr=0; pr<pRows.length; pr++){
+    pRows[pr].addEventListener('click', function(){
+      openKpiPessoaModal(this.getAttribute('data-kpipessoa'));
+    });
+  }
+}
+
+/* v170: Modal com detalhes de tarefas de uma pessoa (concluídas + atrasadas) */
+function openKpiPessoaModal(uid){
+  var u = userById(uid);
+  if (!u){ if (typeof toast==='function') toast('Colaborador não encontrado','error'); return; }
+  var intv = kpiTarefasIntervalo();
+  var todasT = kpiTarefasDoSetor().filter(function(t){ return String(t.assignee_id||'') === String(uid); });
+  var concluidas = todasT.filter(function(t){ return kpiTarefaConcluidaNoPeriodo(t, intv.ini, intv.fim); });
+  var atrasadas = todasT.filter(kpiTarefaAtrasada);
+  // Ordena concluídas por data desc, atrasadas por atraso desc
+  concluidas.sort(function(a,b){
+    var da = a.updated_at || a.due_date || '';
+    var db = b.updated_at || b.due_date || '';
+    return db.localeCompare(da);
+  });
+  atrasadas.sort(function(a,b){
+    return (a.due_date||'').localeCompare(b.due_date||'');
+  });
+
+  function linhaTarefa(t, atrasada){
+    var prio = PRIO[t.priority] || PRIO.media;
+    var quando;
+    if (atrasada){
+      var due = (t.due_date||'').slice(0,10);
+      var diaMs = 24*60*60*1000;
+      var diasAtr = Math.floor((new Date() - new Date(due+'T12:00:00'))/diaMs);
+      quando = '<span class="kpp-atr-tag">'+diasAtr+'d atrasada</span>';
+    } else {
+      var d = t.updated_at || t.due_date;
+      var dd = d ? new Date(String(d).slice(0,10)+'T12:00:00') : null;
+      quando = dd ? '<span class="kpp-dt">'+fmtDate(dd)+'</span>' : '<span class="kpp-dt">—</span>';
+    }
+    var rotinaTag = t.recur_group ? '<span class="kpp-rot">🔁 rotina</span>' : '';
+    var areaTag = t.area ? '<span class="kpp-area">'+esc(t.area)+'</span>' : '';
+    var icon2 = atrasada ? '<span class="kpp-ic-atr">!</span>' : '<span class="kpp-ic-ok">✓</span>';
+    return '<div class="kpp-item'+(atrasada?' kpp-item-atr':'')+'">'+
+      icon2+
+      '<div class="kpp-body">'+
+        '<div class="kpp-t"><b>'+esc(t.title||'Sem título')+'</b><span class="kpp-prio" style="background:'+prio.color+'"></span></div>'+
+        '<div class="kpp-meta">'+quando+areaTag+rotinaTag+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  var htmlConcluidas = concluidas.length > 0
+    ? concluidas.map(function(t){ return linhaTarefa(t, false); }).join('')
+    : '<div class="kpp-vazio">Nenhuma tarefa concluída no período.</div>';
+
+  var htmlAtrasadas = atrasadas.length > 0
+    ? '<div class="kpp-sec-h"><h4>⚠ Atrasadas</h4><span>'+atrasadas.length+'</span></div>'+
+      atrasadas.map(function(t){ return linhaTarefa(t, true); }).join('')
+    : '';
+
+  var modal = document.createElement('div'); modal.className='modal-bg';
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+
+  modal.innerHTML = '<div class="modal kpp-modal">'+
+    '<div class="kpp-head">'+
+      '<span class="ar-av kpp-av" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name||''))+'</span>'+
+      '<div class="kpp-head-mid">'+
+        '<b>'+esc(u.name||'')+'</b>'+
+        '<i>Tarefas · '+esc(intv.label||'período')+'</i>'+
+      '</div>'+
+      '<button class="fx-close" id="kppClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="kpp-summary">'+
+      '<div class="kpp-sm"><b style="color:#16A34A">'+concluidas.length+'</b><i>concluída'+(concluidas.length!==1?'s':'')+'</i></div>'+
+      '<div class="kpp-sm"><b style="color:'+(atrasadas.length>0?'#EF4444':'var(--u-text3)')+'">'+atrasadas.length+'</b><i>atrasada'+(atrasadas.length!==1?'s':'')+'</i></div>'+
+      '<div class="kpp-sm"><b>'+todasT.length+'</b><i>total atribuídas</i></div>'+
+    '</div>'+
+    '<div class="kpp-body-wrap">'+
+      (concluidas.length > 0 ? '<div class="kpp-sec-h"><h4>✓ Concluídas</h4><span>'+concluidas.length+'</span></div>' : '')+
+      htmlConcluidas+
+      htmlAtrasadas+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+  modal.querySelector('#kppClose').addEventListener('click', close);
 }
 
 /* CSV do ranking por pessoa */
