@@ -9825,6 +9825,490 @@ html.dark .kpp-atr-tag { background: rgba(239,68,68,.15); }
 /* Dark */
 html.dark .kpp-count { background: rgba(22,163,74,.2); }
 
+
+/* ============================================================
+   v172 · Rotinas quebradas — card alerta + modal
+   ============================================================ */
+
+/* Card alerta no topo do painel KPIs */
+.kpq-alert-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-3);
+  background: linear-gradient(90deg, rgba(239,68,68,.08), rgba(245,158,11,.08));
+  border: 1px solid rgba(239,68,68,.25);
+  border-left: 4px solid #EF4444;
+  border-radius: var(--rd-lg);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--tr-fast);
+}
+.kpq-alert-card:hover {
+  background: linear-gradient(90deg, rgba(239,68,68,.14), rgba(245,158,11,.14));
+  transform: translateX(2px);
+}
+.kpq-ic {
+  font-size: 22px;
+  color: #EF4444;
+  flex-shrink: 0;
+}
+.kpq-txt {
+  flex: 1;
+  min-width: 0;
+}
+.kpq-txt b {
+  display: block;
+  font-size: 14px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.kpq-txt i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text2);
+  font-style: normal;
+  margin-top: 2px;
+}
+.kpq-cta {
+  color: var(--u-accent);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+}
+
+/* Modal */
+.kpq-modal {
+  max-width: 640px;
+  width: 92vw;
+  max-height: 85vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.kpq-head {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-3);
+}
+.kpq-head b {
+  display: block;
+  font-size: 16px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.kpq-head i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 4px;
+}
+.kpq-head > div:first-child { flex: 1; min-width: 0; }
+.kpq-hint {
+  padding: 10px var(--sp-4);
+  background: var(--u-bg2);
+  font-size: 11px;
+  color: var(--u-text2);
+  line-height: 1.5;
+  border-bottom: 1px solid var(--u-line);
+}
+.kpq-hint b { color: var(--u-text); font-weight: var(--fw-bold); }
+.kpq-body {
+  padding: var(--sp-3) var(--sp-4);
+  overflow-y: auto;
+  flex: 1;
+}
+.kpq-item {
+  padding: 12px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all var(--tr-fast);
+}
+.kpq-item:hover {
+  border-color: var(--u-accent);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+.kpq-item-crit {
+  border-color: rgba(239,68,68,.4);
+  background: rgba(239,68,68,.04);
+}
+.kpq-item-crit:hover {
+  border-color: #EF4444;
+}
+.kpq-item-head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  margin-bottom: 8px;
+}
+.kpq-t {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.kpq-t b {
+  font-size: 14px;
+  color: var(--u-text);
+  font-weight: var(--fw-bold);
+}
+.kpq-freq {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--u-bg2);
+  color: var(--u-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--fw-bold);
+}
+.kpq-loja {
+  font-size: 11px;
+  color: var(--u-text2);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(245,158,11,.1);
+  font-weight: var(--fw-semibold);
+}
+.kpq-dias {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(245,158,11,.15);
+  color: #B45309;
+  font-weight: var(--fw-extrabold);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.kpq-dias-crit {
+  background: rgba(239,68,68,.15);
+  color: #EF4444;
+}
+.kpq-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+.kpq-resp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--u-text2);
+}
+.kpq-av {
+  width: 22px;
+  height: 22px;
+  font-size: 10px;
+}
+.kpq-sem-resp {
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: italic;
+}
+.kpq-ult {
+  font-size: 11px;
+  color: var(--u-text3);
+}
+
+/* Mobile */
+@media (max-width: 500px){
+  .kpq-alert-card { flex-direction: column; align-items: flex-start; }
+  .kpq-cta { align-self: flex-end; }
+  .kpq-item-head { flex-direction: column; }
+  .kpq-item-meta { flex-direction: column; align-items: flex-start; }
+}
+
+/* Dark */
+html.dark .kpq-alert-card { background: linear-gradient(90deg, rgba(239,68,68,.14), rgba(245,158,11,.14)); }
+html.dark .kpq-item-crit { background: rgba(239,68,68,.08); }
+html.dark .kpq-loja { background: rgba(245,158,11,.15); }
+
+
+/* ============================================================
+   v173 · Ações rápidas nas atrasadas (Concluir + Reatribuir)
+   ============================================================ */
+
+/* Botões dentro da linha da atrasada */
+.kpp-acoes {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(239,68,68,.15);
+}
+.kpp-btn-a {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  border-radius: var(--rd-md);
+  cursor: pointer;
+  border: 1px solid var(--u-line);
+  background: var(--u-card);
+  color: var(--u-text2);
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+}
+.kpp-btn-a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+.kpp-btn-ok {
+  color: #16A34A;
+  border-color: rgba(22,163,74,.3);
+}
+.kpp-btn-ok:hover {
+  background: #16A34A;
+  color: #fff;
+  border-color: #16A34A;
+}
+.kpp-btn-reat {
+  color: #3B6FF7;
+  border-color: rgba(59,111,247,.3);
+}
+.kpp-btn-reat:hover {
+  background: #3B6FF7;
+  color: #fff;
+  border-color: #3B6FF7;
+}
+
+/* Popover de reatribuição */
+.kpp-pop-reat {
+  z-index: 2000;
+  min-width: 240px;
+  max-width: 280px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+}
+.kpp-pr-head {
+  font-size: 10px;
+  color: var(--u-text3);
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 8px 6px;
+  border-bottom: 1px solid var(--u-line);
+  margin-bottom: 4px;
+}
+.kpp-pr-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  border-radius: var(--rd-md);
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  color: var(--u-text);
+  transition: background var(--tr-fast);
+}
+.kpp-pr-item:hover {
+  background: var(--u-bg2);
+}
+.kpp-pr-av {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.kpp-pr-vazio {
+  padding: var(--sp-3);
+  text-align: center;
+  color: var(--u-text3);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Dark */
+html.dark .kpp-btn-a { background: rgba(255,255,255,.03); }
+
+
+/* ============================================================
+   v174 · TOP críticas do sistema — card horizontal
+   ============================================================ */
+
+.ktc-card {
+  background: var(--u-card);
+  border: 1px solid var(--u-line);
+  border-left: 4px solid #EF4444;
+  border-radius: var(--rd-lg);
+  margin-bottom: var(--sp-3);
+  overflow: hidden;
+}
+.ktc-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: linear-gradient(90deg, rgba(239,68,68,.06), transparent);
+  border-bottom: 1px solid var(--u-line);
+}
+.ktc-ic {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.ktc-head b {
+  display: block;
+  font-size: 14px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.ktc-head i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 2px;
+}
+.ktc-lista {
+  display: flex;
+  flex-direction: column;
+}
+.ktc-linha {
+  display: grid;
+  grid-template-columns: 24px 32px 1fr 80px 70px;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px var(--sp-4);
+  border-bottom: 1px dashed var(--u-line);
+  cursor: pointer;
+  transition: background var(--tr-fast);
+}
+.ktc-linha:last-child { border-bottom: 0; }
+.ktc-linha:hover {
+  background: var(--u-bg2);
+}
+.ktc-rank {
+  font-size: 13px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text3);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.ktc-av {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+}
+.ktc-av-vazio {
+  background: var(--u-bg2) !important;
+  color: var(--u-text3);
+}
+.ktc-mid {
+  min-width: 0;
+}
+.ktc-t {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ktc-t b {
+  font-size: 13px;
+  color: var(--u-text);
+  font-weight: var(--fw-bold);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ktc-prio {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.ktc-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+.ktc-resp {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-weight: var(--fw-semibold);
+}
+.ktc-tags {
+  font-size: 11px;
+  color: var(--u-text3);
+}
+.ktc-dias {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ktc-dias b {
+  display: block;
+  font-size: 16px;
+  font-weight: var(--fw-extrabold);
+  line-height: 1;
+}
+.ktc-dias i {
+  display: block;
+  font-size: 9px;
+  color: var(--u-text3);
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: var(--fw-bold);
+  margin-top: 2px;
+}
+.ktc-ver {
+  padding: 6px 12px;
+  border: 1px solid var(--u-line);
+  background: var(--u-card);
+  border-radius: var(--rd-md);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: var(--fw-bold);
+  color: var(--u-accent);
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+}
+.ktc-ver:hover {
+  background: var(--u-accent);
+  color: #fff;
+  border-color: var(--u-accent);
+}
+
+/* Mobile */
+@media (max-width: 700px){
+  .ktc-linha {
+    grid-template-columns: 20px 28px 1fr auto;
+    grid-template-areas: "rank av mid dias" "rank av meta ver";
+    row-gap: 4px;
+  }
+  .ktc-linha > :nth-child(1) { grid-area: rank; }
+  .ktc-linha > :nth-child(2) { grid-area: av; }
+  .ktc-linha > :nth-child(3) { grid-area: mid; }
+  .ktc-linha > :nth-child(4) { grid-area: dias; }
+  .ktc-linha > :nth-child(5) { grid-area: ver; justify-self: end; }
+}
+
+/* Dark */
+html.dark .ktc-head { background: linear-gradient(90deg, rgba(239,68,68,.1), transparent); }
+html.dark .ktc-av-vazio { background: rgba(255,255,255,.05) !important; }
+
 </style>
 </head>
 <body>
@@ -9848,7 +10332,7 @@ html.dark .kpp-count { background: rgba(22,163,74,.2); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v171';
+var APP_BUILD = 'v174';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -23630,6 +24114,237 @@ function openInvestimentoAdsModal(){
    v169 · KPIs Tarefas — Relatório completo do sistema de tarefas
    ============================================================ */
 
+/* ============================================================
+   v172 · Rotinas Quebradas — radar de omissão
+   ============================================================ */
+
+/* Limites de "quebrada" por frequência */
+var ROTINA_QUEBRADA_LIMITE = {
+  diaria: 3,     // sem execução há 3+ dias
+  semanal: 14,   // sem execução há 2+ semanas
+  mensal: 60     // sem execução há 2+ meses
+};
+
+/* Retorna array de rotinas quebradas no setor atual.
+   Cada item: { regra, ultimaExec, diasSem, limite, critico, responsavel } */
+function kpiRotinasQuebradas(){
+  var hj = new Date(); hj.setHours(12,0,0,0);  // âncora 12:00 pra bater com ref
+  var regras = (ST.tasks||[]).filter(function(t){
+    if (t.sector && t.sector !== ST.sector) return false;
+    if (!t.is_rule) return false;
+    if (t.rec_paused) return false;                    // pausadas não contam (intencional)
+    if (!ROTINA_QUEBRADA_LIMITE[t.recurrence]) return false; // só diária/semanal/mensal
+    return true;
+  });
+
+  var out = [];
+  regras.forEach(function(r){
+    // Ocorrências concluídas dessa regra (feitas, com recur_group)
+    var execs = (ST.tasks||[]).filter(function(t){
+      return !t.is_rule && String(t.recur_group||'') === String(r.recur_group||'') && t.status === 'feito';
+    });
+    var ultima = null;
+    execs.forEach(function(t){
+      var d = t.updated_at || t.due_date;
+      if (!d) return;
+      d = String(d).slice(0,10);
+      if (!ultima || d > ultima) ultima = d;
+    });
+
+    // Referência: se nunca teve execução, usa rec_start (ou created_at, ou hoje)
+    var ref;
+    if (ultima){
+      ref = new Date(ultima + 'T12:00:00');
+    } else {
+      var rs = r.rec_start || r.created_at;
+      ref = rs ? new Date(String(rs).slice(0,10) + 'T12:00:00') : new Date(hj);
+    }
+    var diasSem = Math.floor((hj - ref) / (24*60*60*1000));
+    var limite = ROTINA_QUEBRADA_LIMITE[r.recurrence];
+
+    if (diasSem >= limite){
+      var critico = diasSem >= limite * 2;   // crítico = 2x o limite
+      out.push({
+        regra: r,
+        ultimaExec: ultima,
+        diasSem: diasSem,
+        limite: limite,
+        critico: critico,
+        responsavel: r.assignee_id ? userById(r.assignee_id) : null
+      });
+    }
+  });
+
+  // Ordena por dias sem execução (mais críticas primeiro)
+  out.sort(function(a,b){ return b.diasSem - a.diasSem; });
+  return out;
+}
+
+/* Card compacto no topo do painel KPIs */
+function kpiRotinasQuebradasCardHTML(){
+  var lista = kpiRotinasQuebradas();
+  if (!lista.length) return '';
+  var criticas = lista.filter(function(x){ return x.critico; }).length;
+  var titulo = lista.length === 1
+    ? '1 rotina quebrada'
+    : lista.length+' rotinas quebradas';
+  var sub = criticas > 0
+    ? (criticas+' crítica'+(criticas>1?'s':'')+' · ninguém está fazendo há muito tempo')
+    : 'sem execução recente — pode ser que ninguém esteja fazendo';
+  return '<button class="kpq-alert-card" id="kpqAbrir">'+
+    '<span class="kpq-ic">⚠</span>'+
+    '<div class="kpq-txt"><b>'+titulo+'</b><i>'+sub+'</i></div>'+
+    '<span class="kpq-cta">Ver detalhes →</span>'+
+  '</button>';
+}
+
+/* Modal com lista completa */
+function openRotinasQuebradasModal(){
+  var lista = kpiRotinasQuebradas();
+  if (!lista.length){
+    if (typeof toast==='function') toast('Nenhuma rotina quebrada — está tudo em ordem 🎉','success');
+    return;
+  }
+
+  var modal = document.createElement('div'); modal.className='modal-bg';
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+
+  var LB = { diaria:'diária', semanal:'semanal', mensal:'mensal' };
+  function linha(item){
+    var r = item.regra;
+    var respTx = item.responsavel
+      ? '<span class="ar-av kpq-av" style="background:'+(item.responsavel.color||'#3B6FF7')+'">'+esc(iniciais(item.responsavel.name))+'</span><span>'+esc(item.responsavel.name)+'</span>'
+      : '<span class="kpq-sem-resp">sem responsável</span>';
+    var ultimaTx = item.ultimaExec
+      ? 'última execução: '+fmtDate(new Date(item.ultimaExec+'T12:00:00'))
+      : 'nunca teve execução registrada';
+    var diasTag = '<span class="kpq-dias'+(item.critico?' kpq-dias-crit':'')+'">'+item.diasSem+'d sem execução</span>';
+    var freqTag = '<span class="kpq-freq">'+esc(LB[r.recurrence]||r.recurrence)+'</span>';
+    var lojaTag = '';
+    if (r.store_unit_id){
+      var loja = (ST.storeUnits||[]).filter(function(s){return String(s.id)===String(r.store_unit_id);})[0];
+      if (loja) lojaTag = '<span class="kpq-loja">🏬 '+esc(loja.name||'Loja')+'</span>';
+    }
+    return '<div class="kpq-item'+(item.critico?' kpq-item-crit':'')+'" data-kpqrid="'+esc(r.id)+'">'+
+      '<div class="kpq-item-head">'+
+        '<div class="kpq-t"><b>'+esc(r.title||'Sem título')+'</b>'+freqTag+lojaTag+'</div>'+
+        diasTag+
+      '</div>'+
+      '<div class="kpq-item-meta">'+
+        '<div class="kpq-resp">'+respTx+'</div>'+
+        '<span class="kpq-ult">'+esc(ultimaTx)+'</span>'+
+      '</div>'+
+    '</div>';
+  }
+
+  modal.innerHTML = '<div class="modal kpq-modal">'+
+    '<div class="kpq-head">'+
+      '<div><b>⚠ Rotinas quebradas</b><i>Rotinas ativas que não tiveram execução recente</i></div>'+
+      '<button class="fx-close" id="kpqClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="kpq-hint">'+
+      'Limites: <b>diária</b> = 3+ dias sem executar · <b>semanal</b> = 14+ dias · <b>mensal</b> = 60+ dias. '+
+      'Em <b style="color:#EF4444">vermelho</b>: crítica (mais de 2x o limite).'+
+    '</div>'+
+    '<div class="kpq-body">'+lista.map(linha).join('')+'</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+  modal.querySelector('#kpqClose').addEventListener('click', close);
+
+  // Click na linha da rotina abre a rotina no modal padrão (openRotinaModal)
+  var itens = modal.querySelectorAll('[data-kpqrid]');
+  for (var i=0; i<itens.length; i++){
+    itens[i].addEventListener('click', function(){
+      var rid = this.getAttribute('data-kpqrid');
+      var regra = (ST.tasks||[]).filter(function(t){return String(t.id)===String(rid);})[0];
+      if (regra && typeof openRotinaModal==='function'){
+        close();
+        openRotinaModal(regra);
+      }
+    });
+  }
+}
+
+/* ============================================================
+   v174 · TOP 5 críticas do sistema — radar de o-que-pega-fogo
+   ============================================================ */
+
+/* Calcula score de criticidade — quanto maior, mais crítica */
+function kpiScoreCriticidade(t){
+  var due = (t.due_date||'').slice(0,10);
+  if (!due) return 0;
+  var hj = new Date(); hj.setHours(12,0,0,0);
+  var diasAtr = Math.floor((hj - new Date(due+'T12:00:00'))/(24*60*60*1000));
+  if (diasAtr <= 0) return 0;
+  var score = diasAtr;                                          // base: dias de atraso
+  if (t.priority === 'alta') score += 10;
+  else if (t.priority === 'media') score += 3;
+  if (t.recur_group) score += 5;                                // rotinas quebradas são piores
+  if (t.store_unit_id) score += 2;                              // impacto operacional em loja
+  return score;
+}
+
+/* Top N tarefas críticas do setor */
+function kpiTopCriticas(n){
+  n = n || 5;
+  var arr = (ST.tasks||[]).filter(function(t){
+    if (t.sector && t.sector !== ST.sector) return false;
+    if (t.is_rule) return false;
+    if (t.status === 'feito') return false;
+    if (!t.due_date) return false;
+    return kpiTarefaAtrasada(t);
+  });
+  arr.forEach(function(t){ t._score = kpiScoreCriticidade(t); });
+  arr.sort(function(a,b){ return b._score - a._score; });
+  return arr.slice(0, n);
+}
+
+/* Card horizontal no topo do painel */
+function kpiTopCriticasCardHTML(){
+  var top = kpiTopCriticas(5);
+  if (!top.length) return '';
+  var hj = new Date(); hj.setHours(12,0,0,0);
+  var linhas = top.map(function(t, i){
+    var due = (t.due_date||'').slice(0,10);
+    var diasAtr = Math.floor((hj - new Date(due+'T12:00:00'))/(24*60*60*1000));
+    var criticoCor = diasAtr >= 7 ? '#EF4444' : '#F59E0B';
+    var resp = t.assignee_id ? userById(t.assignee_id) : null;
+    var avatar = resp
+      ? '<span class="ar-av ktc-av" style="background:'+(resp.color||'#3B6FF7')+'">'+esc(iniciais(resp.name||''))+'</span>'
+      : '<span class="ar-av ktc-av ktc-av-vazio">?</span>';
+    var respNome = resp ? resp.name : 'sem responsável';
+    var prio = PRIO[t.priority] || PRIO.media;
+    var tags = [];
+    if (t.recur_group) tags.push('🔁 rotina');
+    if (t.store_unit_id){
+      var loja = (ST.storeUnits||[]).filter(function(s){return String(s.id)===String(t.store_unit_id);})[0];
+      if (loja) tags.push('🏬 '+esc(loja.name||'Loja'));
+    }
+    if (t.priority === 'alta') tags.push('prioridade alta');
+    var tagsTx = tags.length ? '<span class="ktc-tags">'+tags.join(' · ')+'</span>' : '';
+    return '<div class="ktc-linha" data-ktctid="'+esc(t.id)+'">'+
+      '<span class="ktc-rank">'+(i+1)+'</span>'+
+      avatar+
+      '<div class="ktc-mid">'+
+        '<div class="ktc-t"><b>'+esc(t.title||'Sem título')+'</b><span class="ktc-prio" style="background:'+prio.color+'"></span></div>'+
+        '<div class="ktc-meta"><span class="ktc-resp">'+esc(respNome)+'</span>'+tagsTx+'</div>'+
+      '</div>'+
+      '<span class="ktc-dias" style="color:'+criticoCor+'"><b>'+diasAtr+'d</b><i>atraso</i></span>'+
+      '<button class="ktc-ver" data-ktcver="'+esc(t.id)+'">Ver →</button>'+
+    '</div>';
+  }).join('');
+
+  return '<div class="ktc-card">'+
+    '<div class="ktc-head">'+
+      '<span class="ktc-ic">🔥</span>'+
+      '<div><b>TOP '+top.length+' crítica'+(top.length!==1?'s':'')+' do sistema</b><i>tarefas atrasadas com maior impacto — aja rápido</i></div>'+
+    '</div>'+
+    '<div class="ktc-lista">'+linhas+'</div>'+
+  '</div>';
+}
+
 /* Estado local do filtro de período */
 function kpiTarefasFiltro(){
   if (!ST.kpiTarefas) ST.kpiTarefas = { periodo:'30d' };
@@ -23870,7 +24585,11 @@ function kpiTarefasHTML(){
     ranking_head+linhasRk+
   '</div>';
 
-  return '<div class="kpit-panel">'+head+cards+
+  // v172: alerta de rotinas quebradas no topo (só aparece se >0)
+  var alertaQuebradas = (typeof kpiRotinasQuebradasCardHTML==='function') ? kpiRotinasQuebradasCardHTML() : '';
+  // v174: TOP 5 críticas do sistema
+  var topCriticas = (typeof kpiTopCriticasCardHTML==='function') ? kpiTopCriticasCardHTML() : '';
+  return '<div class="kpit-panel">'+head+alertaQuebradas+topCriticas+cards+
     '<div class="kpit-2col">'+distStatus+distTipo+'</div>'+
     rankingBloco+
   '</div>';
@@ -23887,6 +24606,21 @@ function bindKpiTarefas(){
   }
   var csv = document.getElementById('kpitCsv');
   if (csv) csv.addEventListener('click', function(){ exportarKpiTarefasCSV(); });
+  // v172: card de rotinas quebradas
+  var kpq = document.getElementById('kpqAbrir');
+  if (kpq) kpq.addEventListener('click', function(){ openRotinasQuebradasModal(); });
+  // v174: TOP 5 críticas — click na linha OU no botão "Ver" abre a tarefa
+  var ktcLinhas = app.querySelectorAll('[data-ktctid]');
+  for (var kl=0; kl<ktcLinhas.length; kl++){
+    (function(row){
+      row.addEventListener('click', function(e){
+        if (e.target.closest('button') && !e.target.closest('[data-ktctid]')) return;
+        var tid = row.getAttribute('data-ktctid');
+        var t = (ST.tasks||[]).filter(function(x){return String(x.id)===String(tid);})[0];
+        if (t && typeof openTaskModal==='function') openTaskModal(t);
+      });
+    })(ktcLinhas[kl]);
+  }
   // v170: click na row do ranking abre modal com detalhes
   var pRows = app.querySelectorAll('[data-kpipessoa]');
   for (var pr=0; pr<pRows.length; pr++){
@@ -23978,6 +24712,85 @@ function csvKpiPessoa(u, concluidas, atrasadas){
   return linhas.join('\n');
 }
 
+/* v173: Concluir uma tarefa atrasada direto do modal */
+function concluirTarefaAtrasada(tid, cb){
+  var t = (ST.tasks||[]).filter(function(x){return String(x.id)===String(tid);})[0];
+  if (!t){ if (typeof toast==='function') toast('Tarefa não encontrada','error'); return; }
+  var agora = new Date().toISOString();
+  sb.from('malba_vl_tasks').update({ status:'feito', updated_at: agora }).eq('id', tid).then(function(r){
+    if (r.error){
+      if (typeof toast==='function') toast('Erro ao concluir tarefa','error');
+      console.error(r.error);
+      return;
+    }
+    // Atualiza local
+    t.status = 'feito';
+    t.updated_at = agora;
+    if (typeof toast==='function') toast('Tarefa concluída ✓','success');
+    if (typeof auditLog==='function') auditLog('Concluiu tarefa atrasada', t.title||'');
+    if (typeof cb==='function') cb();
+  });
+}
+
+/* v173: Popover pra reatribuir tarefa */
+function openReatribuirPopover(btn, tid, cb){
+  var t = (ST.tasks||[]).filter(function(x){return String(x.id)===String(tid);})[0];
+  if (!t){ if (typeof toast==='function') toast('Tarefa não encontrada','error'); return; }
+  // Remove popover anterior se existir
+  var existente = document.getElementById('kppPopReat');
+  if (existente) existente.remove();
+
+  var pessoas = (ST.users||[]).filter(function(u){
+    if (u.sector && u.sector !== ST.sector) return false;
+    return String(u.id) !== String(t.assignee_id||'');  // exclui atual responsável
+  });
+
+  var pop = document.createElement('div');
+  pop.id = 'kppPopReat';
+  pop.className = 'kpp-pop-reat';
+  var opts = pessoas.length > 0
+    ? pessoas.map(function(u){
+        return '<button class="kpp-pr-item" data-kppruid="'+esc(u.id)+'">'+
+          '<span class="ar-av kpp-pr-av" style="background:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name||''))+'</span>'+
+          '<span>'+esc(u.name||'')+'</span>'+
+        '</button>';
+      }).join('')
+    : '<div class="kpp-pr-vazio">Nenhum outro colaborador disponível</div>';
+  pop.innerHTML = '<div class="kpp-pr-head">Reatribuir para:</div>'+opts;
+
+  document.body.appendChild(pop);
+  // Posicionar próximo ao botão
+  var rect = btn.getBoundingClientRect();
+  pop.style.position = 'fixed';
+  pop.style.top = (rect.bottom + 4) + 'px';
+  pop.style.left = Math.max(8, rect.right - 240) + 'px';
+
+  function fechar(){ if (pop.parentNode) pop.parentNode.removeChild(pop); document.removeEventListener('click', outsideClick, true); }
+  function outsideClick(e){ if (!pop.contains(e.target)) fechar(); }
+  setTimeout(function(){ document.addEventListener('click', outsideClick, true); }, 10);
+
+  var itens = pop.querySelectorAll('[data-kppruid]');
+  for (var i=0; i<itens.length; i++){
+    itens[i].addEventListener('click', function(e){
+      e.stopPropagation();
+      var nid = this.getAttribute('data-kppruid');
+      fechar();
+      sb.from('malba_vl_tasks').update({ assignee_id: nid }).eq('id', tid).then(function(r){
+        if (r.error){
+          if (typeof toast==='function') toast('Erro ao reatribuir','error');
+          console.error(r.error);
+          return;
+        }
+        t.assignee_id = nid;
+        var novoResp = userById(nid);
+        if (typeof toast==='function') toast('Reatribuída para '+(novoResp?novoResp.name:'colaborador'),'success');
+        if (typeof auditLog==='function') auditLog('Reatribuiu tarefa', (t.title||'')+' → '+(novoResp?novoResp.name:''));
+        if (typeof cb==='function') cb();
+      });
+    });
+  }
+}
+
 function openKpiPessoaModal(uid){
   var u = userById(uid);
   if (!u){ if (typeof toast==='function') toast('Colaborador não encontrado','error'); return; }
@@ -24025,11 +24838,18 @@ function openKpiPessoaModal(uid){
     var atrTag = '<span class="kpp-atr-tag">'+diasAtr+'d atrasada</span>';
     var rotinaTag = t.recur_group ? '<span class="kpp-rot">🔁 rotina</span>' : '';
     var areaTag = t.area ? '<span class="kpp-area">'+esc(t.area)+'</span>' : '';
-    return '<div class="kpp-item kpp-item-atr">'+
+    var acoes = canEdit()
+      ? '<div class="kpp-acoes">'+
+          '<button class="kpp-btn-a kpp-btn-ok" data-kppac="concluir" data-kpptid="'+esc(t.id)+'" title="Marcar como concluída">✓ Concluir</button>'+
+          '<button class="kpp-btn-a kpp-btn-reat" data-kppac="reatribuir" data-kpptid="'+esc(t.id)+'" title="Reatribuir a outra pessoa">👤 Reatribuir</button>'+
+        '</div>'
+      : '';
+    return '<div class="kpp-item kpp-item-atr" data-kppatid="'+esc(t.id)+'">'+
       '<span class="kpp-ic-atr">!</span>'+
       '<div class="kpp-body">'+
         '<div class="kpp-t"><b>'+esc(t.title||'Sem título')+'</b><span class="kpp-prio" style="background:'+prio.color+'"></span></div>'+
         '<div class="kpp-meta">'+atrTag+dueTx+areaTag+rotinaTag+'</div>'+
+        acoes+
       '</div>'+
     '</div>';
   }
@@ -24081,6 +24901,27 @@ function openKpiPessoaModal(uid){
   document.body.appendChild(modal);
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
   modal.querySelector('#kppClose').addEventListener('click', close);
+
+  // v173: ações rápidas nas atrasadas — Concluir + Reatribuir
+  function reloadModal(){
+    close();
+    setTimeout(function(){ openKpiPessoaModal(uid); }, 50);
+  }
+  var acoesBtns = modal.querySelectorAll('[data-kppac]');
+  for (var ab=0; ab<acoesBtns.length; ab++){
+    (function(btn){
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var ac = btn.getAttribute('data-kppac');
+        var tid = btn.getAttribute('data-kpptid');
+        if (ac === 'concluir'){
+          concluirTarefaAtrasada(tid, reloadModal);
+        } else if (ac === 'reatribuir'){
+          openReatribuirPopover(btn, tid, reloadModal);
+        }
+      });
+    })(acoesBtns[ab]);
+  }
 
   // v171: export CSV desta pessoa
   var csvBtn = modal.querySelector('#kppCsv');
