@@ -10989,6 +10989,102 @@ html.dark .tbp-escala-folga { background: rgba(16,185,129,.15); }
 
 html.dark .gp-kind-user { background: rgba(59,111,247,.2); }
 
+
+/* ============================================================
+   v179 · Ponto multi-membro no balcão (login compartilhado)
+   ============================================================ */
+.tbp-pop-balcao {
+  min-width: 320px;
+  max-width: 380px;
+}
+.tbb-hint {
+  font-size: 11px;
+  color: var(--u-text3);
+  padding: 6px 4px 10px;
+  border-bottom: 1px dashed var(--u-line);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.tbb-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.tbb-linha {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border-radius: var(--rd-md);
+  transition: background var(--tr-fast);
+}
+.tbb-linha:hover { background: var(--u-bg2); }
+.tbb-av { width: 34px; height: 34px; font-size: 12px; }
+.tbb-mid { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tbb-mid b {
+  font-size: 13px;
+  color: var(--u-text);
+  font-weight: var(--fw-bold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tbb-pills {
+  display: inline-flex;
+  gap: 3px;
+}
+.tbb-p {
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--u-line);
+}
+.tbb-p-on { background: #16A34A; }
+.tbb-cta {
+  padding: 6px 14px;
+  background: #3B6FF7;
+  color: #fff;
+  border: 0;
+  border-radius: var(--rd-md);
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  cursor: pointer;
+  transition: all var(--tr-fast);
+  white-space: nowrap;
+}
+.tbb-cta:hover:not(:disabled) {
+  background: #2857d1;
+  transform: translateY(-1px);
+}
+.tbb-cta:disabled { opacity: 0.6; cursor: wait; }
+.tbb-completo {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(22,163,74,.1);
+  color: #16A34A;
+  border-radius: var(--rd-md);
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  white-space: nowrap;
+}
+.tbb-vazio {
+  padding: var(--sp-3);
+  text-align: center;
+  color: var(--u-text3);
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Mobile */
+@media (max-width: 500px){
+  .tbp-pop-balcao { min-width: calc(100vw - 32px); max-width: calc(100vw - 32px); }
+}
+
+/* Dark */
+html.dark .tbb-completo { background: rgba(22,163,74,.18); }
+
 </style>
 </head>
 <body>
@@ -11012,7 +11108,7 @@ html.dark .gp-kind-user { background: rgba(59,111,247,.2); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v178';
+var APP_BUILD = 'v179';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -29240,6 +29336,93 @@ function meuCheckinHoje(){
   return null;
 }
 
+/* v179: Detecta se o login atual é um "balcão de loja" — user compartilhado por vários membros */
+function souLoginBalcao(){
+  if (!ST.session || !ST.session.user) return false;
+  if (ST.session.user.sector !== 'lojas') return false;
+  if (!ST.store || !ST.store.id) return false;                // não é dono de loja
+  if (typeof meuMemberId === 'function' && meuMemberId()) return false;  // sou pessoa individual
+  var mems = balcaoMembrosAtivos();
+  return mems.length > 0;
+}
+
+/* v179: Membros ativos da loja do balcão */
+function balcaoMembrosAtivos(){
+  if (!ST.store || !ST.store.id) return [];
+  return (ST.members||[]).filter(function(m){
+    return !m.inativo && String(m.store_unit_id||'')===String(ST.store.id) && m.name;
+  }).sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+}
+
+/* v179: Checkin de HOJE de um membro específico da loja (recebe id) */
+function balcaoCheckinMembro(memberId){
+  var t = today();
+  var arr = ST.checkins || [];
+  var sid = ST.store && ST.store.id;
+  for (var i=0; i<arr.length; i++){
+    var c = arr[i];
+    if (String(c.member_id||'')!==String(memberId)) continue;
+    if (String(c.work_date||'').slice(0,10)!==t) continue;
+    if ((c.sector||'')!==ST.sector) continue;
+    if (sid && String(c.store_unit_id||'')!==String(sid)) continue;
+    return c;
+  }
+  return null;
+}
+
+/* v179: Bater ponto de um membro específico (não do user do balcão) */
+function baterPontoDeMembro(memberId, cb){
+  var membro = (ST.members||[]).filter(function(m){return String(m.id)===String(memberId);})[0];
+  if (!membro){ if (typeof toast==='function') toast('Membro não encontrado','error'); return; }
+  var ci = balcaoCheckinMembro(memberId);
+  var slot = proximoSlotPonto(ci);
+  if (!slot){
+    if (typeof toast==='function') toast(membro.name+' já bateu todas as batidas ✓','success');
+    return;
+  }
+  var nowIso = new Date().toISOString();
+  var sid = ST.store && ST.store.id;
+
+  if (!ci){
+    var payload = {
+      sector: ST.sector,
+      user_id: membro.user_id || null,
+      member_id: memberId,
+      store_unit_id: sid,
+      work_date: today()
+    };
+    payload[slot.key] = nowIso;
+    sb.from('malba_checkins').insert(payload).select().single().then(function(r){
+      if (r.error){
+        if (typeof toast==='function') toast('Erro: '+(r.error.message||''),'error');
+        return;
+      }
+      if (r.data){
+        if (!ST.checkins) ST.checkins = [];
+        ST.checkins.push(r.data);
+      }
+      if (typeof toast==='function') toast('✓ '+membro.name+' — '+slot.label,'success');
+      if (typeof auditLog==='function') auditLog('Bateu ponto de '+membro.name, slot.label);
+      if (typeof cb==='function') cb();
+      if (typeof refreshTopbarPonto==='function') refreshTopbarPonto();
+    });
+  } else {
+    var patch = {};
+    patch[slot.key] = nowIso;
+    sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
+      if (r.error){
+        if (typeof toast==='function') toast('Erro: '+(r.error.message||''),'error');
+        return;
+      }
+      ci[slot.key] = nowIso;
+      if (typeof toast==='function') toast('✓ '+membro.name+' — '+slot.label,'success');
+      if (typeof auditLog==='function') auditLog('Bateu ponto de '+membro.name, slot.label);
+      if (typeof cb==='function') cb();
+      if (typeof refreshTopbarPonto==='function') refreshTopbarPonto();
+    });
+  }
+}
+
 /* Bate a próxima batida esperada. Cria row nova se ainda não tem. */
 function topbarBaterPonto(cb){
   var me = ST.session && ST.session.user;
@@ -29314,6 +29497,10 @@ function refreshTopbarPonto(){
 /* HTML do widget compacto na topbar */
 function topbarPontoWidgetHTML(){
   if (!ST.session || !ST.session.user) return '';
+  // v179: modo balcão — login de loja compartilhado
+  if (typeof souLoginBalcao==='function' && souLoginBalcao()){
+    return topbarBalcaoWidgetHTML();
+  }
   var ci = meuCheckinHoje();
   var slot = proximoSlotPonto(ci);
   var batidos = slotsPontoBatidos(ci);
@@ -29359,6 +29546,123 @@ function meuShiftHoje(){
     return shiftDoUserNoDia(uid, wd);
   }
   return null;
+}
+
+/* v179: Widget do balcão (login compartilhado) */
+function topbarBalcaoWidgetHTML(){
+  var mems = balcaoMembrosAtivos();
+  var completos = 0, pendentes = 0, emServico = 0;
+  mems.forEach(function(m){
+    var ci = balcaoCheckinMembro(m.id);
+    var slot = proximoSlotPonto(ci);
+    if (!slot) completos++;
+    else if (ci && ci.entrada) emServico++;
+    else pendentes++;
+  });
+  var cor, label, ico;
+  if (pendentes > 0){ cor = '#3B6FF7'; ico = '🏬'; label = pendentes+' pendente'+(pendentes>1?'s':''); }
+  else if (emServico > 0){ cor = '#F59E0B'; ico = '🏬'; label = emServico+' em serviço'; }
+  else { cor = '#16A34A'; ico = '✓'; label = 'Todos batidos'; }
+  var pills = mems.slice(0,4).map(function(m){
+    var ci = balcaoCheckinMembro(m.id);
+    var s = slotsPontoBatidos(ci);
+    var pctColor = s===4 ? '#16A34A' : (s>0 ? '#3B6FF7' : 'var(--u-line)');
+    return '<span class="tbp-pill" style="background:'+pctColor+'" title="'+esc(m.name)+' — '+s+'/4"></span>';
+  }).join('');
+  return '<button class="tbp-widget tbp-balcao" id="tbpBtn" title="Ponto da equipe da loja" style="--tbp-cor:'+cor+'">'+
+    '<span class="tbp-ic">'+ico+'</span>'+
+    '<span class="tbp-mid">'+
+      '<b>'+esc(label)+'</b>'+
+      '<span class="tbp-pills">'+pills+'</span>'+
+    '</span>'+
+  '</button>';
+}
+
+/* v179: Popover do balcão — lista membros com CTA inline */
+function topbarBalcaoPopoverAbrir(anchorBtn){
+  var existente = document.getElementById('tbpPop');
+  if (existente){ existente.remove(); return; }
+
+  var mems = balcaoMembrosAtivos();
+  var lojaNome = (ST.store && ST.store.name) || 'Loja';
+
+  var linhas = mems.map(function(m){
+    var ci = balcaoCheckinMembro(m.id);
+    var slot = proximoSlotPonto(ci);
+    var s = slotsPontoBatidos(ci);
+    var pills4 = PONTO_SLOTS.map(function(p, i){
+      return '<span class="tbb-p'+(ci&&ci[p.key]?' tbb-p-on':'')+'"></span>';
+    }).join('');
+    var ctaHTML;
+    if (!slot){
+      ctaHTML = '<span class="tbb-completo">✓ Completo</span>';
+    } else {
+      ctaHTML = '<button class="tbb-cta" data-tbbmid="'+esc(m.id)+'">'+esc(slot.btn)+'</button>';
+    }
+    var fn = (m.name||'').split(' ')[0];
+    return '<div class="tbb-linha">'+
+      '<span class="ar-av tbb-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name||''))+'</span>'+
+      '<div class="tbb-mid">'+
+        '<b>'+esc(fn)+'</b>'+
+        '<div class="tbb-pills">'+pills4+'</div>'+
+      '</div>'+
+      ctaHTML+
+    '</div>';
+  }).join('') || '<div class="tbb-vazio">Nenhum membro ativo nesta loja.</div>';
+
+  var pop = document.createElement('div');
+  pop.id = 'tbpPop';
+  pop.className = 'tbp-pop tbp-pop-balcao';
+  pop.innerHTML =
+    '<div class="tbp-pop-h">🏬 Ponto da equipe · '+esc(lojaNome)+'</div>'+
+    '<div class="tbb-hint">Cada pessoa bate seu ponto separado. Clique no botão de quem tá batendo.</div>'+
+    '<div class="tbb-lista">'+linhas+'</div>'+
+    '<a class="tbp-pop-link" href="#" id="tbpVerEspelho">Ver espelho completo da loja →</a>';
+
+  document.body.appendChild(pop);
+  var rect = anchorBtn.getBoundingClientRect();
+  pop.style.position = 'fixed';
+  pop.style.top = (rect.bottom + 8) + 'px';
+  pop.style.right = Math.max(8, window.innerWidth - rect.right) + 'px';
+
+  function fechar(){
+    if (pop.parentNode) pop.parentNode.removeChild(pop);
+    document.removeEventListener('click', outsideClick, true);
+  }
+  function outsideClick(e){
+    if (!pop.contains(e.target) && e.target !== anchorBtn && !anchorBtn.contains(e.target)) fechar();
+  }
+  setTimeout(function(){ document.addEventListener('click', outsideClick, true); }, 10);
+
+  // CTAs
+  var ctas = pop.querySelectorAll('[data-tbbmid]');
+  for (var i=0; i<ctas.length; i++){
+    ctas[i].addEventListener('click', function(e){
+      e.stopPropagation();
+      var mid = this.getAttribute('data-tbbmid');
+      var btn = this;
+      btn.disabled = true;
+      baterPontoDeMembro(mid, function(){
+        // Reabre popover pra refletir o novo estado
+        fechar();
+        setTimeout(function(){
+          var btnAtual = document.getElementById('tbpBtn');
+          if (btnAtual) topbarBalcaoPopoverAbrir(btnAtual);
+        }, 100);
+      });
+    });
+  }
+
+  var link = document.getElementById('tbpVerEspelho');
+  if (link){
+    link.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      fechar();
+      ST.page = 'ponto';
+      if (typeof navigate === 'function') navigate(ST.sector+'/ponto');
+      if (typeof renderPage === 'function') renderPage();
+    });
+  }
 }
 
 /* Popover com detalhes do dia */
@@ -29460,7 +29764,12 @@ function bindTopbarPonto(){
   if (!btn) return;
   btn.addEventListener('click', function(e){
     e.stopPropagation();
-    topbarPontoPopoverAbrir(btn);
+    // v179: se é balcão, abre popover de balcão
+    if (typeof souLoginBalcao==='function' && souLoginBalcao()){
+      topbarBalcaoPopoverAbrir(btn);
+    } else {
+      topbarPontoPopoverAbrir(btn);
+    }
   });
 }
 
