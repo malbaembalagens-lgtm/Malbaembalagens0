@@ -11085,6 +11085,160 @@ html.dark .gp-kind-user { background: rgba(59,111,247,.2); }
 /* Dark */
 html.dark .tbb-completo { background: rgba(22,163,74,.18); }
 
+
+/* ============================================================
+   v181 · Cadastro Facial — modal + botões
+   ============================================================ */
+
+/* Botão na ficha (mesmo estilo do fi-btn-escala) */
+.fi-btn-facial {
+  color: var(--u-text3);
+  font-size: 16px;
+}
+.fi-btn-facial:hover {
+  background: rgba(139,92,246,.1);
+  color: #8B5CF6;
+}
+.fi-btn-facial-on {
+  background: rgba(22,163,74,.1);
+  color: #16A34A;
+}
+.fi-btn-facial-on:hover {
+  background: rgba(22,163,74,.2);
+}
+
+/* Botão no user modal (v181) */
+#userFacial {
+  border-color: rgba(139,92,246,.3);
+  color: #8B5CF6;
+  font-weight: var(--fw-bold);
+}
+#userFacial:hover {
+  background: #8B5CF6;
+  color: #fff;
+  border-color: #8B5CF6;
+}
+#userFacial.user-fac-on {
+  border-color: rgba(22,163,74,.3);
+  color: #16A34A;
+  background: rgba(22,163,74,.05);
+}
+#userFacial.user-fac-on:hover {
+  background: #16A34A;
+  color: #fff;
+  border-color: #16A34A;
+}
+
+/* Modal cadastro facial */
+.fcm-modal {
+  max-width: 520px;
+  width: 92vw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fcm-head {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-3);
+}
+.fcm-head b {
+  display: block;
+  font-size: 16px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.fcm-head i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 4px;
+}
+.fcm-head > div:first-child { flex: 1; min-width: 0; }
+
+.fcm-body {
+  padding: var(--sp-4);
+}
+.fcm-cam {
+  position: relative;
+  background: #000;
+  border-radius: var(--rd-lg);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  border: 3px solid var(--u-line);
+  margin-bottom: var(--sp-3);
+  transition: border-color var(--tr-fast);
+}
+.fcm-cam.ok { border-color: #16A34A; }
+.fcm-cam.err { border-color: #EF4444; }
+.fcm-cam video, .fcm-cam canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scaleX(-1);
+}
+.fcm-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fcm-oval {
+  width: 55%;
+  aspect-ratio: 3/4;
+  border: 3px dashed rgba(255,255,255,.5);
+  border-radius: 50%;
+}
+.fcm-msg {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background: rgba(0,0,0,.75);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--rd-md);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  z-index: 2;
+}
+.fcm-status {
+  padding: 8px 12px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  font-size: 12px;
+  text-align: center;
+  color: var(--u-text2);
+  min-height: 18px;
+}
+
+.fcm-foot {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--u-line);
+  justify-content: flex-end;
+}
+.fcm-foot .btn { padding: 10px 18px; }
+
+/* Mobile */
+@media (max-width: 500px){
+  .fcm-modal { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .fcm-foot { flex-direction: column; }
+  .fcm-foot .btn { width: 100%; }
+}
+
+/* Dark */
+html.dark .fi-btn-facial:hover { background: rgba(139,92,246,.2); }
+html.dark #userFacial.user-fac-on { background: rgba(22,163,74,.1); }
+
 </style>
 </head>
 <body>
@@ -11108,7 +11262,7 @@ html.dark .tbb-completo { background: rgba(22,163,74,.18); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v180';
+var APP_BUILD = 'v181';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15989,7 +16143,7 @@ function openFichaColaborador(member){
       '<div class="fi-head"><span class="fi-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
         '<div class="fi-id"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+' · '+esc(loja)+'</i></div>'+
         '<span class="fi-sit '+(inativo?'off':'on')+'">'+(inativo?'Inativo':'Ativo')+'</span>'+
-        (can('equipe') ? '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>' : '')+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
+        (can('equipe') ? '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>' : '')+(can('equipe') ? '<button class="fi-edit fi-btn-facial'+(facialTemCadastro(m)?' fi-btn-facial-on':'')+'" id="fiFacial" title="'+(facialTemCadastro(m)?'Rosto cadastrado — refazer':'Cadastrar rosto')+'">🎭</button>' : '')+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
       '</div>'+ tabs + body +
       '<div class="modal-foot"><button class="btn btn-ghost" id="fiClose">Fechar</button></div>'+
     '</div>';
@@ -16049,6 +16203,7 @@ function openFichaColaborador(member){
     modal.querySelector('#fiClose').addEventListener('click', close);
     var tb=modal.querySelectorAll('[data-fitab]'); for(var k=0;k<tb.length;k++) tb[k].addEventListener('click', function(){ fiTab=this.getAttribute('data-fitab'); draw(); });
     var esc_btn = modal.querySelector('#fiEscala'); if(esc_btn) esc_btn.addEventListener('click', function(){ openShiftModal(m); });
+    var fac_btn = modal.querySelector('#fiFacial'); if(fac_btn) fac_btn.addEventListener('click', function(){ openFacialCadastroModal({ id: m.id, name: m.name, kind: 'member' }); });
     // v152: PIN de ponto
     var pinInp = modal.querySelector('#fiPinInput');
     var pinGen = modal.querySelector('#fiPinGen');
@@ -26644,6 +26799,8 @@ function openUserModal(user) {
   var delBtn = (isNew || (u.id===ST.session.user.id)) ? '' : '<button class="btn btn-danger btn-del-wrap" id="userDel">Excluir</button>';
   // v177: botão Escala pra qualquer setor (não só lojas)
   var escBtn = '<button class="btn btn-ghost" id="userEscala" title="Definir escala de trabalho" style="margin-right:auto">🕐 Escala</button>';
+  // v181: botão Facial
+  var facBtn = '<button class="btn btn-ghost'+(facialTemCadastro(u)?' user-fac-on':'')+'" id="userFacial" title="'+(facialTemCadastro(u)?'Rosto cadastrado — refazer':'Cadastrar rosto')+'">🎭 '+(facialTemCadastro(u)?'Rosto ✓':'Facial')+'</button>';
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
@@ -26679,7 +26836,7 @@ function openUserModal(user) {
       })()+
       '<div class="nivel-desc" id="uNivelDesc">'+esc((NIVEIS[nivel]||NIVEIS.colaborador).desc)+'</div>'+
       '<div id="permHolder"></div>'+
-      '<div class="modal-foot">'+(isNew?'':escBtn)+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
+      '<div class="modal-foot">'+(isNew?'':escBtn)+(isNew?'':facBtn)+delBtn+'<button class="btn btn-ghost" id="userCancel">Cancelar</button><button class="btn btn-primary" id="userSave">'+(isNew?'Criar usuário':'Salvar')+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
   (function(){ var sel=modal.querySelector('#uLevel'), d=modal.querySelector('#uNivelDesc');
@@ -26705,6 +26862,13 @@ function openUserModal(user) {
   if (escBtnEl){
     escBtnEl.addEventListener('click', function(){
       openShiftModal({ id: u.id, name: u.name || u.email || 'colaborador', _isUser: true });
+    });
+  }
+  // v181: bind do botão Facial
+  var facBtnEl = modal.querySelector('#userFacial');
+  if (facBtnEl){
+    facBtnEl.addEventListener('click', function(){
+      openFacialCadastroModal({ id: u.id, name: u.name || u.email || 'colaborador', kind: 'user' });
     });
   }
 
@@ -29513,6 +29677,217 @@ function facialMembrosComCadastro(storeUnitId){
     return true;
   });
 }
+
+/* ============================================================
+   v181 · Cadastro Facial — modal reutilizável
+   ============================================================
+   Aceita alvo polimórfico: {id, name, kind: 'member'|'user'}
+   - Detecta rosto → mostra preview → salva descriptor + foto
+   - Atualiza ST.members ou ST.users local
+   ============================================================ */
+
+function openFacialCadastroModal(alvo){
+  if (!alvo || !alvo.id){ if (typeof toast==='function') toast('Alvo inválido','error'); return; }
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialModal';
+
+  var titulo = 'Cadastro Facial · ' + (alvo.name || '');
+  var jaTem = false;
+  if (alvo.kind === 'member'){
+    var mem = (ST.members||[]).filter(function(m){return String(m.id)===String(alvo.id);})[0];
+    jaTem = mem && facialTemCadastro(mem);
+  } else if (alvo.kind === 'user'){
+    var u = (ST.users||[]).filter(function(x){return String(x.id)===String(alvo.id);})[0];
+    jaTem = u && facialTemCadastro(u);
+  }
+
+  var subtitulo = jaTem
+    ? 'Já tem cadastro — capturar de novo <b>substitui</b> o rosto salvo.'
+    : 'Alinhe o rosto no oval e clique em capturar.';
+
+  modal.innerHTML = '<div class="modal fcm-modal">'+
+    '<div class="fcm-head">'+
+      '<div><b>🎭 '+esc(titulo)+'</b><i>'+subtitulo+'</i></div>'+
+      '<button class="fx-close" id="fcmClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="fcm-body">'+
+      '<div class="fcm-cam" id="fcmCam">'+
+        '<video id="fcmVideo" autoplay playsinline muted></video>'+
+        '<canvas id="fcmCanvas" style="display:none"></canvas>'+
+        '<div class="fcm-overlay"><div class="fcm-oval"></div></div>'+
+        '<div class="fcm-msg" id="fcmMsg">Clique em "Abrir câmera" para começar</div>'+
+      '</div>'+
+      '<div class="fcm-status" id="fcmStatus"></div>'+
+    '</div>'+
+    '<div class="fcm-foot" id="fcmFoot">'+
+      '<button class="btn btn-ghost" id="fcmAbrir">📷 Abrir câmera</button>'+
+      '<button class="btn btn-primary" id="fcmCapturar" disabled>✨ Capturar Rosto</button>'+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+
+  var video = modal.querySelector('#fcmVideo');
+  var canvas = modal.querySelector('#fcmCanvas');
+  var cam = modal.querySelector('#fcmCam');
+  var msg = modal.querySelector('#fcmMsg');
+  var status = modal.querySelector('#fcmStatus');
+  var foot = modal.querySelector('#fcmFoot');
+  var btnAbrir = modal.querySelector('#fcmAbrir');
+  var btnCap = modal.querySelector('#fcmCapturar');
+
+  var descAtual = null;
+  var blobAtual = null;
+
+  function close(){
+    facialFecharWebcam();
+    if (modal.parentNode) modal.parentNode.removeChild(modal);
+  }
+
+  modal.querySelector('#fcmClose').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+
+  /* Abrir webcam + carregar modelos em paralelo */
+  btnAbrir.addEventListener('click', async function(){
+    btnAbrir.disabled = true;
+    msg.textContent = 'Carregando IA...';
+    cam.classList.remove('ok','err');
+
+    // Carrega modelos em paralelo com abrir webcam
+    var [modOk, camOk] = await Promise.all([
+      facialCarregarModelos(),
+      facialAbrirWebcam(video)
+    ]);
+
+    if (!modOk){
+      msg.textContent = 'Falha ao carregar IA. Verifique sua conexão.';
+      cam.classList.add('err');
+      btnAbrir.disabled = false;
+      return;
+    }
+    if (!camOk){
+      msg.textContent = 'Falha ao acessar câmera. Verifique permissões.';
+      cam.classList.add('err');
+      btnAbrir.disabled = false;
+      return;
+    }
+
+    msg.textContent = 'Alinhe o rosto no oval e clique em Capturar';
+    btnCap.disabled = false;
+    btnAbrir.textContent = '🔄 Reiniciar';
+    btnAbrir.disabled = false;
+  });
+
+  /* Capturar → detectar → preview de confirmação */
+  btnCap.addEventListener('click', async function(){
+    btnCap.disabled = true;
+    cam.classList.remove('ok','err');
+    msg.textContent = 'Detectando rosto...';
+
+    var det = await facialDetectar(video);
+    if (!det){
+      msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais e melhore a iluminação.';
+      cam.classList.add('err');
+      btnCap.disabled = false;
+      return;
+    }
+
+    descAtual = det.descriptor;
+    blobAtual = await facialCapturarBlob(video);
+
+    // Congela imagem no canvas (preview)
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    canvas.style.display = 'block';
+    video.style.display = 'none';
+    cam.classList.add('ok');
+    msg.textContent = '✓ Rosto detectado! Confirma?';
+
+    // Troca botões
+    foot.innerHTML =
+      '<button class="btn btn-ghost" id="fcmRefazer">← Refazer</button>'+
+      '<button class="btn btn-primary" id="fcmSalvar">✅ Salvar Cadastro</button>';
+
+    modal.querySelector('#fcmRefazer').addEventListener('click', function(){
+      canvas.style.display = 'none';
+      video.style.display = 'block';
+      cam.classList.remove('ok','err');
+      msg.textContent = 'Alinhe o rosto e clique em Capturar';
+      descAtual = null; blobAtual = null;
+      foot.innerHTML =
+        '<button class="btn btn-ghost" id="fcmAbrir2">🔄 Reiniciar</button>'+
+        '<button class="btn btn-primary" id="fcmCapturar2">✨ Capturar Rosto</button>';
+      // Rebind
+      modal.querySelector('#fcmAbrir2').addEventListener('click', function(){ btnAbrir.click(); });
+      var newCap = modal.querySelector('#fcmCapturar2');
+      newCap.disabled = false;
+      newCap.addEventListener('click', function(){
+        newCap.disabled = true;
+        capturarSalvar();
+      });
+    });
+
+    modal.querySelector('#fcmSalvar').addEventListener('click', salvarCadastro);
+  });
+
+  async function salvarCadastro(){
+    status.textContent = '⏳ Enviando foto...';
+    modal.querySelector('#fcmSalvar').disabled = true;
+    modal.querySelector('#fcmRefazer').disabled = true;
+    try {
+      var fotoUrl = await facialUploadFoto(blobAtual, alvo.kind + '_' + alvo.id);
+      status.textContent = '⏳ Salvando cadastro...';
+
+      var tabela = alvo.kind === 'user' ? 'malba_users' : 'malba_store_members';
+      var payload = {
+        face_descriptor: Array.from(descAtual),
+        face_foto_url: fotoUrl,
+        face_cadastrado_em: new Date().toISOString()
+      };
+      var { error } = await sb.from(tabela).update(payload).eq('id', alvo.id);
+      if (error) throw error;
+
+      // Update local
+      if (alvo.kind === 'member'){
+        (ST.members||[]).forEach(function(m){
+          if (String(m.id)===String(alvo.id)){
+            m.face_descriptor = payload.face_descriptor;
+            m.face_foto_url = payload.face_foto_url;
+            m.face_cadastrado_em = payload.face_cadastrado_em;
+          }
+        });
+      } else {
+        (ST.users||[]).forEach(function(u){
+          if (String(u.id)===String(alvo.id)){
+            u.face_descriptor = payload.face_descriptor;
+            u.face_foto_url = payload.face_foto_url;
+            u.face_cadastrado_em = payload.face_cadastrado_em;
+          }
+        });
+        (ST.allUsers||[]).forEach(function(u){
+          if (String(u.id)===String(alvo.id)){
+            u.face_descriptor = payload.face_descriptor;
+            u.face_foto_url = payload.face_foto_url;
+            u.face_cadastrado_em = payload.face_cadastrado_em;
+          }
+        });
+      }
+
+      if (typeof toast==='function') toast('✓ Rosto de '+alvo.name+' cadastrado','success');
+      if (typeof auditLog==='function') auditLog('Cadastrou rosto', alvo.name||'');
+      close();
+    } catch(e){
+      console.error(e);
+      status.textContent = '❌ Erro: ' + (e.message||'desconhecido');
+      modal.querySelector('#fcmSalvar').disabled = false;
+      modal.querySelector('#fcmRefazer').disabled = false;
+    }
+  }
+}
+
 
 /* v179: Detecta se o login atual é um "balcão de loja" — user compartilhado por vários membros */
 function souLoginBalcao(){
