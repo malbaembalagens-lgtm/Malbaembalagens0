@@ -11598,6 +11598,320 @@ html.dark .gp-fac-warn { background: rgba(245,158,11,.22); color: #FBBF24; }
 
 html.dark .fon-b-i { background: rgba(139,92,246,.24); }
 
+
+/* ============================================================
+   v187 · Modal facial OBRIGATÓRIO (sem cadastro = bloqueio)
+   ============================================================ */
+.freq-modal {
+  max-width: 440px;
+  width: 92vw;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.freq-hero {
+  padding: var(--sp-6) var(--sp-5);
+  text-align: center;
+  color: #fff;
+}
+.freq-hero-user   { background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%); }
+.freq-hero-member { background: linear-gradient(135deg, #F59E0B 0%, #B45309 100%); }
+.freq-icon {
+  font-size: 42px;
+  line-height: 1;
+  margin-bottom: var(--sp-3);
+}
+.freq-title {
+  font-size: 20px;
+  font-weight: var(--fw-extrabold);
+  margin: 0 0 8px 0;
+  color: #fff;
+}
+.freq-sub {
+  font-size: 14px;
+  margin: 0;
+  color: rgba(255,255,255,.9);
+  line-height: 1.45;
+}
+.freq-body {
+  padding: var(--sp-4) var(--sp-5);
+}
+.freq-p {
+  color: var(--u-text);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+}
+.freq-p b { color: var(--u-text); font-weight: var(--fw-extrabold); }
+.freq-actions {
+  padding: var(--sp-3) var(--sp-5) var(--sp-4);
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: flex-end;
+  border-top: 1px solid var(--u-line);
+}
+.freq-btn-cad {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  color: #fff !important;
+  font-weight: var(--fw-extrabold);
+}
+.freq-btn-cad:hover { box-shadow: 0 6px 18px rgba(139,92,246,.4); }
+
+@media (max-width: 500px){
+  .freq-actions { flex-direction: column-reverse; }
+  .freq-actions .btn { width: 100%; }
+}
+
+
+/* ============================================================
+   v188 · Onboarding Wizard
+   ============================================================ */
+.onb-modal {
+  max-width: 560px;
+  width: 92vw;
+  max-height: 90vh;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.onb-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--u-line);
+}
+.onb-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+.onb-bullet {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--u-bg2);
+  color: var(--u-text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  border: 2px solid var(--u-line);
+  transition: all .18s;
+}
+.onb-bullet.active { background: #3B6FF7; color: #fff; border-color: #3B6FF7; box-shadow: 0 0 0 3px rgba(59,111,247,.15); }
+.onb-bullet.done { background: #16A34A; color: #fff; border-color: #16A34A; }
+.onb-bullet-sep {
+  flex: 1;
+  min-width: 12px;
+  max-width: 40px;
+  height: 2px;
+  background: var(--u-line);
+}
+.onb-title-wrap {
+  padding: var(--sp-4) var(--sp-5) 0;
+}
+.onb-title {
+  font-size: 20px;
+  font-weight: var(--fw-extrabold);
+  margin: 0 0 4px 0;
+  color: var(--u-text);
+}
+.onb-sub {
+  font-size: 12px;
+  color: var(--u-text3);
+  margin: 0;
+}
+.onb-body {
+  padding: var(--sp-4) var(--sp-5);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 250px;
+}
+.onb-err {
+  margin: 0 var(--sp-5);
+  margin-top: var(--sp-3);
+  padding: 8px 12px;
+  background: rgba(239,68,68,.12);
+  color: #B91C1C;
+  border-radius: var(--rd-md);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+}
+.onb-foot {
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--u-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  background: var(--u-bg2);
+}
+.onb-foot-r {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+}
+
+/* Campos */
+.onb-field {
+  margin-bottom: var(--sp-4);
+}
+.onb-field:last-child { margin-bottom: 0; }
+.onb-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.onb-field input[type="text"],
+.onb-field input[type="email"],
+.onb-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--u-bg);
+  color: var(--u-text);
+  box-sizing: border-box;
+}
+.onb-field input:focus,
+.onb-field select:focus {
+  outline: none;
+  border-color: #3B6FF7;
+  box-shadow: 0 0 0 3px rgba(59,111,247,.15);
+}
+.onb-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--u-text3);
+}
+
+.onb-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.onb-radio {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 2px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--u-bg);
+}
+.onb-radio.sel { border-color: #3B6FF7; background: rgba(59,111,247,.06); }
+.onb-radio input { margin-top: 3px; flex-shrink: 0; }
+.onb-radio b { display: block; font-size: 13px; color: var(--u-text); margin-bottom: 2px; }
+.onb-radio i { display: block; font-style: normal; font-size: 11px; color: var(--u-text3); line-height: 1.35; }
+
+.onb-colors {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.onb-color {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all .12s;
+}
+.onb-color:hover { transform: scale(1.1); }
+.onb-color.sel { border-color: var(--u-text); box-shadow: 0 0 0 3px var(--u-bg2); }
+
+.onb-pass-wrap {
+  display: flex;
+  gap: 6px;
+  align-items: stretch;
+}
+.onb-pass {
+  flex: 1;
+  padding: 12px 14px;
+  background: var(--u-bg2);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: var(--fw-extrabold);
+  letter-spacing: 2px;
+  color: var(--u-text);
+}
+.onb-pass-wrap .btn { padding: 0 12px; }
+
+.onb-info {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: rgba(59,111,247,.06);
+  border: 1px solid rgba(59,111,247,.2);
+  border-radius: var(--rd-lg);
+}
+.onb-info-icon { font-size: 28px; line-height: 1; flex-shrink: 0; }
+.onb-info b { display: block; font-size: 14px; margin-bottom: 4px; color: var(--u-text); }
+.onb-info p { font-size: 13px; margin: 0; color: var(--u-text2); line-height: 1.5; }
+
+/* Passo final (done) */
+.onb-done {
+  text-align: center;
+}
+.onb-done-icon { font-size: 56px; margin-bottom: var(--sp-3); }
+.onb-done-h {
+  font-size: 20px;
+  font-weight: var(--fw-extrabold);
+  margin: 0 0 var(--sp-4) 0;
+  color: #16A34A;
+}
+.onb-done-card {
+  background: var(--u-bg2);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  margin-bottom: var(--sp-3);
+}
+.onb-done-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--u-line);
+  font-size: 13px;
+}
+.onb-done-row:last-child { border-bottom: 0; }
+.onb-done-row span { color: var(--u-text3); }
+.onb-done-row b, .onb-done-row code { color: var(--u-text); font-weight: var(--fw-extrabold); }
+.onb-done-row code { font-family: 'Courier New', monospace; background: var(--u-bg); padding: 3px 8px; border-radius: 6px; letter-spacing: 2px; }
+.onb-done-hint {
+  font-size: 12px;
+  color: var(--u-text3);
+  margin-top: var(--sp-2);
+  padding: 8px;
+  background: rgba(245,158,11,.08);
+  border-radius: var(--rd-md);
+}
+.onb-done-hint + .onb-done-hint { background: var(--u-bg2); color: var(--u-text2); }
+
+@media (max-width: 600px){
+  .onb-modal { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .onb-field-row { grid-template-columns: 1fr; }
+  .onb-bullet-sep { max-width: 20px; }
+}
+
 </style>
 </head>
 <body>
@@ -11621,7 +11935,7 @@ html.dark .fon-b-i { background: rgba(139,92,246,.24); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v185';
+var APP_BUILD = 'v188';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -21694,7 +22008,14 @@ function bindCentral(){
   });
   // ações do detalhe
   var novoColab = document.getElementById('cadNovoColab');
-  if (novoColab) novoColab.addEventListener('click', function(){ openMemberModal({ store_unit_id: ST.central.lojaId || (ST.store?ST.store.id:null) }); });
+  if (novoColab) novoColab.addEventListener('click', function(){
+    // v188: agora abre o wizard de onboarding em vez do modal simples
+    openOnboardingWizard({
+      tipo: 'member',
+      sector: 'lojas',
+      storeId: ST.central.lojaId || (ST.store?ST.store.id:null)
+    });
+  });
   var editarColab = document.getElementById('cadEditarColab');
   if (editarColab) editarColab.addEventListener('click', function(){
     var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
@@ -21708,7 +22029,10 @@ function bindCentral(){
     if (l) openStoreModal(l);
   });
   var novoUser = document.getElementById('cadNovoUsuario');
-  if (novoUser) novoUser.addEventListener('click', function(){ openUserModal({}); });
+  if (novoUser) novoUser.addEventListener('click', function(){
+    // v188: wizard modo user
+    openOnboardingWizard({ tipo: 'user', sector: (ST.sector||'gestao') });
+  });
   // ações da aba Acesso
   var criarAc = document.getElementById('cadCriarAcesso');
   if (criarAc) criarAc.addEventListener('click', function(){
@@ -30190,6 +30514,488 @@ function openFacialOnboardingModal(user){
   modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
 }
 
+/* ============================================================
+   v187 · Facial OBRIGATÓRIO pra bater ponto
+   ============================================================
+   Sem cadastro facial = SEM PONTO. Todos os 4 canais
+   (topbar, página de ponto, balcão de loja, quiosque QR)
+   passam a exigir cadastro antes da 1ª batida.
+   
+   Ligue/desligue via FACIAL_CFG.OBRIGATORIO (default true).
+   ============================================================ */
+
+/* Bandeira global (dá pra virar false se algum dia precisar) */
+FACIAL_CFG.OBRIGATORIO = true;
+
+/* Modal de bloqueio pra USER LOGADO — tem botão pra cadastrar sozinho */
+function openFacialRequiredUserModal(user){
+  if (document.getElementById('facialReqModal')) return;
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialReqModal';
+  var nome = (user && user.name || 'colaborador').split(' ')[0];
+  modal.innerHTML = '<div class="modal freq-modal">'+
+    '<div class="freq-hero freq-hero-user">'+
+      '<div class="freq-icon">🔒</div>'+
+      '<h2 class="freq-title">Cadastre seu rosto pra bater ponto</h2>'+
+      '<p class="freq-sub">O ponto passou a exigir verificação facial. Sem cadastro, você não consegue registrar entrada, almoço ou saída.</p>'+
+    '</div>'+
+    '<div class="freq-body">'+
+      '<p class="freq-p"><b>É rápido:</b> uns 20 segundos na câmera e você fica liberado pra sempre. Depois disso, cada batida abre a câmera e confirma que é você.</p>'+
+    '</div>'+
+    '<div class="freq-actions">'+
+      '<button class="btn btn-primary freq-btn-cad" id="freqCad">🎭 Cadastrar rosto agora</button>'+
+      '<button class="btn btn-ghost" id="freqClose">Depois</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(modal);
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.querySelector('#freqCad').addEventListener('click', function(){
+    close();
+    openFacialCadastroModal({ id: user.id, name: user.name || user.email || 'colaborador', kind: 'user' });
+  });
+  modal.querySelector('#freqClose').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+}
+
+/* Modal de bloqueio pra MEMBRO DE LOJA — precisa pedir pro gestor */
+function openFacialRequiredMemberModal(membro){
+  if (document.getElementById('facialReqModal')) return;
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialReqModal';
+  var nome = (membro && membro.name || 'colaborador').split(' ')[0];
+  modal.innerHTML = '<div class="modal freq-modal">'+
+    '<div class="freq-hero freq-hero-member">'+
+      '<div class="freq-icon">🔒</div>'+
+      '<h2 class="freq-title">'+esc(nome)+' precisa cadastrar o rosto</h2>'+
+      '<p class="freq-sub">O ponto passou a exigir verificação facial. Sem cadastro, não é possível bater.</p>'+
+    '</div>'+
+    '<div class="freq-body">'+
+      '<p class="freq-p"><b>Como resolver:</b> peça ao gestor pra abrir a ficha do colaborador em <b>Equipe → '+esc(nome)+' → 🎭 Facial</b> e cadastrar o rosto pela câmera. Leva 20 segundos.</p>'+
+    '</div>'+
+    '<div class="freq-actions">'+
+      '<button class="btn btn-primary" id="freqClose2">Entendi</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(modal);
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.querySelector('#freqClose2').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+}
+
+/* Guard central: retorna true SE deve bloquear a batida.
+   - kind 'user'    → mostra modal user (com CTA cadastro)
+   - kind 'member'  → mostra modal member (peça ao gestor)
+   - Se FACIAL_CFG.OBRIGATORIO=false, nunca bloqueia (retorna false). */
+function facialBloqueiaSemCadastro(alvo, kind){
+  if (!FACIAL_CFG.OBRIGATORIO) return false;
+  if (!alvo) return false;
+  if (typeof facialTemCadastro==='function' && facialTemCadastro(alvo)) return false;
+  if (kind === 'user') openFacialRequiredUserModal(alvo);
+  else openFacialRequiredMemberModal(alvo);
+  return true;
+}
+
+/* ============================================================
+   v188 · Wizard de novo colaborador (Fatia 1/3)
+   ============================================================
+   Substitui os fluxos separados openUserModal({}) e
+   openMemberModal({}) por um wizard linear em 5 steps.
+   Nesta fatia: navegação + steps 1-3 + criação de fato.
+   Steps 4 (escala) e 5 (facial) ficam pra v189/v190.
+   ============================================================ */
+
+var ONB_STATE = null;
+
+function onbInit(){
+  return {
+    step: 1,
+    total: 5,
+    // Step 1: identidade
+    tipo: 'user',        // 'user' | 'member'
+    name: '',
+    email: '',
+    phone: '',
+    color: onbCorAleatoria(),
+    // Step 2: trabalho
+    sector: 'lojas',
+    role: '',            // cargo/função
+    storeId: '',         // se lojas
+    equipeId: '',        // se user
+    // Step 3: acesso (só user)
+    accessLevel: 'colaborador',
+    tempPass: onbSenhaAleatoria(),
+    // Meta
+    busy: false,
+    err: '',
+    createdId: null
+  };
+}
+
+function onbCorAleatoria(){
+  var paleta = ['#3B6FF7','#8B5CF6','#EF4444','#F59E0B','#10B981','#06B6D4','#EC4899','#84CC16'];
+  return paleta[Math.floor(Math.random()*paleta.length)];
+}
+
+function onbSenhaAleatoria(){
+  // 8 caracteres: 2 letras + 4 dígitos + 2 letras (fácil de ditar)
+  var chars = 'abcdefghijkmnpqrstuvwxyz23456789';
+  var s = '';
+  for (var i=0;i<8;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+function openOnboardingWizard(seed){
+  ONB_STATE = onbInit();
+  if (seed && seed.sector) ONB_STATE.sector = seed.sector;
+  if (seed && seed.storeId) ONB_STATE.storeId = seed.storeId;
+  if (seed && seed.tipo) ONB_STATE.tipo = seed.tipo;
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'onbWizard';
+  modal.innerHTML = '<div class="modal onb-modal" id="onbModal"></div>';
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e){ if (e.target===modal) onbClose(); });
+  onbRender();
+}
+
+function onbClose(){
+  var m = document.getElementById('onbWizard');
+  if (m && m.parentNode) m.parentNode.removeChild(m);
+  ONB_STATE = null;
+}
+
+function onbRender(){
+  var el = document.getElementById('onbModal');
+  if (!el) return;
+  var s = ONB_STATE;
+  var stepHtml = '';
+  if (s.step === 1) stepHtml = onbStep1();
+  else if (s.step === 2) stepHtml = onbStep2();
+  else if (s.step === 3) stepHtml = onbStep3();
+  else if (s.step === 4) stepHtml = onbStep4();
+  else if (s.step === 5) stepHtml = onbStep5();
+  else if (s.step === 6) stepHtml = onbStepDone();
+
+  // Progresso (5 bolinhas)
+  var bullets = '';
+  for (var i=1; i<=s.total; i++){
+    var cls = 'onb-bullet' + (i===s.step?' active':'') + (i<s.step?' done':'');
+    bullets += '<span class="'+cls+'">'+(i<s.step?'✓':i)+'</span>';
+    if (i < s.total) bullets += '<span class="onb-bullet-sep"></span>';
+  }
+
+  var titulos = ['Identidade','Trabalho','Acesso','Escala','Facial','Pronto!'];
+  var subs = [
+    'Quem é o novo colaborador?',
+    'Onde ele vai trabalhar?',
+    'Como ele acessa o sistema?',
+    'Quais os horários da semana?',
+    'Cadastrar rosto pra bater ponto',
+    ''
+  ];
+
+  el.innerHTML = '<div class="onb-head">'+
+      '<div class="onb-progress">'+bullets+'</div>'+
+      '<button class="fx-close" id="onbCloseX" title="Fechar">×</button>'+
+    '</div>'+
+    (s.step<=s.total ? '<div class="onb-title-wrap">'+
+      '<h2 class="onb-title">'+esc(titulos[s.step-1])+'</h2>'+
+      '<p class="onb-sub">Passo '+s.step+' de '+s.total+' · '+esc(subs[s.step-1])+'</p>'+
+    '</div>' : '')+
+    (s.err ? '<div class="onb-err">'+esc(s.err)+'</div>' : '')+
+    '<div class="onb-body">'+stepHtml+'</div>'+
+    onbFoot();
+
+  onbBind();
+}
+
+function onbFoot(){
+  var s = ONB_STATE;
+  if (s.step === 6){
+    return '<div class="onb-foot">'+
+      '<button class="btn btn-primary" id="onbFinish">Concluir</button>'+
+    '</div>';
+  }
+  var prox = s.step === s.total ? 'Criar colaborador' : 'Próximo →';
+  var proxId = s.step === s.total ? 'onbCriar' : 'onbNext';
+  var canSkip = (s.step === 4 || s.step === 5);
+  return '<div class="onb-foot">'+
+    (s.step>1 ? '<button class="btn btn-ghost" id="onbBack">← Voltar</button>' : '<span></span>')+
+    '<div class="onb-foot-r">'+
+      (canSkip ? '<button class="btn btn-ghost" id="onbSkip">Pular</button>' : '')+
+      '<button class="btn btn-primary" id="'+proxId+'"'+(s.busy?' disabled':'')+'>'+(s.busy?'...':prox)+'</button>'+
+    '</div>'+
+  '</div>';
+}
+
+function onbBind(){
+  var el = document.getElementById('onbModal');
+  if (!el) return;
+  var s = ONB_STATE;
+  var close = el.querySelector('#onbCloseX'); if (close) close.addEventListener('click', onbClose);
+  var back = el.querySelector('#onbBack'); if (back) back.addEventListener('click', function(){ if(s.step>1){ s.step--; s.err=''; onbRender(); }});
+  var skip = el.querySelector('#onbSkip'); if (skip) skip.addEventListener('click', function(){ s.step++; s.err=''; onbRender(); });
+  var next = el.querySelector('#onbNext'); if (next) next.addEventListener('click', onbAvancar);
+  var criar = el.querySelector('#onbCriar'); if (criar) criar.addEventListener('click', onbCriarColaborador);
+  var finish = el.querySelector('#onbFinish'); if (finish) finish.addEventListener('click', onbClose);
+
+  // Bindings de input por step
+  if (s.step === 1){
+    ['tipoUser','tipoMember'].forEach(function(id){
+      var r = el.querySelector('#'+id);
+      if (r) r.addEventListener('change', function(){ s.tipo = id==='tipoUser'?'user':'member'; onbRender(); });
+    });
+    var nm = el.querySelector('#onbName'); if (nm) nm.addEventListener('input', function(){ s.name = nm.value; });
+    var em = el.querySelector('#onbEmail'); if (em) em.addEventListener('input', function(){ s.email = em.value; });
+    var ph = el.querySelector('#onbPhone'); if (ph) ph.addEventListener('input', function(){ s.phone = ph.value; });
+    el.querySelectorAll('.onb-color').forEach(function(b){
+      b.addEventListener('click', function(){ s.color = b.getAttribute('data-c'); onbRender(); });
+    });
+  } else if (s.step === 2){
+    var se = el.querySelector('#onbSector'); if (se) se.addEventListener('change', function(){ s.sector = se.value; onbRender(); });
+    var rl = el.querySelector('#onbRole'); if (rl) rl.addEventListener('input', function(){ s.role = rl.value; });
+    var lj = el.querySelector('#onbStore'); if (lj) lj.addEventListener('change', function(){ s.storeId = lj.value; });
+    var eq = el.querySelector('#onbEquipe'); if (eq) eq.addEventListener('change', function(){ s.equipeId = eq.value; });
+  } else if (s.step === 3){
+    var al = el.querySelector('#onbAcc'); if (al) al.addEventListener('change', function(){ s.accessLevel = al.value; });
+    var re = el.querySelector('#onbRePass'); if (re) re.addEventListener('click', function(){ s.tempPass = onbSenhaAleatoria(); onbRender(); });
+    var cp = el.querySelector('#onbCopyPass'); if (cp) cp.addEventListener('click', function(){
+      try { navigator.clipboard.writeText(s.tempPass); if (typeof toast==='function') toast('Senha copiada','success'); } catch(e){}
+    });
+  }
+}
+
+/* ---------------- Steps ---------------- */
+
+function onbStep1(){
+  var s = ONB_STATE;
+  var cores = ['#3B6FF7','#8B5CF6','#EF4444','#F59E0B','#10B981','#06B6D4','#EC4899','#84CC16'];
+  var coresBtns = cores.map(function(c){
+    var sel = c===s.color ? ' sel' : '';
+    return '<button class="onb-color'+sel+'" data-c="'+c+'" style="background:'+c+'"></button>';
+  }).join('');
+  return '<div class="onb-field-row">'+
+      '<label class="onb-radio'+(s.tipo==='user'?' sel':'')+'">'+
+        '<input type="radio" name="onbTipo" id="tipoUser"'+(s.tipo==='user'?' checked':'')+'>'+
+        '<div><b>👤 Com login</b><i>Acessa o sistema com email e senha (recomendado)</i></div>'+
+      '</label>'+
+      '<label class="onb-radio'+(s.tipo==='member'?' sel':'')+'">'+
+        '<input type="radio" name="onbTipo" id="tipoMember"'+(s.tipo==='member'?' checked':'')+'>'+
+        '<div><b>🏬 Só bate ponto</b><i>Vendedor de loja que só usa o balcão/quiosque</i></div>'+
+      '</label>'+
+    '</div>'+
+    '<div class="onb-field">'+
+      '<label>Nome completo *</label>'+
+      '<input type="text" id="onbName" value="'+esc(s.name)+'" placeholder="Ex: Rafaella Souza" autofocus>'+
+    '</div>'+
+    (s.tipo==='user' ? '<div class="onb-field">'+
+      '<label>Email *</label>'+
+      '<input type="email" id="onbEmail" value="'+esc(s.email)+'" placeholder="rafaella@malba.com.br">'+
+    '</div>' : '')+
+    '<div class="onb-field">'+
+      '<label>Telefone (opcional)</label>'+
+      '<input type="text" id="onbPhone" value="'+esc(s.phone)+'" placeholder="(11) 99999-9999">'+
+    '</div>'+
+    '<div class="onb-field">'+
+      '<label>Cor de identificação</label>'+
+      '<div class="onb-colors">'+coresBtns+'</div>'+
+    '</div>';
+}
+
+function onbStep2(){
+  var s = ONB_STATE;
+  var setores = [
+    {v:'marketing', l:'📢 Marketing'},
+    {v:'vendas', l:'🎯 Vendas'},
+    {v:'lojas', l:'🏬 Lojas'},
+    {v:'financeiro', l:'💰 Financeiro'},
+    {v:'gestao', l:'⚙️ Gestão'}
+  ];
+  var seOpts = setores.map(function(x){
+    return '<option value="'+x.v+'"'+(x.v===s.sector?' selected':'')+'>'+x.l+'</option>';
+  }).join('');
+  var lojas = (ST.storeUnits||[]).filter(function(l){return l.is_active!==false;});
+  var ljOpts = '<option value="">— Selecione a loja —</option>' + lojas.map(function(l){
+    return '<option value="'+esc(l.id)+'"'+(String(l.id)===String(s.storeId)?' selected':'')+'>'+esc(l.name)+'</option>';
+  }).join('');
+  var equipes = (ST.equipes||[]).filter(function(e){return e.is_active!==false;});
+  var eqOpts = '<option value="">— Sem equipe —</option>' + equipes.map(function(e){
+    return '<option value="'+esc(e.id)+'"'+(String(e.id)===String(s.equipeId)?' selected':'')+'>'+esc(e.name)+'</option>';
+  }).join('');
+
+  return '<div class="onb-field">'+
+      '<label>Setor *</label>'+
+      '<select id="onbSector">'+seOpts+'</select>'+
+    '</div>'+
+    '<div class="onb-field">'+
+      '<label>Cargo / função</label>'+
+      '<input type="text" id="onbRole" value="'+esc(s.role)+'" placeholder="Ex: Vendedora, Auxiliar, Analista">'+
+    '</div>'+
+    (s.sector==='lojas' ? '<div class="onb-field">'+
+      '<label>Loja *</label>'+
+      '<select id="onbStore">'+ljOpts+'</select>'+
+      (lojas.length===0 ? '<small class="onb-hint">Nenhuma loja cadastrada. Cadastre em Configurações → Lojas.</small>' : '')+
+    '</div>' : '')+
+    (s.tipo==='user' ? '<div class="onb-field">'+
+      '<label>Equipe (opcional)</label>'+
+      '<select id="onbEquipe">'+eqOpts+'</select>'+
+    '</div>' : '');
+}
+
+function onbStep3(){
+  var s = ONB_STATE;
+  if (s.tipo === 'member'){
+    // Member não tem acesso — pula step
+    return '<div class="onb-info">'+
+      '<div class="onb-info-icon">ℹ️</div>'+
+      '<div><b>Membro de loja não tem login</b>'+
+      '<p>Esse colaborador só usa o balcão/quiosque pra bater ponto. Não precisa de acesso ao sistema. Clique em <b>Próximo</b> pra seguir.</p></div>'+
+    '</div>';
+  }
+  var niveis = [
+    {v:'viewer', l:'👁️ Viewer', d:'Só visualiza — não edita nada'},
+    {v:'colaborador', l:'👤 Colaborador', d:'Executa tarefas e bate ponto (padrão)'},
+    {v:'supervisor', l:'📊 Supervisor', d:'+ Redistribui tarefas e vê indicadores'},
+    {v:'gestor', l:'🎯 Gestor', d:'+ Gerencia setor inteiro'},
+    {v:'admin', l:'⚙️ Admin', d:'+ Configura o sistema todo (cuidado)'}
+  ];
+  var opts = niveis.map(function(n){
+    return '<option value="'+n.v+'"'+(n.v===s.accessLevel?' selected':'')+'>'+n.l+' — '+n.d+'</option>';
+  }).join('');
+  return '<div class="onb-field">'+
+      '<label>Nível de acesso *</label>'+
+      '<select id="onbAcc">'+opts+'</select>'+
+    '</div>'+
+    '<div class="onb-field">'+
+      '<label>Senha temporária</label>'+
+      '<div class="onb-pass-wrap">'+
+        '<code class="onb-pass">'+esc(s.tempPass)+'</code>'+
+        '<button class="btn btn-ghost" id="onbCopyPass" title="Copiar">📋</button>'+
+        '<button class="btn btn-ghost" id="onbRePass" title="Gerar outra">🔄</button>'+
+      '</div>'+
+      '<small class="onb-hint">Anote ou copie. O colaborador vai usar essa senha no primeiro login.</small>'+
+    '</div>';
+}
+
+function onbStep4(){
+  return '<div class="onb-info">'+
+    '<div class="onb-info-icon">🕐</div>'+
+    '<div><b>Escala semanal — em breve nesta versão do wizard</b>'+
+    '<p>Por ora, você pode <b>pular</b> este passo e definir a escala depois em <b>Equipe → '+esc(ONB_STATE.name||'colaborador')+' → 🕐 Escala</b>.</p></div>'+
+  '</div>';
+}
+
+function onbStep5(){
+  return '<div class="onb-info">'+
+    '<div class="onb-info-icon">🎭</div>'+
+    '<div><b>Cadastro facial — em breve nesta versão do wizard</b>'+
+    '<p>Por ora, você pode <b>pular</b>. O colaborador é convidado a cadastrar no primeiro login (v185). Se preferir cadastrar agora, use <b>Equipe → '+esc(ONB_STATE.name||'colaborador')+' → 🎭 Facial</b>.</p></div>'+
+  '</div>';
+}
+
+function onbStepDone(){
+  var s = ONB_STATE;
+  var tipo = s.tipo==='user' ? 'Usuário com login' : 'Membro de loja';
+  var setoresMap = {marketing:'Marketing',vendas:'Vendas',lojas:'Lojas',financeiro:'Financeiro',gestao:'Gestão'};
+  return '<div class="onb-done">'+
+    '<div class="onb-done-icon">🎉</div>'+
+    '<h3 class="onb-done-h">Colaborador criado com sucesso!</h3>'+
+    '<div class="onb-done-card">'+
+      '<div class="onb-done-row"><span>Nome</span><b>'+esc(s.name)+'</b></div>'+
+      '<div class="onb-done-row"><span>Tipo</span><b>'+esc(tipo)+'</b></div>'+
+      '<div class="onb-done-row"><span>Setor</span><b>'+esc(setoresMap[s.sector]||s.sector)+'</b></div>'+
+      (s.role ? '<div class="onb-done-row"><span>Cargo</span><b>'+esc(s.role)+'</b></div>' : '')+
+      (s.tipo==='user' ? '<div class="onb-done-row"><span>Email</span><b>'+esc(s.email)+'</b></div>' : '')+
+      (s.tipo==='user' ? '<div class="onb-done-row"><span>Senha inicial</span><code>'+esc(s.tempPass)+'</code></div>' : '')+
+    '</div>'+
+    (s.tipo==='user' ? '<div class="onb-done-hint">⚠️ Anote a senha antes de fechar — ela não será mostrada novamente.</div>' : '')+
+    '<div class="onb-done-hint">Próximos passos: cadastrar escala e rosto na ficha do colaborador.</div>'+
+  '</div>';
+}
+
+/* ---------------- Navegação & Validação ---------------- */
+
+function onbAvancar(){
+  var s = ONB_STATE;
+  s.err = '';
+  if (s.step === 1){
+    if (!s.name || s.name.trim().length < 3){ s.err = 'Nome muito curto'; onbRender(); return; }
+    if (s.tipo === 'user'){
+      if (!s.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.email)){ s.err = 'Email inválido'; onbRender(); return; }
+    }
+  } else if (s.step === 2){
+    if (s.sector === 'lojas' && !s.storeId){ s.err = 'Selecione a loja'; onbRender(); return; }
+  }
+  s.step++;
+  onbRender();
+}
+
+/* ---------------- Criação de fato ---------------- */
+
+function onbCriarColaborador(){
+  var s = ONB_STATE;
+  if (s.busy) return;
+  s.busy = true;
+  s.err = '';
+  onbRender();
+
+  if (s.tipo === 'member'){
+    var rec = {
+      name: s.name.trim(),
+      role: s.role || null,
+      color: s.color,
+      phone: s.phone || null,
+      store_unit_id: s.storeId,
+      is_active: true
+    };
+    sb.from('malba_store_members').insert(rec).select().single().then(function(r){
+      if (r.error){ s.busy = false; s.err = 'Erro: '+(r.error.message||''); onbRender(); return; }
+      if (r.data){
+        if (!ST.members) ST.members = [];
+        ST.members.push(r.data);
+        s.createdId = r.data.id;
+      }
+      s.step = 6;
+      s.busy = false;
+      onbRender();
+      if (typeof renderPage==='function') renderPage();
+    });
+  } else {
+    var urec = {
+      name: s.name.trim(),
+      email: s.email.trim().toLowerCase(),
+      sector: s.sector,
+      access_level: s.accessLevel,
+      role: (s.accessLevel==='admin' ? 'admin' : 'user'),
+      sector_role: (s.accessLevel==='admin'||s.accessLevel==='gestor' ? 'admin' : 'user'),
+      color: s.color,
+      initials: iniciais(s.name),
+      phone: s.phone || null,
+      position: s.role || null,
+      equipe_id: s.equipeId || null,
+      store_unit_id: (s.sector==='lojas' ? s.storeId : null),
+      temp_password: s.tempPass    // fica no registro pra ele setar depois
+    };
+    sb.from('malba_users').insert(urec).select().single().then(function(r){
+      if (r.error){ s.busy = false; s.err = 'Erro: '+(r.error.message||''); onbRender(); return; }
+      if (r.data){
+        if (!ST.allUsers) ST.allUsers = [];
+        ST.allUsers.push(r.data);
+        if (!ST.users) ST.users = [];
+        if (r.data.sector === ST.sector) ST.users.push(r.data);
+        s.createdId = r.data.id;
+      }
+      s.step = 6;
+      s.busy = false;
+      onbRender();
+      if (typeof renderPage==='function') renderPage();
+    });
+  }
+}
+
 function openFacialCadastroModal(alvo){
   if (!alvo || !alvo.id){ if (typeof toast==='function') toast('Alvo inválido','error'); return; }
 
@@ -30438,7 +31244,7 @@ function balcaoCheckinMembro(memberId){
 
 function openFacialVerifModal(membro, cb){
   if (!membro || !facialTemCadastro(membro)){
-    if (typeof toast==='function') toast('Membro sem cadastro facial','error');
+    if (typeof toast==='function') toast('Sem cadastro facial','error');
     return;
   }
 
@@ -30555,15 +31361,16 @@ function baterPontoDeMembro(memberId, cb){
     if (typeof toast==='function') toast(membro.name+' já bateu todas as batidas ✓','success');
     return;
   }
-  // v182: se o membro tem facial cadastrado, exige verificação antes de bater
+  // v182/v187: facial obrigatório
   if (typeof facialTemCadastro==='function' && facialTemCadastro(membro)){
     openFacialVerifModal(membro, function(verif){
-      // callback só é chamado quando aprovou — segue com o insert/update carregando metadados
       baterPontoDeMembroSem(membro, slot, ci, cb, verif);
     });
     return;
   }
-  // Sem cadastro facial → bate direto como sempre
+  // v187: sem cadastro → bloqueia (peça ao gestor)
+  if (typeof facialBloqueiaSemCadastro==='function' && facialBloqueiaSemCadastro(membro, 'member')) return;
+  // Fallback (obrigatório desligado) → bate direto
   baterPontoDeMembroSem(membro, slot, ci, cb, null);
 }
 
@@ -30637,6 +31444,22 @@ function topbarBaterPonto(cb){
     if (typeof toast==='function') toast('Você já bateu todas as batidas do dia ✓','success');
     return;
   }
+  // v186/v187: se o usuário tem facial cadastrado, exige verificação; se não tem, bloqueia (v187)
+  var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(me.id);})[0] || me;
+  if (typeof facialTemCadastro==='function' && facialTemCadastro(uAtual)){
+    openFacialVerifModal(uAtual, function(verif){
+      topbarBaterPontoSem(me, slot, ci, cb, verif);
+    });
+    return;
+  }
+  // v187: sem cadastro → bloqueia com modal de cadastro
+  if (typeof facialBloqueiaSemCadastro==='function' && facialBloqueiaSemCadastro(uAtual, 'user')) return;
+  // Fallback (obrigatório desligado) → bate direto
+  topbarBaterPontoSem(me, slot, ci, cb, null);
+}
+
+/* v186: separado o insert/update pra reutilizar com/sem facial */
+function topbarBaterPontoSem(me, slot, ci, cb, facialData){
   var nowIso = new Date().toISOString();
   var mid = (typeof meuMemberId==='function') ? meuMemberId() : null;
   var sid = (typeof meuStoreId==='function') ? meuStoreId() : null;
@@ -30651,6 +31474,13 @@ function topbarBaterPonto(cb){
       work_date: today()
     };
     payload[slot.key] = nowIso;
+    // v186: metadados de facial se veio verificação
+    if (facialData){
+      payload.face_similaridade = facialData.similaridade;
+      payload.face_foto_url = facialData.fotoUrl;
+      payload.face_verified = true;
+      payload.face_verificado_em = nowIso;
+    }
     sb.from('malba_checkins').insert(payload).select().single().then(function(r){
       if (r.error){
         if (typeof toast==='function') toast('Erro ao bater ponto: '+(r.error.message||''),'error');
@@ -30670,6 +31500,13 @@ function topbarBaterPonto(cb){
     // Update na row existente com o slot novo
     var patch = {};
     patch[slot.key] = nowIso;
+    // v186: metadados de facial no update também
+    if (facialData){
+      patch.face_similaridade = facialData.similaridade;
+      patch.face_foto_url = facialData.fotoUrl;
+      patch.face_verified = true;
+      patch.face_verificado_em = nowIso;
+    }
     sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
       if (r.error){
         if (typeof toast==='function') toast('Erro ao bater ponto: '+(r.error.message||''),'error');
@@ -31098,10 +31935,38 @@ function togglePontoMembro(member){
    Comportamento novo: se sem tipo, avança automático. */
 function registrarCheckin(tipo){
   var u = ST.session.user;
+  // v186/v187: facial obrigatório
+  var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(u.id);})[0] || u;
+  if (typeof facialTemCadastro==='function' && facialTemCadastro(uAtual)){
+    openFacialVerifModal(uAtual, function(verif){
+      registrarCheckinSem(tipo, verif);
+    });
+    return;
+  }
+  // v187: sem cadastro → bloqueia
+  if (typeof facialBloqueiaSemCadastro==='function' && facialBloqueiaSemCadastro(uAtual, 'user')) return;
+  registrarCheckinSem(tipo, null);
+}
+
+/* v186: insert/update reutilizável com/sem facial */
+function registrarCheckinSem(tipo, facialData){
+  var u = ST.session.user;
   var me = u.id;
   var t = today();
   var existing = checkinHojeDoUser();
   var nowIso = new Date().toISOString();
+
+  // Helper: monta face_* pro payload
+  function facFields(){
+    if (!facialData) return {};
+    return {
+      face_similaridade: facialData.similaridade,
+      face_foto_url: facialData.fotoUrl,
+      face_verified: true,
+      face_verificado_em: nowIso
+    };
+  }
+  function merge(a,b){ for (var k in b) a[k]=b[k]; return a; }
 
   // Se sem tipo: avança automático
   if (!tipo){
@@ -31120,13 +31985,13 @@ function registrarCheckin(tipo){
       return;
     }
     if (existing){
-      sb.from('malba_checkins').update({ entrada: nowIso }).eq('id', existing.id).then(function(r){
+      sb.from('malba_checkins').update(merge({ entrada: nowIso }, facFields())).eq('id', existing.id).then(function(r){
         if (!r.error){ existing.entrada=nowIso; toast('Entrada registrada','success'); renderPage(); }
         else toast('Erro ao registrar','error');
       });
     } else {
       var mid = meuMemberId(), sid = meuStoreId();
-      sb.from('malba_checkins').insert({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }).select().single().then(function(r){
+      sb.from('malba_checkins').insert(merge({ sector:ST.sector, store_unit_id:sid, user_id:me, member_id:mid, work_date:t, entrada:nowIso }, facFields())).select().single().then(function(r){
         if (!r.error && r.data){
           ST.checkins.push(r.data);
           auditLog('Check-in (entrada)');
@@ -31152,6 +32017,7 @@ function registrarCheckin(tipo){
     return;
   }
   var patch2 = {}; patch2[tipo] = nowIso;
+  merge(patch2, facFields());  // v186
   sb.from('malba_checkins').update(patch2).eq('id', existing.id).then(function(r){
     if (r.error){ toast('Erro ao registrar','error'); return; }
     existing[tipo] = nowIso;
@@ -33561,9 +34427,25 @@ function validarPinKiosk(){
   KIOSK_STATE.memberIdent = achado;
   KIOSK_STATE.ci = ci;
   KIOSK_STATE.busy = false;
-  // v183: se o membro tem facial cadastrado, força verificação antes de confirmar
+  // v183/v187: se tem facial cadastrado força verificação; se não tem e for obrigatório, bloqueia com msg
   if (typeof facialTemCadastro==='function' && facialTemCadastro(achado)){
     iniciarKioskFacialModo('verificar');
+    return;
+  }
+  if (FACIAL_CFG.OBRIGATORIO){
+    KIOSK_STATE.step = 'err';
+    KIOSK_STATE.msg = achado.name+' precisa cadastrar o rosto antes. Peça ao gestor: Equipe → '+achado.name+' → 🎭 Facial.';
+    KIOSK_STATE.pinBuffer = '';
+    KIOSK_STATE.memberIdent = null;
+    renderKioskUI();
+    // Volta pro PIN em 6s pra próxima tentativa
+    setTimeout(function(){
+      if (KIOSK_STATE.step === 'err'){
+        KIOSK_STATE.step = 'pin';
+        KIOSK_STATE.msg = '';
+        renderKioskUI();
+      }
+    }, 6000);
     return;
   }
   KIOSK_STATE.step = 'confirm';
