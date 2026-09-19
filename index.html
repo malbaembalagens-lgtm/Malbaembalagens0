@@ -11239,6 +11239,365 @@ html.dark .tbb-completo { background: rgba(22,163,74,.18); }
 html.dark .fi-btn-facial:hover { background: rgba(139,92,246,.2); }
 html.dark #userFacial.user-fac-on { background: rgba(22,163,74,.1); }
 
+
+/* ============================================================
+   v182 · Verificação facial pra bater — modal + tag no balcão
+   ============================================================ */
+
+/* Tag 🎭 na linha do balcão */
+.tbb-fac {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 12px;
+  padding: 1px 6px;
+  background: rgba(139,92,246,.15);
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* Modal verificação (reusa estilo do cadastro fcm-*) */
+.fvm-modal {
+  max-width: 480px;
+  width: 92vw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fvm-head {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-3);
+}
+.fvm-head b {
+  display: block;
+  font-size: 16px;
+  color: var(--u-text);
+  font-weight: var(--fw-extrabold);
+}
+.fvm-head i {
+  display: block;
+  font-size: 12px;
+  color: var(--u-text3);
+  font-style: normal;
+  margin-top: 4px;
+}
+.fvm-head > div:first-child { flex: 1; min-width: 0; }
+
+.fvm-body {
+  padding: var(--sp-4);
+}
+.fvm-cam {
+  position: relative;
+  background: #000;
+  border-radius: var(--rd-lg);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  border: 3px solid var(--u-line);
+  margin-bottom: var(--sp-3);
+  transition: border-color var(--tr-fast);
+}
+.fvm-cam.ok { border-color: #16A34A; box-shadow: 0 0 20px rgba(22,163,74,.3); }
+.fvm-cam.err { border-color: #EF4444; }
+.fvm-cam video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scaleX(-1);
+}
+.fvm-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fvm-oval {
+  width: 55%;
+  aspect-ratio: 3/4;
+  border: 3px dashed rgba(255,255,255,.5);
+  border-radius: 50%;
+}
+.fvm-msg {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background: rgba(0,0,0,.75);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--rd-md);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  z-index: 2;
+}
+.fvm-info {
+  padding: 10px 12px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  font-size: 12px;
+  color: var(--u-text2);
+  text-align: center;
+}
+.fvm-foot {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--u-line);
+  justify-content: flex-end;
+}
+.fvm-foot .btn { padding: 10px 18px; }
+
+@media (max-width: 500px){
+  .fvm-modal { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .fvm-foot { flex-direction: column; }
+  .fvm-foot .btn { width: 100%; }
+}
+
+html.dark .tbb-fac { background: rgba(139,92,246,.25); }
+
+
+/* ============================================================
+   v183 · Facial no Quiosque
+   ============================================================ */
+.kiosk-facial-cta {
+  margin-top: 20px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  color: #fff;
+  border: 0;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .18s;
+  box-shadow: 0 6px 20px rgba(139,92,246,.4);
+  width: 100%;
+}
+.kiosk-facial-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(139,92,246,.55); }
+.kiosk-facial-cta:active { transform: scale(.98); }
+
+.kiosk-facial-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.kiosk-sub {
+  color: rgba(255,255,255,.55);
+  font-size: 14px;
+  text-align: center;
+  margin-top: -6px;
+  margin-bottom: 4px;
+}
+.kiosk-facial-cam {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 3/4;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,.15);
+  transition: border-color .2s;
+}
+.kiosk-facial-cam video {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scaleX(-1);
+}
+.kiosk-facial-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.kiosk-facial-oval {
+  width: 60%;
+  aspect-ratio: 3/4;
+  border: 3px dashed rgba(255,255,255,.4);
+  border-radius: 50%;
+}
+.kiosk-facial-btns {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 380px;
+  margin-top: 8px;
+}
+.kiosk-facial-btns .kiosk-key {
+  flex: 1;
+  height: 68px;
+  font-size: 22px;
+  border-radius: 16px;
+}
+.kiosk-facial-btn {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  color: #fff !important;
+}
+.kiosk-facial-btn:active {
+  background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%) !important;
+}
+@media (max-width: 500px){
+  .kiosk-facial-cam { max-width: 100%; }
+  .kiosk-facial-btns { max-width: 100%; }
+}
+
+
+/* ============================================================
+   v184 · Indicadores facial no painel gestor
+   ============================================================ */
+.gp-fac {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+}
+.gp-fac-none {
+  color: var(--u-text3);
+  opacity: .5;
+}
+.gp-fac-wait {
+  background: rgba(139,92,246,.14);
+  color: #8B5CF6;
+}
+.gp-fac-ok {
+  background: rgba(22,163,74,.14);
+  color: #16A34A;
+}
+.gp-fac-warn {
+  background: rgba(245,158,11,.16);
+  color: #B45309;
+  border: 1px solid rgba(245,158,11,.35);
+}
+.gp-fac-cel { text-align: center; }
+
+html.dark .gp-fac-wait { background: rgba(139,92,246,.24); }
+html.dark .gp-fac-ok   { background: rgba(22,163,74,.22); color: #4ADE80; }
+html.dark .gp-fac-warn { background: rgba(245,158,11,.22); color: #FBBF24; }
+
+
+/* ============================================================
+   v185 · Onboarding facial no 1º login
+   ============================================================ */
+.fon-modal {
+  max-width: 460px;
+  width: 92vw;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.fon-hero {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  padding: var(--sp-6) var(--sp-5);
+  text-align: center;
+  color: #fff;
+}
+.fon-icon {
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: var(--sp-3);
+  animation: fon-pulse 2s ease-in-out infinite;
+}
+@keyframes fon-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.fon-title {
+  font-size: 22px;
+  font-weight: var(--fw-extrabold);
+  margin: 0 0 8px 0;
+  color: #fff;
+}
+.fon-sub {
+  font-size: 14px;
+  margin: 0;
+  color: rgba(255,255,255,.85);
+  line-height: 1.45;
+}
+.fon-benefits {
+  padding: var(--sp-4) var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  border-bottom: 1px solid var(--u-line);
+}
+.fon-b {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+.fon-b-i {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(139,92,246,.14);
+  border-radius: 10px;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.fon-b b {
+  display: block;
+  color: var(--u-text);
+  font-weight: var(--fw-semibold);
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+.fon-b i {
+  display: block;
+  color: var(--u-text2);
+  font-style: normal;
+  font-size: 12px;
+}
+.fon-actions {
+  padding: var(--sp-4) var(--sp-5);
+  display: flex;
+  gap: var(--sp-2);
+}
+.fon-btn-cad {
+  flex: 1;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  color: #fff !important;
+  font-weight: var(--fw-extrabold);
+  padding: 12px 20px !important;
+}
+.fon-btn-cad:hover { box-shadow: 0 6px 18px rgba(139,92,246,.4); }
+.fon-actions .btn-ghost {
+  padding: 12px 20px !important;
+}
+.fon-foot {
+  padding: var(--sp-3) var(--sp-5) var(--sp-4);
+  text-align: center;
+  border-top: 1px solid var(--u-line);
+}
+.fon-link {
+  background: none;
+  border: 0;
+  color: var(--u-text3);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 8px;
+}
+.fon-link:hover { color: var(--u-text2); }
+
+@media (max-width: 500px){
+  .fon-modal { width: 96vw; }
+  .fon-actions { flex-direction: column; }
+}
+
+html.dark .fon-b-i { background: rgba(139,92,246,.24); }
+
 </style>
 </head>
 <body>
@@ -11262,7 +11621,7 @@ html.dark #userFacial.user-fac-on { background: rgba(22,163,74,.1); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v181';
+var APP_BUILD = 'v185';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -11644,6 +12003,8 @@ function loadData() {
       }
     }
     ST.loaded = true;
+    // v185: auto-cadastro facial no 1º login (usa localStorage pra dispensar)
+    try { checkFacialOnboarding(); } catch(e){ console.error('[facial onb]', e); }
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
@@ -28491,10 +28852,26 @@ function gpStatusPessoa(pessoa, data){
   return { key:'em_dia', label:'Em serviço', cor:'#3B6FF7' };
 }
 
+/* v184: status facial da pessoa no dia — retorna {tem, verificado, sim, ci} */
+function gpFacialStatus(p, data){
+  var ci = gpCheckin(p, data);
+  var tem = false;
+  if (p.kind === 'user'){
+    var u = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(p.id);})[0];
+    tem = !!(u && u.face_descriptor);
+  } else {
+    var m = (ST.members||[]).filter(function(x){return String(x.id)===String(p.id);})[0];
+    tem = !!(m && m.face_descriptor);
+  }
+  var verificado = !!(ci && ci.face_verified);
+  var sim = ci && ci.face_similaridade ? Number(ci.face_similaridade) : null;
+  return { tem: tem, verificado: verificado, sim: sim, ci: ci };
+}
+
 /* KPIs do dia (agregados) */
 function gpKpisDoDia(data){
   var pessoas = gpPessoasDoSetor();
-  var k = { total:pessoas.length, presentes:0, atrasados:0, faltas:0, folgas:0, semEscala:0, completos:0, minutosTotal:0 };
+  var k = { total:pessoas.length, presentes:0, atrasados:0, faltas:0, folgas:0, semEscala:0, completos:0, minutosTotal:0, facVerif:0, facSemVerif:0, facCadastradas:0 };
   pessoas.forEach(function(p){
     var st = gpStatusPessoa(p, data);
     if (st.key === 'folga') k.folgas++;
@@ -28506,6 +28883,13 @@ function gpKpisDoDia(data){
     var ci = gpCheckin(p, data);
     var h = horasTrabalhadasDia(ci);
     if (h && h.minutos) k.minutosTotal += h.minutos;
+    // v184: contadores facial
+    var fs = gpFacialStatus(p, data);
+    if (fs.tem) k.facCadastradas++;
+    if (fs.ci && fs.tem){
+      if (fs.verificado) k.facVerif++;
+      else k.facSemVerif++;
+    }
   });
   return k;
 }
@@ -28527,6 +28911,18 @@ function gestaoPontoHTML(){
     var st = gpStatusPessoa(p, data);
     var sh = gpShiftNoDia(p, data);
     var h = horasTrabalhadasDia(ci);
+    var fs = gpFacialStatus(p, data);
+    var facCel = '';
+    if (!fs.tem){
+      facCel = '<span class="gp-fac gp-fac-none" title="Sem cadastro facial">—</span>';
+    } else if (!fs.ci){
+      facCel = '<span class="gp-fac gp-fac-wait" title="Cadastrada, aguardando batida">🎭</span>';
+    } else if (fs.verificado){
+      var simTxt = fs.sim ? ' '+fs.sim.toFixed(0)+'%' : '';
+      facCel = '<span class="gp-fac gp-fac-ok" title="Verificada por facial">🎭'+simTxt+'</span>';
+    } else {
+      facCel = '<span class="gp-fac gp-fac-warn" title="Bateu SEM verificação facial — atenção">⚠️ Sem verif</span>';
+    }
     var esp = sh && !sh.folga
       ? ((sh.expected_entrada||'').slice(0,5)+' - '+(sh.expected_saida||'').slice(0,5))
       : (sh && sh.folga ? 'Folga' : '—');
@@ -28542,11 +28938,21 @@ function gestaoPontoHTML(){
       '<td>'+fmtHora(ci&&ci.volta_almoco)+'</td>'+
       '<td>'+fmtHora(ci&&ci.saida)+'</td>'+
       '<td class="gp-horas">'+esc(h.texto)+'</td>'+
+      '<td class="gp-fac-cel">'+facCel+'</td>'+
       '<td><span class="gp-st" style="color:'+st.cor+';background:'+st.cor+'18">'+esc(st.label)+'</span></td>'+
     '</tr>';
-  }).join('') || '<tr><td colspan="8" class="gp-vazio">Sem pessoas cadastradas neste setor.</td></tr>';
+  }).join('') || '<tr><td colspan="9" class="gp-vazio">Sem pessoas cadastradas neste setor.</td></tr>';
 
   var kpiCard = function(l,v,c){ return '<div class="gp-kpi"><div class="gp-kpi-v" style="color:'+c+'">'+v+'</div><div class="gp-kpi-l">'+l+'</div></div>'; };
+  // v184: KPI facial — só mostra se tem cadastradas no setor
+  var facKpis = '';
+  if (k.facCadastradas > 0){
+    var facVerifTxt = k.facVerif + ' / ' + k.facCadastradas;
+    facKpis = kpiCard('🎭 Verificadas', facVerifTxt, '#16A34A');
+    if (k.facSemVerif > 0){
+      facKpis += kpiCard('⚠️ Sem verif', k.facSemVerif, '#F59E0B');
+    }
+  }
   var kpis = '<div class="gp-kpis">'+
     kpiCard('Presentes', k.presentes, '#3B6FF7')+
     kpiCard('Atrasados', k.atrasados, '#F59E0B')+
@@ -28554,6 +28960,7 @@ function gestaoPontoHTML(){
     kpiCard('Folgas', k.folgas, '#8B5CF6')+
     kpiCard('Completos', k.completos, '#16A34A')+
     kpiCard('Total', k.total, 'var(--u-text2)')+
+    facKpis+
   '</div>';
 
   return '<div class="gp-panel">'+
@@ -28572,7 +28979,7 @@ function gestaoPontoHTML(){
         '<thead><tr>'+
           '<th>Pessoa</th><th>Esperado</th>'+
           '<th>Entrada</th><th>Almoço</th><th>Volta</th><th>Saída</th>'+
-          '<th>Horas</th><th>Status</th>'+
+          '<th>Horas</th><th>Facial</th><th>Status</th>'+
         '</tr></thead>'+
         '<tbody>'+rows+'</tbody>'+
       '</table>'+
@@ -28584,7 +28991,7 @@ function gestaoPontoHTML(){
 function gestaoPontoCSV(){
   var data = ST.gestaoPonto.data;
   var pessoas = gpPessoasDoSetor();
-  var rows = [['Pessoa','Função','Esperado','Entrada','Almoço','Volta','Saída','Horas','Status']];
+  var rows = [['Pessoa','Função','Esperado','Entrada','Almoço','Volta','Saída','Horas','Facial','Status']];
   pessoas.forEach(function(p){
     var ci = gpCheckin(p, data);
     var st = gpStatusPessoa(p, data);
@@ -28594,7 +29001,13 @@ function gestaoPontoCSV(){
     var esp = sh && !sh.folga
       ? ((sh.expected_entrada||'').slice(0,5)+' - '+(sh.expected_saida||'').slice(0,5))
       : (sh && sh.folga ? 'Folga' : '');
-    rows.push([p.name, p.role||'', esp, hh(ci&&ci.entrada), hh(ci&&ci.saida_almoco), hh(ci&&ci.volta_almoco), hh(ci&&ci.saida), h.texto||'', st.label]);
+    var fs = gpFacialStatus(p, data);
+    var facCsv = '';
+    if (!fs.tem) facCsv = 'sem cadastro';
+    else if (!fs.ci) facCsv = 'aguardando';
+    else if (fs.verificado) facCsv = 'verificada '+(fs.sim?fs.sim.toFixed(0)+'%':'');
+    else facCsv = 'SEM VERIF';
+    rows.push([p.name, p.role||'', esp, hh(ci&&ci.entrada), hh(ci&&ci.saida_almoco), hh(ci&&ci.volta_almoco), hh(ci&&ci.saida), h.texto||'', facCsv, st.label]);
   });
   if (typeof downloadCSV==='function') downloadCSV('ponto-'+data+'.csv', rows);
 }
@@ -29686,6 +30099,97 @@ function facialMembrosComCadastro(storeUnitId){
    - Atualiza ST.members ou ST.users local
    ============================================================ */
 
+/* ============================================================
+   v185 · Auto-cadastro facial no 1º login
+   ============================================================
+   Dispara UMA vez após login se:
+   - Usuário tem email (é humano, não é login de balcão)
+   - Usuário NÃO tem face_descriptor (sem cadastro)
+   - Não dispensou anteriormente (localStorage)
+   Ação: modal amigável convidando pra cadastrar; abre a
+   openFacialCadastroModal existente se aceitar.
+   ============================================================ */
+
+function facialOnboardingKey(userId){
+  return 'malba_facial_onb_dismiss_v1_' + userId;
+}
+
+function facialOnboardingDismissedPra(userId){
+  try { return localStorage.getItem(facialOnboardingKey(userId)) === '1'; }
+  catch(e){ return false; }
+}
+
+function facialOnboardingDismiss(userId){
+  try { localStorage.setItem(facialOnboardingKey(userId), '1'); }
+  catch(e){}
+}
+
+/* Guarda de sessão pra não abrir 2x no mesmo carregamento */
+var FACIAL_ONB_SHOWN_THIS_SESSION = false;
+
+function checkFacialOnboarding(){
+  if (FACIAL_ONB_SHOWN_THIS_SESSION) return;
+  if (!ST.session || !ST.session.user) return;
+  var u = ST.session.user;
+  if (!u.email) return;                          // não é humano (balcão)
+  if (u.access_level === 'viewer') return;       // viewer não bate ponto
+  // Buscar user atualizado no ST.allUsers (session.user pode estar defasado)
+  var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(u.id);})[0] || u;
+  if (typeof facialTemCadastro==='function' && facialTemCadastro(uAtual)) return;
+  if (facialOnboardingDismissedPra(u.id)) return;
+  FACIAL_ONB_SHOWN_THIS_SESSION = true;
+  // Delay pequeno pra não engasgar o render inicial
+  setTimeout(function(){ openFacialOnboardingModal(uAtual); }, 900);
+}
+
+function openFacialOnboardingModal(user){
+  // Evita duplicar
+  if (document.getElementById('facialOnbModal')) return;
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialOnbModal';
+
+  var primeiroNome = (user.name || 'colaborador').split(' ')[0];
+
+  modal.innerHTML = '<div class="modal fon-modal">'+
+    '<div class="fon-hero">'+
+      '<div class="fon-icon">🎭</div>'+
+      '<h2 class="fon-title">Oi, '+esc(primeiroNome)+'! Cadastre seu rosto</h2>'+
+      '<p class="fon-sub">Leva 20 segundos. Depois você bate ponto na câmera do balcão ou do quiosque — sem PIN, sem cartão, sem digitar nada.</p>'+
+    '</div>'+
+    '<div class="fon-benefits">'+
+      '<div class="fon-b"><span class="fon-b-i">⚡</span><div><b>Mais rápido</b><i>Uma olhada na câmera e pronto</i></div></div>'+
+      '<div class="fon-b"><span class="fon-b-i">🔒</span><div><b>Mais seguro</b><i>Ninguém bate ponto por você</i></div></div>'+
+      '<div class="fon-b"><span class="fon-b-i">📸</span><div><b>Registro completo</b><i>Foto do momento fica salva</i></div></div>'+
+    '</div>'+
+    '<div class="fon-actions">'+
+      '<button class="btn btn-primary fon-btn-cad" id="fonCad">🎭 Cadastrar agora</button>'+
+      '<button class="btn btn-ghost" id="fonDepois">Depois</button>'+
+    '</div>'+
+    '<div class="fon-foot">'+
+      '<button class="fon-link" id="fonNunca">Não perguntar mais</button>'+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+
+  modal.querySelector('#fonCad').addEventListener('click', function(){
+    close();
+    openFacialCadastroModal({ id: user.id, name: user.name || user.email || 'colaborador', kind: 'user' });
+  });
+  modal.querySelector('#fonDepois').addEventListener('click', close);
+  modal.querySelector('#fonNunca').addEventListener('click', function(){
+    facialOnboardingDismiss(user.id);
+    if (typeof toast==='function') toast('Não perguntaremos mais. Você pode cadastrar quando quiser em Equipe → seu nome → 🎭', 'info');
+    close();
+  });
+  // click fora fecha (comportamento "depois")
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+}
+
 function openFacialCadastroModal(alvo){
   if (!alvo || !alvo.id){ if (typeof toast==='function') toast('Alvo inválido','error'); return; }
 
@@ -29924,6 +30428,124 @@ function balcaoCheckinMembro(memberId){
 }
 
 /* v179: Bater ponto de um membro específico (não do user do balcão) */
+/* ============================================================
+   v182 · Verificação Facial pra bater ponto
+   ============================================================
+   openFacialVerifModal(membro, cb) — abre webcam, compara com
+   o descriptor do membro específico, executa cb(sim, fotoUrl) só
+   se similaridade ≥ FACIAL_CFG.SIMILARIDADE_MIN
+   ============================================================ */
+
+function openFacialVerifModal(membro, cb){
+  if (!membro || !facialTemCadastro(membro)){
+    if (typeof toast==='function') toast('Membro sem cadastro facial','error');
+    return;
+  }
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialVerifModal';
+
+  var titulo = 'Verificar Rosto · ' + (membro.name || '');
+  modal.innerHTML = '<div class="modal fvm-modal">'+
+    '<div class="fvm-head">'+
+      '<div><b>🎭 '+esc(titulo)+'</b><i>Olhe pra câmera e clique em Verificar</i></div>'+
+      '<button class="fx-close" id="fvmClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="fvm-body">'+
+      '<div class="fvm-cam" id="fvmCam">'+
+        '<video id="fvmVideo" autoplay playsinline muted></video>'+
+        '<div class="fvm-overlay"><div class="fvm-oval"></div></div>'+
+        '<div class="fvm-msg" id="fvmMsg">Clique em "Abrir câmera" para começar</div>'+
+      '</div>'+
+      '<div class="fvm-info" id="fvmInfo">Mínimo: <b>'+FACIAL_CFG.SIMILARIDADE_MIN+'%</b> de similaridade</div>'+
+    '</div>'+
+    '<div class="fvm-foot" id="fvmFoot">'+
+      '<button class="btn btn-ghost" id="fvmAbrir">📷 Abrir câmera</button>'+
+      '<button class="btn btn-primary" id="fvmVerif" disabled>✓ Verificar & Bater</button>'+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+
+  var video = modal.querySelector('#fvmVideo');
+  var cam = modal.querySelector('#fvmCam');
+  var msg = modal.querySelector('#fvmMsg');
+  var info = modal.querySelector('#fvmInfo');
+  var btnAbrir = modal.querySelector('#fvmAbrir');
+  var btnVerif = modal.querySelector('#fvmVerif');
+
+  function close(){
+    facialFecharWebcam();
+    if (modal.parentNode) modal.parentNode.removeChild(modal);
+  }
+  modal.querySelector('#fvmClose').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+
+  btnAbrir.addEventListener('click', async function(){
+    btnAbrir.disabled = true;
+    msg.textContent = 'Carregando IA + câmera...';
+    cam.classList.remove('ok','err');
+    var [modOk, camOk] = await Promise.all([
+      facialCarregarModelos(),
+      facialAbrirWebcam(video)
+    ]);
+    if (!modOk){ msg.textContent = 'Falha ao carregar IA'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
+    if (!camOk){ msg.textContent = 'Falha ao abrir câmera'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
+    msg.textContent = 'Alinhe o rosto e clique em Verificar';
+    btnVerif.disabled = false;
+    btnAbrir.textContent = '🔄 Reiniciar';
+    btnAbrir.disabled = false;
+  });
+
+  btnVerif.addEventListener('click', async function(){
+    btnVerif.disabled = true;
+    cam.classList.remove('ok','err');
+    msg.textContent = 'Detectando rosto...';
+
+    var det = await facialDetectar(video);
+    if (!det){
+      msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais.';
+      cam.classList.add('err');
+      btnVerif.disabled = false;
+      return;
+    }
+
+    msg.textContent = 'Comparando com o cadastro...';
+    var res = facialComparar(det.descriptor, [membro]);
+    if (!res){
+      msg.textContent = '❌ Erro na comparação';
+      cam.classList.add('err');
+      btnVerif.disabled = false;
+      return;
+    }
+
+    var sim = res.similaridade;
+    info.innerHTML = 'Similaridade calculada: <b style="color:'+(sim>=FACIAL_CFG.SIMILARIDADE_MIN?'#16A34A':'#EF4444')+';font-size:16px">'+sim.toFixed(1)+'%</b> (mín '+FACIAL_CFG.SIMILARIDADE_MIN+'%)';
+
+    if (sim < FACIAL_CFG.SIMILARIDADE_MIN){
+      msg.textContent = '❌ Não é '+membro.name+' (similaridade insuficiente)';
+      cam.classList.add('err');
+      btnVerif.disabled = false;
+      return;
+    }
+
+    // OK — captura foto, envia pro storage e chama callback
+    msg.textContent = '✓ '+membro.name+' identificada! Salvando...';
+    cam.classList.add('ok');
+    try {
+      var blob = await facialCapturarBlob(video);
+      var fotoUrl = await facialUploadFoto(blob, 'verif_'+membro.id);
+      if (typeof cb==='function') cb({ similaridade: sim, fotoUrl: fotoUrl });
+      close();
+    } catch(e){
+      console.error(e);
+      msg.textContent = '❌ Erro salvando foto';
+      btnVerif.disabled = false;
+    }
+  });
+}
+
 function baterPontoDeMembro(memberId, cb){
   var membro = (ST.members||[]).filter(function(m){return String(m.id)===String(memberId);})[0];
   if (!membro){ if (typeof toast==='function') toast('Membro não encontrado','error'); return; }
@@ -29933,6 +30555,21 @@ function baterPontoDeMembro(memberId, cb){
     if (typeof toast==='function') toast(membro.name+' já bateu todas as batidas ✓','success');
     return;
   }
+  // v182: se o membro tem facial cadastrado, exige verificação antes de bater
+  if (typeof facialTemCadastro==='function' && facialTemCadastro(membro)){
+    openFacialVerifModal(membro, function(verif){
+      // callback só é chamado quando aprovou — segue com o insert/update carregando metadados
+      baterPontoDeMembroSem(membro, slot, ci, cb, verif);
+    });
+    return;
+  }
+  // Sem cadastro facial → bate direto como sempre
+  baterPontoDeMembroSem(membro, slot, ci, cb, null);
+}
+
+/* v182: separado o insert/update pra reutilizar com/sem facial */
+function baterPontoDeMembroSem(membro, slot, ci, cb, facialData){
+  var memberId = membro.id;
   var nowIso = new Date().toISOString();
   var sid = ST.store && ST.store.id;
 
@@ -29945,6 +30582,13 @@ function baterPontoDeMembro(memberId, cb){
       work_date: today()
     };
     payload[slot.key] = nowIso;
+    // v182: metadados de facial se veio verificação
+    if (facialData){
+      payload.face_similaridade = facialData.similaridade;
+      payload.face_foto_url = facialData.fotoUrl;
+      payload.face_verified = true;
+      payload.face_verificado_em = nowIso;
+    }
     sb.from('malba_checkins').insert(payload).select().single().then(function(r){
       if (r.error){
         if (typeof toast==='function') toast('Erro: '+(r.error.message||''),'error');
@@ -29962,6 +30606,13 @@ function baterPontoDeMembro(memberId, cb){
   } else {
     var patch = {};
     patch[slot.key] = nowIso;
+    // v182: metadados de facial no update também (última verificação)
+    if (facialData){
+      patch.face_similaridade = facialData.similaridade;
+      patch.face_foto_url = facialData.fotoUrl;
+      patch.face_verified = true;
+      patch.face_verificado_em = nowIso;
+    }
     sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
       if (r.error){
         if (typeof toast==='function') toast('Erro: '+(r.error.message||''),'error');
@@ -30153,10 +30804,12 @@ function topbarBalcaoPopoverAbrir(anchorBtn){
       ctaHTML = '<button class="tbb-cta" data-tbbmid="'+esc(m.id)+'">'+esc(slot.btn)+'</button>';
     }
     var fn = (m.name||'').split(' ')[0];
+    // v182: indicador 🎭 se tem facial
+    var facTag = facialTemCadastro(m) ? '<span class="tbb-fac" title="Exige verificação facial">🎭</span>' : '';
     return '<div class="tbb-linha">'+
       '<span class="ar-av tbb-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name||''))+'</span>'+
       '<div class="tbb-mid">'+
-        '<b>'+esc(fn)+'</b>'+
+        '<b>'+esc(fn)+facTag+'</b>'+
         '<div class="tbb-pills">'+pills4+'</div>'+
       '</div>'+
       ctaHTML+
@@ -32482,6 +33135,154 @@ function openQRLojaModal(loja){
 
 /* ============ TELA KIOSK: colab bate ponto sem login ============ */
 
+/* ============================================================
+   v183 · Facial no Quiosque QR+PIN
+   ============================================================
+   Adiciona ao KIOSK_STATE:
+     - step 'facial'    → tela de webcam pra identificar
+     - facialData       → {sim, fotoUrl} p/ injetar no INSERT
+   Fluxo:
+     PIN clássico    → digita PIN → confirm → bate
+     Facial          → 🎭 → webcam → identifica → confirm → bate
+     Híbrido         → PIN identifica quem tem facial → força verif → confirm
+   ============================================================ */
+
+/* Estado da webcam do kiosk (isolado do FACIAL_WEBCAM global pra evitar conflito) */
+var KIOSK_FACIAL = { video: null, timer: null };
+
+/* Render da tela facial no kiosk */
+function renderKioskFacial(){
+  var msg = KIOSK_STATE.msg ? '<div class="kiosk-err">'+esc(KIOSK_STATE.msg)+'</div>' : '';
+  var busy = KIOSK_STATE.busy ? '<div class="kiosk-busy">Verificando...</div>' : '';
+  var carregando = !FACIAL_STATE.modelsLoaded ? '<div class="kiosk-busy">Carregando IA...</div>' : '';
+  var modo = KIOSK_STATE.facialModo || 'identificar';   // 'identificar' | 'verificar'
+  var headline = modo === 'verificar'
+    ? 'Verifique seu rosto, ' + (KIOSK_STATE.memberIdent ? (KIOSK_STATE.memberIdent.name||'').split(' ')[0] : '')
+    : 'Olhe para a câmera';
+  var sub = modo === 'verificar'
+    ? 'Segurança adicional após o PIN'
+    : 'Ou clique em "PIN" para digitar';
+  return '<div class="kiosk-facial-wrap">'+
+    '<div class="kiosk-headline">'+esc(headline)+'</div>'+
+    '<div class="kiosk-sub">'+esc(sub)+'</div>'+
+    '<div class="kiosk-facial-cam" id="kioskFacialCam">'+
+      '<video id="kioskFacialVideo" autoplay playsinline muted></video>'+
+      '<div class="kiosk-facial-overlay"><div class="kiosk-facial-oval"></div></div>'+
+    '</div>'+
+    msg + busy + carregando +
+    '<div class="kiosk-facial-btns">'+
+      (modo === 'identificar' ? '<button class="kiosk-key back" data-facial-back="1">← PIN</button>' : '')+
+      '<button class="kiosk-key ok kiosk-facial-btn" data-facial-verif="1">✓ '+(modo==='verificar'?'Verificar':'Identificar')+'</button>'+
+    '</div>'+
+  '</div>';
+}
+
+/* Ativar modo facial no kiosk */
+function iniciarKioskFacialModo(modo){
+  KIOSK_STATE.step = 'facial';
+  KIOSK_STATE.facialModo = modo || 'identificar';
+  KIOSK_STATE.msg = '';
+  KIOSK_STATE.busy = false;
+  renderKioskUI();
+  // Depois do DOM montar, abre webcam + carrega modelos em paralelo
+  setTimeout(function(){
+    var video = document.getElementById('kioskFacialVideo');
+    if (!video) return;
+    Promise.all([
+      facialCarregarModelos(),
+      facialAbrirWebcam(video)
+    ]).then(function(res){
+      if (!res[0]){ KIOSK_STATE.msg = 'Falha carregando IA'; renderKioskUI(); return; }
+      if (!res[1]){ KIOSK_STATE.msg = 'Câmera indisponível'; renderKioskUI(); return; }
+      KIOSK_FACIAL.video = video;
+      // força re-render sem loading
+      renderKioskUI();
+    });
+  }, 60);
+}
+
+/* Voltar do facial pro PIN */
+function voltarKioskParaPin(){
+  facialFecharWebcam();
+  KIOSK_FACIAL.video = null;
+  KIOSK_STATE.step = 'pin';
+  KIOSK_STATE.msg = '';
+  KIOSK_STATE.pinBuffer = '';
+  KIOSK_STATE.facialModo = null;
+  renderKioskUI();
+}
+
+/* Verificar/Identificar no kiosk */
+async function verificarKioskFacial(){
+  if (KIOSK_STATE.busy) return;
+  var video = document.getElementById('kioskFacialVideo');
+  if (!video){ return; }
+  KIOSK_STATE.busy = true;
+  KIOSK_STATE.msg = '';
+  renderKioskUI();
+
+  var det = await facialDetectar(video);
+  if (!det){
+    KIOSK_STATE.busy = false;
+    KIOSK_STATE.msg = 'Nenhum rosto detectado — aproxime-se';
+    renderKioskUI();
+    if (navigator.vibrate) navigator.vibrate(80);
+    return;
+  }
+
+  // Lista candidatos: só quem TEM facial cadastrado
+  var candidatos;
+  if (KIOSK_STATE.facialModo === 'verificar' && KIOSK_STATE.memberIdent){
+    candidatos = [KIOSK_STATE.memberIdent];
+  } else {
+    candidatos = (KIOSK_STATE.members||[]).filter(function(m){
+      return facialTemCadastro(m);
+    });
+  }
+
+  if (!candidatos.length){
+    KIOSK_STATE.busy = false;
+    KIOSK_STATE.msg = 'Ninguém desta loja tem rosto cadastrado ainda';
+    renderKioskUI();
+    return;
+  }
+
+  var res = facialComparar(det.descriptor, candidatos);
+  if (!res || res.similaridade < FACIAL_CFG.SIMILARIDADE_MIN){
+    KIOSK_STATE.busy = false;
+    var s = res ? res.similaridade.toFixed(1) : '0';
+    KIOSK_STATE.msg = (KIOSK_STATE.facialModo === 'verificar')
+      ? 'Não é você ('+s+'% — mín '+FACIAL_CFG.SIMILARIDADE_MIN+'%)'
+      : 'Rosto não reconhecido ('+s+'%) — use o PIN';
+    renderKioskUI();
+    if (navigator.vibrate) navigator.vibrate([80,60,80]);
+    return;
+  }
+
+  // Reconhecido — captura foto pra registro e vai pro confirm
+  var blob = await facialCapturarBlob(video);
+  var fotoUrl = null;
+  try { fotoUrl = await facialUploadFoto(blob, 'kiosk_'+res.melhor.id); }
+  catch(e){ console.error('kiosk facial upload:', e); }
+
+  KIOSK_STATE.memberIdent = res.melhor;
+  KIOSK_STATE.facialData = { similaridade: res.similaridade, fotoUrl: fotoUrl };
+  // Pega ci do dia se existir
+  var ci = null;
+  for (var j=0; j<KIOSK_STATE.checkins.length; j++){
+    if (String(KIOSK_STATE.checkins[j].member_id)===String(res.melhor.id)){
+      ci = KIOSK_STATE.checkins[j]; break;
+    }
+  }
+  KIOSK_STATE.ci = ci;
+  KIOSK_STATE.busy = false;
+  KIOSK_STATE.step = 'confirm';
+  facialFecharWebcam();
+  KIOSK_FACIAL.video = null;
+  renderKioskUI();
+}
+
+
 var KIOSK_STATE = {
   token: null,
   loja: null,
@@ -32596,6 +33397,7 @@ function renderKioskPin(){
     '<div class="kiosk-dots">'+dots+'</div>'+
     errMsg + hint +
     '<div class="kiosk-pad">'+keyHTML+'</div>'+
+    '<button class="kiosk-facial-cta" data-kiosk-facial="1">🎭 Bater com Facial</button>'+
   '</div>';
 }
 
@@ -32649,6 +33451,18 @@ function renderKioskDone(){
 
 function bindKiosk(){
   var app_el = document.getElementById('app') || document.body;
+  // v183: botão facial na tela do PIN
+  if (KIOSK_STATE.step === 'pin'){
+    var facBtn = app_el.querySelector('[data-kiosk-facial]');
+    if (facBtn) facBtn.addEventListener('click', function(){ iniciarKioskFacialModo('identificar'); });
+  }
+  // v183: bind da tela facial
+  if (KIOSK_STATE.step === 'facial'){
+    var vBtn = app_el.querySelector('[data-facial-verif]');
+    if (vBtn) vBtn.addEventListener('click', function(){ verificarKioskFacial(); });
+    var bBtn = app_el.querySelector('[data-facial-back]');
+    if (bBtn) bBtn.addEventListener('click', function(){ voltarKioskParaPin(); });
+  }
   if (KIOSK_STATE.step === 'pin'){
     app_el.querySelectorAll('[data-key]').forEach(function(b){
       b.addEventListener('click', function(){
@@ -32707,6 +33521,8 @@ function bindKiosk(){
         KIOSK_STATE.ci = null;
         KIOSK_STATE.slotRegistrada = null;
         KIOSK_STATE.msg = '';
+        KIOSK_STATE.facialData = null;       // v183
+        KIOSK_STATE.facialModo = null;       // v183
         renderKioskUI();
       }
     }, 1000);
@@ -32745,6 +33561,11 @@ function validarPinKiosk(){
   KIOSK_STATE.memberIdent = achado;
   KIOSK_STATE.ci = ci;
   KIOSK_STATE.busy = false;
+  // v183: se o membro tem facial cadastrado, força verificação antes de confirmar
+  if (typeof facialTemCadastro==='function' && facialTemCadastro(achado)){
+    iniciarKioskFacialModo('verificar');
+    return;
+  }
   KIOSK_STATE.step = 'confirm';
   renderKioskUI();
 }
@@ -32769,6 +33590,18 @@ function registrarViaKiosk(){
       work_date: t,
       entrada: nowIso
     };
+    // v183: metadados facial (se veio pelo modo facial)
+    if (KIOSK_STATE.facialData){
+      row.face_similaridade = KIOSK_STATE.facialData.similaridade;
+      row.face_foto_url = KIOSK_STATE.facialData.fotoUrl;
+      row.face_verified = true;
+      row.face_verificado_em = nowIso;
+    }
+    // ⚠️ prox pode não ser 'entrada' — corrige a chave se necessário
+    if (prox.key !== 'entrada'){
+      row[prox.key] = nowIso;
+      delete row.entrada;
+    }
     sb.from('malba_checkins').insert(row).select().single().then(function(r){
       if (r.error){ KIOSK_STATE.msg='Erro ao registrar. Tente novamente.'; KIOSK_STATE.step='pin'; KIOSK_STATE.pinBuffer=''; renderKioskUI(); return; }
       KIOSK_STATE.checkins.push(r.data);
@@ -32779,6 +33612,13 @@ function registrarViaKiosk(){
   } else {
     var patch = {};
     patch[prox.key] = nowIso;
+    // v183: metadados facial no update
+    if (KIOSK_STATE.facialData){
+      patch.face_similaridade = KIOSK_STATE.facialData.similaridade;
+      patch.face_foto_url = KIOSK_STATE.facialData.fotoUrl;
+      patch.face_verified = true;
+      patch.face_verificado_em = nowIso;
+    }
     sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
       if (r.error){ KIOSK_STATE.msg='Erro ao registrar. Tente novamente.'; KIOSK_STATE.step='pin'; KIOSK_STATE.pinBuffer=''; renderKioskUI(); return; }
       ci[prox.key] = nowIso;
