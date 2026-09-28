@@ -11912,6 +11912,916 @@ html.dark .fon-b-i { background: rgba(139,92,246,.24); }
   .onb-bullet-sep { max-width: 20px; }
 }
 
+
+/* ============================================================
+   v189 · Onboarding Wizard — Step 4 Escala
+   ============================================================ */
+.onb-shifts { display: flex; flex-direction: column; gap: var(--sp-4); }
+.onb-shifts-tpls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+.onb-shifts-tpls .onb-radio { padding: 10px; }
+.onb-shifts-tpls .onb-radio b { font-size: 12px; }
+.onb-shifts-tpls .onb-radio i { font-size: 10px; }
+
+.onb-shifts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--sp-3);
+  background: var(--u-bg2);
+  border-radius: var(--rd-lg);
+}
+.onb-shift-row {
+  display: grid;
+  grid-template-columns: 42px 68px 1fr;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 10px;
+  background: var(--u-bg);
+  border-radius: var(--rd-md);
+  border: 1px solid var(--u-line);
+  transition: opacity .15s;
+}
+.onb-shift-row.folga { opacity: .55; }
+.onb-shift-day {
+  font-weight: var(--fw-extrabold);
+  font-size: 12px;
+  color: var(--u-text);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.onb-shift-folga {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--u-text3);
+  user-select: none;
+}
+.onb-shift-folga input { margin: 0; }
+.onb-shift-hours {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+.onb-shift-hours input[type="time"] {
+  width: 68px;
+  padding: 4px 6px;
+  border: 1px solid var(--u-line);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  background: var(--u-bg);
+  color: var(--u-text);
+  min-width: 0;
+}
+.onb-shift-hours input[type="time"]:disabled { opacity: .5; background: var(--u-bg2); cursor: not-allowed; }
+.onb-shift-hours input[type="time"]:focus { outline: none; border-color: #3B6FF7; }
+.onb-shift-sep { color: var(--u-text3); font-size: 11px; }
+.onb-shift-folgado {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-style: italic;
+  padding: 4px 0;
+}
+
+@media (max-width: 600px){
+  .onb-shifts-tpls { grid-template-columns: 1fr; }
+  .onb-shift-row { grid-template-columns: 42px 1fr; grid-template-rows: auto auto; gap: 4px; }
+  .onb-shift-folga { grid-column: 2; justify-self: end; }
+  .onb-shift-hours { grid-column: 1 / -1; flex-wrap: wrap; }
+  .onb-shift-hours input[type="time"] { width: calc(50% - 12px); }
+}
+
+
+/* ============================================================
+   v190 · Wizard Step 5 Facial + Modal captura for-wizard
+   ============================================================ */
+.onb-face-invite, .onb-face-done {
+  text-align: center;
+  padding: var(--sp-3) 0;
+}
+.onb-face-icon {
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: var(--sp-3);
+  animation: onb-face-pulse 2.2s ease-in-out infinite;
+}
+.onb-face-icon-ok {
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: var(--sp-3);
+}
+@keyframes onb-face-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+.onb-face-h {
+  font-size: 18px;
+  font-weight: var(--fw-extrabold);
+  margin: 0 0 var(--sp-2) 0;
+  color: var(--u-text);
+}
+.onb-face-p {
+  font-size: 13px;
+  color: var(--u-text2);
+  line-height: 1.5;
+  margin: 0 0 var(--sp-4) 0;
+}
+.onb-face-p b { color: #B45309; font-weight: var(--fw-extrabold); }
+.onb-face-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(139,92,246,.06);
+  border: 1px solid rgba(139,92,246,.15);
+  border-radius: var(--rd-lg);
+  padding: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  text-align: left;
+  font-size: 13px;
+  color: var(--u-text);
+}
+.onb-face-cta {
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  color: #fff !important;
+  font-weight: var(--fw-extrabold);
+  padding: 12px 24px !important;
+  margin-bottom: var(--sp-3);
+}
+.onb-face-cta:hover { box-shadow: 0 6px 18px rgba(139,92,246,.4); }
+.onb-face-hint {
+  font-size: 11px;
+  color: var(--u-text3);
+  margin: 0;
+  padding: 8px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  line-height: 1.5;
+}
+
+/* Modal captura for-wizard (parecido com fcm-modal do v181 mas isolado) */
+.fcw-modal {
+  max-width: 500px;
+  width: 92vw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fcw-head {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-3);
+}
+.fcw-head b { display: block; font-size: 16px; color: var(--u-text); font-weight: var(--fw-extrabold); }
+.fcw-head i { display: block; font-size: 12px; color: var(--u-text3); font-style: normal; margin-top: 4px; }
+.fcw-head > div:first-child { flex: 1; min-width: 0; }
+.fcw-body { padding: var(--sp-4); }
+.fcw-cam {
+  position: relative;
+  background: #000;
+  border-radius: var(--rd-lg);
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  border: 3px solid var(--u-line);
+  transition: border-color var(--tr-fast);
+}
+.fcw-cam.ok { border-color: #16A34A; box-shadow: 0 0 20px rgba(22,163,74,.3); }
+.fcw-cam.err { border-color: #EF4444; }
+.fcw-cam video, .fcw-cam canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scaleX(-1);
+}
+.fcw-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fcw-oval {
+  width: 55%;
+  aspect-ratio: 3/4;
+  border: 3px dashed rgba(255,255,255,.5);
+  border-radius: 50%;
+}
+.fcw-msg {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  background: rgba(0,0,0,.75);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--rd-md);
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  z-index: 2;
+}
+.fcw-foot {
+  display: flex;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border-top: 1px solid var(--u-line);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.fcw-foot .btn { padding: 10px 18px; }
+
+@media (max-width: 500px){
+  .fcw-modal { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .fcw-foot { flex-direction: column; }
+  .fcw-foot .btn { width: 100%; }
+}
+
+
+/* ============================================================
+   v191 · Notificações — sino topbar + popover
+   ============================================================ */
+.top-notif {
+  position: relative;
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: var(--rd-md);
+  color: var(--u-text2);
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.top-notif:hover { background: var(--u-bg2); color: var(--u-text); }
+.top-notif.has-unread .top-notif-ico { animation: notif-ring 3s ease-in-out infinite; transform-origin: top; }
+@keyframes notif-ring {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  93% { transform: rotate(15deg); }
+  96% { transform: rotate(-15deg); }
+}
+.top-notif-ico { font-size: 20px; line-height: 1; display: inline-block; }
+.top-notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: #EF4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--fw-extrabold);
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--u-bg);
+  box-sizing: border-box;
+  box-shadow: 0 2px 4px rgba(239,68,68,.4);
+}
+
+.notif-pop {
+  position: fixed;
+  z-index: 1000;
+  width: 360px;
+  max-width: 92vw;
+  max-height: 480px;
+  background: var(--u-bg);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  box-shadow: 0 12px 40px rgba(0,0,0,.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.notif-pop-head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--u-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--u-bg2);
+}
+.notif-pop-head b { font-size: 14px; color: var(--u-text); font-weight: var(--fw-extrabold); }
+.notif-mark-all {
+  background: none;
+  border: 0;
+  color: #3B6FF7;
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.notif-mark-all:hover { background: rgba(59,111,247,.1); }
+.notif-pop-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--u-line);
+  cursor: pointer;
+  transition: background .12s;
+  position: relative;
+}
+.notif-item:last-child { border-bottom: 0; }
+.notif-item:hover { background: var(--u-bg2); }
+.notif-item.unread { background: rgba(59,111,247,.04); }
+.notif-item.unread:hover { background: rgba(59,111,247,.08); }
+.notif-item.notif-high { border-left: 3px solid #F59E0B; }
+.notif-item.notif-urgent { border-left: 3px solid #EF4444; background: rgba(239,68,68,.04); }
+.notif-item.notif-urgent.unread { background: rgba(239,68,68,.08); }
+.notif-ico {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--u-bg2);
+  border-radius: 8px;
+}
+.notif-mid {
+  flex: 1;
+  min-width: 0;
+}
+.notif-title {
+  font-size: 13px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text);
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+.notif-body {
+  font-size: 12px;
+  color: var(--u-text2);
+  line-height: 1.4;
+  margin-bottom: 4px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.notif-time {
+  font-size: 11px;
+  color: var(--u-text3);
+}
+.notif-dot {
+  position: absolute;
+  top: 16px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  background: #3B6FF7;
+  border-radius: 50%;
+}
+.notif-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--u-text3);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.notif-empty-ico { font-size: 42px; margin-bottom: 12px; opacity: .6; }
+.notif-empty small { color: var(--u-text3); font-size: 11px; }
+
+@media (max-width: 500px){
+  .notif-pop { width: 96vw; max-width: 96vw; right: 2vw !important; left: 2vw; }
+}
+
+
+/* ============================================================
+   v193 · Notificações WhatsApp — botão wa + preferências
+   ============================================================ */
+.notif-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.notif-pref-btn {
+  background: none;
+  border: 0;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--u-text3);
+  transition: background .12s;
+}
+.notif-pref-btn:hover { background: rgba(0,0,0,.05); color: var(--u-text); }
+
+.notif-wa-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #25D366;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all .12s;
+  align-self: center;
+  margin-right: 8px;
+}
+.notif-wa-btn:hover {
+  transform: scale(1.08);
+  background: #128C7E;
+  box-shadow: 0 3px 10px rgba(37,211,102,.4);
+}
+
+/* Modal preferências */
+.np-modal {
+  max-width: 480px;
+  width: 92vw;
+  max-height: 90vh;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.np-head {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+  gap: var(--sp-3);
+}
+.np-head b { display: block; font-size: 16px; color: var(--u-text); font-weight: var(--fw-extrabold); }
+.np-head i { display: block; font-size: 12px; color: var(--u-text3); font-style: normal; margin-top: 4px; }
+.np-head > div:first-child { flex: 1; min-width: 0; }
+.np-body {
+  padding: var(--sp-4);
+  overflow-y: auto;
+  flex: 1;
+}
+.np-field { margin-bottom: var(--sp-4); }
+.np-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.np-field input[type="text"],
+.np-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--u-bg);
+  color: var(--u-text);
+  box-sizing: border-box;
+}
+.np-field input:focus, .np-field select:focus {
+  outline: none;
+  border-color: #3B6FF7;
+  box-shadow: 0 0 0 3px rgba(59,111,247,.15);
+}
+.np-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--u-text3);
+}
+.np-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 12px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+  color: var(--u-text);
+}
+.np-switch input { width: 18px; height: 18px; }
+.np-kinds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 10px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+}
+.np-kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: var(--fw-semibold);
+  color: var(--u-text2);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.np-kind:hover { background: var(--u-bg); }
+.np-kind input { margin: 0; flex-shrink: 0; }
+.np-foot {
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--u-line);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-2);
+  background: var(--u-bg2);
+}
+
+@media (max-width: 500px){
+  .np-modal { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .np-kinds { grid-template-columns: 1fr; }
+}
+
+html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
+
+
+/* ============================================================
+   v194 · Feriados — página + modal
+   ============================================================ */
+.fer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+}
+.fer-toolbar label {
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text2);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.fer-toolbar select {
+  padding: 6px 10px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 14px;
+  background: var(--u-bg);
+  color: var(--u-text);
+}
+.fer-count {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--u-text3);
+}
+
+.fer-table { width: 100%; }
+.fer-td-data { white-space: nowrap; }
+.fer-td-data b { display: block; font-size: 14px; }
+.fer-td-data small { display: block; font-size: 11px; color: var(--u-text3); }
+.fer-td-acts { text-align: right; white-space: nowrap; }
+
+.fer-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  white-space: nowrap;
+}
+.fer-tag-nacional  { background: rgba(59,111,247,.12);  color: #1E40AF; }
+.fer-tag-estadual  { background: rgba(139,92,246,.12);  color: #6D28D9; }
+.fer-tag-municipal { background: rgba(236,72,153,.12);  color: #BE185D; }
+.fer-tag-empresa   { background: rgba(22,163,74,.12);   color: #15803D; }
+
+.fer-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--u-text3);
+  font-size: 13px;
+}
+
+/* Modal de feriado */
+.fer-modal {
+  max-width: 480px;
+  width: 92vw;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4);
+  border-bottom: 1px solid var(--u-line);
+}
+.fer-head b { font-size: 16px; font-weight: var(--fw-extrabold); color: var(--u-text); }
+.fer-body { padding: var(--sp-4); }
+.fer-field { margin-bottom: var(--sp-3); }
+.fer-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.fer-field input, .fer-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--u-bg);
+  color: var(--u-text);
+  box-sizing: border-box;
+}
+.fer-field input:focus, .fer-field select:focus {
+  outline: none;
+  border-color: #3B6FF7;
+  box-shadow: 0 0 0 3px rgba(59,111,247,.15);
+}
+.fer-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--u-text3);
+}
+.fer-foot {
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--u-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--u-bg2);
+  gap: var(--sp-2);
+}
+
+@media (max-width: 500px){
+  .fer-modal { width: 100vw; max-width: 100vw; height: 100vh; max-height: 100vh; border-radius: 0; }
+  .fer-toolbar { flex-wrap: wrap; }
+  .fer-count { margin-left: 0; width: 100%; }
+}
+
+
+/* ============================================================
+   v195 · Auditoria — página consultável
+   ============================================================ */
+.aud-wrap { display: flex; flex-direction: column; gap: var(--sp-3); }
+.aud-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-2);
+}
+.aud-head h3 { margin: 0 0 4px 0; font-size: 18px; font-weight: var(--fw-extrabold); color: var(--u-text); }
+.aud-sub { margin: 0; font-size: 12px; color: var(--u-text3); }
+.aud-sub b { color: var(--u-text); font-weight: var(--fw-extrabold); }
+
+.aud-filtros {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-3);
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  flex-wrap: wrap;
+}
+.aud-filt-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 140px;
+}
+.aud-filt-item label {
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text2);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.aud-input {
+  padding: 8px 10px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--u-bg);
+  color: var(--u-text);
+  width: 100%;
+  box-sizing: border-box;
+}
+.aud-input:focus {
+  outline: none;
+  border-color: #3B6FF7;
+  box-shadow: 0 0 0 3px rgba(59,111,247,.15);
+}
+
+.aud-table { width: 100%; }
+.aud-td-time { white-space: nowrap; }
+.aud-td-time b { display: block; font-size: 13px; font-weight: var(--fw-extrabold); color: var(--u-text); }
+.aud-td-time small { display: block; font-size: 10px; color: var(--u-text3); }
+.aud-td-actor {
+  white-space: nowrap;
+}
+.aud-actor-info { display: inline-block; vertical-align: middle; margin-left: 8px; }
+.aud-actor-info b { display: block; font-size: 13px; font-weight: var(--fw-extrabold); color: var(--u-text); }
+.aud-actor-info small { display: block; font-size: 10px; color: var(--u-text3); text-transform: capitalize; }
+.aud-avatar {
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #3B6FF7 0%, #8B5CF6 100%);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: var(--fw-extrabold);
+}
+.aud-td-cat { white-space: nowrap; }
+.aud-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+}
+.aud-td-action {
+  font-size: 13px;
+  color: var(--u-text);
+  line-height: 1.4;
+}
+
+.aud-row:hover td { background: var(--u-bg2); }
+.aud-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--u-text3);
+  font-size: 13px;
+}
+
+@media (max-width: 800px){
+  .aud-filtros { flex-direction: column; }
+  .aud-filt-item { width: 100%; min-width: 0; }
+  .aud-table thead { display: none; }
+  .aud-row td { display: block; padding: 6px 12px; }
+  .aud-row {
+    display: block;
+    padding: 12px;
+    border-bottom: 1px solid var(--u-line);
+  }
+  .aud-td-time { display: inline-block !important; margin-right: 12px; }
+  .aud-td-actor { display: inline-block !important; }
+  .aud-td-cat, .aud-td-action { display: block !important; margin-top: 6px; }
+}
+
+
+/* ============================================================
+   v196 · Férias — modal solicitar + página + cards
+   ============================================================ */
+.fr-field { margin-bottom: var(--sp-3); }
+.fr-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text2);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.fr-field input, .fr-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-md);
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--u-bg);
+  color: var(--u-text);
+  box-sizing: border-box;
+}
+.fr-field textarea { min-height: 80px; resize: vertical; }
+.fr-field input:focus, .fr-field textarea:focus {
+  outline: none;
+  border-color: #0EA5E9;
+  box-shadow: 0 0 0 3px rgba(14,165,233,.15);
+}
+.fr-preview {
+  padding: 12px;
+  background: rgba(14,165,233,.08);
+  border-radius: var(--rd-md);
+  font-size: 14px;
+  color: var(--u-text);
+  text-align: center;
+}
+.fr-preview b { font-size: 18px; color: #0284C7; font-weight: var(--fw-extrabold); }
+.fr-preview small { color: var(--u-text3); }
+
+.fr-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.fr-card {
+  padding: var(--sp-3);
+  border: 1px solid var(--u-line);
+  border-radius: var(--rd-lg);
+  background: var(--u-bg);
+  transition: box-shadow .12s;
+}
+.fr-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+.fr-card-pending { border-left: 4px solid #F59E0B; }
+.fr-card-approved { border-left: 4px solid #16A34A; }
+.fr-card-rejected { border-left: 4px solid #EF4444; opacity: .8; }
+.fr-card-cancelled { opacity: .5; }
+
+.fr-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.fr-card-status {
+  font-size: 13px;
+  font-weight: var(--fw-extrabold);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.fr-card-actions { display: flex; gap: 6px; }
+.fr-card-periodo {
+  font-size: 15px;
+  font-weight: var(--fw-extrabold);
+  color: var(--u-text);
+  margin-bottom: 6px;
+}
+.fr-card-motivo {
+  font-size: 13px;
+  color: var(--u-text2);
+  font-style: italic;
+  padding: 8px 12px;
+  background: var(--u-bg2);
+  border-radius: var(--rd-md);
+  margin-bottom: 6px;
+}
+.fr-card-meta {
+  font-size: 11px;
+  color: var(--u-text3);
+}
+.fr-card-rejeicao {
+  font-size: 12px;
+  color: #EF4444;
+  padding: 6px 10px;
+  background: rgba(239,68,68,.08);
+  border-radius: var(--rd-md);
+  margin-top: 6px;
+}
+
+.fr-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--u-text3);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.fr-empty small { font-size: 11px; }
+
+@media (max-width: 500px){
+  .fr-card-head { flex-direction: column; align-items: flex-start; }
+  .fr-card-actions { width: 100%; }
+  .fr-card-actions .btn { flex: 1; }
+}
+
 </style>
 </head>
 <body>
@@ -11935,7 +12845,7 @@ html.dark .fon-b-i { background: rgba(139,92,246,.24); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v188';
+var APP_BUILD = 'v196';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -12319,6 +13229,12 @@ function loadData() {
     ST.loaded = true;
     // v185: auto-cadastro facial no 1º login (usa localStorage pra dispensar)
     try { checkFacialOnboarding(); } catch(e){ console.error('[facial onb]', e); }
+    // v191: carrega notificações + inicia poll
+    try { notifCarregarMinhas(function(){ notifIniciarPoll(); }); } catch(e){ console.error('[notif load]', e); }
+    // v194: carrega feriados uma vez
+    try { feriadosCarregar(); } catch(e){ console.error('[feriados load]', e); }
+    // v196: carrega férias
+    try { feriasCarregar(); } catch(e){ console.error('[ferias load]', e); }
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
@@ -12670,6 +13586,7 @@ function renderShell(innerHTML, title) {
         '<span class="top-online" id="topOnline"><i></i><span>Online</span></span>'+
         ((typeof topbarPontoWidgetHTML==='function') ? topbarPontoWidgetHTML() : '')+
         '<div class="top-search"><span class="ts-ico">'+icon('search')+'</span><input id="topSearch" placeholder="Buscar em tudo..." autocomplete="off"><span class="ts-kbd" id="tsKbd">Ctrl K</span><div class="ts-results" id="topResults"></div></div>'+
+        ((typeof topbarNotifHTML==='function') ? topbarNotifHTML() : '')+
         '<button class="top-theme" id="themeToggle" title="'+(getTheme()==='dark'?'Modo claro':'Modo escuro')+'">'+icon(getTheme()==='dark'?'sun':'moon')+'</button>'+
         '<button class="btn btn-primary top-novo" id="topNovo">'+icon('plus')+'<span>Novo</span></button>'+
       '</header>'+
@@ -12678,6 +13595,7 @@ function renderShell(innerHTML, title) {
   );
   document.getElementById('btnSair').addEventListener('click', logout);
   if (typeof bindTopbarPonto === 'function') bindTopbarPonto();
+  if (typeof bindTopbarNotif === 'function') bindTopbarNotif();
   var sideUser=document.getElementById('sideUser');
   if (sideUser) sideUser.addEventListener('click', function(){ ST.page='perfil'; ST.openProject=null; navigate(ST.sector+'/perfil'); renderPage(); });
   // v89.3: cliques nos itens de submenu — pulam direto para a aba
@@ -15452,6 +16370,7 @@ function bindTarefas() {
     this.value=''; this.disabled=true;
     var self=this;
     sb.from('malba_vl_tasks').insert(payload).select().single().then(function(r){
+      try{ if(r&&r.data&&r.data.assigned_to) notifEmitir_TarefaAtribuida(r.data); }catch(e){console.error(e);}
       self.disabled=false;
       if (r.error||!r.data){ toast('Erro ao criar','error'); return; }
       ST.tasks.unshift(r.data); auditLog('Criou tarefa', title); toast('Tarefa adicionada','success'); renderPage();
@@ -16845,7 +17764,7 @@ function openFichaColaborador(member){
     var el=modal.querySelector('#fiKudo'); var msg=(el.value||'').trim(); if(!msg){ toast('Escreva o reconhecimento','error'); return; }
     var btn=modal.querySelector('#fiSendKudo'); btn.disabled=true; btn.textContent='Enviando...';
     var rec={ sector:ST.sector, member_id:m.id, from_user_id:ST.session.user.id, from_name:ST.session.user.name, message:msg };
-    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado','success'); draw(); });
+    sb.from('malba_kudos').insert(rec).select().single().then(function(r){ if(r.error||!r.data){ toast('Não consegui enviar (peça para rodar o SQL de acompanhamento).','error'); console.error(r.error); setBusy(btn,false); btn.textContent='Enviar'; return; } ST.kudos.unshift(r.data); auditLog('Enviou kudos', m.name); toast('Reconhecimento enviado','success'); try{ notifEmitir_KudoRecebido(r.data, m); }catch(e){console.error(e);} draw(); });
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   function draw(){ modal.innerHTML=fichaHTML(); bind(); }
@@ -18348,6 +19267,7 @@ function openGoalModal(goal, preset) {
       });
     } else {
       sb.from('malba_sales_goals').update(rec).eq('id', g.id).then(function(r){
+        try{ if(!r.error) notifEmitir_MetaBatida(Object.assign({},g,rec)); }catch(e){console.error(e);}
         if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.goals.length;i++) if (ST.goals[i].id===g.id) { ST.goals[i]=Object.assign(ST.goals[i],rec); break; }
         close(); toast('Meta atualizada','success'); renderPage();
@@ -27435,8 +28355,9 @@ function configHTML() {
     '<button class="cfg-tab'+(tab==='usuarios'?' on':'')+'" data-tab="usuarios">'+icon('users')+'Usuários</button>'+
     '<button class="cfg-tab'+(tab==='lojas'?' on':'')+'" data-tab="lojas">'+icon('store')+'Lojas</button>'+
     '<button class="cfg-tab'+(tab==='banners'?' on':'')+'" data-tab="banners">'+icon('dashboard')+'Banners</button>'+
+    '<button class="cfg-tab'+(tab==='auditoria'?' on':'')+'" data-tab="auditoria">'+icon('search')+'Auditoria</button>'+
   '</div>';
-  var body = tab==='lojas' ? lojasHTML() : (tab==='banners' ? bannersAdminHTML() : usuariosHTML());
+  var body = tab==='lojas' ? lojasHTML() : (tab==='banners' ? bannersAdminHTML() : (tab==='auditoria' ? auditoriaConfigHTML() : usuariosHTML()));
   return '<div class="tasks-head"><div><h2>Configurações</h2><div class="sub">Administração do sistema</div></div></div>'+tabs+'<div id="cfgBody">'+body+'</div>';
 }
 
@@ -27880,7 +28801,12 @@ function openBannerModal(banner) {
 function bindConfig() {
   if (!isAdmin(ST.session)) return;
   var tabs = app.querySelectorAll('.cfg-tab');
-  for (var i=0;i<tabs.length;i++) tabs[i].addEventListener('click', function(){ ST.configTab=this.getAttribute('data-tab'); renderPage(); });
+  for (var i=0;i<tabs.length;i++) tabs[i].addEventListener('click', function(){ ST.configTab=this.getAttribute('data-tab'); if(ST.configTab==='auditoria' && typeof auditCarregar==='function'){ auditCarregar(function(){renderPage();}); } renderPage(); });
+  // v195: se já está na aba auditoria, garante bind + load
+  if ((ST.configTab||'')==='auditoria'){
+    if (typeof auditCarregar==='function' && !AUDIT_STATE.loaded) auditCarregar(function(){renderPage();});
+    if (typeof bindAuditoriaPage==='function') bindAuditoriaPage();
+  }
 
   var nu = document.getElementById('btnNovoUser');
   if (nu) nu.addEventListener('click', function(){ openUserModal(null); });
@@ -29155,6 +30081,14 @@ function gpStatusPessoa(pessoa, data){
   var shift = gpShiftNoDia(pessoa, data);
   var ci = gpCheckin(pessoa, data);
   if (shift && shift.folga) return { key:'folga', label:'Folga', cor:'#8B5CF6' };
+  // v196: férias aprovadas — não é falta
+  if (typeof feriasEmDia === 'function' && (!ci || !ci.entrada)){
+    var fer196 = feriasEmDia(pessoa, data);
+    if (fer196) return { key:'ferias', label:'🌴 Férias', cor:'#0EA5E9' };
+  }
+  // v194: feriado tem prioridade — se o colaborador não bateu ponto, é feriado (não falta)
+  var fer = (typeof feriadoDoDia === 'function') ? feriadoDoDia(data) : null;
+  if (fer && (!ci || !ci.entrada)) return { key:'feriado', label:'🎉 '+fer.nome, cor:'#EC4899' };
   if (!ci || !ci.entrada){
     if (shift && shift.expected_entrada){
       // Passou do horário esperado?
@@ -29195,10 +30129,12 @@ function gpFacialStatus(p, data){
 /* KPIs do dia (agregados) */
 function gpKpisDoDia(data){
   var pessoas = gpPessoasDoSetor();
-  var k = { total:pessoas.length, presentes:0, atrasados:0, faltas:0, folgas:0, semEscala:0, completos:0, minutosTotal:0, facVerif:0, facSemVerif:0, facCadastradas:0 };
+  var k = { total:pessoas.length, presentes:0, atrasados:0, faltas:0, folgas:0, semEscala:0, completos:0, minutosTotal:0, facVerif:0, facSemVerif:0, facCadastradas:0, feriados:0, ferias:0 };
   pessoas.forEach(function(p){
     var st = gpStatusPessoa(p, data);
     if (st.key === 'folga') k.folgas++;
+    else if (st.key === 'ferias') k.ferias++;
+    else if (st.key === 'feriado') k.feriados++;
     else if (st.key === 'sem_escala') k.semEscala++;
     else if (st.key === 'falta') k.faltas++;
     else if (st.key === 'atrasado') k.atrasados++;
@@ -30110,6 +31046,7 @@ function bindGestao() {
   else if (gt==='kpis'){ bindKpiTarefas(); }
   else if (gt==='visao'){ bindBriefingVisao(); }
   else if (gt==='ponto'){ bindGestaoPonto(); }
+  else if (gt==='feriados'){ if(typeof bindFeriadosPage==='function') bindFeriadosPage(); }
   else if (gt==='metas'){ if(typeof bindMetas==='function') bindMetas(); }
   else if (gt==='relatorio'){ if(ST.sector==='lojas'){ if(typeof bindRelatorioLojas==='function') bindRelatorioLojas(); } else { if(typeof bindRelatorio==='function') bindRelatorio(); } }
   else if (gt==='orcamento'){ if(typeof bindOrcamento==='function') bindOrcamento(); }
@@ -30606,6 +31543,1500 @@ function facialBloqueiaSemCadastro(alvo, kind){
    Steps 4 (escala) e 5 (facial) ficam pra v189/v190.
    ============================================================ */
 
+/* ============================================================
+   v190 · Wizard Step 5 real — Cadastro facial no wizard
+   ============================================================
+   Difere de openFacialCadastroModal (v181): captura descriptor
+   + blob SEM salvar no banco. Retorna via callback pro wizard
+   embutir no INSERT do user/member.
+   ============================================================ */
+
+function openFacialCaptureForWizard(callback){
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialCaptureWizard';
+  modal.innerHTML = '<div class="modal fcw-modal">'+
+    '<div class="fcw-head">'+
+      '<div><b>🎭 Cadastrar rosto</b><i>Alinhe o rosto no oval e clique em Capturar</i></div>'+
+      '<button class="fx-close" id="fcwClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="fcw-body">'+
+      '<div class="fcw-cam" id="fcwCam">'+
+        '<video id="fcwVideo" autoplay playsinline muted></video>'+
+        '<canvas id="fcwCanvas" style="display:none"></canvas>'+
+        '<div class="fcw-overlay"><div class="fcw-oval"></div></div>'+
+        '<div class="fcw-msg" id="fcwMsg">Clique em "Abrir câmera" para começar</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="fcw-foot">'+
+      '<button class="btn btn-ghost" id="fcwAbrir">📷 Abrir câmera</button>'+
+      '<button class="btn btn-ghost" id="fcwRetry" style="display:none">🔄 Refazer</button>'+
+      '<button class="btn btn-primary" id="fcwCap" disabled>📸 Capturar</button>'+
+      '<button class="btn btn-primary" id="fcwOk" style="display:none">✓ Usar este rosto</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(modal);
+
+  var video = modal.querySelector('#fcwVideo');
+  var canvas = modal.querySelector('#fcwCanvas');
+  var cam = modal.querySelector('#fcwCam');
+  var msg = modal.querySelector('#fcwMsg');
+  var btnAbrir = modal.querySelector('#fcwAbrir');
+  var btnCap = modal.querySelector('#fcwCap');
+  var btnRetry = modal.querySelector('#fcwRetry');
+  var btnOk = modal.querySelector('#fcwOk');
+
+  var descAtual = null;
+  var blobAtual = null;
+
+  function close(){
+    facialFecharWebcam();
+    if (modal.parentNode) modal.parentNode.removeChild(modal);
+  }
+  modal.querySelector('#fcwClose').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+
+  btnAbrir.addEventListener('click', async function(){
+    btnAbrir.disabled = true;
+    msg.textContent = 'Carregando IA + câmera...';
+    cam.classList.remove('ok','err');
+    var [modOk, camOk] = await Promise.all([
+      facialCarregarModelos(),
+      facialAbrirWebcam(video)
+    ]);
+    if (!modOk){ msg.textContent = 'Falha carregando IA'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
+    if (!camOk){ msg.textContent = 'Falha ao abrir câmera'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
+    msg.textContent = 'Alinhe o rosto no oval e clique em Capturar';
+    btnCap.disabled = false;
+    btnAbrir.textContent = '🔄 Reiniciar';
+    btnAbrir.disabled = false;
+  });
+
+  btnCap.addEventListener('click', async function(){
+    btnCap.disabled = true;
+    cam.classList.remove('ok','err');
+    msg.textContent = 'Detectando rosto...';
+    var det = await facialDetectar(video);
+    if (!det){
+      msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais.';
+      cam.classList.add('err');
+      btnCap.disabled = false;
+      return;
+    }
+    descAtual = det.descriptor;
+    blobAtual = await facialCapturarBlob(video);
+    // Preview congelado
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    canvas.style.display = 'block';
+    video.style.display = 'none';
+    cam.classList.add('ok');
+    msg.textContent = '✓ Rosto detectado. Confirme ou refaça.';
+    btnCap.style.display = 'none';
+    btnAbrir.style.display = 'none';
+    btnRetry.style.display = '';
+    btnOk.style.display = '';
+  });
+
+  btnRetry.addEventListener('click', function(){
+    descAtual = null; blobAtual = null;
+    canvas.style.display = 'none';
+    video.style.display = '';
+    cam.classList.remove('ok','err');
+    msg.textContent = 'Alinhe o rosto no oval e clique em Capturar';
+    btnCap.style.display = ''; btnCap.disabled = false;
+    btnAbrir.style.display = '';
+    btnRetry.style.display = 'none';
+    btnOk.style.display = 'none';
+  });
+
+  btnOk.addEventListener('click', function(){
+    if (!descAtual || !blobAtual){ msg.textContent = 'Erro: sem dados capturados'; return; }
+    facialFecharWebcam();
+    if (modal.parentNode) modal.parentNode.removeChild(modal);
+    if (typeof callback === 'function') callback({ descriptor: descAtual, blob: blobAtual });
+  });
+}
+
+/* ============================================================
+   v191 · Notificações persistentes (Fatia 1/3 · Foundation)
+   ============================================================
+   Bandejinha no topbar com contador + popover que lista as
+   últimas não-lidas. Poll leve a cada 30s + push local sempre
+   que a UI insere via notify().
+   ============================================================ */
+
+var NOTIF_CFG = {
+  POLL_MS: 30000,
+  MAX_POPOVER: 15,
+  RETENTION_DAYS: 30
+};
+
+var NOTIF_STATE = {
+  loaded: false,
+  loading: false,
+  pollTimer: null,
+  lastFetch: null
+};
+
+function notif_meuId(){
+  return ST.session && ST.session.user && ST.session.user.id;
+}
+
+/* Insere uma notificação. Fire-and-forget. */
+function notify(userId, opts){
+  if (!userId || !opts || !opts.title) return;
+  var row = {
+    user_id: userId,
+    kind: opts.kind || 'info',
+    title: opts.title,
+    body: opts.body || null,
+    link: opts.link || null,
+    priority: opts.priority || 'normal',
+    ctx: opts.ctx || null
+  };
+  sb.from('malba_notifications').insert(row).select().single().then(function(r){
+    if (r.error){ console.error('[notify]', r.error); return; }
+    if (!r.data) return;
+    // Se é pro user logado, push local + refresh badge
+    if (String(userId) === String(notif_meuId())){
+      ST.notifications = ST.notifications || [];
+      ST.notifications.unshift(r.data);
+      notifRefreshBadge();
+    }
+  });
+}
+
+/* Carrega as notificações do usuário logado (últimas 100 dos últimos 30 dias) */
+function notifCarregarMinhas(cb){
+  var me = notif_meuId();
+  if (!me){ if (cb) cb(); return; }
+  if (NOTIF_STATE.loading) { if (cb) cb(); return; }
+  NOTIF_STATE.loading = true;
+  var since = new Date(Date.now() - NOTIF_CFG.RETENTION_DAYS*86400*1000).toISOString();
+  sb.from('malba_notifications').select('*').eq('user_id', me).gte('created_at', since).order('created_at', {ascending:false}).limit(100).then(function(r){
+    NOTIF_STATE.loading = false;
+    NOTIF_STATE.lastFetch = new Date();
+    if (r.error){ console.error('[notif load]', r.error); if (cb) cb(); return; }
+    ST.notifications = r.data || [];
+    NOTIF_STATE.loaded = true;
+    notifRefreshBadge();
+    if (cb) cb();
+  });
+}
+
+function notifNaoLidas(){
+  return (ST.notifications||[]).filter(function(n){ return !n.is_read; });
+}
+
+function notifRefreshBadge(){
+  var el = document.getElementById('topNotifBadge');
+  if (!el) return;
+  var n = notifNaoLidas().length;
+  if (n > 0){
+    el.textContent = n > 99 ? '99+' : String(n);
+    el.style.display = '';
+    var btn = document.getElementById('topNotifBtn');
+    if (btn) btn.classList.add('has-unread');
+  } else {
+    el.textContent = '';
+    el.style.display = 'none';
+    var btn2 = document.getElementById('topNotifBtn');
+    if (btn2) btn2.classList.remove('has-unread');
+  }
+}
+
+function notifMarcarLida(id){
+  var n = (ST.notifications||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!n || n.is_read) return;
+  n.is_read = true;
+  n.read_at = new Date().toISOString();
+  notifRefreshBadge();
+  sb.from('malba_notifications').update({ is_read:true, read_at: n.read_at }).eq('id', id).then(function(r){
+    if (r.error) console.error('[notif mark]', r.error);
+  });
+}
+
+function notifMarcarTodasLidas(){
+  var me = notif_meuId();
+  var pend = (ST.notifications||[]).filter(function(n){return !n.is_read;});
+  if (!pend.length) return;
+  var now = new Date().toISOString();
+  pend.forEach(function(n){ n.is_read = true; n.read_at = now; });
+  notifRefreshBadge();
+  sb.from('malba_notifications').update({is_read:true, read_at:now}).eq('user_id', me).eq('is_read', false).then(function(r){
+    if (r.error) console.error('[notif mark all]', r.error);
+  });
+}
+
+/* Poll periódico (leve — só quando aba visível) */
+function notifIniciarPoll(){
+  if (NOTIF_STATE.pollTimer) return;
+  NOTIF_STATE.pollTimer = setInterval(function(){
+    if (typeof document.hidden === 'boolean' && document.hidden) return;
+    notifCarregarMinhas();
+  }, NOTIF_CFG.POLL_MS);
+}
+
+/* Widget do topbar */
+function topbarNotifHTML(){
+  if (!notif_meuId()) return '';
+  var qtd = notifNaoLidas().length;
+  return '<button class="top-notif'+(qtd>0?' has-unread':'')+'" id="topNotifBtn" title="Notificações">'+
+    '<span class="top-notif-ico">🔔</span>'+
+    '<span class="top-notif-badge" id="topNotifBadge"'+(qtd>0?'':' style="display:none"')+'>'+(qtd>99?'99+':qtd)+'</span>'+
+  '</button>';
+}
+
+function topbarNotifPopoverAbrir(anchorBtn){
+  // Fecha se já aberto
+  var existente = document.getElementById('notifPop');
+  if (existente){ existente.parentNode.removeChild(existente); return; }
+
+  var rect = anchorBtn.getBoundingClientRect();
+  var lidas = (ST.notifications||[]).slice(0, NOTIF_CFG.MAX_POPOVER);
+
+  var body = '';
+  if (!lidas.length){
+    body = '<div class="notif-empty"><div class="notif-empty-ico">🔕</div><div>Nenhuma notificação por aqui.<br><small>Você tá em dia!</small></div></div>';
+  } else {
+    body = lidas.map(function(n){
+      var cls = 'notif-item' + (n.is_read?'':' unread') + ' notif-'+n.priority;
+      var ago = notifTempoAgo(n.created_at);
+      var kindIcon = notifIconePorKind(n.kind);
+      var waHtml = (typeof notifWaBotaoHTML==='function') ? notifWaBotaoHTML(n) : '';
+      return '<div class="'+cls+'" data-notif-id="'+esc(n.id)+'"'+(n.link?' data-notif-link="'+esc(n.link)+'"':'')+'>'+
+        '<div class="notif-ico">'+kindIcon+'</div>'+
+        '<div class="notif-mid">'+
+          '<div class="notif-title">'+esc(n.title)+'</div>'+
+          (n.body?'<div class="notif-body">'+esc(n.body)+'</div>':'')+
+          '<div class="notif-time">'+ago+'</div>'+
+        '</div>'+
+        waHtml +
+        (n.is_read?'':'<div class="notif-dot"></div>')+
+      '</div>';
+    }).join('');
+  }
+
+  var qtd = notifNaoLidas().length;
+  var pop = document.createElement('div');
+  pop.className = 'notif-pop';
+  pop.id = 'notifPop';
+  var rightEdge = Math.min(window.innerWidth - rect.right, window.innerWidth - 340);
+  pop.style.top = (rect.bottom + 8) + 'px';
+  pop.style.right = (window.innerWidth - rect.right) + 'px';
+  pop.innerHTML = '<div class="notif-pop-head">'+
+    '<b>Notificações</b>'+
+    '<div class="notif-head-actions">'+
+      (qtd>0?'<button class="notif-mark-all" id="notifMarkAll">Marcar todas como lidas</button>':'')+
+      '<button class="notif-pref-btn" id="notifPrefBtn" title="Preferências">⚙️</button>'+
+    '</div>'+
+  '</div>'+
+  '<div class="notif-pop-body">'+body+'</div>';
+
+  document.body.appendChild(pop);
+
+  // Bindings
+  pop.querySelectorAll('.notif-item').forEach(function(item){
+    item.addEventListener('click', function(e){
+      // v193: click no botão WhatsApp não deve marcar/navegar
+      if (e.target.closest && e.target.closest('[data-wa-btn]')) return;
+      var id = item.getAttribute('data-notif-id');
+      notifMarcarLida(id);
+      var link = item.getAttribute('data-notif-link');
+      if (pop.parentNode) pop.parentNode.removeChild(pop);
+      if (link && typeof navigate === 'function'){
+        navigate(link.replace(/^\//,''));
+        if (typeof renderPage==='function') renderPage();
+      }
+    });
+  });
+  // v193: bind ícone de preferências
+  var prefBtn = pop.querySelector('#notifPrefBtn');
+  if (prefBtn) prefBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (pop.parentNode) pop.parentNode.removeChild(pop);
+    openNotifPreferencias();
+  });
+  var mA = pop.querySelector('#notifMarkAll');
+  if (mA) mA.addEventListener('click', function(e){ e.stopPropagation(); notifMarcarTodasLidas(); if (pop.parentNode) pop.parentNode.removeChild(pop); });
+
+  // Fecha ao clicar fora
+  setTimeout(function(){
+    var closer = function(e){
+      if (!pop.contains(e.target) && e.target !== anchorBtn && !anchorBtn.contains(e.target)){
+        if (pop.parentNode) pop.parentNode.removeChild(pop);
+        document.removeEventListener('click', closer);
+      }
+    };
+    document.addEventListener('click', closer);
+  }, 10);
+}
+
+function notifIconePorKind(kind){
+  var mapa = {
+    ponto_sem_verif: '🚨',
+    ponto_atraso: '⏰',
+    meta_batida: '🎯',
+    tarefa: '📝',
+    tarefa_atrasada: '🔥',
+    kudos: '👏',
+    rotina_quebrada: '⚠️',
+    comentario: '💬',
+    novo_colaborador: '👤',
+    info: 'ℹ️',
+    warning: '⚠️',
+    success: '✓',
+    error: '❌'
+  };
+  return mapa[kind] || '🔔';
+}
+
+function notifTempoAgo(iso){
+  if (!iso) return '';
+  var d = new Date(iso);
+  var diff = (Date.now() - d.getTime())/1000;
+  if (diff < 60) return 'agora';
+  if (diff < 3600) return Math.floor(diff/60) + 'min atrás';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h atrás';
+  if (diff < 604800) return Math.floor(diff/86400) + 'd atrás';
+  return d.toLocaleDateString('pt-BR');
+}
+
+function bindTopbarNotif(){
+  var btn = document.getElementById('topNotifBtn');
+  if (btn) btn.addEventListener('click', function(e){ e.stopPropagation(); topbarNotifPopoverAbrir(btn); });
+}
+
+/* ============================================================
+   v192 · Notificações — Emissores (Fatia 2/3)
+   ============================================================
+   Helpers pra achar destinatários certos + wrappers que
+   plugam notify() em eventos-chave do sistema.
+   ============================================================ */
+
+/* Quem são os gestores/admins do setor? */
+function notifGestoresDoSetor(sector){
+  var list = ST.allUsers || ST.users || [];
+  return list.filter(function(u){
+    if (String(u.sector||'') !== String(sector||'')) return false;
+    var lvl = u.access_level || u.role || '';
+    return lvl === 'admin' || lvl === 'gestor';
+  }).map(function(u){ return u.id; });
+}
+
+/* Quem são supervisores/gestores/admins do setor (mais amplo) */
+function notifLiderancaDoSetor(sector){
+  var list = ST.allUsers || ST.users || [];
+  return list.filter(function(u){
+    if (String(u.sector||'') !== String(sector||'')) return false;
+    var lvl = u.access_level || u.role || '';
+    return lvl === 'admin' || lvl === 'gestor' || lvl === 'supervisor';
+  }).map(function(u){ return u.id; });
+}
+
+/* Achar user_id do membro (se o member tem login vinculado) */
+function notifUserIdDoMember(memberId){
+  var m = (ST.members||[]).filter(function(x){return String(x.id)===String(memberId);})[0];
+  return m && m.user_id ? m.user_id : null;
+}
+
+/* Nome legível do meu user pra ir no body ("de Bruno") */
+function notifMeuNome(){
+  return (ST.session && ST.session.user && (ST.session.user.name || ST.session.user.email)) || 'alguém';
+}
+
+/* Emitir pra múltiplos user_ids (dedup + skip do próprio) */
+function notifBroadcast(userIds, opts){
+  if (!userIds || !userIds.length) return;
+  var meuId = ST.session && ST.session.user && ST.session.user.id;
+  var vistos = {};
+  userIds.forEach(function(uid){
+    if (!uid) return;
+    if (String(uid) === String(meuId)) return;  // não notifica a si mesmo
+    if (vistos[uid]) return;
+    vistos[uid] = 1;
+    notify(uid, opts);
+  });
+}
+
+/* Emissores específicos (chamados pelos patches abaixo) */
+
+function notifEmitir_KudoRecebido(kudo, membroAlvo){
+  if (!kudo || !membroAlvo) return;
+  var uid = membroAlvo.user_id || notifUserIdDoMember(membroAlvo.id);
+  if (!uid) return;   // membro sem login → sem notif in-app (fatia 3 mandaria por WhatsApp)
+  notify(uid, {
+    kind: 'kudos',
+    title: '👏 Você recebeu um reconhecimento!',
+    body: 'De ' + notifMeuNome() + (kudo.message ? ': "' + String(kudo.message).slice(0,80) + '"' : ''),
+    link: '/perfil',
+    priority: 'normal',
+    ctx: { kudo_id: kudo.id }
+  });
+}
+
+function notifEmitir_TarefaAtribuida(task){
+  if (!task || !task.assigned_to) return;
+  var meuId = ST.session && ST.session.user && ST.session.user.id;
+  if (String(task.assigned_to) === String(meuId)) return;  // skip próprio
+  notify(task.assigned_to, {
+    kind: 'tarefa',
+    title: '📝 Nova tarefa: ' + (task.title || 'sem título').slice(0,60),
+    body: 'Atribuída por ' + notifMeuNome() + (task.due_date ? ' · vence ' + task.due_date : ''),
+    link: '/tarefas',
+    priority: task.priority === 'high' ? 'high' : 'normal',
+    ctx: { task_id: task.id }
+  });
+}
+
+function notifEmitir_JustificativaEnviada(justif, autorNome){
+  // Notifica gestores/admins do setor pra aprovarem
+  var sector = justif && justif.sector;
+  if (!sector) return;
+  var ids = notifGestoresDoSetor(sector);
+  notifBroadcast(ids, {
+    kind: 'warning',
+    title: '⚠️ Justificativa aguardando aprovação',
+    body: (autorNome || 'Colaborador') + ' enviou justificativa de ponto',
+    link: '/gestao/ponto',
+    priority: 'high',
+    ctx: { justif_id: justif.id }
+  });
+}
+
+function notifEmitir_NovoColaborador(entidade, tipo, sector){
+  // Notifica gestores do setor sobre novo colaborador cadastrado
+  var ids = notifGestoresDoSetor(sector);
+  notifBroadcast(ids, {
+    kind: 'novo_colaborador',
+    title: '👤 Novo ' + (tipo==='user'?'usuário':'colaborador') + ' cadastrado',
+    body: (entidade.name || '') + (entidade.role ? ' · ' + entidade.role : ''),
+    link: '/gestao/equipe',
+    priority: 'normal',
+    ctx: { entidade_id: entidade.id, tipo: tipo }
+  });
+}
+
+function notifEmitir_MetaBatida(goal){
+  // Notifica gestores do setor + próprio user se meta atribuída
+  if (!goal) return;
+  var atingiu = Number(goal.actual_value||0) >= Number(goal.target_value||1);
+  if (!atingiu) return;
+  var ids = notifGestoresDoSetor(goal.sector || ST.sector);
+  notifBroadcast(ids, {
+    kind: 'meta_batida',
+    title: '🎯 Meta batida!',
+    body: (goal.title || 'Meta') + ' · R$ ' + Number(goal.actual_value||0).toLocaleString('pt-BR'),
+    link: '/vendas/metas',
+    priority: 'high',
+    ctx: { goal_id: goal.id }
+  });
+}
+
+/* ============================================================
+   v193 · WhatsApp Bridge (Fatia 3/3)
+   ============================================================
+   Sem servidor. Usa wa.me links pra gestor mandar em 1 clique
+   as notificações importantes pro próprio WhatsApp ou pra
+   outros gestores. Preferência por usuário: qual priority
+   mínimo, quais kinds ignorar, on/off geral.
+   ============================================================ */
+
+/* Normaliza número pra formato aceito pelo wa.me
+   (só dígitos; adiciona 55 se não começar com código de país) */
+function notifNormalizaNumero(n){
+  if (!n) return '';
+  var d = String(n).replace(/\D/g, '');
+  if (!d) return '';
+  // Se veio só o DDD+número (10-11 dígitos), assume Brasil
+  if (d.length >= 10 && d.length <= 11) d = '55' + d;
+  return d;
+}
+
+/* Monta um link wa.me com texto pré-preenchido */
+function notifBuildWaLink(numero, texto){
+  var num = notifNormalizaNumero(numero);
+  var msg = encodeURIComponent(texto || '');
+  if (!num) return null;
+  return 'https://wa.me/' + num + (msg ? '?text=' + msg : '');
+}
+
+/* Monta o texto da mensagem WhatsApp a partir de uma notif */
+function notifTextoWa(notif){
+  var lines = [];
+  lines.push('*' + (notif.title || 'Notificação MALBA') + '*');
+  if (notif.body) lines.push(notif.body);
+  lines.push('');
+  lines.push('_(via MALBA Work OS)_');
+  return lines.join('\n');
+}
+
+/* Pega o phone do user (ou member) por id */
+function notifPhoneDoUserId(uid){
+  var u = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(uid);})[0];
+  if (u && u.phone) return u.phone;
+  // fallback: member vinculado a esse user
+  var m = (ST.members||[]).filter(function(x){return String(x.user_id)===String(uid);})[0];
+  return m && m.phone ? m.phone : null;
+}
+
+/* Preferência do usuário logado (ou defaults) */
+function notifMinhaPref(){
+  var u = ST.session && ST.session.user;
+  var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return u && String(x.id)===String(u.id);})[0] || u;
+  var p = (uAtual && uAtual.notif_wa_pref) || {};
+  return {
+    enabled: p.enabled !== false,
+    minPriority: p.minPriority || 'high',
+    kindsBlock: Array.isArray(p.kindsBlock) ? p.kindsBlock : []
+  };
+}
+
+/* Notif deve mostrar botão WhatsApp? (in-app; user decide se envia) */
+function notifDeveMostrarWa(notif){
+  var pref = notifMinhaPref();
+  if (!pref.enabled) return false;
+  if (pref.kindsBlock.indexOf(notif.kind) >= 0) return false;
+  var ord = {low:0, normal:1, high:2, urgent:3};
+  return (ord[notif.priority]||1) >= (ord[pref.minPriority]||2);
+}
+
+/* Rótulos amigáveis */
+var NOTIF_WA_KIND_LABELS = {
+  ponto_sem_verif: '🚨 Ponto sem verificação',
+  ponto_atraso: '⏰ Atrasos',
+  meta_batida: '🎯 Metas batidas',
+  tarefa: '📝 Novas tarefas',
+  tarefa_atrasada: '🔥 Tarefas atrasadas',
+  kudos: '👏 Kudos recebidos',
+  rotina_quebrada: '⚠️ Rotinas quebradas',
+  comentario: '💬 Comentários',
+  novo_colaborador: '👤 Novos colaboradores',
+  info: 'ℹ️ Informativos',
+  warning: '⚠️ Avisos',
+  success: '✓ Sucessos',
+  error: '❌ Erros'
+};
+
+/* Modal de preferências */
+function openNotifPreferencias(){
+  if (document.getElementById('notifPrefModal')) return;
+  var u = ST.session && ST.session.user;
+  if (!u) return;
+  var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(u.id);})[0] || u;
+  var pref = notifMinhaPref();
+  var phoneAtual = uAtual.phone || '';
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'notifPrefModal';
+
+  var kindsChks = Object.keys(NOTIF_WA_KIND_LABELS).map(function(k){
+    var bloqueado = pref.kindsBlock.indexOf(k) >= 0;
+    return '<label class="np-kind"><input type="checkbox" data-np-kind="'+esc(k)+'"'+(bloqueado?'':' checked')+'><span>'+esc(NOTIF_WA_KIND_LABELS[k])+'</span></label>';
+  }).join('');
+
+  var prioOpts = [
+    {v:'low',    l:'Todas (barulhento)'},
+    {v:'normal', l:'Normais ou mais importantes'},
+    {v:'high',   l:'Apenas altas + urgentes (recomendado)'},
+    {v:'urgent', l:'Só urgentes (mínimo ruído)'}
+  ].map(function(o){
+    return '<option value="'+o.v+'"'+(o.v===pref.minPriority?' selected':'')+'>'+esc(o.l)+'</option>';
+  }).join('');
+
+  modal.innerHTML = '<div class="modal np-modal">'+
+    '<div class="np-head">'+
+      '<div><b>📱 Notificações no WhatsApp</b><i>Só aparece o botão pra reencaminhar; nada é enviado automaticamente.</i></div>'+
+      '<button class="fx-close" id="npClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="np-body">'+
+      '<div class="np-field">'+
+        '<label class="np-switch"><input type="checkbox" id="npEnabled"'+(pref.enabled?' checked':'')+'><span>Mostrar botão WhatsApp nas notificações</span></label>'+
+      '</div>'+
+      '<div class="np-field">'+
+        '<label>SEU WHATSAPP</label>'+
+        '<input type="text" id="npPhone" value="'+esc(phoneAtual)+'" placeholder="+55 11 99999-9999">'+
+        '<small class="np-hint">Formato internacional (com DDI). Ex: +5511958724485</small>'+
+      '</div>'+
+      '<div class="np-field">'+
+        '<label>QUAIS PRIORIDADES MOSTRAM O BOTÃO?</label>'+
+        '<select id="npMinPrio">'+prioOpts+'</select>'+
+      '</div>'+
+      '<div class="np-field">'+
+        '<label>TIPOS ATIVOS</label>'+
+        '<div class="np-kinds">'+kindsChks+'</div>'+
+        '<small class="np-hint">Desmarque o que você NÃO quer ver com botão WhatsApp.</small>'+
+      '</div>'+
+    '</div>'+
+    '<div class="np-foot">'+
+      '<button class="btn btn-ghost" id="npCancel">Cancelar</button>'+
+      '<button class="btn btn-primary" id="npSave">Salvar</button>'+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.querySelector('#npClose').addEventListener('click', close);
+  modal.querySelector('#npCancel').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+
+  modal.querySelector('#npSave').addEventListener('click', function(){
+    var novoPhone = (modal.querySelector('#npPhone').value || '').trim();
+    var novaPref = {
+      enabled: modal.querySelector('#npEnabled').checked,
+      minPriority: modal.querySelector('#npMinPrio').value,
+      kindsBlock: []
+    };
+    modal.querySelectorAll('[data-np-kind]').forEach(function(cb){
+      if (!cb.checked) novaPref.kindsBlock.push(cb.getAttribute('data-np-kind'));
+    });
+
+    var patch = { notif_wa_pref: novaPref };
+    if (novoPhone !== phoneAtual) patch.phone = novoPhone || null;
+
+    sb.from('malba_users').update(patch).eq('id', u.id).then(function(r){
+      if (r.error){ if (typeof toast==='function') toast('Erro salvando: '+(r.error.message||''),'error'); console.error(r.error); return; }
+      // Atualiza local
+      Object.assign(uAtual, patch);
+      if (u === uAtual === false) Object.assign(u, patch);
+      if (typeof toast==='function') toast('Preferências salvas','success');
+      close();
+    });
+  });
+}
+
+/* Botão wa.me pra um item de notificação */
+function notifWaBotaoHTML(notif){
+  if (!notifDeveMostrarWa(notif)) return '';
+  var phone = notifPhoneDoUserId(ST.session && ST.session.user && ST.session.user.id);
+  if (!phone) return '';   // não tem o próprio número — nada a mostrar
+  var link = notifBuildWaLink(phone, notifTextoWa(notif));
+  if (!link) return '';
+  return '<a class="notif-wa-btn" href="'+esc(link)+'" target="_blank" rel="noopener" title="Reencaminhar pro WhatsApp" data-wa-btn="1">📱</a>';
+}
+
+/* ============================================================
+   v194 · Feriados nacionais e regionais
+   ============================================================
+   Evita falso positivo de falta no painel gestor v178 quando
+   o dia é feriado. Ainda permite marcar folga voluntária
+   como "compareceu no feriado".
+   ============================================================ */
+
+var FERIADOS_STATE = {
+  loaded: false
+};
+
+/* Carrega todos os feriados ativos (uma vez) */
+function feriadosCarregar(cb){
+  if (FERIADOS_STATE.loaded){ if (cb) cb(); return; }
+  sb.from('malba_feriados').select('*').eq('ativo', true).order('data', {ascending:true}).then(function(r){
+    if (r.error){ console.error('[feriados load]', r.error); if (cb) cb(); return; }
+    ST.feriados = r.data || [];
+    FERIADOS_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+/* Retorna o feriado do dia (ou null). Filtra por UF/cidade se relevante. */
+function feriadoDoDia(dateStr){
+  if (!dateStr) return null;
+  var lista = ST.feriados || [];
+  for (var i=0;i<lista.length;i++){
+    var f = lista[i];
+    if (f.data !== dateStr) continue;
+    // Filtro geográfico: nacional sempre; SP estadual/municipal (MALBA é SP)
+    if (f.tipo === 'nacional') return f;
+    if (f.tipo === 'estadual' && (!f.uf || f.uf === 'SP')) return f;
+    if (f.tipo === 'municipal' && f.cidade === 'São Paulo') return f;
+    if (f.tipo === 'empresa') return f;
+  }
+  return null;
+}
+
+function ehFeriado(dateStr){
+  return !!feriadoDoDia(dateStr);
+}
+
+function nomeFeriado(dateStr){
+  var f = feriadoDoDia(dateStr);
+  return f ? f.nome : '';
+}
+
+/* Salvar/adicionar feriado (usado no modal admin) */
+function feriadoSalvar(payload, cb){
+  var row = {
+    data: payload.data,
+    nome: payload.nome,
+    tipo: payload.tipo || 'empresa',
+    uf: payload.uf || null,
+    cidade: payload.cidade || null,
+    ativo: payload.ativo !== false
+  };
+  var op = payload.id
+    ? sb.from('malba_feriados').update(row).eq('id', payload.id)
+    : sb.from('malba_feriados').insert(row).select().single();
+  op.then(function(r){
+    if (r.error){ if (typeof toast==='function') toast('Erro: '+r.error.message, 'error'); if (cb) cb(false); return; }
+    // Atualiza ST local
+    if (payload.id){
+      var idx = (ST.feriados||[]).findIndex(function(f){return String(f.id)===String(payload.id);});
+      if (idx >= 0) Object.assign(ST.feriados[idx], row);
+    } else if (r.data){
+      ST.feriados = ST.feriados || [];
+      ST.feriados.push(r.data);
+      ST.feriados.sort(function(a,b){return a.data.localeCompare(b.data);});
+    }
+    if (typeof toast==='function') toast('Feriado salvo', 'success');
+    if (cb) cb(true);
+  });
+}
+
+function feriadoRemover(id, cb){
+  sb.from('malba_feriados').delete().eq('id', id).then(function(r){
+    if (r.error){ if (typeof toast==='function') toast('Erro: '+r.error.message, 'error'); if (cb) cb(false); return; }
+    ST.feriados = (ST.feriados||[]).filter(function(f){return String(f.id)!==String(id);});
+    if (typeof toast==='function') toast('Feriado removido', 'success');
+    if (cb) cb(true);
+  });
+}
+
+/* Modal de novo feriado (admin) */
+function openFeriadoModal(feriado){
+  if (document.getElementById('feriadoModal')) return;
+  var f = feriado || { data:'', nome:'', tipo:'empresa', uf:'', cidade:'' };
+  var isEdit = !!feriado;
+  var m = document.createElement('div');
+  m.className = 'modal-bg';
+  m.id = 'feriadoModal';
+  m.innerHTML = '<div class="modal fer-modal">'+
+    '<div class="fer-head"><b>'+(isEdit?'✏️ Editar':'➕ Novo')+' feriado</b><button class="fx-close" id="ferClose">×</button></div>'+
+    '<div class="fer-body">'+
+      '<div class="fer-field"><label>DATA</label><input type="date" id="ferData" value="'+esc(f.data||'')+'"></div>'+
+      '<div class="fer-field"><label>NOME</label><input type="text" id="ferNome" value="'+esc(f.nome||'')+'" placeholder="Ex: Confraternização, Aniversário MALBA"></div>'+
+      '<div class="fer-field"><label>TIPO</label>'+
+        '<select id="ferTipo">'+
+          ['nacional','estadual','municipal','empresa'].map(function(t){return '<option value="'+t+'"'+(t===f.tipo?' selected':'')+'>'+t+'</option>';}).join('')+
+        '</select>'+
+        '<small class="fer-hint">Nacional = todo Brasil · Estadual/Municipal = SP · Empresa = folga interna MALBA</small>'+
+      '</div>'+
+    '</div>'+
+    '<div class="fer-foot">'+
+      (isEdit?'<button class="btn btn-danger" id="ferDel">🗑 Excluir</button>':'<span></span>')+
+      '<div><button class="btn btn-ghost" id="ferCancel">Cancelar</button> <button class="btn btn-primary" id="ferSave">Salvar</button></div>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(m);
+  function close(){ if (m.parentNode) m.parentNode.removeChild(m); }
+  m.querySelector('#ferClose').addEventListener('click', close);
+  m.querySelector('#ferCancel').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if (e.target===m) close(); });
+  m.querySelector('#ferSave').addEventListener('click', function(){
+    var payload = {
+      data: m.querySelector('#ferData').value,
+      nome: (m.querySelector('#ferNome').value||'').trim(),
+      tipo: m.querySelector('#ferTipo').value
+    };
+    if (isEdit) payload.id = f.id;
+    if (!payload.data || !payload.nome){ toast('Preencha data e nome','error'); return; }
+    feriadoSalvar(payload, function(ok){
+      if (ok){ close(); if (typeof renderPage==='function') renderPage(); }
+    });
+  });
+  var del = m.querySelector('#ferDel');
+  if (del) del.addEventListener('click', function(){
+    if (typeof confirmDelete === 'function'){
+      confirmDelete('Excluir "'+f.nome+'" ('+f.data+')?', function(){
+        feriadoRemover(f.id, function(ok){ if (ok){ close(); if (typeof renderPage==='function') renderPage(); } });
+      });
+    } else if (confirm('Excluir "'+f.nome+'"?')){
+      feriadoRemover(f.id, function(ok){ if (ok){ close(); if (typeof renderPage==='function') renderPage(); } });
+    }
+  });
+}
+
+/* Página de gerenciamento de feriados (admin) */
+function feriadosPageHTML(){
+  if (!can('equipe')) return '<div class="empty">Sem permissão</div>';
+  var anoFiltro = ST.feriadosFiltroAno || String(new Date().getFullYear());
+  var lista = (ST.feriados||[]).filter(function(f){return f.data && f.data.startsWith(anoFiltro);});
+  var anosDisponiveis = {};
+  (ST.feriados||[]).forEach(function(f){ if (f.data) anosDisponiveis[f.data.slice(0,4)] = 1; });
+  var anos = Object.keys(anosDisponiveis).sort();
+  if (anos.indexOf(anoFiltro) < 0) anos.push(anoFiltro);
+  anos.sort();
+
+  var linhas = lista.length ? lista.map(function(f){
+    var tipoLabel = {nacional:'🇧🇷 Nacional', estadual:'🏛 Estadual', municipal:'🏙 Municipal', empresa:'🏢 Empresa'}[f.tipo] || f.tipo;
+    var dt = new Date(f.data + 'T12:00:00');
+    var diaSemana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dt.getDay()];
+    return '<tr class="fer-row" data-fer-id="'+esc(f.id)+'">'+
+      '<td class="fer-td-data"><b>'+esc(f.data.split('-').reverse().join('/'))+'</b><small>'+diaSemana+'</small></td>'+
+      '<td>'+esc(f.nome)+'</td>'+
+      '<td><span class="fer-tag fer-tag-'+esc(f.tipo)+'">'+tipoLabel+'</span></td>'+
+      '<td class="fer-td-acts"><button class="btn btn-ghost btn-sm fer-edit-btn" data-fid="'+esc(f.id)+'">✏️</button></td>'+
+    '</tr>';
+  }).join('') : '<tr><td colspan="4" class="fer-empty">Nenhum feriado cadastrado em '+anoFiltro+'</td></tr>';
+
+  return '<div class="page-x">'+
+    '<div class="page-x-head">'+
+      '<div><h2>🎉 Feriados</h2><p>Dias que NÃO contam como falta no painel de ponto.</p></div>'+
+      '<button class="btn btn-primary" id="ferNovoBtn">➕ Novo feriado</button>'+
+    '</div>'+
+    '<div class="fer-toolbar">'+
+      '<label>Ano:</label>'+
+      '<select id="ferAnoSelect">'+anos.map(function(a){return '<option value="'+a+'"'+(a===anoFiltro?' selected':'')+'>'+a+'</option>';}).join('')+'</select>'+
+      '<span class="fer-count">'+lista.length+' feriado'+(lista.length===1?'':'s')+' em '+anoFiltro+'</span>'+
+    '</div>'+
+    '<div class="card-x">'+
+      '<table class="table-x fer-table">'+
+        '<thead><tr><th>Data</th><th>Nome</th><th>Tipo</th><th></th></tr></thead>'+
+        '<tbody>'+linhas+'</tbody>'+
+      '</table>'+
+    '</div>'+
+  '</div>';
+}
+
+function bindFeriadosPage(){
+  var novoBtn = document.getElementById('ferNovoBtn');
+  if (novoBtn) novoBtn.addEventListener('click', function(){ openFeriadoModal(null); });
+  var sel = document.getElementById('ferAnoSelect');
+  if (sel) sel.addEventListener('change', function(){
+    ST.feriadosFiltroAno = sel.value;
+    if (typeof renderPage==='function') renderPage();
+  });
+  document.querySelectorAll('.fer-edit-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var fid = b.getAttribute('data-fid');
+      var f = (ST.feriados||[]).filter(function(x){return String(x.id)===String(fid);})[0];
+      if (f) openFeriadoModal(f);
+    });
+  });
+}
+
+/* ============================================================
+   v195 · Auditoria — página consultável em Configurações
+   ============================================================
+   auditLog() já grava em malba_admin_audit desde v100+.
+   Este módulo consome e exibe: filtros por pessoa, setor,
+   busca por ação e período. CSV export.
+   ============================================================ */
+
+var AUDIT_CFG = {
+  MAX_ROWS: 500,
+  RETENTION_DAYS: 90
+};
+
+var AUDIT_STATE = {
+  loaded: false,
+  loading: false
+};
+
+function auditCarregar(cb){
+  if (AUDIT_STATE.loading){ if (cb) cb(); return; }
+  AUDIT_STATE.loading = true;
+  var since = new Date(Date.now() - AUDIT_CFG.RETENTION_DAYS*86400*1000).toISOString();
+  sb.from('malba_admin_audit').select('*').gte('created_at', since).order('created_at', {ascending:false}).limit(AUDIT_CFG.MAX_ROWS).then(function(r){
+    AUDIT_STATE.loading = false;
+    if (r.error){ console.error('[audit load]', r.error); if (cb) cb(); return; }
+    ST.audit = r.data || [];
+    AUDIT_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+/* Atores únicos (ordenado alfabético) */
+function auditListaAtores(){
+  var m = {};
+  (ST.audit||[]).forEach(function(a){ if (a.actor_name) m[a.actor_name] = 1; });
+  return Object.keys(m).sort();
+}
+
+function auditListaSetores(){
+  var m = {};
+  (ST.audit||[]).forEach(function(a){ if (a.actor_sector) m[a.actor_sector] = 1; });
+  return Object.keys(m).sort();
+}
+
+/* Filtragem in-memory */
+function auditFiltrar(fil){
+  fil = fil || {};
+  var arr = ST.audit || [];
+  var q = String(fil.q||'').trim().toLowerCase();
+  var actor = fil.actor || '';
+  var sector = fil.sector || '';
+  var dtFrom = fil.dtFrom || '';
+  var dtTo = fil.dtTo || '';
+  return arr.filter(function(a){
+    if (actor && String(a.actor_name||'') !== actor) return false;
+    if (sector && String(a.actor_sector||'') !== sector) return false;
+    if (dtFrom && (a.created_at||'') < dtFrom) return false;
+    if (dtTo){
+      // dtTo inclusivo — considera todo o dia
+      var dtToEnd = dtTo + 'T23:59:59';
+      if ((a.created_at||'') > dtToEnd) return false;
+    }
+    if (q){
+      var hay = ((a.action||'')+' '+(a.actor_name||'')+' '+(a.actor_sector||'')).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+}
+
+/* Categoriza ação por primeira palavra (Criou/Editou/Excluiu/etc) */
+function auditCategoriaAcao(action){
+  if (!action) return 'outro';
+  var primeira = String(action).split(' ')[0].toLowerCase();
+  var mapa = {
+    'criou': 'criou', 'criaram': 'criou', 'adicionou': 'criou', 'enviou': 'criou',
+    'editou': 'editou', 'atualizou': 'editou', 'mudou': 'editou', 'alterou': 'editou',
+    'excluiu': 'excluiu', 'apagou': 'excluiu', 'removeu': 'excluiu', 'deletou': 'excluiu',
+    'concluiu': 'concluiu', 'finalizou': 'concluiu', 'aprovou': 'concluiu', 'validou': 'concluiu',
+    'reatribuiu': 'transferiu', 'moveu': 'transferiu', 'transferiu': 'transferiu',
+    'pausou': 'pausou', 'retomou': 'pausou',
+    'pulou': 'outro', 'dispensou': 'outro'
+  };
+  return mapa[primeira] || 'outro';
+}
+
+function auditFmtData(iso){
+  if (!iso) return '';
+  var d = new Date(iso);
+  var pad = function(n){return n<10?'0'+n:''+n;};
+  return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+
+function auditFmtDataRelativa(iso){
+  if (!iso) return '';
+  var diff = (Date.now() - new Date(iso).getTime())/1000;
+  if (diff < 60) return 'agora';
+  if (diff < 3600) return Math.floor(diff/60)+'min';
+  if (diff < 86400) return Math.floor(diff/3600)+'h';
+  if (diff < 604800) return Math.floor(diff/86400)+'d';
+  return auditFmtData(iso).split(' ')[0];
+}
+
+var AUDIT_CAT_LABEL = {
+  criou: {ic:'➕', label:'Criou', cor:'#16A34A'},
+  editou: {ic:'✏️', label:'Editou', cor:'#3B6FF7'},
+  excluiu: {ic:'🗑', label:'Excluiu', cor:'#EF4444'},
+  concluiu: {ic:'✓', label:'Concluiu', cor:'#16A34A'},
+  transferiu: {ic:'↔️', label:'Transferiu', cor:'#8B5CF6'},
+  pausou: {ic:'⏸', label:'Pausou/Retomou', cor:'#F59E0B'},
+  outro: {ic:'•', label:'Outro', cor:'var(--u-text3)'}
+};
+
+function auditoriaConfigHTML(){
+  if (!isAdmin(ST.session)) return '<div class="empty">Sem permissão</div>';
+  var f = ST.auditFiltros || {};
+  var lista = auditFiltrar(f);
+  var atores = auditListaAtores();
+  var setores = auditListaSetores();
+
+  var linhas = lista.length ? lista.map(function(a){
+    var cat = auditCategoriaAcao(a.action);
+    var meta = AUDIT_CAT_LABEL[cat] || AUDIT_CAT_LABEL.outro;
+    var initials = String(a.actor_name||'?').split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+    return '<tr class="aud-row">'+
+      '<td class="aud-td-time"><b>'+esc(auditFmtDataRelativa(a.created_at))+'</b><small>'+esc(auditFmtData(a.created_at))+'</small></td>'+
+      '<td class="aud-td-actor"><span class="aud-avatar">'+esc(initials)+'</span><div class="aud-actor-info"><b>'+esc(a.actor_name||'?')+'</b><small>'+esc(a.actor_sector||'')+'</small></div></td>'+
+      '<td class="aud-td-cat"><span class="aud-cat" style="color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span></td>'+
+      '<td class="aud-td-action">'+esc(a.action||'')+'</td>'+
+    '</tr>';
+  }).join('') : '<tr><td colspan="4" class="aud-empty">🔍 Nenhum evento encontrado com esses filtros.</td></tr>';
+
+  return '<div class="aud-wrap">'+
+    '<div class="aud-head">'+
+      '<div>'+
+        '<h3>🔍 Log de Auditoria</h3>'+
+        '<p class="aud-sub">Últimos '+AUDIT_CFG.MAX_ROWS+' eventos dos últimos '+AUDIT_CFG.RETENTION_DAYS+' dias. Filtrando: <b>'+lista.length+' resultado'+(lista.length===1?'':'s')+'</b></p>'+
+      '</div>'+
+      '<button class="btn btn-ghost" id="audCsvBtn">📊 CSV</button>'+
+    '</div>'+
+
+    '<div class="aud-filtros">'+
+      '<div class="aud-filt-item">'+
+        '<label>BUSCAR</label>'+
+        '<input type="search" id="audQ" value="'+esc(f.q||'')+'" placeholder="ação, nome, setor..." class="aud-input">'+
+      '</div>'+
+      '<div class="aud-filt-item">'+
+        '<label>PESSOA</label>'+
+        '<select id="audActor" class="aud-input"><option value="">Todas</option>'+atores.map(function(a){return '<option value="'+esc(a)+'"'+(f.actor===a?' selected':'')+'>'+esc(a)+'</option>';}).join('')+'</select>'+
+      '</div>'+
+      '<div class="aud-filt-item">'+
+        '<label>SETOR</label>'+
+        '<select id="audSector" class="aud-input"><option value="">Todos</option>'+setores.map(function(s){return '<option value="'+esc(s)+'"'+(f.sector===s?' selected':'')+'>'+esc(s)+'</option>';}).join('')+'</select>'+
+      '</div>'+
+      '<div class="aud-filt-item">'+
+        '<label>DE</label>'+
+        '<input type="date" id="audDtFrom" value="'+esc((f.dtFrom||'').slice(0,10))+'" class="aud-input">'+
+      '</div>'+
+      '<div class="aud-filt-item">'+
+        '<label>ATÉ</label>'+
+        '<input type="date" id="audDtTo" value="'+esc((f.dtTo||'').slice(0,10))+'" class="aud-input">'+
+      '</div>'+
+      '<button class="btn btn-ghost btn-sm" id="audLimparBtn">Limpar</button>'+
+    '</div>'+
+
+    '<div class="card-x">'+
+      '<table class="table-x aud-table">'+
+        '<thead><tr><th>Quando</th><th>Quem</th><th>Tipo</th><th>O que fez</th></tr></thead>'+
+        '<tbody>'+linhas+'</tbody>'+
+      '</table>'+
+    '</div>'+
+  '</div>';
+}
+
+function bindAuditoriaPage(){
+  function apply(){
+    ST.auditFiltros = ST.auditFiltros || {};
+    var q = document.getElementById('audQ');
+    var actor = document.getElementById('audActor');
+    var sector = document.getElementById('audSector');
+    var dtF = document.getElementById('audDtFrom');
+    var dtT = document.getElementById('audDtTo');
+    if (q) ST.auditFiltros.q = q.value;
+    if (actor) ST.auditFiltros.actor = actor.value;
+    if (sector) ST.auditFiltros.sector = sector.value;
+    if (dtF) ST.auditFiltros.dtFrom = dtF.value;
+    if (dtT) ST.auditFiltros.dtTo = dtT.value;
+    if (typeof renderPage==='function') renderPage();
+  }
+  ['audQ','audActor','audSector','audDtFrom','audDtTo'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('change', apply);
+    if (el && id==='audQ') el.addEventListener('input', debounceAudit(apply, 250));
+  });
+  var limpar = document.getElementById('audLimparBtn');
+  if (limpar) limpar.addEventListener('click', function(){
+    ST.auditFiltros = {};
+    if (typeof renderPage==='function') renderPage();
+  });
+  var csv = document.getElementById('audCsvBtn');
+  if (csv) csv.addEventListener('click', function(){
+    var lista = auditFiltrar(ST.auditFiltros||{});
+    var linhas = [['Quando','Quem','Setor','Ação']];
+    lista.forEach(function(a){
+      linhas.push([auditFmtData(a.created_at), a.actor_name||'', a.actor_sector||'', a.action||'']);
+    });
+    if (typeof downloadCSV === 'function'){
+      downloadCSV(linhas, 'auditoria-malba-'+(new Date().toISOString().slice(0,10))+'.csv');
+    } else {
+      // fallback simples
+      var csv = linhas.map(function(l){return l.map(function(c){return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+      var blob = new Blob(['\ufeff'+csv], {type:'text/csv'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href=url; a.download='auditoria.csv'; a.click();
+      setTimeout(function(){URL.revokeObjectURL(url);}, 100);
+    }
+  });
+}
+
+var _auditDebounce = null;
+function debounceAudit(fn, ms){
+  return function(){
+    var args = arguments;
+    if (_auditDebounce) clearTimeout(_auditDebounce);
+    _auditDebounce = setTimeout(function(){ fn.apply(null, args); }, ms);
+  };
+}
+
+/* ============================================================
+   v196 · Módulo de Férias
+   ============================================================
+   Solicitação (colaborador) → Aprovação (gestor) → Integração
+   com painel de ponto v178 + feriados v194 (dias de férias
+   aprovadas não contam como falta).
+   ============================================================ */
+
+var FERIAS_STATE = { loaded:false, loading:false };
+
+function feriasCarregar(cb){
+  if (FERIAS_STATE.loading){ if(cb) cb(); return; }
+  FERIAS_STATE.loading = true;
+  sb.from('malba_ferias').select('*').order('created_at', {ascending:false}).limit(500).then(function(r){
+    FERIAS_STATE.loading = false;
+    if (r.error){ console.error('[ferias load]', r.error); if(cb) cb(); return; }
+    ST.ferias = r.data || [];
+    FERIAS_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+function feriasDiff(inicio, fim){
+  if (!inicio || !fim) return 0;
+  var a = new Date(inicio+'T12:00:00');
+  var b = new Date(fim+'T12:00:00');
+  var ms = b.getTime() - a.getTime();
+  if (ms < 0) return 0;
+  return Math.round(ms / 86400000) + 1;   // inclusive
+}
+
+/* Está de férias aprovadas naquele dia? */
+function feriasEmDia(alvo, dataStr){
+  if (!alvo || !dataStr) return null;
+  var arr = ST.ferias || [];
+  for (var i=0;i<arr.length;i++){
+    var f = arr[i];
+    if (f.status !== 'approved') continue;
+    // Filtrar por user_id OU member_id
+    var bate = false;
+    if (alvo.user_id && String(f.user_id||'') === String(alvo.user_id)) bate = true;
+    if (alvo.member_id && String(f.member_id||'') === String(alvo.member_id)) bate = true;
+    if (!bate) continue;
+    if (dataStr >= f.data_inicio && dataStr <= f.data_fim) return f;
+  }
+  return null;
+}
+
+/* Minhas férias (do session user) */
+function feriasMinhas(){
+  var meuId = ST.session && ST.session.user && ST.session.user.id;
+  if (!meuId) return [];
+  var meusMembers = (ST.members||[]).filter(function(m){return String(m.user_id||'')===String(meuId);}).map(function(m){return String(m.id);});
+  return (ST.ferias||[]).filter(function(f){
+    if (String(f.user_id||'') === String(meuId)) return true;
+    if (meusMembers.indexOf(String(f.member_id||'')) >= 0) return true;
+    return false;
+  });
+}
+
+/* Pendentes de aprovação — do setor que sou gestor */
+function feriasPendentes(){
+  if (!isAdmin(ST.session) && !can('equipe')) return [];
+  var sec = ST.sector;
+  // Super (admin geral) vê tudo; gestor vê só do próprio setor
+  return (ST.ferias||[]).filter(function(f){
+    if (f.status !== 'pending') return false;
+    if (isSuper(ST.session)) return true;
+    return f.sector === sec;
+  });
+}
+
+/* Solicitar férias */
+function feriasSolicitar(payload, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var dias = feriasDiff(payload.data_inicio, payload.data_fim);
+  if (dias < 1){ toast('Datas inválidas — fim precisa ser >= início', 'error'); if(cb) cb(false); return; }
+  var row = {
+    user_id: payload.user_id || null,
+    member_id: payload.member_id || null,
+    actor_name: payload.actor_name || u.name,
+    sector: payload.sector || u.sector,
+    data_inicio: payload.data_inicio,
+    data_fim: payload.data_fim,
+    dias: dias,
+    motivo: payload.motivo || null,
+    status: 'pending',
+    created_by: u.id
+  };
+  // Auto-preenchimento: se não passou nenhum, é o próprio user
+  if (!row.user_id && !row.member_id) row.user_id = u.id;
+  sb.from('malba_ferias').insert(row).select().single().then(function(r){
+    if (r.error){ toast('Erro solicitando férias: '+r.error.message, 'error'); console.error(r.error); if(cb) cb(false); return; }
+    ST.ferias = ST.ferias || [];
+    ST.ferias.unshift(r.data);
+    if (typeof auditLog === 'function') auditLog('Solicitou férias', row.actor_name+' · '+dias+' dia'+(dias>1?'s':''));
+    // Notifica gestores do setor (v192 emissor)
+    try {
+      if (typeof notifGestoresDoSetor === 'function' && typeof notifBroadcast === 'function'){
+        notifBroadcast(notifGestoresDoSetor(row.sector), {
+          kind: 'warning',
+          title: '🌴 Nova solicitação de férias',
+          body: row.actor_name+' pediu '+dias+' dia'+(dias>1?'s':'')+' ('+row.data_inicio.split('-').reverse().join('/')+' a '+row.data_fim.split('-').reverse().join('/')+')',
+          link: '/ferias',
+          priority: 'high',
+          ctx: { ferias_id: r.data.id }
+        });
+      }
+    } catch(e){ console.error(e); }
+    toast('Solicitação enviada aos gestores 🌴', 'success');
+    if (cb) cb(true);
+  });
+}
+
+function feriasAprovar(id, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var f = (ST.ferias||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!f){ if(cb) cb(false); return; }
+  var patch = {
+    status: 'approved',
+    approver_id: u.id,
+    approver_name: u.name,
+    approved_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+  sb.from('malba_ferias').update(patch).eq('id', id).then(function(r){
+    if (r.error){ toast('Erro aprovando: '+r.error.message, 'error'); if(cb) cb(false); return; }
+    Object.assign(f, patch);
+    if (typeof auditLog === 'function') auditLog('Aprovou férias', f.actor_name+' · '+f.dias+' dias');
+    // Notifica solicitante
+    try {
+      if (typeof notify === 'function' && f.created_by){
+        notify(f.created_by, {
+          kind: 'success',
+          title: '✓ Férias aprovadas!',
+          body: f.dias+' dia'+(f.dias>1?'s':'')+' de '+f.data_inicio.split('-').reverse().join('/')+' a '+f.data_fim.split('-').reverse().join('/'),
+          link: '/ferias',
+          priority: 'high',
+          ctx: { ferias_id: id }
+        });
+      }
+    } catch(e){ console.error(e); }
+    toast('Férias aprovadas ✓', 'success');
+    if (cb) cb(true);
+  });
+}
+
+function feriasRejeitar(id, motivo, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var f = (ST.ferias||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!f){ if(cb) cb(false); return; }
+  var patch = {
+    status: 'rejected',
+    approver_id: u.id,
+    approver_name: u.name,
+    rejection_reason: motivo || '',
+    updated_at: new Date().toISOString()
+  };
+  sb.from('malba_ferias').update(patch).eq('id', id).then(function(r){
+    if (r.error){ toast('Erro rejeitando: '+r.error.message, 'error'); if(cb) cb(false); return; }
+    Object.assign(f, patch);
+    if (typeof auditLog === 'function') auditLog('Rejeitou férias', f.actor_name+' · '+(motivo||''));
+    try {
+      if (typeof notify === 'function' && f.created_by){
+        notify(f.created_by, {
+          kind: 'warning',
+          title: '❌ Solicitação de férias recusada',
+          body: motivo ? 'Motivo: '+motivo : 'Fale com seu gestor pra entender',
+          link: '/ferias',
+          priority: 'high',
+          ctx: { ferias_id: id }
+        });
+      }
+    } catch(e){ console.error(e); }
+    toast('Rejeitado', 'success');
+    if (cb) cb(true);
+  });
+}
+
+function feriasCancelar(id, cb){
+  var f = (ST.ferias||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!f){ if(cb) cb(false); return; }
+  var u = ST.session && ST.session.user;
+  if (!u || (String(f.created_by||'') !== String(u.id) && !isAdmin(ST.session))){
+    toast('Só quem criou pode cancelar', 'error'); if(cb) cb(false); return;
+  }
+  sb.from('malba_ferias').update({status:'cancelled', updated_at:new Date().toISOString()}).eq('id', id).then(function(r){
+    if (r.error){ toast('Erro cancelando: '+r.error.message, 'error'); if(cb) cb(false); return; }
+    f.status = 'cancelled';
+    if (typeof auditLog === 'function') auditLog('Cancelou férias', f.actor_name);
+    toast('Cancelado', 'success');
+    if (cb) cb(true);
+  });
+}
+
+/* Meta status */
+var FERIAS_STATUS_META = {
+  pending:   { label:'Aguardando aprovação', cor:'#F59E0B', ic:'⏳' },
+  approved:  { label:'Aprovada',             cor:'#16A34A', ic:'✓'  },
+  rejected:  { label:'Recusada',             cor:'#EF4444', ic:'❌' },
+  cancelled: { label:'Cancelada',            cor:'var(--u-text3)', ic:'⊘' }
+};
+
+function feriasFmtPeriodo(f){
+  var di = (f.data_inicio||'').split('-').reverse().join('/');
+  var df = (f.data_fim||'').split('-').reverse().join('/');
+  return di + ' a ' + df + ' (' + f.dias + ' dia' + (f.dias>1?'s':'') + ')';
+}
+
+/* Modal de solicitação */
+function openFeriasSolicitarModal(){
+  if (document.getElementById('feriasModal')) return;
+  var u = ST.session && ST.session.user;
+  if (!u){ toast('Sem sessão','error'); return; }
+  var hoje = new Date().toISOString().slice(0,10);
+
+  var m = document.createElement('div');
+  m.className = 'modal-bg';
+  m.id = 'feriasModal';
+  m.innerHTML = '<div class="modal fer-modal">'+
+    '<div class="fer-head"><b>🌴 Solicitar férias</b><button class="fx-close" id="frClose">×</button></div>'+
+    '<div class="fer-body">'+
+      '<div class="fr-field"><label>DATA DE INÍCIO</label><input type="date" id="frInicio" min="'+hoje+'"></div>'+
+      '<div class="fr-field"><label>DATA DE FIM</label><input type="date" id="frFim" min="'+hoje+'"></div>'+
+      '<div class="fr-field"><label>MOTIVO (opcional)</label><textarea id="frMotivo" placeholder="Ex: Viagem em família, descanso, etc"></textarea></div>'+
+      '<div class="fr-preview" id="frPreview"></div>'+
+    '</div>'+
+    '<div class="fer-foot">'+
+      '<button class="btn btn-ghost" id="frCancel">Cancelar</button>'+
+      '<button class="btn btn-primary" id="frSave">🌴 Enviar solicitação</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(m);
+
+  function close(){ if(m.parentNode) m.parentNode.removeChild(m); }
+  m.querySelector('#frClose').addEventListener('click', close);
+  m.querySelector('#frCancel').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if (e.target===m) close(); });
+
+  function preview(){
+    var i = m.querySelector('#frInicio').value;
+    var f = m.querySelector('#frFim').value;
+    var el = m.querySelector('#frPreview');
+    if (!i || !f){ el.innerHTML = '<small>Escolha as datas para ver o resumo</small>'; return; }
+    var d = feriasDiff(i, f);
+    if (d < 1){ el.innerHTML = '<small style="color:#EF4444">❌ Fim precisa ser >= início</small>'; return; }
+    el.innerHTML = '<b>'+d+' dia'+(d>1?'s':'')+'</b> de '+i.split('-').reverse().join('/')+' a '+f.split('-').reverse().join('/');
+  }
+  m.querySelector('#frInicio').addEventListener('change', preview);
+  m.querySelector('#frFim').addEventListener('change', preview);
+  preview();
+
+  m.querySelector('#frSave').addEventListener('click', function(){
+    var payload = {
+      data_inicio: m.querySelector('#frInicio').value,
+      data_fim: m.querySelector('#frFim').value,
+      motivo: (m.querySelector('#frMotivo').value||'').trim()
+    };
+    if (!payload.data_inicio || !payload.data_fim){ toast('Preencha as duas datas','error'); return; }
+    feriasSolicitar(payload, function(ok){
+      if (ok){ close(); if (typeof renderPage==='function') renderPage(); }
+    });
+  });
+}
+
+/* Página principal */
+function feriasPageHTML(){
+  var minhas = feriasMinhas();
+  var pendentes = feriasPendentes();
+  var podeGerir = isAdmin(ST.session) || can('equipe');
+  var abaAtual = ST.feriasTab || 'minhas';
+
+  var abas = '<div class="cfg-tabs">'+
+    '<button class="cfg-tab'+(abaAtual==='minhas'?' on':'')+'" data-frtab="minhas">🌴 Minhas férias'+(minhas.length?' <span class="tab-badge">'+minhas.length+'</span>':'')+'</button>'+
+    (podeGerir ? '<button class="cfg-tab'+(abaAtual==='pendentes'?' on':'')+'" data-frtab="pendentes">⏳ Aprovar'+(pendentes.length?' <span class="tab-badge">'+pendentes.length+'</span>':'')+'</button>' : '')+
+    (podeGerir ? '<button class="cfg-tab'+(abaAtual==='todas'?' on':'')+'" data-frtab="todas">📋 Todas do setor</button>' : '')+
+  '</div>';
+
+  var body = '';
+  if (abaAtual === 'pendentes') body = feriasAprovarHTML(pendentes);
+  else if (abaAtual === 'todas') body = feriasTodasHTML();
+  else body = feriasMinhasHTML(minhas);
+
+  return '<div class="page-x">'+
+    '<div class="page-x-head">'+
+      '<div><h2>🌴 Férias</h2><p>Solicite e acompanhe suas férias. Dias aprovados não contam como falta no ponto.</p></div>'+
+      '<button class="btn btn-primary" id="frNovaBtn">➕ Solicitar férias</button>'+
+    '</div>'+
+    abas+
+    '<div id="feriasBody">'+body+'</div>'+
+  '</div>';
+}
+
+function feriasMinhasHTML(minhas){
+  if (!minhas.length) return '<div class="fr-empty">🌴 Você ainda não solicitou férias este período.<br><small>Clique em "Solicitar férias" pra começar.</small></div>';
+  minhas.sort(function(a,b){return (b.created_at||'').localeCompare(a.created_at||'');});
+  return '<div class="fr-cards">'+minhas.map(function(f){
+    var st = FERIAS_STATUS_META[f.status] || FERIAS_STATUS_META.pending;
+    var podeCancel = f.status === 'pending' && (ST.session && String(f.created_by||'')===String(ST.session.user.id));
+    return '<div class="fr-card fr-card-'+esc(f.status)+'">'+
+      '<div class="fr-card-head">'+
+        '<div class="fr-card-status" style="color:'+st.cor+'">'+st.ic+' '+esc(st.label)+'</div>'+
+        (podeCancel ? '<button class="btn btn-ghost btn-sm fr-cancel-btn" data-fid="'+esc(f.id)+'">Cancelar</button>' : '')+
+      '</div>'+
+      '<div class="fr-card-periodo">'+esc(feriasFmtPeriodo(f))+'</div>'+
+      (f.motivo ? '<div class="fr-card-motivo">"'+esc(f.motivo)+'"</div>' : '')+
+      (f.approver_name ? '<div class="fr-card-meta">Por '+esc(f.approver_name)+(f.approved_at?' · '+esc(f.approved_at.slice(0,10).split('-').reverse().join('/')):'')+'</div>' : '')+
+      (f.rejection_reason ? '<div class="fr-card-rejeicao">Motivo da recusa: '+esc(f.rejection_reason)+'</div>' : '')+
+    '</div>';
+  }).join('')+'</div>';
+}
+
+function feriasAprovarHTML(pendentes){
+  if (!pendentes.length) return '<div class="fr-empty">✓ Nenhuma solicitação pendente.<br><small>Tudo em dia!</small></div>';
+  return '<div class="fr-cards">'+pendentes.map(function(f){
+    return '<div class="fr-card fr-card-pending">'+
+      '<div class="fr-card-head">'+
+        '<div><b>'+esc(f.actor_name)+'</b><small style="color:var(--u-text3)"> · '+esc(f.sector||'')+'</small></div>'+
+        '<div class="fr-card-actions">'+
+          '<button class="btn btn-ghost btn-sm fr-rej-btn" data-fid="'+esc(f.id)+'">❌ Recusar</button>'+
+          '<button class="btn btn-primary btn-sm fr-apr-btn" data-fid="'+esc(f.id)+'">✓ Aprovar</button>'+
+        '</div>'+
+      '</div>'+
+      '<div class="fr-card-periodo">'+esc(feriasFmtPeriodo(f))+'</div>'+
+      (f.motivo ? '<div class="fr-card-motivo">"'+esc(f.motivo)+'"</div>' : '')+
+      '<div class="fr-card-meta">Solicitado em '+esc((f.created_at||'').slice(0,10).split('-').reverse().join('/'))+'</div>'+
+    '</div>';
+  }).join('')+'</div>';
+}
+
+function feriasTodasHTML(){
+  var sec = ST.sector;
+  var todas = (ST.ferias||[]).filter(function(f){return f.sector === sec || isAdmin(ST.session);});
+  if (!todas.length) return '<div class="fr-empty">Nenhuma férias registrada neste setor.</div>';
+  todas.sort(function(a,b){return (b.data_inicio||'').localeCompare(a.data_inicio||'');});
+  return '<div class="card-x"><table class="table-x">'+
+    '<thead><tr><th>Colaborador</th><th>Período</th><th>Status</th><th>Aprovador</th></tr></thead>'+
+    '<tbody>'+todas.map(function(f){
+      var st = FERIAS_STATUS_META[f.status] || FERIAS_STATUS_META.pending;
+      return '<tr>'+
+        '<td><b>'+esc(f.actor_name||'')+'</b></td>'+
+        '<td>'+esc(feriasFmtPeriodo(f))+'</td>'+
+        '<td><span style="color:'+st.cor+';font-weight:800">'+st.ic+' '+esc(st.label)+'</span></td>'+
+        '<td>'+esc(f.approver_name||'—')+'</td>'+
+      '</tr>';
+    }).join('')+'</tbody>'+
+  '</table></div>';
+}
+
+function bindFeriasPage(){
+  var novaBtn = document.getElementById('frNovaBtn');
+  if (novaBtn) novaBtn.addEventListener('click', openFeriasSolicitarModal);
+
+  document.querySelectorAll('[data-frtab]').forEach(function(b){
+    b.addEventListener('click', function(){
+      ST.feriasTab = b.getAttribute('data-frtab');
+      if (typeof renderPage==='function') renderPage();
+    });
+  });
+
+  document.querySelectorAll('.fr-cancel-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-fid');
+      if (confirm('Cancelar essa solicitação?')){
+        feriasCancelar(id, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+      }
+    });
+  });
+
+  document.querySelectorAll('.fr-apr-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-fid');
+      if (confirm('Aprovar essas férias?')){
+        feriasAprovar(id, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+      }
+    });
+  });
+
+  document.querySelectorAll('.fr-rej-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-fid');
+      var motivo = prompt('Motivo da recusa (opcional):');
+      if (motivo === null) return;
+      feriasRejeitar(id, motivo, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+}
+
 var ONB_STATE = null;
 
 function onbInit(){
@@ -30626,12 +33057,57 @@ function onbInit(){
     // Step 3: acesso (só user)
     accessLevel: 'colaborador',
     tempPass: onbSenhaAleatoria(),
+    // Step 4: escala (v189)
+    shiftTemplate: 'nenhum',   // 'nenhum' | 'comercial' | 'loja' | 'custom'
+    shifts: onbShiftsDefault(),
+    // Step 5: facial (v190)
+    faceData: null,   // { descriptor, blob } — se capturado
     // Meta
     busy: false,
     err: '',
     createdId: null
   };
 }
+
+/* v189: escala default (7 dias, todos folga) */
+function onbShiftsDefault(){
+  var arr = [];
+  for (var i=0;i<7;i++){
+    arr.push({ weekday:i, folga:true, expected_entrada:'', expected_saida_almoco:'', expected_volta_almoco:'', expected_saida:'' });
+  }
+  return arr;
+}
+
+/* v189: aplicar template escolhido nos shifts */
+function onbShiftAplicarTemplate(tpl){
+  if (tpl === 'nenhum'){
+    ONB_STATE.shifts = onbShiftsDefault();
+  } else if (tpl === 'comercial'){
+    // Seg-Sex 09:00-18:00 com almoço 12:00-13:00, sáb-dom folga
+    ONB_STATE.shifts = [];
+    for (var i=0;i<7;i++){
+      if (i>=1 && i<=5){
+        ONB_STATE.shifts.push({ weekday:i, folga:false, expected_entrada:'09:00', expected_saida_almoco:'12:00', expected_volta_almoco:'13:00', expected_saida:'18:00' });
+      } else {
+        ONB_STATE.shifts.push({ weekday:i, folga:true, expected_entrada:'', expected_saida_almoco:'', expected_volta_almoco:'', expected_saida:'' });
+      }
+    }
+  } else if (tpl === 'loja'){
+    // Seg-Sex 08:00-17:00 com almoço 12:00-13:00, sáb 08:00-13:00 sem almoço, dom folga
+    ONB_STATE.shifts = [];
+    for (var i=0;i<7;i++){
+      if (i>=1 && i<=5){
+        ONB_STATE.shifts.push({ weekday:i, folga:false, expected_entrada:'08:00', expected_saida_almoco:'12:00', expected_volta_almoco:'13:00', expected_saida:'17:00' });
+      } else if (i===6){
+        ONB_STATE.shifts.push({ weekday:6, folga:false, expected_entrada:'08:00', expected_saida_almoco:'', expected_volta_almoco:'', expected_saida:'13:00' });
+      } else {
+        ONB_STATE.shifts.push({ weekday:0, folga:true, expected_entrada:'', expected_saida_almoco:'', expected_volta_almoco:'', expected_saida:'' });
+      }
+    }
+  }
+  // 'custom' preserva o que o user editou
+}
+
 
 function onbCorAleatoria(){
   var paleta = ['#3B6FF7','#8B5CF6','#EF4444','#F59E0B','#10B981','#06B6D4','#EC4899','#84CC16'];
@@ -30765,6 +33241,50 @@ function onbBind(){
     var cp = el.querySelector('#onbCopyPass'); if (cp) cp.addEventListener('click', function(){
       try { navigator.clipboard.writeText(s.tempPass); if (typeof toast==='function') toast('Senha copiada','success'); } catch(e){}
     });
+  } else if (s.step === 5){
+    // v190: bindings facial
+    var bCap = el.querySelector('#onbFaceCap');
+    if (bCap) bCap.addEventListener('click', function(){
+      openFacialCaptureForWizard(function(data){
+        s.faceData = data;
+        onbRender();
+      });
+    });
+    var bRedo = el.querySelector('#onbFaceRedo');
+    if (bRedo) bRedo.addEventListener('click', function(){
+      s.faceData = null;
+      onbRender();
+    });
+  } else if (s.step === 4){
+    // v189: bindings escala
+    el.querySelectorAll('input[name="onbTpl"]').forEach(function(r){
+      r.addEventListener('change', function(){
+        s.shiftTemplate = r.getAttribute('data-tpl');
+        onbShiftAplicarTemplate(s.shiftTemplate);
+        onbRender();
+      });
+    });
+    el.querySelectorAll('[data-shift-folga]').forEach(function(cb){
+      cb.addEventListener('change', function(){
+        var idx = Number(cb.getAttribute('data-shift-folga'));
+        s.shifts[idx].folga = cb.checked;
+        if (cb.checked){
+          s.shifts[idx].expected_entrada = '';
+          s.shifts[idx].expected_saida_almoco = '';
+          s.shifts[idx].expected_volta_almoco = '';
+          s.shifts[idx].expected_saida = '';
+        }
+        onbRender();
+      });
+    });
+    el.querySelectorAll('[data-shift-h]').forEach(function(inp){
+      inp.addEventListener('input', function(){
+        var parts = inp.getAttribute('data-shift-h').split('-');
+        var idx = Number(parts[0]);
+        var field = 'expected_' + parts[1];
+        s.shifts[idx][field] = inp.value;
+      });
+    });
   }
 }
 
@@ -30881,18 +33401,75 @@ function onbStep3(){
 }
 
 function onbStep4(){
-  return '<div class="onb-info">'+
-    '<div class="onb-info-icon">🕐</div>'+
-    '<div><b>Escala semanal — em breve nesta versão do wizard</b>'+
-    '<p>Por ora, você pode <b>pular</b> este passo e definir a escala depois em <b>Equipe → '+esc(ONB_STATE.name||'colaborador')+' → 🕐 Escala</b>.</p></div>'+
+  var s = ONB_STATE;
+  var dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  // Templates
+  var tpls = [
+    {v:'nenhum',    l:'Sem escala fixa (definir depois)', s:''},
+    {v:'comercial', l:'Comercial', s:'Seg–Sex, 09:00–18:00 (almoço 12–13)'},
+    {v:'loja',      l:'Loja',      s:'Seg–Sex 08–17, Sáb 08–13, Dom folga'},
+    {v:'custom',    l:'Personalizar', s:'Editar cada dia manualmente'}
+  ];
+  var tplHtml = tpls.map(function(t){
+    var sel = t.v===s.shiftTemplate ? ' sel' : '';
+    return '<label class="onb-radio'+sel+'"><input type="radio" name="onbTpl" data-tpl="'+t.v+'"'+(t.v===s.shiftTemplate?' checked':'')+'><div><b>'+esc(t.l)+'</b>'+(t.s?'<i>'+esc(t.s)+'</i>':'')+'</div></label>';
+  }).join('');
+
+  // Grid dos 7 dias (só mostra se template != nenhum)
+  var gridHtml = '';
+  if (s.shiftTemplate !== 'nenhum'){
+    gridHtml = '<div class="onb-shifts-grid">'+ s.shifts.map(function(sh, idx){
+      var editable = s.shiftTemplate === 'custom';
+      var folgaChk = '<label class="onb-shift-folga"><input type="checkbox" data-shift-folga="'+idx+'"'+(sh.folga?' checked':'')+(editable?'':' disabled')+'><span>Folga</span></label>';
+      var horHtml = sh.folga
+        ? '<div class="onb-shift-folgado">— folga —</div>'
+        : '<div class="onb-shift-hours">'+
+            '<input type="time" data-shift-h="'+idx+'-entrada" value="'+esc(sh.expected_entrada||'')+'"'+(editable?'':' disabled')+' title="Entrada">'+
+            '<span class="onb-shift-sep">–</span>'+
+            '<input type="time" data-shift-h="'+idx+'-saida_almoco" value="'+esc(sh.expected_saida_almoco||'')+'"'+(editable?'':' disabled')+' title="Almoço">'+
+            '<span class="onb-shift-sep">–</span>'+
+            '<input type="time" data-shift-h="'+idx+'-volta_almoco" value="'+esc(sh.expected_volta_almoco||'')+'"'+(editable?'':' disabled')+' title="Volta">'+
+            '<span class="onb-shift-sep">–</span>'+
+            '<input type="time" data-shift-h="'+idx+'-saida" value="'+esc(sh.expected_saida||'')+'"'+(editable?'':' disabled')+' title="Saída">'+
+          '</div>';
+      return '<div class="onb-shift-row'+(sh.folga?' folga':'')+'">'+
+        '<div class="onb-shift-day">'+dias[idx]+'</div>'+
+        folgaChk +
+        horHtml +
+      '</div>';
+    }).join('') +'</div>';
+  }
+
+  return '<div class="onb-shifts">'+
+    '<div class="onb-shifts-tpls">'+tplHtml+'</div>'+
+    gridHtml +
   '</div>';
 }
 
 function onbStep5(){
-  return '<div class="onb-info">'+
-    '<div class="onb-info-icon">🎭</div>'+
-    '<div><b>Cadastro facial — em breve nesta versão do wizard</b>'+
-    '<p>Por ora, você pode <b>pular</b>. O colaborador é convidado a cadastrar no primeiro login (v185). Se preferir cadastrar agora, use <b>Equipe → '+esc(ONB_STATE.name||'colaborador')+' → 🎭 Facial</b>.</p></div>'+
+  var s = ONB_STATE;
+  var nome = (s.name||'colaborador').split(' ')[0];
+  // Se já capturou, mostrar preview + opção de refazer
+  if (s.faceData){
+    return '<div class="onb-face-done">'+
+      '<div class="onb-face-icon-ok">✅</div>'+
+      '<h3 class="onb-face-h">Rosto de '+esc(nome)+' capturado!</h3>'+
+      '<p class="onb-face-p">Vamos salvar junto com o cadastro. Depois disso, '+esc(nome)+' já pode bater ponto pela câmera.</p>'+
+      '<button class="btn btn-ghost" id="onbFaceRedo">🔄 Refazer captura</button>'+
+    '</div>';
+  }
+  // Ainda não capturou — convite
+  return '<div class="onb-face-invite">'+
+    '<div class="onb-face-icon">🎭</div>'+
+    '<h3 class="onb-face-h">Cadastrar o rosto agora?</h3>'+
+    '<p class="onb-face-p">Com o rosto cadastrado, '+esc(nome)+' bate ponto pela câmera do balcão, quiosque ou próprio app. Sem cadastro, '+esc(nome)+' <b>não vai conseguir bater ponto</b> (ficará bloqueado até cadastrar).</p>'+
+    '<div class="onb-face-benefits">'+
+      '<div>⚡ Bate ponto em segundos</div>'+
+      '<div>🔒 Ninguém bate por '+esc(nome)+'</div>'+
+      '<div>📸 Foto do momento fica salva</div>'+
+    '</div>'+
+    '<button class="btn btn-primary onb-face-cta" id="onbFaceCap">🎭 Abrir câmera e cadastrar</button>'+
+    '<p class="onb-face-hint">Se pular agora, '+esc(nome)+' verá o convite pra cadastrar no primeiro login. Ou você pode cadastrar depois em Equipe → '+esc(nome)+' → 🎭 Facial.</p>'+
   '</div>';
 }
 
@@ -30912,7 +33489,8 @@ function onbStepDone(){
       (s.tipo==='user' ? '<div class="onb-done-row"><span>Senha inicial</span><code>'+esc(s.tempPass)+'</code></div>' : '')+
     '</div>'+
     (s.tipo==='user' ? '<div class="onb-done-hint">⚠️ Anote a senha antes de fechar — ela não será mostrada novamente.</div>' : '')+
-    '<div class="onb-done-hint">Próximos passos: cadastrar escala e rosto na ficha do colaborador.</div>'+
+    (s.shiftTemplate !== 'nenhum' ? '<div class="onb-done-hint">✓ Escala aplicada nos dias úteis. Ajustes finos em Equipe → '+esc(s.name)+' → 🕐 Escala.</div>' : '')+
+    (s.faceData ? '<div class="onb-done-hint">✓ Rosto cadastrado — já pode bater ponto pela câmera.</div>' : '<div class="onb-done-hint">⚠️ Sem facial cadastrado. Colaborador ficará bloqueado até cadastrar (no primeiro login ou em Equipe → '+esc(s.name)+' → 🎭 Facial).</div>')+
   '</div>';
 }
 
@@ -30934,6 +33512,55 @@ function onbAvancar(){
 }
 
 /* ---------------- Criação de fato ---------------- */
+
+/* v190: após criar user/member, se houver face capturado, faz upload + patch face_* */
+async function onbSalvarFaceCriado(){
+  var s = ONB_STATE;
+  if (!s.faceData || !s.createdId) return;
+  try {
+    var fotoUrl = await facialUploadFoto(s.faceData.blob, s.tipo + '_' + s.createdId);
+    var tbl = s.tipo === 'user' ? 'malba_users' : 'malba_store_members';
+    var patch = {
+      face_descriptor: Array.from(s.faceData.descriptor),
+      face_foto_url: fotoUrl,
+      face_cadastrado_em: new Date().toISOString()
+    };
+    var res = await sb.from(tbl).update(patch).eq('id', s.createdId);
+    if (res.error){ console.error('[wizard face patch]', res.error); return; }
+    // Atualizar entidade local
+    var list = s.tipo === 'user' ? ST.allUsers : ST.members;
+    if (list){
+      for (var i=0;i<list.length;i++){
+        if (String(list[i].id)===String(s.createdId)){
+          Object.assign(list[i], patch);
+          break;
+        }
+      }
+    }
+    // Marcar auto-cadastro (v185) como dispensado — já foi feito
+    try { if (typeof facialOnboardingDismiss === 'function') facialOnboardingDismiss(s.createdId); } catch(e){}
+  } catch(e){ console.error('[wizard face]', e); }
+}
+
+/* v189: após criar user/member, salvar shifts se houver */
+function onbSalvarShiftsCriado(){
+  var s = ONB_STATE;
+  if (s.shiftTemplate === 'nenhum') return;
+  if (!s.createdId) return;
+  var alvo;
+  if (s.tipo === 'user'){
+    alvo = { id: s.createdId, _isUser: true };
+  } else {
+    alvo = { id: s.createdId };
+  }
+  // Salvar apenas dias NÃO-folga (folga=true não precisa criar row)
+  s.shifts.forEach(function(sh){
+    if (sh.folga) return;
+    if (!sh.expected_entrada && !sh.expected_saida) return;  // vazio, pula
+    try { salvarShift(alvo, sh, function(err){ if (err) console.error('[wizard shift]', err); }); }
+    catch(e){ console.error('[wizard shift]', e); }
+  });
+}
 
 function onbCriarColaborador(){
   var s = ONB_STATE;
@@ -30958,6 +33585,9 @@ function onbCriarColaborador(){
         ST.members.push(r.data);
         s.createdId = r.data.id;
       }
+      onbSalvarShiftsCriado();   // v189
+      onbSalvarFaceCriado();     // v190 (async, fire-and-forget)
+      try { notifEmitir_NovoColaborador(r.data, 'member', s.sector); } catch(e){console.error(e);}  // v192
       s.step = 6;
       s.busy = false;
       onbRender();
@@ -30988,6 +33618,9 @@ function onbCriarColaborador(){
         if (r.data.sector === ST.sector) ST.users.push(r.data);
         s.createdId = r.data.id;
       }
+      onbSalvarShiftsCriado();   // v189
+      onbSalvarFaceCriado();     // v190 (async, fire-and-forget)
+      try { notifEmitir_NovoColaborador(r.data, 'user', s.sector); } catch(e){console.error(e);}  // v192
       s.step = 6;
       s.busy = false;
       onbRender();
@@ -32367,6 +35000,7 @@ function criarJustificativa(payload, cb){
     created_by: me
   };
   sb.from('malba_ponto_justif').insert(row).select().single().then(function(r){
+    try{ if(r&&r.data) notifEmitir_JustificativaEnviada(r.data, notifMeuNome()); }catch(e){console.error(e);}
     if (r.error){
       if (cb) cb(r.error);
       toast('Erro ao enviar justificativa','error');
@@ -33668,6 +36302,8 @@ function buildCommands() {
   pages = pages.filter(function(pg){ return pageAllowed(pg.id, ST.session); });
   pages.forEach(function(pg){ if(pg.enabled) cmds.push({ cat:'Ir para', label:pg.label, icon:pg.icon, run:function(){ goToPage(pg.id); } }); });
   cmds.push({ cat:'Ir para', label:'Meu Perfil', icon:'users', run:function(){ ST.page='perfil'; navigate(ST.sector+'/perfil'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'🌴 Férias', icon:'calendar', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); } });
+  cmds.push({ cat:'Criar', label:'Solicitar férias', icon:'plus', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); setTimeout(function(){if(typeof openFeriasSolicitarModal==='function') openFeriasSolicitarModal();}, 60); } });
   // ações de criação
   cmds.push({ cat:'Criar', label:'Nova tarefa', icon:'plus', run:function(){ openTaskModal(null); } });
   if (admin) {
@@ -33822,6 +36458,7 @@ function renderPage() {
   if (ST.page!=='perfil' && !pageAllowed(ST.page, ST.session)) { ST.page='inicio'; }
   // Perfil é uma página especial, fora do menu de setores
   if (ST.page==='perfil') { renderShell(perfilHTML(), 'Meu Perfil'); bindPerfil(); return; }
+  if (ST.page==='ferias') { renderShell(feriasPageHTML(), 'Férias'); bindFeriasPage(); return; }
   var pages=PAGES[ST.sector]||PAGES.lojas; var pg=null;
   for (var i=0;i<pages.length;i++) if (pages[i].id===ST.page) { pg=pages[i]; break; }
   if (!pg || !pg.enabled) {
