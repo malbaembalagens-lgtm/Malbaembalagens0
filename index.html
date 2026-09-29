@@ -13013,6 +13013,14 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 /* ===== fim v200 ===== */
 
 
+/* ===== v203 · Facial sem rosto - piscar vermelho pra chamar atenção ===== */
+.fvm-cam.sem-rosto{ border-color:#EF4444 !important; animation: fvmSemRosto 1s ease-in-out infinite; }
+@keyframes fvmSemRosto {
+  0%,100%{ box-shadow: 0 0 0 0 rgba(239,68,68,.4); }
+  50%{ box-shadow: 0 0 0 12px rgba(239,68,68,0); }
+}
+.fvm-cam.sem-rosto .fvm-oval{ border-color:#EF4444 !important; }
+
 /* ===== v201 · Tela /ponto mobile-first ===== */
 .pp-page{max-width:520px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
 .pp-topo{text-align:center;padding:8px 0}
@@ -34843,6 +34851,9 @@ function facialLoopPiscadas(video, cbOnCount, cbDone){
   var framesSemRosto = 0;
   var hintShown = false;
   var hintApos = FACIAL_CFG.PISCAR_HINT_APOS_MS || 4000;
+  var jaViuRosto = false;       // v203: viu rosto alguma vez?
+  var ultimoAvisoSemRosto = 0;  // v203: evita spam da mensagem
+  var totalFramesRosto = 0;     // v203: quantos frames com rosto no total
 
   // v203: debug opcional — ativa com localStorage.setItem('facial_debug','1')
   var debugOn = false;
@@ -34859,7 +34870,14 @@ function facialLoopPiscadas(video, cbOnCount, cbDone){
     if (abortado){ if (debugEl && debugEl.parentNode) debugEl.parentNode.removeChild(debugEl); return; }
     if (Date.now() - startTs > timeout){
       if (debugEl && debugEl.parentNode) debugEl.parentNode.removeChild(debugEl);
-      cbDone(false, 'timeout');
+      // v203: se NUNCA viu rosto, é problema de enquadramento
+      if (!jaViuRosto){
+        cbDone(false, 'no_face_at_all');
+      } else if (totalFramesRosto < 10){
+        cbDone(false, 'no_face_at_all');  // rosto muito instável — enquadramento ruim
+      } else {
+        cbDone(false, 'timeout');
+      }
       return;
     }
     if (!window.faceapi){
@@ -34874,16 +34892,22 @@ function facialLoopPiscadas(video, cbOnCount, cbDone){
       var det = await faceapi.detectSingleFace(video, opts).withFaceLandmarks();
       if (!det || !det.landmarks){
         framesSemRosto++;
-        // v203: se muito tempo sem rosto, dá pista via cbOnCount(-1)
-        if (framesSemRosto === 20 && count === 0){
+        // v203: emite AVISO SEM ROSTO já no 3º frame (~270ms) e a cada 20 frames (~1.8s)
+        if (framesSemRosto === 3 || (framesSemRosto % 20 === 0)){
           try { cbOnCount(-1); } catch(e){}
         }
         if (debugEl) debugEl.textContent = 'SEM ROSTO ('+framesSemRosto+')';
         setTimeout(tick, intervalo);
         return;
       }
+      // Rosto detectado — se estava sem rosto, avisa que voltou
+      if (framesSemRosto > 0){
+        try { cbOnCount(-3); } catch(e){}  // sinaliza VOLTOU
+      }
       framesComRosto++;
       framesSemRosto = 0;
+      jaViuRosto = true;
+      totalFramesRosto++;
       var ear = facialCalcEAR(det.landmarks);
       if (ear < earMin) earMin = ear;
       if (ear > earMax) earMax = ear;
@@ -36408,9 +36432,15 @@ function openFacialVerifModal(membro, cb){
       var piscOK = false;
       var loopRef = facialLoopPiscadas(video,
         function(n){
-          // v203: n=-1 sinaliza SEM ROSTO, n=-2 sinaliza HINT após 4s
+          // v203: n=-1 SEM ROSTO, n=-2 HINT piscar, n=-3 ROSTO VOLTOU
           if (n === -1){
-            msg.innerHTML = '👤 <b>Aproxime seu rosto</b> — a câmera não está te vendo bem';
+            cam.classList.add('sem-rosto');
+            msg.innerHTML = '👤 <b>Não estou vendo seu rosto!</b> Centralize dentro do círculo tracejado';
+            return;
+          }
+          if (n === -3){
+            cam.classList.remove('sem-rosto');
+            msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
             return;
           }
           if (n === -2){
@@ -36419,7 +36449,6 @@ function openFacialVerifModal(membro, cb){
           }
           var ct = modal.querySelector('.fvm-piscar-ct');
           if (ct){ ct.textContent = n + ' / ' + FACIAL_CFG.PISCAR_QTD_MIN; ct.classList.add('bump'); setTimeout(function(){ ct.classList.remove('bump'); }, 300); }
-          // v203: se voltou a detectar após um hint, restaura msg normal
           if (n === 1 && !modal.querySelector('.fvm-piscar-ct')){
             msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">'+n+' / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
           }
@@ -36436,6 +36465,9 @@ function openFacialVerifModal(membro, cb){
             if (motivo === 'timeout'){
               msg.innerHTML = '⏱ <b>Tempo esgotado.</b> Reinicie e tente novamente.';
               if (typeof facialLogRegistrar==='function'){ var _i2 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i2,{result:'TIMEOUT',reason:'Piscar timeout — não detectou piscadas suficientes',liveness_passed:false,origin:'topbar'})); }
+            } else if (motivo === 'no_face_at_all'){
+              msg.innerHTML = '📷 <b>Sua câmera não conseguiu ver seu rosto.</b><br>Ajuste a posição da câmera (aponte pro rosto) e clique Reiniciar.';
+              if (typeof facialLogRegistrar==='function'){ var _i2b = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i2b,{result:'NO_FACE',reason:'Rosto nunca detectado durante o liveness (câmera mal posicionada)',liveness_passed:false,origin:'topbar'})); }
             } else {
               msg.innerHTML = '❌ Verificação de vivacidade falhou. Reinicie.';
               if (typeof facialLogRegistrar==='function'){ var _i3 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i3,{result:'LIVENESS_FAILED',reason:'Liveness (piscar) falhou: '+(motivo||'motivo desconhecido'),liveness_passed:false,origin:'topbar'})); }
