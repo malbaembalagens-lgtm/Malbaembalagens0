@@ -12822,6 +12822,266 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
   .fr-card-actions .btn { flex: 1; }
 }
 
+
+/* ===== v197 · Ficha 360° ===== */
+.f36-modal{width:min(920px,96vw);max-height:90vh;overflow-y:auto;padding:0}
+.f36-head{display:flex;align-items:center;gap:16px;padding:20px 24px;border-bottom:1px solid var(--u-border);position:sticky;top:0;background:var(--u-bg-card);z-index:2;border-radius:12px 12px 0 0}
+.f36-avatar{position:relative;width:72px;height:72px;border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,#3B6FF7,#8B5CF6);display:flex;align-items:center;justify-content:center}
+.f36-avatar img{width:100%;height:100%;object-fit:cover}
+.f36-ini{color:#fff;font-weight:700;font-size:26px;font-family:'Sora',sans-serif}
+.f36-face-ok{position:absolute;bottom:0;right:0;background:#16A34A;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:2px solid var(--u-bg-card)}
+.f36-head-info{flex:1;min-width:0}
+.f36-head-info h2{margin:0 0 4px;font-family:'Sora',sans-serif;font-size:22px;color:var(--u-text1)}
+.f36-meta{display:flex;flex-wrap:wrap;gap:4px;font-size:14px;color:var(--u-text2)}
+.f36-tempo{margin-top:6px;font-size:13px;color:var(--u-text3)}
+.f36-alertas{padding:12px 24px;background:#FEF3C7;border-bottom:1px solid var(--u-border);display:flex;flex-direction:column;gap:6px}
+.f36-alert{font-size:13px;color:#78350F;display:flex;align-items:center;gap:8px}
+.f36-body{padding:20px 24px}
+.f36-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.f36-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f36-box{background:var(--u-bg-alt);border:1px solid var(--u-border);border-radius:10px;padding:14px}
+.f36-box-ponto{border-left:3px solid #3B6FF7}
+.f36-box-tarefas{border-left:3px solid #8B5CF6}
+.f36-box-ferias{border-left:3px solid #0EA5E9}
+.f36-box-kudos{border-left:3px solid #EC4899}
+.f36-box-escala{border-left:3px solid #F59E0B}
+.f36-box-head{font-size:13px;font-weight:600;color:var(--u-text2);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.f36-box-sub{font-size:11px;color:var(--u-text3);font-weight:400}
+.f36-metric-big{display:flex;align-items:baseline;gap:6px;margin-bottom:8px}
+.f36-metric-big b{font-size:28px;font-family:'Sora',sans-serif;color:var(--u-text1);line-height:1}
+.f36-metric-big small{font-size:12px;color:var(--u-text2)}
+.f36-inline-metrics{display:flex;gap:14px;font-size:12px;color:var(--u-text2)}
+.f36-inline-metrics b{font-family:'Sora',sans-serif}
+.f36-box-foot{font-size:11px;color:var(--u-text3);margin-top:8px;padding-top:8px;border-top:1px dashed var(--u-border)}
+.f36-kudo-msg{margin-top:8px;padding:8px;background:var(--u-bg-card);border-radius:6px;font-size:12px;font-style:italic;color:var(--u-text2)}
+.f36-escala-resumo{font-size:16px;font-weight:600;color:var(--u-text1);padding:8px 0}
+.f36-escala-vazio{font-size:13px;color:var(--u-text3);font-style:italic;padding:8px 0}
+.f36-foot{padding:16px 24px;border-top:1px solid var(--u-border);background:var(--u-bg-alt);border-radius:0 0 12px 12px}
+.f36-acoes{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:700px){
+  .f36-grid,.f36-grid-2{grid-template-columns:1fr}
+  .f36-head{flex-wrap:wrap}
+  .f36-avatar{width:60px;height:60px}
+  .f36-ini{font-size:22px}
+  .f36-head-info h2{font-size:18px}
+}
+/* ===== fim v197 ===== */
+
+
+/* ===== v198 · Atestados ===== */
+.at-page{max-width:900px;margin:0 auto;padding:20px}
+.at-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.at-head h2{margin:0;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.at-tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid var(--u-border)}
+.at-tab{padding:10px 16px;background:transparent;border:none;font-family:inherit;font-size:14px;color:var(--u-text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.at-tab:hover{color:var(--u-text1)}
+.at-tab.ativa{color:var(--u-accent);border-bottom-color:var(--u-accent);font-weight:600}
+.at-lista{display:flex;flex-direction:column;gap:10px}
+.at-card{background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:10px;padding:14px;border-left:3px solid #A855F7}
+.at-card.at-pending{border-left-color:#F59E0B}
+.at-card.at-approved{border-left-color:#16A34A}
+.at-card.at-rejected{border-left-color:#EF4444}
+.at-card.at-cancelled{border-left-color:var(--u-text3);opacity:.7}
+.at-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.at-card-head b{font-size:15px;color:var(--u-text1)}
+.at-badge{margin-left:8px;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.at-foto-link{color:var(--u-accent);text-decoration:none;font-size:13px;padding:4px 10px;border:1px solid var(--u-border);border-radius:6px;background:var(--u-bg-alt)}
+.at-foto-link:hover{background:var(--u-accent);color:#fff}
+.at-per{font-size:14px;color:var(--u-text1);font-weight:500;margin-bottom:6px}
+.at-cid,.at-med{font-size:13px;color:var(--u-text2);margin-bottom:4px}
+.at-cid b{color:var(--u-text1);background:#EDE9FE;padding:1px 6px;border-radius:4px}
+.at-mot{font-size:13px;color:var(--u-text2);font-style:italic;margin:6px 0;padding:6px 10px;background:var(--u-bg-alt);border-radius:6px;border-left:2px solid var(--u-accent)}
+.at-rej{font-size:12px;color:#EF4444;background:#FEF2F2;padding:6px 10px;border-radius:6px;margin-top:6px}
+.at-app{font-size:12px;color:#16A34A;margin-top:6px}
+.at-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.at-empty{padding:40px 20px;text-align:center;color:var(--u-text3);font-style:italic}
+.at-preview{padding:8px 12px;background:#EDE9FE;border-radius:6px;font-weight:600;color:#7C3AED;margin:8px 0;text-align:center}
+.at-modal{width:min(520px,96vw);max-height:90vh;overflow-y:auto}
+@media (max-width:600px){
+  .at-head{flex-direction:column;align-items:stretch;gap:8px}
+  .at-tabs{overflow-x:auto;white-space:nowrap}
+}
+/* ===== fim v198 ===== */
+
+
+/* ===== v199 · Undo Snackbar ===== */
+.undo-wrap{position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column-reverse;gap:8px;pointer-events:none;max-width:calc(100vw - 40px)}
+.undo-snack{pointer-events:auto;background:#0F172A;color:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 12px 28px rgba(0,0,0,.28);display:flex;align-items:center;gap:10px;min-width:280px;max-width:420px;transform:translateY(20px);opacity:0;transition:transform .25s ease,opacity .25s ease;position:relative;overflow:hidden}
+.undo-snack.undo-show{transform:translateY(0);opacity:1}
+.undo-snack.undo-hide{transform:translateY(20px);opacity:0}
+.undo-snack.undo-undone{transform:scale(.96);opacity:0}
+.undo-ic{font-size:18px;color:#93C5FD;flex-shrink:0}
+.undo-msg{flex:1;font-size:14px;line-height:1.3;color:#F1F5F9}
+.undo-btn{background:transparent;color:#60A5FA;border:1px solid #334155;padding:5px 12px;border-radius:6px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;transition:all .15s}
+.undo-btn:hover{background:#60A5FA;color:#0F172A;border-color:#60A5FA}
+.undo-close{background:transparent;color:#64748B;border:none;font-size:20px;line-height:1;padding:0 4px;cursor:pointer;flex-shrink:0}
+.undo-close:hover{color:#F1F5F9}
+.undo-bar{position:absolute;bottom:0;left:0;right:0;height:2px;background:#1E293B}
+.undo-bar-fill{height:100%;width:100%;background:#60A5FA}
+@media (max-width:600px){
+  .undo-wrap{left:12px;right:12px;bottom:12px;max-width:none}
+  .undo-snack{min-width:0;width:100%;max-width:none}
+}
+/* ===== fim v199 ===== */
+
+
+/* ===== v200 · Reembolsos ===== */
+.re-page{max-width:900px;margin:0 auto;padding:20px}
+.re-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.re-head h2{margin:0;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.re-tabs{display:flex;gap:4px;margin-bottom:12px;border-bottom:2px solid var(--u-border);overflow-x:auto;white-space:nowrap}
+.re-tab{padding:10px 14px;background:transparent;border:none;font-family:inherit;font-size:14px;color:var(--u-text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px}
+.re-tab:hover{color:var(--u-text1)}
+.re-tab.ativa{color:var(--u-accent);border-bottom-color:var(--u-accent);font-weight:600}
+.re-kpi{background:#EFF6FF;padding:10px 14px;border-radius:8px;margin-bottom:12px;font-size:14px;color:var(--u-text2)}
+.re-kpi b{color:#1E40AF;font-family:'Sora',sans-serif}
+.re-lista{display:flex;flex-direction:column;gap:10px}
+.re-card{background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:10px;padding:14px;border-left:3px solid #64748B}
+.re-card.re-pending{border-left-color:#F59E0B}
+.re-card.re-approved{border-left-color:#16A34A}
+.re-card.re-paid{border-left-color:#059669;background:linear-gradient(90deg,#ECFDF5 0%,var(--u-bg-card) 40%)}
+.re-card.re-rejected{border-left-color:#EF4444}
+.re-card.re-cancelled{border-left-color:var(--u-text3);opacity:.7}
+.re-card-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.re-valor{font-size:20px;font-weight:700;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.re-cat,.re-badge{padding:3px 9px;border-radius:12px;font-size:11px;font-weight:600}
+.re-meta{font-size:13px;color:var(--u-text2);margin-bottom:6px}
+.re-meta b{color:var(--u-text1)}
+.re-desc{font-size:13px;color:var(--u-text1);margin:8px 0;padding:8px 10px;background:var(--u-bg-alt);border-radius:6px;border-left:2px solid var(--u-accent)}
+.re-foto-link{color:var(--u-accent);text-decoration:none;font-size:13px;padding:4px 10px;border:1px solid var(--u-border);border-radius:6px;background:var(--u-bg-alt);display:inline-block;margin:4px 0}
+.re-foto-link:hover{background:var(--u-accent);color:#fff}
+.re-rej{font-size:12px;color:#EF4444;background:#FEF2F2;padding:6px 10px;border-radius:6px;margin-top:6px}
+.re-app{font-size:12px;color:#16A34A;margin-top:6px}
+.re-pago{font-size:12px;color:#059669;margin-top:6px;font-weight:600}
+.re-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.re-empty{padding:40px 20px;text-align:center;color:var(--u-text3);font-style:italic}
+.re-modal,.re-modal-pago{width:min(520px,96vw);max-height:90vh;overflow-y:auto}
+@media (max-width:600px){
+  .re-head{flex-direction:column;align-items:stretch;gap:8px}
+  .re-card-head{gap:6px}
+  .re-valor{font-size:18px}
+}
+/* ===== fim v200 ===== */
+
+
+/* ===== v200 · Anti-Spoofing Piscada ===== */
+.fvm-cam.piscando{outline:3px solid #F59E0B;box-shadow:0 0 20px rgba(245,158,11,.45);animation:fvm-piscando-pulse 1.5s ease-in-out infinite}
+.fvm-cam.piscou{outline:3px solid #16A34A;box-shadow:0 0 24px rgba(22,163,74,.55)}
+@keyframes fvm-piscando-pulse{
+  0%,100%{box-shadow:0 0 20px rgba(245,158,11,.45)}
+  50%{box-shadow:0 0 32px rgba(245,158,11,.75)}
+}
+.fvm-piscar-ct{display:inline-block;background:#F59E0B;color:#fff;padding:3px 10px;border-radius:6px;font-family:'Sora',sans-serif;font-weight:700;font-size:16px;margin-left:4px;transition:transform .2s;min-width:56px;text-align:center}
+.fvm-piscar-ct.bump{transform:scale(1.25)}
+/* ===== fim v200 ===== */
+
+
+/* ===== v200 · Reembolsos ===== */
+.rb-page{max-width:900px;margin:0 auto;padding:20px}
+.rb-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.rb-head h2{margin:0;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.rb-tabs{display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid var(--u-border);overflow-x:auto}
+.rb-tab{padding:10px 14px;background:transparent;border:none;font-family:inherit;font-size:14px;color:var(--u-text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap}
+.rb-tab:hover{color:var(--u-text1)}
+.rb-tab.ativa{color:var(--u-accent);border-bottom-color:var(--u-accent);font-weight:600}
+.rb-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.rb-kpi{background:var(--u-bg-alt);border:1px solid var(--u-border);border-radius:10px;padding:12px;text-align:center}
+.rb-kpi b{display:block;font-size:20px;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.rb-kpi small{font-size:11px;color:var(--u-text2)}
+.rb-lista{display:flex;flex-direction:column;gap:10px}
+.rb-card{background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:10px;padding:14px;border-left:3px solid #64748B}
+.rb-card.rb-paid{opacity:.85}
+.rb-card.rb-cancelled{opacity:.6}
+.rb-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px}
+.rb-card-head b{font-size:15px;color:var(--u-text1)}
+.rb-cat,.rb-badge{margin-left:8px;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.rb-foto-link{color:var(--u-accent);text-decoration:none;font-size:13px;padding:4px 10px;border:1px solid var(--u-border);border-radius:6px;background:var(--u-bg-alt)}
+.rb-foto-link:hover{background:var(--u-accent);color:#fff}
+.rb-valor{font-size:22px;font-family:'Sora',sans-serif;font-weight:700;color:var(--u-text1);margin:4px 0}
+.rb-data{font-size:13px;color:var(--u-text2);margin-bottom:4px}
+.rb-desc{font-size:13px;color:var(--u-text2);font-style:italic;margin:6px 0;padding:6px 10px;background:var(--u-bg-alt);border-radius:6px;border-left:2px solid var(--u-accent)}
+.rb-rej{font-size:12px;color:#EF4444;background:#FEF2F2;padding:6px 10px;border-radius:6px;margin-top:6px}
+.rb-app{font-size:12px;color:#3B82F6;margin-top:6px}
+.rb-pago{font-size:12px;color:#16A34A;background:#F0FDF4;padding:6px 10px;border-radius:6px;margin-top:6px;font-weight:600}
+.rb-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.rb-empty{padding:40px 20px;text-align:center;color:var(--u-text3);font-style:italic}
+.rb-modal{width:min(540px,96vw);max-height:90vh;overflow-y:auto}
+@media (max-width:600px){
+  .rb-head{flex-direction:column;align-items:stretch;gap:8px}
+  .rb-kpis{grid-template-columns:1fr}
+}
+/* ===== fim v200 ===== */
+
+
+/* ===== v201 · Tela /ponto mobile-first ===== */
+.pp-page{max-width:520px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.pp-topo{text-align:center;padding:8px 0}
+.pp-titulo{font-family:'Sora',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--u-text3);text-transform:uppercase;margin-bottom:6px}
+.pp-hello{font-family:'Sora',sans-serif;font-size:22px;color:var(--u-text1);font-weight:600}
+.pp-card{background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:20px;padding:24px;text-align:center;box-shadow:0 4px 16px rgba(59,111,247,.05)}
+.pp-next-lbl{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--u-text3);margin-bottom:6px}
+.pp-next-val{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:var(--u-accent);letter-spacing:1px;margin-bottom:20px}
+.pp-btn-grande{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;padding:24px;background:linear-gradient(135deg,#3B6FF7,#8B5CF6);color:#fff;border:none;border-radius:16px;font-family:inherit;cursor:pointer;transition:all .15s;box-shadow:0 6px 20px rgba(59,111,247,.35)}
+.pp-btn-grande:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(59,111,247,.5)}
+.pp-btn-grande:active{transform:translateY(0)}
+.pp-btn-ic{font-size:44px;line-height:1}
+.pp-btn-txt{font-size:18px;font-weight:700;font-family:'Sora',sans-serif}
+.pp-btn-sub{font-size:12px;opacity:.9;text-transform:uppercase;letter-spacing:1px}
+.pp-warn{padding:14px;background:#FEF3C7;border:1px solid #FCD34D;border-radius:12px;color:#78350F;font-size:13px;line-height:1.4;text-align:center}
+.pp-done{padding:20px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:12px;color:#166534;font-size:15px;font-weight:600;text-align:center}
+.pp-resumo{background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:16px;padding:16px}
+.pp-resumo h3{margin:0 0 12px;font-family:'Sora',sans-serif;font-size:14px;color:var(--u-text2);text-transform:uppercase;letter-spacing:1px}
+.pp-resumo-linhas{display:flex;flex-direction:column;gap:2px}
+.pp-linha{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--u-border)}
+.pp-linha:last-child{border-bottom:none}
+.pp-linha-lbl{font-size:13px;color:var(--u-text2)}
+.pp-linha-val{font-family:'Sora',sans-serif;font-size:15px;font-weight:600;color:var(--u-text1)}
+.pp-linha-vazia .pp-linha-val{color:var(--u-text3);font-weight:400}
+.pp-total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:2px solid var(--u-accent)}
+.pp-total span{font-size:13px;color:var(--u-text2);text-transform:uppercase;letter-spacing:1px}
+.pp-total b{font-family:'Sora',sans-serif;font-size:20px;color:var(--u-accent)}
+.pp-foot{text-align:center;padding:8px 0}
+.pp-foot a{color:var(--u-text2);font-size:13px;text-decoration:none}
+.pp-foot a:hover{color:var(--u-accent);text-decoration:underline}
+.pp-empty{padding:40px 20px;text-align:center;color:var(--u-text3);font-style:italic}
+@media (min-width:720px){
+  .pp-page{max-width:640px;padding:24px}
+  .pp-btn-ic{font-size:56px}
+  .pp-btn-txt{font-size:22px}
+}
+
+/* ===== v201 · Facial log dashboard ===== */
+.fl-page{max-width:1100px;margin:0 auto;padding:20px}
+.fl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.fl-head h2{margin:0;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.fl-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.fl-kpi{background:var(--u-bg-alt);border:1px solid var(--u-border);border-radius:10px;padding:12px;text-align:center}
+.fl-kpi b{display:block;font-size:22px;font-family:'Sora',sans-serif;color:var(--u-text1)}
+.fl-kpi small{font-size:11px;color:var(--u-text2);text-transform:uppercase;letter-spacing:.5px}
+.fl-kpi-ok{border-left:3px solid #16A34A}
+.fl-kpi-ok b{color:#16A34A}
+.fl-kpi-fail{border-left:3px solid #EF4444}
+.fl-kpi-fail b{color:#EF4444}
+.fl-kpi-warn{border-left:3px solid #DC2626}
+.fl-kpi-orange{border-left:3px solid #F97316}
+.fl-filtros{display:flex;gap:8px;flex-wrap:wrap;padding:12px;background:var(--u-bg-alt);border-radius:10px;margin-bottom:12px}
+.fl-filtros input,.fl-filtros select{padding:6px 10px;border:1px solid var(--u-border);border-radius:6px;background:var(--u-bg-card);color:var(--u-text1);font-family:inherit;font-size:13px}
+.fl-table{width:100%;border-collapse:collapse;background:var(--u-bg-card);border-radius:10px;overflow:hidden}
+.fl-table th{padding:10px 12px;text-align:left;background:var(--u-bg-alt);font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--u-text2);border-bottom:1px solid var(--u-border)}
+.fl-table td{padding:10px 12px;border-bottom:1px solid var(--u-border);font-size:13px;color:var(--u-text1)}
+.fl-table tr:last-child td{border-bottom:none}
+.fl-table tr:hover{background:var(--u-bg-alt)}
+.fl-td-when{font-family:'Sora',sans-serif;white-space:nowrap}
+.fl-td-when b{font-size:12px}
+.fl-td-reason{color:var(--u-text2);font-size:12px;max-width:260px}
+.fl-badge{padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap;display:inline-block}
+@media (max-width:800px){
+  .fl-kpis{grid-template-columns:repeat(2,1fr)}
+  .fl-table{font-size:12px;display:block;overflow-x:auto}
+  .fl-td-reason{max-width:160px}
+}
+/* ===== fim v201 ===== */
+
 </style>
 </head>
 <body>
@@ -12845,7 +13105,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v196';
+var APP_BUILD = 'v201';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13235,6 +13495,9 @@ function loadData() {
     try { feriadosCarregar(); } catch(e){ console.error('[feriados load]', e); }
     // v196: carrega férias
     try { feriasCarregar(); } catch(e){ console.error('[ferias load]', e); }
+    try { atestadoCarregar(); } catch(e){ console.error('[atestado load]', e); }
+    try { reembCarregar(); } catch(e){ console.error('[reemb load]', e); }
+    try { facialLogCarregar(); } catch(e){ console.error('[flog load]', e); }
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
@@ -16843,10 +17106,21 @@ function openTaskModal(task, preset) {
       confirmDelete('Pular só o dia '+fmtDate(t.due_date)+' desta rotina?\nA rotina continua nos outros dias, e este dia não volta.', function(){ pularDiaRotina(occRule, t, function(ok){ if(ok){ close(); renderPage(); } }); });
     });
     modal.querySelector('#taskDel').addEventListener('click', function(){
-      confirmDelete('Excluir a tarefa "'+(t.title||'sem título')+'"?', function(){ sb.from('malba_vl_tasks').delete().eq('id', t.id).then(function(r){
+      confirmDelete('Excluir a tarefa "'+(t.title||'sem título')+'"?', function(){
+        // v199: snapshot pra undo
+        var snap = {}; Object.keys(t).forEach(function(k){ snap[k] = t[k]; });
+        sb.from('malba_vl_tasks').delete().eq('id', t.id).then(function(r){
         if (r.error) { toast('Erro ao excluir','error'); return; }
         ST.tasks=ST.tasks.filter(function(x){ return x.id!==t.id; });
-        auditLog('Excluiu tarefa', t.title||''); close(); toast('Tarefa excluída','success'); renderPage();
+        auditLog('Excluiu tarefa', t.title||''); close();
+        if (typeof undoSnack === 'function'){
+          undoSnack('Tarefa "'+(t.title||'sem título')+'" excluída', function(){
+            undoRestaurarRegistro('malba_vl_tasks', snap, function(rest){ if(rest){ ST.tasks.push(rest); } });
+          });
+        } else {
+          toast('Tarefa excluída','success');
+        }
+        renderPage();
       }); });
     });
     var delSerie=modal.querySelector('#taskDelSerie');
@@ -30086,6 +30360,11 @@ function gpStatusPessoa(pessoa, data){
     var fer196 = feriasEmDia(pessoa, data);
     if (fer196) return { key:'ferias', label:'🌴 Férias', cor:'#0EA5E9' };
   }
+  // v198: atestado médico aprovado — não é falta
+  if (typeof atestadoEmDia === 'function' && (!ci || !ci.entrada)){
+    var at198 = atestadoEmDia(pessoa, data);
+    if (at198) return { key:'atestado', label:'🏥 Atestado', cor:'#A855F7' };
+  }
   // v194: feriado tem prioridade — se o colaborador não bateu ponto, é feriado (não falta)
   var fer = (typeof feriadoDoDia === 'function') ? feriadoDoDia(data) : null;
   if (fer && (!ci || !ci.entrada)) return { key:'feriado', label:'🎉 '+fer.nome, cor:'#EC4899' };
@@ -30281,6 +30560,23 @@ function bindGestaoPonto(){
   });
   var csv = document.getElementById('gpCsv');
   if (csv) csv.addEventListener('click', function(){ gestaoPontoCSV(); });
+  // v197: clique em linha abre Ficha 360°
+  document.querySelectorAll('.gp-row').forEach(function(tr){
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', function(e){
+      // Ignora clique em botões/inputs dentro da linha
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('a')) return;
+      var gid = tr.getAttribute('data-gpid');
+      var gkind = tr.getAttribute('data-gpkind');
+      var entidade;
+      if (gkind === 'user'){
+        entidade = (ST.allUsers||ST.users||[]).filter(function(u){return String(u.id)===String(gid);})[0];
+      } else {
+        entidade = (ST.members||[]).filter(function(m){return String(m.id)===String(gid);})[0];
+      }
+      if (entidade && typeof openFicha360==='function') openFicha360(entidade, gkind);
+    });
+  });
 }
 
 function gestaoTabsForSector(){
@@ -31605,7 +31901,13 @@ function openFacialCaptureForWizard(callback){
       facialAbrirWebcam(video)
     ]);
     if (!modOk){ msg.textContent = 'Falha carregando IA'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
-    if (!camOk){ msg.textContent = 'Falha ao abrir câmera'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
+    if (!camOk){
+      msg.textContent = 'Falha ao abrir câmera';
+      cam.classList.add('err');
+      btnAbrir.disabled = false;
+      if (typeof facialLogRegistrar==='function'){ var _i1 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i1,{result:'CAMERA_ERROR',reason:'Falha abrir webcam',liveness_passed:false,origin:'topbar'})); }
+      return;
+    }
     msg.textContent = 'Alinhe o rosto no oval e clique em Capturar';
     btnCap.disabled = false;
     btnAbrir.textContent = '🔄 Reiniciar';
@@ -32297,10 +32599,24 @@ function feriadoSalvar(payload, cb){
 }
 
 function feriadoRemover(id, cb){
+  var snapshot = (ST.feriados||[]).filter(function(f){return String(f.id)===String(id);})[0];
+  var snapClean = null;
+  if (snapshot){
+    snapClean = {};
+    Object.keys(snapshot).forEach(function(k){ snapClean[k] = snapshot[k]; });
+  }
   sb.from('malba_feriados').delete().eq('id', id).then(function(r){
     if (r.error){ if (typeof toast==='function') toast('Erro: '+r.error.message, 'error'); if (cb) cb(false); return; }
     ST.feriados = (ST.feriados||[]).filter(function(f){return String(f.id)!==String(id);});
-    if (typeof toast==='function') toast('Feriado removido', 'success');
+    if (typeof undoSnack === 'function' && snapClean){
+      undoSnack('Feriado "'+(snapClean.nome||'')+'" removido', function(){
+        undoRestaurarRegistro('malba_feriados', snapClean, function(rest){
+          if (rest){ ST.feriados = ST.feriados || []; ST.feriados.push(rest); }
+        });
+      });
+    } else {
+      if (typeof toast==='function') toast('Feriado removido', 'success');
+    }
     if (cb) cb(true);
   });
 }
@@ -32837,9 +33153,17 @@ function feriasCancelar(id, cb){
   }
   sb.from('malba_ferias').update({status:'cancelled', updated_at:new Date().toISOString()}).eq('id', id).then(function(r){
     if (r.error){ toast('Erro cancelando: '+r.error.message, 'error'); if(cb) cb(false); return; }
+    var statusAntes = 'pending';
     f.status = 'cancelled';
     if (typeof auditLog === 'function') auditLog('Cancelou férias', f.actor_name);
-    toast('Cancelado', 'success');
+    // v199: undo — reverte pra pending
+    if (typeof undoSnack === 'function'){
+      undoSnack('Férias canceladas', function(){
+        undoReverterStatus('malba_ferias', id, statusAntes, function(){ f.status = statusAntes; });
+      });
+    } else {
+      toast('Cancelado', 'success');
+    }
     if (cb) cb(true);
   });
 }
@@ -33035,6 +33359,2069 @@ function bindFeriasPage(){
       feriasRejeitar(id, motivo, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
     });
   });
+}
+
+/* ============================================================
+   v197 · Ficha 360° Unificada
+   ============================================================
+   Vitrine consolidada de UMA pessoa (user ou member): ponto,
+   escala, tarefas, kudos, férias, facial, comissão, alertas.
+   Não substitui openMemberModal/openUserModal (editores);
+   é uma visão de dashboard, com atalhos pros editores.
+   ============================================================ */
+
+function ficha360EstatsPonto(alvo){
+  var uid = alvo.user_id || (alvo._tipo==='user' ? alvo.id : null);
+  var mid = alvo.member_id || (alvo._tipo==='member' ? alvo.id : null);
+  var arr = ST.checkins || [];
+  // Últimos 90 dias
+  var since = new Date(Date.now() - 90*86400*1000).toISOString().slice(0,10);
+  var mine = arr.filter(function(c){
+    if ((c.work_date||'') < since) return false;
+    if (uid && String(c.user_id||'')===String(uid)) return true;
+    if (mid && String(c.member_id||'')===String(mid)) return true;
+    return false;
+  });
+  var diasTrab = mine.filter(function(c){return c.entrada;}).length;
+  var atrasos = 0;
+  var faltas = 0;
+  mine.forEach(function(c){
+    if (!c.entrada) return;
+    // Comparar entrada com shift esperado
+    var wd = new Date((c.work_date||'')+'T12:00:00').getDay();
+    var sh = (ST.shifts||[]).filter(function(s){
+      var alvoBate = (mid && String(s.member_id||'')===String(mid)) || (uid && String(s.user_id||'')===String(uid));
+      return alvoBate && Number(s.weekday)===wd && !s.folga;
+    })[0];
+    if (sh && sh.expected_entrada){
+      var esperado = sh.expected_entrada;
+      var toler = Number(sh.tolerancia_min||5);
+      var entradaMin = parseInt(c.entrada.slice(0,2),10)*60 + parseInt(c.entrada.slice(3,5),10);
+      var esperMin = parseInt(esperado.slice(0,2),10)*60 + parseInt(esperado.slice(3,5),10);
+      if (entradaMin > esperMin + toler) atrasos++;
+    }
+  });
+  var ultima = mine.filter(function(c){return c.entrada;}).sort(function(a,b){return (b.work_date||'').localeCompare(a.work_date||'');})[0];
+  return { dias:diasTrab, atrasos:atrasos, faltas:faltas, ultima:ultima };
+}
+
+function ficha360EstatsTarefas(alvo){
+  var uid = alvo.user_id || (alvo._tipo==='user' ? alvo.id : null);
+  if (!uid) return { atrasadas:0, abertas:0, concluidas:0 };
+  var arr = ST.tasks || [];
+  var mine = arr.filter(function(t){return String(t.assigned_to||'')===String(uid);});
+  var atrasadas = 0, abertas = 0, concluidas = 0;
+  var hoje = new Date().toISOString().slice(0,10);
+  mine.forEach(function(t){
+    if (t.status === 'done' || t.status === 'concluida') concluidas++;
+    else {
+      abertas++;
+      if (t.due_date && t.due_date < hoje) atrasadas++;
+    }
+  });
+  return { atrasadas:atrasadas, abertas:abertas, concluidas:concluidas };
+}
+
+function ficha360EstatsKudos(alvo){
+  var uid = alvo.user_id || (alvo._tipo==='user' ? alvo.id : null);
+  var mid = alvo.member_id || (alvo._tipo==='member' ? alvo.id : null);
+  var arr = ST.kudos || [];
+  var recebidos = arr.filter(function(k){
+    return (uid && String(k.to_user_id||'')===String(uid)) || (mid && String(k.to_member_id||'')===String(mid));
+  });
+  var enviados = arr.filter(function(k){
+    return (uid && String(k.from_user_id||'')===String(uid));
+  });
+  var maisRecente = recebidos.sort(function(a,b){return (b.created_at||'').localeCompare(a.created_at||'');})[0];
+  return { recebidos:recebidos.length, enviados:enviados.length, ultimo:maisRecente };
+}
+
+function ficha360EstatsFerias(alvo){
+  var uid = alvo.user_id || (alvo._tipo==='user' ? alvo.id : null);
+  var mid = alvo.member_id || (alvo._tipo==='member' ? alvo.id : null);
+  var arr = ST.ferias || [];
+  var mine = arr.filter(function(f){
+    if (uid && String(f.user_id||'')===String(uid)) return true;
+    if (mid && String(f.member_id||'')===String(mid)) return true;
+    return false;
+  });
+  var pending = mine.filter(function(f){return f.status==='pending';}).length;
+  var anoAtual = String(new Date().getFullYear());
+  var aprovAno = mine.filter(function(f){return f.status==='approved' && (f.data_inicio||'').startsWith(anoAtual);});
+  var totalDiasAno = aprovAno.reduce(function(acc,f){return acc + Number(f.dias||0);}, 0);
+  return { pending:pending, aprovadasAno:aprovAno.length, diasAno:totalDiasAno };
+}
+
+function ficha360Escala(alvo){
+  var uid = alvo.user_id || (alvo._tipo==='user' ? alvo.id : null);
+  var mid = alvo.member_id || (alvo._tipo==='member' ? alvo.id : null);
+  var arr = ST.shifts || [];
+  var mine = arr.filter(function(s){
+    if (uid && String(s.user_id||'')===String(uid)) return true;
+    if (mid && String(s.member_id||'')===String(mid)) return true;
+    return false;
+  });
+  if (!mine.length) return null;
+  // Agrupa horários iguais
+  var days = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  var dias = mine.filter(function(s){return !s.folga && s.expected_entrada;}).map(function(s){
+    return { wd:s.weekday, dia:days[s.weekday], hi:s.expected_entrada, hf:s.expected_saida };
+  }).sort(function(a,b){return a.wd-b.wd;});
+  if (!dias.length) return null;
+  // Resumo: se todos iguais, "Seg-Sex 09h-18h"
+  var horariosDiferentes = dias.some(function(d){return d.hi !== dias[0].hi || d.hf !== dias[0].hf;});
+  var resumo;
+  if (!horariosDiferentes){
+    var first = dias[0].dia, last = dias[dias.length-1].dia;
+    resumo = (dias.length===1 ? first : first+'-'+last) + ' ' + dias[0].hi.slice(0,5) + '-' + (dias[0].hf||'').slice(0,5);
+  } else {
+    resumo = dias.length + ' dias trabalhados';
+  }
+  return { resumo:resumo, dias:dias };
+}
+
+function ficha360TempoDeCasa(alvo){
+  var dt = alvo.created_at || alvo.hired_at || alvo.data_admissao;
+  if (!dt) return null;
+  var d = new Date(dt);
+  var meses = (Date.now() - d.getTime()) / (30*86400*1000);
+  var anos = Math.floor(meses/12);
+  var mResto = Math.round(meses - anos*12);
+  if (anos === 0) return mResto+' mês'+(mResto!==1?'es':'')+' de MALBA';
+  if (mResto === 0) return anos+' ano'+(anos!==1?'s':'')+' de MALBA';
+  return anos+' ano'+(anos!==1?'s':'')+' e '+mResto+' mês'+(mResto!==1?'es':'')+' de MALBA';
+}
+
+function ficha360Alertas(alvo){
+  var uid = alvo.user_id || (alvo._tipo==='user' ? alvo.id : null);
+  var mid = alvo.member_id || (alvo._tipo==='member' ? alvo.id : null);
+  var alertas = [];
+  // Justificativas aprovadas 90 dias
+  var since = new Date(Date.now() - 90*86400*1000).toISOString();
+  var justs = (ST.justifs||[]).filter(function(j){
+    if ((j.created_at||'') < since) return false;
+    if (uid && String(j.user_id||'')===String(uid)) return true;
+    if (mid && String(j.member_id||'')===String(mid)) return true;
+    return false;
+  });
+  if (justs.length) alertas.push({ico:'📋', txt:justs.length+' justificativa'+(justs.length!==1?'s':'')+' nos últimos 90 dias'});
+  // Sem facial
+  if (!alvo.face_descriptor || !alvo.face_descriptor.length) alertas.push({ico:'⚠️', txt:'Sem cadastro facial (bloqueado pra bater ponto)'});
+  // Inativo
+  if (alvo.is_active === false) alertas.push({ico:'🔒', txt:'Colaborador inativo'});
+  return alertas;
+}
+
+/* MODAL PRINCIPAL */
+function openFicha360(entidade, tipo){
+  if (!entidade) return;
+  if (!isAdmin(ST.session) && !can('equipe')){
+    try { if (typeof toast==='function') toast('Sem permissão','error'); } catch(e){}
+    return;
+  }
+  var alvo = Object.assign({}, entidade);
+  alvo._tipo = tipo || (entidade.user_id !== undefined ? 'member' : 'user');
+  // Resolve tipo pra pegar user vinculado
+  var user = null;
+  if (alvo._tipo === 'user') { user = entidade; alvo.user_id = entidade.id; }
+  else if (alvo._tipo === 'member') {
+    user = (ST.allUsers||ST.users||[]).filter(function(u){return String(u.id)===String(entidade.user_id||'');})[0];
+    alvo.member_id = entidade.id;
+    if (user) alvo.user_id = user.id;
+  }
+
+  var ep = ficha360EstatsPonto(alvo);
+  var et = ficha360EstatsTarefas(alvo);
+  var ek = ficha360EstatsKudos(alvo);
+  var ef = ficha360EstatsFerias(alvo);
+  var esc_ = ficha360Escala(alvo);
+  var tc = ficha360TempoDeCasa(alvo);
+  var alertas = ficha360Alertas(alvo);
+  var ini = iniciais(alvo.name||user?.name||'?');
+  var temFacial = !!(alvo.face_descriptor && alvo.face_descriptor.length);
+  var fotoUrl = alvo.face_foto_url;
+  var setor = alvo.sector || (user && user.sector) || '';
+  var cargo = alvo.role || alvo.cargo || '';
+  var loja = alvo.store_unit_id ? storeName(alvo.store_unit_id) : '';
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'ficha360Modal';
+
+  // Header
+  var headerHTML = '<div class="f36-head">'+
+    '<div class="f36-avatar">'+
+      (fotoUrl ? '<img src="'+esc(fotoUrl)+'" alt="'+esc(alvo.name||'')+'">' : '<span class="f36-ini">'+esc(ini)+'</span>')+
+      (temFacial ? '<span class="f36-face-ok" title="Facial cadastrado">✓</span>' : '')+
+    '</div>'+
+    '<div class="f36-head-info">'+
+      '<h2>'+esc(alvo.name||user?.name||'—')+'</h2>'+
+      '<div class="f36-meta">'+
+        (cargo ? '<span>'+esc(cargo)+'</span>' : '')+
+        (loja ? '<span>· '+esc(loja)+'</span>' : '')+
+        (setor && !loja ? '<span>· '+esc(setor)+'</span>' : '')+
+      '</div>'+
+      (tc ? '<div class="f36-tempo">🎂 '+esc(tc)+'</div>' : '')+
+    '</div>'+
+    '<button class="fx-close" id="f36Close" title="Fechar">×</button>'+
+  '</div>';
+
+  // Alertas
+  var alertasHTML = alertas.length ? '<div class="f36-alertas">'+
+    alertas.map(function(a){return '<div class="f36-alert"><span>'+a.ico+'</span> '+esc(a.txt)+'</div>';}).join('')+
+  '</div>' : '';
+
+  // Grid 3 cols: Ponto, Tarefas, Ferias/Kudos
+  var pontoBox = '<div class="f36-box f36-box-ponto">'+
+    '<div class="f36-box-head">⏰ Ponto <span class="f36-box-sub">últimos 90 dias</span></div>'+
+    '<div class="f36-metric-big"><b>'+ep.dias+'</b><small>dias trabalhados</small></div>'+
+    '<div class="f36-inline-metrics">'+
+      '<div><b style="color:'+(ep.atrasos>0?'#F59E0B':'var(--u-text3)')+'">'+ep.atrasos+'</b> atraso'+(ep.atrasos!==1?'s':'')+'</div>'+
+      '<div><b style="color:'+(ep.faltas>0?'#EF4444':'var(--u-text3)')+'">'+ep.faltas+'</b> falta'+(ep.faltas!==1?'s':'')+'</div>'+
+    '</div>'+
+    (ep.ultima ? '<div class="f36-box-foot">Última: '+esc((ep.ultima.work_date||'').split('-').reverse().join('/'))+' '+esc(ep.ultima.entrada||'')+'</div>' : '<div class="f36-box-foot">Sem batidas recentes</div>')+
+  '</div>';
+
+  var tarefasBox = '<div class="f36-box f36-box-tarefas">'+
+    '<div class="f36-box-head">📝 Tarefas</div>'+
+    '<div class="f36-metric-big"><b>'+et.concluidas+'</b><small>concluídas</small></div>'+
+    '<div class="f36-inline-metrics">'+
+      '<div><b>'+et.abertas+'</b> abertas</div>'+
+      '<div><b style="color:'+(et.atrasadas>0?'#EF4444':'#16A34A')+'">'+et.atrasadas+'</b> atrasada'+(et.atrasadas!==1?'s':'')+' '+(et.atrasadas===0?'🎉':'🔥')+'</div>'+
+    '</div>'+
+  '</div>';
+
+  var feriasBox = '<div class="f36-box f36-box-ferias">'+
+    '<div class="f36-box-head">🌴 Férias '+(new Date().getFullYear())+'</div>'+
+    '<div class="f36-metric-big"><b>'+ef.diasAno+'</b><small>dias '+(ef.diasAno===1?'aprovado':'aprovados')+'</small></div>'+
+    '<div class="f36-inline-metrics">'+
+      '<div><b>'+ef.aprovadasAno+'</b> período'+(ef.aprovadasAno!==1?'s':'')+'</div>'+
+      '<div><b style="color:'+(ef.pending>0?'#F59E0B':'var(--u-text3)')+'">'+ef.pending+'</b> pendente'+(ef.pending!==1?'s':'')+'</div>'+
+    '</div>'+
+  '</div>';
+
+  var kudosBox = '<div class="f36-box f36-box-kudos">'+
+    '<div class="f36-box-head">👏 Kudos</div>'+
+    '<div class="f36-metric-big"><b>'+ek.recebidos+'</b><small>recebido'+(ek.recebidos!==1?'s':'')+'</small></div>'+
+    '<div class="f36-inline-metrics">'+
+      '<div><b>'+ek.enviados+'</b> enviado'+(ek.enviados!==1?'s':'')+'</div>'+
+    '</div>'+
+    (ek.ultimo && ek.ultimo.message ? '<div class="f36-kudo-msg">"'+esc(String(ek.ultimo.message).slice(0,80))+'"</div>' : '')+
+  '</div>';
+
+  var escalaBox = '<div class="f36-box f36-box-escala">'+
+    '<div class="f36-box-head">📅 Escala</div>'+
+    (esc_ ? '<div class="f36-escala-resumo">'+esc(esc_.resumo)+'</div>' : '<div class="f36-escala-vazio">Sem escala definida</div>')+
+  '</div>';
+
+  // Ações
+  var acoesHTML = '<div class="f36-acoes">'+
+    '<button class="btn btn-ghost" id="f36Edit">✏️ Editar ficha</button>'+
+    (!temFacial ? '<button class="btn btn-primary" id="f36Face">🎭 Cadastrar facial</button>' : '<button class="btn btn-ghost" id="f36Face">🎭 Refazer facial</button>')+
+    (alvo._tipo==='user' && typeof openShiftModal==='function' ? '<button class="btn btn-ghost" id="f36Escala">🕐 Escala</button>' : '')+
+    (alvo._tipo==='member' && typeof openShiftModal==='function' ? '<button class="btn btn-ghost" id="f36Escala">🕐 Escala</button>' : '')+
+  '</div>';
+
+  modal.innerHTML = '<div class="modal f36-modal">'+
+    headerHTML +
+    alertasHTML +
+    '<div class="f36-body">'+
+      '<div class="f36-grid">'+
+        pontoBox + tarefasBox + feriasBox +
+      '</div>'+
+      '<div class="f36-grid-2">'+
+        kudosBox + escalaBox +
+      '</div>'+
+    '</div>'+
+    '<div class="f36-foot">'+
+      acoesHTML +
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(modal);
+
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.querySelector('#f36Close').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target===modal) close(); });
+
+  // Ações
+  var edBtn = modal.querySelector('#f36Edit');
+  if (edBtn) edBtn.addEventListener('click', function(){
+    close();
+    if (alvo._tipo === 'member' && typeof openMemberModal === 'function') openMemberModal(entidade);
+    else if (alvo._tipo === 'user' && typeof openUserModal === 'function') openUserModal(entidade);
+  });
+
+  var faceBtn = modal.querySelector('#f36Face');
+  if (faceBtn) faceBtn.addEventListener('click', function(){
+    close();
+    if (typeof openFacialCadastroModal === 'function'){
+      openFacialCadastroModal({ id: entidade.id, name: alvo.name||user?.name, kind: alvo._tipo });
+    }
+  });
+
+  var escBtn = modal.querySelector('#f36Escala');
+  if (escBtn) escBtn.addEventListener('click', function(){
+    close();
+    if (typeof openShiftModal === 'function'){
+      if (alvo._tipo === 'user') openShiftModal({id:entidade.id, _isUser:true, name:alvo.name});
+      else openShiftModal(entidade);
+    }
+  });
+}
+
+
+// v197: expor funções pra testes e integração externa
+if (typeof globalThis !== 'undefined'){
+  // Setter pra testes/debug — permite injetar ST no IIFE
+  globalThis.__setST = function(newSt){ if (typeof ST !== 'undefined') { Object.keys(newSt).forEach(function(k){ ST[k] = newSt[k]; }); } };
+  // Debug helpers v197
+  if (typeof isAdmin==='function') globalThis.isAdmin = isAdmin;
+  if (typeof can==='function') globalThis.can = can;
+  if (typeof CAPS!=='undefined') globalThis.CAPS = CAPS;
+  if (typeof FACIAL_CFG!=='undefined') globalThis.FACIAL_CFG = FACIAL_CFG;
+  if (typeof NIVEIS!=='undefined') globalThis.NIVEIS = NIVEIS;
+  if (typeof APP_BUILD!=='undefined') globalThis.APP_BUILD = APP_BUILD;
+  globalThis.openFicha360 = openFicha360;
+  globalThis.ficha360EstatsPonto = ficha360EstatsPonto;
+  globalThis.ficha360EstatsTarefas = ficha360EstatsTarefas;
+  globalThis.ficha360EstatsKudos = ficha360EstatsKudos;
+  globalThis.ficha360EstatsFerias = ficha360EstatsFerias;
+  globalThis.ficha360Escala = ficha360Escala;
+  globalThis.ficha360TempoDeCasa = ficha360TempoDeCasa;
+  globalThis.ficha360Alertas = ficha360Alertas;
+}
+
+/* ============================================================
+   v198 · Módulo de Atestado Médico
+   ============================================================
+   Colaborador envia foto do atestado → gestor aprova → dia
+   marcado no painel de ponto como 🏥 Atestado (não conta falta).
+   Segue padrão idêntico ao módulo de férias v196.
+   ============================================================ */
+
+var ATESTADO_STATE = { loaded:false, loading:false };
+
+function atestadoCarregar(cb){
+  if (ATESTADO_STATE.loading){ if(cb) cb(); return; }
+  ATESTADO_STATE.loading = true;
+  sb.from('malba_atestados').select('*').order('created_at', {ascending:false}).limit(500).then(function(r){
+    ATESTADO_STATE.loading = false;
+    if (r.error){ console.error('[atestados load]', r.error); if(cb) cb(); return; }
+    ST.atestados = r.data || [];
+    ATESTADO_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+function atestadoDiff(inicio, fim){
+  if (!inicio || !fim) return 0;
+  var a = new Date(inicio+'T12:00:00');
+  var b = new Date(fim+'T12:00:00');
+  var ms = b.getTime() - a.getTime();
+  if (ms < 0) return 0;
+  return Math.round(ms / 86400000) + 1;
+}
+
+/* Está de atestado aprovado no dia? */
+function atestadoEmDia(alvo, dataStr){
+  if (!alvo || !dataStr) return null;
+  var arr = ST.atestados || [];
+  for (var i=0;i<arr.length;i++){
+    var a = arr[i];
+    if (a.status !== 'approved') continue;
+    var bate = false;
+    if (alvo.user_id && String(a.user_id||'') === String(alvo.user_id)) bate = true;
+    if (alvo.member_id && String(a.member_id||'') === String(alvo.member_id)) bate = true;
+    if (!bate) continue;
+    if (dataStr >= a.data_inicio && dataStr <= a.data_fim) return a;
+  }
+  return null;
+}
+
+function atestadoMeus(){
+  var u = ST.session && ST.session.user;
+  if (!u) return [];
+  var uid = u.id;
+  // Members vinculados
+  var meusMids = (ST.members||[]).filter(function(m){return String(m.user_id||'')===String(uid);}).map(function(m){return String(m.id);});
+  return (ST.atestados||[]).filter(function(a){
+    if (String(a.user_id||'')===String(uid)) return true;
+    if (meusMids.indexOf(String(a.member_id||''))!==-1) return true;
+    return false;
+  });
+}
+
+function atestadoPendentes(){
+  var s = ST.session;
+  return (ST.atestados||[]).filter(function(a){
+    if (a.status !== 'pending') return false;
+    if (typeof isSuper==='function' && isSuper(s)) return true;
+    // Gestor comum: só do próprio setor
+    if (!a.actor_sector) return true;
+    return String(a.actor_sector) === String(s && s.sector);
+  });
+}
+
+/* Solicitar atestado — dias auto-calculados */
+function atestadoSolicitar(dados, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ toast('Sem sessão','error'); if(cb) cb(false); return; }
+  var dias = atestadoDiff(dados.data_inicio, dados.data_fim);
+  if (dias < 1){ toast('Período inválido','error'); if(cb) cb(false); return; }
+  var reg = {
+    user_id: dados.user_id || u.id,
+    member_id: dados.member_id || null,
+    actor_name: dados.actor_name || u.name,
+    actor_sector: dados.actor_sector || u.sector || null,
+    data_inicio: dados.data_inicio,
+    data_fim: dados.data_fim,
+    dias: dias,
+    cid: dados.cid || null,
+    medico: dados.medico || null,
+    crm: dados.crm || null,
+    foto_url: dados.foto_url || null,
+    motivo: dados.motivo || null,
+    status: 'pending',
+    created_by: u.id,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+  // XOR user/member — se pediu pra si, garantir só um
+  if (reg.user_id && reg.member_id){ reg.member_id = null; }
+  sb.from('malba_atestados').insert(reg).select().then(function(r){
+    if (r.error){ toast('Erro: '+r.error.message,'error'); if(cb) cb(false); return; }
+    var criado = (r.data && r.data[0]) || null;
+    if (criado){ ST.atestados = ST.atestados || []; ST.atestados.unshift(criado); }
+    if (typeof auditLog === 'function') auditLog('Enviou atestado ('+dias+'d)', u.name);
+    // Notificar gestores do setor
+    if (typeof notifBroadcast === 'function' && typeof notifGestoresDoSetor === 'function'){
+      var alvos = notifGestoresDoSetor(reg.actor_sector);
+      notifBroadcast(alvos, {
+        kind: 'warning',
+        title: '🏥 Novo atestado enviado',
+        body: (reg.actor_name||'Alguém')+' enviou atestado de '+dias+' dia'+(dias>1?'s':''),
+        link: '/atestados',
+        priority: 'high',
+        ctx: { atestado_id: criado && criado.id }
+      });
+    }
+    toast('Atestado enviado','success');
+    if (cb) cb(true, criado);
+  });
+}
+
+function atestadoAprovar(id, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var a = (ST.atestados||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!a){ if(cb) cb(false); return; }
+  sb.from('malba_atestados').update({
+    status:'approved',
+    approver_id: u.id,
+    approver_name: u.name,
+    approver_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function(r){
+    if (r.error){ toast('Erro aprovando: '+r.error.message,'error'); if(cb) cb(false); return; }
+    a.status = 'approved'; a.approver_name = u.name;
+    if (typeof auditLog === 'function') auditLog('Aprovou atestado de '+(a.actor_name||''), u.name);
+    if (typeof notify === 'function' && a.user_id){
+      notify(a.user_id, {
+        kind: 'success',
+        title: '✓ Atestado aprovado',
+        body: 'Seu atestado de '+a.dias+' dia'+(a.dias>1?'s':'')+' foi aprovado',
+        link: '/atestados'
+      });
+    }
+    toast('Atestado aprovado','success');
+    if (cb) cb(true);
+  });
+}
+
+function atestadoRejeitar(id, motivo, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var a = (ST.atestados||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!a){ if(cb) cb(false); return; }
+  sb.from('malba_atestados').update({
+    status:'rejected',
+    approver_id: u.id,
+    approver_name: u.name,
+    approver_at: new Date().toISOString(),
+    rejection_reason: motivo || null,
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function(r){
+    if (r.error){ toast('Erro: '+r.error.message,'error'); if(cb) cb(false); return; }
+    a.status = 'rejected'; a.rejection_reason = motivo;
+    if (typeof auditLog === 'function') auditLog('Rejeitou atestado de '+(a.actor_name||''), u.name);
+    if (typeof notify === 'function' && a.user_id){
+      notify(a.user_id, {
+        kind: 'warning',
+        title: '❌ Atestado recusado',
+        body: motivo ? ('Motivo: '+motivo) : 'Atestado recusado pela liderança',
+        link: '/atestados'
+      });
+    }
+    toast('Atestado recusado','success');
+    if (cb) cb(true);
+  });
+}
+
+function atestadoCancelar(id, cb){
+  var u = ST.session && ST.session.user;
+  var a = (ST.atestados||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!a){ if(cb) cb(false); return; }
+  var ehDono = u && (String(a.user_id||'')===String(u.id) || String(a.created_by||'')===String(u.id));
+  var ehAdmin = typeof isSuper==='function' && isSuper(ST.session);
+  if (!ehDono && !ehAdmin){ toast('Sem permissão','error'); if(cb) cb(false); return; }
+  sb.from('malba_atestados').update({status:'cancelled', updated_at:new Date().toISOString()}).eq('id', id).then(function(r){
+    if (r.error){ toast('Erro cancelando: '+r.error.message, 'error'); if(cb) cb(false); return; }
+    var statusAntes_at = 'pending';
+    a.status = 'cancelled';
+    if (typeof auditLog === 'function') auditLog('Cancelou atestado', u && u.name);
+    if (typeof undoSnack === 'function'){
+      undoSnack('Atestado cancelado', function(){
+        undoReverterStatus('malba_atestados', id, statusAntes_at, function(){ a.status = statusAntes_at; });
+      });
+    } else {
+      toast('Cancelado', 'success');
+    }
+    if (cb) cb(true);
+  });
+}
+
+var ATESTADO_STATUS_META = {
+  pending:   { label:'Aguardando aprovação', cor:'#F59E0B', ic:'⏳' },
+  approved:  { label:'Aprovado',             cor:'#16A34A', ic:'✓'  },
+  rejected:  { label:'Recusado',             cor:'#EF4444', ic:'❌' },
+  cancelled: { label:'Cancelado',            cor:'var(--u-text3)', ic:'⊘' }
+};
+
+function atestadoFmtPeriodo(a){
+  var di = (a.data_inicio||'').split('-').reverse().join('/');
+  var df = (a.data_fim||'').split('-').reverse().join('/');
+  return di + ' a ' + df + ' (' + a.dias + ' dia' + (a.dias>1?'s':'') + ')';
+}
+
+/* Upload de foto do atestado — reusa bucket facial */
+async function atestadoUploadFoto(file){
+  if (!file) return null;
+  var ext = (file.name||'foto.jpg').split('.').pop().toLowerCase();
+  var nome = 'atestado_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.' + ext;
+  var { data, error } = await sb.storage.from('malba-facial').upload(nome, file, {
+    contentType: file.type || 'image/jpeg',
+    upsert: false
+  });
+  if (error){ toast('Erro upload: '+error.message,'error'); return null; }
+  return sb.storage.from('malba-facial').getPublicUrl(nome).data.publicUrl;
+}
+
+/* Modal de solicitação */
+function openAtestadoSolicitarModal(){
+  if (document.getElementById('atestadoModal')) return;
+  var u = ST.session && ST.session.user;
+  if (!u){ try { toast('Sem sessão','error'); } catch(e){} return; }
+  var hoje = new Date().toISOString().slice(0,10);
+
+  var m = document.createElement('div');
+  m.className = 'modal-bg';
+  m.id = 'atestadoModal';
+  m.innerHTML = '<div class="modal at-modal">'+
+    '<h3>🏥 Enviar atestado médico</h3>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Data início *</label>'+
+        '<input type="date" id="atIni" max="'+hoje+'" value="'+hoje+'"></div>'+
+      '<div class="modal-row"><label class="modal-label">Data fim *</label>'+
+        '<input type="date" id="atFim" max="'+hoje+'" value="'+hoje+'"></div>'+
+    '</div>'+
+    '<div class="at-preview" id="atPreview">1 dia</div>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">CID (opcional)</label>'+
+        '<input type="text" id="atCid" placeholder="ex J06.9" maxlength="10"></div>'+
+      '<div class="modal-row"><label class="modal-label">CRM (opcional)</label>'+
+        '<input type="text" id="atCrm" placeholder="ex 123456/SP" maxlength="20"></div>'+
+    '</div>'+
+    '<div class="modal-row"><label class="modal-label">Nome do médico (opcional)</label>'+
+      '<input type="text" id="atMed" placeholder="Dr. Fulano" maxlength="80"></div>'+
+    '<div class="modal-row"><label class="modal-label">📸 Foto do atestado *</label>'+
+      '<input type="file" id="atFoto" accept="image/*,application/pdf"></div>'+
+    '<div class="modal-row"><label class="modal-label">Observações</label>'+
+      '<textarea id="atMot" rows="2" placeholder="Ex: exame de rotina, gripe forte..."></textarea></div>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-ghost" id="atCancel">Cancelar</button>'+
+      '<button class="btn btn-primary" id="atOk">Enviar atestado</button>'+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(m);
+
+  function close(){ if(m.parentNode) m.parentNode.removeChild(m); }
+  m.querySelector('#atCancel').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if (e.target===m) close(); });
+
+  function updatePreview(){
+    var i = m.querySelector('#atIni').value;
+    var f = m.querySelector('#atFim').value;
+    var d = atestadoDiff(i, f);
+    m.querySelector('#atPreview').textContent = d + ' dia' + (d!==1?'s':'') + ' de afastamento';
+  }
+  m.querySelector('#atIni').addEventListener('change', updatePreview);
+  m.querySelector('#atFim').addEventListener('change', updatePreview);
+
+  m.querySelector('#atOk').addEventListener('click', async function(){
+    var btn = this; btn.disabled = true; btn.textContent = 'Enviando…';
+    var ini = m.querySelector('#atIni').value;
+    var fim = m.querySelector('#atFim').value;
+    var cid = m.querySelector('#atCid').value.trim();
+    var med = m.querySelector('#atMed').value.trim();
+    var crm = m.querySelector('#atCrm').value.trim();
+    var mot = m.querySelector('#atMot').value.trim();
+    var fileEl = m.querySelector('#atFoto');
+    var file = fileEl.files && fileEl.files[0];
+    if (!ini || !fim){ toast('Preencha as datas','error'); btn.disabled=false; btn.textContent='Enviar atestado'; return; }
+    if (!file){ toast('Anexe a foto do atestado','error'); btn.disabled=false; btn.textContent='Enviar atestado'; return; }
+
+    var fotoUrl = null;
+    try {
+      fotoUrl = await atestadoUploadFoto(file);
+      if (!fotoUrl){ btn.disabled=false; btn.textContent='Enviar atestado'; return; }
+    } catch(e){
+      toast('Erro upload','error'); btn.disabled=false; btn.textContent='Enviar atestado'; return;
+    }
+
+    atestadoSolicitar({
+      data_inicio: ini, data_fim: fim,
+      cid: cid, medico: med, crm: crm,
+      foto_url: fotoUrl, motivo: mot
+    }, function(ok){
+      if (ok){ close(); if (typeof renderPage==='function') renderPage(); }
+      else { btn.disabled=false; btn.textContent='Enviar atestado'; }
+    });
+  });
+}
+
+/* Página /atestados com 3 abas */
+function atestadosPageHTML(){
+  var s = ST.session;
+  var sub = (ST.atestadosSubPage||'meus');
+  var meus = atestadoMeus();
+  var pendentes = atestadoPendentes();
+  var podeAprovar = (typeof isAdmin==='function' && isAdmin(s));
+  var todos = (podeAprovar) ? (ST.atestados||[]).filter(function(a){
+    if (typeof isSuper==='function' && isSuper(s)) return true;
+    return String(a.actor_sector||'') === String(s && s.sector||'');
+  }) : [];
+
+  var tabs = '<div class="at-tabs">'+
+    '<button class="at-tab '+(sub==='meus'?'ativa':'')+'" data-atsub="meus">🏥 Meus</button>'+
+    (podeAprovar ? '<button class="at-tab '+(sub==='aprovar'?'ativa':'')+'" data-atsub="aprovar">⏳ Aprovar'+(pendentes.length?' ('+pendentes.length+')':'')+'</button>' : '')+
+    (podeAprovar ? '<button class="at-tab '+(sub==='todos'?'ativa':'')+'" data-atsub="todos">📋 Todos do setor</button>' : '')+
+  '</div>';
+
+  var lista;
+  if (sub === 'aprovar') lista = pendentes;
+  else if (sub === 'todos') lista = todos;
+  else lista = meus;
+
+  function cardHTML(a){
+    var meta = ATESTADO_STATUS_META[a.status] || ATESTADO_STATUS_META.pending;
+    var mineOwner = s && s.user && (String(a.user_id||'')===String(s.user.id) || String(a.created_by||'')===String(s.user.id));
+    var podeCancel = mineOwner && a.status==='pending';
+    var pAprovar = (sub==='aprovar' && a.status==='pending');
+    return '<div class="at-card at-'+a.status+'">'+
+      '<div class="at-card-head">'+
+        '<div><b>'+esc(a.actor_name||'—')+'</b><span class="at-badge" style="background:'+meta.cor+'22;color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span></div>'+
+        (a.foto_url ? '<a class="at-foto-link" href="'+esc(a.foto_url)+'" target="_blank">📎 Ver foto</a>' : '')+
+      '</div>'+
+      '<div class="at-per">'+esc(atestadoFmtPeriodo(a))+'</div>'+
+      (a.cid ? '<div class="at-cid">🩺 CID: <b>'+esc(a.cid)+'</b></div>' : '')+
+      (a.medico ? '<div class="at-med">👨‍⚕️ '+esc(a.medico)+(a.crm?' · CRM '+esc(a.crm):'')+'</div>' : '')+
+      (a.motivo ? '<div class="at-mot">"'+esc(a.motivo)+'"</div>' : '')+
+      (a.status==='rejected' && a.rejection_reason ? '<div class="at-rej">❌ '+esc(a.rejection_reason)+'</div>' : '')+
+      (a.status==='approved' && a.approver_name ? '<div class="at-app">✓ Aprovado por '+esc(a.approver_name)+'</div>' : '')+
+      '<div class="at-actions">'+
+        (pAprovar ? '<button class="btn btn-primary at-btn-ap" data-atid="'+esc(a.id)+'">✓ Aprovar</button>' : '')+
+        (pAprovar ? '<button class="btn btn-danger at-btn-rj" data-atid="'+esc(a.id)+'">❌ Recusar</button>' : '')+
+        (podeCancel ? '<button class="btn btn-ghost at-btn-cn" data-atid="'+esc(a.id)+'">Cancelar</button>' : '')+
+      '</div>'+
+    '</div>';
+  }
+
+  var listaHTML = lista.length ? lista.map(cardHTML).join('') : '<div class="at-empty">Nada por aqui.</div>';
+
+  return '<div class="at-page">'+
+    '<div class="at-head">'+
+      '<h2>🏥 Atestados médicos</h2>'+
+      '<button class="btn btn-primary" id="atNew">+ Novo atestado</button>'+
+    '</div>'+
+    tabs +
+    '<div class="at-lista">'+ listaHTML +'</div>'+
+  '</div>';
+}
+
+function bindAtestadosPage(){
+  var b = document.getElementById('atNew');
+  if (b) b.addEventListener('click', function(){ openAtestadoSolicitarModal(); });
+  document.querySelectorAll('.at-tab[data-atsub]').forEach(function(t){
+    t.addEventListener('click', function(){
+      ST.atestadosSubPage = t.getAttribute('data-atsub');
+      if (typeof renderPage==='function') renderPage();
+    });
+  });
+  document.querySelectorAll('.at-btn-ap').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-atid');
+      atestadoAprovar(id, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+  document.querySelectorAll('.at-btn-rj').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-atid');
+      var mot = prompt('Motivo da recusa (opcional):');
+      if (mot === null) return;
+      atestadoRejeitar(id, mot, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+  document.querySelectorAll('.at-btn-cn').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (!confirm('Cancelar este atestado?')) return;
+      var id = b.getAttribute('data-atid');
+      atestadoCancelar(id, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis.ATESTADO_STATE = ATESTADO_STATE;
+  globalThis.atestadoCarregar = atestadoCarregar;
+  globalThis.atestadoDiff = atestadoDiff;
+  globalThis.atestadoEmDia = atestadoEmDia;
+  globalThis.atestadoMeus = atestadoMeus;
+  globalThis.atestadoPendentes = atestadoPendentes;
+  globalThis.atestadoSolicitar = atestadoSolicitar;
+  globalThis.atestadoAprovar = atestadoAprovar;
+  globalThis.atestadoRejeitar = atestadoRejeitar;
+  globalThis.atestadoCancelar = atestadoCancelar;
+  globalThis.ATESTADO_STATUS_META = ATESTADO_STATUS_META;
+  globalThis.atestadoFmtPeriodo = atestadoFmtPeriodo;
+  globalThis.openAtestadoSolicitarModal = openAtestadoSolicitarModal;
+  globalThis.atestadosPageHTML = atestadosPageHTML;
+  globalThis.bindAtestadosPage = bindAtestadosPage;
+}
+
+/* ============================================================
+   v199 · Undo Destrutivo Universal
+   ============================================================
+   Snackbar canto inferior-direito com botão "Desfazer" 8s.
+   API única: undoSnack(msg, undoFn, opts).
+   Instrumentação leve nas ações destrutivas existentes.
+   ============================================================ */
+
+var UNDO_CFG = { TIMEOUT_MS: 8000, MAX_STACK: 3 };
+var UNDO_STATE = { queue: [], nextId: 1 };
+
+function undoWrap(){
+  var w = document.getElementById('undoWrap');
+  if (!w){
+    w = document.createElement('div');
+    w.id = 'undoWrap';
+    w.className = 'undo-wrap';
+    document.body.appendChild(w);
+  }
+  return w;
+}
+
+function undoSnack(msg, undoFn, opts){
+  opts = opts || {};
+  var timeout = opts.timeout || UNDO_CFG.TIMEOUT_MS;
+  var id = 'usn-' + (UNDO_STATE.nextId++);
+
+  // Limitar pilha
+  while (UNDO_STATE.queue.length >= UNDO_CFG.MAX_STACK){
+    var oldest = UNDO_STATE.queue.shift();
+    undoSnackClose(oldest.id, false);
+  }
+
+  var w = undoWrap();
+  var el = document.createElement('div');
+  el.className = 'undo-snack';
+  el.id = id;
+  el.innerHTML =
+    '<span class="undo-ic">↺</span>'+
+    '<span class="undo-msg">'+esc(msg||'Ação executada')+'</span>'+
+    '<button class="undo-btn" type="button">Desfazer</button>'+
+    '<button class="undo-close" type="button" title="Fechar">×</button>'+
+    '<div class="undo-bar"><div class="undo-bar-fill"></div></div>';
+  w.appendChild(el);
+
+  var reg = { id:id, el:el, undoFn:undoFn, timerId:null, done:false };
+  UNDO_STATE.queue.push(reg);
+
+  // Animação da barra decrescente
+  requestAnimationFrame(function(){
+    var fill = el.querySelector('.undo-bar-fill');
+    if (fill){
+      fill.style.transition = 'width '+timeout+'ms linear';
+      fill.style.width = '0%';
+    }
+    el.classList.add('undo-show');
+  });
+
+  // Timer pra fechar
+  reg.timerId = setTimeout(function(){
+    undoSnackClose(id, false);
+  }, timeout);
+
+  // Handlers
+  var btn = el.querySelector('.undo-btn');
+  btn.addEventListener('click', function(){
+    if (reg.done) return;
+    reg.done = true;
+    try { if (typeof undoFn === 'function') undoFn(); } catch(e){ console.error('[undo]', e); }
+    undoSnackClose(id, true);
+  });
+  var closeBtn = el.querySelector('.undo-close');
+  closeBtn.addEventListener('click', function(){ undoSnackClose(id, false); });
+
+  return id;
+}
+
+function undoSnackClose(id, wasUndone){
+  var reg = null; var idx = -1;
+  for (var i=0;i<UNDO_STATE.queue.length;i++){
+    if (UNDO_STATE.queue[i].id === id){ reg = UNDO_STATE.queue[i]; idx = i; break; }
+  }
+  if (!reg) return;
+  if (reg.timerId){ clearTimeout(reg.timerId); reg.timerId = null; }
+  UNDO_STATE.queue.splice(idx, 1);
+  if (reg.el && reg.el.parentNode){
+    reg.el.classList.add(wasUndone ? 'undo-undone' : 'undo-hide');
+    setTimeout(function(){
+      if (reg.el && reg.el.parentNode) reg.el.parentNode.removeChild(reg.el);
+    }, 300);
+  }
+}
+
+/* ==== Helpers de rollback pra ações mais comuns ==== */
+
+/* Restaura registro no Supabase (undo de delete) */
+function undoRestaurarRegistro(tabela, dadosSnapshot, cbLocal){
+  if (!dadosSnapshot) return;
+  sb.from(tabela).insert(dadosSnapshot).select().then(function(r){
+    if (r.error){
+      if (typeof toast==='function') toast('Não foi possível restaurar: '+r.error.message, 'error');
+      return;
+    }
+    if (typeof cbLocal === 'function') cbLocal(r.data && r.data[0]);
+    if (typeof toast==='function') toast('Restaurado', 'success');
+    if (typeof renderPage === 'function') renderPage();
+  });
+}
+
+/* Reverte status pra estado anterior (undo de cancelar/aprovar/rejeitar) */
+function undoReverterStatus(tabela, id, statusAntes, cbLocal){
+  sb.from(tabela).update({status: statusAntes, updated_at: new Date().toISOString()}).eq('id', id).then(function(r){
+    if (r.error){
+      if (typeof toast==='function') toast('Não foi possível reverter: '+r.error.message, 'error');
+      return;
+    }
+    if (typeof cbLocal === 'function') cbLocal();
+    if (typeof toast==='function') toast('Revertido', 'success');
+    if (typeof renderPage === 'function') renderPage();
+  });
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis.UNDO_CFG = UNDO_CFG;
+  globalThis.UNDO_STATE = UNDO_STATE;
+  globalThis.undoSnack = undoSnack;
+  globalThis.undoSnackClose = undoSnackClose;
+  globalThis.undoRestaurarRegistro = undoRestaurarRegistro;
+  globalThis.undoReverterStatus = undoReverterStatus;
+}
+
+/* ============================================================
+   v200 · Módulo de Reembolso de Despesas
+   ============================================================
+   Colaborador foto do recibo + valor → gestor aprova →
+   admin marca como pago (integração Yosef via campo paid_at).
+   Padrão semelhante ao v198 atestado + valor + categoria.
+   ============================================================ */
+
+var REEMB_STATE = { loaded:false, loading:false };
+
+var REEMB_CATEGORIAS = [
+  { key:'combustivel',  label:'Combustível',       ic:'⛽', cor:'#DC2626' },
+  { key:'refeicao',     label:'Refeição',          ic:'🍽️', cor:'#F59E0B' },
+  { key:'material',     label:'Material',          ic:'📦', cor:'#3B6FF7' },
+  { key:'transporte',   label:'Transporte',        ic:'🚌', cor:'#0EA5E9' },
+  { key:'deslocamento', label:'Deslocamento (km)', ic:'🚗', cor:'#8B5CF6' },
+  { key:'ferramenta',   label:'Ferramenta',        ic:'🔧', cor:'#059669' },
+  { key:'outros',       label:'Outros',            ic:'📝', cor:'#64748B' }
+];
+
+var REEMB_FORMAS = [
+  { key:'dinheiro',       label:'Dinheiro' },
+  { key:'cartao_pessoal', label:'Cartão pessoal' },
+  { key:'pix',            label:'PIX' },
+  { key:'outro',          label:'Outro' }
+];
+
+var REEMB_STATUS_META = {
+  pending:   { label:'Aguardando aprovação', cor:'#F59E0B', ic:'⏳' },
+  approved:  { label:'Aprovado — a pagar',   cor:'#16A34A', ic:'✓'  },
+  paid:      { label:'Pago',                 cor:'#059669', ic:'💰' },
+  rejected:  { label:'Recusado',             cor:'#EF4444', ic:'❌' },
+  cancelled: { label:'Cancelado',            cor:'var(--u-text3)', ic:'⊘' }
+};
+
+function reembCategoriaMeta(k){
+  for (var i=0;i<REEMB_CATEGORIAS.length;i++) if (REEMB_CATEGORIAS[i].key===k) return REEMB_CATEGORIAS[i];
+  return REEMB_CATEGORIAS[REEMB_CATEGORIAS.length-1];
+}
+
+function reembFormaLabel(k){
+  for (var i=0;i<REEMB_FORMAS.length;i++) if (REEMB_FORMAS[i].key===k) return REEMB_FORMAS[i].label;
+  return k || '—';
+}
+
+function reembCarregar(cb){
+  if (REEMB_STATE.loading){ if(cb) cb(); return; }
+  REEMB_STATE.loading = true;
+  sb.from('malba_reembolsos').select('*').order('created_at', {ascending:false}).limit(500).then(function(r){
+    REEMB_STATE.loading = false;
+    if (r.error){ console.error('[reemb load]', r.error); if(cb) cb(); return; }
+    ST.reembolsos = r.data || [];
+    REEMB_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+function reembMeus(){
+  var u = ST.session && ST.session.user;
+  if (!u) return [];
+  var uid = u.id;
+  var meusMids = (ST.members||[]).filter(function(m){return String(m.user_id||'')===String(uid);}).map(function(m){return String(m.id);});
+  return (ST.reembolsos||[]).filter(function(r){
+    if (String(r.user_id||'')===String(uid)) return true;
+    if (meusMids.indexOf(String(r.member_id||''))!==-1) return true;
+    return false;
+  });
+}
+
+function reembPendentes(){
+  var s = ST.session;
+  return (ST.reembolsos||[]).filter(function(r){
+    if (r.status !== 'pending') return false;
+    if (typeof isSuper==='function' && isSuper(s)) return true;
+    if (!r.actor_sector) return true;
+    return String(r.actor_sector) === String(s && s.sector);
+  });
+}
+
+function reembAPagar(){
+  // Aprovados aguardando pagamento (só admin/gestor vê)
+  return (ST.reembolsos||[]).filter(function(r){ return r.status === 'approved'; });
+}
+
+function reembFmtValor(v){
+  var n = Number(v||0);
+  return 'R$ ' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function reembFmtData(d){
+  if (!d) return '—';
+  return String(d).split('-').reverse().join('/');
+}
+
+function reembSolicitar(dados, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ try { toast('Sem sessão','error'); } catch(e){} if(cb) cb(false); return; }
+  var valor = Number(dados.valor||0);
+  if (valor <= 0){ try { toast('Valor inválido','error'); } catch(e){} if(cb) cb(false); return; }
+
+  var reg = {
+    user_id: dados.user_id || u.id,
+    member_id: dados.member_id || null,
+    actor_name: dados.actor_name || u.name,
+    actor_sector: dados.actor_sector || u.sector || null,
+    valor: valor,
+    categoria: dados.categoria || 'outros',
+    data_gasto: dados.data_gasto,
+    forma_pagamento: dados.forma_pagamento || 'dinheiro',
+    foto_url: dados.foto_url || null,
+    descricao: dados.descricao || null,
+    status: 'pending',
+    created_by: u.id,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  };
+  if (reg.user_id && reg.member_id) reg.member_id = null;
+
+  sb.from('malba_reembolsos').insert(reg).select().then(function(r){
+    if (r.error){ try { toast('Erro: '+r.error.message,'error'); } catch(e){} if(cb) cb(false); return; }
+    var criado = (r.data && r.data[0]) || null;
+    if (criado){ ST.reembolsos = ST.reembolsos || []; ST.reembolsos.unshift(criado); }
+    if (typeof auditLog === 'function') auditLog('Solicitou reembolso ('+reembFmtValor(valor)+')', u.name);
+    if (typeof notifBroadcast === 'function' && typeof notifGestoresDoSetor === 'function'){
+      var alvos = notifGestoresDoSetor(reg.actor_sector);
+      notifBroadcast(alvos, {
+        kind: 'warning',
+        title: '💸 Reembolso solicitado',
+        body: (reg.actor_name||'Alguém')+' pediu '+reembFmtValor(valor)+' ('+reembCategoriaMeta(reg.categoria).label+')',
+        link: '/reembolsos',
+        priority: 'normal',
+        ctx: { reemb_id: criado && criado.id }
+      });
+    }
+    try { toast('Reembolso enviado','success'); } catch(e){}
+    if (cb) cb(true, criado);
+  });
+}
+
+function reembAprovar(id, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var r = (ST.reembolsos||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!r){ if(cb) cb(false); return; }
+  sb.from('malba_reembolsos').update({
+    status:'approved',
+    approver_id: u.id, approver_name: u.name,
+    approver_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function(res){
+    if (res.error){ try { toast('Erro: '+res.error.message,'error'); } catch(e){} if(cb) cb(false); return; }
+    r.status = 'approved'; r.approver_name = u.name;
+    if (typeof auditLog === 'function') auditLog('Aprovou reembolso de '+(r.actor_name||''), u.name);
+    if (typeof notify === 'function' && r.user_id){
+      notify(r.user_id, {
+        kind:'success',
+        title:'✓ Reembolso aprovado',
+        body: reembFmtValor(r.valor)+' aprovado — aguardando pagamento',
+        link:'/reembolsos'
+      });
+    }
+    try { toast('Aprovado','success'); } catch(e){}
+    if (cb) cb(true);
+  });
+}
+
+function reembRejeitar(id, motivo, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  var r = (ST.reembolsos||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!r){ if(cb) cb(false); return; }
+  sb.from('malba_reembolsos').update({
+    status:'rejected',
+    approver_id: u.id, approver_name: u.name,
+    approver_at: new Date().toISOString(),
+    rejection_reason: motivo || null,
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function(res){
+    if (res.error){ try { toast('Erro: '+res.error.message,'error'); } catch(e){} if(cb) cb(false); return; }
+    r.status = 'rejected'; r.rejection_reason = motivo;
+    if (typeof auditLog === 'function') auditLog('Rejeitou reembolso de '+(r.actor_name||''), u.name);
+    if (typeof notify === 'function' && r.user_id){
+      notify(r.user_id, {
+        kind:'warning',
+        title:'❌ Reembolso recusado',
+        body: motivo ? 'Motivo: '+motivo : 'Reembolso recusado',
+        link:'/reembolsos'
+      });
+    }
+    try { toast('Recusado','success'); } catch(e){}
+    if (cb) cb(true);
+  });
+}
+
+function reembMarcarPago(id, metodo, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if(cb) cb(false); return; }
+  if (typeof isAdmin !== 'function' || !isAdmin(ST.session)){
+    try { toast('Sem permissão pra marcar pagamento','error'); } catch(e){}
+    if(cb) cb(false); return;
+  }
+  var r = (ST.reembolsos||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!r){ if(cb) cb(false); return; }
+  sb.from('malba_reembolsos').update({
+    status:'paid',
+    paid_at: new Date().toISOString(),
+    paid_by: u.id,
+    paid_by_name: u.name,
+    paid_method: metodo || null,
+    updated_at: new Date().toISOString()
+  }).eq('id', id).then(function(res){
+    if (res.error){ try { toast('Erro: '+res.error.message,'error'); } catch(e){} if(cb) cb(false); return; }
+    r.status = 'paid'; r.paid_by_name = u.name; r.paid_method = metodo;
+    if (typeof auditLog === 'function') auditLog('Marcou reembolso como pago ('+reembFmtValor(r.valor)+')', u.name);
+    if (typeof notify === 'function' && r.user_id){
+      notify(r.user_id, {
+        kind:'success',
+        title:'💰 Reembolso pago',
+        body: reembFmtValor(r.valor)+(metodo?' via '+metodo:''),
+        link:'/reembolsos'
+      });
+    }
+    try { toast('Marcado como pago','success'); } catch(e){}
+    if (cb) cb(true);
+  });
+}
+
+function reembCancelar(id, cb){
+  var u = ST.session && ST.session.user;
+  var r = (ST.reembolsos||[]).filter(function(x){return String(x.id)===String(id);})[0];
+  if (!r){ if(cb) cb(false); return; }
+  var ehDono = u && (String(r.user_id||'')===String(u.id) || String(r.created_by||'')===String(u.id));
+  var ehSuper = typeof isSuper==='function' && isSuper(ST.session);
+  if (!ehDono && !ehSuper){ try { toast('Sem permissão','error'); } catch(e){} if(cb) cb(false); return; }
+  sb.from('malba_reembolsos').update({status:'cancelled', updated_at:new Date().toISOString()}).eq('id', id).then(function(res){
+    if (res.error){ try { toast('Erro: '+res.error.message,'error'); } catch(e){} if(cb) cb(false); return; }
+    var statusAntes = 'pending';
+    r.status = 'cancelled';
+    if (typeof auditLog === 'function') auditLog('Cancelou reembolso', u && u.name);
+    if (typeof undoSnack === 'function'){
+      undoSnack('Reembolso cancelado', function(){
+        undoReverterStatus('malba_reembolsos', id, statusAntes, function(){ r.status = statusAntes; });
+      });
+    } else {
+      try { toast('Cancelado','success'); } catch(e){}
+    }
+    if (cb) cb(true);
+  });
+}
+
+async function reembUploadFoto(file){
+  if (!file) return null;
+  var ext = (file.name||'recibo.jpg').split('.').pop().toLowerCase();
+  var nome = 'reembolso_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.' + ext;
+  var { data, error } = await sb.storage.from('malba-facial').upload(nome, file, {
+    contentType: file.type || 'image/jpeg', upsert: false
+  });
+  if (error){ try { toast('Erro upload: '+error.message,'error'); } catch(e){} return null; }
+  return sb.storage.from('malba-facial').getPublicUrl(nome).data.publicUrl;
+}
+
+function openReembSolicitarModal(){
+  if (document.getElementById('reembModal')) return;
+  var u = ST.session && ST.session.user;
+  if (!u){ try { toast('Sem sessão','error'); } catch(e){} return; }
+  var hoje = new Date().toISOString().slice(0,10);
+
+  var catOpts = REEMB_CATEGORIAS.map(function(c){
+    return '<option value="'+c.key+'">'+c.ic+' '+c.label+'</option>';
+  }).join('');
+  var fpOpts = REEMB_FORMAS.map(function(f){
+    return '<option value="'+f.key+'">'+f.label+'</option>';
+  }).join('');
+
+  var m = document.createElement('div');
+  m.className = 'modal-bg';
+  m.id = 'reembModal';
+  m.innerHTML = '<div class="modal re-modal">'+
+    '<h3>💸 Solicitar reembolso</h3>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Valor (R$) *</label>'+
+        '<input type="number" id="reVal" min="0.01" step="0.01" placeholder="0,00"></div>'+
+      '<div class="modal-row"><label class="modal-label">Data do gasto *</label>'+
+        '<input type="date" id="reData" max="'+hoje+'" value="'+hoje+'"></div>'+
+    '</div>'+
+    '<div class="modal-grid2">'+
+      '<div class="modal-row"><label class="modal-label">Categoria *</label>'+
+        '<select id="reCat">'+catOpts+'</select></div>'+
+      '<div class="modal-row"><label class="modal-label">Forma de pagamento</label>'+
+        '<select id="reFp">'+fpOpts+'</select></div>'+
+    '</div>'+
+    '<div class="modal-row"><label class="modal-label">📸 Foto do recibo/NF *</label>'+
+      '<input type="file" id="reFoto" accept="image/*,application/pdf"></div>'+
+    '<div class="modal-row"><label class="modal-label">Descrição *</label>'+
+      '<textarea id="reDesc" rows="2" placeholder="Ex: gasolina viagem Guarulhos, almoço com cliente X"></textarea></div>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-ghost" id="reCancel">Cancelar</button>'+
+      '<button class="btn btn-primary" id="reOk">Enviar reembolso</button>'+
+    '</div>'+
+  '</div>';
+
+  document.body.appendChild(m);
+
+  function close(){ if(m.parentNode) m.parentNode.removeChild(m); }
+  m.querySelector('#reCancel').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if (e.target===m) close(); });
+
+  m.querySelector('#reOk').addEventListener('click', async function(){
+    var btn = this; btn.disabled = true; btn.textContent = 'Enviando…';
+    var val = Number(m.querySelector('#reVal').value||0);
+    var data = m.querySelector('#reData').value;
+    var cat = m.querySelector('#reCat').value;
+    var fp = m.querySelector('#reFp').value;
+    var desc = m.querySelector('#reDesc').value.trim();
+    var fileEl = m.querySelector('#reFoto');
+    var file = fileEl.files && fileEl.files[0];
+
+    if (val <= 0){ try{toast('Informe valor','error');}catch(e){} btn.disabled=false; btn.textContent='Enviar reembolso'; return; }
+    if (!data){ try{toast('Informe data','error');}catch(e){} btn.disabled=false; btn.textContent='Enviar reembolso'; return; }
+    if (!desc){ try{toast('Adicione descrição','error');}catch(e){} btn.disabled=false; btn.textContent='Enviar reembolso'; return; }
+    if (!file){ try{toast('Anexe o recibo','error');}catch(e){} btn.disabled=false; btn.textContent='Enviar reembolso'; return; }
+
+    var fotoUrl = null;
+    try {
+      fotoUrl = await reembUploadFoto(file);
+      if (!fotoUrl){ btn.disabled=false; btn.textContent='Enviar reembolso'; return; }
+    } catch(e){ try{toast('Erro upload','error');}catch(e){} btn.disabled=false; btn.textContent='Enviar reembolso'; return; }
+
+    reembSolicitar({
+      valor: val, data_gasto: data, categoria: cat, forma_pagamento: fp,
+      foto_url: fotoUrl, descricao: desc
+    }, function(ok){
+      if (ok){ close(); if (typeof renderPage==='function') renderPage(); }
+      else { btn.disabled=false; btn.textContent='Enviar reembolso'; }
+    });
+  });
+}
+
+function openReembMarcarPagoModal(id){
+  if (document.getElementById('rePagoModal')) return;
+  var m = document.createElement('div');
+  m.className = 'modal-bg';
+  m.id = 'rePagoModal';
+  m.innerHTML = '<div class="modal re-modal-pago">'+
+    '<h3>💰 Marcar como pago</h3>'+
+    '<div class="modal-row"><label class="modal-label">Método/observação</label>'+
+      '<input type="text" id="rePagoMet" placeholder="Ex: PIX, folha, adiantamento" maxlength="80"></div>'+
+    '<div class="modal-actions">'+
+      '<button class="btn btn-ghost" id="rePagoCancel">Cancelar</button>'+
+      '<button class="btn btn-primary" id="rePagoOk">Confirmar pagamento</button>'+
+    '</div>'+
+  '</div>';
+  document.body.appendChild(m);
+  function close(){ if(m.parentNode) m.parentNode.removeChild(m); }
+  m.querySelector('#rePagoCancel').addEventListener('click', close);
+  m.addEventListener('click', function(e){ if (e.target===m) close(); });
+  m.querySelector('#rePagoOk').addEventListener('click', function(){
+    var met = m.querySelector('#rePagoMet').value.trim();
+    reembMarcarPago(id, met, function(ok){
+      if (ok){ close(); if (typeof renderPage==='function') renderPage(); }
+    });
+  });
+}
+
+function reembolsosPageHTML(){
+  var s = ST.session;
+  var sub = (ST.reembSubPage||'meus');
+  var meus = reembMeus();
+  var pendentes = reembPendentes();
+  var apagar = reembAPagar();
+  var podeAprovar = (typeof isAdmin==='function' && isAdmin(s));
+  var podePagar = (typeof isAdmin==='function' && isAdmin(s));
+  var todos = (podeAprovar) ? (ST.reembolsos||[]).filter(function(r){
+    if (typeof isSuper==='function' && isSuper(s)) return true;
+    return String(r.actor_sector||'') === String(s && s.sector||'');
+  }) : [];
+
+  // Totais rápidos
+  var totalMeuMes = 0;
+  var mesAtual = new Date().toISOString().slice(0,7);
+  meus.forEach(function(r){
+    if (r.status !== 'cancelled' && r.status !== 'rejected' && (r.data_gasto||'').startsWith(mesAtual)){
+      totalMeuMes += Number(r.valor||0);
+    }
+  });
+
+  var tabs = '<div class="re-tabs">'+
+    '<button class="re-tab '+(sub==='meus'?'ativa':'')+'" data-resub="meus">💸 Meus</button>'+
+    (podeAprovar ? '<button class="re-tab '+(sub==='aprovar'?'ativa':'')+'" data-resub="aprovar">⏳ Aprovar'+(pendentes.length?' ('+pendentes.length+')':'')+'</button>' : '')+
+    (podePagar ? '<button class="re-tab '+(sub==='pagar'?'ativa':'')+'" data-resub="pagar">💰 A pagar'+(apagar.length?' ('+apagar.length+')':'')+'</button>' : '')+
+    (podeAprovar ? '<button class="re-tab '+(sub==='todos'?'ativa':'')+'" data-resub="todos">📋 Todos</button>' : '')+
+  '</div>';
+
+  var lista;
+  if (sub === 'aprovar') lista = pendentes;
+  else if (sub === 'pagar') lista = apagar;
+  else if (sub === 'todos') lista = todos;
+  else lista = meus;
+
+  function cardHTML(r){
+    var meta = REEMB_STATUS_META[r.status] || REEMB_STATUS_META.pending;
+    var cat = reembCategoriaMeta(r.categoria);
+    var mineOwner = s && s.user && (String(r.user_id||'')===String(s.user.id) || String(r.created_by||'')===String(s.user.id));
+    var podeCancel = mineOwner && r.status==='pending';
+    var podeAp = (sub==='aprovar' && r.status==='pending' && podeAprovar);
+    var podeMP = (sub==='pagar' && r.status==='approved' && podePagar);
+    return '<div class="re-card re-'+r.status+'">'+
+      '<div class="re-card-head">'+
+        '<div class="re-valor">'+esc(reembFmtValor(r.valor))+'</div>'+
+        '<span class="re-cat" style="background:'+cat.cor+'22;color:'+cat.cor+'">'+cat.ic+' '+esc(cat.label)+'</span>'+
+        '<span class="re-badge" style="background:'+meta.cor+'22;color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span>'+
+      '</div>'+
+      '<div class="re-meta"><b>'+esc(r.actor_name||'—')+'</b> · '+esc(reembFmtData(r.data_gasto))+' · '+esc(reembFormaLabel(r.forma_pagamento))+'</div>'+
+      (r.descricao ? '<div class="re-desc">'+esc(r.descricao)+'</div>' : '')+
+      (r.foto_url ? '<a class="re-foto-link" href="'+esc(r.foto_url)+'" target="_blank">📎 Ver recibo</a>' : '')+
+      (r.status==='rejected' && r.rejection_reason ? '<div class="re-rej">❌ '+esc(r.rejection_reason)+'</div>' : '')+
+      (r.status==='approved' && r.approver_name ? '<div class="re-app">✓ Aprovado por '+esc(r.approver_name)+'</div>' : '')+
+      (r.status==='paid' && r.paid_by_name ? '<div class="re-pago">💰 Pago por '+esc(r.paid_by_name)+(r.paid_method?' via '+esc(r.paid_method):'')+'</div>' : '')+
+      '<div class="re-actions">'+
+        (podeAp ? '<button class="btn btn-primary re-btn-ap" data-reid="'+esc(r.id)+'">✓ Aprovar</button>' : '')+
+        (podeAp ? '<button class="btn btn-danger re-btn-rj" data-reid="'+esc(r.id)+'">❌ Recusar</button>' : '')+
+        (podeMP ? '<button class="btn btn-primary re-btn-mp" data-reid="'+esc(r.id)+'">💰 Marcar pago</button>' : '')+
+        (podeCancel ? '<button class="btn btn-ghost re-btn-cn" data-reid="'+esc(r.id)+'">Cancelar</button>' : '')+
+      '</div>'+
+    '</div>';
+  }
+
+  var listaHTML = lista.length ? lista.map(cardHTML).join('') : '<div class="re-empty">Nada por aqui.</div>';
+
+  var kpi = sub==='meus' && totalMeuMes>0 ?
+    '<div class="re-kpi">📊 Você já solicitou <b>'+reembFmtValor(totalMeuMes)+'</b> este mês</div>' : '';
+
+  return '<div class="re-page">'+
+    '<div class="re-head">'+
+      '<h2>💸 Reembolso de despesas</h2>'+
+      '<button class="btn btn-primary" id="reNew">+ Novo reembolso</button>'+
+    '</div>'+
+    tabs +
+    kpi +
+    '<div class="re-lista">'+ listaHTML +'</div>'+
+  '</div>';
+}
+
+function bindReembolsosPage(){
+  var b = document.getElementById('reNew');
+  if (b) b.addEventListener('click', function(){ openReembSolicitarModal(); });
+  document.querySelectorAll('.re-tab[data-resub]').forEach(function(t){
+    t.addEventListener('click', function(){
+      ST.reembSubPage = t.getAttribute('data-resub');
+      if (typeof renderPage==='function') renderPage();
+    });
+  });
+  document.querySelectorAll('.re-btn-ap').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-reid');
+      reembAprovar(id, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+  document.querySelectorAll('.re-btn-rj').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-reid');
+      var mot = prompt('Motivo da recusa (opcional):');
+      if (mot === null) return;
+      reembRejeitar(id, mot, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+  document.querySelectorAll('.re-btn-mp').forEach(function(b){
+    b.addEventListener('click', function(){
+      var id = b.getAttribute('data-reid');
+      openReembMarcarPagoModal(id);
+    });
+  });
+  document.querySelectorAll('.re-btn-cn').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (!confirm('Cancelar este reembolso?')) return;
+      var id = b.getAttribute('data-reid');
+      reembCancelar(id, function(ok){ if(ok && typeof renderPage==='function') renderPage(); });
+    });
+  });
+}
+
+if (typeof globalThis !== 'undefined'){
+  globalThis.REEMB_STATE = REEMB_STATE;
+  globalThis.REEMB_CATEGORIAS = REEMB_CATEGORIAS;
+  globalThis.REEMB_FORMAS = REEMB_FORMAS;
+  globalThis.REEMB_STATUS_META = REEMB_STATUS_META;
+  globalThis.reembCategoriaMeta = reembCategoriaMeta;
+  globalThis.reembFormaLabel = reembFormaLabel;
+  globalThis.reembCarregar = reembCarregar;
+  globalThis.reembMeus = reembMeus;
+  globalThis.reembPendentes = reembPendentes;
+  globalThis.reembAPagar = reembAPagar;
+  globalThis.reembFmtValor = reembFmtValor;
+  globalThis.reembFmtData = reembFmtData;
+  globalThis.reembSolicitar = reembSolicitar;
+  globalThis.reembAprovar = reembAprovar;
+  globalThis.reembRejeitar = reembRejeitar;
+  globalThis.reembMarcarPago = reembMarcarPago;
+  globalThis.reembCancelar = reembCancelar;
+  globalThis.openReembSolicitarModal = openReembSolicitarModal;
+  globalThis.openReembMarcarPagoModal = openReembMarcarPagoModal;
+  globalThis.reembolsosPageHTML = reembolsosPageHTML;
+  globalThis.bindReembolsosPage = bindReembolsosPage;
+}
+
+/* ============================================================
+   v200 · Anti-Spoofing Facial (Piscar 2x)
+   ============================================================
+   Antes de aceitar a batida, exige que o usuário pisque
+   2 vezes na frente da câmera. Bloqueia fraude com foto
+   impressa/tela de celular.
+   Usa Eye Aspect Ratio (EAR) sobre landmarks 68 do face-api.
+   ============================================================ */
+
+// Extende FACIAL_CFG (que já existe)
+if (typeof FACIAL_CFG !== 'undefined'){
+  FACIAL_CFG.ANTISPOOFING_PISCAR   = true;
+  FACIAL_CFG.PISCAR_QTD_MIN        = 2;
+  FACIAL_CFG.EAR_THRESHOLD_FECHADO = 0.20;   // olho fechado se EAR < 0.20
+  FACIAL_CFG.EAR_THRESHOLD_ABERTO  = 0.26;   // olho aberto se EAR > 0.26
+  FACIAL_CFG.PISCAR_TIMEOUT_MS     = 20000;  // desiste após 20s
+  FACIAL_CFG.PISCAR_INTERVALO_MS   = 150;    // loop de detecção
+}
+
+/* Calcula distância euclidiana 2D entre 2 pontos {x,y} */
+function facialDist2D(a, b){
+  var dx = a.x - b.x, dy = a.y - b.y;
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+/* Eye Aspect Ratio pra 6 pontos do olho (face-api landmarks 68) */
+function facialEAR(pontos6){
+  if (!pontos6 || pontos6.length !== 6) return 1;
+  var vert1 = facialDist2D(pontos6[1], pontos6[5]);
+  var vert2 = facialDist2D(pontos6[2], pontos6[4]);
+  var horiz = facialDist2D(pontos6[0], pontos6[3]);
+  if (horiz < 0.001) return 1;
+  return (vert1 + vert2) / (2 * horiz);
+}
+
+/* Calcula EAR médio dos 2 olhos a partir dos landmarks 68 do face-api */
+function facialCalcEAR(landmarks){
+  if (!landmarks) return 1;
+  var pts = landmarks.positions || landmarks._positions || (landmarks.getEyeLeft && [].concat(landmarks.getLeftEye(), landmarks.getRightEye()));
+  var olhoEsq, olhoDir;
+  if (typeof landmarks.getLeftEye === 'function'){
+    olhoEsq = landmarks.getLeftEye();
+    olhoDir = landmarks.getRightEye();
+  } else if (pts && pts.length >= 48){
+    // Landmark68: 36-41 = olho direito, 42-47 = olho esquerdo
+    olhoDir = pts.slice(36, 42);
+    olhoEsq = pts.slice(42, 48);
+  } else {
+    return 1;
+  }
+  var earEsq = facialEAR(olhoEsq);
+  var earDir = facialEAR(olhoDir);
+  return (earEsq + earDir) / 2;
+}
+
+/* Loop de detecção de piscadas.
+   Chama cbOnCount(n) cada nova piscada; cbDone(true) quando atinge min; cbDone(false, 'timeout'|'aborted') se falhar.
+   Retorna { abort: fn } pra permitir cancelamento. */
+function facialLoopPiscadas(video, cbOnCount, cbDone){
+  var min = FACIAL_CFG.PISCAR_QTD_MIN;
+  var timeout = FACIAL_CFG.PISCAR_TIMEOUT_MS;
+  var intervalo = FACIAL_CFG.PISCAR_INTERVALO_MS;
+
+  var estado = 'esperando'; // 'esperando' | 'aberto' | 'fechado'
+  var count = 0;
+  var abortado = false;
+  var startTs = Date.now();
+
+  async function tick(){
+    if (abortado) return;
+    if (Date.now() - startTs > timeout){
+      cbDone(false, 'timeout');
+      return;
+    }
+    if (!window.faceapi){
+      setTimeout(tick, intervalo);
+      return;
+    }
+    try {
+      var opts = new faceapi.TinyFaceDetectorOptions({
+        inputSize: FACIAL_CFG.DETECT_INPUT,
+        scoreThreshold: FACIAL_CFG.DETECT_SCORE
+      });
+      var det = await faceapi.detectSingleFace(video, opts).withFaceLandmarks();
+      if (!det || !det.landmarks){
+        setTimeout(tick, intervalo);
+        return;
+      }
+      var ear = facialCalcEAR(det.landmarks);
+      // Máquina de estados: precisa ver ABERTO→FECHADO→ABERTO pra contar 1
+      if (estado === 'esperando'){
+        if (ear >= FACIAL_CFG.EAR_THRESHOLD_ABERTO) estado = 'aberto';
+      } else if (estado === 'aberto'){
+        if (ear < FACIAL_CFG.EAR_THRESHOLD_FECHADO) estado = 'fechado';
+      } else if (estado === 'fechado'){
+        if (ear >= FACIAL_CFG.EAR_THRESHOLD_ABERTO){
+          count++;
+          estado = 'aberto';
+          try { cbOnCount(count); } catch(e){}
+          if (count >= min){
+            cbDone(true);
+            return;
+          }
+        }
+      }
+    } catch(e){
+      // Silêncio: continua tentando
+    }
+    setTimeout(tick, intervalo);
+  }
+
+  tick();
+
+  return {
+    abort: function(){ abortado = true; }
+  };
+}
+
+if (typeof globalThis !== 'undefined'){
+  globalThis.facialDist2D = facialDist2D;
+  globalThis.facialEAR = facialEAR;
+  globalThis.facialCalcEAR = facialCalcEAR;
+  globalThis.facialLoopPiscadas = facialLoopPiscadas;
+}
+
+/* ============================================================
+   v201 · Log de tentativas de reconhecimento facial
+   ============================================================
+   Grava sucessos e falhas do fluxo openFacialVerifModal em
+   malba_facial_log. Nunca armazena foto/frame — só metadados.
+   ============================================================ */
+
+var FACIAL_LOG_STATE = { loaded:false, loading:false };
+
+var FACIAL_LOG_META = {
+  SUCCESS:              { label:'Sucesso',            cor:'#16A34A', ic:'✓'  },
+  FACE_NOT_RECOGNIZED:  { label:'Rosto não reconhecido', cor:'#EF4444', ic:'❌' },
+  LOW_SIMILARITY:       { label:'Similaridade baixa', cor:'#F97316', ic:'📉' },
+  LIVENESS_FAILED:      { label:'Liveness falhou',    cor:'#DC2626', ic:'👁' },
+  TIMEOUT:              { label:'Tempo esgotado',     cor:'#78716C', ic:'⏱' },
+  NO_FACE:              { label:'Sem rosto detectado', cor:'#F59E0B', ic:'👤' },
+  CAMERA_ERROR:         { label:'Erro de câmera',     cor:'#7C3AED', ic:'📷' },
+  NO_FACE_TEMPLATE:     { label:'Sem cadastro facial', cor:'#64748B', ic:'∅' },
+  MODEL_ERROR:          { label:'Erro no modelo IA',  cor:'#7C3AED', ic:'🧠' },
+  RATE_LIMITED:         { label:'Muitas tentativas',  cor:'#78716C', ic:'🚦' }
+};
+
+/* Coleta info de dispositivo resumida (sem PII pesada) */
+function facialLogDeviceInfo(){
+  try {
+    var ua = (navigator.userAgent||'').slice(0, 120);
+    var w = window.innerWidth||0;
+    var h = window.innerHeight||0;
+    return ua + ' · ' + w + 'x' + h;
+  } catch(e){ return null; }
+}
+
+/* Gravar tentativa — chamada assíncrona fire-and-forget.
+   dados = { user_id, member_id, store_id, actor_name, actor_sector,
+             result, reason, similarity, liveness_passed, origin } */
+function facialLogRegistrar(dados){
+  if (!dados || !dados.result) return;
+  if (typeof sb === 'undefined') return;
+
+  var payload = {
+    user_id: dados.user_id || null,
+    member_id: dados.member_id || null,
+    store_id: dados.store_id || null,
+    actor_name: dados.actor_name || null,
+    actor_sector: dados.actor_sector || null,
+    attempted_at: new Date().toISOString(),
+    result: dados.result,
+    reason: dados.reason || null,
+    similarity: (typeof dados.similarity === 'number') ? Math.round(dados.similarity*100)/100 : null,
+    liveness_passed: !!dados.liveness_passed,
+    device_info: facialLogDeviceInfo(),
+    origin: dados.origin || null
+  };
+
+  // Fire-and-forget — não bloqueia o fluxo do usuário
+  sb.from('malba_facial_log').insert(payload).then(function(r){
+    if (r.error) console.warn('[facial_log]', r.error);
+    else {
+      // Empilha no ST pra dashboard consumir sem reload
+      ST.facialLog = ST.facialLog || [];
+      if (r.data && r.data[0]) ST.facialLog.unshift(r.data[0]);
+      else ST.facialLog.unshift(payload);
+      // Cap local
+      if (ST.facialLog.length > 500) ST.facialLog.length = 500;
+    }
+  });
+}
+
+/* Ajuda: extrai user_id/member_id/store_id de um "alvo" do fluxo facial */
+function facialLogAlvoInfo(alvo){
+  if (!alvo) return {};
+  // alvo pode ser: user com id direto, member com store_unit_id, etc.
+  var out = {};
+  if (alvo.face_descriptor !== undefined || alvo.access_level){
+    // Provavelmente user
+    out.user_id = alvo.id || alvo.user_id || null;
+    out.actor_name = alvo.name || null;
+    out.actor_sector = alvo.sector || null;
+  } else if (alvo.store_unit_id){
+    // Provavelmente member
+    out.member_id = alvo.id || alvo.member_id || null;
+    out.store_id = alvo.store_unit_id || null;
+    out.user_id = alvo.user_id || null;
+    out.actor_name = alvo.name || null;
+    out.actor_sector = 'lojas';
+  } else {
+    if (alvo.id) out.user_id = alvo.id;
+    if (alvo.name) out.actor_name = alvo.name;
+  }
+  return out;
+}
+
+/* Carregar do banco pro dashboard */
+function facialLogCarregar(cb){
+  if (FACIAL_LOG_STATE.loading){ if (cb) cb(); return; }
+  FACIAL_LOG_STATE.loading = true;
+  sb.from('malba_facial_log').select('*').order('attempted_at', {ascending:false}).limit(500).then(function(r){
+    FACIAL_LOG_STATE.loading = false;
+    if (r.error){ console.error('[facial_log load]', r.error); if (cb) cb(); return; }
+    ST.facialLog = r.data || [];
+    FACIAL_LOG_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+/* Filtrar por escopo do usuário atual (usado antes de exibir) */
+function facialLogEscopoUsuario(lista){
+  var s = ST.session;
+  if (!s || !s.user) return [];
+  var arr = lista || ST.facialLog || [];
+  // Super admin: tudo
+  if (typeof isSuper === 'function' && isSuper(s)) return arr.slice();
+  // Gestor/admin de setor: só do setor
+  if (typeof isAdmin === 'function' && isAdmin(s)){
+    var sec = s.sector;
+    return arr.filter(function(x){
+      if (!x.actor_sector) return true;
+      return String(x.actor_sector) === String(sec);
+    });
+  }
+  // Colaborador: só as próprias
+  var uid = s.user.id;
+  var meusMids = (ST.members||[]).filter(function(m){return String(m.user_id||'')===String(uid);}).map(function(m){return String(m.id);});
+  return arr.filter(function(x){
+    if (String(x.user_id||'')===String(uid)) return true;
+    if (meusMids.indexOf(String(x.member_id||''))!==-1) return true;
+    return false;
+  });
+}
+
+/* Filtrar por período/loja/pessoa/resultado */
+function facialLogFiltrar(fil){
+  fil = fil || {};
+  var arr = facialLogEscopoUsuario();
+  if (fil.result) arr = arr.filter(function(x){return x.result === fil.result;});
+  if (fil.store_id) arr = arr.filter(function(x){return String(x.store_id||'')===String(fil.store_id);});
+  if (fil.user_id) arr = arr.filter(function(x){return String(x.user_id||'')===String(fil.user_id);});
+  if (fil.dtFrom) arr = arr.filter(function(x){return (x.attempted_at||'') >= fil.dtFrom;});
+  if (fil.dtTo){
+    var ate = fil.dtTo + 'T23:59:59';
+    arr = arr.filter(function(x){return (x.attempted_at||'') <= ate;});
+  }
+  return arr;
+}
+
+/* KPIs pro dashboard */
+function facialLogKpis(lista){
+  var arr = lista || facilLogEscopoDefault();
+  var k = { total:0, sucesso:0, falhas:0, liveness_fail:0, low_sim:0 };
+  arr.forEach(function(x){
+    k.total++;
+    if (x.result === 'SUCCESS') k.sucesso++;
+    else k.falhas++;
+    if (x.result === 'LIVENESS_FAILED') k.liveness_fail++;
+    if (x.result === 'LOW_SIMILARITY') k.low_sim++;
+  });
+  return k;
+}
+// Alias pra evitar erro se helper acima chamado sem lista
+function facilLogEscopoDefault(){ return facialLogEscopoUsuario(); }
+
+/* Formatação */
+function facialLogFmtQuando(iso){
+  if (!iso) return '—';
+  var d = new Date(iso);
+  var hh = String(d.getHours()).padStart(2,'0');
+  var mm = String(d.getMinutes()).padStart(2,'0');
+  var dd = String(d.getDate()).padStart(2,'0');
+  var mo = String(d.getMonth()+1).padStart(2,'0');
+  var yy = d.getFullYear();
+  return dd+'/'+mo+'/'+yy+' '+hh+':'+mm;
+}
+
+/* Página dashboard admin — /facial-log */
+function facialLogPageHTML(){
+  var s = ST.session;
+  var podeVer = (typeof isAdmin === 'function' && isAdmin(s));
+  if (!podeVer){
+    return '<div class="page-x"><div class="aud-empty">Sem permissão pra ver este painel.</div></div>';
+  }
+
+  var fil = ST.facialLogFiltros || {};
+  var lista = facialLogFiltrar(fil);
+  var k = facialLogKpis(lista);
+  var recentes = lista.slice(0, 50);
+
+  var lojas = ST.storeUnits || [];
+  var lojaOpts = '<option value="">Todas as lojas</option>' + lojas.map(function(l){
+    return '<option value="'+esc(l.id)+'"'+(fil.store_id===l.id?' selected':'')+'>'+esc(l.name)+'</option>';
+  }).join('');
+
+  var resultOpts = '<option value="">Todos resultados</option>' + Object.keys(FACIAL_LOG_META).map(function(k){
+    return '<option value="'+k+'"'+(fil.result===k?' selected':'')+'>'+FACIAL_LOG_META[k].label+'</option>';
+  }).join('');
+
+  var kpisHTML = '<div class="fl-kpis">'+
+    '<div class="fl-kpi"><b>'+k.total+'</b><small>Tentativas</small></div>'+
+    '<div class="fl-kpi fl-kpi-ok"><b>'+k.sucesso+'</b><small>Aprovadas</small></div>'+
+    '<div class="fl-kpi fl-kpi-fail"><b>'+k.falhas+'</b><small>Falhas</small></div>'+
+    '<div class="fl-kpi fl-kpi-warn"><b>'+k.liveness_fail+'</b><small>Liveness recusado</small></div>'+
+    '<div class="fl-kpi fl-kpi-orange"><b>'+k.low_sim+'</b><small>Similaridade baixa</small></div>'+
+  '</div>';
+
+  var filtrosHTML = '<div class="fl-filtros">'+
+    '<input type="date" id="flDtFrom" value="'+esc(fil.dtFrom||'')+'" title="De">'+
+    '<input type="date" id="flDtTo" value="'+esc(fil.dtTo||'')+'" title="Até">'+
+    '<select id="flResult">'+resultOpts+'</select>'+
+    '<select id="flStore">'+lojaOpts+'</select>'+
+    '<button class="btn btn-ghost" id="flClear">Limpar</button>'+
+  '</div>';
+
+  function linhaHTML(x){
+    var meta = FACIAL_LOG_META[x.result] || { label:x.result, cor:'#64748B', ic:'?' };
+    var simCol = (typeof x.similarity === 'number')
+      ? '<b style="color:'+(x.similarity >= 90 ? '#16A34A' : x.similarity >= 70 ? '#F59E0B' : '#EF4444')+'">'+x.similarity.toFixed(1)+'%</b>'
+      : '—';
+    var live = x.liveness_passed ? '<span title="Passou liveness">👁 ✓</span>' : '—';
+    return '<tr>'+
+      '<td class="fl-td-when"><b>'+esc(facialLogFmtQuando(x.attempted_at))+'</b></td>'+
+      '<td>'+esc(x.actor_name||'—')+'<small style="display:block;color:var(--u-text3)">'+esc(x.actor_sector||x.origin||'')+'</small></td>'+
+      '<td><span class="fl-badge" style="background:'+meta.cor+'22;color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span></td>'+
+      '<td>'+simCol+'</td>'+
+      '<td>'+live+'</td>'+
+      '<td class="fl-td-reason">'+esc(x.reason||'')+'</td>'+
+    '</tr>';
+  }
+
+  var tabela = recentes.length ? '<table class="fl-table"><thead><tr>'+
+    '<th>Quando</th><th>Quem</th><th>Resultado</th><th>Similaridade</th><th>Liveness</th><th>Motivo</th>'+
+  '</tr></thead><tbody>'+
+    recentes.map(linhaHTML).join('')+
+  '</tbody></table>' : '<div class="aud-empty">Sem tentativas no filtro.</div>';
+
+  return '<div class="fl-page">'+
+    '<div class="fl-head">'+
+      '<h2>🎭 Tentativas de reconhecimento</h2>'+
+      '<button class="btn btn-ghost" id="flReload">🔄 Recarregar</button>'+
+    '</div>'+
+    kpisHTML +
+    filtrosHTML +
+    tabela +
+  '</div>';
+}
+
+function bindFacialLogPage(){
+  var fil = ST.facialLogFiltros || {};
+  function upd(k, v){ fil[k] = v; ST.facialLogFiltros = fil; if (typeof renderPage==='function') renderPage(); }
+  var dF = document.getElementById('flDtFrom'); if (dF) dF.addEventListener('change', function(){ upd('dtFrom', this.value); });
+  var dT = document.getElementById('flDtTo');   if (dT) dT.addEventListener('change', function(){ upd('dtTo', this.value); });
+  var rs = document.getElementById('flResult'); if (rs) rs.addEventListener('change', function(){ upd('result', this.value); });
+  var st = document.getElementById('flStore');  if (st) st.addEventListener('change', function(){ upd('store_id', this.value); });
+  var cl = document.getElementById('flClear');  if (cl) cl.addEventListener('click', function(){ ST.facialLogFiltros = {}; if (typeof renderPage==='function') renderPage(); });
+  var rl = document.getElementById('flReload'); if (rl) rl.addEventListener('click', function(){
+    FACIAL_LOG_STATE.loading = false;
+    FACIAL_LOG_STATE.loaded = false;
+    facialLogCarregar(function(){ if (typeof renderPage==='function') renderPage(); });
+  });
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  if (typeof proximoSlotPonto === 'function') globalThis.proximoSlotPonto = proximoSlotPonto;
+  if (typeof PONTO_SLOTS !== 'undefined') globalThis.PONTO_SLOTS = PONTO_SLOTS;
+  globalThis.FACIAL_LOG_STATE = FACIAL_LOG_STATE;
+  globalThis.FACIAL_LOG_META = FACIAL_LOG_META;
+  globalThis.facialLogRegistrar = facialLogRegistrar;
+  globalThis.facialLogAlvoInfo = facialLogAlvoInfo;
+  globalThis.facialLogCarregar = facialLogCarregar;
+  globalThis.facialLogEscopoUsuario = facialLogEscopoUsuario;
+  globalThis.facialLogFiltrar = facialLogFiltrar;
+  globalThis.facialLogKpis = facialLogKpis;
+  globalThis.facialLogFmtQuando = facialLogFmtQuando;
+  globalThis.facialLogPageHTML = facialLogPageHTML;
+  globalThis.bindFacialLogPage = bindFacialLogPage;
+}
+
+/* ============================================================
+   v201 · Tela dedicada /ponto — mobile-first
+   ============================================================
+   Layout limpo pro colaborador bater ponto: Olá + Próximo
+   registro + botão Reconhecer + resumo do dia + total.
+   Reusa proximoSlotPonto, openFacialVerifModal, registrarCheckin.
+   NÃO recria a máquina de estados.
+   ============================================================ */
+
+/* Total trabalhado até agora hoje */
+function pontoTotalTrabalhadoHoje(ci){
+  if (!ci) return null;
+  var minutos = 0;
+  function toMin(hhmm){
+    if (!hhmm) return null;
+    var p = String(hhmm).split(':');
+    return parseInt(p[0],10)*60 + parseInt(p[1]||'0',10);
+  }
+  var e = toMin(ci.entrada);
+  var sa = toMin(ci.saida_almoco);
+  var va = toMin(ci.volta_almoco);
+  var s = toMin(ci.saida);
+
+  // Bloco 1: entrada → saida_almoco (ou agora se ainda não almoçou)
+  if (e !== null){
+    var agora = (function(){ var d = new Date(); return d.getHours()*60 + d.getMinutes(); })();
+    var fim1 = sa !== null ? sa : (s !== null ? s : agora);
+    if (fim1 > e) minutos += (fim1 - e);
+  }
+  // Bloco 2: volta_almoco → saida (ou agora)
+  if (va !== null){
+    var agora2 = (function(){ var d = new Date(); return d.getHours()*60 + d.getMinutes(); })();
+    var fim2 = s !== null ? s : agora2;
+    if (fim2 > va) minutos += (fim2 - va);
+  }
+  return minutos;
+}
+
+function pontoFmtMin(m){
+  if (m === null || m === undefined) return '—';
+  if (m < 0) m = 0;
+  var h = Math.floor(m/60);
+  var r = m % 60;
+  return h + 'h ' + (r<10?'0':'') + r + 'min';
+}
+
+/* Resolve o alvo do usuário atual pra bater ponto:
+   - Se user tem cadastro facial: usa user
+   - Senão, se é membro do balcão (souLoginBalcao): fluxo balcão fica na topbar
+   - Retorna null se nada aplicável */
+function pontoAlvoDoUsuario(){
+  var s = ST.session;
+  if (!s || !s.user) return null;
+  var u = s.user;
+  // Se sou user com facial: sou o alvo
+  if (u.face_descriptor && u.face_descriptor.length) return { alvo: u, tipo: 'user' };
+  // Se sou membro vinculado com facial: uso o member
+  var meuMid = ST.meuMemberId || null;
+  if (meuMid){
+    var m = (ST.members||[]).filter(function(x){return String(x.id)===String(meuMid);})[0];
+    if (m && m.face_descriptor && m.face_descriptor.length) return { alvo: m, tipo: 'member' };
+  }
+  // Sem cadastro: retorna user mesmo (a UI vai avisar)
+  return { alvo: u, tipo: 'user' };
+}
+
+/* Página /ponto */
+function pontoPageHTML(){
+  var s = ST.session;
+  if (!s || !s.user){
+    return '<div class="page-x"><div class="pp-empty">Faça login pra bater ponto.</div></div>';
+  }
+  var u = s.user;
+  var alvoInfo = pontoAlvoDoUsuario();
+  var temFacial = !!(alvoInfo && alvoInfo.alvo && alvoInfo.alvo.face_descriptor && alvoInfo.alvo.face_descriptor.length);
+
+  // Busca checkin de hoje pro alvo
+  var hoje = new Date().toISOString().slice(0,10);
+  var ci = null;
+  if (alvoInfo){
+    var arr = ST.checkins || [];
+    ci = arr.filter(function(x){
+      if ((x.work_date||'') !== hoje) return false;
+      if (alvoInfo.tipo === 'user') return String(x.user_id||'')===String(alvoInfo.alvo.id);
+      return String(x.member_id||'')===String(alvoInfo.alvo.id);
+    })[0] || null;
+  }
+
+  var slot = (typeof proximoSlotPonto === 'function') ? proximoSlotPonto(ci) : null;
+  var jaFechou = !slot; // jornada encerrada
+
+  // Header
+  var saudacao = (function(){
+    var h = new Date().getHours();
+    if (h < 12) return 'Bom dia';
+    if (h < 18) return 'Boa tarde';
+    return 'Boa noite';
+  })();
+
+  // Botão principal
+  var botao = '';
+  if (!temFacial){
+    botao = '<div class="pp-warn">'+
+      '⚠️ Você ainda não cadastrou o rosto. '+
+      (u.access_level === 'admin' ? 'Vá no seu perfil → 🎭 Cadastrar rosto.' : 'Peça pro gestor cadastrar.')+
+    '</div>';
+  } else if (jaFechou){
+    botao = '<div class="pp-done">✓ Jornada de hoje encerrada</div>';
+  } else {
+    botao = '<button class="pp-btn-grande" id="ppBater">'+
+      '<span class="pp-btn-ic">🎭</span>'+
+      '<span class="pp-btn-txt">Reconhecer rosto</span>'+
+      '<span class="pp-btn-sub">e bater '+esc(slot.label)+'</span>'+
+    '</button>';
+  }
+
+  // Resumo do dia
+  var resumo = '<div class="pp-resumo">'+
+    '<h3>Resumo de hoje</h3>'+
+    '<div class="pp-resumo-linhas">'+
+      pontoResumoLinha('Entrada',           ci && ci.entrada,      'sunrise') +
+      pontoResumoLinha('Início do intervalo', ci && ci.saida_almoco, 'coffee') +
+      pontoResumoLinha('Retorno do intervalo', ci && ci.volta_almoco, 'coffee') +
+      pontoResumoLinha('Saída',             ci && ci.saida,         'moon') +
+    '</div>'+
+    '<div class="pp-total">'+
+      '<span>Total trabalhado hoje</span>'+
+      '<b>'+esc(pontoFmtMin(pontoTotalTrabalhadoHoje(ci)))+'</b>'+
+    '</div>'+
+  '</div>';
+
+  return '<div class="pp-page">'+
+    '<div class="pp-topo">'+
+      '<div class="pp-titulo">Bater ponto</div>'+
+      '<div class="pp-hello">'+esc(saudacao)+', '+esc(u.name||'—')+'</div>'+
+    '</div>'+
+    '<div class="pp-card">'+
+      (slot && temFacial && !jaFechou ? '<div class="pp-next-lbl">Próximo registro</div>' +
+        '<div class="pp-next-val">'+esc(slot.label.toUpperCase())+'</div>' : '')+
+      botao +
+    '</div>'+
+    resumo +
+    '<div class="pp-foot">'+
+      '<a href="#/'+esc(ST.sector||'gestao')+'/ponto/espelho">Ver espelho mensal completo →</a>'+
+    '</div>'+
+  '</div>';
+}
+
+function pontoResumoLinha(lbl, val, ic){
+  var vazio = !val;
+  return '<div class="pp-linha'+(vazio?' pp-linha-vazia':'')+'">'+
+    '<span class="pp-linha-lbl">'+esc(lbl)+'</span>'+
+    '<span class="pp-linha-val">'+esc(val || '— —')+'</span>'+
+  '</div>';
+}
+
+function bindPontoPage(){
+  var b = document.getElementById('ppBater');
+  if (!b) return;
+  b.addEventListener('click', function(){
+    var alvoInfo = pontoAlvoDoUsuario();
+    if (!alvoInfo || !alvoInfo.alvo){
+      if (typeof toast==='function') toast('Sem alvo pra bater','error');
+      return;
+    }
+    // Reusa o fluxo facial existente
+    if (typeof openFacialVerifModal !== 'function'){
+      if (typeof toast==='function') toast('Módulo facial indisponível','error');
+      return;
+    }
+
+    var infoLog = (typeof facialLogAlvoInfo === 'function') ? facialLogAlvoInfo(alvoInfo.alvo) : {};
+    infoLog.origin = 'pagina_ponto';
+
+    // Se sem cadastro, loga e volta
+    if (!alvoInfo.alvo.face_descriptor || !alvoInfo.alvo.face_descriptor.length){
+      if (typeof facialLogRegistrar === 'function'){
+        facialLogRegistrar(Object.assign({}, infoLog, {
+          result: 'NO_FACE_TEMPLATE',
+          reason: 'Alvo sem face_descriptor cadastrado',
+          liveness_passed: false
+        }));
+      }
+      if (typeof toast==='function') toast('Sem cadastro facial','error');
+      return;
+    }
+
+    openFacialVerifModal(alvoInfo.alvo, function(res){
+      // res = { similaridade, fotoUrl }
+      if (typeof facialLogRegistrar === 'function'){
+        facialLogRegistrar(Object.assign({}, infoLog, {
+          result: 'SUCCESS',
+          similarity: res && res.similaridade,
+          liveness_passed: true,
+          reason: null
+        }));
+      }
+      // Grava a batida
+      pontoRegistrarBatidaDaPagina(alvoInfo, res, function(ok){
+        if (ok){
+          if (typeof toast==='function') toast('✓ Ponto registrado', 'success');
+          if (typeof renderPage==='function') renderPage();
+        }
+      });
+    });
+  });
+}
+
+/* Grava a batida no supabase — reusa lógica de topbarBaterPonto/baterPontoDeMembro */
+function pontoRegistrarBatidaDaPagina(alvoInfo, facialData, cb){
+  var u = ST.session && ST.session.user;
+  if (!u){ if (cb) cb(false); return; }
+  var hoje = new Date().toISOString().slice(0,10);
+  var agora = (function(){ var d = new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); })();
+
+  // Busca checkin existente
+  var ci = (ST.checkins||[]).filter(function(x){
+    if ((x.work_date||'') !== hoje) return false;
+    if (alvoInfo.tipo === 'user') return String(x.user_id||'')===String(alvoInfo.alvo.id);
+    return String(x.member_id||'')===String(alvoInfo.alvo.id);
+  })[0];
+
+  var slot = proximoSlotPonto(ci);
+  if (!slot){ if (cb) cb(false); return; }
+
+  var facFields = {
+    face_verified: true,
+    face_similaridade: facialData && facialData.similaridade,
+    face_foto_url: facialData && facialData.fotoUrl,
+    face_verificado_em: new Date().toISOString()
+  };
+
+  if (!ci){
+    // Insert novo
+    var payload = { work_date: hoje };
+    payload[slot.key] = agora;
+    if (alvoInfo.tipo === 'user'){
+      payload.user_id = alvoInfo.alvo.id;
+    } else {
+      payload.member_id = alvoInfo.alvo.id;
+      payload.store_unit_id = alvoInfo.alvo.store_unit_id;
+      if (alvoInfo.alvo.user_id) payload.user_id = alvoInfo.alvo.user_id;
+    }
+    Object.keys(facFields).forEach(function(k){ payload[k] = facFields[k]; });
+    sb.from('malba_checkins').insert(payload).select().then(function(r){
+      if (r.error){ if (typeof toast==='function') toast('Erro: '+r.error.message,'error'); if (cb) cb(false); return; }
+      if (r.data && r.data[0]){
+        ST.checkins = ST.checkins || [];
+        ST.checkins.unshift(r.data[0]);
+      }
+      if (cb) cb(true);
+    });
+  } else {
+    // Update
+    var patch = {};
+    patch[slot.key] = agora;
+    Object.keys(facFields).forEach(function(k){ patch[k] = facFields[k]; });
+    sb.from('malba_checkins').update(patch).eq('id', ci.id).then(function(r){
+      if (r.error){ if (typeof toast==='function') toast('Erro: '+r.error.message,'error'); if (cb) cb(false); return; }
+      Object.keys(patch).forEach(function(k){ ci[k] = patch[k]; });
+      if (cb) cb(true);
+    });
+  }
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis.pontoTotalTrabalhadoHoje = pontoTotalTrabalhadoHoje;
+  globalThis.pontoFmtMin = pontoFmtMin;
+  globalThis.pontoAlvoDoUsuario = pontoAlvoDoUsuario;
+  globalThis.pontoPageHTML = pontoPageHTML;
+  globalThis.bindPontoPage = bindPontoPage;
+  globalThis.pontoRegistrarBatidaDaPagina = pontoRegistrarBatidaDaPagina;
 }
 
 var ONB_STATE = null;
@@ -33915,6 +36302,8 @@ function openFacialVerifModal(membro, cb){
   var btnVerif = modal.querySelector('#fvmVerif');
 
   function close(){
+    // v200: aborta loop de piscada se ativo
+    if (modal._piscarLoop && typeof modal._piscarLoop.abort === 'function') modal._piscarLoop.abort();
     facialFecharWebcam();
     if (modal.parentNode) modal.parentNode.removeChild(modal);
   }
@@ -33929,12 +36318,51 @@ function openFacialVerifModal(membro, cb){
       facialCarregarModelos(),
       facialAbrirWebcam(video)
     ]);
-    if (!modOk){ msg.textContent = 'Falha ao carregar IA'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
+    if (!modOk){
+      msg.textContent = 'Falha ao carregar IA';
+      cam.classList.add('err');
+      btnAbrir.disabled = false;
+      if (typeof facialLogRegistrar==='function'){ var _i0 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i0,{result:'MODEL_ERROR',reason:'Falha carregar modelos face-api',liveness_passed:false,origin:'topbar'})); }
+      return;
+    }
     if (!camOk){ msg.textContent = 'Falha ao abrir câmera'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
-    msg.textContent = 'Alinhe o rosto e clique em Verificar';
-    btnVerif.disabled = false;
     btnAbrir.textContent = '🔄 Reiniciar';
     btnAbrir.disabled = false;
+    // v200: anti-spoofing por piscada
+    if (typeof FACIAL_CFG !== 'undefined' && FACIAL_CFG.ANTISPOOFING_PISCAR && typeof facialLoopPiscadas === 'function'){
+      msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+      cam.classList.add('piscando');
+      var piscOK = false;
+      var loopRef = facialLoopPiscadas(video,
+        function(n){
+          var ct = modal.querySelector('.fvm-piscar-ct');
+          if (ct){ ct.textContent = n + ' / ' + FACIAL_CFG.PISCAR_QTD_MIN; ct.classList.add('bump'); setTimeout(function(){ ct.classList.remove('bump'); }, 300); }
+        },
+        function(ok, motivo){
+          cam.classList.remove('piscando');
+          if (ok){
+            piscOK = true;
+            cam.classList.add('piscou');
+            msg.innerHTML = '✓ <b>Piscada confirmada</b> — alinhe e clique em Verificar';
+            btnVerif.disabled = false;
+          } else {
+            cam.classList.add('err');
+            if (motivo === 'timeout'){
+              msg.innerHTML = '⏱ <b>Tempo esgotado.</b> Reinicie e tente novamente.';
+              if (typeof facialLogRegistrar==='function'){ var _i2 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i2,{result:'TIMEOUT',reason:'Piscar timeout — não detectou piscadas suficientes',liveness_passed:false,origin:'topbar'})); }
+            } else {
+              msg.innerHTML = '❌ Verificação de vivacidade falhou. Reinicie.';
+              if (typeof facialLogRegistrar==='function'){ var _i3 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i3,{result:'LIVENESS_FAILED',reason:'Liveness (piscar) falhou: '+(motivo||'motivo desconhecido'),liveness_passed:false,origin:'topbar'})); }
+            }
+          }
+        }
+      );
+      // Guardar referência pra cancelar em close
+      modal._piscarLoop = loopRef;
+    } else {
+      msg.textContent = 'Alinhe o rosto e clique em Verificar';
+      btnVerif.disabled = false;
+    }
   });
 
   btnVerif.addEventListener('click', async function(){
@@ -33947,6 +36375,7 @@ function openFacialVerifModal(membro, cb){
       msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais.';
       cam.classList.add('err');
       btnVerif.disabled = false;
+      if (typeof facialLogRegistrar==='function'){ var _i4 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i4,{result:'NO_FACE',reason:'facialDetectar não achou rosto no frame',liveness_passed:!!piscOK,origin:'topbar'})); }
       return;
     }
 
@@ -33966,6 +36395,7 @@ function openFacialVerifModal(membro, cb){
       msg.textContent = '❌ Não é '+membro.name+' (similaridade insuficiente)';
       cam.classList.add('err');
       btnVerif.disabled = false;
+      if (typeof facialLogRegistrar==='function'){ var _i5 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i5,{result:'LOW_SIMILARITY',reason:'Similaridade '+sim.toFixed(1)+'% abaixo do mínimo '+FACIAL_CFG.SIMILARIDADE_MIN+'%',similarity:sim,liveness_passed:!!piscOK,origin:'topbar'})); }
       return;
     }
 
@@ -33975,6 +36405,11 @@ function openFacialVerifModal(membro, cb){
     try {
       var blob = await facialCapturarBlob(video);
       var fotoUrl = await facialUploadFoto(blob, 'verif_'+membro.id);
+      // v201: log SUCCESS
+      if (typeof facialLogRegistrar==='function'){
+        var _iOk = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{};
+        facialLogRegistrar(Object.assign(_iOk,{result:'SUCCESS',similarity:sim,liveness_passed:!!piscOK,origin:'topbar'}));
+      }
       if (typeof cb==='function') cb({ similaridade: sim, fotoUrl: fotoUrl });
       close();
     } catch(e){
@@ -36303,6 +38738,14 @@ function buildCommands() {
   pages.forEach(function(pg){ if(pg.enabled) cmds.push({ cat:'Ir para', label:pg.label, icon:pg.icon, run:function(){ goToPage(pg.id); } }); });
   cmds.push({ cat:'Ir para', label:'Meu Perfil', icon:'users', run:function(){ ST.page='perfil'; navigate(ST.sector+'/perfil'); renderPage(); } });
   cmds.push({ cat:'Ir para', label:'🌴 Férias', icon:'calendar', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'🏥 Atestados', icon:'calendar', run:function(){ ST.page='atestados'; navigate(ST.sector+'/atestados'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'💸 Reembolsos', icon:'dollar', run:function(){ ST.page='reembolsos'; navigate(ST.sector+'/reembolsos'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'⏰ Bater Ponto', icon:'clock', run:function(){ ST.page='ponto'; navigate(ST.sector+'/ponto'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'🎭 Tentativas Faciais', icon:'shield', run:function(){ ST.page='facial-log'; navigate(ST.sector+'/facial-log'); renderPage(); } });
+  cmds.push({ cat:'Ações', label:'Solicitar reembolso', icon:'plus', run:function(){ if(typeof openReembSolicitarModal==='function') openReembSolicitarModal(); } });
+  cmds.push({ cat:'Ações', label:'Enviar atestado médico', icon:'plus', run:function(){ if(typeof openAtestadoSolicitarModal==='function') openAtestadoSolicitarModal(); } });
+  // v197: Ficha 360° do próprio user
+  cmds.push({ cat:'Ir para', label:'🔍 Minha ficha 360°', icon:'users', run:function(){ if(typeof openFicha360==='function' && ST.session && ST.session.user) openFicha360(ST.session.user, 'user'); } });
   cmds.push({ cat:'Criar', label:'Solicitar férias', icon:'plus', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); setTimeout(function(){if(typeof openFeriasSolicitarModal==='function') openFeriasSolicitarModal();}, 60); } });
   // ações de criação
   cmds.push({ cat:'Criar', label:'Nova tarefa', icon:'plus', run:function(){ openTaskModal(null); } });
@@ -36459,6 +38902,10 @@ function renderPage() {
   // Perfil é uma página especial, fora do menu de setores
   if (ST.page==='perfil') { renderShell(perfilHTML(), 'Meu Perfil'); bindPerfil(); return; }
   if (ST.page==='ferias') { renderShell(feriasPageHTML(), 'Férias'); bindFeriasPage(); return; }
+  if (ST.page==='atestados') { renderShell(atestadosPageHTML(), 'Atestados'); if (typeof bindAtestadosPage==='function') bindAtestadosPage(); return; }
+  if (ST.page==='reembolsos') { renderShell(reembolsosPageHTML(), 'Reembolsos'); if (typeof bindReembolsosPage==='function') bindReembolsosPage(); return; }
+  if (ST.page==='ponto' && typeof pontoPageHTML==='function') { renderShell(pontoPageHTML(), 'Bater Ponto'); if (typeof bindPontoPage==='function') bindPontoPage(); return; }
+  if (ST.page==='facial-log' && typeof facialLogPageHTML==='function') { renderShell(facialLogPageHTML(), 'Tentativas Faciais'); if (typeof bindFacialLogPage==='function') bindFacialLogPage(); return; }
   var pages=PAGES[ST.sector]||PAGES.lojas; var pg=null;
   for (var i=0;i<pages.length;i++) if (pages[i].id===ST.page) { pg=pages[i]; break; }
   if (!pg || !pg.enabled) {
