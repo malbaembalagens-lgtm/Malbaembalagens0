@@ -13105,7 +13105,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v202';
+var APP_BUILD = 'v203';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -34782,10 +34782,11 @@ if (typeof globalThis !== 'undefined'){
 if (typeof FACIAL_CFG !== 'undefined'){
   FACIAL_CFG.ANTISPOOFING_PISCAR   = true;
   FACIAL_CFG.PISCAR_QTD_MIN        = 2;
-  FACIAL_CFG.EAR_THRESHOLD_FECHADO = 0.20;   // olho fechado se EAR < 0.20
-  FACIAL_CFG.EAR_THRESHOLD_ABERTO  = 0.26;   // olho aberto se EAR > 0.26
+  FACIAL_CFG.EAR_THRESHOLD_FECHADO = 0.23;   // v203: relaxado 0.20→0.23 (piscada casual detectada)
+  FACIAL_CFG.EAR_THRESHOLD_ABERTO  = 0.26;   // olho aberto se EAR > 0.26 (histerese anti-bounce)
   FACIAL_CFG.PISCAR_TIMEOUT_MS     = 20000;  // desiste após 20s
-  FACIAL_CFG.PISCAR_INTERVALO_MS   = 150;    // loop de detecção
+  FACIAL_CFG.PISCAR_INTERVALO_MS   = 90;     // v203: acelerado 150→90 (pega piscadas rápidas)
+  FACIAL_CFG.PISCAR_HINT_APOS_MS   = 4000;   // v203: mostra dica se não detectou nada em 4s
 }
 
 /* Calcula distância euclidiana 2D entre 2 pontos {x,y} */
@@ -34836,10 +34837,28 @@ function facialLoopPiscadas(video, cbOnCount, cbDone){
   var count = 0;
   var abortado = false;
   var startTs = Date.now();
+  var earMin = 1;  // menor EAR já visto
+  var earMax = 0;  // maior EAR já visto
+  var framesComRosto = 0;
+  var framesSemRosto = 0;
+  var hintShown = false;
+  var hintApos = FACIAL_CFG.PISCAR_HINT_APOS_MS || 4000;
+
+  // v203: debug opcional — ativa com localStorage.setItem('facial_debug','1')
+  var debugOn = false;
+  try { debugOn = (typeof localStorage!=='undefined' && localStorage.getItem('facial_debug')==='1'); } catch(e){}
+  var debugEl = null;
+  if (debugOn){
+    debugEl = document.createElement('div');
+    debugEl.style.cssText = 'position:absolute;top:8px;left:8px;background:rgba(0,0,0,.8);color:#fff;padding:6px 10px;border-radius:6px;font:12px/1.3 monospace;z-index:9999;pointer-events:none';
+    var container = video && video.parentNode ? video.parentNode : document.body;
+    container.appendChild(debugEl);
+  }
 
   async function tick(){
-    if (abortado) return;
+    if (abortado){ if (debugEl && debugEl.parentNode) debugEl.parentNode.removeChild(debugEl); return; }
     if (Date.now() - startTs > timeout){
+      if (debugEl && debugEl.parentNode) debugEl.parentNode.removeChild(debugEl);
       cbDone(false, 'timeout');
       return;
     }
@@ -34854,10 +34873,31 @@ function facialLoopPiscadas(video, cbOnCount, cbDone){
       });
       var det = await faceapi.detectSingleFace(video, opts).withFaceLandmarks();
       if (!det || !det.landmarks){
+        framesSemRosto++;
+        // v203: se muito tempo sem rosto, dá pista via cbOnCount(-1)
+        if (framesSemRosto === 20 && count === 0){
+          try { cbOnCount(-1); } catch(e){}
+        }
+        if (debugEl) debugEl.textContent = 'SEM ROSTO ('+framesSemRosto+')';
         setTimeout(tick, intervalo);
         return;
       }
+      framesComRosto++;
+      framesSemRosto = 0;
       var ear = facialCalcEAR(det.landmarks);
+      if (ear < earMin) earMin = ear;
+      if (ear > earMax) earMax = ear;
+
+      if (debugEl){
+        debugEl.textContent = 'EAR: '+ear.toFixed(3)+' | min:'+earMin.toFixed(3)+' max:'+earMax.toFixed(3)+' | '+estado+' | '+count+'/'+min;
+      }
+
+      // v203: hint dinâmico após N ms sem nenhuma piscada
+      if (!hintShown && count === 0 && (Date.now() - startTs) > hintApos){
+        hintShown = true;
+        try { cbOnCount(-2); } catch(e){}  // sinaliza hint
+      }
+
       // Máquina de estados: precisa ver ABERTO→FECHADO→ABERTO pra contar 1
       if (estado === 'esperando'){
         if (ear >= FACIAL_CFG.EAR_THRESHOLD_ABERTO) estado = 'aberto';
@@ -34869,6 +34909,7 @@ function facialLoopPiscadas(video, cbOnCount, cbDone){
           estado = 'aberto';
           try { cbOnCount(count); } catch(e){}
           if (count >= min){
+            if (debugEl && debugEl.parentNode) debugEl.parentNode.removeChild(debugEl);
             cbDone(true);
             return;
           }
@@ -36367,8 +36408,21 @@ function openFacialVerifModal(membro, cb){
       var piscOK = false;
       var loopRef = facialLoopPiscadas(video,
         function(n){
+          // v203: n=-1 sinaliza SEM ROSTO, n=-2 sinaliza HINT após 4s
+          if (n === -1){
+            msg.innerHTML = '👤 <b>Aproxime seu rosto</b> — a câmera não está te vendo bem';
+            return;
+          }
+          if (n === -2){
+            msg.innerHTML = '👁 <b>Feche os olhos por 1 segundo</b> e abra devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+            return;
+          }
           var ct = modal.querySelector('.fvm-piscar-ct');
           if (ct){ ct.textContent = n + ' / ' + FACIAL_CFG.PISCAR_QTD_MIN; ct.classList.add('bump'); setTimeout(function(){ ct.classList.remove('bump'); }, 300); }
+          // v203: se voltou a detectar após um hint, restaura msg normal
+          if (n === 1 && !modal.querySelector('.fvm-piscar-ct')){
+            msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">'+n+' / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+          }
         },
         function(ok, motivo){
           cam.classList.remove('piscando');
