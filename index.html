@@ -13105,7 +13105,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v201';
+var APP_BUILD = 'v202';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -31688,8 +31688,24 @@ function checkFacialOnboarding(){
   if (FACIAL_ONB_SHOWN_THIS_SESSION) return;
   if (!ST.session || !ST.session.user) return;
   var u = ST.session.user;
-  if (!u.email) return;                          // não é humano (balcão)
+  if (!u.email) return;                          // não é humano (balcão sem email)
   if (u.access_level === 'viewer') return;       // viewer não bate ponto
+  // v202 FIX: login de balcão (compartilhado da loja) não deve cadastrar rosto próprio.
+  // Quem bate ponto nesse login são os MEMBERS da loja (Rafaella, Ligia...).
+  if (typeof souLoginBalcao === 'function' && souLoginBalcao()) return;
+  // v202 FIX defensivo: se o nome do user for "Loja", "Balcão" ou terminar com nome de loja,
+  // é convenção de login compartilhado — não perguntar.
+  var nomeLower = String(u.name||'').toLowerCase().trim();
+  if (nomeLower === 'loja' || nomeLower === 'balcao' || nomeLower === 'balcão' ||
+      nomeLower.indexOf('login') === 0 || nomeLower.indexOf('balcão ') === 0 || nomeLower.indexOf('balcao ') === 0){
+    return;
+  }
+  // v202 FIX: se o user tem store atrelada (dono da loja logada) MAS não tem member vinculado
+  // pessoal, provavelmente é login compartilhado — não perguntar.
+  if (u.sector === 'lojas' && ST.store && ST.store.id){
+    var meuMid = (typeof meuMemberId === 'function') ? meuMemberId() : null;
+    if (!meuMid) return;
+  }
   // Buscar user atualizado no ST.allUsers (session.user pode estar defasado)
   var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(u.id);})[0] || u;
   if (typeof facialTemCadastro==='function' && facialTemCadastro(uAtual)) return;
@@ -31825,6 +31841,11 @@ function facialBloqueiaSemCadastro(alvo, kind){
   if (!FACIAL_CFG.OBRIGATORIO) return false;
   if (!alvo) return false;
   if (typeof facialTemCadastro==='function' && facialTemCadastro(alvo)) return false;
+  // v202 FIX: login de balcão nunca deve ser bloqueado por facial próprio.
+  // O fluxo dele é bater pelos members via widget balcão.
+  if (kind === 'user' && typeof souLoginBalcao === 'function' && souLoginBalcao()){
+    return false;
+  }
   if (kind === 'user') openFacialRequiredUserModal(alvo);
   else openFacialRequiredMemberModal(alvo);
   return true;
@@ -35136,6 +35157,11 @@ function bindFacialLogPage(){
 if (typeof globalThis !== 'undefined'){
   if (typeof proximoSlotPonto === 'function') globalThis.proximoSlotPonto = proximoSlotPonto;
   if (typeof PONTO_SLOTS !== 'undefined') globalThis.PONTO_SLOTS = PONTO_SLOTS;
+  // v202: expor funções pra teste do fix login balcão
+  if (typeof souLoginBalcao === 'function') globalThis.souLoginBalcao = souLoginBalcao;
+  if (typeof checkFacialOnboarding === 'function') globalThis.checkFacialOnboarding = checkFacialOnboarding;
+  if (typeof facialBloqueiaSemCadastro === 'function') globalThis.facialBloqueiaSemCadastro = facialBloqueiaSemCadastro;
+  if (typeof meuMemberId === 'function') globalThis.meuMemberId = meuMemberId;
   globalThis.FACIAL_LOG_STATE = FACIAL_LOG_STATE;
   globalThis.FACIAL_LOG_META = FACIAL_LOG_META;
   globalThis.facialLogRegistrar = facialLogRegistrar;
@@ -35250,7 +35276,13 @@ function pontoPageHTML(){
 
   // Botão principal
   var botao = '';
-  if (!temFacial){
+  // v202: se é login de balcão da loja, orientar diferente — não é ele que bate próprio ponto
+  var ehBalcao = (typeof souLoginBalcao === 'function' && souLoginBalcao());
+  if (ehBalcao){
+    botao = '<div class="pp-warn">'+
+      '🏪 <b>Este é o login da loja.</b><br>Pra bater ponto, use o widget "N pendentes" no topo da tela — cada colaborador da loja aparece lá com o rosto próprio dele.'+
+    '</div>';
+  } else if (!temFacial){
     botao = '<div class="pp-warn">'+
       '⚠️ Você ainda não cadastrou o rosto. '+
       (u.access_level === 'admin' ? 'Vá no seu perfil → 🎭 Cadastrar rosto.' : 'Peça pro gestor cadastrar.')+
