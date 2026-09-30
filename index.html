@@ -13113,7 +13113,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v203';
+var APP_BUILD = 'v204';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -31494,8 +31494,16 @@ var FACIAL_CFG = {
   MODELS_URL: 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/model',
   FACE_API_URL: 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.13/dist/face-api.min.js',
   BUCKET: 'malba-facial',
-  DETECT_INPUT: 320,      // 128/160/224/320/416/512 (maior = mais preciso, mais lento)
-  DETECT_SCORE: 0.5       // 0.1-0.9 (menor = detecta rostos menos nítidos)
+  DETECT_INPUT: 416,      // v204: 320→416 (mais preciso, ~1.3x mais lento)
+  DETECT_SCORE: 0.6,      // v204: 0.5→0.6 (rejeita detecções fracas)
+  // v204: Validação de qualidade da captura
+  QUALIDADE_MIN_SCORE: 0.7,      // score mínimo do detector pra aceitar
+  QUALIDADE_MIN_WIDTH_PCT: 0.20, // bbox rosto ≥ 20% da largura do vídeo (não muito longe)
+  QUALIDADE_MAX_WIDTH_PCT: 0.90, // bbox rosto ≤ 90% (não colado na câmera)
+  // v204: Multi-amostra pra captura mais assertiva
+  AMOSTRAS_QTD: 3,               // 3 detecções antes de aprovar
+  AMOSTRAS_INTERVALO_MS: 250,    // espaço entre amostras
+  AMOSTRAS_TOLERANCIA_PCT: 5     // cada amostra pode ficar até 5% abaixo do mínimo, mas média manda
 };
 
 /* Estado do carregamento (compartilhado entre chamadas) */
@@ -34788,7 +34796,7 @@ if (typeof globalThis !== 'undefined'){
 
 // Extende FACIAL_CFG (que já existe)
 if (typeof FACIAL_CFG !== 'undefined'){
-  FACIAL_CFG.ANTISPOOFING_PISCAR   = true;
+  FACIAL_CFG.ANTISPOOFING_PISCAR   = false;  // v204: DESLIGADO — captura multi-amostra é o novo anti-fraude
   FACIAL_CFG.PISCAR_QTD_MIN        = 2;
   FACIAL_CFG.EAR_THRESHOLD_FECHADO = 0.23;   // v203: relaxado 0.20→0.23 (piscada casual detectada)
   FACIAL_CFG.EAR_THRESHOLD_ABERTO  = 0.26;   // olho aberto se EAR > 0.26 (histerese anti-bounce)
@@ -36478,7 +36486,7 @@ function openFacialVerifModal(membro, cb){
       // Guardar referência pra cancelar em close
       modal._piscarLoop = loopRef;
     } else {
-      msg.textContent = 'Alinhe o rosto e clique em Verificar';
+      msg.innerHTML = '📸 <b>Centralize seu rosto no oval</b> e clique em <b>Verificar & Bater</b>';
       btnVerif.disabled = false;
     }
   });
@@ -36486,49 +36494,115 @@ function openFacialVerifModal(membro, cb){
   btnVerif.addEventListener('click', async function(){
     btnVerif.disabled = true;
     cam.classList.remove('ok','err');
-    msg.textContent = 'Detectando rosto...';
+    var QTD = FACIAL_CFG.AMOSTRAS_QTD || 3;
+    var INTERV = FACIAL_CFG.AMOSTRAS_INTERVALO_MS || 250;
+    var TOL = FACIAL_CFG.AMOSTRAS_TOLERANCIA_PCT || 5;
+    var VID_W = video.videoWidth || 640;
 
-    var det = await facialDetectar(video);
-    if (!det){
-      msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais.';
+    var amostras = [];  // { sim, score, box }
+    var errosQualidade = [];
+
+    // v204: coleta N amostras espaçadas pra evitar aprovação por sorte
+    for (var i = 0; i < QTD; i++){
+      msg.innerHTML = '🔍 Analisando... <b>'+(i+1)+' / '+QTD+'</b>';
+      var det = await facialDetectar(video);
+      if (!det){
+        errosQualidade.push('sem rosto na amostra '+(i+1));
+        if (i < QTD - 1) await new Promise(function(r){ setTimeout(r, INTERV); });
+        continue;
+      }
+
+      // Validar qualidade: score do detector
+      var detScore = (det.detection && det.detection.score) || det.score || 1;
+      if (detScore < FACIAL_CFG.QUALIDADE_MIN_SCORE){
+        errosQualidade.push('rosto pouco nítido (conf '+(detScore*100).toFixed(0)+'%)');
+      }
+
+      // Validar qualidade: tamanho do rosto no frame
+      var box = det.detection && det.detection.box;
+      if (box){
+        var pct = box.width / VID_W;
+        if (pct < FACIAL_CFG.QUALIDADE_MIN_WIDTH_PCT){
+          errosQualidade.push('rosto muito distante ('+(pct*100).toFixed(0)+'% do quadro — aproxime)');
+        } else if (pct > FACIAL_CFG.QUALIDADE_MAX_WIDTH_PCT){
+          errosQualidade.push('rosto muito colado na câmera ('+(pct*100).toFixed(0)+'% — afaste)');
+        }
+      }
+
+      var resTmp = facialComparar(det.descriptor, [membro]);
+      if (resTmp){
+        amostras.push({ sim: resTmp.similaridade, score: detScore, box: box });
+      }
+
+      if (i < QTD - 1) await new Promise(function(r){ setTimeout(r, INTERV); });
+    }
+
+    // Nenhuma amostra válida
+    if (amostras.length === 0){
+      msg.innerHTML = '❌ <b>Não consegui te ver.</b> Enquadre bem o rosto e tente de novo.';
       cam.classList.add('err');
       btnVerif.disabled = false;
-      if (typeof facialLogRegistrar==='function'){ var _i4 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i4,{result:'NO_FACE',reason:'facialDetectar não achou rosto no frame',liveness_passed:!!piscOK,origin:'topbar'})); }
+      if (typeof facialLogRegistrar==='function'){
+        var _iN = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{};
+        facialLogRegistrar(Object.assign(_iN,{result:'NO_FACE',reason:'0/'+QTD+' amostras válidas: '+errosQualidade.slice(0,3).join('; '),liveness_passed:false,origin:'topbar'}));
+      }
       return;
     }
 
-    msg.textContent = 'Comparando com o cadastro...';
-    var res = facialComparar(det.descriptor, [membro]);
-    if (!res){
-      msg.textContent = '❌ Erro na comparação';
+    // Amostras insuficientes (menos que metade)
+    if (amostras.length < Math.ceil(QTD/2)){
+      msg.innerHTML = '❌ <b>Detecção instável.</b> '+errosQualidade[0]+'. Tente novamente.';
       cam.classList.add('err');
       btnVerif.disabled = false;
+      if (typeof facialLogRegistrar==='function'){
+        var _iI = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{};
+        facialLogRegistrar(Object.assign(_iI,{result:'NO_FACE',reason:'Só '+amostras.length+'/'+QTD+' amostras válidas: '+errosQualidade.slice(0,3).join('; '),liveness_passed:false,origin:'topbar'}));
+      }
       return;
     }
 
-    var sim = res.similaridade;
-    info.innerHTML = 'Similaridade calculada: <b style="color:'+(sim>=FACIAL_CFG.SIMILARIDADE_MIN?'#16A34A':'#EF4444')+';font-size:16px">'+sim.toFixed(1)+'%</b> (mín '+FACIAL_CFG.SIMILARIDADE_MIN+'%)';
+    // Calcular estatísticas
+    var soma = 0, min = 100, max = 0;
+    amostras.forEach(function(a){ soma += a.sim; if (a.sim < min) min = a.sim; if (a.sim > max) max = a.sim; });
+    var media = soma / amostras.length;
+    var minAceitavel = FACIAL_CFG.SIMILARIDADE_MIN - TOL;
 
-    if (sim < FACIAL_CFG.SIMILARIDADE_MIN){
-      msg.textContent = '❌ Não é '+membro.name+' (similaridade insuficiente)';
+    info.innerHTML = 'Similaridade: média <b style="color:'+(media>=FACIAL_CFG.SIMILARIDADE_MIN?'#16A34A':'#EF4444')+';font-size:16px">'+media.toFixed(1)+'%</b> '+
+                     '<small style="color:var(--u-text3)">('+amostras.length+' amostras · min '+min.toFixed(1)+'% · máx '+max.toFixed(1)+'%)</small>';
+
+    // Regra rígida: MÉDIA >= SIMILARIDADE_MIN E cada amostra >= (SIMILARIDADE_MIN - TOL)
+    if (media < FACIAL_CFG.SIMILARIDADE_MIN){
+      msg.innerHTML = '❌ Não é <b>'+membro.name+'</b> (média '+media.toFixed(1)+'% < '+FACIAL_CFG.SIMILARIDADE_MIN+'%)';
       cam.classList.add('err');
       btnVerif.disabled = false;
-      if (typeof facialLogRegistrar==='function'){ var _i5 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i5,{result:'LOW_SIMILARITY',reason:'Similaridade '+sim.toFixed(1)+'% abaixo do mínimo '+FACIAL_CFG.SIMILARIDADE_MIN+'%',similarity:sim,liveness_passed:!!piscOK,origin:'topbar'})); }
+      if (typeof facialLogRegistrar==='function'){
+        var _iL = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{};
+        facialLogRegistrar(Object.assign(_iL,{result:'LOW_SIMILARITY',reason:'Média '+media.toFixed(1)+'% ('+amostras.length+' amostras) abaixo de '+FACIAL_CFG.SIMILARIDADE_MIN+'%',similarity:media,liveness_passed:false,origin:'topbar'}));
+      }
+      return;
+    }
+    if (min < minAceitavel){
+      msg.innerHTML = '❌ Detecção inconsistente (uma amostra em '+min.toFixed(1)+'% — mín aceitável '+minAceitavel+'%)';
+      cam.classList.add('err');
+      btnVerif.disabled = false;
+      if (typeof facialLogRegistrar==='function'){
+        var _iC = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{};
+        facialLogRegistrar(Object.assign(_iC,{result:'LOW_SIMILARITY',reason:'Amostra em '+min.toFixed(1)+'% abaixo do tolerável '+minAceitavel+'%',similarity:min,liveness_passed:false,origin:'topbar'}));
+      }
       return;
     }
 
     // OK — captura foto, envia pro storage e chama callback
-    msg.textContent = '✓ '+membro.name+' identificada! Salvando...';
+    msg.innerHTML = '✓ <b>'+membro.name+'</b> identificado(a)! Salvando...';
     cam.classList.add('ok');
     try {
       var blob = await facialCapturarBlob(video);
       var fotoUrl = await facialUploadFoto(blob, 'verif_'+membro.id);
-      // v201: log SUCCESS
       if (typeof facialLogRegistrar==='function'){
         var _iOk = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{};
-        facialLogRegistrar(Object.assign(_iOk,{result:'SUCCESS',similarity:sim,liveness_passed:!!piscOK,origin:'topbar'}));
+        facialLogRegistrar(Object.assign(_iOk,{result:'SUCCESS',similarity:media,liveness_passed:false,reason:'Multi-amostra '+amostras.length+'/'+QTD+' aprovadas',origin:'topbar'}));
       }
-      if (typeof cb==='function') cb({ similaridade: sim, fotoUrl: fotoUrl });
+      if (typeof cb==='function') cb({ similaridade: media, fotoUrl: fotoUrl });
       close();
     } catch(e){
       console.error(e);
