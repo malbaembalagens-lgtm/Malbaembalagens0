@@ -13090,6 +13090,42 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 }
 /* ===== fim v201 ===== */
 
+
+/* ===== v205 · Cadastro multi-pose ===== */
+.cmp-modal{max-width:560px;width:95vw;background:var(--u-bg-card);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;max-height:92vh}
+.cmp-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--u-border);background:linear-gradient(135deg,#3B6FF7,#8B5CF6);color:#fff}
+.cmp-head b{display:block;font-family:'Sora',sans-serif;font-size:15px;font-weight:700}
+.cmp-head i{display:block;font-size:12px;font-style:normal;opacity:.9;margin-top:2px}
+.cmp-head .fx-close{background:rgba(255,255,255,.2);color:#fff;border:none;width:32px;height:32px;border-radius:50%;font-size:20px;cursor:pointer}
+.cmp-head .fx-close:hover{background:rgba(255,255,255,.35)}
+.cmp-dots{display:flex;gap:10px;padding:14px 20px;background:var(--u-bg-alt);justify-content:center;border-bottom:1px solid var(--u-border)}
+.cmp-dot{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-weight:700;font-size:14px;transition:all .2s}
+.cmp-dot-todo{background:var(--u-bg-card);border:2px solid var(--u-border);color:var(--u-text3)}
+.cmp-dot-active{background:linear-gradient(135deg,#3B6FF7,#8B5CF6);color:#fff;transform:scale(1.15);box-shadow:0 4px 12px rgba(59,111,247,.4)}
+.cmp-dot-done{background:#16A34A;color:#fff}
+.cmp-body{padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.cmp-instr{text-align:center;padding:12px}
+.cmp-emoji{font-size:56px;line-height:1;margin-bottom:8px}
+.cmp-instr h3{margin:0 0 6px;font-family:'Sora',sans-serif;font-size:20px;color:var(--u-text1)}
+.cmp-instr p{margin:0;color:var(--u-text2);font-size:14px}
+.cmp-cam{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:4/3;border:3px solid var(--u-border);transition:border-color .2s}
+.cmp-cam.ok{border-color:#16A34A}
+.cmp-cam.err{border-color:#EF4444}
+.cmp-cam video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+.cmp-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.cmp-oval{width:60%;height:80%;border:2px dashed rgba(255,255,255,.7);border-radius:50%;box-shadow:0 0 0 200px rgba(0,0,0,.25)}
+.cmp-msg{position:absolute;left:12px;right:12px;bottom:12px;background:rgba(0,0,0,.75);color:#fff;padding:10px 14px;border-radius:8px;font-size:13px;text-align:center}
+.cmp-foot{display:flex;justify-content:space-between;gap:10px;padding:14px 20px;border-top:1px solid var(--u-border);background:var(--u-bg-alt)}
+.cmp-btn-capturar{flex:1;background:linear-gradient(135deg,#3B6FF7,#8B5CF6);color:#fff;border:none;padding:12px;border-radius:10px;font-family:'Sora',sans-serif;font-weight:700;cursor:pointer;font-size:14px}
+.cmp-btn-capturar:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 16px rgba(59,111,247,.4)}
+.cmp-btn-capturar:disabled{opacity:.5;cursor:not-allowed}
+@media (max-width:600px){
+  .cmp-dot{width:28px;height:28px;font-size:12px}
+  .cmp-emoji{font-size:44px}
+  .cmp-instr h3{font-size:17px}
+}
+/* ===== fim v205 ===== */
+
 </style>
 </head>
 <body>
@@ -13113,7 +13149,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v204';
+var APP_BUILD = 'v205';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -31581,21 +31617,52 @@ function facialDistParaSim(dist){
 
 /* Compara descriptor recém-detectado com uma lista de candidatos
    Retorna { melhor: {id, name, ...}, similaridade: 92.3, distancia: 0.077 } ou null */
+/* v205: helper — extrai TODAS as poses cadastradas de uma entidade.
+   Retrocompat: se face_descriptor é [128 floats], vira [[128 floats]].
+   Multi-pose: se face_descriptor é [[128], [128], ...], retorna direto. */
+function facialExtrairPoses(entidade){
+  if (!entidade || !entidade.face_descriptor) return [];
+  var fd = entidade.face_descriptor;
+  if (!fd.length) return [];
+  // Se primeiro elemento é número → formato antigo (single pose)
+  if (typeof fd[0] === 'number') return [fd];
+  // Se primeiro elemento é array → multi-pose
+  if (Array.isArray(fd[0]) || (fd[0] && typeof fd[0].length === 'number')){
+    return fd;
+  }
+  return [];
+}
+
+/* v205: quantas poses cadastradas — útil pra UI mostrar completude */
+function facialQuantasPoses(entidade){
+  return facialExtrairPoses(entidade).length;
+}
+
 function facialComparar(descriptorNovo, candidatos){
   if (!descriptorNovo || !candidatos || !candidatos.length) return null;
   if (!window.faceapi) return null;
-  var melhor = null, menorDist = Infinity;
+  var melhor = null, menorDist = Infinity, melhorPose = -1;
   candidatos.forEach(function(c){
-    if (!c.face_descriptor || !c.face_descriptor.length) return;
-    var d2 = new Float32Array(c.face_descriptor);
-    var dist = window.faceapi.euclideanDistance(descriptorNovo, d2);
-    if (dist < menorDist){ menorDist = dist; melhor = c; }
+    var poses = facialExtrairPoses(c);
+    if (!poses.length) return;
+    // v205: compara contra CADA pose cadastrada e pega o melhor match
+    poses.forEach(function(desc, idx){
+      var d2 = new Float32Array(desc);
+      var dist = window.faceapi.euclideanDistance(descriptorNovo, d2);
+      if (dist < menorDist){
+        menorDist = dist;
+        melhor = c;
+        melhorPose = idx;
+      }
+    });
   });
   if (!melhor) return null;
   return {
     melhor: melhor,
     similaridade: facialDistParaSim(menorDist),
-    distancia: menorDist
+    distancia: menorDist,
+    poseUsada: melhorPose,      // v205: qual pose deu o match (0-4)
+    totalPoses: facialQuantasPoses(melhor)
   };
 }
 
@@ -31650,7 +31717,11 @@ function facialFecharWebcam(){
 
 /* Helpers de conveniência — dizem quem tem facial cadastrado */
 function facialTemCadastro(entidade){
-  return !!(entidade && entidade.face_descriptor && entidade.face_descriptor.length);
+  // v205: aceita single (128 floats) OU multi-pose ([[128], [128], ...])
+  if (!entidade || !entidade.face_descriptor) return false;
+  var fd = entidade.face_descriptor;
+  if (!fd.length) return false;
+  return true;
 }
 
 /* Lista todos os membros de loja COM facial cadastrado (pra usar em comparação) */
@@ -35231,6 +35302,11 @@ if (typeof globalThis !== 'undefined'){
   if (typeof proximoSlotPonto === 'function') globalThis.proximoSlotPonto = proximoSlotPonto;
   if (typeof PONTO_SLOTS !== 'undefined') globalThis.PONTO_SLOTS = PONTO_SLOTS;
   // v202: expor funções pra teste do fix login balcão
+  if (typeof openFacialCadastroModal === 'function') globalThis.openFacialCadastroModal = openFacialCadastroModal;
+  if (typeof facialExtrairPoses === 'function') globalThis.facialExtrairPoses = facialExtrairPoses;
+  if (typeof facialQuantasPoses === 'function') globalThis.facialQuantasPoses = facialQuantasPoses;
+  if (typeof facialComparar === 'function') globalThis.facialComparar = facialComparar;
+  if (typeof facialTemCadastro === 'function') globalThis.facialTemCadastro = facialTemCadastro;
   if (typeof souLoginBalcao === 'function') globalThis.souLoginBalcao = souLoginBalcao;
   if (typeof checkFacialOnboarding === 'function') globalThis.checkFacialOnboarding = checkFacialOnboarding;
   if (typeof facialBloqueiaSemCadastro === 'function') globalThis.facialBloqueiaSemCadastro = facialBloqueiaSemCadastro;
@@ -35527,6 +35603,321 @@ if (typeof globalThis !== 'undefined'){
   globalThis.pontoPageHTML = pontoPageHTML;
   globalThis.bindPontoPage = bindPontoPage;
   globalThis.pontoRegistrarBatidaDaPagina = pontoRegistrarBatidaDaPagina;
+}
+
+/* ============================================================
+   v205 · Cadastro facial multi-pose
+   ============================================================
+   Substitui a captura única de rosto por 5 poses diferentes.
+   Cada pose gera um descriptor 128d — comparação bate contra
+   qualquer uma → reconhecimento muito mais tolerante a variações
+   naturais (leve giro, iluminação, óculos).
+
+   openFacialCadastroMultiPoseModal(alvo, cb) — wizard 5 passos.
+   ============================================================ */
+
+var CADASTRO_POSES = [
+  { key:'frente',     label:'Rosto de frente',           dica:'Olhe direto pra câmera com expressão neutra',      emoji:'😐', angulo:'0°' },
+  { key:'esq_leve',   label:'Vire um pouquinho pra sua esquerda', dica:'Gire o rosto ~20° pra sua esquerda (não muito)', emoji:'👈', angulo:'-20°' },
+  { key:'dir_leve',   label:'Vire um pouquinho pra sua direita',  dica:'Gire o rosto ~20° pra sua direita (não muito)',  emoji:'👉', angulo:'+20°' },
+  { key:'cima',       label:'Levante o queixo levemente', dica:'Erga o queixo como se olhasse um pouco pra cima',  emoji:'👆', angulo:'top' },
+  { key:'sorriso',    label:'Agora sorria!',              dica:'Sorriso natural, mostra os dentes',                emoji:'😊', angulo:'smile' }
+];
+
+/* Estado do wizard de cadastro */
+var CADASTRO_MP_STATE = null;
+
+function openFacialCadastroMultiPoseModal(alvo, cb){
+  // alvo: { id, name, kind: 'user'|'member' }
+  if (!alvo || !alvo.id){
+    if (typeof toast==='function') toast('Alvo inválido','error');
+    return;
+  }
+  if (typeof sb === 'undefined'){
+    if (typeof toast==='function') toast('Sistema indisponível','error');
+    return;
+  }
+
+  CADASTRO_MP_STATE = {
+    alvo: alvo,
+    passo: 0,
+    descriptors: [],  // array de arrays 128
+    fotos: [],        // primeira foto vira principal
+    modelosCarregando: true
+  };
+
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'facialCadMPModal';
+  modal.innerHTML = _cadMPRenderHTML();
+  document.body.appendChild(modal);
+
+  _cadMPBind(modal, cb);
+  _cadMPIniciar(modal);
+}
+
+function _cadMPRenderHTML(){
+  var s = CADASTRO_MP_STATE;
+  var pose = CADASTRO_POSES[s.passo];
+  var progresso = s.descriptors.length;
+  var total = CADASTRO_POSES.length;
+
+  var bolinhas = CADASTRO_POSES.map(function(p, i){
+    var cls = i < progresso ? 'cmp-dot-done' : (i === s.passo ? 'cmp-dot-active' : 'cmp-dot-todo');
+    return '<div class="cmp-dot '+cls+'" title="'+esc(p.label)+'">'+
+      (i < progresso ? '✓' : (i+1))+
+    '</div>';
+  }).join('');
+
+  return '<div class="modal cmp-modal">'+
+    '<div class="cmp-head">'+
+      '<div><b>🎭 Cadastro facial de '+esc(s.alvo.name||'colaborador')+'</b><i>Passo '+(s.passo+1)+' de '+total+' — vamos pegar '+total+' ângulos do seu rosto</i></div>'+
+      '<button class="fx-close" id="cmpClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="cmp-dots">'+bolinhas+'</div>'+
+    '<div class="cmp-body">'+
+      '<div class="cmp-instr">'+
+        '<div class="cmp-emoji">'+pose.emoji+'</div>'+
+        '<h3>'+esc(pose.label)+'</h3>'+
+        '<p>'+esc(pose.dica)+'</p>'+
+      '</div>'+
+      '<div class="cmp-cam" id="cmpCam">'+
+        '<video id="cmpVideo" autoplay playsinline muted></video>'+
+        '<div class="cmp-overlay"><div class="cmp-oval"></div></div>'+
+        '<div class="cmp-msg" id="cmpMsg">Carregando câmera...</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="cmp-foot">'+
+      '<button class="btn btn-ghost" id="cmpVoltar" '+(s.passo===0?'disabled':'')+'>← Voltar</button>'+
+      '<button class="btn btn-primary cmp-btn-capturar" id="cmpCapturar" disabled>📸 Capturar esta pose</button>'+
+    '</div>'+
+  '</div>';
+}
+
+async function _cadMPIniciar(modal){
+  var msg = modal.querySelector('#cmpMsg');
+  var video = modal.querySelector('#cmpVideo');
+  var cam = modal.querySelector('#cmpCam');
+
+  msg.textContent = 'Carregando IA + câmera...';
+
+  var [modOk, camOk] = await Promise.all([
+    facialCarregarModelos(),
+    facialAbrirWebcam(video)
+  ]);
+
+  if (!modOk){
+    msg.innerHTML = '❌ <b>Falha ao carregar IA</b>';
+    cam.classList.add('err');
+    return;
+  }
+  if (!camOk){
+    msg.innerHTML = '❌ <b>Falha ao abrir câmera</b><br><small>Permita o uso da câmera nas configurações do navegador.</small>';
+    cam.classList.add('err');
+    return;
+  }
+
+  CADASTRO_MP_STATE.modelosCarregando = false;
+  msg.innerHTML = '📸 <b>Posicione o rosto</b> e clique em capturar';
+  modal.querySelector('#cmpCapturar').disabled = false;
+}
+
+function _cadMPBind(modal, cb){
+  modal.querySelector('#cmpClose').addEventListener('click', function(){ _cadMPFechar(modal, cb, false); });
+  modal.addEventListener('click', function(e){ if (e.target === modal) _cadMPFechar(modal, cb, false); });
+
+  modal.querySelector('#cmpCapturar').addEventListener('click', async function(){
+    await _cadMPCapturarPose(modal, cb);
+  });
+
+  modal.querySelector('#cmpVoltar').addEventListener('click', function(){
+    if (CADASTRO_MP_STATE.passo > 0){
+      CADASTRO_MP_STATE.passo--;
+      CADASTRO_MP_STATE.descriptors.pop();
+      CADASTRO_MP_STATE.fotos.pop();
+      _cadMPRefreshUI(modal, cb);
+    }
+  });
+}
+
+async function _cadMPCapturarPose(modal, cb){
+  var s = CADASTRO_MP_STATE;
+  var video = modal.querySelector('#cmpVideo');
+  var cam = modal.querySelector('#cmpCam');
+  var msg = modal.querySelector('#cmpMsg');
+  var btn = modal.querySelector('#cmpCapturar');
+
+  btn.disabled = true;
+  cam.classList.remove('err','ok');
+  msg.innerHTML = '🔍 <b>Analisando pose...</b>';
+
+  // v205: coleta 2 amostras rápidas pra garantir descriptor estável
+  var descriptors = [];
+  var VID_W = video.videoWidth || 640;
+
+  for (var i = 0; i < 2; i++){
+    var det = await facialDetectar(video);
+    if (!det){ continue; }
+
+    // Validação de qualidade
+    var detScore = (det.detection && det.detection.score) || 1;
+    if (detScore < FACIAL_CFG.QUALIDADE_MIN_SCORE){ continue; }
+
+    var box = det.detection && det.detection.box;
+    if (box){
+      var pct = box.width / VID_W;
+      if (pct < FACIAL_CFG.QUALIDADE_MIN_WIDTH_PCT || pct > FACIAL_CFG.QUALIDADE_MAX_WIDTH_PCT){
+        continue;
+      }
+    }
+
+    descriptors.push(det.descriptor);
+    if (i === 0) await new Promise(function(r){ setTimeout(r, 200); });
+  }
+
+  if (descriptors.length === 0){
+    cam.classList.add('err');
+    msg.innerHTML = '❌ <b>Não consegui capturar bem.</b> Ajuste posição/iluminação e tente novamente.';
+    btn.disabled = false;
+    return;
+  }
+
+  // Média dos 2 descriptors captados = descriptor final da pose (mais estável)
+  var finalDesc;
+  if (descriptors.length === 1){
+    finalDesc = Array.from(descriptors[0]);
+  } else {
+    var somaArr = new Array(128).fill(0);
+    descriptors.forEach(function(d){
+      for (var j = 0; j < 128; j++) somaArr[j] += d[j];
+    });
+    finalDesc = somaArr.map(function(x){ return x / descriptors.length; });
+  }
+
+  s.descriptors.push(finalDesc);
+
+  // Só captura foto na primeira pose (frente) — foto principal
+  if (s.passo === 0){
+    try {
+      var blob = await facialCapturarBlob(video);
+      s.fotos.push(blob);
+    } catch(e){ s.fotos.push(null); }
+  }
+
+  cam.classList.add('ok');
+  msg.innerHTML = '✓ <b>Pose capturada!</b> ('+descriptors.length+'/2 amostras)';
+
+  // Se última pose → salvar tudo
+  if (s.passo === CADASTRO_POSES.length - 1){
+    await _cadMPFinalizar(modal, cb);
+    return;
+  }
+
+  // Senão, avança
+  setTimeout(function(){
+    s.passo++;
+    _cadMPRefreshUI(modal, cb);
+  }, 700);
+}
+
+function _cadMPRefreshUI(modal, cb){
+  // Preserva video/webcam — só troca a UI ao redor
+  var html = _cadMPRenderHTML();
+  modal.innerHTML = html;
+  _cadMPBind(modal, cb);
+  // Reatacha video ao stream existente
+  var video = modal.querySelector('#cmpVideo');
+  if (FACIAL_WEBCAM && FACIAL_WEBCAM.stream){
+    video.srcObject = FACIAL_WEBCAM.stream;
+    modal.querySelector('#cmpMsg').innerHTML = '📸 <b>Posicione pra próxima pose</b> e clique em capturar';
+    modal.querySelector('#cmpCapturar').disabled = false;
+  } else {
+    _cadMPIniciar(modal);
+  }
+}
+
+async function _cadMPFinalizar(modal, cb){
+  var s = CADASTRO_MP_STATE;
+  var msg = modal.querySelector('#cmpMsg');
+  var btn = modal.querySelector('#cmpCapturar');
+  btn.disabled = true;
+  msg.innerHTML = '💾 <b>Salvando '+s.descriptors.length+' poses...</b>';
+
+  try {
+    // Upload foto principal (primeira pose)
+    var fotoUrl = null;
+    if (s.fotos[0]){
+      fotoUrl = await facialUploadFoto(s.fotos[0], 'cad_'+s.alvo.id);
+    }
+
+    // Update no banco — face_descriptor vira ARRAY de arrays
+    var patch = {
+      face_descriptor: s.descriptors,  // [[128], [128], [128], [128], [128]]
+      face_cadastrado_em: new Date().toISOString()
+    };
+    if (fotoUrl) patch.face_foto_url = fotoUrl;
+
+    var tabela = (s.alvo.kind === 'user') ? 'malba_users' : 'malba_store_members';
+    var { error } = await sb.from(tabela).update(patch).eq('id', s.alvo.id);
+    if (error) throw error;
+
+    // Atualiza local também
+    var arr = (s.alvo.kind === 'user') ? (ST.allUsers||ST.users||[]) : (ST.members||[]);
+    var idx = -1;
+    for (var i = 0; i < arr.length; i++){
+      if (String(arr[i].id) === String(s.alvo.id)){ idx = i; break; }
+    }
+    if (idx >= 0){
+      arr[idx].face_descriptor = s.descriptors;
+      arr[idx].face_cadastrado_em = patch.face_cadastrado_em;
+      if (fotoUrl) arr[idx].face_foto_url = fotoUrl;
+    }
+
+    msg.innerHTML = '✓ <b>Cadastro completo!</b> '+s.descriptors.length+' poses salvas.';
+
+    // Log
+    if (typeof facialLogRegistrar === 'function'){
+      facialLogRegistrar({
+        user_id: s.alvo.kind === 'user' ? s.alvo.id : null,
+        member_id: s.alvo.kind === 'member' ? s.alvo.id : null,
+        actor_name: s.alvo.name,
+        result: 'SUCCESS',
+        similarity: 100,
+        liveness_passed: false,
+        reason: 'Cadastro multi-pose completo: '+s.descriptors.length+' poses',
+        origin: 'cadastro'
+      });
+    }
+
+    if (typeof toast === 'function') toast('✓ Rosto cadastrado com '+s.descriptors.length+' poses','success');
+
+    setTimeout(function(){
+      _cadMPFechar(modal, cb, true);
+    }, 1200);
+  } catch(e){
+    console.error('[cad multipose]', e);
+    msg.innerHTML = '❌ <b>Erro salvando:</b> '+(e.message||'desconhecido');
+    btn.disabled = false;
+  }
+}
+
+function _cadMPFechar(modal, cb, sucesso){
+  facialFecharWebcam();
+  if (modal.parentNode) modal.parentNode.removeChild(modal);
+  CADASTRO_MP_STATE = null;
+  if (typeof cb === 'function') cb(sucesso);
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis._cadMPRenderHTML = _cadMPRenderHTML;
+  globalThis.__setCadMPState = function(x){ CADASTRO_MP_STATE = x; };
+  globalThis.CADASTRO_POSES = CADASTRO_POSES;
+  globalThis.openFacialCadastroMultiPoseModal = openFacialCadastroMultiPoseModal;
+  globalThis.facialQuantasPosesUtil = function(entidade){
+    if (typeof facialQuantasPoses === 'function') return facialQuantasPoses(entidade);
+    return 0;
+  };
 }
 
 var ONB_STATE = null;
@@ -36121,7 +36512,17 @@ function onbCriarColaborador(){
   }
 }
 
-function openFacialCadastroModal(alvo){
+
+// v205: wrapper — redireciona pra cadastro multi-pose (5 poses)
+function openFacialCadastroModal(alvo, cb){
+  if (typeof openFacialCadastroMultiPoseModal === 'function'){
+    return openFacialCadastroMultiPoseModal(alvo, cb);
+  }
+  // Fallback pra versão antiga se módulo v205 não carregou
+  return openFacialCadastroModalLegacy(alvo, cb);
+}
+
+function openFacialCadastroModalLegacy(alvo){
   if (!alvo || !alvo.id){ if (typeof toast==='function') toast('Alvo inválido','error'); return; }
 
   var modal = document.createElement('div');
@@ -36568,7 +36969,8 @@ function openFacialVerifModal(membro, cb){
     var minAceitavel = FACIAL_CFG.SIMILARIDADE_MIN - TOL;
 
     info.innerHTML = 'Similaridade: média <b style="color:'+(media>=FACIAL_CFG.SIMILARIDADE_MIN?'#16A34A':'#EF4444')+';font-size:16px">'+media.toFixed(1)+'%</b> '+
-                     '<small style="color:var(--u-text3)">('+amostras.length+' amostras · min '+min.toFixed(1)+'% · máx '+max.toFixed(1)+'%)</small>';
+                     '<small style="color:var(--u-text3)">('+amostras.length+' amostras · min '+min.toFixed(1)+'% · máx '+max.toFixed(1)+'%)</small>'+
+                     ((typeof facialQuantasPoses === 'function' && facialQuantasPoses(membro) > 1) ? ' · <small>base: '+facialQuantasPoses(membro)+' poses</small>' : '');
 
     // Regra rígida: MÉDIA >= SIMILARIDADE_MIN E cada amostra >= (SIMILARIDADE_MIN - TOL)
     if (media < FACIAL_CFG.SIMILARIDADE_MIN){
