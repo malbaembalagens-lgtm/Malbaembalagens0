@@ -13126,6 +13126,89 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 }
 /* ===== fim v205 ===== */
 
+
+/* ===== v206 · Bloco Feedback IA na avaliação ===== */
+.asum-block.fb-ia{
+  background:linear-gradient(135deg,rgba(59,111,247,0.08),rgba(139,92,246,0.08));
+  border:1px solid rgba(139,92,246,0.25);
+}
+.asum-block.fb-ia h5{color:#8B5CF6}
+.fb-ia-body{font-size:13px;line-height:1.7;color:var(--u-text);margin:8px 0 10px}
+.fb-ia-body p{margin:6px 0}
+.fb-ia-body b{color:#3B6FF7}
+.fb-ia-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.fb-ia-actions .btn{padding:5px 10px;font-size:12px}
+.asum-block.fb-ia-empty{text-align:center;padding:18px}
+.asum-block.fb-ia-empty p{color:var(--u-text3);font-size:13px;margin:8px 0 12px;line-height:1.5}
+/* ===== fim v206 ===== */
+
+/* ===== v207 · Modo editar/preview do feedback ===== */
+.fb-ia-badge{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:2px 8px;border-radius:10px;margin-left:8px;vertical-align:middle;
+  background:rgba(139,92,246,0.15);color:#8B5CF6;text-transform:uppercase;
+}
+.fb-ia-edit{
+  width:100%;min-height:280px;padding:14px;
+  background:var(--u-bg2,#fff);border:2px solid rgba(139,92,246,0.3);
+  border-radius:8px;color:var(--u-text,#1F2937);
+  font-family:'Menlo','Monaco','Courier New',monospace;font-size:13px;line-height:1.65;
+  resize:vertical;outline:none;box-sizing:border-box;margin:8px 0;
+}
+.fb-ia-edit:focus{border-color:#8B5CF6;box-shadow:0 0 0 3px rgba(139,92,246,0.1)}
+.fb-ia-hint{
+  font-size:11px;color:var(--u-text3,#6B7280);
+  background:rgba(139,92,246,0.05);border-left:2px solid #8B5CF6;
+  padding:6px 10px;border-radius:4px;margin-bottom:8px;
+}
+.fb-ia-hint code{
+  background:rgba(139,92,246,0.15);padding:1px 5px;border-radius:3px;
+  font-family:'Menlo',monospace;font-size:11px;color:#8B5CF6;
+}
+.asum-block.fb-ia .fb-ia-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
+/* ===== fim v207 ===== */
+
+
+
+/* ===== v208 · Agenda Semanal do Gestor ===== */
+.agd-card{margin-bottom:16px}
+.agd-hoje-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.agd-hoje-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid;flex-shrink:0}
+.agd-hoje-txt{flex:1;min-width:0}
+.agd-hoje-lbl{font-size:11px;color:var(--u-text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.agd-hoje-val{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;line-height:1.2}
+.agd-hoje-obs{font-size:12px;color:var(--u-text2);margin-top:4px;font-style:italic}
+.agd-btn-cfg{padding:6px 10px}
+.agd-semana{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding-top:12px;border-top:1px solid var(--u-border)}
+.agd-dia{text-align:center;padding:8px 4px;border-radius:8px;background:var(--u-bg-alt);border:1px solid var(--u-border);min-width:0;overflow:hidden}
+.agd-dia small{display:block;font-size:10px;color:var(--u-text3);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.agd-dia b{display:block;font-size:11px;color:var(--u-text1);margin-top:3px;font-family:'Sora',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.agd-dia.agd-vazia b{color:var(--u-text3);font-weight:400}
+.agd-dia.agd-hoy{background:rgba(59,111,247,0.08);border-color:var(--cor,#3B6FF7);border-width:2px}
+.agd-dia.agd-hoy b{color:var(--cor,#3B6FF7)}
+.agd-modal{max-width:800px;width:95vw;background:var(--u-bg-card);border-radius:16px;padding:0;display:flex;flex-direction:column;max-height:90vh}
+.agd-head{padding:20px;border-bottom:1px solid var(--u-border);display:flex;justify-content:space-between;align-items:center}
+.agd-head h3{margin:0;font-family:'Sora',sans-serif;font-size:18px;color:var(--u-text1)}
+.agd-head p{margin:4px 0 0;font-size:13px;color:var(--u-text2)}
+.agd-head .fx-close{background:none;color:var(--u-text3);border:none;width:32px;height:32px;border-radius:50%;font-size:22px;cursor:pointer}
+.agd-head .fx-close:hover{background:var(--u-bg-alt);color:var(--u-text1)}
+.agd-rows{padding:16px 20px;overflow-y:auto;flex:1}
+.agd-row{display:grid;grid-template-columns:90px 1fr 1fr 44px 1fr 36px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--u-border)}
+.agd-row:last-child{border-bottom:none}
+.agd-row-nome{font-family:'Sora',sans-serif;font-size:13px;font-weight:600;color:var(--u-text1)}
+.agd-row select,.agd-row input[type="text"]{width:100%;padding:7px 10px;border:1px solid var(--u-border);border-radius:6px;background:var(--u-bg-card);color:var(--u-text1);font-family:inherit;font-size:12px}
+.agd-row input[type="color"]{width:40px;height:34px;border:1px solid var(--u-border);border-radius:6px;cursor:pointer;padding:2px;background:var(--u-bg-card)}
+.agd-btn-clear{padding:6px 8px;font-size:14px;background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2)}
+.agd-btn-clear:hover{background:rgba(239,68,68,0.2)}
+.agd-foot{padding:16px 20px;border-top:1px solid var(--u-border);display:flex;justify-content:flex-end;gap:10px;background:var(--u-bg-alt)}
+@media (max-width:720px){
+  .agd-row{grid-template-columns:1fr;gap:4px;padding:12px 0}
+  .agd-semana{gap:3px}
+  .agd-dia{padding:6px 2px}
+  .agd-dia b{font-size:10px}
+}
+/* ===== fim v208 ===== */
+
 </style>
 </head>
 <body>
@@ -13149,7 +13232,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v205';
+var APP_BUILD = 'v208';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13542,6 +13625,7 @@ function loadData() {
     try { atestadoCarregar(); } catch(e){ console.error('[atestado load]', e); }
     try { reembCarregar(); } catch(e){ console.error('[reemb load]', e); }
     try { facialLogCarregar(); } catch(e){ console.error('[flog load]', e); }
+    try { agendaGestorCarregar(); } catch(e){ console.error('[agenda gest]', e); }
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
@@ -14380,9 +14464,12 @@ function dashboardHTML() {
     dashStoreSel='<select class="task-filter" id="dashStore" title="Ver loja">'+dso+'</select>';
   }
   var pgHTML = (typeof painelGestorHTML === 'function') ? painelGestorHTML() : '';
+  // v208: widget Agenda Semanal do Gestor
+  var agdHTML = (typeof agendaGestorWidgetHoje === 'function') ? agendaGestorWidgetHoje() : '';
   return ''+
     pgHTML+
     hero+
+    agdHTML+
     muralHTML()+
     '<div class="dash-sec-h"><h3>Resumo de hoje</h3><span>'+esc(dataExtenso())+' · Setor '+esc(setorLabel)+'</span>'+(dashStoreSel?'<span class="dash-sec-spacer"></span>'+dashStoreSel:'')+'</div>'+
     '<div class="dash-cards">'+cards+'</div>'+
@@ -31121,7 +31208,8 @@ function openAvaliacaoModal(aval, preset) {
     obs: editing?(aval.observacao||''):'',
     fortes: editing?(aval.pontos_fortes||''):'',
     desenvolver: editing?(aval.pontos_desenvolver||''):'',
-    plano: editing?(aval.plano_acao||''):''
+    plano: editing?(aval.plano_acao||''):'',
+    feedback_ia: editing?(aval.feedback_ia||''):''
   };
 
   function defaultsFor(tp){ return (tp==='loja'?CRIT_LOJA:CRIT_MEMBRO).map(function(c){ return {id:c.id,label:c.label,nota:0}; }); }
@@ -31210,13 +31298,43 @@ function openAvaliacaoModal(aval, preset) {
     if((form.fortes||'').trim()) blocks+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(form.fortes)+'</p></div>';
     if((form.desenvolver||'').trim()) blocks+='<div class="asum-block desenv"><h5>Pontos a desenvolver</h5><p>'+esc(form.desenvolver)+'</p></div>';
     if((form.plano||'').trim()) blocks+='<div class="asum-block plano"><h5>Plano de ação (PDI)</h5><p>'+esc(form.plano)+'</p></div>';
+    // v206: bloco Feedback Automático — v207: editável com toggle preview/editar
+    var fbHTML = '';
+    if ((form.feedback_ia||'').trim()){
+      var modoEditar = form._fbModoEditar === true;
+      var bodyEl = modoEditar
+        ? '<textarea id="avFbTexto" class="fb-ia-edit" placeholder="Edite livremente... Use **texto** pra negrito." rows="14">'+esc(form.feedback_ia)+'</textarea>'+
+          '<div class="fb-ia-hint">💡 Use <code>**texto em negrito**</code> pra destacar títulos. Clique em 👁 Preview pra ver formatado.</div>'
+        : '<div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(form.feedback_ia):esc(form.feedback_ia))+'</div>';
+      var toggleBtn = modoEditar
+        ? '<button type="button" class="btn btn-primary" id="avFbPreview">👁 Preview</button>'
+        : '<button type="button" class="btn btn-primary" id="avFbEditar">✏️ Editar</button>';
+      fbHTML = '<div class="asum-block fb-ia"><h5>🤖 Feedback automático <small class="fb-ia-badge">'+(modoEditar?'EDITANDO':'leitura')+'</small></h5>'+
+        bodyEl +
+        '<div class="fb-ia-actions">'+
+          toggleBtn +
+          '<button type="button" class="btn btn-ghost" id="avFbRegerar">↺ Gerar novamente</button>'+
+          '<button type="button" class="btn btn-ghost" id="avFbCopiar">📋 Copiar</button>'+
+          '<button type="button" class="btn btn-ghost" id="avFbLimpar">🗑 Limpar</button>'+
+        '</div>'+
+      '</div>';
+    } else {
+      fbHTML = '<div class="asum-block fb-ia fb-ia-empty">'+
+        '<h5>🤖 Feedback automático</h5>'+
+        '<p>Monte um resumo em 4 blocos (Perfil, Pontos Fortes, Oportunidades, Próximos Passos) baseado nas notas acima. Depois pode editar livremente antes de salvar.</p>'+
+        '<div class="fb-ia-actions" style="justify-content:center">'+
+          '<button type="button" class="btn btn-primary" id="avFbGerar">✨ Gerar Feedback</button>'+
+          '<button type="button" class="btn btn-ghost" id="avFbEscrever">✏️ Escrever do zero</button>'+
+        '</div>'+
+      '</div>';
+    }
     return '<div class="aval-sum-head"><div><b>'+esc(alvoLabel())+'</b><i>'+MESES[form.ref_month-1]+' '+form.ref_year+' · avaliado em '+fmtDate(form.data_aval)+'</i></div></div>'+
       '<div class="aval-summary">'+
         '<div class="asum-score" style="border-color:'+diag.color+'"><span class="asum-num" style="color:'+diag.color+'">'+media.toFixed(1)+'</span><span class="asum-of">de 5</span></div>'+
         '<div class="asum-diag">'+diagBadge(media)+'<p>'+diag.rec+'</p></div>'+
       '</div>'+
       critBarsHTML(clean)+
-      blocks;
+      blocks + fbHTML;
   }
 
   function build() {
@@ -31243,6 +31361,8 @@ function openAvaliacaoModal(aval, preset) {
     var pf=modal.querySelector('#avFortes'); if(pf) form.fortes=pf.value;
     var pd=modal.querySelector('#avDesenv'); if(pd) form.desenvolver=pd.value;
     var pl=modal.querySelector('#avPlano'); if(pl) form.plano=pl.value;
+    // v207: captura texto do feedback editável
+    var fbT=modal.querySelector('#avFbTexto'); if(fbT) form.feedback_ia=fbT.value;
     var nc=modal.querySelector('#avNewCrit'); if(nc) pendingCrit=nc.value;
     var names=modal.querySelectorAll('.aval-crit-name');
     for (var i=0;i<names.length;i++){ var idx=parseInt(names[i].getAttribute('data-cidx'),10); if(critList[idx]) critList[idx].label=names[i].value; }
@@ -31279,6 +31399,93 @@ function openAvaliacaoModal(aval, preset) {
     var back=modal.querySelector('#avBack'); if(back) back.addEventListener('click', function(){ captura(); if(step>1) step--; rerender(false); });
     var nextB=modal.querySelector('#avNext'); if(nextB) nextB.addEventListener('click', next);
     var del=modal.querySelector('#avDel'); if(del) del.addEventListener('click', excluir);
+
+    // v206: handlers do bloco Feedback IA
+    var fbGerar = modal.querySelector('#avFbGerar') || modal.querySelector('#avFbRegerar');
+    if (fbGerar){
+      fbGerar.addEventListener('click', async function(){
+        captura();
+        var clean = critList.filter(function(c){ return (c.label||'').trim()!=='' && c.nota>0; });
+        if (!clean.length){ toast('Dê nota em pelo menos um critério antes','error'); return; }
+        var mediaF = mediaAtual();
+        var alvoN = alvoLabel();
+        var periodoL = MESES[form.ref_month-1]+' '+form.ref_year;
+        setBusy(fbGerar, true);
+        fbGerar.textContent = '⏳ Gerando...';
+        try {
+          if (typeof gerarFeedbackIA === 'function'){
+            var r = await gerarFeedbackIA(clean, alvoN, periodoL, mediaF);
+            form.feedback_ia = (r && r.texto) || '';
+            form._fbModoEditar = false;  // começa em preview — Ligia clica Editar se quiser mexer
+            rerender(false);
+            if (r && r.fonte === 'local'){
+              toast('Feedback gerado (modo local)','info');
+            } else {
+              toast('✓ Feedback gerado','success');
+            }
+          } else {
+            toast('Módulo de feedback indisponível','error');
+            setBusy(fbGerar, false);
+          }
+        } catch(e){
+          console.error('[fb ia]', e);
+          toast('Erro ao gerar feedback','error');
+          setBusy(fbGerar, false);
+        }
+      });
+    }
+    var fbCopiar = modal.querySelector('#avFbCopiar');
+    if (fbCopiar){
+      fbCopiar.addEventListener('click', function(){
+        captura();
+        if (typeof feedbackIACopiar === 'function') feedbackIACopiar(form.feedback_ia||'');
+      });
+    }
+    var fbLimpar = modal.querySelector('#avFbLimpar');
+    if (fbLimpar){
+      fbLimpar.addEventListener('click', function(){
+        captura();
+        form.feedback_ia = '';
+        form._fbModoEditar = false;
+        rerender(false);
+      });
+    }
+    // v207: toggle editar/preview
+    var fbEditar = modal.querySelector('#avFbEditar');
+    if (fbEditar){
+      fbEditar.addEventListener('click', function(){
+        captura();
+        form._fbModoEditar = true;
+        rerender(false);
+        // Foca no textarea e vai pro final
+        setTimeout(function(){
+          var ta = modal.querySelector('#avFbTexto');
+          if (ta){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+        }, 50);
+      });
+    }
+    var fbPreview = modal.querySelector('#avFbPreview');
+    if (fbPreview){
+      fbPreview.addEventListener('click', function(){
+        captura();
+        form._fbModoEditar = false;
+        rerender(false);
+      });
+    }
+    // v207: escrever do zero (sem gerar antes)
+    var fbEscrever = modal.querySelector('#avFbEscrever');
+    if (fbEscrever){
+      fbEscrever.addEventListener('click', function(){
+        captura();
+        form.feedback_ia = '**Perfil Geral**\n\n\n\n**Pontos Fortes**\n\n\n\n**Oportunidades**\n\n\n\n**Próximos Passos**\n';
+        form._fbModoEditar = true;
+        rerender(false);
+        setTimeout(function(){
+          var ta = modal.querySelector('#avFbTexto');
+          if (ta){ ta.focus(); }
+        }, 50);
+      });
+    }
   }
   function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
   function next(){
@@ -31310,7 +31517,7 @@ function openAvaliacaoModal(aval, preset) {
     var pFim = form.ref_year+'-'+mm2+'-'+(lastDay<10?'0':'')+lastDay;
     var pLabel = MESES[form.ref_month-1]+' '+form.ref_year;
     var base={ sector:'lojas', tipo:tipo, store_unit_id:curLoja, member_id:memberId, periodo_label:pLabel, data_avaliacao:form.data_aval||today(), notas:notasToSave, nota_final:Math.round(media*10)/10, observacao:(form.obs||'').trim()||null, created_by: editing?(aval.created_by||ST.session.user.id):ST.session.user.id };
-    var full=Object.assign({}, base, { periodo_inicio:pIni, periodo_fim:pFim, pontos_fortes:(form.fortes||'').trim()||null, pontos_desenvolver:(form.desenvolver||'').trim()||null, plano_acao:(form.plano||'').trim()||null });
+    var full=Object.assign({}, base, { periodo_inicio:pIni, periodo_fim:pFim, pontos_fortes:(form.fortes||'').trim()||null, pontos_desenvolver:(form.desenvolver||'').trim()||null, plano_acao:(form.plano||'').trim()||null, feedback_ia:(form.feedback_ia||'').trim()||null });
     var btn=modal.querySelector('#avNext'); if(btn){ setBusy(btn,true); }
     function done(row){
       if(editing){ for(var i=0;i<ST.avaliacoes.length;i++) if(ST.avaliacoes[i].id===aval.id){ ST.avaliacoes[i]=Object.assign(ST.avaliacoes[i], row); break; } }
@@ -31348,6 +31555,8 @@ function avaliacaoDetalhe(a){
   if(a.pontos_fortes) blocks+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(a.pontos_fortes)+'</p></div>';
   if(a.pontos_desenvolver) blocks+='<div class="asum-block desenv"><h5>Pontos a desenvolver</h5><p>'+esc(a.pontos_desenvolver)+'</p></div>';
   if(a.plano_acao) blocks+='<div class="asum-block plano"><h5>Plano de ação (PDI)</h5><p>'+esc(a.plano_acao)+'</p></div>';
+  // v206: mostra feedback IA se existir
+  if(a.feedback_ia) blocks+='<div class="asum-block fb-ia"><h5>🤖 Feedback automático</h5><div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(a.feedback_ia):esc(a.feedback_ia))+'</div></div>';
   if(a.observacao) blocks+='<div class="asum-block"><h5>Observações</h5><p>'+esc(a.observacao)+'</p></div>';
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML='<div class="modal aval-wizard">'+
@@ -35920,6 +36129,514 @@ if (typeof globalThis !== 'undefined'){
   };
 }
 
+/* ============================================================
+   v206 · Feedback automático nas Avaliações
+   ============================================================
+   Gera um resumo em 4 blocos (Perfil / Fortes / Oportunidades /
+   Próximos Passos) baseado nas notas da avaliação.
+
+   Tenta chamar edge function /api/claude-feedback (futura).
+   Se falhar, usa heurística local INTELIGENTE que já entrega
+   valor usando os próprios dados da avaliação.
+   ============================================================ */
+
+var FEEDBACK_IA_STATE = { gerando:false, ultimoResultado:null };
+
+/* Sugestões contextuais por palavra-chave do critério */
+var FEEDBACK_SUGESTOES = {
+  venda:        'revisar técnicas de abordagem e fechamento com role-play semanal',
+  negocia:      'treinar negociação em casos reais da própria loja',
+  cliente:      'escutar gravações de atendimento + feedback direto do gestor',
+  atend:        'revisar scripts de atendimento e observar outro vendedor',
+  produto:      'estudo técnico semanal de 1 linha nova de produto',
+  conhec:       'avaliar com perguntas rápidas no final de cada semana',
+  meta:         'desdobrar meta mensal em meta semanal + check diário',
+  conver:       'mapear onde o cliente desiste e ajustar o pitch',
+  ticket:       'treinar cross-sell e kit combinado',
+  team:         'participar ativamente de reunião semanal da equipe',
+  equipe:       'participar ativamente de reunião semanal da equipe',
+  pontual:      'checkin facial diário + feedback imediato se atrasar',
+  horario:      'checkin facial diário + feedback imediato se atrasar',
+  comunic:      'treinar apresentação de 2min toda sexta',
+  apres:        'treinar apresentação de 2min toda sexta',
+  proat:        'propor 1 ação de melhoria por semana',
+  iniciat:      'propor 1 ação de melhoria por semana',
+  organiz:      'checklist diário com fotos antes/depois',
+  limpeza:      'checklist diário com fotos antes/depois',
+  caixa:        'conferência dupla diária + prestação de contas semanal',
+  crm:          'bloqueio de 15min no fim do turno pra atualizar registros',
+  sistema:      'bloqueio de 15min no fim do turno pra atualizar registros',
+  pos:          'ligação de follow-up em até 48h de toda venda',
+  follow:       'ligação de follow-up em até 48h de toda venda',
+  nps:          'pedir avaliação ativa ao cliente após 7 dias'
+};
+
+function _feedbackSugestaoPorCritério(label){
+  var low = String(label||'').toLowerCase();
+  var achada = null;
+  Object.keys(FEEDBACK_SUGESTOES).some(function(k){
+    if (low.indexOf(k) !== -1){ achada = FEEDBACK_SUGESTOES[k]; return true; }
+    return false;
+  });
+  return achada || 'definir plano de ação específico + check mensal';
+}
+
+/* Classificação local inteligente baseada em notas 1-5 */
+function _feedbackClassificaCriterios(critList){
+  var fortes = [], criticos = [], ok = [];
+  (critList||[]).forEach(function(c){
+    if (!c.nota) return;
+    var n = Number(c.nota) || 0;
+    if (n >= 4) fortes.push(c);
+    else if (n <= 2) criticos.push(c);
+    else ok.push(c);
+  });
+  // Ordena: fortes maior→menor, criticos menor→maior
+  fortes.sort(function(a,b){ return b.nota - a.nota; });
+  criticos.sort(function(a,b){ return a.nota - b.nota; });
+  return { fortes: fortes, criticos: criticos, ok: ok };
+}
+
+/* Monta feedback local — usado quando IA externa não está disponível */
+function gerarFeedbackLocal(critList, alvoNome, periodoLabel, media){
+  var cls = _feedbackClassificaCriterios(critList);
+  var mediaNum = Number(media)||0;
+
+  // PERFIL GERAL
+  var perfil;
+  if (mediaNum >= 4.5){
+    perfil = 'Desempenho excelente em ' + periodoLabel + '. ' + alvoNome + ' se destaca de forma consistente em quase todos os critérios avaliados, sendo uma referência positiva pra equipe. Manter ritmo e assumir mentoria dos pares é o próximo degrau.';
+  } else if (mediaNum >= 3.5){
+    perfil = 'Desempenho acima do esperado em ' + periodoLabel + '. ' + alvoNome + ' entrega resultados consistentes e tem pontos de destaque claros. Com ajustes em alguns critérios específicos, pode chegar ao nível excelente no próximo ciclo.';
+  } else if (mediaNum >= 2.5){
+    perfil = 'Desempenho dentro do esperado em ' + periodoLabel + '. ' + alvoNome + ' entrega o básico com qualidade razoável, mas há oportunidades claras de evolução. Um plano de desenvolvimento focado nos pontos críticos vai acelerar o crescimento.';
+  } else if (mediaNum >= 1.5){
+    perfil = 'Desempenho abaixo do esperado em ' + periodoLabel + '. Vários critérios estão em nível crítico e exigem atenção imediata. É importante entender se há questões externas afetando o resultado, antes de pensar em desligamento — e definir um plano de 30 dias com check semanal.';
+  } else {
+    perfil = 'Desempenho insatisfatório em ' + periodoLabel + '. Resultado preocupante na maioria dos critérios. Recomenda-se conversa individual urgente pra alinhar expectativas, entender o contexto, e definir se há condições pra recuperação ou se o melhor caminho é desligamento planejado.';
+  }
+
+  // PONTOS FORTES
+  var fortesTxt;
+  if (cls.fortes.length === 0){
+    fortesTxt = 'Nenhum critério avaliado com nota 4 ou 5 neste ciclo. Vale investigar com ' + alvoNome + ' o que não está permitindo o destaque — pode ser falta de desafio, de clareza nas expectativas ou de ferramentas.';
+  } else {
+    fortesTxt = 'Destaques do ciclo: ';
+    var fortesLista = cls.fortes.slice(0,3).map(function(c){
+      return '**' + c.label + '** (' + c.nota + '/5)';
+    });
+    fortesTxt += fortesLista.join(', ') + '. ';
+    if (cls.fortes.length >= 3){
+      fortesTxt += 'Esses pontos devem ser reconhecidos publicamente e usados como alavanca pra desenvolver os colegas nas mesmas áreas.';
+    } else {
+      fortesTxt += 'Reconhecer publicamente esses pontos ajuda a reforçar o comportamento e inspirar os colegas.';
+    }
+  }
+
+  // OPORTUNIDADES
+  var oportTxt;
+  if (cls.criticos.length === 0){
+    oportTxt = 'Nenhum critério em nível crítico (nota ≤ 2). Pra evoluir ainda mais, focar nos critérios com nota 3 e transformá-los em pontos fortes. Pequenos ajustes podem elevar a média próxima do nível excelente.';
+  } else {
+    oportTxt = 'Pontos que exigem atenção: ';
+    var critLista = cls.criticos.slice(0,3).map(function(c){
+      return '**' + c.label + '** (' + c.nota + '/5) — ' + _feedbackSugestaoPorCritério(c.label);
+    });
+    oportTxt += critLista.join('; ') + '.';
+  }
+
+  // PRÓXIMOS PASSOS
+  var passosTxt;
+  var passos = [];
+  if (cls.criticos.length > 0){
+    passos.push('Reunião individual de 30min esta semana pra alinhar o plano de ação nos pontos críticos');
+    passos.push('Definir metas específicas e mensuráveis pra cada ponto fraco (ex: "ticket médio +15% em 30 dias")');
+    passos.push('Check de progresso em 30 dias');
+  } else if (cls.fortes.length >= 3){
+    passos.push('Reconhecer publicamente os destaques na próxima reunião de equipe');
+    passos.push('Convidar ' + alvoNome + ' pra apoiar colegas nos critérios em que se destaca');
+    passos.push('Discutir ampliação de responsabilidades no próximo ciclo');
+  } else {
+    passos.push('Reunião individual pra alinhar expectativas e definir prioridades do próximo ciclo');
+    passos.push('Transformar os critérios de nota 3 em pontos fortes (meta clara + prazo)');
+    passos.push('Reavaliar em 60 dias');
+  }
+  passosTxt = passos.map(function(p,i){ return (i+1)+'. '+p; }).join('\n');
+
+  return '**Perfil Geral**\n' + perfil + '\n\n' +
+         '**Pontos Fortes**\n' + fortesTxt + '\n\n' +
+         '**Oportunidades**\n' + oportTxt + '\n\n' +
+         '**Próximos Passos**\n' + passosTxt;
+}
+
+/* Tenta API Claude (edge function futura) → fallback local */
+async function gerarFeedbackIA(critList, alvoNome, periodoLabel, media){
+  // Tenta edge function (quando existir)
+  try {
+    if (typeof sb !== 'undefined' && sb.functions && sb.functions.invoke){
+      var payload = { alvo: alvoNome, periodo: periodoLabel, media: media, criterios: critList };
+      var { data, error } = await sb.functions.invoke('claude-feedback-avaliacao', { body: payload });
+      if (!error && data && data.feedback){
+        return { fonte: 'ia', texto: data.feedback };
+      }
+    }
+  } catch(e){
+    // Edge function não existe ainda ou falhou — vai pro fallback
+  }
+
+  // Fallback: heurística local inteligente
+  var txt = gerarFeedbackLocal(critList, alvoNome, periodoLabel, media);
+  return { fonte: 'local', texto: txt };
+}
+
+/* Formata o texto markdown-simples pra HTML (negrito + quebras) */
+function feedbackIAFormatarHTML(texto){
+  if (!texto) return '';
+  var h = esc(texto);
+  // **negrito** vira <b>
+  h = h.replace(/\*\*(.+?)\*\*/g, '<b style="color:var(--accent, #3B6FF7)">$1</b>');
+  // Quebras duplas = parágrafos
+  h = h.replace(/\n\n+/g, '</p><p>');
+  // Quebras simples = <br>
+  h = h.replace(/\n/g, '<br>');
+  return '<p>' + h + '</p>';
+}
+
+/* Helper pra copiar o texto pro clipboard */
+function feedbackIACopiar(texto){
+  if (!texto) return;
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(texto).then(function(){
+        if (typeof toast==='function') toast('✓ Feedback copiado', 'success');
+      });
+    } else {
+      // Fallback
+      var ta = document.createElement('textarea');
+      ta.value = texto;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (typeof toast==='function') toast('✓ Copiado', 'success');
+    }
+  } catch(e){
+    if (typeof toast==='function') toast('Erro ao copiar', 'error');
+  }
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis.FEEDBACK_IA_STATE = FEEDBACK_IA_STATE;
+  globalThis.gerarFeedbackIA = gerarFeedbackIA;
+  globalThis.gerarFeedbackLocal = gerarFeedbackLocal;
+  globalThis.feedbackIAFormatarHTML = feedbackIAFormatarHTML;
+  globalThis.feedbackIACopiar = feedbackIACopiar;
+  globalThis._feedbackSugestaoPorCritério = _feedbackSugestaoPorCritério;
+  globalThis._feedbackClassificaCriterios = _feedbackClassificaCriterios;
+}
+
+/* ============================================================
+   v208 · Agenda Semanal do Gestor
+   ============================================================
+   Cada gestor define qual loja/local visita cada dia da semana.
+   Widget "🏪 Hoje você está em X" na home + modal de configuração.
+   ============================================================ */
+
+var AGENDA_GESTOR_STATE = { loaded:false, loading:false };
+var AGENDA_DIAS_NOMES = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+var AGENDA_DIAS_CURTOS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+var AGENDA_COR_PADRAO = '#8B5CF6';  // roxo pra escritório/flex quando sem loja
+
+/* Carrega do banco pra o user atual */
+function agendaGestorCarregar(cb){
+  if (!ST.session || !ST.session.user){ if (cb) cb(); return; }
+  if (AGENDA_GESTOR_STATE.loading){ if (cb) cb(); return; }
+  AGENDA_GESTOR_STATE.loading = true;
+  sb.from('malba_agenda_gestor').select('*').eq('user_id', ST.session.user.id).then(function(r){
+    AGENDA_GESTOR_STATE.loading = false;
+    if (r.error){
+      // Tabela não existe ainda? Permite fallback silencioso.
+      console.warn('[agenda_gestor]', r.error);
+      ST.agendaGestor = [];
+      AGENDA_GESTOR_STATE.loaded = true;
+      if (cb) cb();
+      return;
+    }
+    ST.agendaGestor = r.data || [];
+    AGENDA_GESTOR_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+/* Retorna o registro da agenda pra um dia da semana (0-6), ou null */
+function agendaGestorDoDia(weekday){
+  if (!ST.agendaGestor) return null;
+  for (var i = 0; i < ST.agendaGestor.length; i++){
+    if (Number(ST.agendaGestor[i].weekday) === Number(weekday)){
+      return ST.agendaGestor[i];
+    }
+  }
+  return null;
+}
+
+/* Monta objeto {nome, cor, bg, obs, store, label} pro dia */
+function agendaGestorInfo(weekday){
+  var reg = agendaGestorDoDia(weekday);
+  if (!reg) return null;
+  var store = null;
+  if (reg.store_unit_id){
+    store = (ST.storeUnits||[]).filter(function(s){
+      return String(s.id) === String(reg.store_unit_id);
+    })[0] || null;
+  }
+  var nome = reg.label || (store ? store.name : 'Dia livre');
+  var cor = reg.cor || (store && store.cor) || AGENDA_COR_PADRAO;
+  var bg;
+  // Converte hex pra rgba
+  try {
+    var h = cor.replace('#','');
+    var r = parseInt(h.substr(0,2),16);
+    var g = parseInt(h.substr(2,2),16);
+    var b = parseInt(h.substr(4,2),16);
+    bg = 'rgba('+r+','+g+','+b+',0.12)';
+  } catch(e){ bg = 'rgba(139,92,246,0.12)'; }
+  return {
+    nome: nome,
+    cor: cor,
+    bg: bg,
+    obs: reg.obs || '',
+    store: store,
+    reg: reg
+  };
+}
+
+/* Salva/atualiza um dia (upsert) */
+function agendaGestorSalvar(weekday, dados, cb){
+  if (!ST.session || !ST.session.user){ if (cb) cb(false); return; }
+  var reg = agendaGestorDoDia(weekday);
+  var payload = {
+    user_id: ST.session.user.id,
+    weekday: Number(weekday),
+    store_unit_id: dados.store_unit_id || null,
+    label: dados.label || null,
+    cor: dados.cor || null,
+    obs: dados.obs || null,
+    updated_at: new Date().toISOString()
+  };
+  if (reg && reg.id){
+    sb.from('malba_agenda_gestor').update(payload).eq('id', reg.id).then(function(r){
+      if (r.error){ if (cb) cb(false, r.error); return; }
+      // Atualiza local
+      Object.keys(payload).forEach(function(k){ reg[k] = payload[k]; });
+      if (cb) cb(true);
+    });
+  } else {
+    sb.from('malba_agenda_gestor').insert(payload).select().then(function(r){
+      if (r.error){ if (cb) cb(false, r.error); return; }
+      if (!ST.agendaGestor) ST.agendaGestor = [];
+      if (r.data && r.data[0]) ST.agendaGestor.push(r.data[0]);
+      if (cb) cb(true);
+    });
+  }
+}
+
+/* Remove um dia (volta a ser "livre") */
+function agendaGestorRemover(weekday, cb){
+  var reg = agendaGestorDoDia(weekday);
+  if (!reg || !reg.id){ if (cb) cb(true); return; }
+  sb.from('malba_agenda_gestor').delete().eq('id', reg.id).then(function(r){
+    if (r.error){ if (cb) cb(false, r.error); return; }
+    ST.agendaGestor = (ST.agendaGestor||[]).filter(function(x){ return x.id !== reg.id; });
+    if (cb) cb(true);
+  });
+}
+
+/* v208: elegibilidade — só mostra pra gestor+ do setor lojas, ou admin geral */
+function agendaGestorElegivel(){
+  var s = ST.session;
+  if (!s || !s.user) return false;
+  if (typeof isSuper === 'function' && isSuper(s)) return true;
+  if (typeof isAdmin === 'function' && isAdmin(s)){
+    // Admin de qualquer setor pode ter agenda; mas priorizar lojas
+    return true;
+  }
+  return false;
+}
+
+/* Widget pra home — "Hoje você está em X" */
+function agendaGestorWidgetHoje(){
+  if (!agendaGestorElegivel()) return '';
+  var hoje = new Date();
+  var dow = hoje.getDay();
+  var info = agendaGestorInfo(dow);
+
+  var corpo;
+  if (info){
+    corpo = '<div class="agd-hoje-row">'+
+      '<div class="agd-hoje-ico" style="background:'+info.bg+';border-color:'+info.cor+'">🏪</div>'+
+      '<div class="agd-hoje-txt">'+
+        '<div class="agd-hoje-lbl">Hoje você está em</div>'+
+        '<div class="agd-hoje-val" style="color:'+info.cor+'">'+esc(info.nome)+'</div>'+
+        (info.obs ? '<div class="agd-hoje-obs">'+esc(info.obs)+'</div>' : '')+
+      '</div>'+
+      '<button class="btn btn-ghost btn-sm agd-btn-cfg" onclick="openAgendaGestorConfigModal()" title="Editar agenda semanal">⚙️</button>'+
+    '</div>'+
+    '<div class="agd-semana">'+
+      AGENDA_DIAS_CURTOS.map(function(d, i){
+        var inf = agendaGestorInfo(i);
+        var hoy = (i === dow);
+        var vazia = !inf;
+        return '<div class="agd-dia '+(hoy?'agd-hoy':'')+' '+(vazia?'agd-vazia':'')+'" '+
+          (inf ? 'style="--cor:'+inf.cor+'" title="'+esc(inf.nome)+'"' : 'title="Livre"')+
+          '><small>'+d+'</small>'+
+          (inf ? '<b>'+esc((inf.nome||'').split(' ')[0].slice(0,8))+'</b>' : '<b>—</b>')+
+        '</div>';
+      }).join('')+
+    '</div>';
+  } else {
+    corpo = '<div class="agd-hoje-row">'+
+      '<div class="agd-hoje-ico" style="background:rgba(107,114,128,0.1);border-color:#9CA3AF">📅</div>'+
+      '<div class="agd-hoje-txt">'+
+        '<div class="agd-hoje-lbl">Agenda da semana</div>'+
+        '<div class="agd-hoje-val" style="color:var(--u-text2)">Nenhum dia configurado</div>'+
+      '</div>'+
+      '<button class="btn btn-primary btn-sm" onclick="openAgendaGestorConfigModal()">Configurar</button>'+
+    '</div>';
+  }
+
+  return '<div class="card agd-card">'+
+    '<div class="card-title" style="margin-bottom:10px">📅 Agenda da semana</div>'+
+    corpo +
+  '</div>';
+}
+
+/* Modal de configuração — 7 linhas (um por dia), cada uma com select de loja + label + obs */
+function openAgendaGestorConfigModal(){
+  var modal = document.createElement('div');
+  modal.className = 'modal-bg';
+  modal.id = 'agendaGestorModal';
+
+  modal.innerHTML = _agdRenderConfigHTML();
+  document.body.appendChild(modal);
+  _agdBindConfig(modal);
+}
+
+function _agdRenderConfigHTML(){
+  var lojas = ST.storeUnits || [];
+  var lojaOpts = '<option value="">— Livre / Nenhuma loja —</option>' +
+    lojas.map(function(s){
+      return '<option value="'+esc(s.id)+'">'+esc(s.name)+'</option>';
+    }).join('');
+
+  var linhas = AGENDA_DIAS_NOMES.map(function(nome, dow){
+    var info = agendaGestorInfo(dow);
+    var selId = info && info.store ? info.store.id : '';
+    var selLabel = (info && info.reg && info.reg.label) ? info.reg.label : '';
+    var selObs = (info && info.obs) ? info.obs : '';
+    var selCor = (info && info.reg && info.reg.cor) ? info.reg.cor : (info && info.cor ? info.cor : AGENDA_COR_PADRAO);
+    return '<div class="agd-row" data-dow="'+dow+'">'+
+      '<div class="agd-row-nome">'+esc(nome)+'</div>'+
+      '<select class="agd-sel-loja" data-dow="'+dow+'">'+
+        lojaOpts.replace('value="'+esc(selId)+'"', 'value="'+esc(selId)+'" selected')+
+      '</select>'+
+      '<input type="text" class="agd-inp-label" data-dow="'+dow+'" placeholder="Ou um rótulo custom (ex: Escritório)" value="'+esc(selLabel)+'">'+
+      '<input type="color" class="agd-inp-cor" data-dow="'+dow+'" value="'+esc(selCor)+'" title="Cor">'+
+      '<input type="text" class="agd-inp-obs" data-dow="'+dow+'" placeholder="Observação (opcional)" value="'+esc(selObs)+'">'+
+      '<button class="btn btn-ghost btn-sm agd-btn-clear" data-dow="'+dow+'" title="Limpar este dia">🗑</button>'+
+    '</div>';
+  }).join('');
+
+  return '<div class="modal agd-modal">'+
+    '<div class="agd-head">'+
+      '<div>'+
+        '<h3>📅 Minha agenda semanal</h3>'+
+        '<p>Defina qual loja você visita em cada dia. O dia atual aparece destacado na home.</p>'+
+      '</div>'+
+      '<button class="fx-close" id="agdClose" title="Fechar">×</button>'+
+    '</div>'+
+    '<div class="agd-rows">'+linhas+'</div>'+
+    '<div class="agd-foot">'+
+      '<button class="btn btn-ghost" id="agdCancelar">Cancelar</button>'+
+      '<button class="btn btn-primary" id="agdSalvar">💾 Salvar agenda</button>'+
+    '</div>'+
+  '</div>';
+}
+
+function _agdBindConfig(modal){
+  function close(){ if (modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.querySelector('#agdClose').addEventListener('click', close);
+  modal.querySelector('#agdCancelar').addEventListener('click', close);
+  modal.addEventListener('click', function(e){ if (e.target === modal) close(); });
+
+  // Limpar dia
+  var clears = modal.querySelectorAll('.agd-btn-clear');
+  for (var i = 0; i < clears.length; i++){
+    clears[i].addEventListener('click', function(){
+      var dow = Number(this.getAttribute('data-dow'));
+      modal.querySelector('.agd-sel-loja[data-dow="'+dow+'"]').value = '';
+      modal.querySelector('.agd-inp-label[data-dow="'+dow+'"]').value = '';
+      modal.querySelector('.agd-inp-obs[data-dow="'+dow+'"]').value = '';
+    });
+  }
+
+  // Salvar tudo
+  modal.querySelector('#agdSalvar').addEventListener('click', async function(){
+    var btn = this;
+    btn.disabled = true;
+    btn.textContent = '💾 Salvando...';
+
+    var promises = [];
+    for (var dow = 0; dow < 7; dow++){
+      var storeId = modal.querySelector('.agd-sel-loja[data-dow="'+dow+'"]').value || null;
+      var label = (modal.querySelector('.agd-inp-label[data-dow="'+dow+'"]').value || '').trim();
+      var cor = modal.querySelector('.agd-inp-cor[data-dow="'+dow+'"]').value || null;
+      var obs = (modal.querySelector('.agd-inp-obs[data-dow="'+dow+'"]').value || '').trim();
+
+      // Se dia está completamente vazio → remover
+      if (!storeId && !label && !obs){
+        promises.push(new Promise(function(resolve){
+          agendaGestorRemover(dow, function(){ resolve(); });
+        }));
+      } else {
+        promises.push(new Promise((function(w, sid, lbl, c, o){
+          return function(resolve){
+            agendaGestorSalvar(w, { store_unit_id: sid, label: lbl, cor: c, obs: o }, function(){ resolve(); });
+          };
+        })(dow, storeId, label, cor, obs)));
+      }
+    }
+
+    try {
+      await Promise.all(promises);
+      if (typeof toast === 'function') toast('✓ Agenda salva', 'success');
+      close();
+      if (typeof renderPage === 'function') renderPage();
+    } catch(e){
+      console.error('[agenda save]', e);
+      if (typeof toast === 'function') toast('Erro ao salvar', 'error');
+      btn.disabled = false;
+      btn.textContent = '💾 Salvar agenda';
+    }
+  });
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis._agdRenderConfigHTML = _agdRenderConfigHTML;
+  globalThis.AGENDA_GESTOR_STATE = AGENDA_GESTOR_STATE;
+  globalThis.AGENDA_DIAS_NOMES = AGENDA_DIAS_NOMES;
+  globalThis.AGENDA_DIAS_CURTOS = AGENDA_DIAS_CURTOS;
+  globalThis.agendaGestorCarregar = agendaGestorCarregar;
+  globalThis.agendaGestorDoDia = agendaGestorDoDia;
+  globalThis.agendaGestorInfo = agendaGestorInfo;
+  globalThis.agendaGestorSalvar = agendaGestorSalvar;
+  globalThis.agendaGestorRemover = agendaGestorRemover;
+  globalThis.agendaGestorElegivel = agendaGestorElegivel;
+  globalThis.agendaGestorWidgetHoje = agendaGestorWidgetHoje;
+  globalThis.openAgendaGestorConfigModal = openAgendaGestorConfigModal;
+}
+
 var ONB_STATE = null;
 
 function onbInit(){
@@ -38863,6 +39580,7 @@ function perfilDesempenhoHTML(){
     if(latest.pontos_fortes) fb+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(latest.pontos_fortes)+'</p></div>';
     if(latest.pontos_desenvolver) fb+='<div class="asum-block desenv"><h5>A desenvolver</h5><p>'+esc(latest.pontos_desenvolver)+'</p></div>';
     if(latest.plano_acao) fb+='<div class="asum-block plano"><h5>Plano de ação</h5><p>'+esc(latest.plano_acao)+'</p></div>';
+    if(latest.feedback_ia) fb+='<div class="asum-block fb-ia"><h5>🤖 Feedback automático</h5><div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(latest.feedback_ia):esc(latest.feedback_ia))+'</div></div>';
     diagCard='<div class="profile-card"><h3 class="profile-sec-h">Meu diagnóstico · '+(latest.periodo_label?esc(latest.periodo_label):fmtDate(latest.data_avaliacao))+'</h3>'+
       '<div class="aval-summary"><div class="asum-score" style="border-color:'+ld.color+'"><span class="asum-num" style="color:'+ld.color+'">'+lnota.toFixed(1)+'</span><span class="asum-of">de 5</span></div><div class="asum-diag">'+diagBadge(lnota)+'<p>'+ld.rec+'</p></div></div>'+
       critBarsHTML(lArr)+fb+'</div>';
@@ -39336,6 +40054,9 @@ function buildCommands() {
   cmds.push({ cat:'Ir para', label:'💸 Reembolsos', icon:'dollar', run:function(){ ST.page='reembolsos'; navigate(ST.sector+'/reembolsos'); renderPage(); } });
   cmds.push({ cat:'Ir para', label:'⏰ Bater Ponto', icon:'clock', run:function(){ ST.page='ponto'; navigate(ST.sector+'/ponto'); renderPage(); } });
   cmds.push({ cat:'Ir para', label:'🎭 Tentativas Faciais', icon:'shield', run:function(){ ST.page='facial-log'; navigate(ST.sector+'/facial-log'); renderPage(); } });
+  if (typeof agendaGestorElegivel === 'function' && agendaGestorElegivel()){
+    cmds.push({ cat:'Ações', label:'📅 Editar agenda semanal', icon:'calendar', run:function(){ if (typeof openAgendaGestorConfigModal==='function') openAgendaGestorConfigModal(); } });
+  }
   cmds.push({ cat:'Ações', label:'Solicitar reembolso', icon:'plus', run:function(){ if(typeof openReembSolicitarModal==='function') openReembSolicitarModal(); } });
   cmds.push({ cat:'Ações', label:'Enviar atestado médico', icon:'plus', run:function(){ if(typeof openAtestadoSolicitarModal==='function') openAtestadoSolicitarModal(); } });
   // v197: Ficha 360° do próprio user
