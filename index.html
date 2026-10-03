@@ -13186,7 +13186,8 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 .agd-dia.agd-vazia b{color:var(--u-text3);font-weight:400}
 .agd-dia.agd-hoy{background:rgba(59,111,247,0.08);border-color:var(--cor,#3B6FF7);border-width:2px}
 .agd-dia.agd-hoy b{color:var(--cor,#3B6FF7)}
-.agd-modal{max-width:800px;width:95vw;background:var(--u-bg-card);border-radius:16px;padding:0;display:flex;flex-direction:column;max-height:90vh}
+#agendaGestorModal{z-index:9999 !important}
+.agd-modal{max-width:800px;width:95vw;background:var(--u-bg-card);border-radius:16px;padding:0;display:flex;flex-direction:column;max-height:90vh;position:relative;z-index:10000}
 .agd-head{padding:20px;border-bottom:1px solid var(--u-border);display:flex;justify-content:space-between;align-items:center}
 .agd-head h3{margin:0;font-family:'Sora',sans-serif;font-size:18px;color:var(--u-text1)}
 .agd-head p{margin:4px 0 0;font-size:13px;color:var(--u-text2)}
@@ -13208,6 +13209,97 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
   .agd-dia b{font-size:10px}
 }
 /* ===== fim v208 ===== */
+
+
+/* ===== v209 · Plano de Ação da Gestora ===== */
+.gp-page{max-width:1200px;margin:0 auto;padding:20px}
+.gp-head{margin-bottom:16px}
+.gp-head h2{margin:0;font-family:'Sora',sans-serif;color:var(--u-text1);font-size:22px}
+.gp-head p{margin:4px 0 0;color:var(--u-text2);font-size:13px}
+.gp-empty{text-align:center;padding:40px;color:var(--u-text3);font-style:italic}
+
+.gp-tabs{display:flex;gap:4px;background:var(--u-bg-alt);border:1px solid var(--u-border);border-radius:10px;padding:4px;margin-bottom:16px}
+.gp-tab{flex:1;padding:10px 8px;border:none;background:transparent;color:var(--u-text2);font-family:'Sora',sans-serif;font-size:13px;font-weight:600;border-radius:7px;cursor:pointer;transition:all .15s}
+.gp-tab:hover{color:var(--u-text1)}
+.gp-tab-active{background:var(--u-bg-card);color:var(--u-text1);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+
+.gp-content{background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:12px;padding:20px}
+.gp-cal-wrap{display:grid;grid-template-columns:1fr 340px;gap:20px}
+
+.gp-cal-nav{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.gp-cal-mes{font-family:'Sora',sans-serif;font-size:17px;font-weight:700;color:var(--u-text1);flex:1}
+.gp-nav-btn{width:34px;height:34px;border-radius:8px;background:var(--u-bg-alt);border:1px solid var(--u-border);color:var(--u-text1);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gp-nav-btn:hover{background:var(--u-bg-card)}
+.gp-nav-hoje{width:auto;padding:0 14px;font-size:12px;font-weight:700}
+
+.gp-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px}
+.gp-cal-dow{text-align:center;font-size:10px;font-weight:700;color:var(--u-text3);text-transform:uppercase;letter-spacing:1px;padding:6px 0}
+.gp-cal-dia{aspect-ratio:1;border-radius:8px;background:var(--u-bg-alt);border:1px solid var(--u-border);padding:4px;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;transition:all .15s;min-width:0;overflow:hidden}
+.gp-cal-dia:hover{border-color:var(--u-accent,#3B6FF7)}
+.gp-dia-empty{background:transparent;border-color:transparent;cursor:default}
+.gp-dia-empty:hover{border-color:transparent}
+.gp-dia-num{font-size:12px;font-weight:700;color:var(--u-text1);line-height:1}
+.gp-dia-hoje{background:rgba(59,111,247,0.12);border-color:var(--u-accent,#3B6FF7);border-width:2px}
+.gp-dia-hoje .gp-dia-num{color:var(--u-accent,#3B6FF7)}
+.gp-dia-tem{background:var(--u-bg-card)}
+.gp-dia-sel{background:var(--u-accent,#3B6FF7)!important;border-color:var(--u-accent,#3B6FF7)!important}
+.gp-dia-sel .gp-dia-num{color:#fff}
+.gp-dia-dots{display:flex;gap:2px;flex-wrap:wrap;justify-content:center;margin-top:2px}
+.gp-dot{width:5px;height:5px;border-radius:50%}
+.gp-dot[data-done]{opacity:0.4}
+.gp-dia-badge{position:absolute;top:2px;right:3px;background:#EF4444;color:#fff;font-size:9px;font-weight:800;min-width:14px;height:14px;padding:0 3px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+
+.gp-painel-dia{background:var(--u-bg-alt);border:1px solid var(--u-border);border-radius:10px;padding:16px;max-height:600px;overflow-y:auto}
+.gp-painel-empty{text-align:center;color:var(--u-text3);font-style:italic;padding:40px 10px}
+.gp-painel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--u-border)}
+.gp-painel-head h3{margin:0;font-family:'Sora',sans-serif;font-size:15px;color:var(--u-text1)}
+.gp-painel-head small{font-size:11px;color:var(--u-text3)}
+.gp-painel-vazio{text-align:center;color:var(--u-text3);font-size:13px;padding:16px 0;font-style:italic}
+
+.gp-task,.gp-acao,.gp-result{display:flex;align-items:center;gap:10px;padding:10px;background:var(--u-bg-card);border:1px solid var(--u-border);border-radius:8px;margin-bottom:6px}
+.gp-task-done,.gp-acao-done{opacity:0.55}
+.gp-task-done .gp-task-tit,.gp-acao-done .gp-acao-tit{text-decoration:line-through;color:var(--u-text3)}
+.gp-task-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--u-border);background:var(--u-bg-alt);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:12px;padding:0}
+.gp-task-done .gp-task-check,.gp-acao-done .gp-task-check{background:#16A34A;border-color:#16A34A}
+.gp-task-body{flex:1;min-width:0}
+.gp-task-tit{font-size:13px;font-weight:600;color:var(--u-text1)}
+.gp-task-obs{font-size:11px;color:var(--u-text2);margin-top:2px;font-style:italic}
+.gp-task-del{background:none;border:none;color:var(--u-text3);font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0}
+.gp-task-del:hover{color:#EF4444}
+
+.gp-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--u-border)}
+.gp-cats-row{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.gp-cat-btn{padding:4px 10px;border-radius:12px;border:1.5px solid var(--u-border);background:var(--u-bg-card);color:var(--u-text3);font-size:11px;font-weight:600;cursor:pointer}
+.gp-cat-sel{border-color:var(--cor);color:var(--cor);background:rgba(0,0,0,0.05)}
+
+.gp-add-row{display:flex;gap:6px}
+.gp-add-row input{flex:1;padding:8px 12px;border:1px solid var(--u-border);border-radius:7px;background:var(--u-bg-card);color:var(--u-text1);font-family:inherit;font-size:13px}
+
+.gp-resumo-mes{margin-top:14px;padding:10px;background:var(--u-bg-alt);border-radius:8px}
+.gp-resumo-barra small{display:block;font-size:11px;color:var(--u-text2);margin-bottom:4px}
+.gp-prog-track{height:6px;background:var(--u-bg-card);border-radius:3px;overflow:hidden}
+.gp-prog-fill{height:100%;background:#16A34A;transition:width .4s}
+.gp-legenda{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:11px}
+.gp-leg-item{font-weight:600}
+
+.gp-acoes-head,.gp-acoes-hint{margin-bottom:14px}
+.gp-acoes-hint{padding:10px;background:rgba(59,111,247,0.06);border-left:3px solid #3B6FF7;border-radius:4px;font-size:12px;color:var(--u-text2);line-height:1.5}
+.gp-acao-tit,.gp-result-tit{flex:1;background:none;border:none;color:var(--u-text1);font-family:inherit;font-size:14px;font-weight:600;outline:none;padding:4px 0}
+.gp-acao-tit:focus,.gp-result-tit:focus{background:var(--u-bg-alt);padding:4px 8px;border-radius:4px}
+
+.gp-result-emoji{font-size:20px;flex-shrink:0}
+
+.gp-obs-box{margin-top:20px;padding:14px;background:var(--u-bg-alt);border-radius:8px}
+.gp-obs-box label{display:block;font-size:12px;font-weight:700;color:var(--u-text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.gp-obs-box textarea{width:100%;padding:10px;border:1px solid var(--u-border);border-radius:6px;background:var(--u-bg-card);color:var(--u-text1);font-family:inherit;font-size:13px;resize:vertical}
+
+@media (max-width:900px){
+  .gp-cal-wrap{grid-template-columns:1fr}
+  .gp-painel-dia{max-height:none}
+  .gp-cal-dia{padding:3px}
+  .gp-dia-num{font-size:11px}
+}
+/* ===== fim v209 ===== */
 
 </style>
 </head>
@@ -13232,7 +13324,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v208';
+var APP_BUILD = 'v210';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13626,6 +13718,7 @@ function loadData() {
     try { reembCarregar(); } catch(e){ console.error('[reemb load]', e); }
     try { facialLogCarregar(); } catch(e){ console.error('[flog load]', e); }
     try { agendaGestorCarregar(); } catch(e){ console.error('[agenda gest]', e); }
+    try { gestorPlanoCarregar(); } catch(e){ console.error('[gestor plano]', e); }
     // v70: gera automaticamente as ocorrências de hoje das rotinas (regra -> tarefas do dia). Fire-and-forget: re-renderiza se criar algo.
     try { materializarRecorrencias().then(function(created){ if(created) renderPage(); }); } catch(e){ console.error(e); }
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
@@ -35345,7 +35438,15 @@ function facialLogCarregar(cb){
   FACIAL_LOG_STATE.loading = true;
   sb.from('malba_facial_log').select('*').order('attempted_at', {ascending:false}).limit(500).then(function(r){
     FACIAL_LOG_STATE.loading = false;
-    if (r.error){ console.error('[facial_log load]', r.error); if (cb) cb(); return; }
+    if (r.error){
+      var msgFl = String(r.error.message||r.error||'');
+      if (msgFl.indexOf('does not exist') === -1 && msgFl.indexOf('relation') === -1){
+        console.error('[facial_log load]', r.error);
+      }
+      ST.facialLog = [];
+      if (cb) cb();
+      return;
+    }
     ST.facialLog = r.data || [];
     FACIAL_LOG_STATE.loaded = true;
     if (cb) cb();
@@ -36356,8 +36457,11 @@ function agendaGestorCarregar(cb){
   sb.from('malba_agenda_gestor').select('*').eq('user_id', ST.session.user.id).then(function(r){
     AGENDA_GESTOR_STATE.loading = false;
     if (r.error){
-      // Tabela não existe ainda? Permite fallback silencioso.
-      console.warn('[agenda_gestor]', r.error);
+      // Tabela não existe ainda? Fallback totalmente silencioso.
+      var msg = String(r.error.message||r.error||'');
+      if (msg.indexOf('does not exist') === -1 && msg.indexOf('relation') === -1){
+        console.warn('[agenda_gestor]', r.error);
+      }
       ST.agendaGestor = [];
       AGENDA_GESTOR_STATE.loaded = true;
       if (cb) cb();
@@ -36513,6 +36617,17 @@ function agendaGestorWidgetHoje(){
 
 /* Modal de configuração — 7 linhas (um por dia), cada uma com select de loja + label + obs */
 function openAgendaGestorConfigModal(){
+  // v209: garantir que modal anterior é removido antes de abrir novo
+  var antigo = document.getElementById('agendaGestorModal');
+  if (antigo && antigo.parentNode) antigo.parentNode.removeChild(antigo);
+  // Remover também qualquer toast vermelho persistente
+  var toastWrap = document.getElementById('toastWrap');
+  if (toastWrap){
+    var toastsErro = toastWrap.querySelectorAll('.toast.error');
+    for (var i = 0; i < toastsErro.length; i++){
+      if (toastsErro[i].parentNode) toastsErro[i].parentNode.removeChild(toastsErro[i]);
+    }
+  }
   var modal = document.createElement('div');
   modal.className = 'modal-bg';
   modal.id = 'agendaGestorModal';
@@ -36635,6 +36750,634 @@ if (typeof globalThis !== 'undefined'){
   globalThis.agendaGestorElegivel = agendaGestorElegivel;
   globalThis.agendaGestorWidgetHoje = agendaGestorWidgetHoje;
   globalThis.openAgendaGestorConfigModal = openAgendaGestorConfigModal;
+}
+
+/* ============================================================
+   v209 · Plano de Ação da Gestora (Diário de Bordo)
+   ============================================================
+   Visão pessoal do gestor com 3 abas:
+   - 📅 Calendário: tarefas por dia, coloridas por categoria
+   - 🎯 Ações do Mês: objetivos mensais estratégicos
+   - 🏆 Resultados: wins + observações do mês
+   ============================================================ */
+
+var GP_STATE = { loaded:false, loading:false, tab:'cal', mes:null, ano:null, selDate:null, newCat:'admin' };
+
+var GP_CATEGORIAS = [
+  { id:'visita',    label:'🏪 Visita',     cor:'#C8965A' },
+  { id:'reuniao',   label:'👥 Reunião',    cor:'#5BA3D4' },
+  { id:'avaliacao', label:'⭐ Avaliação',  cor:'#A87FD4' },
+  { id:'admin',     label:'📋 Admin',      cor:'#4CAF78' },
+  { id:'fornec',    label:'📦 Fornecedor', cor:'#D4B041' },
+  { id:'urgente',   label:'🔴 Urgente',    cor:'#E05555' }
+];
+
+var GP_MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+var GP_DIAS_SEMANA = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+function _gpInitMesAno(){
+  if (GP_STATE.mes === null){
+    var d = new Date();
+    GP_STATE.mes = d.getMonth();
+    GP_STATE.ano = d.getFullYear();
+  }
+}
+
+function _gpMesAnoStr(ano, mes){ return ano + '-' + String(mes+1).padStart(2,'0'); }
+
+function _gpDataStr(ano, mes, dia){
+  return ano + '-' + String(mes+1).padStart(2,'0') + '-' + String(dia).padStart(2,'0');
+}
+
+function _gpCategoriaMeta(catId){
+  for (var i = 0; i < GP_CATEGORIAS.length; i++){
+    if (GP_CATEGORIAS[i].id === catId) return GP_CATEGORIAS[i];
+  }
+  return GP_CATEGORIAS[3]; // admin fallback
+}
+
+/* Carrega todos os registros do user atual */
+function gestorPlanoCarregar(cb){
+  if (!ST.session || !ST.session.user){ if (cb) cb(); return; }
+  if (GP_STATE.loading){ if (cb) cb(); return; }
+  GP_STATE.loading = true;
+  sb.from('malba_gestor_plano').select('*').eq('user_id', ST.session.user.id).order('created_at', {ascending:false}).then(function(r){
+    GP_STATE.loading = false;
+    if (r.error){
+      var msgGp = String(r.error.message||r.error||'');
+      if (msgGp.indexOf('does not exist') === -1 && msgGp.indexOf('relation') === -1){
+        console.warn('[gestor_plano]', r.error);
+      }
+      ST.gestorPlano = [];
+      GP_STATE.loaded = true;
+      if (cb) cb();
+      return;
+    }
+    ST.gestorPlano = r.data || [];
+    GP_STATE.loaded = true;
+    if (cb) cb();
+  });
+}
+
+function gestorPlanoFiltrar(tipo, mesAno, data){
+  var arr = ST.gestorPlano || [];
+  arr = arr.filter(function(x){ return x.tipo === tipo; });
+  if (mesAno) arr = arr.filter(function(x){ return x.mes_ano === mesAno; });
+  if (data) arr = arr.filter(function(x){ return x.data === data; });
+  return arr;
+}
+
+function gestorPlanoAdicionar(dados, cb){
+  if (!ST.session || !ST.session.user){ if (cb) cb(false); return; }
+  var payload = {
+    user_id: ST.session.user.id,
+    tipo: dados.tipo,
+    data: dados.data || null,
+    mes_ano: dados.mes_ano,
+    categoria: dados.categoria || null,
+    titulo: dados.titulo,
+    obs: dados.obs || null,
+    cor: dados.cor || null,
+    done: false
+  };
+  sb.from('malba_gestor_plano').insert(payload).select().then(function(r){
+    if (r.error){ if (cb) cb(false, r.error); return; }
+    if (r.data && r.data[0]){
+      ST.gestorPlano = ST.gestorPlano || [];
+      ST.gestorPlano.unshift(r.data[0]);
+    }
+    if (cb) cb(true);
+  });
+}
+
+function gestorPlanoToggle(id, cb){
+  var item = (ST.gestorPlano||[]).filter(function(x){ return x.id === id; })[0];
+  if (!item){ if (cb) cb(false); return; }
+  var newDone = !item.done;
+  sb.from('malba_gestor_plano').update({ done: newDone, updated_at: new Date().toISOString() }).eq('id', id).then(function(r){
+    if (r.error){ if (cb) cb(false, r.error); return; }
+    item.done = newDone;
+    if (cb) cb(true);
+  });
+}
+
+function gestorPlanoEditar(id, campos, cb){
+  var item = (ST.gestorPlano||[]).filter(function(x){ return x.id === id; })[0];
+  if (!item){ if (cb) cb(false); return; }
+  var patch = Object.assign({}, campos, { updated_at: new Date().toISOString() });
+  sb.from('malba_gestor_plano').update(patch).eq('id', id).then(function(r){
+    if (r.error){ if (cb) cb(false, r.error); return; }
+    Object.keys(campos).forEach(function(k){ item[k] = campos[k]; });
+    if (cb) cb(true);
+  });
+}
+
+function gestorPlanoDeletar(id, cb){
+  sb.from('malba_gestor_plano').delete().eq('id', id).then(function(r){
+    if (r.error){ if (cb) cb(false, r.error); return; }
+    ST.gestorPlano = (ST.gestorPlano||[]).filter(function(x){ return x.id !== id; });
+    if (cb) cb(true);
+  });
+}
+
+function gestorPlanoElegivel(){
+  var s = ST.session;
+  if (!s || !s.user) return false;
+  if (typeof isSuper === 'function' && isSuper(s)) return true;
+  if (typeof isAdmin === 'function' && isAdmin(s)) return true;
+  return false;
+}
+
+/* ============================================================
+   PÁGINA PRINCIPAL — /meu-plano
+   ============================================================ */
+
+function gestorPlanoPageHTML(){
+  _gpInitMesAno();
+  if (!gestorPlanoElegivel()){
+    return '<div class="gp-page"><div class="gp-empty">Sem permissão pra ver esta página.</div></div>';
+  }
+
+  var tabsHTML = '<div class="gp-tabs">'+
+    '<button class="gp-tab '+(GP_STATE.tab==='cal'?'gp-tab-active':'')+'" data-tab="cal">📅 Calendário</button>'+
+    '<button class="gp-tab '+(GP_STATE.tab==='acoes'?'gp-tab-active':'')+'" data-tab="acoes">🎯 Ações do Mês</button>'+
+    '<button class="gp-tab '+(GP_STATE.tab==='result'?'gp-tab-active':'')+'" data-tab="result">🏆 Resultados</button>'+
+  '</div>';
+
+  var conteudo;
+  if (GP_STATE.tab === 'cal') conteudo = _gpTabCalendarioHTML();
+  else if (GP_STATE.tab === 'acoes') conteudo = _gpTabAcoesHTML();
+  else conteudo = _gpTabResultadosHTML();
+
+  return '<div class="gp-page">'+
+    '<div class="gp-head">'+
+      '<div>'+
+        '<h2>📋 Meu Plano de Ação</h2>'+
+        '<p>Diário de bordo pessoal: suas tarefas, seus objetivos, seus wins.</p>'+
+      '</div>'+
+    '</div>'+
+    tabsHTML +
+    '<div class="gp-content">'+conteudo+'</div>'+
+  '</div>';
+}
+
+function bindGestorPlanoPage(){
+  var tabs = document.querySelectorAll('.gp-tab');
+  for (var i = 0; i < tabs.length; i++){
+    tabs[i].addEventListener('click', function(){
+      GP_STATE.tab = this.getAttribute('data-tab');
+      if (typeof renderPage === 'function') renderPage();
+    });
+  }
+  var tab = GP_STATE.tab;
+  if (tab === 'cal') _gpBindCalendario();
+  else if (tab === 'acoes') _gpBindAcoes();
+  else _gpBindResultados();
+}
+
+/* ============================================================
+   TAB CALENDÁRIO
+   ============================================================ */
+
+function _gpTabCalendarioHTML(){
+  var mesAno = _gpMesAnoStr(GP_STATE.ano, GP_STATE.mes);
+  var tasks = gestorPlanoFiltrar('tarefa', mesAno);
+  var hoje = new Date();
+  var hd = hoje.getDate(), hm = hoje.getMonth(), hy = hoje.getFullYear();
+
+  // Nav
+  var navHTML = '<div class="gp-cal-nav">'+
+    '<button class="gp-nav-btn" id="gpMesAnt">‹</button>'+
+    '<div class="gp-cal-mes">'+GP_MESES[GP_STATE.mes]+' '+GP_STATE.ano+'</div>'+
+    '<button class="gp-nav-btn" id="gpMesProx">›</button>'+
+    '<button class="gp-nav-btn gp-nav-hoje" id="gpHoje" title="Ir pra hoje">Hoje</button>'+
+  '</div>';
+
+  // Grid
+  var primDow = new Date(GP_STATE.ano, GP_STATE.mes, 1).getDay();
+  var totalDias = new Date(GP_STATE.ano, GP_STATE.mes+1, 0).getDate();
+
+  var gridHTML = GP_DIAS_SEMANA.map(function(d){ return '<div class="gp-cal-dow">'+d+'</div>'; }).join('');
+  for (var i = 0; i < primDow; i++) gridHTML += '<div class="gp-cal-dia gp-dia-empty"></div>';
+
+  for (var d = 1; d <= totalDias; d++){
+    var dataStr = _gpDataStr(GP_STATE.ano, GP_STATE.mes, d);
+    var tasksDia = tasks.filter(function(t){ return t.data === dataStr; });
+    var isH = (d === hd && GP_STATE.mes === hm && GP_STATE.ano === hy);
+    var isSel = (GP_STATE.selDate === dataStr);
+    var pendentes = tasksDia.filter(function(t){ return !t.done; }).length;
+
+    var dots = tasksDia.slice(0, 4).map(function(t){
+      var cat = _gpCategoriaMeta(t.categoria);
+      return '<span class="gp-dot" style="background:'+(t.cor||cat.cor)+'"'+(t.done?' data-done':'')+'></span>';
+    }).join('');
+
+    gridHTML += '<div class="gp-cal-dia '+(isH?'gp-dia-hoje':'')+' '+(tasksDia.length?'gp-dia-tem':'')+' '+(isSel?'gp-dia-sel':'')+'" data-dia="'+d+'" data-date="'+dataStr+'">'+
+      '<span class="gp-dia-num">'+d+'</span>'+
+      (dots ? '<div class="gp-dia-dots">'+dots+'</div>' : '')+
+      (pendentes > 0 ? '<span class="gp-dia-badge">'+pendentes+'</span>' : '')+
+    '</div>';
+  }
+
+  // Painel lateral do dia selecionado
+  var painelHTML;
+  if (GP_STATE.selDate){
+    var tasksDia2 = tasks.filter(function(t){ return t.data === GP_STATE.selDate; });
+    var parts = GP_STATE.selDate.split('-');
+    var dataFmt = parts[2]+'/'+parts[1]+'/'+parts[0];
+    var dowSel = new Date(parts[0],Number(parts[1])-1,parts[2]).getDay();
+
+    painelHTML = '<div class="gp-painel-dia">'+
+      '<div class="gp-painel-head">'+
+        '<h3>'+GP_DIAS_SEMANA[dowSel]+', '+dataFmt+'</h3>'+
+        '<small>'+tasksDia2.length+' tarefa'+(tasksDia2.length!==1?'s':'')+'</small>'+
+      '</div>'+
+      (tasksDia2.length === 0 ? '<p class="gp-painel-vazio">Nenhuma tarefa pra este dia.</p>' : '')+
+      tasksDia2.map(function(t){
+        var cat = _gpCategoriaMeta(t.categoria);
+        return '<div class="gp-task '+(t.done?'gp-task-done':'')+'" data-id="'+esc(t.id)+'">'+
+          '<button class="gp-task-check" data-toggle="'+esc(t.id)+'">'+(t.done?'✓':'')+'</button>'+
+          '<div class="gp-task-body">'+
+            '<div class="gp-task-tit">'+esc(t.titulo)+'</div>'+
+            '<small style="color:'+cat.cor+'">'+cat.label+'</small>'+
+            (t.obs ? '<div class="gp-task-obs">'+esc(t.obs)+'</div>' : '')+
+          '</div>'+
+          '<button class="gp-task-del" data-del="'+esc(t.id)+'" title="Excluir">×</button>'+
+        '</div>';
+      }).join('')+
+      // Form adicionar
+      '<div class="gp-form">'+
+        '<div class="gp-cats-row">'+
+          GP_CATEGORIAS.map(function(c){
+            return '<button class="gp-cat-btn '+(GP_STATE.newCat===c.id?'gp-cat-sel':'')+'" data-cat="'+c.id+'" style="--cor:'+c.cor+'">'+c.label+'</button>';
+          }).join('')+
+        '</div>'+
+        '<div class="gp-add-row">'+
+          '<input type="text" id="gpNewTask" placeholder="Nova tarefa...">'+
+          '<button class="btn btn-primary" id="gpAddTask">+ Adicionar</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  } else {
+    painelHTML = '<div class="gp-painel-dia gp-painel-empty">'+
+      '<p>👆 Clique em um dia pra ver ou adicionar tarefas.</p>'+
+    '</div>';
+  }
+
+  // Resumo do mês + legenda
+  var totalMes = tasks.length;
+  var feitasMes = tasks.filter(function(t){ return t.done; }).length;
+  var legendaHTML = '<div class="gp-legenda">'+
+    GP_CATEGORIAS.map(function(c){
+      var cnt = tasks.filter(function(t){ return t.categoria === c.id; }).length;
+      return cnt > 0 ? '<span class="gp-leg-item" style="color:'+c.cor+'">'+c.label.split(' ')[0]+' '+cnt+'</span>' : '';
+    }).filter(Boolean).join('')+
+  '</div>';
+
+  var resumoHTML = '<div class="gp-resumo-mes">'+
+    '<div class="gp-resumo-barra">'+
+      '<small>'+feitasMes+' de '+totalMes+' concluídas</small>'+
+      '<div class="gp-prog-track"><div class="gp-prog-fill" style="width:'+(totalMes>0?feitasMes/totalMes*100:0)+'%"></div></div>'+
+    '</div>'+
+    legendaHTML +
+  '</div>';
+
+  return '<div class="gp-cal-wrap">'+
+    '<div>'+
+      navHTML +
+      '<div class="gp-cal-grid">'+gridHTML+'</div>'+
+      resumoHTML +
+    '</div>'+
+    painelHTML +
+  '</div>';
+}
+
+function _gpBindCalendario(){
+  var ant = document.getElementById('gpMesAnt');
+  if (ant) ant.addEventListener('click', function(){
+    GP_STATE.mes--; if (GP_STATE.mes < 0){ GP_STATE.mes = 11; GP_STATE.ano--; }
+    GP_STATE.selDate = null;
+    if (typeof renderPage === 'function') renderPage();
+  });
+  var prox = document.getElementById('gpMesProx');
+  if (prox) prox.addEventListener('click', function(){
+    GP_STATE.mes++; if (GP_STATE.mes > 11){ GP_STATE.mes = 0; GP_STATE.ano++; }
+    GP_STATE.selDate = null;
+    if (typeof renderPage === 'function') renderPage();
+  });
+  var hoje = document.getElementById('gpHoje');
+  if (hoje) hoje.addEventListener('click', function(){
+    var d = new Date();
+    GP_STATE.mes = d.getMonth(); GP_STATE.ano = d.getFullYear();
+    GP_STATE.selDate = _gpDataStr(d.getFullYear(), d.getMonth(), d.getDate());
+    if (typeof renderPage === 'function') renderPage();
+  });
+
+  // Clique no dia
+  var dias = document.querySelectorAll('.gp-cal-dia:not(.gp-dia-empty)');
+  for (var i = 0; i < dias.length; i++){
+    dias[i].addEventListener('click', function(){
+      GP_STATE.selDate = this.getAttribute('data-date');
+      if (typeof renderPage === 'function') renderPage();
+    });
+  }
+
+  // Botões categoria
+  var cats = document.querySelectorAll('.gp-cat-btn');
+  for (var c = 0; c < cats.length; c++){
+    cats[c].addEventListener('click', function(){
+      GP_STATE.newCat = this.getAttribute('data-cat');
+      if (typeof renderPage === 'function') renderPage();
+    });
+  }
+
+  // Toggle done
+  var toggles = document.querySelectorAll('[data-toggle]');
+  for (var t = 0; t < toggles.length; t++){
+    toggles[t].addEventListener('click', function(){
+      gestorPlanoToggle(this.getAttribute('data-toggle'), function(){
+        if (typeof renderPage === 'function') renderPage();
+      });
+    });
+  }
+
+  // Delete
+  var dels = document.querySelectorAll('[data-del]');
+  for (var d2 = 0; d2 < dels.length; d2++){
+    dels[d2].addEventListener('click', function(e){
+      e.stopPropagation();
+      var id = this.getAttribute('data-del');
+      if (!confirm('Excluir esta tarefa?')) return;
+      gestorPlanoDeletar(id, function(){
+        if (typeof renderPage === 'function') renderPage();
+      });
+    });
+  }
+
+  // Add task
+  var add = document.getElementById('gpAddTask');
+  var inp = document.getElementById('gpNewTask');
+  function doAdd(){
+    var tit = (inp.value||'').trim();
+    if (!tit){ inp.focus(); return; }
+    if (!GP_STATE.selDate){ if (typeof toast==='function') toast('Selecione um dia','error'); return; }
+    var parts = GP_STATE.selDate.split('-');
+    var mesAno = parts[0]+'-'+parts[1];
+    gestorPlanoAdicionar({
+      tipo: 'tarefa',
+      data: GP_STATE.selDate,
+      mes_ano: mesAno,
+      categoria: GP_STATE.newCat,
+      titulo: tit
+    }, function(ok){
+      if (ok){
+        if (typeof toast==='function') toast('✓ Tarefa adicionada','success');
+        if (typeof renderPage === 'function') renderPage();
+      }
+    });
+  }
+  if (add) add.addEventListener('click', doAdd);
+  if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); doAdd(); } });
+}
+
+/* ============================================================
+   TAB AÇÕES DO MÊS
+   ============================================================ */
+
+function _gpTabAcoesHTML(){
+  var mesAno = _gpMesAnoStr(GP_STATE.ano, GP_STATE.mes);
+  var acoes = gestorPlanoFiltrar('acao_mes', mesAno);
+  var done = acoes.filter(function(a){ return a.done; }).length;
+
+  var navHTML = '<div class="gp-cal-nav">'+
+    '<button class="gp-nav-btn" id="gpAcoesAnt">‹</button>'+
+    '<div class="gp-cal-mes">'+GP_MESES[GP_STATE.mes]+' '+GP_STATE.ano+'</div>'+
+    '<button class="gp-nav-btn" id="gpAcoesProx">›</button>'+
+  '</div>';
+
+  var listaHTML = acoes.length === 0
+    ? '<p class="gp-painel-vazio">Nenhum objetivo planejado pra este mês. Adicione abaixo.</p>'
+    : acoes.map(function(a){
+      return '<div class="gp-acao '+(a.done?'gp-acao-done':'')+'">'+
+        '<button class="gp-task-check" data-toggle-acao="'+esc(a.id)+'">'+(a.done?'✓':'')+'</button>'+
+        '<input type="text" class="gp-acao-tit" value="'+esc(a.titulo)+'" data-edit-acao="'+esc(a.id)+'">'+
+        '<button class="gp-task-del" data-del-acao="'+esc(a.id)+'" title="Excluir">×</button>'+
+      '</div>';
+    }).join('');
+
+  var progHTML = acoes.length > 0 ? '<div class="gp-resumo-barra" style="margin-bottom:14px">'+
+    '<small>'+done+' de '+acoes.length+' concluídas</small>'+
+    '<div class="gp-prog-track"><div class="gp-prog-fill" style="width:'+(done/acoes.length*100)+'%"></div></div>'+
+  '</div>' : '';
+
+  return '<div class="gp-tab-content">'+
+    navHTML +
+    '<div class="gp-acoes-head">'+
+      '<p class="gp-acoes-hint">💡 Objetivos estratégicos pessoais pro mês. Ex: "Realizar avaliação de todos", "Visitar fornecedor X", "Treinar nova equipe".</p>'+
+    '</div>'+
+    progHTML +
+    '<div class="gp-acoes-lista">'+listaHTML+'</div>'+
+    '<div class="gp-add-row" style="margin-top:14px">'+
+      '<input type="text" id="gpNewAcao" placeholder="Novo objetivo pro mês...">'+
+      '<button class="btn btn-primary" id="gpAddAcao">+ Adicionar</button>'+
+    '</div>'+
+  '</div>';
+}
+
+function _gpBindAcoes(){
+  var ant = document.getElementById('gpAcoesAnt');
+  if (ant) ant.addEventListener('click', function(){
+    GP_STATE.mes--; if (GP_STATE.mes < 0){ GP_STATE.mes = 11; GP_STATE.ano--; }
+    if (typeof renderPage === 'function') renderPage();
+  });
+  var prox = document.getElementById('gpAcoesProx');
+  if (prox) prox.addEventListener('click', function(){
+    GP_STATE.mes++; if (GP_STATE.mes > 11){ GP_STATE.mes = 0; GP_STATE.ano++; }
+    if (typeof renderPage === 'function') renderPage();
+  });
+
+  var toggles = document.querySelectorAll('[data-toggle-acao]');
+  for (var t = 0; t < toggles.length; t++){
+    toggles[t].addEventListener('click', function(){
+      gestorPlanoToggle(this.getAttribute('data-toggle-acao'), function(){
+        if (typeof renderPage === 'function') renderPage();
+      });
+    });
+  }
+
+  var edits = document.querySelectorAll('[data-edit-acao]');
+  for (var e = 0; e < edits.length; e++){
+    edits[e].addEventListener('blur', function(){
+      var id = this.getAttribute('data-edit-acao');
+      var val = this.value.trim();
+      if (!val) return;
+      gestorPlanoEditar(id, { titulo: val });
+    });
+  }
+
+  var dels = document.querySelectorAll('[data-del-acao]');
+  for (var d = 0; d < dels.length; d++){
+    dels[d].addEventListener('click', function(){
+      var id = this.getAttribute('data-del-acao');
+      if (!confirm('Excluir este objetivo?')) return;
+      gestorPlanoDeletar(id, function(){
+        if (typeof renderPage === 'function') renderPage();
+      });
+    });
+  }
+
+  var add = document.getElementById('gpAddAcao');
+  var inp = document.getElementById('gpNewAcao');
+  function doAdd(){
+    var tit = (inp.value||'').trim();
+    if (!tit){ inp.focus(); return; }
+    var mesAno = _gpMesAnoStr(GP_STATE.ano, GP_STATE.mes);
+    gestorPlanoAdicionar({ tipo:'acao_mes', mes_ano: mesAno, titulo: tit }, function(ok){
+      if (ok){
+        if (typeof toast==='function') toast('✓ Objetivo adicionado','success');
+        if (typeof renderPage === 'function') renderPage();
+      }
+    });
+  }
+  if (add) add.addEventListener('click', doAdd);
+  if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); doAdd(); } });
+}
+
+/* ============================================================
+   TAB RESULTADOS
+   ============================================================ */
+
+function _gpTabResultadosHTML(){
+  var mesAno = _gpMesAnoStr(GP_STATE.ano, GP_STATE.mes);
+  var resultados = gestorPlanoFiltrar('resultado', mesAno);
+
+  var navHTML = '<div class="gp-cal-nav">'+
+    '<button class="gp-nav-btn" id="gpResAnt">‹</button>'+
+    '<div class="gp-cal-mes">'+GP_MESES[GP_STATE.mes]+' '+GP_STATE.ano+'</div>'+
+    '<button class="gp-nav-btn" id="gpResProx">›</button>'+
+  '</div>';
+
+  var listaHTML = resultados.length === 0
+    ? '<p class="gp-painel-vazio">Nenhum resultado registrado pra este mês. Celebre seus wins!</p>'
+    : resultados.map(function(r){
+      return '<div class="gp-result">'+
+        '<span class="gp-result-emoji">🏆</span>'+
+        '<input type="text" class="gp-result-tit" value="'+esc(r.titulo)+'" data-edit-res="'+esc(r.id)+'">'+
+        '<button class="gp-task-del" data-del-res="'+esc(r.id)+'" title="Excluir">×</button>'+
+      '</div>';
+    }).join('');
+
+  // Obs do mês — armazenada como um resultado especial com titulo='[OBS]'
+  var obsItem = resultados.filter(function(r){ return r.titulo === '[OBS]'; })[0];
+  var obsTxt = (obsItem && obsItem.obs) || '';
+
+  return '<div class="gp-tab-content">'+
+    navHTML +
+    '<p class="gp-acoes-hint">🏆 Registre wins, metas batidas, aprendizados. Útil pra lembrar do mês depois.</p>'+
+    '<div class="gp-result-lista">'+listaHTML+'</div>'+
+    '<div class="gp-add-row" style="margin-top:14px">'+
+      '<input type="text" id="gpNewRes" placeholder="Ex: Meta de Itaquera batida em 112%">'+
+      '<button class="btn btn-primary" id="gpAddRes">+ Adicionar</button>'+
+    '</div>'+
+    '<div class="gp-obs-box">'+
+      '<label>📝 Observações / aprendizados do mês</label>'+
+      '<textarea id="gpResObs" rows="4" placeholder="Pontos de atenção, lições aprendidas, planos pro mês que vem...">'+esc(obsTxt)+'</textarea>'+
+      '<button class="btn btn-ghost" id="gpResObsSave" style="margin-top:8px">💾 Salvar observação</button>'+
+    '</div>'+
+  '</div>';
+}
+
+function _gpBindResultados(){
+  var ant = document.getElementById('gpResAnt');
+  if (ant) ant.addEventListener('click', function(){
+    GP_STATE.mes--; if (GP_STATE.mes < 0){ GP_STATE.mes = 11; GP_STATE.ano--; }
+    if (typeof renderPage === 'function') renderPage();
+  });
+  var prox = document.getElementById('gpResProx');
+  if (prox) prox.addEventListener('click', function(){
+    GP_STATE.mes++; if (GP_STATE.mes > 11){ GP_STATE.mes = 0; GP_STATE.ano++; }
+    if (typeof renderPage === 'function') renderPage();
+  });
+
+  var edits = document.querySelectorAll('[data-edit-res]');
+  for (var e = 0; e < edits.length; e++){
+    edits[e].addEventListener('blur', function(){
+      var id = this.getAttribute('data-edit-res');
+      var val = this.value.trim();
+      if (!val) return;
+      gestorPlanoEditar(id, { titulo: val });
+    });
+  }
+
+  var dels = document.querySelectorAll('[data-del-res]');
+  for (var d = 0; d < dels.length; d++){
+    dels[d].addEventListener('click', function(){
+      var id = this.getAttribute('data-del-res');
+      if (!confirm('Excluir este resultado?')) return;
+      gestorPlanoDeletar(id, function(){
+        if (typeof renderPage === 'function') renderPage();
+      });
+    });
+  }
+
+  var add = document.getElementById('gpAddRes');
+  var inp = document.getElementById('gpNewRes');
+  function doAdd(){
+    var tit = (inp.value||'').trim();
+    if (!tit){ inp.focus(); return; }
+    var mesAno = _gpMesAnoStr(GP_STATE.ano, GP_STATE.mes);
+    gestorPlanoAdicionar({ tipo:'resultado', mes_ano: mesAno, titulo: tit }, function(ok){
+      if (ok){
+        if (typeof toast==='function') toast('✓ Resultado adicionado','success');
+        if (typeof renderPage === 'function') renderPage();
+      }
+    });
+  }
+  if (add) add.addEventListener('click', doAdd);
+  if (inp) inp.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); doAdd(); } });
+
+  // Salvar obs do mês
+  var obsSave = document.getElementById('gpResObsSave');
+  if (obsSave){
+    obsSave.addEventListener('click', function(){
+      var txt = (document.getElementById('gpResObs').value||'').trim();
+      var mesAno = _gpMesAnoStr(GP_STATE.ano, GP_STATE.mes);
+      var resultados = gestorPlanoFiltrar('resultado', mesAno);
+      var obsItem = resultados.filter(function(r){ return r.titulo === '[OBS]'; })[0];
+      if (obsItem){
+        gestorPlanoEditar(obsItem.id, { obs: txt }, function(){
+          if (typeof toast==='function') toast('✓ Observação salva','success');
+        });
+      } else {
+        gestorPlanoAdicionar({ tipo:'resultado', mes_ano: mesAno, titulo:'[OBS]', obs: txt }, function(){
+          if (typeof toast==='function') toast('✓ Observação salva','success');
+        });
+      }
+    });
+  }
+}
+
+// Expor
+if (typeof globalThis !== 'undefined'){
+  globalThis.GP_STATE = GP_STATE;
+  globalThis.GP_CATEGORIAS = GP_CATEGORIAS;
+  globalThis.GP_MESES = GP_MESES;
+  globalThis.GP_DIAS_SEMANA = GP_DIAS_SEMANA;
+  globalThis.gestorPlanoCarregar = gestorPlanoCarregar;
+  globalThis.gestorPlanoFiltrar = gestorPlanoFiltrar;
+  globalThis.gestorPlanoAdicionar = gestorPlanoAdicionar;
+  globalThis.gestorPlanoToggle = gestorPlanoToggle;
+  globalThis.gestorPlanoEditar = gestorPlanoEditar;
+  globalThis.gestorPlanoDeletar = gestorPlanoDeletar;
+  globalThis.gestorPlanoElegivel = gestorPlanoElegivel;
+  globalThis.gestorPlanoPageHTML = gestorPlanoPageHTML;
+  globalThis.bindGestorPlanoPage = bindGestorPlanoPage;
+  globalThis._gpTabCalendarioHTML = _gpTabCalendarioHTML;
+  globalThis._gpTabAcoesHTML = _gpTabAcoesHTML;
+  globalThis._gpTabResultadosHTML = _gpTabResultadosHTML;
+  globalThis._gpCategoriaMeta = _gpCategoriaMeta;
+  globalThis._gpMesAnoStr = _gpMesAnoStr;
+  globalThis._gpDataStr = _gpDataStr;
 }
 
 var ONB_STATE = null;
@@ -40057,6 +40800,9 @@ function buildCommands() {
   if (typeof agendaGestorElegivel === 'function' && agendaGestorElegivel()){
     cmds.push({ cat:'Ações', label:'📅 Editar agenda semanal', icon:'calendar', run:function(){ if (typeof openAgendaGestorConfigModal==='function') openAgendaGestorConfigModal(); } });
   }
+  if (typeof gestorPlanoElegivel === 'function' && gestorPlanoElegivel()){
+    cmds.push({ cat:'Ir para', label:'📋 Meu Plano de Ação', icon:'clipboard', run:function(){ ST.page='meu-plano'; navigate(ST.sector+'/meu-plano'); renderPage(); } });
+  }
   cmds.push({ cat:'Ações', label:'Solicitar reembolso', icon:'plus', run:function(){ if(typeof openReembSolicitarModal==='function') openReembSolicitarModal(); } });
   cmds.push({ cat:'Ações', label:'Enviar atestado médico', icon:'plus', run:function(){ if(typeof openAtestadoSolicitarModal==='function') openAtestadoSolicitarModal(); } });
   // v197: Ficha 360° do próprio user
@@ -40221,6 +40967,7 @@ function renderPage() {
   if (ST.page==='reembolsos') { renderShell(reembolsosPageHTML(), 'Reembolsos'); if (typeof bindReembolsosPage==='function') bindReembolsosPage(); return; }
   if (ST.page==='ponto' && typeof pontoPageHTML==='function') { renderShell(pontoPageHTML(), 'Bater Ponto'); if (typeof bindPontoPage==='function') bindPontoPage(); return; }
   if (ST.page==='facial-log' && typeof facialLogPageHTML==='function') { renderShell(facialLogPageHTML(), 'Tentativas Faciais'); if (typeof bindFacialLogPage==='function') bindFacialLogPage(); return; }
+  if (ST.page==='meu-plano' && typeof gestorPlanoPageHTML==='function') { renderShell(gestorPlanoPageHTML(), 'Meu Plano'); if (typeof bindGestorPlanoPage==='function') bindGestorPlanoPage(); return; }
   var pages=PAGES[ST.sector]||PAGES.lojas; var pg=null;
   for (var i=0;i<pages.length;i++) if (pages[i].id===ST.page) { pg=pages[i]; break; }
   if (!pg || !pg.enabled) {
