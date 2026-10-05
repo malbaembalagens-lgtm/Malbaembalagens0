@@ -13530,6 +13530,190 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 @keyframes amFadeIn { from { opacity: 0; } to { opacity: 1; } }
 /* ===== fim v212 ===== */
 
+
+/* ===== v213 · Header enxuto ===== */
+.top-v213 {
+  gap: var(--sp-3);
+  padding: 0 var(--sp-6);
+}
+
+/* Breadcrumb dentro do header — remove margens e ajusta alinhamento */
+.top-breadcrumb-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.top-breadcrumb-wrap .page-x-breadcrumb {
+  margin-bottom: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1;
+}
+.top-breadcrumb-wrap .page-x-breadcrumb .last {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--u-text);
+}
+
+/* Botão Command Palette */
+.top-cmdk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px 7px 12px;
+  border: 1px solid var(--u-border);
+  border-radius: var(--rd-md);
+  background: var(--u-bg2);
+  color: var(--u-text2);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 38px;
+  min-width: 44px;
+  transition: background var(--tr-fast), border-color var(--tr-fast), color var(--tr-fast);
+  flex-shrink: 0;
+}
+.top-cmdk:hover {
+  background: var(--u-card, #fff);
+  border-color: var(--primary-500, #3B6FF7);
+  color: var(--u-text);
+}
+.top-cmdk:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.top-cmdk-ico {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--u-text3);
+}
+.top-cmdk-ico svg { width: 16px; height: 16px; }
+.top-cmdk:hover .top-cmdk-ico { color: var(--primary-500, #3B6FF7); }
+.top-cmdk-lbl { font-size: 13px; }
+.top-cmdk-kbd {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--u-text3);
+  background: var(--u-card, #fff);
+  border: 1px solid var(--u-border2, var(--u-border));
+  border-radius: 5px;
+  padding: 2px 6px;
+  letter-spacing: .3px;
+}
+
+/* Avatar botão no header */
+.top-avatar-btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color var(--tr-fast), transform var(--tr-fast);
+}
+.top-avatar-btn:hover { border-color: var(--u-border); }
+.top-avatar-btn:focus-visible {
+  outline: none;
+  border-color: var(--primary-500, #3B6FF7);
+  box-shadow: var(--focus-ring);
+}
+.top-avatar-btn[aria-expanded="true"] {
+  border-color: var(--primary-500, #3B6FF7);
+}
+.top-av-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--primary-500, #3B6FF7);
+}
+
+/* Store picker compacto */
+.top-store-compact {
+  max-width: 140px;
+  padding: 7px 10px;
+  font-size: 12.5px;
+  height: 38px;
+}
+
+/* Botão Novo compacto (reduz padding; label some em mobile) */
+.top-novo-compact {
+  padding: 7px 12px;
+  gap: 6px;
+  height: 38px;
+}
+
+/* Widget de ponto wrapper — permite CSS mobile ajustar */
+.top-ponto-wrap {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+  .top-v213 { padding: 0 var(--sp-4); gap: var(--sp-2); }
+  .top-cmdk-kbd { display: none; }   /* esconde badge do atalho */
+  .top-store-compact { max-width: 110px; }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 720px) {
+  .top-v213 { gap: var(--sp-2); padding: 0 var(--sp-3); }
+  /* Breadcrumb mais compacto no mobile */
+  .top-breadcrumb-wrap .page-x-breadcrumb {
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .top-breadcrumb-wrap .page-x-breadcrumb .last {
+    font-size: 13px;
+  }
+  /* Botão Buscar vira só ícone */
+  .top-cmdk {
+    padding: 7px 9px;
+    gap: 0;
+  }
+  .top-cmdk-lbl { display: none; }
+  /* Botão Novo vira só ícone */
+  .top-novo-lbl { display: none; }
+  .top-novo-compact { padding: 7px 10px; min-width: 38px; }
+  /* Store picker ainda mais compacto */
+  .top-store-compact { max-width: 100px; font-size: 11.5px; }
+  /* Avatar menor */
+  .top-avatar-btn { width: 34px; height: 34px; }
+  .top-av-img { width: 28px; height: 28px; font-size: 11px; }
+}
+
+/* ===== VERY SMALL ===== */
+@media (max-width: 420px) {
+  .top-v213 { padding: 0 var(--sp-2); gap: 4px; }
+  /* Store picker some */
+  .top-store-compact { display: none; }
+}
+
+/* v213: títulos do header antigo (classes legacy) ocultos
+   — garantem compat se algum fallback render antigo os injetar */
+.top-v213 .top-title,
+.top-v213 .top-online,
+.top-v213 .top-theme,
+.top-v213 .top-search { display: none !important; }
+
+/* ===== fim v213 ===== */
+
 </style>
 </head>
 <body>
@@ -13553,7 +13737,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v212';
+var APP_BUILD = 'v213';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13778,10 +13962,12 @@ var AM_STATE = { open:false, lastFocused:null };
 function closeAvatarMenu(){
   var el = document.getElementById('avatarMenu');
   if (el && el.parentNode) el.parentNode.removeChild(el);
-  var trigger = document.getElementById('sideUser');
-  if (trigger){
-    trigger.setAttribute('aria-expanded', 'false');
+  // v213: resetar aria-expanded em ambos os triggers conhecidos
+  var trigs = [document.getElementById('sideUser'), document.getElementById('topAvatar')];
+  for (var i = 0; i < trigs.length; i++){
+    if (trigs[i]) trigs[i].setAttribute('aria-expanded', 'false');
   }
+  AM_STATE.triggerEl = null;
   // Remove listeners globais
   document.removeEventListener('keydown', _amOnKey, true);
   document.removeEventListener('click', _amOnClickOutside, true);
@@ -13793,13 +13979,15 @@ function closeAvatarMenu(){
 }
 
 /* Toggle — abre se fechado, fecha se aberto */
-function openAvatarMenu(){
+function openAvatarMenu(triggerEl){
   if (AM_STATE.open){
     closeAvatarMenu();
     return;
   }
-  var trigger = document.getElementById('sideUser');
+  // v213: aceita trigger opcional; default é #sideUser (sidebar) ou fallback pra #topAvatar
+  var trigger = triggerEl || document.getElementById('sideUser') || document.getElementById('topAvatar');
   if (!trigger) return;
+  AM_STATE.triggerEl = trigger;  // guarda pro ciclo do menu
   AM_STATE.lastFocused = document.activeElement;
 
   var menu = document.createElement('div');
@@ -13811,7 +13999,7 @@ function openAvatarMenu(){
   document.body.appendChild(menu);
 
   trigger.setAttribute('aria-expanded', 'true');
-  _amPosition(menu, trigger);
+  _amPosition(menu, trigger);  // v213: posiciona adaptativo (ao lado se sidebar, abaixo se header)
   _amBind(menu);
 
   // Listeners globais — capture pra funcionar antes de outros handlers
@@ -13836,22 +14024,35 @@ function _amPosition(menu, trigger){
     menu.classList.add('av-menu-sheet');
     return; // CSS cuida do posicionamento bottom sheet
   }
-  // Desktop: posicionar ao lado direito da sidebar, alinhado ao topo do avatar
   var r = trigger.getBoundingClientRect();
   var mw = Math.min(320, window.innerWidth - 20);
   menu.style.width = mw + 'px';
-  menu.style.left = Math.max(10, r.right + 8) + 'px';
-  // Clamp vertical: não deixar passar da viewport
   menu.style.visibility = 'hidden';
   menu.style.top = '0px';
-  // Após render, recalcula altura real e clampa
+  // v213: detectar se o trigger está no topbar (abaixo+direita) ou sidebar (lateral)
+  var isTopbar = trigger.id === 'topAvatar' || !!trigger.closest('.top');
   requestAnimationFrame(function(){
     var mh = menu.offsetHeight;
-    var top = r.top;
-    if (top + mh > window.innerHeight - 10){
-      top = Math.max(10, window.innerHeight - mh - 10);
+    if (isTopbar){
+      // Posicionar ABAIXO do botão, alinhado à direita do próprio botão
+      var right = Math.max(10, window.innerWidth - r.right);
+      menu.style.left = 'auto';
+      menu.style.right = right + 'px';
+      var top = r.bottom + 8;
+      if (top + mh > window.innerHeight - 10){
+        top = Math.max(10, window.innerHeight - mh - 10);
+      }
+      menu.style.top = top + 'px';
+    } else {
+      // Sidebar: posicionar à DIREITA do trigger
+      menu.style.right = 'auto';
+      menu.style.left = Math.max(10, r.right + 8) + 'px';
+      var topS = r.top;
+      if (topS + mh > window.innerHeight - 10){
+        topS = Math.max(10, window.innerHeight - mh - 10);
+      }
+      menu.style.top = topS + 'px';
     }
-    menu.style.top = top + 'px';
     menu.style.visibility = 'visible';
   });
 }
@@ -13902,10 +14103,13 @@ function _amOnKey(e){
 function _amOnClickOutside(e){
   if (!AM_STATE.open) return;
   var menu = document.getElementById('avatarMenu');
-  var trigger = document.getElementById('sideUser');
   if (!menu) return;
   if (menu.contains(e.target)) return;
-  if (trigger && trigger.contains(e.target)) return;
+  // v213: respeitar AMBOS triggers possíveis
+  var trigs = [document.getElementById('sideUser'), document.getElementById('topAvatar')];
+  for (var i = 0; i < trigs.length; i++){
+    if (trigs[i] && trigs[i].contains(e.target)) return;
+  }
   closeAvatarMenu();
 }
 
@@ -14067,6 +14271,106 @@ if (typeof globalThis !== 'undefined'){
   globalThis.closeAvatarMenu = closeAvatarMenu;
   globalThis._amRenderHTML = _amRenderHTML;
   globalThis._amDispatch = _amDispatch;
+}
+
+
+/* ============================================================
+   v213 · Header enxuto + Command Palette visível
+   ============================================================
+   Reorganiza o topbar sem recriar funcionalidades:
+   - Breadcrumb (v211) assume papel de contexto no header
+   - Botão único "Buscar · ⌘K" abre openCommandPalette() existente
+   - Avatar compacto no header também abre openAvatarMenu() (v212)
+   - Status online, theme toggle removidos VISUALMENTE (lógica preservada)
+   - Widgets de ponto/notif/store/novo preservados, só compactados
+   ============================================================ */
+
+/* Detecta OS pra mostrar atalho correto (Mac → ⌘K; demais → Ctrl K) */
+function _topKbdLabel(){
+  try {
+    var ua = (navigator.platform || navigator.userAgent || '').toString();
+    if (/Mac|iPhone|iPad|iPod/i.test(ua)) return '\u2318K';  // ⌘K
+  } catch(e){}
+  return 'Ctrl K';
+}
+
+/* Renderiza o breadcrumb pra usar DENTRO do header.
+   Reusa breadcrumbHTML() do v211 — não duplica. */
+function topBreadcrumbHTML(){
+  if (typeof breadcrumbShouldShow !== 'function' || typeof breadcrumbHTML !== 'function') return '';
+  if (!breadcrumbShouldShow(ST && ST.page)) return '';
+  // Envolve numa div com classe .top-breadcrumb pra estilização específica
+  return '<div class="top-breadcrumb-wrap">'+breadcrumbHTML()+'</div>';
+}
+
+/* Botão compacto que abre o Command Palette existente.
+   Visual: "🔍 Buscar  [⌘K/Ctrl K]"
+   Mobile: só o ícone 🔍 (CSS cuida) */
+function cmdkTriggerHTML(){
+  var kbd = _topKbdLabel();
+  return '<button type="button" id="cmdkTrigger" class="top-cmdk" '+
+    'aria-label="Abrir busca e comandos (' + esc(kbd) + ')" '+
+    'title="Buscar e executar ações (' + esc(kbd) + ')">'+
+    '<span class="top-cmdk-ico" aria-hidden="true">'+icon('search')+'</span>'+
+    '<span class="top-cmdk-lbl">Buscar</span>'+
+    '<span class="top-cmdk-kbd" aria-hidden="true">'+esc(kbd)+'</span>'+
+  '</button>';
+}
+
+/* Avatar compacto que abre o menu v212.
+   Clica → chama openAvatarMenu() com this como trigger. */
+function topAvatarButtonHTML(){
+  var s = ST.session;
+  var u = (s && s.user) || {};
+  var sectorInfo = (typeof SECTORS !== 'undefined' && SECTORS[ST.sector]) || { color: '#3B6FF7' };
+  var avInner;
+  if (u.avatar){
+    avInner = '<span class="top-av-img" style="background:center/cover url(\''+esc(u.avatar)+'\')"></span>';
+  } else {
+    var bg = u.color || sectorInfo.color || '#3B6FF7';
+    var ini = esc(u.initials || (u.name ? u.name.charAt(0) : '?'));
+    avInner = '<span class="top-av-img" style="background:'+esc(bg)+'">'+ini+'</span>';
+  }
+  var name = esc((u.name||'').split(' ')[0] || 'Usuário');
+  return '<button type="button" id="topAvatar" class="top-avatar-btn" '+
+    'aria-haspopup="menu" aria-expanded="false" '+
+    'aria-label="Abrir menu do usuário" title="'+name+' — abrir menu">'+
+    avInner +
+  '</button>';
+}
+
+/* Liga handlers do novo header. Chamado por bindTopbar() modificado. */
+function bindTopbarV213(){
+  // Botão Command Palette
+  var cmdkBtn = document.getElementById('cmdkTrigger');
+  if (cmdkBtn && typeof openCommandPalette === 'function'){
+    cmdkBtn.addEventListener('click', function(){
+      openCommandPalette();
+    });
+  }
+  // Botão avatar no header
+  var topAv = document.getElementById('topAvatar');
+  if (topAv && typeof openAvatarMenu === 'function'){
+    topAv.addEventListener('click', function(e){
+      e.stopPropagation();
+      openAvatarMenu(this);  // v213: passa trigger
+    });
+    topAv.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        if (typeof openAvatarMenu === 'function') openAvatarMenu(this);
+      }
+    });
+  }
+}
+
+/* Expor */
+if (typeof globalThis !== 'undefined'){
+  globalThis._topKbdLabel = _topKbdLabel;
+  globalThis.topBreadcrumbHTML = topBreadcrumbHTML;
+  globalThis.cmdkTriggerHTML = cmdkTriggerHTML;
+  globalThis.topAvatarButtonHTML = topAvatarButtonHTML;
+  globalThis.bindTopbarV213 = bindTopbarV213;
 }
 
 var PAGES = {
@@ -14787,32 +15091,21 @@ function renderShell(innerHTML, title, shellOpts) {
       '<button class="btn-logout" id="btnSair">'+icon('logout')+'<span>Sair</span></button>'+
       '<div class="side-version" title="Versão no ar">'+esc(APP_BUILD)+'</div>'+
     '</aside><div class="side-overlay" id="sideOverlay"></div><main class="main">'+
-      '<header class="top"><button class="top-burger" id="topBurger" aria-label="Abrir menu"><span></span><span></span><span></span></button><span class="top-title">'+esc(title||'')+'</span><div class="top-spacer"></div>'+
+      '<header class="top top-v213"><button class="top-burger" id="topBurger" aria-label="Abrir menu"><span></span><span></span><span></span></button>'+
+        ((typeof topBreadcrumbHTML==='function') ? topBreadcrumbHTML() : '')+
+        '<div class="top-spacer"></div>'+
         (function(){
           if (!(isSuper(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length)) return '';
           var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(su){ return '<option value="'+esc(su.id)+'"'+(String(ST.viewStore)===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+su.store_number))+'</option>'; }).join('');
-          return '<select class="top-store" id="topStore" title="Loja em foco">'+op+'</select>';
+          return '<select class="top-store top-store-compact" id="topStore" title="Loja em foco">'+op+'</select>';
         })()+
-        '<span class="top-online" id="topOnline"><i></i><span>Online</span></span>'+
-        ((typeof topbarPontoWidgetHTML==='function') ? topbarPontoWidgetHTML() : '')+
-        '<div class="top-search"><span class="ts-ico">'+icon('search')+'</span><input id="topSearch" placeholder="Buscar em tudo..." autocomplete="off"><span class="ts-kbd" id="tsKbd">Ctrl K</span><div class="ts-results" id="topResults"></div></div>'+
+        ((typeof topbarPontoWidgetHTML==='function') ? '<div class="top-ponto-wrap">'+topbarPontoWidgetHTML()+'</div>' : '')+
+        ((typeof cmdkTriggerHTML==='function') ? cmdkTriggerHTML() : '')+
         ((typeof topbarNotifHTML==='function') ? topbarNotifHTML() : '')+
-        '<button class="top-theme" id="themeToggle" title="'+(getTheme()==='dark'?'Modo claro':'Modo escuro')+'">'+icon(getTheme()==='dark'?'sun':'moon')+'</button>'+
-        '<button class="btn btn-primary top-novo" id="topNovo">'+icon('plus')+'<span>Novo</span></button>'+
+        '<button class="btn btn-primary top-novo top-novo-compact" id="topNovo" aria-label="Criar novo" title="Criar novo">'+icon('plus')+'<span class="top-novo-lbl">Novo</span></button>'+
+        ((typeof topAvatarButtonHTML==='function') ? topAvatarButtonHTML() : '')+
       '</header>'+
-      '<section class="content" id="content">'+((function(){
-          // v211: breadcrumb universal — opt-in por página via BREADCRUMB_ENABLED_PAGES
-          try {
-            if (typeof shellOpts !== 'undefined' && shellOpts && shellOpts.breadcrumb === false) return '';
-            if (typeof shellOpts !== 'undefined' && shellOpts && shellOpts.breadcrumb && typeof breadcrumbHTML==='function'){
-              return breadcrumbHTML(shellOpts.breadcrumb);
-            }
-            if (typeof breadcrumbShouldShow==='function' && breadcrumbShouldShow(ST.page) && typeof breadcrumbHTML==='function'){
-              return breadcrumbHTML();
-            }
-          } catch(e){ console.warn('[breadcrumb]', e); }
-          return '';
-        })())+innerHTML+'</section>'+
+      '<section class="content" id="content">'+innerHTML+'</section>'+
     '</main></div>'
   );
   document.getElementById('btnSair').addEventListener('click', logout);
@@ -14977,9 +15270,11 @@ function openSearchResult(r) {
   }
 }
 function bindTopbar() {
-  setOnlineState();
-  var kbd=document.getElementById('tsKbd'); if(kbd) kbd.addEventListener('click', openCommandPalette);
-  var tt=document.getElementById('themeToggle'); if(tt) tt.addEventListener('click', toggleTheme);
+  setOnlineState();  // v213: safe sem #topOnline (função já tem guard if(!el) return)
+  // v213: botão único do Command Palette (substitui #tsKbd antigo)
+  if (typeof bindTopbarV213 === 'function') bindTopbarV213();
+  var kbd=document.getElementById('tsKbd'); if(kbd) kbd.addEventListener('click', openCommandPalette);  // compat: se #tsKbd ainda estiver em algum render legado
+  var tt=document.getElementById('themeToggle'); if(tt) tt.addEventListener('click', toggleTheme);  // compat: se #themeToggle existir, mantém binding
   var ts2=document.getElementById('topStore'); if(ts2) ts2.addEventListener('change', function(){ ST.viewStore=this.value||null; renderPage(); });
   var novo=document.getElementById('topNovo');
   if (novo) novo.addEventListener('click', novoContextual);
