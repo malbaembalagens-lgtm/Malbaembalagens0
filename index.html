@@ -13936,7 +13936,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
   gap: 6px;
 }
 .brf-strip-item {
-  background: #ffffff;
+  background: var(--u-card);
   border: 1px solid var(--u-border);
   border-left: 3px solid var(--ac, #F59E0B);
   padding: 8px 12px;
@@ -13950,7 +13950,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
   transition: background .12s ease, border-color .12s ease;
 }
 .brf-strip-item:hover {
-  background: #FAFBFF;
+  background: var(--u-card2);
   border-color: var(--ac, #F59E0B);
 }
 
@@ -13961,7 +13961,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
   gap: var(--sp-3);
 }
 .brf-hero-item {
-  background: #ffffff;
+  background: var(--u-card);
   border: 1px solid var(--u-border);
   border-radius: 12px;
   padding: 18px 20px;
@@ -14036,7 +14036,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 .brf-sec-head svg { width: 14px; height: 14px; color: var(--u-text3); }
 .brf-sec-label { line-height: 1; }
 .brf-sec-body {
-  background: #ffffff;
+  background: var(--u-card);
   border: 1px solid var(--u-border);
   border-radius: 10px;
   padding: 4px 12px;
@@ -14083,7 +14083,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 .brf-aux-count { color: var(--u-text3); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 2px; }
 .brf-aux-body {
   margin-top: 6px;
-  background: #ffffff;
+  background: var(--u-card);
   border: 1px solid var(--u-border);
   border-radius: 10px;
   padding: 4px 12px;
@@ -14093,6 +14093,21 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
   border-bottom: 1px solid var(--u-border2);
 }
 .brf-panel-v218 .brf-evt:last-child { border-bottom: 0; }
+
+
+
+/* v218 — dark mode overrides para tons quentes/frios do strip/quiet */
+html.dark .brf-atencao-strip {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+  border-left-color: #F59E0B;
+}
+html.dark .brf-strip-head { color: #FCD34D; }
+html.dark .brf-status-quiet {
+  background: rgba(22, 163, 74, 0.10);
+  border-color: rgba(22, 163, 74, 0.28);
+  color: #86EFAC;
+}
 
 /* Mobile */
 @media (max-width: 900px){
