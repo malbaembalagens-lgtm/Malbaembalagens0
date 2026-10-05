@@ -13759,6 +13759,110 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 }
 /* ===== fim v214 ===== */
 
+
+/* ===== v215 · Gestão: áreas (nav primária) ===== */
+.gest-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  padding: var(--sp-1) 0 var(--sp-4);
+  margin-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--u-border);
+}
+.gest-area-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  min-height: 40px;
+  border-radius: var(--rd-md);
+  background: var(--u-bg2);
+  color: var(--u-text2);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background var(--tr-fast), color var(--tr-fast), border-color var(--tr-fast);
+  position: relative;
+}
+.gest-area-btn:hover {
+  background: var(--u-card, #fff);
+  color: var(--u-text);
+  border-color: var(--u-border);
+}
+.gest-area-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.gest-area-btn.on {
+  background: var(--primary-50);
+  color: var(--primary-600);
+  border-color: var(--primary-100, var(--primary-500));
+  font-weight: 700;
+}
+.gest-area-btn.on svg { color: var(--primary-500); }
+.gest-area-ic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.gest-area-ic svg { width: 16px; height: 16px; }
+.gest-area-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  margin-left: 2px;
+  border-radius: 999px;
+  background: var(--u-red, #EF4444);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Nav secundária (sub-abas da área) — reusa .cfg-tabs mas com modificador v215 */
+.gest-subtabs {
+  margin-top: 0;
+  margin-bottom: var(--sp-4);
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+  .gest-areas {
+    gap: 6px;
+    padding-bottom: var(--sp-3);
+  }
+  .gest-area-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 720px) {
+  .gest-areas {
+    /* permite scroll horizontal controlado em telas estreitas */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: var(--sp-2);
+  }
+  .gest-area-btn {
+    flex-shrink: 0;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    min-height: 42px;
+  }
+  .gest-area-btn .gest-area-lb {
+    white-space: nowrap;
+  }
+}
+/* ===== fim v215 ===== */
+
 </style>
 </head>
 <body>
@@ -13782,7 +13886,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v214';
+var APP_BUILD = 'v215';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -31876,9 +31980,9 @@ function gestaoPontoHTML(){
   var facKpis = '';
   if (k.facCadastradas > 0){
     var facVerifTxt = k.facVerif + ' / ' + k.facCadastradas;
-    facKpis = kpiCard('🎭 Verificadas', facVerifTxt, '#16A34A');
+    facKpis = kpiCard('Verificadas', facVerifTxt, '#16A34A');
     if (k.facSemVerif > 0){
-      facKpis += kpiCard('⚠️ Sem verif', k.facSemVerif, '#F59E0B');
+      facKpis += kpiCard('Sem verif', k.facSemVerif, '#F59E0B');
     }
   }
   var kpis = '<div class="gp-kpis">'+
@@ -31898,7 +32002,7 @@ function gestaoPontoHTML(){
         '<input type="date" id="gpData" class="task-filter" value="'+esc(data)+'">'+
       '</div>'+
       '<div class="gp-tb-right">'+
-        '<button class="btn btn-ghost" id="gpCsv" title="Exportar CSV">📊 CSV</button>'+
+        '<button class="btn btn-ghost" id="gpCsv" title="Exportar CSV" aria-label="Exportar CSV">'+icon('trend')+'<span style="margin-left:6px">CSV</span></button>'+
       '</div>'+
     '</div>'+
     kpis+
@@ -31980,18 +32084,106 @@ function gestaoTabsForSector(){
   else { add('atividade','Atividade','search'); }
   return T;
 }
+/* ============================================================
+   v215 · Arquitetura MÓDULO → ÁREA → PÁGINA (Gestão)
+   ============================================================
+   Em vez de 10 abas planas, agrupa em áreas semânticas.
+   Cada área pode ter 1 ou várias folhas; a folha ativa fica em
+   ST.gestaoTab (preserva deep links e GESTAO_CHILDREN). Nenhuma rota nova.
+   ============================================================ */
+function gestaoAreasForSector(){
+  var s = ST.sector, A = [], isA = (typeof isAdmin==='function') && isAdmin(ST.session);
+  function area(id,label,ic,kids){ A.push({id:id,label:label,icon:ic,kids:kids||[]}); }
+  function leaf(id,label,ic){ return {id:id,label:label,icon:ic}; }
+  // Visão geral — só lojas tem painel de visão
+  if (s==='lojas') area('visao','Visão geral','dashboard',[leaf('visao','Visão geral','dashboard')]);
+  // Resultados — metas + relatório + comissões/ranking/orçamento (varia por setor)
+  var r = [];
+  if (s==='lojas'){ r.push(leaf('metas','Metas','target')); r.push(leaf('relatorio','Relatório','trend')); r.push(leaf('comissoes','Comissões','dollar')); }
+  else if (s==='marketing'){ r.push(leaf('metas','Metas','target')); r.push(leaf('relatorio','Relatório','trend')); r.push(leaf('orcamento','Orçamento','dollar')); }
+  else if (s==='vendas'){ r.push(leaf('metas','Metas','target')); r.push(leaf('ranking','Ranking','trend')); }
+  if (r.length) area('resultados','Resultados','trend', r);
+  // Operação — admin only (rotinas, KPIs, ponto)
+  if (isA){
+    area('operacao','Operação','gear',[
+      leaf('tarefas','Rotinas','tasks'),
+      leaf('kpis','KPIs','trend'),
+      leaf('ponto','Ponto','clock')
+    ]);
+  }
+  // Avaliações — só lojas tem avaliações formais
+  if (s==='lojas') area('avaliacoes','Avaliações','users',[leaf('avaliacoes','Avaliações','users')]);
+  // Pendências — solicitações (só lojas) + atividade
+  var p = [];
+  if (s==='lojas') p.push(leaf('solicitacoes','Solicitações','bell'));
+  p.push(leaf('atividade','Atividade','search'));
+  if (p.length === 1){
+    // apenas atividade — vira área própria
+    area(p[0].id, p[0].label, p[0].icon, [p[0]]);
+  } else {
+    area('pendencias','Pendências','bell', p);
+  }
+  return A;
+}
+/* Resolve a ÁREA que contém um dado tabId (folha). Retorna a área ou null. */
+function gestaoAreaDe(tabId){
+  var areas = gestaoAreasForSector();
+  for (var i=0;i<areas.length;i++){
+    var kids = areas[i].kids || [];
+    for (var j=0;j<kids.length;j++){
+      if (kids[j].id === tabId) return areas[i];
+    }
+  }
+  return null;
+}
+
 function gestaoHTML() {
   if (!can('indicadores')) {
     return emptyState({ icon:'target', title:'Acesso restrito', text:'Esta área é para Supervisores, Gestores e Administradores.' });
   }
-  var T=gestaoTabsForSector(); var ids=T.map(function(x){return x.id;});
-  var tab = ST.gestaoTab || ids[0];
-  if (ids.indexOf(tab)===-1){ tab=ids[0]; ST.gestaoTab=tab; } // v74: valida a aba pro setor atual
-  var pend = pendingRequests().length;
-  var tabs = '<div class="cfg-tabs">'+T.map(function(x){
-    var badge = (x.id==='solicitacoes' && pend>0) ? ' <span class="tab-badge">'+pend+'</span>' : '';
-    return '<button class="cfg-tab'+(tab===x.id?' on':'')+'" data-gtab="'+x.id+'">'+icon(x.icon)+x.label+badge+'</button>';
-  }).join('')+'</div>';
+  var areas = gestaoAreasForSector();
+  if (!areas.length){
+    return emptyState({ icon:'target', title:'Nada por aqui', text:'Nenhuma área de Gestão disponível pro seu perfil neste setor.' });
+  }
+  // Resolver qual folha (tab) está ativa — compat com GESTAO_CHILDREN e deep links antigos
+  var allLeaves = [];
+  areas.forEach(function(a){ (a.kids||[]).forEach(function(k){ allLeaves.push(k.id); }); });
+  var tab = ST.gestaoTab;
+  if (!tab || allLeaves.indexOf(tab)===-1){
+    // sem tab válida pro perfil atual → cai no primeiro leaf da primeira área
+    tab = areas[0].kids[0].id;
+    ST.gestaoTab = tab;
+  }
+  var activeArea = gestaoAreaDe(tab) || areas[0];
+  var pend = (typeof pendingRequests==='function') ? pendingRequests().length : 0;
+
+  // Nav primária: áreas (horizontal, destacada)
+  var areasNav = '<div class="gest-areas" role="tablist" aria-label="Áreas de Gestão">'+
+    areas.map(function(a){
+      var on = (a.id === activeArea.id);
+      // badge de pendências aparece na área que contém solicitacoes
+      var hasSolic = (a.kids||[]).some(function(k){ return k.id==='solicitacoes'; });
+      var badge = (hasSolic && pend > 0) ? '<span class="gest-area-badge">'+pend+'</span>' : '';
+      return '<button type="button" class="gest-area-btn'+(on?' on':'')+'" '+
+        'role="tab" aria-selected="'+(on?'true':'false')+'" '+
+        'data-garea="'+esc(a.id)+'" '+
+        'title="'+esc(a.label)+'">'+
+        '<span class="gest-area-ic" aria-hidden="true">'+icon(a.icon)+'</span>'+
+        '<span class="gest-area-lb">'+esc(a.label)+'</span>'+
+        badge+
+      '</button>';
+    }).join('')+'</div>';
+
+  // Nav secundária: folhas da área ativa (só se > 1)
+  var leavesNav = '';
+  if ((activeArea.kids||[]).length > 1){
+    leavesNav = '<div class="cfg-tabs gest-subtabs" role="tablist" aria-label="'+esc(activeArea.label)+'">'+
+      activeArea.kids.map(function(k){
+        var sbadge = (k.id==='solicitacoes' && pend>0) ? ' <span class="tab-badge">'+pend+'</span>' : '';
+        return '<button type="button" class="cfg-tab'+(tab===k.id?' on':'')+'" role="tab" aria-selected="'+(tab===k.id?'true':'false')+'" data-gtab="'+esc(k.id)+'">'+icon(k.icon)+esc(k.label)+sbadge+'</button>';
+      }).join('')+'</div>';
+  }
+
   var body;
   if (tab==='tarefas') body=admTarefasHTML();
   else if (tab==='kpis') body=kpiTarefasHTML();
@@ -32005,7 +32197,10 @@ function gestaoHTML() {
   else if (tab==='comissoes') body=comissoesHTML();
   else if (tab==='solicitacoes') body=solicitacoesHTML();
   else body=visaoGeralHTML();
-  return '<div class="tasks-head"><div><h2>Gestão</h2><div class="sub">Metas, resultados e gestão do setor</div></div></div>'+tabs+'<div id="gestaoBody">'+body+'</div>';
+
+  return '<div class="tasks-head"><div><h2>Gestão</h2><div class="sub">'+esc(activeArea.label)+((activeArea.kids||[]).length>1 ? ' · '+esc(((activeArea.kids.find(function(k){return k.id===tab;})||{}).label||'')) : '')+'</div></div></div>'+
+    areasNav + leavesNav +
+    '<div id="gestaoBody">'+body+'</div>';
 }
 function gestaoStats(filterFn){
   var hoje=today(); var o={abertas:0,atrasadas:0,concluidas:0,total:0};
@@ -32845,7 +33040,25 @@ function avaliacaoDetalhe(a){
 
 function bindGestao() {
   if (!canEdit()) return;
-  var tabs=app.querySelectorAll('.cfg-tab');
+  // v215: cliques na nav primária (áreas) — seleciona a primeira folha da área
+  var ares = app.querySelectorAll('.gest-area-btn[data-garea]');
+  for (var a=0;a<ares.length;a++){
+    ares[a].addEventListener('click', function(){
+      var aid = this.getAttribute('data-garea');
+      if (typeof gestaoAreasForSector === 'function'){
+        var areas = gestaoAreasForSector();
+        for (var k=0;k<areas.length;k++){
+          if (areas[k].id === aid){
+            ST.gestaoTab = (areas[k].kids && areas[k].kids[0]) ? areas[k].kids[0].id : aid;
+            break;
+          }
+        }
+      }
+      renderPage();
+    });
+  }
+  // v215: cliques na nav secundária (folhas da área) — mantém binding antigo
+  var tabs=app.querySelectorAll('.cfg-tab[data-gtab]');
   for (var i=0;i<tabs.length;i++) tabs[i].addEventListener('click', function(){ ST.gestaoTab=this.getAttribute('data-gtab'); renderPage(); });
   // v74: liga os eventos da tela aninhada na aba ativa
   var gt=ST.gestaoTab||'';
@@ -35270,6 +35483,9 @@ if (typeof globalThis !== 'undefined'){
   if (typeof isSuper==='function') globalThis.isSuper = isSuper;
   if (typeof navigate==='function') globalThis.navigate = navigate;
   if (typeof ST!=='undefined') globalThis.ST = ST;
+  if (typeof gestaoAreasForSector==='function') globalThis.gestaoAreasForSector = gestaoAreasForSector;
+  if (typeof gestaoAreaDe==='function') globalThis.gestaoAreaDe = gestaoAreaDe;
+  if (typeof gestaoTabsForSector==='function') globalThis.gestaoTabsForSector = gestaoTabsForSector;
   globalThis.openFicha360 = openFicha360;
   globalThis.ficha360EstatsPonto = ficha360EstatsPonto;
   globalThis.ficha360EstatsTarefas = ficha360EstatsTarefas;
@@ -38077,9 +38293,9 @@ function gestorPlanoPageHTML(){
   }
 
   var tabsHTML = '<div class="gp-tabs">'+
-    '<button class="gp-tab '+(GP_STATE.tab==='cal'?'gp-tab-active':'')+'" data-tab="cal">📅 Calendário</button>'+
-    '<button class="gp-tab '+(GP_STATE.tab==='acoes'?'gp-tab-active':'')+'" data-tab="acoes">🎯 Ações do Mês</button>'+
-    '<button class="gp-tab '+(GP_STATE.tab==='result'?'gp-tab-active':'')+'" data-tab="result">🏆 Resultados</button>'+
+    '<button class="gp-tab '+(GP_STATE.tab==='cal'?'gp-tab-active':'')+'" data-tab="cal">'+icon('cal')+'<span style="margin-left:6px">Calendário</span></button>'+
+    '<button class="gp-tab '+(GP_STATE.tab==='acoes'?'gp-tab-active':'')+'" data-tab="acoes">'+icon('target')+'<span style="margin-left:6px">Ações do Mês</span></button>'+
+    '<button class="gp-tab '+(GP_STATE.tab==='result'?'gp-tab-active':'')+'" data-tab="result">'+icon('trend')+'<span style="margin-left:6px">Resultados</span></button>'+
   '</div>';
 
   var conteudo;
