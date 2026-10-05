@@ -13353,6 +13353,183 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 }
 /* ===== fim v211 ===== */
 
+
+/* ===== v212 · Menu do Avatar ===== */
+.av-menu {
+  position: fixed;
+  z-index: 1200;  /* acima dos modais padrão (--z-modal:100) mas abaixo do splash */
+  background: var(--u-card, #fff);
+  border: 1px solid var(--u-border);
+  border-radius: 14px;
+  box-shadow: var(--u-shadow-lg, 0 10px 40px rgba(0,0,0,.18));
+  padding: 10px;
+  min-width: 260px;
+  max-width: 320px;
+  max-height: calc(100vh - 20px);
+  overflow-y: auto;
+  animation: amIn .14s ease;
+}
+@keyframes amIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+.av-head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 6px 12px;
+  border-bottom: 1px solid var(--u-line);
+  margin-bottom: 8px;
+}
+.av-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.av-head-txt { flex: 1; min-width: 0; line-height: 1.3; }
+.av-name {
+  font-family: var(--u-font-display, 'Sora', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--u-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.av-meta {
+  font-size: 11.5px;
+  color: var(--u-text2);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.av-email {
+  font-size: 11px;
+  color: var(--u-text3);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.av-status {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--u-green, #16A34A);
+  font-weight: 600;
+}
+.av-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--u-green, #16A34A);
+  box-shadow: 0 0 5px var(--u-green, #16A34A);
+  flex-shrink: 0;
+}
+
+.av-sec {
+  padding: 4px 0;
+  border-top: 1px solid var(--u-line);
+}
+.av-sec:first-of-type { border-top: none; padding-top: 0; }
+.av-sec-foot { padding: 10px 8px; }
+
+.av-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 10px;
+  min-height: 40px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  text-align: left;
+  font-family: inherit;
+  font-size: 13.5px;
+  color: var(--u-text);
+  cursor: pointer;
+  transition: background .12s;
+}
+.av-item:hover { background: var(--u-bg2, rgba(0,0,0,.04)); }
+.av-item:focus-visible {
+  outline: none;
+  background: var(--u-bg2, rgba(0,0,0,.05));
+  box-shadow: 0 0 0 2px var(--primary-500, #3B6FF7) inset;
+}
+.av-ico {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--u-text3);
+  flex-shrink: 0;
+}
+.av-ico svg { width: 18px; height: 18px; }
+.av-lbl {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.av-item-danger { color: var(--u-red, #EF4444); }
+.av-item-danger .av-ico { color: var(--u-red, #EF4444); }
+.av-item-danger:hover { background: rgba(239,68,68,.08); }
+
+.av-version {
+  font-size: 10px;
+  color: var(--u-text3);
+  text-align: center;
+  letter-spacing: .5px;
+  opacity: .7;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Mobile: vira bottom sheet usando o padrão do sistema */
+@media (max-width: 720px) {
+  .av-menu.av-menu-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 20px 20px 0 0;
+    padding: 16px 14px calc(14px + env(safe-area-inset-bottom, 0));
+    animation: amSheetIn .22s cubic-bezier(.4,0,.2,1);
+  }
+  .av-menu.av-menu-sheet .av-item {
+    min-height: 48px;  /* tap target maior em touch */
+    padding: 12px 12px;
+    font-size: 14.5px;
+  }
+}
+@keyframes amSheetIn { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+/* Overlay suave em mobile pra reforçar foco no sheet */
+@media (max-width: 720px) {
+  body:has(.av-menu-sheet)::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,.3);
+    z-index: 1199;
+    animation: amFadeIn .22s ease;
+  }
+}
+@keyframes amFadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* ===== fim v212 ===== */
+
 </style>
 </head>
 <body>
@@ -13376,7 +13553,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v211';
+var APP_BUILD = 'v212';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13576,6 +13753,320 @@ if (typeof globalThis !== 'undefined'){
   globalThis.breadcrumbHTML = breadcrumbHTML;
   globalThis.breadcrumbShouldShow = breadcrumbShouldShow;
   globalThis.bindBreadcrumb = bindBreadcrumb;
+}
+
+
+/* ============================================================
+   v212 · Menu do Avatar unificado
+   ============================================================
+   Dropdown/popover acessível que agrupa:
+   - Áreas pessoais (perfil, férias, atestados, reembolsos, meu plano)
+   - Preferências (tema)
+   - Troca de setor (reusa renderSectorScreen)
+   - Versão (APP_BUILD)
+   - Sair (reusa logout)
+
+   Reutiliza: logout, toggleTheme, getTheme, goToPage,
+              renderSectorScreen, roleNivelLabel, nivelDe,
+              icon, esc, SECTORS, APP_BUILD.
+   Nada é duplicado.
+   ============================================================ */
+
+var AM_STATE = { open:false, lastFocused:null };
+
+/* Fecha o menu — remove DOM, listeners e restaura foco */
+function closeAvatarMenu(){
+  var el = document.getElementById('avatarMenu');
+  if (el && el.parentNode) el.parentNode.removeChild(el);
+  var trigger = document.getElementById('sideUser');
+  if (trigger){
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+  // Remove listeners globais
+  document.removeEventListener('keydown', _amOnKey, true);
+  document.removeEventListener('click', _amOnClickOutside, true);
+  window.removeEventListener('resize', _amOnResize);
+  AM_STATE.open = false;
+  // Restaura foco no gatilho
+  try { if (AM_STATE.lastFocused && AM_STATE.lastFocused.focus) AM_STATE.lastFocused.focus(); } catch(e){}
+  AM_STATE.lastFocused = null;
+}
+
+/* Toggle — abre se fechado, fecha se aberto */
+function openAvatarMenu(){
+  if (AM_STATE.open){
+    closeAvatarMenu();
+    return;
+  }
+  var trigger = document.getElementById('sideUser');
+  if (!trigger) return;
+  AM_STATE.lastFocused = document.activeElement;
+
+  var menu = document.createElement('div');
+  menu.id = 'avatarMenu';
+  menu.className = 'av-menu';
+  menu.setAttribute('role', 'menu');
+  menu.setAttribute('aria-label', 'Menu do usuário');
+  menu.innerHTML = _amRenderHTML();
+  document.body.appendChild(menu);
+
+  trigger.setAttribute('aria-expanded', 'true');
+  _amPosition(menu, trigger);
+  _amBind(menu);
+
+  // Listeners globais — capture pra funcionar antes de outros handlers
+  document.addEventListener('keydown', _amOnKey, true);
+  document.addEventListener('click', _amOnClickOutside, true);
+  window.addEventListener('resize', _amOnResize);
+
+  AM_STATE.open = true;
+
+  // Foco no primeiro item (acessibilidade)
+  setTimeout(function(){
+    var first = menu.querySelector('[role="menuitem"]');
+    if (first) first.focus();
+  }, 10);
+}
+
+/* Posiciona o popover em desktop (ao lado do avatar na sidebar)
+   ou vira bottom sheet em mobile. Nunca escapa da viewport. */
+function _amPosition(menu, trigger){
+  var isMobile = window.matchMedia && window.matchMedia('(max-width: 720px)').matches;
+  if (isMobile){
+    menu.classList.add('av-menu-sheet');
+    return; // CSS cuida do posicionamento bottom sheet
+  }
+  // Desktop: posicionar ao lado direito da sidebar, alinhado ao topo do avatar
+  var r = trigger.getBoundingClientRect();
+  var mw = Math.min(320, window.innerWidth - 20);
+  menu.style.width = mw + 'px';
+  menu.style.left = Math.max(10, r.right + 8) + 'px';
+  // Clamp vertical: não deixar passar da viewport
+  menu.style.visibility = 'hidden';
+  menu.style.top = '0px';
+  // Após render, recalcula altura real e clampa
+  requestAnimationFrame(function(){
+    var mh = menu.offsetHeight;
+    var top = r.top;
+    if (top + mh > window.innerHeight - 10){
+      top = Math.max(10, window.innerHeight - mh - 10);
+    }
+    menu.style.top = top + 'px';
+    menu.style.visibility = 'visible';
+  });
+}
+
+/* Reposiciona em resize/scroll — simples: fecha e deixa reabrir se quiser */
+function _amOnResize(){
+  if (AM_STATE.open) closeAvatarMenu();
+}
+
+/* ESC + navegação por teclado */
+function _amOnKey(e){
+  if (!AM_STATE.open) return;
+  if (e.key === 'Escape'){
+    e.preventDefault();
+    e.stopPropagation();
+    closeAvatarMenu();
+    return;
+  }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    var items = document.querySelectorAll('#avatarMenu [role="menuitem"]');
+    if (!items.length) return;
+    var idx = -1;
+    for (var i = 0; i < items.length; i++){
+      if (items[i] === document.activeElement){ idx = i; break; }
+    }
+    var next;
+    if (e.key === 'ArrowDown') next = (idx + 1) % items.length;
+    else next = (idx <= 0 ? items.length - 1 : idx - 1);
+    items[next].focus();
+    return;
+  }
+  if (e.key === 'Home'){
+    e.preventDefault();
+    var first = document.querySelector('#avatarMenu [role="menuitem"]');
+    if (first) first.focus();
+    return;
+  }
+  if (e.key === 'End'){
+    e.preventDefault();
+    var all = document.querySelectorAll('#avatarMenu [role="menuitem"]');
+    if (all.length) all[all.length - 1].focus();
+    return;
+  }
+}
+
+/* Click fora fecha */
+function _amOnClickOutside(e){
+  if (!AM_STATE.open) return;
+  var menu = document.getElementById('avatarMenu');
+  var trigger = document.getElementById('sideUser');
+  if (!menu) return;
+  if (menu.contains(e.target)) return;
+  if (trigger && trigger.contains(e.target)) return;
+  closeAvatarMenu();
+}
+
+/* Monta o HTML do menu. Mostra apenas o que existe/for permitido. */
+function _amRenderHTML(){
+  var s = ST.session;
+  var u = (s && s.user) || {};
+  var sector = (ST.sector) || (s && s.sector) || 'lojas';
+  var sectorInfo = (typeof SECTORS !== 'undefined' && SECTORS[sector]) || { label: sector, color: '#3B6FF7' };
+
+  // --- Avatar visual
+  var avHTML;
+  if (u.avatar){
+    avHTML = '<span class="av-avatar" style="background:center/cover url(\''+u.avatar+'\')"></span>';
+  } else {
+    var bg = u.color || sectorInfo.color || '#3B6FF7';
+    var ini = esc(u.initials || (u.name ? u.name.charAt(0) : '?'));
+    avHTML = '<span class="av-avatar" style="background:'+bg+'">'+ini+'</span>';
+  }
+
+  // --- Linha de info (só o que existe)
+  var nivelLabel = (typeof roleNivelLabel === 'function') ? roleNivelLabel(s) : '';
+  var metaBits = [];
+  if (nivelLabel) metaBits.push(esc(nivelLabel));
+  if (sectorInfo.label) metaBits.push(esc(sectorInfo.label));
+  var metaLine = metaBits.length ? '<div class="av-meta">'+metaBits.join(' · ')+'</div>' : '';
+
+  var emailLine = u.email ? '<div class="av-email" title="'+esc(u.email)+'">'+esc(u.email)+'</div>' : '';
+  var nameLine = u.name ? '<div class="av-name">'+esc(u.name)+'</div>' : '<div class="av-name">Usuário</div>';
+
+  // --- Status online (replica o que o header mostra; não altera lógica)
+  var onlineLine = '<div class="av-status"><span class="av-dot"></span>Online</div>';
+
+  var head = '<div class="av-head">'+
+    avHTML +
+    '<div class="av-head-txt">'+
+      nameLine +
+      metaLine +
+      emailLine +
+      onlineLine +
+    '</div>'+
+  '</div>';
+
+  // --- Seção: Pessoal
+  function item(id, label, iconName, action){
+    return '<button role="menuitem" class="av-item" data-am-action="'+esc(action)+'" data-am-arg="'+esc(id||'')+'">'+
+      '<span class="av-ico">'+(typeof icon==='function'?icon(iconName):'')+'</span>'+
+      '<span class="av-lbl">'+esc(label)+'</span>'+
+    '</button>';
+  }
+
+  var pessoal = '';
+  pessoal += item('perfil',     'Meu perfil',  'users',    'goto');
+  pessoal += item('ferias',     'Férias',      'calendar', 'goto');
+  pessoal += item('atestados',  'Atestados',   'folder',   'goto');
+  pessoal += item('reembolsos', 'Reembolsos',  'dollar',   'goto');
+  // Meu plano: só aparece pra elegíveis (gestor+). Reusa gestorPlanoElegivel do v209.
+  if (typeof gestorPlanoElegivel === 'function' && gestorPlanoElegivel()){
+    pessoal += item('meu-plano', 'Meu plano', 'target', 'goto');
+  }
+
+  // --- Seção: Preferências / sistema
+  var temaAtual = (typeof getTheme === 'function') ? getTheme() : 'light';
+  var temaIco = (temaAtual === 'dark') ? 'sun' : 'moon';
+  var temaLabel = (temaAtual === 'dark') ? 'Aparência: tema claro' : 'Aparência: tema escuro';
+  var prefs = '';
+  prefs += '<button role="menuitem" class="av-item" data-am-action="theme">'+
+    '<span class="av-ico">'+(typeof icon==='function'?icon(temaIco):'')+'</span>'+
+    '<span class="av-lbl">'+esc(temaLabel)+'</span>'+
+  '</button>';
+
+  // Mudar de setor: só se há mais de 1 setor ativo (reusa departamentosParaLogin)
+  var podeTrocar = false;
+  try {
+    var deps = (typeof departamentosParaLogin === 'function') ? departamentosParaLogin() : [];
+    podeTrocar = deps.length > 1;
+  } catch(e){ podeTrocar = false; }
+  if (podeTrocar){
+    prefs += '<button role="menuitem" class="av-item" data-am-action="switch-sector">'+
+      '<span class="av-ico">'+(typeof icon==='function'?icon('gear'):'')+'</span>'+
+      '<span class="av-lbl">Mudar de setor</span>'+
+    '</button>';
+  }
+
+  // --- Rodapé: versão + sair
+  var versao = (typeof APP_BUILD !== 'undefined') ? APP_BUILD : '';
+  var versaoLine = '<div class="av-version" title="Versão em uso">Work OS · '+esc(versao)+'</div>';
+
+  var sair = '<button role="menuitem" class="av-item av-item-danger" data-am-action="logout">'+
+    '<span class="av-ico">'+(typeof icon==='function'?icon('logout'):'')+'</span>'+
+    '<span class="av-lbl">Sair</span>'+
+  '</button>';
+
+  return head +
+    '<div class="av-sec">'+pessoal+'</div>'+
+    '<div class="av-sec">'+prefs+'</div>'+
+    '<div class="av-sec av-sec-foot">'+versaoLine+'</div>'+
+    '<div class="av-sec">'+sair+'</div>';
+}
+
+/* Liga handlers do menu. Reutiliza funções globais existentes. */
+function _amBind(menu){
+  var items = menu.querySelectorAll('[role="menuitem"]');
+  for (var i = 0; i < items.length; i++){
+    items[i].addEventListener('click', function(){
+      var act = this.getAttribute('data-am-action');
+      var arg = this.getAttribute('data-am-arg');
+      _amDispatch(act, arg);
+    });
+  }
+}
+
+/* Despacha a ação. Reusa estritamente funções que já existem. */
+function _amDispatch(action, arg){
+  if (action === 'goto'){
+    closeAvatarMenu();
+    if (typeof goToPage === 'function'){
+      goToPage(arg);
+    } else if (typeof ST !== 'undefined'){
+      ST.page = arg;
+      if (typeof navigate === 'function') navigate(ST.sector + '/' + arg);
+      if (typeof renderPage === 'function') renderPage();
+    }
+    return;
+  }
+  if (action === 'theme'){
+    // reusa EXATAMENTE a função existente (sincroniza com botão do header)
+    if (typeof toggleTheme === 'function') toggleTheme();
+    closeAvatarMenu();
+    return;
+  }
+  if (action === 'switch-sector'){
+    closeAvatarMenu();
+    // reusa EXATAMENTE o picker + login existente
+    if (typeof renderSectorScreen === 'function') renderSectorScreen();
+    return;
+  }
+  if (action === 'logout'){
+    closeAvatarMenu();
+    // reusa EXATAMENTE o logout existente, com confirmação se houver confirmDialog
+    if (typeof confirmDialog === 'function'){
+      confirmDialog({
+        title: 'Sair do Work OS?',
+        text:  'Você precisará entrar novamente.',
+        confirmLabel: 'Sair',
+        onConfirm: function(){ if (typeof logout === 'function') logout(); }
+      });
+    } else {
+      if (typeof logout === 'function') logout();
+    }
+    return;
+  }
+}
+
+/* Expor pros testes e pra reuso */
+if (typeof globalThis !== 'undefined'){
+  globalThis.AM_STATE = AM_STATE;
+  globalThis.openAvatarMenu = openAvatarMenu;
+  globalThis.closeAvatarMenu = closeAvatarMenu;
+  globalThis._amRenderHTML = _amRenderHTML;
+  globalThis._amDispatch = _amDispatch;
 }
 
 var PAGES = {
@@ -14330,7 +14821,27 @@ function renderShell(innerHTML, title, shellOpts) {
   if (typeof bindTopbarPonto === 'function') bindTopbarPonto();
   if (typeof bindTopbarNotif === 'function') bindTopbarNotif();
   var sideUser=document.getElementById('sideUser');
-  if (sideUser) sideUser.addEventListener('click', function(){ ST.page='perfil'; ST.openProject=null; navigate(ST.sector+'/perfil'); renderPage(); });
+  if (sideUser){
+    // v212: adicionar ARIA e trocar comportamento para abrir menu do avatar
+    sideUser.setAttribute('aria-haspopup', 'menu');
+    sideUser.setAttribute('aria-expanded', 'false');
+    sideUser.addEventListener('click', function(e){
+      e.stopPropagation();
+      if (typeof openAvatarMenu === 'function'){
+        openAvatarMenu();
+      } else {
+        // fallback: comportamento original (nunca deve cair aqui, mas protege)
+        ST.page='perfil'; ST.openProject=null; navigate(ST.sector+'/perfil'); renderPage();
+      }
+    });
+    // v212: suporte a Enter/Space no botão (acessibilidade de teclado)
+    sideUser.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        if (typeof openAvatarMenu === 'function') openAvatarMenu();
+      }
+    });
+  }
   // v89.3: cliques nos itens de submenu — pulam direto para a aba
   document.querySelectorAll('[data-subpage]').forEach(function(el){
     el.addEventListener('click', function(e){
