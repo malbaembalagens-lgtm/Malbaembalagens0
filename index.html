@@ -13863,6 +13863,42 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 }
 /* ===== fim v215 ===== */
 
+
+/* ===== v216 · ajuste de containers de ícones (substituição de emoji) ===== */
+.brf-emoji { font-size: 16px; display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; }
+.brf-emoji svg { width:18px; height:18px; }
+.brf-alert-ic svg { width:16px; height:16px; vertical-align:-3px; }
+.ktc-ic svg, .kpq-ic svg { width:16px; height:16px; }
+.gp-fac svg { width:14px; height:14px; vertical-align:-2px; }
+.gp-result-emoji svg { width:20px; height:20px; }
+.fon-icon svg { width:40px; height:40px; }
+.pp-btn-ic svg { width:40px; height:40px; }
+.onb-face-icon svg { width:48px; height:48px; }
+.onb-face-icon-ok svg { width:48px; height:48px; }
+.onb-done-icon svg { width:48px; height:48px; }
+.onb-info-icon svg { width:28px; height:28px; }
+.top-notif-ico svg { width:18px; height:18px; }
+.agd-hoje-ico svg { width:20px; height:20px; }
+.re-cat svg { width:14px; height:14px; vertical-align:-2px; }
+.aud-cat svg { width:14px; height:14px; vertical-align:-2px; }
+.fi-btn-facial svg { width:16px; height:16px; }
+.re-rej svg, .at-rej svg { width:14px; height:14px; vertical-align:-2px; }
+
+/* v216 — ajustes de estrelas e outros SVG restantes */
+.star-pick svg { width:22px; height:22px; }
+.star-ro svg { width:14px; height:14px; }
+.notif-wa-btn svg { width:18px; height:18px; }
+.fer-edit-btn svg { width:14px; height:14px; }
+.agd-btn-clear svg { width:14px; height:14px; }
+.tbp-pop-h svg { width:18px; height:18px; vertical-align:-3px; }
+.fcm-btn svg, #fcwRetry svg, #fcwCap svg, #fcwAbrir svg, #fcmAbrir svg, #fcmAbrir2 svg, #fcmSalvar svg, #fvmAbrir svg { width:16px; height:16px; }
+.cmp-btn-capturar svg { width:16px; height:16px; }
+.freq-icon svg { width:40px; height:40px; }
+.fb-ia-hint svg, .gp-acoes-hint svg { width:14px; height:14px; vertical-align:-2px; }
+#onbRePass svg, #onbFaceRedo svg { width:14px; height:14px; }
+#frSave svg, #frNovaBtn svg, #ferNovoBtn svg, #ferDel svg, #agdSalvar svg, #gpResObsSave svg { width:14px; height:14px; }
+/* ===== fim v216 ===== */
+
 </style>
 </head>
 <body>
@@ -13886,7 +13922,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v215';
+var APP_BUILD = 'v216';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -14744,6 +14780,10 @@ var ICON_PATHS = {
   'star-icon':      '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>',
   'wave-hand':      '<path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
   'zap':            '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  'face':           '<circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8.5 15c1 1.2 2.3 1.8 3.5 1.8s2.5-.6 3.5-1.8"/>',
+  'fire':           '<path d="M12 2c0 4-4 5-4 9a4 4 0 0 0 8 0c0-1.5-.8-2.8-1.8-3.5.5 1.5 0 2.5-1 2.5-1 0-1.5-1.2-1.2-2.5C13 5 12 3.5 12 2z"/>',
+  'sparkle':        '<path d="M12 2v6M12 16v6M2 12h6M16 12h6M4.5 4.5l4.2 4.2M15.3 15.3l4.2 4.2M4.5 19.5l4.2-4.2M15.3 8.7l4.2-4.2"/>',
+  'info':           '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r=".5" fill="currentColor"/>',
   'rocket':         '<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>'
 };
 function icon(name) {
@@ -16749,7 +16789,7 @@ function rankingPanelHTML(storeId){
 
   var podioOrder = top3.length >= 3 ? [1, 0, 2] : (top3.length === 2 ? [1, 0] : [0]);
   var podioClasses = { 0:'ouro', 1:'prata', 2:'bronze' };
-  var podioMedals = { 0:'🥇', 1:'🥈', 2:'🥉' };
+  var podioMedals = { 0:'medal', 1:'medal', 2:'medal' };  // v216: nome de ícone
 
   // Helpers de meta/comissão dentro do card (só modo mês)
   function extraMesHTML(e){
@@ -17870,7 +17910,7 @@ function rotinaLojaCardHTML(sid){
     var cor = pct >= 100 ? '#16A34A' : (pct >= 50 ? '#3B6FF7' : '#F59E0B');
     var critInfo = st.criticoTotal > 0
       ? '<span class="rlc-crit-tag'+(st.criticoDone===st.criticoTotal?' rlc-crit-ok':'')+'">'+
-          (st.criticoDone===st.criticoTotal?'✓ críticos':'⚠ '+(st.criticoTotal-st.criticoDone)+' crítico'+(st.criticoTotal-st.criticoDone!==1?'s':'')+' pendente'+(st.criticoTotal-st.criticoDone!==1?'s':''))+
+          (st.criticoDone===st.criticoTotal?'críticos OK':(st.criticoTotal-st.criticoDone)+' crítico'+(st.criticoTotal-st.criticoDone!==1?'s':'')+' pendente'+(st.criticoTotal-st.criticoDone!==1?'s':''))+
         '</span>'
       : '';
     return '<div class="rlc-turno">'+
@@ -19504,7 +19544,7 @@ function openFichaColaborador(member){
       '<div class="fi-head"><span class="fi-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
         '<div class="fi-id"><b>'+esc(m.name)+'</b><i>'+esc(m.role||'Sem função')+' · '+esc(loja)+'</i></div>'+
         '<span class="fi-sit '+(inativo?'off':'on')+'">'+(inativo?'Inativo':'Ativo')+'</span>'+
-        (can('equipe') ? '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>' : '')+(can('equipe') ? '<button class="fi-edit fi-btn-facial'+(facialTemCadastro(m)?' fi-btn-facial-on':'')+'" id="fiFacial" title="'+(facialTemCadastro(m)?'Rosto cadastrado — refazer':'Cadastrar rosto')+'">🎭</button>' : '')+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
+        (can('equipe') ? '<button class="fi-edit fi-btn-escala" id="fiEscala" title="Escala de trabalho">'+icon('clock')+'</button>' : '')+(can('equipe') ? '<button class="fi-edit fi-btn-facial'+(facialTemCadastro(m)?' fi-btn-facial-on':'')+'" id="fiFacial" title="'+(facialTemCadastro(m)?'Rosto cadastrado — refazer':'Cadastrar rosto')+'" aria-label="Facial">'+icon('face')+'</button>' : '')+'<button class="fi-edit" id="fiEdit" title="Editar dados">'+icon('gear')+'</button>'+
       '</div>'+ tabs + body +
       '<div class="modal-foot"><button class="btn btn-ghost" id="fiClose">Fechar</button></div>'+
     '</div>';
@@ -20150,7 +20190,7 @@ function rotinaHTML(){
     var rows = items.length ? items.map(function(it){
       var dr = checklistDoneFor(it.id, sid, d); var done = dr && dr.done;
       var who = done ? ('<span class="rot-who">'+esc((dr.done_by_name||'').split(' ')[0])+' · '+hhmm(dr.done_at)+'</span>') : '';
-      var critIco = it.is_critico ? '<span class="rot-crit-ico" title="Item crítico — alerta se não for feito">⚠</span>' : ''; return '<button class="rot-item'+(done?' done':'')+(it.is_critico?' rot-crit':'')+'" data-check="'+esc(it.id)+'"><span class="rot-box">'+(done?icon('tasks'):'')+'</span>'+critIco+'<span class="rot-label">'+esc(it.label)+'</span>'+who+'</button>';
+      var critIco = it.is_critico ? '<span class="rot-crit-ico" title="Item crítico — alerta se não for feito" aria-label="Crítico">'+icon('warning')+'</span>' : ''; return '<button class="rot-item'+(done?' done':'')+(it.is_critico?' rot-crit':'')+'" data-check="'+esc(it.id)+'"><span class="rot-box">'+(done?icon('tasks'):'')+'</span>'+critIco+'<span class="rot-label">'+esc(it.label)+'</span>'+who+'</button>';
     }).join('') : '<div class="col-empty">Nenhum item neste turno.'+(canManage()?' Use "Editar rotina".':'')+'</div>';
     var pct = items.length ? Math.round(doneCount/items.length*100) : 0;
     return '<div class="rot-block"><div class="rot-block-h">'+icon(t.icon)+'<b>'+t.label+'</b><span class="rot-prog'+(items.length&&doneCount===items.length?' full':'')+'">'+doneCount+'/'+items.length+'</span></div><div class="rot-bar"><span style="width:'+pct+'%"></span></div><div class="rot-items">'+rows+'</div></div>';
@@ -20173,7 +20213,7 @@ function openRotinaConfig(){
   function draw(){
     var blocks=CHECK_TURNOS.map(function(t){
       var items=checklistItemsDoTurno(t.key);
-      var rows=items.length ? items.map(function(it){ return '<div class="rc-item"'+(it.is_critico?' data-crit':'')+'><input type="text" class="rc-input" data-itemid="'+esc(it.id)+'" value="'+esc(it.label)+'"><label class="rc-crit" title="Marcar como crítico: alerta se não for feito"><input type="checkbox" data-critid="'+esc(it.id)+'"'+(it.is_critico?' checked':'')+'><span>⚠ crítico</span></label><button class="rc-del" data-delitem="'+esc(it.id)+'" title="Remover">'+icon('logout')+'</button></div>'; }).join('') : '<div class="col-empty" style="margin:4px 0">Sem itens ainda.</div>';
+      var rows=items.length ? items.map(function(it){ return '<div class="rc-item"'+(it.is_critico?' data-crit':'')+'><input type="text" class="rc-input" data-itemid="'+esc(it.id)+'" value="'+esc(it.label)+'"><label class="rc-crit" title="Marcar como crítico: alerta se não for feito"><input type="checkbox" data-critid="'+esc(it.id)+'"'+(it.is_critico?' checked':'')+'><span>'+icon('warning')+'<span style="margin-left:4px">crítico</span></span></label><button class="rc-del" data-delitem="'+esc(it.id)+'" title="Remover">'+icon('logout')+'</button></div>'; }).join('') : '<div class="col-empty" style="margin:4px 0">Sem itens ainda.</div>';
       return '<div class="rc-block"><div class="rc-block-h">'+icon(t.icon)+t.label+'</div><div class="rc-items">'+rows+'</div><div class="rc-add"><input type="text" class="rc-new" id="rcNew_'+t.key+'" placeholder="Novo item de '+t.label.toLowerCase()+'..."><button class="btn btn-primary rc-addbtn" data-addturno="'+t.key+'">Adicionar</button></div></div>';
     }).join('');
     modal.innerHTML='<div class="modal"><div class="modal-title-input" style="cursor:default">Editar rotina da loja</div><div class="modal-note">Estes itens valem para <b>todas as lojas</b>. A equipe marca o que foi feito a cada dia. Edite o texto direto no campo.</div>'+blocks+'<div class="modal-foot"><button class="btn btn-primary" id="rcClose">Concluído</button></div></div>';
@@ -28529,7 +28569,7 @@ function kpiRotinasQuebradasCardHTML(){
     ? (criticas+' crítica'+(criticas>1?'s':'')+' · ninguém está fazendo há muito tempo')
     : 'sem execução recente — pode ser que ninguém esteja fazendo';
   return '<button class="kpq-alert-card" id="kpqAbrir">'+
-    '<span class="kpq-ic">⚠</span>'+
+    '<span class="kpq-ic" aria-hidden="true">'+icon('warning')+'</span>'+
     '<div class="kpq-txt"><b>'+titulo+'</b><i>'+sub+'</i></div>'+
     '<span class="kpq-cta">Ver detalhes →</span>'+
   '</button>';
@@ -28539,7 +28579,7 @@ function kpiRotinasQuebradasCardHTML(){
 function openRotinasQuebradasModal(){
   var lista = kpiRotinasQuebradas();
   if (!lista.length){
-    if (typeof toast==='function') toast('Nenhuma rotina quebrada — está tudo em ordem 🎉','success');
+    if (typeof toast==='function') toast('Nenhuma rotina quebrada — está tudo em ordem','success');
     return;
   }
 
@@ -28560,7 +28600,7 @@ function openRotinasQuebradasModal(){
     var lojaTag = '';
     if (r.store_unit_id){
       var loja = (ST.storeUnits||[]).filter(function(s){return String(s.id)===String(r.store_unit_id);})[0];
-      if (loja) lojaTag = '<span class="kpq-loja">🏬 '+esc(loja.name||'Loja')+'</span>';
+      if (loja) lojaTag = '<span class="kpq-loja">'+icon('store')+'<span style="margin-left:4px">'+esc(loja.name||'Loja')+'</span></span>';
     }
     return '<div class="kpq-item'+(item.critico?' kpq-item-crit':'')+'" data-kpqrid="'+esc(r.id)+'">'+
       '<div class="kpq-item-head">'+
@@ -28576,7 +28616,7 @@ function openRotinasQuebradasModal(){
 
   modal.innerHTML = '<div class="modal kpq-modal">'+
     '<div class="kpq-head">'+
-      '<div><b>⚠ Rotinas quebradas</b><i>Rotinas ativas que não tiveram execução recente</i></div>'+
+      '<div><b>'+icon('warning')+'<span style="margin-left:6px">Rotinas quebradas</span></b><i>Rotinas ativas que não tiveram execução recente</i></div>'+
       '<button class="fx-close" id="kpqClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="kpq-hint">'+
@@ -28654,10 +28694,10 @@ function kpiTopCriticasCardHTML(){
     var respNome = resp ? resp.name : 'sem responsável';
     var prio = PRIO[t.priority] || PRIO.media;
     var tags = [];
-    if (t.recur_group) tags.push('🔁 rotina');
+    if (t.recur_group) tags.push('rotina');
     if (t.store_unit_id){
       var loja = (ST.storeUnits||[]).filter(function(s){return String(s.id)===String(t.store_unit_id);})[0];
-      if (loja) tags.push('🏬 '+esc(loja.name||'Loja'));
+      if (loja) tags.push(esc(loja.name||'Loja'));
     }
     if (t.priority === 'alta') tags.push('prioridade alta');
     var tagsTx = tags.length ? '<span class="ktc-tags">'+tags.join(' · ')+'</span>' : '';
@@ -28675,7 +28715,7 @@ function kpiTopCriticasCardHTML(){
 
   return '<div class="ktc-card">'+
     '<div class="ktc-head">'+
-      '<span class="ktc-ic">🔥</span>'+
+      '<span class="ktc-ic" aria-hidden="true">'+icon('fire')+'</span>'+
       '<div><b>TOP '+top.length+' crítica'+(top.length!==1?'s':'')+' do sistema</b><i>tarefas atrasadas com maior impacto — aja rápido</i></div>'+
     '</div>'+
     '<div class="ktc-lista">'+linhas+'</div>'+
@@ -29169,7 +29209,7 @@ function openKpiPessoaModal(uid){
       ? '<span class="kpp-dt">'+(g.count>1?'última ':'')+fmtDate(new Date(String(g.ultima).slice(0,10)+'T12:00:00'))+'</span>'
       : '<span class="kpp-dt">—</span>';
     var countTag = g.count>1 ? '<span class="kpp-count">'+g.count+'×</span>' : '';
-    var rotinaTag = g.isRotina ? '<span class="kpp-rot">🔁 rotina</span>' : '';
+    var rotinaTag = g.isRotina ? '<span class="kpp-rot">'+icon('history')+'<span style="margin-left:3px">rotina</span></span>' : '';
     var areaTag = g.area ? '<span class="kpp-area">'+esc(g.area)+'</span>' : '';
     return '<div class="kpp-item">'+
       '<span class="kpp-ic-ok">✓</span>'+
@@ -29190,12 +29230,12 @@ function openKpiPessoaModal(uid){
     }
     var dueTx = due ? '<span class="kpp-dt">vencia '+fmtDate(new Date(due+'T12:00:00'))+'</span>' : '';
     var atrTag = '<span class="kpp-atr-tag">'+diasAtr+'d atrasada</span>';
-    var rotinaTag = t.recur_group ? '<span class="kpp-rot">🔁 rotina</span>' : '';
+    var rotinaTag = t.recur_group ? '<span class="kpp-rot">'+icon('history')+'<span style="margin-left:3px">rotina</span></span>' : '';
     var areaTag = t.area ? '<span class="kpp-area">'+esc(t.area)+'</span>' : '';
     var acoes = canEdit()
       ? '<div class="kpp-acoes">'+
           '<button class="kpp-btn-a kpp-btn-ok" data-kppac="concluir" data-kpptid="'+esc(t.id)+'" title="Marcar como concluída">✓ Concluir</button>'+
-          '<button class="kpp-btn-a kpp-btn-reat" data-kppac="reatribuir" data-kpptid="'+esc(t.id)+'" title="Reatribuir a outra pessoa">👤 Reatribuir</button>'+
+          '<button class="kpp-btn-a kpp-btn-reat" data-kppac="reatribuir" data-kpptid="'+esc(t.id)+'" title="Reatribuir a outra pessoa" aria-label="Reatribuir">'+icon('user-round')+'<span style="margin-left:4px">Reatribuir</span></button>'+
         '</div>'
       : '';
     return '<div class="kpp-item kpp-item-atr" data-kppatid="'+esc(t.id)+'">'+
@@ -29213,7 +29253,7 @@ function openKpiPessoaModal(uid){
     : '<div class="kpp-vazio">Nenhuma tarefa concluída no período.</div>';
 
   var htmlAtrasadas = atrasadas.length > 0
-    ? '<div class="kpp-sec-h"><h4>⚠ Atrasadas</h4><span>'+atrasadas.length+'</span></div>'+
+    ? '<div class="kpp-sec-h"><h4>'+icon('warning')+'<span style="margin-left:4px">Atrasadas</span></h4><span>'+atrasadas.length+'</span></div>'+
       atrasadas.map(linhaAtrasada).join('')
     : '';
 
@@ -30171,9 +30211,9 @@ function openUserModal(user) {
 
   var delBtn = (isNew || (u.id===ST.session.user.id)) ? '' : '<button class="btn btn-danger btn-del-wrap" id="userDel">Excluir</button>';
   // v177: botão Escala pra qualquer setor (não só lojas)
-  var escBtn = '<button class="btn btn-ghost" id="userEscala" title="Definir escala de trabalho" style="margin-right:auto">🕐 Escala</button>';
+  var escBtn = '<button class="btn btn-ghost" id="userEscala" title="Definir escala de trabalho" style="margin-right:auto" aria-label="Escala">'+icon('clock')+'<span style="margin-left:4px">Escala</span></button>';
   // v181: botão Facial
-  var facBtn = '<button class="btn btn-ghost'+(facialTemCadastro(u)?' user-fac-on':'')+'" id="userFacial" title="'+(facialTemCadastro(u)?'Rosto cadastrado — refazer':'Cadastrar rosto')+'">🎭 '+(facialTemCadastro(u)?'Rosto ✓':'Facial')+'</button>';
+  var facBtn = '<button class="btn btn-ghost'+(facialTemCadastro(u)?' user-fac-on':'')+'" id="userFacial" title="'+(facialTemCadastro(u)?'Rosto cadastrado — refazer':'Cadastrar rosto')+'" aria-label="Facial">'+icon('face')+'<span style="margin-left:6px">'+(facialTemCadastro(u)?'Rosto cadastrado':'Facial')+'</span></button>';
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
@@ -31851,16 +31891,16 @@ function gpStatusPessoa(pessoa, data){
   // v196: férias aprovadas — não é falta
   if (typeof feriasEmDia === 'function' && (!ci || !ci.entrada)){
     var fer196 = feriasEmDia(pessoa, data);
-    if (fer196) return { key:'ferias', label:'🌴 Férias', cor:'#0EA5E9' };
+    if (fer196) return { key:'ferias', label:'Férias', cor:'#0EA5E9' };
   }
   // v198: atestado médico aprovado — não é falta
   if (typeof atestadoEmDia === 'function' && (!ci || !ci.entrada)){
     var at198 = atestadoEmDia(pessoa, data);
-    if (at198) return { key:'atestado', label:'🏥 Atestado', cor:'#A855F7' };
+    if (at198) return { key:'atestado', label:'Atestado', cor:'#A855F7' };
   }
   // v194: feriado tem prioridade — se o colaborador não bateu ponto, é feriado (não falta)
   var fer = (typeof feriadoDoDia === 'function') ? feriadoDoDia(data) : null;
-  if (fer && (!ci || !ci.entrada)) return { key:'feriado', label:'🎉 '+fer.nome, cor:'#EC4899' };
+  if (fer && (!ci || !ci.entrada)) return { key:'feriado', label:fer.nome, cor:'#EC4899' };
   if (!ci || !ci.entrada){
     if (shift && shift.expected_entrada){
       // Passou do horário esperado?
@@ -31948,19 +31988,19 @@ function gestaoPontoHTML(){
     if (!fs.tem){
       facCel = '<span class="gp-fac gp-fac-none" title="Sem cadastro facial">—</span>';
     } else if (!fs.ci){
-      facCel = '<span class="gp-fac gp-fac-wait" title="Cadastrada, aguardando batida">🎭</span>';
+      facCel = '<span class="gp-fac gp-fac-wait" title="Cadastrada, aguardando batida" aria-label="Facial cadastrada">'+icon('face')+'</span>';
     } else if (fs.verificado){
       var simTxt = fs.sim ? ' '+fs.sim.toFixed(0)+'%' : '';
-      facCel = '<span class="gp-fac gp-fac-ok" title="Verificada por facial">🎭'+simTxt+'</span>';
+      facCel = '<span class="gp-fac gp-fac-ok" title="Verificada por facial" aria-label="Verificada por facial">'+icon('face')+simTxt+'</span>';
     } else {
-      facCel = '<span class="gp-fac gp-fac-warn" title="Bateu SEM verificação facial — atenção">⚠️ Sem verif</span>';
+      facCel = '<span class="gp-fac gp-fac-warn" title="Bateu SEM verificação facial — atenção" aria-label="Sem verificação">'+icon('warning')+'<span style="margin-left:4px">Sem verif</span></span>';
     }
     var esp = sh && !sh.folga
       ? ((sh.expected_entrada||'').slice(0,5)+' - '+(sh.expected_saida||'').slice(0,5))
       : (sh && sh.folga ? 'Folga' : '—');
     var kindTag = p.kind === 'user'
       ? '<span class="gp-kind gp-kind-user">'+esc(p.role)+'</span>'
-      : (p.store_unit_id ? '<span class="gp-kind">🏬</span>' : '');
+      : (p.store_unit_id ? '<span class="gp-kind" aria-hidden="true">'+icon('store')+'</span>' : '');
     return '<tr class="gp-row" data-gpid="'+esc(p.id)+'" data-gpkind="'+esc(p.kind)+'">'+
       '<td class="gp-pes"><span class="ar-av gp-av" style="background:'+p.color+'">'+esc(iniciais(p.name))+'</span>'+
         '<div class="gp-pes-txt"><b>'+esc(p.name)+'</b><i>'+esc(p.role||'')+'</i></div></td>'+
@@ -32266,7 +32306,7 @@ function visaoGeralHTML(){
   }
 
   var vendasCard = '<div class="brf-card brf-vendas">'+
-    '<div class="brf-card-h"><span class="brf-emoji">💰</span><b>Vendas de hoje</b></div>'+
+    '<div class="brf-card-h"><span class="brf-emoji">'+icon('dollar')+'</span><b>Vendas de hoje</b></div>'+
     '<div class="brf-vendas-v">'+brlShort(vHj)+'</div>'+
     '<div class="brf-vendas-cmp">'+
       '<div class="brf-cmp-row"><span class="brf-cmp-lbl">vs ontem</span><span class="brf-cmp-val" style="color:'+corDelta(vHj,vOnt)+'">'+setaDelta(vHj,vOnt)+' '+pctDelta(vHj,vOnt)+'</span><span class="brf-cmp-ref">('+brlShort(vOnt)+')</span></div>'+
@@ -32291,7 +32331,7 @@ function visaoGeralHTML(){
   var metaCor = pctProj >= 100 ? '#16A34A' : (pctProj >= 80 ? '#F59E0B' : '#EF4444');
   var barPct = Math.min(100, pctMes);
   var metaCard = metaMes > 0 ? '<div class="brf-card brf-meta">'+
-    '<div class="brf-card-h"><span class="brf-emoji">🎯</span><b>Meta do mês</b><span class="brf-badge">'+diasRest+'d restantes</span></div>'+
+    '<div class="brf-card-h"><span class="brf-emoji">'+icon('target')+'</span><b>Meta do mês</b><span class="brf-badge">'+diasRest+'d restantes</span></div>'+
     '<div class="brf-meta-row">'+
       '<b>'+brlShort(vendasMes)+'</b>'+
       '<span class="brf-meta-de">de '+brlShort(metaMes)+'</span>'+
@@ -32311,22 +32351,22 @@ function visaoGeralHTML(){
   var atrasadas = (ST.tasks||[]).filter(function(t){ return !t.is_rule && kpiTarefaAtrasada&&kpiTarefaAtrasada(t); });
 
   var alertItens = [];
-  if (atrasadas.length > 0) alertItens.push({ic:'🔥',qt:atrasadas.length,tx:'tarefa'+(atrasadas.length>1?'s':'')+' atrasada'+(atrasadas.length>1?'s':''),acao:'gestao/kpis',cor:'#EF4444'});
-  if (quebradas.length > 0) alertItens.push({ic:'⚠',qt:quebradas.length,tx:'rotina'+(quebradas.length>1?'s':'')+' quebrada'+(quebradas.length>1?'s':''),acao:'gestao/kpis',cor:'#F59E0B'});
-  if (pendReq.length > 0) alertItens.push({ic:'📋',qt:pendReq.length,tx:'solicitaç'+(pendReq.length>1?'ões':'ão')+' aguardando',acao:'gestao/requests',cor:'#3B6FF7'});
+  if (atrasadas.length > 0) alertItens.push({ic:'fire',qt:atrasadas.length,tx:'tarefa'+(atrasadas.length>1?'s':'')+' atrasada'+(atrasadas.length>1?'s':''),acao:'gestao/kpis',cor:'#EF4444'});
+  if (quebradas.length > 0) alertItens.push({ic:'warning',qt:quebradas.length,tx:'rotina'+(quebradas.length>1?'s':'')+' quebrada'+(quebradas.length>1?'s':''),acao:'gestao/kpis',cor:'#F59E0B'});
+  if (pendReq.length > 0) alertItens.push({ic:'clipboard-list',qt:pendReq.length,tx:'solicitaç'+(pendReq.length>1?'ões':'ão')+' aguardando',acao:'gestao/requests',cor:'#3B6FF7'});
 
   var alertHTML;
   if (alertItens.length === 0){
     alertHTML = '<div class="brf-card brf-atencao brf-limpo">'+
-      '<div class="brf-card-h"><span class="brf-emoji">✨</span><b>Tudo em ordem</b></div>'+
+      '<div class="brf-card-h"><span class="brf-emoji">'+icon('check')+'</span><b>Tudo em ordem</b></div>'+
       '<div class="brf-limpo-tx">Nenhum alerta agora. Aproveita e planeja o próximo passo.</div>'+
     '</div>';
   } else {
     alertHTML = '<div class="brf-card brf-atencao">'+
-      '<div class="brf-card-h"><span class="brf-emoji">🚨</span><b>Precisa da sua atenção</b></div>'+
+      '<div class="brf-card-h"><span class="brf-emoji">'+icon('warning')+'</span><b>Precisa da sua atenção</b></div>'+
       '<div class="brf-alert-list">'+alertItens.map(function(a){
         return '<button class="brf-alert-item" data-brfacao="'+esc(a.acao)+'">'+
-          '<span class="brf-alert-ic" style="color:'+a.cor+'">'+a.ic+'</span>'+
+          '<span class="brf-alert-ic" style="color:'+a.cor+'">'+((typeof icon==='function')?icon(a.ic):'')+'</span>'+
           '<span class="brf-alert-tx"><b style="color:'+a.cor+'">'+a.qt+'</b> '+a.tx+'</span>'+
           '<span class="brf-alert-cta">Ver →</span>'+
         '</button>';
@@ -32377,7 +32417,7 @@ function visaoGeralHTML(){
   }).join('') : '<div class="brf-vazio">Sem atividade suficiente pra comparar.</div>';
 
   var compCard = '<div class="brf-card brf-comp">'+
-    '<div class="brf-card-h"><span class="brf-emoji">📊</span><b>Últimos 7 dias vs 7 anteriores</b></div>'+
+    '<div class="brf-card-h"><span class="brf-emoji">'+icon('file-bar-chart')+'</span><b>Últimos 7 dias vs 7 anteriores</b></div>'+
     compHTML+
   '</div>';
 
@@ -32396,13 +32436,13 @@ function visaoGeralHTML(){
     '</div>';
   }).join('') : '<div class="brf-vazio">Sem eventos recentes.</div>';
   var eventosCard = '<div class="brf-card brf-eventos">'+
-    '<div class="brf-card-h"><span class="brf-emoji">📰</span><b>Últimos eventos</b></div>'+
+    '<div class="brf-card-h"><span class="brf-emoji">'+icon('history')+'</span><b>Últimos eventos</b></div>'+
     eventosHTML+
   '</div>';
 
   /* --- HEADER --- */
   var head = '<div class="brf-head">'+
-    '<div><div class="brf-data">📅 '+esc(dataTx)+'</div><div class="brf-hi">'+esc(saudacao)+', '+esc(meNome)+'!</div></div>'+
+    '<div><div class="brf-data">'+icon('cal')+' '+esc(dataTx)+'</div><div class="brf-hi">'+esc(saudacao)+', '+esc(meNome)+'!</div></div>'+
   '</div>';
 
   /* --- MONTAGEM FINAL --- */
@@ -32635,7 +32675,7 @@ function avaliacoesHTML() {
 }
 function renderStarsRO(nota) {
   var n=Math.round(Number(nota)||0); var s='';
-  for (var i=1;i<=5;i++) s += '<span class="star-ro'+(i<=n?' on':'')+'">★</span>';
+  for (var i=1;i<=5;i++) s += '<span class="star-ro'+(i<=n?' on':'')+'" aria-hidden="true">'+icon('star-icon')+'</span>';
   return s;
 }
 
@@ -32716,7 +32756,7 @@ function openAvaliacaoModal(aval, preset) {
   function step2HTML(){
     var critHTML = critList.map(function(c,idx){
       var stars='';
-      for (var i=1;i<=5;i++) stars += '<button type="button" class="star-pick'+(i<=c.nota?' on':'')+'" data-cidx="'+idx+'" data-val="'+i+'" title="'+SCALE_LABELS[i]+'">★</button>';
+      for (var i=1;i<=5;i++) stars += '<button type="button" class="star-pick'+(i<=c.nota?' on':'')+'" data-cidx="'+idx+'" data-val="'+i+'" title="'+SCALE_LABELS[i]+'" aria-label="'+i+' estrelas">'+icon('star-icon')+'</button>';
       return '<div class="aval-crit">'+
         '<input type="text" class="aval-crit-name" data-cidx="'+idx+'" value="'+esc(c.label)+'" maxlength="60" placeholder="Nome do critério">'+
         '<div class="aval-crit-right">'+
@@ -32757,27 +32797,27 @@ function openAvaliacaoModal(aval, preset) {
       var modoEditar = form._fbModoEditar === true;
       var bodyEl = modoEditar
         ? '<textarea id="avFbTexto" class="fb-ia-edit" placeholder="Edite livremente... Use **texto** pra negrito." rows="14">'+esc(form.feedback_ia)+'</textarea>'+
-          '<div class="fb-ia-hint">💡 Use <code>**texto em negrito**</code> pra destacar títulos. Clique em 👁 Preview pra ver formatado.</div>'
+          '<div class="fb-ia-hint">'+icon('info')+'<span style="margin-left:4px">Use <code>**texto em negrito**</code> pra destacar títulos. Clique em Preview pra ver formatado.</div>'
         : '<div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(form.feedback_ia):esc(form.feedback_ia))+'</div>';
       var toggleBtn = modoEditar
-        ? '<button type="button" class="btn btn-primary" id="avFbPreview">👁 Preview</button>'
-        : '<button type="button" class="btn btn-primary" id="avFbEditar">✏️ Editar</button>';
-      fbHTML = '<div class="asum-block fb-ia"><h5>🤖 Feedback automático <small class="fb-ia-badge">'+(modoEditar?'EDITANDO':'leitura')+'</small></h5>'+
+        ? '<button type="button" class="btn btn-primary" id="avFbPreview" aria-label="Preview">'+icon('face')+'<span style="margin-left:4px">Preview</span></button>'
+        : '<button type="button" class="btn btn-primary" id="avFbEditar" aria-label="Editar">'+icon('edit')+'<span style="margin-left:4px">Editar</span></button>';
+      fbHTML = '<div class="asum-block fb-ia"><h5>'+icon('sparkle')+'<span style="margin-left:6px">Feedback automático</span> <small class="fb-ia-badge">'+(modoEditar?'EDITANDO':'leitura')+'</small></h5>'+
         bodyEl +
         '<div class="fb-ia-actions">'+
           toggleBtn +
           '<button type="button" class="btn btn-ghost" id="avFbRegerar">↺ Gerar novamente</button>'+
-          '<button type="button" class="btn btn-ghost" id="avFbCopiar">📋 Copiar</button>'+
-          '<button type="button" class="btn btn-ghost" id="avFbLimpar">🗑 Limpar</button>'+
+          '<button type="button" class="btn btn-ghost" id="avFbCopiar" aria-label="Copiar">'+icon('copy')+'<span style="margin-left:6px">Copiar</span></button>'+
+          '<button type="button" class="btn btn-ghost" id="avFbLimpar" aria-label="Limpar">'+icon('trash')+'<span style="margin-left:4px">Limpar</span></button>'+
         '</div>'+
       '</div>';
     } else {
       fbHTML = '<div class="asum-block fb-ia fb-ia-empty">'+
-        '<h5>🤖 Feedback automático</h5>'+
+        '<h5>'+icon('sparkle')+'<span style="margin-left:6px">Feedback automático</span></h5>'+
         '<p>Monte um resumo em 4 blocos (Perfil, Pontos Fortes, Oportunidades, Próximos Passos) baseado nas notas acima. Depois pode editar livremente antes de salvar.</p>'+
         '<div class="fb-ia-actions" style="justify-content:center">'+
-          '<button type="button" class="btn btn-primary" id="avFbGerar">✨ Gerar Feedback</button>'+
-          '<button type="button" class="btn btn-ghost" id="avFbEscrever">✏️ Escrever do zero</button>'+
+          '<button type="button" class="btn btn-primary" id="avFbGerar" aria-label="Gerar Feedback">'+icon('sparkle')+'<span style="margin-left:6px">Gerar Feedback</span></button>'+
+          '<button type="button" class="btn btn-ghost" id="avFbEscrever" aria-label="Escrever do zero">'+icon('edit')+'<span style="margin-left:4px">Escrever do zero</span></button>'+
         '</div>'+
       '</div>';
     }
@@ -33009,7 +33049,7 @@ function avaliacaoDetalhe(a){
   if(a.pontos_desenvolver) blocks+='<div class="asum-block desenv"><h5>Pontos a desenvolver</h5><p>'+esc(a.pontos_desenvolver)+'</p></div>';
   if(a.plano_acao) blocks+='<div class="asum-block plano"><h5>Plano de ação (PDI)</h5><p>'+esc(a.plano_acao)+'</p></div>';
   // v206: mostra feedback IA se existir
-  if(a.feedback_ia) blocks+='<div class="asum-block fb-ia"><h5>🤖 Feedback automático</h5><div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(a.feedback_ia):esc(a.feedback_ia))+'</div></div>';
+  if(a.feedback_ia) blocks+='<div class="asum-block fb-ia"><h5>'+icon('sparkle')+'<span style="margin-left:6px">Feedback automático</span></h5><div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(a.feedback_ia):esc(a.feedback_ia))+'</div></div>';
   if(a.observacao) blocks+='<div class="asum-block"><h5>Observações</h5><p>'+esc(a.observacao)+'</p></div>';
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML='<div class="modal aval-wizard">'+
@@ -33494,17 +33534,17 @@ function openFacialOnboardingModal(user){
 
   modal.innerHTML = '<div class="modal fon-modal">'+
     '<div class="fon-hero">'+
-      '<div class="fon-icon">🎭</div>'+
+      '<div class="fon-icon" aria-hidden="true">'+icon('face')+'</div>'+
       '<h2 class="fon-title">Oi, '+esc(primeiroNome)+'! Cadastre seu rosto</h2>'+
       '<p class="fon-sub">Leva 20 segundos. Depois você bate ponto na câmera do balcão ou do quiosque — sem PIN, sem cartão, sem digitar nada.</p>'+
     '</div>'+
     '<div class="fon-benefits">'+
-      '<div class="fon-b"><span class="fon-b-i">⚡</span><div><b>Mais rápido</b><i>Uma olhada na câmera e pronto</i></div></div>'+
-      '<div class="fon-b"><span class="fon-b-i">🔒</span><div><b>Mais seguro</b><i>Ninguém bate ponto por você</i></div></div>'+
-      '<div class="fon-b"><span class="fon-b-i">📸</span><div><b>Registro completo</b><i>Foto do momento fica salva</i></div></div>'+
+      '<div class="fon-b"><span class="fon-b-i" aria-hidden="true">'+icon('zap')+'</span><div><b>Mais rápido</b><i>Uma olhada na câmera e pronto</i></div></div>'+
+      '<div class="fon-b"><span class="fon-b-i" aria-hidden="true">'+icon('lock')+'</span><div><b>Mais seguro</b><i>Ninguém bate ponto por você</i></div></div>'+
+      '<div class="fon-b"><span class="fon-b-i" aria-hidden="true">'+icon('image')+'</span><div><b>Registro completo</b><i>Foto do momento fica salva</i></div></div>'+
     '</div>'+
     '<div class="fon-actions">'+
-      '<button class="btn btn-primary fon-btn-cad" id="fonCad">🎭 Cadastrar agora</button>'+
+      '<button class="btn btn-primary fon-btn-cad" id="fonCad" aria-label="Cadastrar rosto agora">'+icon('face')+'<span style="margin-left:6px">Cadastrar agora</span></button>'+
       '<button class="btn btn-ghost" id="fonDepois">Depois</button>'+
     '</div>'+
     '<div class="fon-foot">'+
@@ -33523,7 +33563,7 @@ function openFacialOnboardingModal(user){
   modal.querySelector('#fonDepois').addEventListener('click', close);
   modal.querySelector('#fonNunca').addEventListener('click', function(){
     facialOnboardingDismiss(user.id);
-    if (typeof toast==='function') toast('Não perguntaremos mais. Você pode cadastrar quando quiser em Equipe → seu nome → 🎭', 'info');
+    if (typeof toast==='function') toast('Não perguntaremos mais. Você pode cadastrar quando quiser em Equipe → seu nome → Facial', 'info');
     close();
   });
   // click fora fecha (comportamento "depois")
@@ -33552,7 +33592,7 @@ function openFacialRequiredUserModal(user){
   var nome = (user && user.name || 'colaborador').split(' ')[0];
   modal.innerHTML = '<div class="modal freq-modal">'+
     '<div class="freq-hero freq-hero-user">'+
-      '<div class="freq-icon">🔒</div>'+
+      '<div class="freq-icon" aria-hidden="true">'+icon('lock')+'</div>'+
       '<h2 class="freq-title">Cadastre seu rosto pra bater ponto</h2>'+
       '<p class="freq-sub">O ponto passou a exigir verificação facial. Sem cadastro, você não consegue registrar entrada, almoço ou saída.</p>'+
     '</div>'+
@@ -33560,7 +33600,7 @@ function openFacialRequiredUserModal(user){
       '<p class="freq-p"><b>É rápido:</b> uns 20 segundos na câmera e você fica liberado pra sempre. Depois disso, cada batida abre a câmera e confirma que é você.</p>'+
     '</div>'+
     '<div class="freq-actions">'+
-      '<button class="btn btn-primary freq-btn-cad" id="freqCad">🎭 Cadastrar rosto agora</button>'+
+      '<button class="btn btn-primary freq-btn-cad" id="freqCad" aria-label="Cadastrar rosto agora">'+icon('face')+'<span style="margin-left:6px">Cadastrar rosto agora</span></button>'+
       '<button class="btn btn-ghost" id="freqClose">Depois</button>'+
     '</div>'+
   '</div>';
@@ -33583,12 +33623,12 @@ function openFacialRequiredMemberModal(membro){
   var nome = (membro && membro.name || 'colaborador').split(' ')[0];
   modal.innerHTML = '<div class="modal freq-modal">'+
     '<div class="freq-hero freq-hero-member">'+
-      '<div class="freq-icon">🔒</div>'+
+      '<div class="freq-icon" aria-hidden="true">'+icon('lock')+'</div>'+
       '<h2 class="freq-title">'+esc(nome)+' precisa cadastrar o rosto</h2>'+
       '<p class="freq-sub">O ponto passou a exigir verificação facial. Sem cadastro, não é possível bater.</p>'+
     '</div>'+
     '<div class="freq-body">'+
-      '<p class="freq-p"><b>Como resolver:</b> peça ao gestor pra abrir a ficha do colaborador em <b>Equipe → '+esc(nome)+' → 🎭 Facial</b> e cadastrar o rosto pela câmera. Leva 20 segundos.</p>'+
+      '<p class="freq-p"><b>Como resolver:</b> peça ao gestor pra abrir a ficha do colaborador em <b>Equipe → '+esc(nome)+' → Facial</b> e cadastrar o rosto pela câmera. Leva 20 segundos.</p>'+
     '</div>'+
     '<div class="freq-actions">'+
       '<button class="btn btn-primary" id="freqClose2">Entendi</button>'+
@@ -33641,7 +33681,7 @@ function openFacialCaptureForWizard(callback){
   modal.id = 'facialCaptureWizard';
   modal.innerHTML = '<div class="modal fcw-modal">'+
     '<div class="fcw-head">'+
-      '<div><b>🎭 Cadastrar rosto</b><i>Alinhe o rosto no oval e clique em Capturar</i></div>'+
+      '<div><b>'+icon('face')+'<span style="margin-left:6px">Cadastrar rosto</span></b><i>Alinhe o rosto no oval e clique em Capturar</i></div>'+
       '<button class="fx-close" id="fcwClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="fcw-body">'+
@@ -33653,9 +33693,9 @@ function openFacialCaptureForWizard(callback){
       '</div>'+
     '</div>'+
     '<div class="fcw-foot">'+
-      '<button class="btn btn-ghost" id="fcwAbrir">📷 Abrir câmera</button>'+
-      '<button class="btn btn-ghost" id="fcwRetry" style="display:none">🔄 Refazer</button>'+
-      '<button class="btn btn-primary" id="fcwCap" disabled>📸 Capturar</button>'+
+      '<button class="btn btn-ghost" id="fcwAbrir" aria-label="Abrir câmera">'+icon('image')+'<span style="margin-left:4px">Abrir câmera</span></button>'+
+      '<button class="btn btn-ghost" id="fcwRetry" style="display:none" aria-label="Refazer">'+icon('history')+'<span style="margin-left:4px">Refazer</span></button>'+
+      '<button class="btn btn-primary" id="fcwCap" disabled aria-label="Capturar">'+icon('image')+'<span style="margin-left:4px">Capturar</span></button>'+
       '<button class="btn btn-primary" id="fcwOk" style="display:none">✓ Usar este rosto</button>'+
     '</div>'+
   '</div>';
@@ -33698,7 +33738,7 @@ function openFacialCaptureForWizard(callback){
     }
     msg.textContent = 'Alinhe o rosto no oval e clique em Capturar';
     btnCap.disabled = false;
-    btnAbrir.textContent = '🔄 Reiniciar';
+    btnAbrir.textContent = 'Reiniciar';
     btnAbrir.disabled = false;
   });
 
@@ -33708,7 +33748,7 @@ function openFacialCaptureForWizard(callback){
     msg.textContent = 'Detectando rosto...';
     var det = await facialDetectar(video);
     if (!det){
-      msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais.';
+      msg.textContent = 'Nenhum rosto detectado. Aproxime mais.';
       cam.classList.add('err');
       btnCap.disabled = false;
       return;
@@ -33874,7 +33914,7 @@ function topbarNotifHTML(){
   if (!notif_meuId()) return '';
   var qtd = notifNaoLidas().length;
   return '<button class="top-notif'+(qtd>0?' has-unread':'')+'" id="topNotifBtn" title="Notificações">'+
-    '<span class="top-notif-ico">🔔</span>'+
+    '<span class="top-notif-ico" aria-hidden="true">'+icon('bell')+'</span>'+
     '<span class="top-notif-badge" id="topNotifBadge"'+(qtd>0?'':' style="display:none"')+'>'+(qtd>99?'99+':qtd)+'</span>'+
   '</button>';
 }
@@ -33889,12 +33929,12 @@ function topbarNotifPopoverAbrir(anchorBtn){
 
   var body = '';
   if (!lidas.length){
-    body = '<div class="notif-empty"><div class="notif-empty-ico">🔕</div><div>Nenhuma notificação por aqui.<br><small>Você tá em dia!</small></div></div>';
+    body = '<div class="notif-empty"><div class="notif-empty-ico" aria-hidden="true">'+icon('bell')+'</div><div>Nenhuma notificação por aqui.<br><small>Você tá em dia!</small></div></div>';
   } else {
     body = lidas.map(function(n){
       var cls = 'notif-item' + (n.is_read?'':' unread') + ' notif-'+n.priority;
       var ago = notifTempoAgo(n.created_at);
-      var kindIcon = notifIconePorKind(n.kind);
+      var kindIcon = (typeof icon === 'function') ? icon(notifIconePorKind(n.kind)) : '';
       var waHtml = (typeof notifWaBotaoHTML==='function') ? notifWaBotaoHTML(n) : '';
       return '<div class="'+cls+'" data-notif-id="'+esc(n.id)+'"'+(n.link?' data-notif-link="'+esc(n.link)+'"':'')+'>'+
         '<div class="notif-ico">'+kindIcon+'</div>'+
@@ -33920,7 +33960,7 @@ function topbarNotifPopoverAbrir(anchorBtn){
     '<b>Notificações</b>'+
     '<div class="notif-head-actions">'+
       (qtd>0?'<button class="notif-mark-all" id="notifMarkAll">Marcar todas como lidas</button>':'')+
-      '<button class="notif-pref-btn" id="notifPrefBtn" title="Preferências">⚙️</button>'+
+      '<button class="notif-pref-btn" id="notifPrefBtn" title="Preferências" aria-label="Preferências">'+icon('gear')+'</button>'+
     '</div>'+
   '</div>'+
   '<div class="notif-pop-body">'+body+'</div>';
@@ -33965,22 +34005,23 @@ function topbarNotifPopoverAbrir(anchorBtn){
 }
 
 function notifIconePorKind(kind){
+  // v216: retorna nome de ícone do sistema; chamador renderiza via icon(nome)
   var mapa = {
-    ponto_sem_verif: '🚨',
-    ponto_atraso: '⏰',
-    meta_batida: '🎯',
-    tarefa: '📝',
-    tarefa_atrasada: '🔥',
-    kudos: '👏',
-    rotina_quebrada: '⚠️',
-    comentario: '💬',
-    novo_colaborador: '👤',
-    info: 'ℹ️',
-    warning: '⚠️',
-    success: '✓',
-    error: '❌'
+    ponto_sem_verif: 'warning',
+    ponto_atraso: 'clock',
+    meta_batida: 'target',
+    tarefa: 'pencil',
+    tarefa_atrasada: 'fire',
+    kudos: 'trophy',
+    rotina_quebrada: 'warning',
+    comentario: 'chat',
+    novo_colaborador: 'user-round',
+    info: 'info',
+    warning: 'warning',
+    success: 'check',
+    error: 'x'
   };
-  return mapa[kind] || '🔔';
+  return mapa[kind] || 'bell';
 }
 
 function notifTempoAgo(iso){
@@ -34059,7 +34100,7 @@ function notifEmitir_KudoRecebido(kudo, membroAlvo){
   if (!uid) return;   // membro sem login → sem notif in-app (fatia 3 mandaria por WhatsApp)
   notify(uid, {
     kind: 'kudos',
-    title: '👏 Você recebeu um reconhecimento!',
+    title: 'Você recebeu um reconhecimento!',
     body: 'De ' + notifMeuNome() + (kudo.message ? ': "' + String(kudo.message).slice(0,80) + '"' : ''),
     link: '/perfil',
     priority: 'normal',
@@ -34073,7 +34114,7 @@ function notifEmitir_TarefaAtribuida(task){
   if (String(task.assigned_to) === String(meuId)) return;  // skip próprio
   notify(task.assigned_to, {
     kind: 'tarefa',
-    title: '📝 Nova tarefa: ' + (task.title || 'sem título').slice(0,60),
+    title: 'Nova tarefa: ' + (task.title || 'sem título').slice(0,60),
     body: 'Atribuída por ' + notifMeuNome() + (task.due_date ? ' · vence ' + task.due_date : ''),
     link: '/tarefas',
     priority: task.priority === 'high' ? 'high' : 'normal',
@@ -34088,7 +34129,7 @@ function notifEmitir_JustificativaEnviada(justif, autorNome){
   var ids = notifGestoresDoSetor(sector);
   notifBroadcast(ids, {
     kind: 'warning',
-    title: '⚠️ Justificativa aguardando aprovação',
+    title: 'Justificativa aguardando aprovação',
     body: (autorNome || 'Colaborador') + ' enviou justificativa de ponto',
     link: '/gestao/ponto',
     priority: 'high',
@@ -34101,7 +34142,7 @@ function notifEmitir_NovoColaborador(entidade, tipo, sector){
   var ids = notifGestoresDoSetor(sector);
   notifBroadcast(ids, {
     kind: 'novo_colaborador',
-    title: '👤 Novo ' + (tipo==='user'?'usuário':'colaborador') + ' cadastrado',
+    title: 'Novo ' + (tipo==='user'?'usuário':'colaborador') + ' cadastrado',
     body: (entidade.name || '') + (entidade.role ? ' · ' + entidade.role : ''),
     link: '/gestao/equipe',
     priority: 'normal',
@@ -34117,7 +34158,7 @@ function notifEmitir_MetaBatida(goal){
   var ids = notifGestoresDoSetor(goal.sector || ST.sector);
   notifBroadcast(ids, {
     kind: 'meta_batida',
-    title: '🎯 Meta batida!',
+    title: 'Meta batida!',
     body: (goal.title || 'Meta') + ' · R$ ' + Number(goal.actual_value||0).toLocaleString('pt-BR'),
     link: '/vendas/metas',
     priority: 'high',
@@ -34195,19 +34236,20 @@ function notifDeveMostrarWa(notif){
 
 /* Rótulos amigáveis */
 var NOTIF_WA_KIND_LABELS = {
-  ponto_sem_verif: '🚨 Ponto sem verificação',
-  ponto_atraso: '⏰ Atrasos',
-  meta_batida: '🎯 Metas batidas',
-  tarefa: '📝 Novas tarefas',
-  tarefa_atrasada: '🔥 Tarefas atrasadas',
-  kudos: '👏 Kudos recebidos',
-  rotina_quebrada: '⚠️ Rotinas quebradas',
-  comentario: '💬 Comentários',
-  novo_colaborador: '👤 Novos colaboradores',
-  info: 'ℹ️ Informativos',
-  warning: '⚠️ Avisos',
-  success: '✓ Sucessos',
-  error: '❌ Erros'
+  /* v216: labels sem emojis — ícones renderizados ao lado quando usados */
+  ponto_sem_verif: 'Ponto sem verificação',
+  ponto_atraso: 'Atrasos',
+  meta_batida: 'Metas batidas',
+  tarefa: 'Novas tarefas',
+  tarefa_atrasada: 'Tarefas atrasadas',
+  kudos: 'Kudos recebidos',
+  rotina_quebrada: 'Rotinas quebradas',
+  comentario: 'Comentários',
+  novo_colaborador: 'Novos colaboradores',
+  info: 'Informativos',
+  warning: 'Avisos',
+  success: 'Sucessos',
+  error: 'Erros'
 };
 
 /* Modal de preferências */
@@ -34239,7 +34281,7 @@ function openNotifPreferencias(){
 
   modal.innerHTML = '<div class="modal np-modal">'+
     '<div class="np-head">'+
-      '<div><b>📱 Notificações no WhatsApp</b><i>Só aparece o botão pra reencaminhar; nada é enviado automaticamente.</i></div>'+
+      '<div><b>'+icon('chat')+'<span style="margin-left:4px">Notificações no WhatsApp</span></b><i>Só aparece o botão pra reencaminhar; nada é enviado automaticamente.</i></div>'+
       '<button class="fx-close" id="npClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="np-body">'+
@@ -34306,7 +34348,7 @@ function notifWaBotaoHTML(notif){
   if (!phone) return '';   // não tem o próprio número — nada a mostrar
   var link = notifBuildWaLink(phone, notifTextoWa(notif));
   if (!link) return '';
-  return '<a class="notif-wa-btn" href="'+esc(link)+'" target="_blank" rel="noopener" title="Reencaminhar pro WhatsApp" data-wa-btn="1">📱</a>';
+  return '<a class="notif-wa-btn" href="'+esc(link)+'" target="_blank" rel="noopener" title="Reencaminhar pro WhatsApp" aria-label="WhatsApp" data-wa-btn="1">'+icon('chat')+'</a>';
 }
 
 /* ============================================================
@@ -34418,7 +34460,7 @@ function openFeriadoModal(feriado){
   m.className = 'modal-bg';
   m.id = 'feriadoModal';
   m.innerHTML = '<div class="modal fer-modal">'+
-    '<div class="fer-head"><b>'+(isEdit?'✏️ Editar':'➕ Novo')+' feriado</b><button class="fx-close" id="ferClose">×</button></div>'+
+    '<div class="fer-head"><b>'+(isEdit?icon('edit')+'<span style="margin-left:4px">Editar</span>':icon('plus')+'<span style="margin-left:4px">Novo</span>')+' feriado</b><button class="fx-close" id="ferClose">×</button></div>'+
     '<div class="fer-body">'+
       '<div class="fer-field"><label>DATA</label><input type="date" id="ferData" value="'+esc(f.data||'')+'"></div>'+
       '<div class="fer-field"><label>NOME</label><input type="text" id="ferNome" value="'+esc(f.nome||'')+'" placeholder="Ex: Confraternização, Aniversário MALBA"></div>'+
@@ -34430,7 +34472,7 @@ function openFeriadoModal(feriado){
       '</div>'+
     '</div>'+
     '<div class="fer-foot">'+
-      (isEdit?'<button class="btn btn-danger" id="ferDel">🗑 Excluir</button>':'<span></span>')+
+      (isEdit?'<button class="btn btn-danger" id="ferDel" aria-label="Excluir">'+icon('trash')+'<span style="margin-left:4px">Excluir</span></button>':'<span></span>')+
       '<div><button class="btn btn-ghost" id="ferCancel">Cancelar</button> <button class="btn btn-primary" id="ferSave">Salvar</button></div>'+
     '</div>'+
   '</div>';
@@ -34475,21 +34517,21 @@ function feriadosPageHTML(){
   anos.sort();
 
   var linhas = lista.length ? lista.map(function(f){
-    var tipoLabel = {nacional:'🇧🇷 Nacional', estadual:'🏛 Estadual', municipal:'🏙 Municipal', empresa:'🏢 Empresa'}[f.tipo] || f.tipo;
+    var tipoLabel = {nacional:'Nacional', estadual:'Estadual', municipal:'Municipal', empresa:'Empresa'}[f.tipo] || f.tipo;
     var dt = new Date(f.data + 'T12:00:00');
     var diaSemana = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dt.getDay()];
     return '<tr class="fer-row" data-fer-id="'+esc(f.id)+'">'+
       '<td class="fer-td-data"><b>'+esc(f.data.split('-').reverse().join('/'))+'</b><small>'+diaSemana+'</small></td>'+
       '<td>'+esc(f.nome)+'</td>'+
       '<td><span class="fer-tag fer-tag-'+esc(f.tipo)+'">'+tipoLabel+'</span></td>'+
-      '<td class="fer-td-acts"><button class="btn btn-ghost btn-sm fer-edit-btn" data-fid="'+esc(f.id)+'">✏️</button></td>'+
+      '<td class="fer-td-acts"><button class="btn btn-ghost btn-sm fer-edit-btn" data-fid="'+esc(f.id)+'" aria-label="Editar">'+icon('edit')+'</button></td>'+
     '</tr>';
   }).join('') : '<tr><td colspan="4" class="fer-empty">Nenhum feriado cadastrado em '+anoFiltro+'</td></tr>';
 
   return '<div class="page-x">'+
     '<div class="page-x-head">'+
-      '<div><h2>🎉 Feriados</h2><p>Dias que NÃO contam como falta no painel de ponto.</p></div>'+
-      '<button class="btn btn-primary" id="ferNovoBtn">➕ Novo feriado</button>'+
+      '<div><h2>'+icon('party')+'<span style="margin-left:8px">Feriados</span></h2><p>Dias que NÃO contam como falta no painel de ponto.</p></div>'+
+      '<button class="btn btn-primary" id="ferNovoBtn" aria-label="Novo feriado">'+icon('plus')+'<span style="margin-left:4px">Novo feriado</span></button>'+
     '</div>'+
     '<div class="fer-toolbar">'+
       '<label>Ano:</label>'+
@@ -34626,9 +34668,9 @@ function auditFmtDataRelativa(iso){
 }
 
 var AUDIT_CAT_LABEL = {
-  criou: {ic:'➕', label:'Criou', cor:'#16A34A'},
-  editou: {ic:'✏️', label:'Editou', cor:'#3B6FF7'},
-  excluiu: {ic:'🗑', label:'Excluiu', cor:'#EF4444'},
+  criou: {ic:'plus', label:'Criou', cor:'#16A34A'},
+  editou: {ic:'edit', label:'Editou', cor:'#3B6FF7'},
+  excluiu: {ic:'trash', label:'Excluiu', cor:'#EF4444'},
   concluiu: {ic:'✓', label:'Concluiu', cor:'#16A34A'},
   transferiu: {ic:'↔️', label:'Transferiu', cor:'#8B5CF6'},
   pausou: {ic:'⏸', label:'Pausou/Retomou', cor:'#F59E0B'},
@@ -34649,18 +34691,18 @@ function auditoriaConfigHTML(){
     return '<tr class="aud-row">'+
       '<td class="aud-td-time"><b>'+esc(auditFmtDataRelativa(a.created_at))+'</b><small>'+esc(auditFmtData(a.created_at))+'</small></td>'+
       '<td class="aud-td-actor"><span class="aud-avatar">'+esc(initials)+'</span><div class="aud-actor-info"><b>'+esc(a.actor_name||'?')+'</b><small>'+esc(a.actor_sector||'')+'</small></div></td>'+
-      '<td class="aud-td-cat"><span class="aud-cat" style="color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span></td>'+
+      '<td class="aud-td-cat"><span class="aud-cat" style="color:'+meta.cor+'">'+((typeof icon==='function')?icon(meta.ic):'')+'<span style="margin-left:4px">'+esc(meta.label)+'</span></span></td>'+
       '<td class="aud-td-action">'+esc(a.action||'')+'</td>'+
     '</tr>';
-  }).join('') : '<tr><td colspan="4" class="aud-empty">🔍 Nenhum evento encontrado com esses filtros.</td></tr>';
+  }).join('') : '<tr><td colspan="4" class="aud-empty">'+icon('search')+'<span style="margin-left:4px">Nenhum evento encontrado com esses filtros.</span></td></tr>';
 
   return '<div class="aud-wrap">'+
     '<div class="aud-head">'+
       '<div>'+
-        '<h3>🔍 Log de Auditoria</h3>'+
+        '<h3>'+icon('search')+'<span style="margin-left:6px">Log de Auditoria</span></h3>'+
         '<p class="aud-sub">Últimos '+AUDIT_CFG.MAX_ROWS+' eventos dos últimos '+AUDIT_CFG.RETENTION_DAYS+' dias. Filtrando: <b>'+lista.length+' resultado'+(lista.length===1?'':'s')+'</b></p>'+
       '</div>'+
-      '<button class="btn btn-ghost" id="audCsvBtn">📊 CSV</button>'+
+      '<button class="btn btn-ghost" id="audCsvBtn" aria-label="Exportar CSV">'+icon('download')+'<span style="margin-left:6px">CSV</span></button>'+
     '</div>'+
 
     '<div class="aud-filtros">'+
@@ -34852,7 +34894,7 @@ function feriasSolicitar(payload, cb){
       if (typeof notifGestoresDoSetor === 'function' && typeof notifBroadcast === 'function'){
         notifBroadcast(notifGestoresDoSetor(row.sector), {
           kind: 'warning',
-          title: '🌴 Nova solicitação de férias',
+          title: 'Nova solicitação de férias',
           body: row.actor_name+' pediu '+dias+' dia'+(dias>1?'s':'')+' ('+row.data_inicio.split('-').reverse().join('/')+' a '+row.data_fim.split('-').reverse().join('/')+')',
           link: '/ferias',
           priority: 'high',
@@ -34860,7 +34902,7 @@ function feriasSolicitar(payload, cb){
         });
       }
     } catch(e){ console.error(e); }
-    toast('Solicitação enviada aos gestores 🌴', 'success');
+    toast('Solicitação enviada aos gestores', 'success');
     if (cb) cb(true);
   });
 }
@@ -34919,7 +34961,7 @@ function feriasRejeitar(id, motivo, cb){
       if (typeof notify === 'function' && f.created_by){
         notify(f.created_by, {
           kind: 'warning',
-          title: '❌ Solicitação de férias recusada',
+          title: 'Solicitação de férias recusada',
           body: motivo ? 'Motivo: '+motivo : 'Fale com seu gestor pra entender',
           link: '/ferias',
           priority: 'high',
@@ -34960,7 +35002,7 @@ function feriasCancelar(id, cb){
 var FERIAS_STATUS_META = {
   pending:   { label:'Aguardando aprovação', cor:'#F59E0B', ic:'⏳' },
   approved:  { label:'Aprovada',             cor:'#16A34A', ic:'✓'  },
-  rejected:  { label:'Recusada',             cor:'#EF4444', ic:'❌' },
+  rejected:  { label:'Recusada',             cor:'#EF4444', ic:'x' },
   cancelled: { label:'Cancelada',            cor:'var(--u-text3)', ic:'⊘' }
 };
 
@@ -34981,7 +35023,7 @@ function openFeriasSolicitarModal(){
   m.className = 'modal-bg';
   m.id = 'feriasModal';
   m.innerHTML = '<div class="modal fer-modal">'+
-    '<div class="fer-head"><b>🌴 Solicitar férias</b><button class="fx-close" id="frClose">×</button></div>'+
+    '<div class="fer-head"><b>Solicitar férias</b><button class="fx-close" id="frClose">×</button></div>'+
     '<div class="fer-body">'+
       '<div class="fr-field"><label>DATA DE INÍCIO</label><input type="date" id="frInicio" min="'+hoje+'"></div>'+
       '<div class="fr-field"><label>DATA DE FIM</label><input type="date" id="frFim" min="'+hoje+'"></div>'+
@@ -34990,7 +35032,7 @@ function openFeriasSolicitarModal(){
     '</div>'+
     '<div class="fer-foot">'+
       '<button class="btn btn-ghost" id="frCancel">Cancelar</button>'+
-      '<button class="btn btn-primary" id="frSave">🌴 Enviar solicitação</button>'+
+      '<button class="btn btn-primary" id="frSave" aria-label="Enviar solicitação">Enviar solicitação</button>'+
     '</div>'+
   '</div>';
   document.body.appendChild(m);
@@ -35006,7 +35048,7 @@ function openFeriasSolicitarModal(){
     var el = m.querySelector('#frPreview');
     if (!i || !f){ el.innerHTML = '<small>Escolha as datas para ver o resumo</small>'; return; }
     var d = feriasDiff(i, f);
-    if (d < 1){ el.innerHTML = '<small style="color:#EF4444">❌ Fim precisa ser >= início</small>'; return; }
+    if (d < 1){ el.innerHTML = '<small style="color:#EF4444">Fim precisa ser >= início</small>'; return; }
     el.innerHTML = '<b>'+d+' dia'+(d>1?'s':'')+'</b> de '+i.split('-').reverse().join('/')+' a '+f.split('-').reverse().join('/');
   }
   m.querySelector('#frInicio').addEventListener('change', preview);
@@ -35034,9 +35076,9 @@ function feriasPageHTML(){
   var abaAtual = ST.feriasTab || 'minhas';
 
   var abas = '<div class="cfg-tabs">'+
-    '<button class="cfg-tab'+(abaAtual==='minhas'?' on':'')+'" data-frtab="minhas">🌴 Minhas férias'+(minhas.length?' <span class="tab-badge">'+minhas.length+'</span>':'')+'</button>'+
+    '<button class="cfg-tab'+(abaAtual==='minhas'?' on':'')+'" data-frtab="minhas">Minhas férias'+(minhas.length?' <span class="tab-badge">'+minhas.length+'</span>':'')+'</button>'+
     (podeGerir ? '<button class="cfg-tab'+(abaAtual==='pendentes'?' on':'')+'" data-frtab="pendentes">⏳ Aprovar'+(pendentes.length?' <span class="tab-badge">'+pendentes.length+'</span>':'')+'</button>' : '')+
-    (podeGerir ? '<button class="cfg-tab'+(abaAtual==='todas'?' on':'')+'" data-frtab="todas">📋 Todas do setor</button>' : '')+
+    (podeGerir ? '<button class="cfg-tab'+(abaAtual==='todas'?' on':'')+'" data-frtab="todas">'+icon('clipboard-list')+'<span style="margin-left:4px">Todas do setor</span></button>' : '')+
   '</div>';
 
   var body = '';
@@ -35046,8 +35088,8 @@ function feriasPageHTML(){
 
   return '<div class="page-x">'+
     '<div class="page-x-head">'+
-      '<div><h2>🌴 Férias</h2><p>Solicite e acompanhe suas férias. Dias aprovados não contam como falta no ponto.</p></div>'+
-      '<button class="btn btn-primary" id="frNovaBtn">➕ Solicitar férias</button>'+
+      '<div><h2>Férias</h2><p>Solicite e acompanhe suas férias. Dias aprovados não contam como falta no ponto.</p></div>'+
+      '<button class="btn btn-primary" id="frNovaBtn" aria-label="Solicitar férias">'+icon('plus')+'<span style="margin-left:4px">Solicitar férias</span></button>'+
     '</div>'+
     abas+
     '<div id="feriasBody">'+body+'</div>'+
@@ -35055,7 +35097,7 @@ function feriasPageHTML(){
 }
 
 function feriasMinhasHTML(minhas){
-  if (!minhas.length) return '<div class="fr-empty">🌴 Você ainda não solicitou férias este período.<br><small>Clique em "Solicitar férias" pra começar.</small></div>';
+  if (!minhas.length) return '<div class="fr-empty">Você ainda não solicitou férias este período.<br><small>Clique em "Solicitar férias" pra começar.</small></div>';
   minhas.sort(function(a,b){return (b.created_at||'').localeCompare(a.created_at||'');});
   return '<div class="fr-cards">'+minhas.map(function(f){
     var st = FERIAS_STATUS_META[f.status] || FERIAS_STATUS_META.pending;
@@ -35080,7 +35122,7 @@ function feriasAprovarHTML(pendentes){
       '<div class="fr-card-head">'+
         '<div><b>'+esc(f.actor_name)+'</b><small style="color:var(--u-text3)"> · '+esc(f.sector||'')+'</small></div>'+
         '<div class="fr-card-actions">'+
-          '<button class="btn btn-ghost btn-sm fr-rej-btn" data-fid="'+esc(f.id)+'">❌ Recusar</button>'+
+          '<button class="btn btn-ghost btn-sm fr-rej-btn" data-fid="'+esc(f.id)+'" aria-label="Recusar">'+icon('x')+'<span style="margin-left:4px">Recusar</span></button>'+
           '<button class="btn btn-primary btn-sm fr-apr-btn" data-fid="'+esc(f.id)+'">✓ Aprovar</button>'+
         '</div>'+
       '</div>'+
@@ -35292,11 +35334,11 @@ function ficha360Alertas(alvo){
     if (mid && String(j.member_id||'')===String(mid)) return true;
     return false;
   });
-  if (justs.length) alertas.push({ico:'📋', txt:justs.length+' justificativa'+(justs.length!==1?'s':'')+' nos últimos 90 dias'});
+  if (justs.length) alertas.push({ico:'clipboard-list', txt:justs.length+' justificativa'+(justs.length!==1?'s':'')+' nos últimos 90 dias'});
   // Sem facial
-  if (!alvo.face_descriptor || !alvo.face_descriptor.length) alertas.push({ico:'⚠️', txt:'Sem cadastro facial (bloqueado pra bater ponto)'});
+  if (!alvo.face_descriptor || !alvo.face_descriptor.length) alertas.push({ico:'warning', txt:'Sem cadastro facial (bloqueado pra bater ponto)'});
   // Inativo
-  if (alvo.is_active === false) alertas.push({ico:'🔒', txt:'Colaborador inativo'});
+  if (alvo.is_active === false) alertas.push({ico:'lock', txt:'Colaborador inativo'});
   return alertas;
 }
 
@@ -35349,7 +35391,7 @@ function openFicha360(entidade, tipo){
         (loja ? '<span>· '+esc(loja)+'</span>' : '')+
         (setor && !loja ? '<span>· '+esc(setor)+'</span>' : '')+
       '</div>'+
-      (tc ? '<div class="f36-tempo">🎂 '+esc(tc)+'</div>' : '')+
+      (tc ? '<div class="f36-tempo">'+esc(tc)+'</div>' : '')+
     '</div>'+
     '<button class="fx-close" id="f36Close" title="Fechar">×</button>'+
   '</div>';
@@ -35361,7 +35403,7 @@ function openFicha360(entidade, tipo){
 
   // Grid 3 cols: Ponto, Tarefas, Ferias/Kudos
   var pontoBox = '<div class="f36-box f36-box-ponto">'+
-    '<div class="f36-box-head">⏰ Ponto <span class="f36-box-sub">últimos 90 dias</span></div>'+
+    '<div class="f36-box-head">'+icon('clock')+'<span style="margin-left:6px">Ponto</span> <span class="f36-box-sub">últimos 90 dias</span></div>'+
     '<div class="f36-metric-big"><b>'+ep.dias+'</b><small>dias trabalhados</small></div>'+
     '<div class="f36-inline-metrics">'+
       '<div><b style="color:'+(ep.atrasos>0?'#F59E0B':'var(--u-text3)')+'">'+ep.atrasos+'</b> atraso'+(ep.atrasos!==1?'s':'')+'</div>'+
@@ -35371,16 +35413,16 @@ function openFicha360(entidade, tipo){
   '</div>';
 
   var tarefasBox = '<div class="f36-box f36-box-tarefas">'+
-    '<div class="f36-box-head">📝 Tarefas</div>'+
+    '<div class="f36-box-head">'+icon('pencil')+'<span style="margin-left:6px">Tarefas</span></div>'+
     '<div class="f36-metric-big"><b>'+et.concluidas+'</b><small>concluídas</small></div>'+
     '<div class="f36-inline-metrics">'+
       '<div><b>'+et.abertas+'</b> abertas</div>'+
-      '<div><b style="color:'+(et.atrasadas>0?'#EF4444':'#16A34A')+'">'+et.atrasadas+'</b> atrasada'+(et.atrasadas!==1?'s':'')+' '+(et.atrasadas===0?'🎉':'🔥')+'</div>'+
+      '<div><b style="color:'+(et.atrasadas>0?'#EF4444':'#16A34A')+'">'+et.atrasadas+'</b> atrasada'+(et.atrasadas!==1?'s':'')+' '+((typeof icon==='function')?(et.atrasadas===0?icon('check'):icon('fire')):'')+'</div>'+
     '</div>'+
   '</div>';
 
   var feriasBox = '<div class="f36-box f36-box-ferias">'+
-    '<div class="f36-box-head">🌴 Férias '+(new Date().getFullYear())+'</div>'+
+    '<div class="f36-box-head">Férias '+(new Date().getFullYear())+'</div>'+
     '<div class="f36-metric-big"><b>'+ef.diasAno+'</b><small>dias '+(ef.diasAno===1?'aprovado':'aprovados')+'</small></div>'+
     '<div class="f36-inline-metrics">'+
       '<div><b>'+ef.aprovadasAno+'</b> período'+(ef.aprovadasAno!==1?'s':'')+'</div>'+
@@ -35389,7 +35431,7 @@ function openFicha360(entidade, tipo){
   '</div>';
 
   var kudosBox = '<div class="f36-box f36-box-kudos">'+
-    '<div class="f36-box-head">👏 Kudos</div>'+
+    '<div class="f36-box-head">'+icon('trophy')+'<span style="margin-left:6px">Kudos</span></div>'+
     '<div class="f36-metric-big"><b>'+ek.recebidos+'</b><small>recebido'+(ek.recebidos!==1?'s':'')+'</small></div>'+
     '<div class="f36-inline-metrics">'+
       '<div><b>'+ek.enviados+'</b> enviado'+(ek.enviados!==1?'s':'')+'</div>'+
@@ -35398,16 +35440,16 @@ function openFicha360(entidade, tipo){
   '</div>';
 
   var escalaBox = '<div class="f36-box f36-box-escala">'+
-    '<div class="f36-box-head">📅 Escala</div>'+
+    '<div class="f36-box-head">'+icon('cal')+'<span style="margin-left:6px">Escala</span></div>'+
     (esc_ ? '<div class="f36-escala-resumo">'+esc(esc_.resumo)+'</div>' : '<div class="f36-escala-vazio">Sem escala definida</div>')+
   '</div>';
 
   // Ações
   var acoesHTML = '<div class="f36-acoes">'+
-    '<button class="btn btn-ghost" id="f36Edit">✏️ Editar ficha</button>'+
-    (!temFacial ? '<button class="btn btn-primary" id="f36Face">🎭 Cadastrar facial</button>' : '<button class="btn btn-ghost" id="f36Face">🎭 Refazer facial</button>')+
-    (alvo._tipo==='user' && typeof openShiftModal==='function' ? '<button class="btn btn-ghost" id="f36Escala">🕐 Escala</button>' : '')+
-    (alvo._tipo==='member' && typeof openShiftModal==='function' ? '<button class="btn btn-ghost" id="f36Escala">🕐 Escala</button>' : '')+
+    '<button class="btn btn-ghost" id="f36Edit" aria-label="Editar ficha">'+icon('edit')+'<span style="margin-left:4px">Editar ficha</span></button>'+
+    (!temFacial ? '<button class="btn btn-primary" id="f36Face" aria-label="Cadastrar facial">'+icon('face')+'<span style="margin-left:6px">Cadastrar facial</span></button>' : '<button class="btn btn-ghost" id="f36Face" aria-label="Refazer facial">'+icon('face')+'<span style="margin-left:6px">Refazer facial</span></button>')+
+    (alvo._tipo==='user' && typeof openShiftModal==='function' ? '<button class="btn btn-ghost" id="f36Escala" aria-label="Escala">'+icon('clock')+'<span style="margin-left:4px">Escala</span></button>' : '')+
+    (alvo._tipo==='member' && typeof openShiftModal==='function' ? '<button class="btn btn-ghost" id="f36Escala" aria-label="Escala">'+icon('clock')+'<span style="margin-left:4px">Escala</span></button>' : '')+
   '</div>';
 
   modal.innerHTML = '<div class="modal f36-modal">'+
@@ -35486,6 +35528,10 @@ if (typeof globalThis !== 'undefined'){
   if (typeof gestaoAreasForSector==='function') globalThis.gestaoAreasForSector = gestaoAreasForSector;
   if (typeof gestaoAreaDe==='function') globalThis.gestaoAreaDe = gestaoAreaDe;
   if (typeof gestaoTabsForSector==='function') globalThis.gestaoTabsForSector = gestaoTabsForSector;
+  if (typeof notifIconePorKind==='function') globalThis.notifIconePorKind = notifIconePorKind;
+  if (typeof NOTIF_WA_KIND_LABELS!=='undefined') globalThis.NOTIF_WA_KIND_LABELS = NOTIF_WA_KIND_LABELS;
+  if (typeof ICON_PATHS!=='undefined') globalThis.ICON_PATHS = ICON_PATHS;
+  if (typeof icon==='function') globalThis.icon = icon;
   globalThis.openFicha360 = openFicha360;
   globalThis.ficha360EstatsPonto = ficha360EstatsPonto;
   globalThis.ficha360EstatsTarefas = ficha360EstatsTarefas;
@@ -35603,7 +35649,7 @@ function atestadoSolicitar(dados, cb){
       var alvos = notifGestoresDoSetor(reg.actor_sector);
       notifBroadcast(alvos, {
         kind: 'warning',
-        title: '🏥 Novo atestado enviado',
+        title: 'Novo atestado enviado',
         body: (reg.actor_name||'Alguém')+' enviou atestado de '+dias+' dia'+(dias>1?'s':''),
         link: '/atestados',
         priority: 'high',
@@ -35662,7 +35708,7 @@ function atestadoRejeitar(id, motivo, cb){
     if (typeof notify === 'function' && a.user_id){
       notify(a.user_id, {
         kind: 'warning',
-        title: '❌ Atestado recusado',
+        title: 'Atestado recusado',
         body: motivo ? ('Motivo: '+motivo) : 'Atestado recusado pela liderança',
         link: '/atestados'
       });
@@ -35698,7 +35744,7 @@ function atestadoCancelar(id, cb){
 var ATESTADO_STATUS_META = {
   pending:   { label:'Aguardando aprovação', cor:'#F59E0B', ic:'⏳' },
   approved:  { label:'Aprovado',             cor:'#16A34A', ic:'✓'  },
-  rejected:  { label:'Recusado',             cor:'#EF4444', ic:'❌' },
+  rejected:  { label:'Recusado',             cor:'#EF4444', ic:'x' },
   cancelled: { label:'Cancelado',            cor:'var(--u-text3)', ic:'⊘' }
 };
 
@@ -35732,7 +35778,7 @@ function openAtestadoSolicitarModal(){
   m.className = 'modal-bg';
   m.id = 'atestadoModal';
   m.innerHTML = '<div class="modal at-modal">'+
-    '<h3>🏥 Enviar atestado médico</h3>'+
+    '<h3>'+icon('warning')+'<span style="margin-left:6px">Enviar atestado médico</span></h3>'+
     '<div class="modal-grid2">'+
       '<div class="modal-row"><label class="modal-label">Data início *</label>'+
         '<input type="date" id="atIni" max="'+hoje+'" value="'+hoje+'"></div>'+
@@ -35748,7 +35794,7 @@ function openAtestadoSolicitarModal(){
     '</div>'+
     '<div class="modal-row"><label class="modal-label">Nome do médico (opcional)</label>'+
       '<input type="text" id="atMed" placeholder="Dr. Fulano" maxlength="80"></div>'+
-    '<div class="modal-row"><label class="modal-label">📸 Foto do atestado *</label>'+
+    '<div class="modal-row"><label class="modal-label">'+icon('image')+'<span style="margin-left:4px">Foto do atestado *</span></label>'+
       '<input type="file" id="atFoto" accept="image/*,application/pdf"></div>'+
     '<div class="modal-row"><label class="modal-label">Observações</label>'+
       '<textarea id="atMot" rows="2" placeholder="Ex: exame de rotina, gripe forte..."></textarea></div>'+
@@ -35818,9 +35864,9 @@ function atestadosPageHTML(){
   }) : [];
 
   var tabs = '<div class="at-tabs">'+
-    '<button class="at-tab '+(sub==='meus'?'ativa':'')+'" data-atsub="meus">🏥 Meus</button>'+
+    '<button class="at-tab '+(sub==='meus'?'ativa':'')+'" data-atsub="meus">Meus</button>'+
     (podeAprovar ? '<button class="at-tab '+(sub==='aprovar'?'ativa':'')+'" data-atsub="aprovar">⏳ Aprovar'+(pendentes.length?' ('+pendentes.length+')':'')+'</button>' : '')+
-    (podeAprovar ? '<button class="at-tab '+(sub==='todos'?'ativa':'')+'" data-atsub="todos">📋 Todos do setor</button>' : '')+
+    (podeAprovar ? '<button class="at-tab '+(sub==='todos'?'ativa':'')+'" data-atsub="todos">'+icon('clipboard-list')+'<span style="margin-left:4px">Todos do setor</span></button>' : '')+
   '</div>';
 
   var lista;
@@ -35836,17 +35882,17 @@ function atestadosPageHTML(){
     return '<div class="at-card at-'+a.status+'">'+
       '<div class="at-card-head">'+
         '<div><b>'+esc(a.actor_name||'—')+'</b><span class="at-badge" style="background:'+meta.cor+'22;color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span></div>'+
-        (a.foto_url ? '<a class="at-foto-link" href="'+esc(a.foto_url)+'" target="_blank">📎 Ver foto</a>' : '')+
+        (a.foto_url ? '<a class="at-foto-link" href="'+esc(a.foto_url)+'" target="_blank">'+icon('link')+'<span style="margin-left:4px">Ver foto</span></a>' : '')+
       '</div>'+
       '<div class="at-per">'+esc(atestadoFmtPeriodo(a))+'</div>'+
-      (a.cid ? '<div class="at-cid">🩺 CID: <b>'+esc(a.cid)+'</b></div>' : '')+
-      (a.medico ? '<div class="at-med">👨‍⚕️ '+esc(a.medico)+(a.crm?' · CRM '+esc(a.crm):'')+'</div>' : '')+
+      (a.cid ? '<div class="at-cid">CID: <b>'+esc(a.cid)+'</b></div>' : '')+
+      (a.medico ? '<div class="at-med">'+esc(a.medico)+(a.crm?' · CRM '+esc(a.crm):'')+'</div>' : '')+
       (a.motivo ? '<div class="at-mot">"'+esc(a.motivo)+'"</div>' : '')+
-      (a.status==='rejected' && a.rejection_reason ? '<div class="at-rej">❌ '+esc(a.rejection_reason)+'</div>' : '')+
+      (a.status==='rejected' && a.rejection_reason ? '<div class="at-rej">'+icon('x')+' '+esc(a.rejection_reason)+'</div>' : '')+
       (a.status==='approved' && a.approver_name ? '<div class="at-app">✓ Aprovado por '+esc(a.approver_name)+'</div>' : '')+
       '<div class="at-actions">'+
         (pAprovar ? '<button class="btn btn-primary at-btn-ap" data-atid="'+esc(a.id)+'">✓ Aprovar</button>' : '')+
-        (pAprovar ? '<button class="btn btn-danger at-btn-rj" data-atid="'+esc(a.id)+'">❌ Recusar</button>' : '')+
+        (pAprovar ? '<button class="btn btn-danger at-btn-rj" data-atid="'+esc(a.id)+'" aria-label="Recusar">'+icon('x')+'<span style="margin-left:4px">Recusar</span></button>' : '')+
         (podeCancel ? '<button class="btn btn-ghost at-btn-cn" data-atid="'+esc(a.id)+'">Cancelar</button>' : '')+
       '</div>'+
     '</div>';
@@ -35856,7 +35902,7 @@ function atestadosPageHTML(){
 
   return '<div class="at-page">'+
     '<div class="at-head">'+
-      '<h2>🏥 Atestados médicos</h2>'+
+      '<h2>Atestados médicos</h2>'+
       '<button class="btn btn-primary" id="atNew">+ Novo atestado</button>'+
     '</div>'+
     tabs +
@@ -36058,13 +36104,13 @@ if (typeof globalThis !== 'undefined'){
 var REEMB_STATE = { loaded:false, loading:false };
 
 var REEMB_CATEGORIAS = [
-  { key:'combustivel',  label:'Combustível',       ic:'⛽', cor:'#DC2626' },
-  { key:'refeicao',     label:'Refeição',          ic:'🍽️', cor:'#F59E0B' },
-  { key:'material',     label:'Material',          ic:'📦', cor:'#3B6FF7' },
-  { key:'transporte',   label:'Transporte',        ic:'🚌', cor:'#0EA5E9' },
-  { key:'deslocamento', label:'Deslocamento (km)', ic:'🚗', cor:'#8B5CF6' },
-  { key:'ferramenta',   label:'Ferramenta',        ic:'🔧', cor:'#059669' },
-  { key:'outros',       label:'Outros',            ic:'📝', cor:'#64748B' }
+  { key:'combustivel',  label:'Combustível',       ic:'plug-zap', cor:'#DC2626' },
+  { key:'refeicao',     label:'Refeição',          ic:'dollar', cor:'#F59E0B' },
+  { key:'material',     label:'Material',          ic:'archive', cor:'#3B6FF7' },
+  { key:'transporte',   label:'Transporte',        ic:'move', cor:'#0EA5E9' },
+  { key:'deslocamento', label:'Deslocamento (km)', ic:'pin', cor:'#8B5CF6' },
+  { key:'ferramenta',   label:'Ferramenta',        ic:'gear', cor:'#059669' },
+  { key:'outros',       label:'Outros',            ic:'pencil', cor:'#64748B' }
 ];
 
 var REEMB_FORMAS = [
@@ -36077,8 +36123,8 @@ var REEMB_FORMAS = [
 var REEMB_STATUS_META = {
   pending:   { label:'Aguardando aprovação', cor:'#F59E0B', ic:'⏳' },
   approved:  { label:'Aprovado — a pagar',   cor:'#16A34A', ic:'✓'  },
-  paid:      { label:'Pago',                 cor:'#059669', ic:'💰' },
-  rejected:  { label:'Recusado',             cor:'#EF4444', ic:'❌' },
+  paid:      { label:'Pago',                 cor:'#059669', ic:'dollar' },
+  rejected:  { label:'Recusado',             cor:'#EF4444', ic:'x' },
   cancelled: { label:'Cancelado',            cor:'var(--u-text3)', ic:'⊘' }
 };
 
@@ -36174,7 +36220,7 @@ function reembSolicitar(dados, cb){
       var alvos = notifGestoresDoSetor(reg.actor_sector);
       notifBroadcast(alvos, {
         kind: 'warning',
-        title: '💸 Reembolso solicitado',
+        title: 'Reembolso solicitado',
         body: (reg.actor_name||'Alguém')+' pediu '+reembFmtValor(valor)+' ('+reembCategoriaMeta(reg.categoria).label+')',
         link: '/reembolsos',
         priority: 'normal',
@@ -36231,7 +36277,7 @@ function reembRejeitar(id, motivo, cb){
     if (typeof notify === 'function' && r.user_id){
       notify(r.user_id, {
         kind:'warning',
-        title:'❌ Reembolso recusado',
+        title:'Reembolso recusado',
         body: motivo ? 'Motivo: '+motivo : 'Reembolso recusado',
         link:'/reembolsos'
       });
@@ -36264,7 +36310,7 @@ function reembMarcarPago(id, metodo, cb){
     if (typeof notify === 'function' && r.user_id){
       notify(r.user_id, {
         kind:'success',
-        title:'💰 Reembolso pago',
+        title:'Reembolso pago',
         body: reembFmtValor(r.valor)+(metodo?' via '+metodo:''),
         link:'/reembolsos'
       });
@@ -36315,7 +36361,7 @@ function openReembSolicitarModal(){
   var hoje = new Date().toISOString().slice(0,10);
 
   var catOpts = REEMB_CATEGORIAS.map(function(c){
-    return '<option value="'+c.key+'">'+c.ic+' '+c.label+'</option>';
+    return '<option value="'+c.key+'">'+c.label+'</option>';
   }).join('');
   var fpOpts = REEMB_FORMAS.map(function(f){
     return '<option value="'+f.key+'">'+f.label+'</option>';
@@ -36325,7 +36371,7 @@ function openReembSolicitarModal(){
   m.className = 'modal-bg';
   m.id = 'reembModal';
   m.innerHTML = '<div class="modal re-modal">'+
-    '<h3>💸 Solicitar reembolso</h3>'+
+    '<h3>'+icon('dollar')+'<span style="margin-left:6px">Solicitar reembolso</span></h3>'+
     '<div class="modal-grid2">'+
       '<div class="modal-row"><label class="modal-label">Valor (R$) *</label>'+
         '<input type="number" id="reVal" min="0.01" step="0.01" placeholder="0,00"></div>'+
@@ -36338,7 +36384,7 @@ function openReembSolicitarModal(){
       '<div class="modal-row"><label class="modal-label">Forma de pagamento</label>'+
         '<select id="reFp">'+fpOpts+'</select></div>'+
     '</div>'+
-    '<div class="modal-row"><label class="modal-label">📸 Foto do recibo/NF *</label>'+
+    '<div class="modal-row"><label class="modal-label">'+icon('image')+'<span style="margin-left:4px">Foto do recibo/NF *</span></label>'+
       '<input type="file" id="reFoto" accept="image/*,application/pdf"></div>'+
     '<div class="modal-row"><label class="modal-label">Descrição *</label>'+
       '<textarea id="reDesc" rows="2" placeholder="Ex: gasolina viagem Guarulhos, almoço com cliente X"></textarea></div>'+
@@ -36391,7 +36437,7 @@ function openReembMarcarPagoModal(id){
   m.className = 'modal-bg';
   m.id = 'rePagoModal';
   m.innerHTML = '<div class="modal re-modal-pago">'+
-    '<h3>💰 Marcar como pago</h3>'+
+    '<h3>'+icon('dollar')+'<span style="margin-left:6px">Marcar como pago</span></h3>'+
     '<div class="modal-row"><label class="modal-label">Método/observação</label>'+
       '<input type="text" id="rePagoMet" placeholder="Ex: PIX, folha, adiantamento" maxlength="80"></div>'+
     '<div class="modal-actions">'+
@@ -36434,10 +36480,10 @@ function reembolsosPageHTML(){
   });
 
   var tabs = '<div class="re-tabs">'+
-    '<button class="re-tab '+(sub==='meus'?'ativa':'')+'" data-resub="meus">💸 Meus</button>'+
+    '<button class="re-tab '+(sub==='meus'?'ativa':'')+'" data-resub="meus">'+icon('dollar')+'<span style="margin-left:4px">Meus</span></button>'+
     (podeAprovar ? '<button class="re-tab '+(sub==='aprovar'?'ativa':'')+'" data-resub="aprovar">⏳ Aprovar'+(pendentes.length?' ('+pendentes.length+')':'')+'</button>' : '')+
-    (podePagar ? '<button class="re-tab '+(sub==='pagar'?'ativa':'')+'" data-resub="pagar">💰 A pagar'+(apagar.length?' ('+apagar.length+')':'')+'</button>' : '')+
-    (podeAprovar ? '<button class="re-tab '+(sub==='todos'?'ativa':'')+'" data-resub="todos">📋 Todos</button>' : '')+
+    (podePagar ? '<button class="re-tab '+(sub==='pagar'?'ativa':'')+'" data-resub="pagar">'+icon('dollar')+'<span style="margin-left:4px">A pagar</span>'+(apagar.length?' ('+apagar.length+')':'')+'</button>' : '')+
+    (podeAprovar ? '<button class="re-tab '+(sub==='todos'?'ativa':'')+'" data-resub="todos">'+icon('clipboard-list')+'<span style="margin-left:4px">Todos</span></button>' : '')+
   '</div>';
 
   var lista;
@@ -36456,19 +36502,19 @@ function reembolsosPageHTML(){
     return '<div class="re-card re-'+r.status+'">'+
       '<div class="re-card-head">'+
         '<div class="re-valor">'+esc(reembFmtValor(r.valor))+'</div>'+
-        '<span class="re-cat" style="background:'+cat.cor+'22;color:'+cat.cor+'">'+cat.ic+' '+esc(cat.label)+'</span>'+
+        '<span class="re-cat" style="background:'+cat.cor+'22;color:'+cat.cor+'">'+icon(cat.ic)+'<span style="margin-left:4px">'+esc(cat.label)+'</span></span>'+
         '<span class="re-badge" style="background:'+meta.cor+'22;color:'+meta.cor+'">'+meta.ic+' '+esc(meta.label)+'</span>'+
       '</div>'+
       '<div class="re-meta"><b>'+esc(r.actor_name||'—')+'</b> · '+esc(reembFmtData(r.data_gasto))+' · '+esc(reembFormaLabel(r.forma_pagamento))+'</div>'+
       (r.descricao ? '<div class="re-desc">'+esc(r.descricao)+'</div>' : '')+
-      (r.foto_url ? '<a class="re-foto-link" href="'+esc(r.foto_url)+'" target="_blank">📎 Ver recibo</a>' : '')+
-      (r.status==='rejected' && r.rejection_reason ? '<div class="re-rej">❌ '+esc(r.rejection_reason)+'</div>' : '')+
+      (r.foto_url ? '<a class="re-foto-link" href="'+esc(r.foto_url)+'" target="_blank">'+icon('link')+'<span style="margin-left:4px">Ver recibo</span></a>' : '')+
+      (r.status==='rejected' && r.rejection_reason ? '<div class="re-rej">'+icon('x')+' '+esc(r.rejection_reason)+'</div>' : '')+
       (r.status==='approved' && r.approver_name ? '<div class="re-app">✓ Aprovado por '+esc(r.approver_name)+'</div>' : '')+
-      (r.status==='paid' && r.paid_by_name ? '<div class="re-pago">💰 Pago por '+esc(r.paid_by_name)+(r.paid_method?' via '+esc(r.paid_method):'')+'</div>' : '')+
+      (r.status==='paid' && r.paid_by_name ? '<div class="re-pago">'+icon('dollar')+' Pago por '+esc(r.paid_by_name)+(r.paid_method?' via '+esc(r.paid_method):'')+'</div>' : '')+
       '<div class="re-actions">'+
         (podeAp ? '<button class="btn btn-primary re-btn-ap" data-reid="'+esc(r.id)+'">✓ Aprovar</button>' : '')+
-        (podeAp ? '<button class="btn btn-danger re-btn-rj" data-reid="'+esc(r.id)+'">❌ Recusar</button>' : '')+
-        (podeMP ? '<button class="btn btn-primary re-btn-mp" data-reid="'+esc(r.id)+'">💰 Marcar pago</button>' : '')+
+        (podeAp ? '<button class="btn btn-danger re-btn-rj" data-reid="'+esc(r.id)+'" aria-label="Recusar">'+icon('x')+'<span style="margin-left:4px">Recusar</span></button>' : '')+
+        (podeMP ? '<button class="btn btn-primary re-btn-mp" data-reid="'+esc(r.id)+'" aria-label="Marcar como pago">'+icon('dollar')+'<span style="margin-left:4px">Marcar pago</span></button>' : '')+
         (podeCancel ? '<button class="btn btn-ghost re-btn-cn" data-reid="'+esc(r.id)+'">Cancelar</button>' : '')+
       '</div>'+
     '</div>';
@@ -36477,11 +36523,11 @@ function reembolsosPageHTML(){
   var listaHTML = lista.length ? lista.map(cardHTML).join('') : '<div class="re-empty">Nada por aqui.</div>';
 
   var kpi = sub==='meus' && totalMeuMes>0 ?
-    '<div class="re-kpi">📊 Você já solicitou <b>'+reembFmtValor(totalMeuMes)+'</b> este mês</div>' : '';
+    '<div class="re-kpi">'+icon('trend')+'<span style="margin-left:6px">Você já solicitou</span> <b>'+reembFmtValor(totalMeuMes)+'</b> este mês</div>' : '';
 
   return '<div class="re-page">'+
     '<div class="re-head">'+
-      '<h2>💸 Reembolso de despesas</h2>'+
+      '<h2>Reembolso de despesas</h2>'+
       '<button class="btn btn-primary" id="reNew">+ Novo reembolso</button>'+
     '</div>'+
     tabs +
@@ -36745,15 +36791,15 @@ var FACIAL_LOG_STATE = { loaded:false, loading:false };
 
 var FACIAL_LOG_META = {
   SUCCESS:              { label:'Sucesso',            cor:'#16A34A', ic:'✓'  },
-  FACE_NOT_RECOGNIZED:  { label:'Rosto não reconhecido', cor:'#EF4444', ic:'❌' },
-  LOW_SIMILARITY:       { label:'Similaridade baixa', cor:'#F97316', ic:'📉' },
-  LIVENESS_FAILED:      { label:'Liveness falhou',    cor:'#DC2626', ic:'👁' },
+  FACE_NOT_RECOGNIZED:  { label:'Rosto não reconhecido', cor:'#EF4444', ic:'x' },
+  LOW_SIMILARITY:       { label:'Similaridade baixa', cor:'#F97316', ic:'warning' },
+  LIVENESS_FAILED:      { label:'Liveness falhou',    cor:'#DC2626', ic:'face' },
   TIMEOUT:              { label:'Tempo esgotado',     cor:'#78716C', ic:'⏱' },
-  NO_FACE:              { label:'Sem rosto detectado', cor:'#F59E0B', ic:'👤' },
-  CAMERA_ERROR:         { label:'Erro de câmera',     cor:'#7C3AED', ic:'📷' },
+  NO_FACE:              { label:'Sem rosto detectado', cor:'#F59E0B', ic:'user-round' },
+  CAMERA_ERROR:         { label:'Erro de câmera',     cor:'#7C3AED', ic:'image' },
   NO_FACE_TEMPLATE:     { label:'Sem cadastro facial', cor:'#64748B', ic:'∅' },
-  MODEL_ERROR:          { label:'Erro no modelo IA',  cor:'#7C3AED', ic:'🧠' },
-  RATE_LIMITED:         { label:'Muitas tentativas',  cor:'#78716C', ic:'🚦' }
+  MODEL_ERROR:          { label:'Erro no modelo IA',  cor:'#7C3AED', ic:'sparkle' },
+  RATE_LIMITED:         { label:'Muitas tentativas',  cor:'#78716C', ic:'warning' }
 };
 
 /* Coleta info de dispositivo resumida (sem PII pesada) */
@@ -36958,7 +37004,7 @@ function facialLogPageHTML(){
     var simCol = (typeof x.similarity === 'number')
       ? '<b style="color:'+(x.similarity >= 90 ? '#16A34A' : x.similarity >= 70 ? '#F59E0B' : '#EF4444')+'">'+x.similarity.toFixed(1)+'%</b>'
       : '—';
-    var live = x.liveness_passed ? '<span title="Passou liveness">👁 ✓</span>' : '—';
+    var live = x.liveness_passed ? '<span title="Passou liveness" aria-label="Liveness ok">'+icon('check')+'</span>' : '—';
     return '<tr>'+
       '<td class="fl-td-when"><b>'+esc(facialLogFmtQuando(x.attempted_at))+'</b></td>'+
       '<td>'+esc(x.actor_name||'—')+'<small style="display:block;color:var(--u-text3)">'+esc(x.actor_sector||x.origin||'')+'</small></td>'+
@@ -36977,8 +37023,8 @@ function facialLogPageHTML(){
 
   return '<div class="fl-page">'+
     '<div class="fl-head">'+
-      '<h2>🎭 Tentativas de reconhecimento</h2>'+
-      '<button class="btn btn-ghost" id="flReload">🔄 Recarregar</button>'+
+      '<h2>'+icon('face')+'<span style="margin-left:8px">Tentativas de reconhecimento</span></h2>'+
+      '<button class="btn btn-ghost" id="flReload" aria-label="Recarregar">'+icon('history')+'<span style="margin-left:4px">Recarregar</span></button>'+
     '</div>'+
     kpisHTML +
     filtrosHTML +
@@ -37133,18 +37179,18 @@ function pontoPageHTML(){
   var ehBalcao = (typeof souLoginBalcao === 'function' && souLoginBalcao());
   if (ehBalcao){
     botao = '<div class="pp-warn">'+
-      '🏪 <b>Este é o login da loja.</b><br>Pra bater ponto, use o widget "N pendentes" no topo da tela — cada colaborador da loja aparece lá com o rosto próprio dele.'+
+      icon('store')+'<span style="margin-left:4px"><b>Este é o login da loja.</b><br>Pra bater ponto, use o widget "N pendentes" no topo da tela — cada colaborador da loja aparece lá com o rosto próprio dele.</span>'+
     '</div>';
   } else if (!temFacial){
     botao = '<div class="pp-warn">'+
-      '⚠️ Você ainda não cadastrou o rosto. '+
-      (u.access_level === 'admin' ? 'Vá no seu perfil → 🎭 Cadastrar rosto.' : 'Peça pro gestor cadastrar.')+
+      icon('warning')+'<span style="margin-left:4px">Você ainda não cadastrou o rosto.</span> '+
+      (u.access_level === 'admin' ? 'Vá no seu perfil → Cadastrar rosto.' : 'Peça pro gestor cadastrar.')+
     '</div>';
   } else if (jaFechou){
-    botao = '<div class="pp-done">✓ Jornada de hoje encerrada</div>';
+    botao = '<div class="pp-done">'+icon('check')+'<span style="margin-left:4px">Jornada de hoje encerrada</span></div>';
   } else {
     botao = '<button class="pp-btn-grande" id="ppBater">'+
-      '<span class="pp-btn-ic">🎭</span>'+
+      '<span class="pp-btn-ic" aria-hidden="true">'+icon('face')+'</span>'+
       '<span class="pp-btn-txt">Reconhecer rosto</span>'+
       '<span class="pp-btn-sub">e bater '+esc(slot.label)+'</span>'+
     '</button>';
@@ -37321,11 +37367,11 @@ if (typeof globalThis !== 'undefined'){
    ============================================================ */
 
 var CADASTRO_POSES = [
-  { key:'frente',     label:'Rosto de frente',           dica:'Olhe direto pra câmera com expressão neutra',      emoji:'😐', angulo:'0°' },
-  { key:'esq_leve',   label:'Vire um pouquinho pra sua esquerda', dica:'Gire o rosto ~20° pra sua esquerda (não muito)', emoji:'👈', angulo:'-20°' },
-  { key:'dir_leve',   label:'Vire um pouquinho pra sua direita',  dica:'Gire o rosto ~20° pra sua direita (não muito)',  emoji:'👉', angulo:'+20°' },
-  { key:'cima',       label:'Levante o queixo levemente', dica:'Erga o queixo como se olhasse um pouco pra cima',  emoji:'👆', angulo:'top' },
-  { key:'sorriso',    label:'Agora sorria!',              dica:'Sorriso natural, mostra os dentes',                emoji:'😊', angulo:'smile' }
+  { key:'frente',     label:'Rosto de frente',           dica:'Olhe direto pra câmera com expressão neutra',      angulo:'0°' },
+  { key:'esq_leve',   label:'Vire um pouquinho pra sua esquerda', dica:'Gire o rosto ~20° pra sua esquerda (não muito)', angulo:'-20°' },
+  { key:'dir_leve',   label:'Vire um pouquinho pra sua direita',  dica:'Gire o rosto ~20° pra sua direita (não muito)',  angulo:'+20°' },
+  { key:'cima',       label:'Levante o queixo levemente', dica:'Erga o queixo como se olhasse um pouco pra cima',  angulo:'top' },
+  { key:'sorriso',    label:'Agora sorria!',              dica:'Sorriso natural, mostra os dentes',                angulo:'smile' }
 ];
 
 /* Estado do wizard de cadastro */
@@ -37375,13 +37421,13 @@ function _cadMPRenderHTML(){
 
   return '<div class="modal cmp-modal">'+
     '<div class="cmp-head">'+
-      '<div><b>🎭 Cadastro facial de '+esc(s.alvo.name||'colaborador')+'</b><i>Passo '+(s.passo+1)+' de '+total+' — vamos pegar '+total+' ângulos do seu rosto</i></div>'+
+      '<div><b>'+icon('face')+'<span style="margin-left:6px">Cadastro facial de '+esc(s.alvo.name||'colaborador')+'</span></b><i>Passo '+(s.passo+1)+' de '+total+' — vamos pegar '+total+' ângulos do seu rosto</i></div>'+
       '<button class="fx-close" id="cmpClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="cmp-dots">'+bolinhas+'</div>'+
     '<div class="cmp-body">'+
       '<div class="cmp-instr">'+
-        '<div class="cmp-emoji">'+pose.emoji+'</div>'+
+        ''+
         '<h3>'+esc(pose.label)+'</h3>'+
         '<p>'+esc(pose.dica)+'</p>'+
       '</div>'+
@@ -37393,7 +37439,7 @@ function _cadMPRenderHTML(){
     '</div>'+
     '<div class="cmp-foot">'+
       '<button class="btn btn-ghost" id="cmpVoltar" '+(s.passo===0?'disabled':'')+'>← Voltar</button>'+
-      '<button class="btn btn-primary cmp-btn-capturar" id="cmpCapturar" disabled>📸 Capturar esta pose</button>'+
+      '<button class="btn btn-primary cmp-btn-capturar" id="cmpCapturar" disabled aria-label="Capturar esta pose">'+icon('image')+'<span style="margin-left:4px">Capturar esta pose</span></button>'+
     '</div>'+
   '</div>';
 }
@@ -37411,18 +37457,18 @@ async function _cadMPIniciar(modal){
   ]);
 
   if (!modOk){
-    msg.innerHTML = '❌ <b>Falha ao carregar IA</b>';
+    msg.innerHTML = '<b>Falha ao carregar IA</b>';
     cam.classList.add('err');
     return;
   }
   if (!camOk){
-    msg.innerHTML = '❌ <b>Falha ao abrir câmera</b><br><small>Permita o uso da câmera nas configurações do navegador.</small>';
+    msg.innerHTML = '<b>Falha ao abrir câmera</b><br><small>Permita o uso da câmera nas configurações do navegador.</small>';
     cam.classList.add('err');
     return;
   }
 
   CADASTRO_MP_STATE.modelosCarregando = false;
-  msg.innerHTML = '📸 <b>Posicione o rosto</b> e clique em capturar';
+  msg.innerHTML = ''+icon('image')+' <b>Posicione o rosto</b> e clique em capturar';
   modal.querySelector('#cmpCapturar').disabled = false;
 }
 
@@ -37453,7 +37499,7 @@ async function _cadMPCapturarPose(modal, cb){
 
   btn.disabled = true;
   cam.classList.remove('err','ok');
-  msg.innerHTML = '🔍 <b>Analisando pose...</b>';
+  msg.innerHTML = ''+icon('search')+' <b>Analisando pose...</b>';
 
   // v205: coleta 2 amostras rápidas pra garantir descriptor estável
   var descriptors = [];
@@ -37481,7 +37527,7 @@ async function _cadMPCapturarPose(modal, cb){
 
   if (descriptors.length === 0){
     cam.classList.add('err');
-    msg.innerHTML = '❌ <b>Não consegui capturar bem.</b> Ajuste posição/iluminação e tente novamente.';
+    msg.innerHTML = '<b>Não consegui capturar bem.</b> Ajuste posição/iluminação e tente novamente.';
     btn.disabled = false;
     return;
   }
@@ -37533,7 +37579,7 @@ function _cadMPRefreshUI(modal, cb){
   var video = modal.querySelector('#cmpVideo');
   if (FACIAL_WEBCAM && FACIAL_WEBCAM.stream){
     video.srcObject = FACIAL_WEBCAM.stream;
-    modal.querySelector('#cmpMsg').innerHTML = '📸 <b>Posicione pra próxima pose</b> e clique em capturar';
+    modal.querySelector('#cmpMsg').innerHTML = ''+icon('image')+' <b>Posicione pra próxima pose</b> e clique em capturar';
     modal.querySelector('#cmpCapturar').disabled = false;
   } else {
     _cadMPIniciar(modal);
@@ -37545,7 +37591,7 @@ async function _cadMPFinalizar(modal, cb){
   var msg = modal.querySelector('#cmpMsg');
   var btn = modal.querySelector('#cmpCapturar');
   btn.disabled = true;
-  msg.innerHTML = '💾 <b>Salvando '+s.descriptors.length+' poses...</b>';
+  msg.innerHTML = ''+icon('save')+' <b>Salvando '+s.descriptors.length+' poses...</b>';
 
   try {
     // Upload foto principal (primeira pose)
@@ -37600,7 +37646,7 @@ async function _cadMPFinalizar(modal, cb){
     }, 1200);
   } catch(e){
     console.error('[cad multipose]', e);
-    msg.innerHTML = '❌ <b>Erro salvando:</b> '+(e.message||'desconhecido');
+    msg.innerHTML = '<b>Erro salvando:</b> '+(e.message||'desconhecido');
     btn.disabled = false;
   }
 }
@@ -37972,13 +38018,13 @@ function agendaGestorWidgetHoje(){
   var corpo;
   if (info){
     corpo = '<div class="agd-hoje-row">'+
-      '<div class="agd-hoje-ico" style="background:'+info.bg+';border-color:'+info.cor+'">🏪</div>'+
+      '<div class="agd-hoje-ico" style="background:'+info.bg+';border-color:'+info.cor+'" aria-hidden="true">'+icon('store')+'</div>'+
       '<div class="agd-hoje-txt">'+
         '<div class="agd-hoje-lbl">Hoje você está em</div>'+
         '<div class="agd-hoje-val" style="color:'+info.cor+'">'+esc(info.nome)+'</div>'+
         (info.obs ? '<div class="agd-hoje-obs">'+esc(info.obs)+'</div>' : '')+
       '</div>'+
-      '<button class="btn btn-ghost btn-sm agd-btn-cfg" onclick="openAgendaGestorConfigModal()" title="Editar agenda semanal">⚙️</button>'+
+      '<button class="btn btn-ghost btn-sm agd-btn-cfg" onclick="openAgendaGestorConfigModal()" title="Editar agenda semanal" aria-label="Editar agenda semanal">'+icon('gear')+'</button>'+
     '</div>'+
     '<div class="agd-semana">'+
       AGENDA_DIAS_CURTOS.map(function(d, i){
@@ -37994,7 +38040,7 @@ function agendaGestorWidgetHoje(){
     '</div>';
   } else {
     corpo = '<div class="agd-hoje-row">'+
-      '<div class="agd-hoje-ico" style="background:rgba(107,114,128,0.1);border-color:#9CA3AF">📅</div>'+
+      '<div class="agd-hoje-ico" style="background:rgba(107,114,128,0.1);border-color:#9CA3AF" aria-hidden="true">'+icon('cal')+'</div>'+
       '<div class="agd-hoje-txt">'+
         '<div class="agd-hoje-lbl">Agenda da semana</div>'+
         '<div class="agd-hoje-val" style="color:var(--u-text2)">Nenhum dia configurado</div>'+
@@ -38004,7 +38050,7 @@ function agendaGestorWidgetHoje(){
   }
 
   return '<div class="card agd-card">'+
-    '<div class="card-title" style="margin-bottom:10px">📅 Agenda da semana</div>'+
+    '<div class="card-title" style="margin-bottom:10px">'+icon('cal')+'<span style="margin-left:6px">Agenda da semana</span></div>'+
     corpo +
   '</div>';
 }
@@ -38052,14 +38098,14 @@ function _agdRenderConfigHTML(){
       '<input type="text" class="agd-inp-label" data-dow="'+dow+'" placeholder="Ou um rótulo custom (ex: Escritório)" value="'+esc(selLabel)+'">'+
       '<input type="color" class="agd-inp-cor" data-dow="'+dow+'" value="'+esc(selCor)+'" title="Cor">'+
       '<input type="text" class="agd-inp-obs" data-dow="'+dow+'" placeholder="Observação (opcional)" value="'+esc(selObs)+'">'+
-      '<button class="btn btn-ghost btn-sm agd-btn-clear" data-dow="'+dow+'" title="Limpar este dia">🗑</button>'+
+      '<button class="btn btn-ghost btn-sm agd-btn-clear" data-dow="'+dow+'" title="Limpar este dia" aria-label="Limpar este dia">'+icon('trash')+'</button>'+
     '</div>';
   }).join('');
 
   return '<div class="modal agd-modal">'+
     '<div class="agd-head">'+
       '<div>'+
-        '<h3>📅 Minha agenda semanal</h3>'+
+        '<h3>'+icon('cal')+'<span style="margin-left:6px">Minha agenda semanal</span></h3>'+
         '<p>Defina qual loja você visita em cada dia. O dia atual aparece destacado na home.</p>'+
       '</div>'+
       '<button class="fx-close" id="agdClose" title="Fechar">×</button>'+
@@ -38067,7 +38113,7 @@ function _agdRenderConfigHTML(){
     '<div class="agd-rows">'+linhas+'</div>'+
     '<div class="agd-foot">'+
       '<button class="btn btn-ghost" id="agdCancelar">Cancelar</button>'+
-      '<button class="btn btn-primary" id="agdSalvar">💾 Salvar agenda</button>'+
+      '<button class="btn btn-primary" id="agdSalvar" aria-label="Salvar agenda">'+icon('save')+'<span style="margin-left:4px">Salvar agenda</span></button>'+
     '</div>'+
   '</div>';
 }
@@ -38093,7 +38139,7 @@ function _agdBindConfig(modal){
   modal.querySelector('#agdSalvar').addEventListener('click', async function(){
     var btn = this;
     btn.disabled = true;
-    btn.textContent = '💾 Salvando...';
+    btn.textContent = 'Salvando...';
 
     var promises = [];
     for (var dow = 0; dow < 7; dow++){
@@ -38125,7 +38171,7 @@ function _agdBindConfig(modal){
       console.error('[agenda save]', e);
       if (typeof toast === 'function') toast('Erro ao salvar', 'error');
       btn.disabled = false;
-      btn.textContent = '💾 Salvar agenda';
+      btn.textContent = 'Salvar agenda';
     }
   });
 }
@@ -38158,12 +38204,12 @@ if (typeof globalThis !== 'undefined'){
 var GP_STATE = { loaded:false, loading:false, tab:'cal', mes:null, ano:null, selDate:null, newCat:'admin' };
 
 var GP_CATEGORIAS = [
-  { id:'visita',    label:'🏪 Visita',     cor:'#C8965A' },
-  { id:'reuniao',   label:'👥 Reunião',    cor:'#5BA3D4' },
-  { id:'avaliacao', label:'⭐ Avaliação',  cor:'#A87FD4' },
-  { id:'admin',     label:'📋 Admin',      cor:'#4CAF78' },
-  { id:'fornec',    label:'📦 Fornecedor', cor:'#D4B041' },
-  { id:'urgente',   label:'🔴 Urgente',    cor:'#E05555' }
+  { id:'visita',    label:'Visita',     icon:'store', cor:'#C8965A' },
+  { id:'reuniao',   label:'Reunião',    icon:'users-round', cor:'#5BA3D4' },
+  { id:'avaliacao', label:'Avaliação',  icon:'star-icon', cor:'#A87FD4' },
+  { id:'admin',     label:'Admin',      icon:'clipboard-list', cor:'#4CAF78' },
+  { id:'fornec',    label:'Fornecedor', icon:'archive', cor:'#D4B041' },
+  { id:'urgente',   label:'Urgente',    icon:'warning', cor:'#E05555' }
 ];
 
 var GP_MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -38306,7 +38352,7 @@ function gestorPlanoPageHTML(){
   return '<div class="gp-page">'+
     '<div class="gp-head">'+
       '<div>'+
-        '<h2>📋 Meu Plano de Ação</h2>'+
+        '<h2>'+icon('clipboard-list')+'<span style="margin-left:8px">Meu Plano de Ação</span></h2>'+
         '<p>Diário de bordo pessoal: suas tarefas, seus objetivos, seus wins.</p>'+
       '</div>'+
     '</div>'+
@@ -38414,7 +38460,7 @@ function _gpTabCalendarioHTML(){
     '</div>';
   } else {
     painelHTML = '<div class="gp-painel-dia gp-painel-empty">'+
-      '<p>👆 Clique em um dia pra ver ou adicionar tarefas.</p>'+
+      '<p>Clique em um dia pra ver ou adicionar tarefas.</p>'+
     '</div>';
   }
 
@@ -38567,7 +38613,7 @@ function _gpTabAcoesHTML(){
   return '<div class="gp-tab-content">'+
     navHTML +
     '<div class="gp-acoes-head">'+
-      '<p class="gp-acoes-hint">💡 Objetivos estratégicos pessoais pro mês. Ex: "Realizar avaliação de todos", "Visitar fornecedor X", "Treinar nova equipe".</p>'+
+      '<p class="gp-acoes-hint">'+icon('info')+'<span style="margin-left:6px">Objetivos estratégicos pessoais pro mês. Ex: "Realizar avaliação de todos", "Visitar fornecedor X", "Treinar nova equipe".</p>'+
     '</div>'+
     progHTML +
     '<div class="gp-acoes-lista">'+listaHTML+'</div>'+
@@ -38655,7 +38701,7 @@ function _gpTabResultadosHTML(){
     ? '<p class="gp-painel-vazio">Nenhum resultado registrado pra este mês. Celebre seus wins!</p>'
     : resultados.map(function(r){
       return '<div class="gp-result">'+
-        '<span class="gp-result-emoji">🏆</span>'+
+        '<span class="gp-result-emoji" aria-hidden="true">'+icon('trophy')+'</span>'+
         '<input type="text" class="gp-result-tit" value="'+esc(r.titulo)+'" data-edit-res="'+esc(r.id)+'">'+
         '<button class="gp-task-del" data-del-res="'+esc(r.id)+'" title="Excluir">×</button>'+
       '</div>';
@@ -38667,16 +38713,16 @@ function _gpTabResultadosHTML(){
 
   return '<div class="gp-tab-content">'+
     navHTML +
-    '<p class="gp-acoes-hint">🏆 Registre wins, metas batidas, aprendizados. Útil pra lembrar do mês depois.</p>'+
+    '<p class="gp-acoes-hint">'+icon('trophy')+'<span style="margin-left:6px">Registre wins, metas batidas, aprendizados. Útil pra lembrar do mês depois.</p>'+
     '<div class="gp-result-lista">'+listaHTML+'</div>'+
     '<div class="gp-add-row" style="margin-top:14px">'+
       '<input type="text" id="gpNewRes" placeholder="Ex: Meta de Itaquera batida em 112%">'+
       '<button class="btn btn-primary" id="gpAddRes">+ Adicionar</button>'+
     '</div>'+
     '<div class="gp-obs-box">'+
-      '<label>📝 Observações / aprendizados do mês</label>'+
+      '<label>'+icon('pencil')+'<span style="margin-left:6px">Observações / aprendizados do mês</span></label>'+
       '<textarea id="gpResObs" rows="4" placeholder="Pontos de atenção, lições aprendidas, planos pro mês que vem...">'+esc(obsTxt)+'</textarea>'+
-      '<button class="btn btn-ghost" id="gpResObsSave" style="margin-top:8px">💾 Salvar observação</button>'+
+      '<button class="btn btn-ghost" id="gpResObsSave" style="margin-top:8px" aria-label="Salvar observação">'+icon('save')+'<span style="margin-left:4px">Salvar observação</span></button>'+
     '</div>'+
   '</div>';
 }
@@ -39037,11 +39083,11 @@ function onbStep1(){
   return '<div class="onb-field-row">'+
       '<label class="onb-radio'+(s.tipo==='user'?' sel':'')+'">'+
         '<input type="radio" name="onbTipo" id="tipoUser"'+(s.tipo==='user'?' checked':'')+'>'+
-        '<div><b>👤 Com login</b><i>Acessa o sistema com email e senha (recomendado)</i></div>'+
+        '<div><b>'+icon('user-round')+'<span style="margin-left:6px">Com login</span></b><i>Acessa o sistema com email e senha (recomendado)</i></div>'+
       '</label>'+
       '<label class="onb-radio'+(s.tipo==='member'?' sel':'')+'">'+
         '<input type="radio" name="onbTipo" id="tipoMember"'+(s.tipo==='member'?' checked':'')+'>'+
-        '<div><b>🏬 Só bate ponto</b><i>Vendedor de loja que só usa o balcão/quiosque</i></div>'+
+        '<div><b>'+icon('store')+'<span style="margin-left:4px">Só bate ponto</span></b><i>Vendedor de loja que só usa o balcão/quiosque</i></div>'+
       '</label>'+
     '</div>'+
     '<div class="onb-field">'+
@@ -39065,11 +39111,11 @@ function onbStep1(){
 function onbStep2(){
   var s = ONB_STATE;
   var setores = [
-    {v:'marketing', l:'📢 Marketing'},
-    {v:'vendas', l:'🎯 Vendas'},
-    {v:'lojas', l:'🏬 Lojas'},
-    {v:'financeiro', l:'💰 Financeiro'},
-    {v:'gestao', l:'⚙️ Gestão'}
+    {v:'marketing', l:'Marketing'},
+    {v:'vendas', l:'Vendas'},
+    {v:'lojas', l:'Lojas'},
+    {v:'financeiro', l:'Financeiro'},
+    {v:'gestao', l:'Gestão'}
   ];
   var seOpts = setores.map(function(x){
     return '<option value="'+x.v+'"'+(x.v===s.sector?' selected':'')+'>'+x.l+'</option>';
@@ -39107,17 +39153,17 @@ function onbStep3(){
   if (s.tipo === 'member'){
     // Member não tem acesso — pula step
     return '<div class="onb-info">'+
-      '<div class="onb-info-icon">ℹ️</div>'+
+      '<div class="onb-info-icon" aria-hidden="true">'+icon('info')+'</div>'+
       '<div><b>Membro de loja não tem login</b>'+
       '<p>Esse colaborador só usa o balcão/quiosque pra bater ponto. Não precisa de acesso ao sistema. Clique em <b>Próximo</b> pra seguir.</p></div>'+
     '</div>';
   }
   var niveis = [
-    {v:'viewer', l:'👁️ Viewer', d:'Só visualiza — não edita nada'},
-    {v:'colaborador', l:'👤 Colaborador', d:'Executa tarefas e bate ponto (padrão)'},
-    {v:'supervisor', l:'📊 Supervisor', d:'+ Redistribui tarefas e vê indicadores'},
-    {v:'gestor', l:'🎯 Gestor', d:'+ Gerencia setor inteiro'},
-    {v:'admin', l:'⚙️ Admin', d:'+ Configura o sistema todo (cuidado)'}
+    {v:'viewer', l:'Viewer', d:'Só visualiza — não edita nada'},
+    {v:'colaborador', l:'Colaborador', d:'Executa tarefas e bate ponto (padrão)'},
+    {v:'supervisor', l:'Supervisor', d:'+ Redistribui tarefas e vê indicadores'},
+    {v:'gestor', l:'Gestor', d:'+ Gerencia setor inteiro'},
+    {v:'admin', l:'Admin', d:'+ Configura o sistema todo (cuidado)'}
   ];
   var opts = niveis.map(function(n){
     return '<option value="'+n.v+'"'+(n.v===s.accessLevel?' selected':'')+'>'+n.l+' — '+n.d+'</option>';
@@ -39130,8 +39176,8 @@ function onbStep3(){
       '<label>Senha temporária</label>'+
       '<div class="onb-pass-wrap">'+
         '<code class="onb-pass">'+esc(s.tempPass)+'</code>'+
-        '<button class="btn btn-ghost" id="onbCopyPass" title="Copiar">📋</button>'+
-        '<button class="btn btn-ghost" id="onbRePass" title="Gerar outra">🔄</button>'+
+        '<button class="btn btn-ghost" id="onbCopyPass" title="Copiar" aria-label="Copiar senha">'+icon('copy')+'</button>'+
+        '<button class="btn btn-ghost" id="onbRePass" title="Gerar outra" aria-label="Gerar outra">'+icon('history')+'</button>'+
       '</div>'+
       '<small class="onb-hint">Anote ou copie. O colaborador vai usar essa senha no primeiro login.</small>'+
     '</div>';
@@ -39189,24 +39235,24 @@ function onbStep5(){
   // Se já capturou, mostrar preview + opção de refazer
   if (s.faceData){
     return '<div class="onb-face-done">'+
-      '<div class="onb-face-icon-ok">✅</div>'+
+      '<div class="onb-face-icon-ok" aria-hidden="true">'+icon('check')+'</div>'+
       '<h3 class="onb-face-h">Rosto de '+esc(nome)+' capturado!</h3>'+
       '<p class="onb-face-p">Vamos salvar junto com o cadastro. Depois disso, '+esc(nome)+' já pode bater ponto pela câmera.</p>'+
-      '<button class="btn btn-ghost" id="onbFaceRedo">🔄 Refazer captura</button>'+
+      '<button class="btn btn-ghost" id="onbFaceRedo" aria-label="Refazer captura">'+icon('history')+'<span style="margin-left:4px">Refazer captura</span></button>'+
     '</div>';
   }
   // Ainda não capturou — convite
   return '<div class="onb-face-invite">'+
-    '<div class="onb-face-icon">🎭</div>'+
+    '<div class="onb-face-icon" aria-hidden="true">'+icon('face')+'</div>'+
     '<h3 class="onb-face-h">Cadastrar o rosto agora?</h3>'+
     '<p class="onb-face-p">Com o rosto cadastrado, '+esc(nome)+' bate ponto pela câmera do balcão, quiosque ou próprio app. Sem cadastro, '+esc(nome)+' <b>não vai conseguir bater ponto</b> (ficará bloqueado até cadastrar).</p>'+
     '<div class="onb-face-benefits">'+
-      '<div>⚡ Bate ponto em segundos</div>'+
-      '<div>🔒 Ninguém bate por '+esc(nome)+'</div>'+
-      '<div>📸 Foto do momento fica salva</div>'+
+      '<div>'+icon('zap')+'<span style="margin-left:4px">Bate ponto em segundos</span></div>'+
+      '<div>'+icon('lock')+'<span style="margin-left:4px">Ninguém bate por '+esc(nome)+'</span></div>'+
+      '<div>'+icon('image')+'<span style="margin-left:4px">Foto do momento fica salva</span></div>'+
     '</div>'+
-    '<button class="btn btn-primary onb-face-cta" id="onbFaceCap">🎭 Abrir câmera e cadastrar</button>'+
-    '<p class="onb-face-hint">Se pular agora, '+esc(nome)+' verá o convite pra cadastrar no primeiro login. Ou você pode cadastrar depois em Equipe → '+esc(nome)+' → 🎭 Facial.</p>'+
+    '<button class="btn btn-primary onb-face-cta" id="onbFaceCap" aria-label="Abrir câmera e cadastrar">'+icon('face')+'<span style="margin-left:6px">Abrir câmera e cadastrar</span></button>'+
+    '<p class="onb-face-hint">Se pular agora, '+esc(nome)+' verá o convite pra cadastrar no primeiro login. Ou você pode cadastrar depois em Equipe → '+esc(nome)+' → Facial.</p>'+
   '</div>';
 }
 
@@ -39215,7 +39261,7 @@ function onbStepDone(){
   var tipo = s.tipo==='user' ? 'Usuário com login' : 'Membro de loja';
   var setoresMap = {marketing:'Marketing',vendas:'Vendas',lojas:'Lojas',financeiro:'Financeiro',gestao:'Gestão'};
   return '<div class="onb-done">'+
-    '<div class="onb-done-icon">🎉</div>'+
+    '<div class="onb-done-icon" aria-hidden="true">'+icon('party')+'</div>'+
     '<h3 class="onb-done-h">Colaborador criado com sucesso!</h3>'+
     '<div class="onb-done-card">'+
       '<div class="onb-done-row"><span>Nome</span><b>'+esc(s.name)+'</b></div>'+
@@ -39225,9 +39271,9 @@ function onbStepDone(){
       (s.tipo==='user' ? '<div class="onb-done-row"><span>Email</span><b>'+esc(s.email)+'</b></div>' : '')+
       (s.tipo==='user' ? '<div class="onb-done-row"><span>Senha inicial</span><code>'+esc(s.tempPass)+'</code></div>' : '')+
     '</div>'+
-    (s.tipo==='user' ? '<div class="onb-done-hint">⚠️ Anote a senha antes de fechar — ela não será mostrada novamente.</div>' : '')+
-    (s.shiftTemplate !== 'nenhum' ? '<div class="onb-done-hint">✓ Escala aplicada nos dias úteis. Ajustes finos em Equipe → '+esc(s.name)+' → 🕐 Escala.</div>' : '')+
-    (s.faceData ? '<div class="onb-done-hint">✓ Rosto cadastrado — já pode bater ponto pela câmera.</div>' : '<div class="onb-done-hint">⚠️ Sem facial cadastrado. Colaborador ficará bloqueado até cadastrar (no primeiro login ou em Equipe → '+esc(s.name)+' → 🎭 Facial).</div>')+
+    (s.tipo==='user' ? '<div class="onb-done-hint">'+icon('warning')+'<span style="margin-left:4px">Anote a senha antes de fechar — ela não será mostrada novamente.</div>' : '')+
+    (s.shiftTemplate !== 'nenhum' ? '<div class="onb-done-hint">✓ Escala aplicada nos dias úteis. Ajustes finos em Equipe → '+esc(s.name)+' → Escala.</span></div>' : '')+
+    (s.faceData ? '<div class="onb-done-hint">✓ Rosto cadastrado — já pode bater ponto pela câmera.</div>' : '<div class="onb-done-hint">'+icon('warning')+'<span style="margin-left:4px">Sem facial cadastrado. Colaborador ficará bloqueado até cadastrar (no primeiro login ou em Equipe → '+esc(s.name)+' → Facial).</div>')+
   '</div>';
 }
 
@@ -39399,7 +39445,7 @@ function openFacialCadastroModalLegacy(alvo){
 
   modal.innerHTML = '<div class="modal fcm-modal">'+
     '<div class="fcm-head">'+
-      '<div><b>🎭 '+esc(titulo)+'</b><i>'+subtitulo+'</i></div>'+
+      '<div><b>'+icon('face')+'<span style="margin-left:6px">'+esc(titulo)+'</span></b><i>'+subtitulo+'</i></div>'+
       '<button class="fx-close" id="fcmClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="fcm-body">'+
@@ -39412,8 +39458,8 @@ function openFacialCadastroModalLegacy(alvo){
       '<div class="fcm-status" id="fcmStatus"></div>'+
     '</div>'+
     '<div class="fcm-foot" id="fcmFoot">'+
-      '<button class="btn btn-ghost" id="fcmAbrir">📷 Abrir câmera</button>'+
-      '<button class="btn btn-primary" id="fcmCapturar" disabled>✨ Capturar Rosto</button>'+
+      '<button class="btn btn-ghost" id="fcmAbrir" aria-label="Abrir câmera">'+icon('image')+'<span style="margin-left:4px">Abrir câmera</span></button>'+
+      '<button class="btn btn-primary" id="fcmCapturar" disabled aria-label="Capturar Rosto">'+icon('face')+'<span style="margin-left:6px">Capturar Rosto</span></button>'+
     '</div>'+
   '</div>';
 
@@ -39466,7 +39512,7 @@ function openFacialCadastroModalLegacy(alvo){
 
     msg.textContent = 'Alinhe o rosto no oval e clique em Capturar';
     btnCap.disabled = false;
-    btnAbrir.textContent = '🔄 Reiniciar';
+    btnAbrir.textContent = 'Reiniciar';
     btnAbrir.disabled = false;
   });
 
@@ -39478,7 +39524,7 @@ function openFacialCadastroModalLegacy(alvo){
 
     var det = await facialDetectar(video);
     if (!det){
-      msg.textContent = '❌ Nenhum rosto detectado. Aproxime mais e melhore a iluminação.';
+      msg.textContent = 'Nenhum rosto detectado. Aproxime mais e melhore a iluminação.';
       cam.classList.add('err');
       btnCap.disabled = false;
       return;
@@ -39499,7 +39545,7 @@ function openFacialCadastroModalLegacy(alvo){
     // Troca botões
     foot.innerHTML =
       '<button class="btn btn-ghost" id="fcmRefazer">← Refazer</button>'+
-      '<button class="btn btn-primary" id="fcmSalvar">✅ Salvar Cadastro</button>';
+      '<button class="btn btn-primary" id="fcmSalvar" aria-label="Salvar cadastro">'+icon('check')+'<span style="margin-left:4px">Salvar Cadastro</span></button>';
 
     modal.querySelector('#fcmRefazer').addEventListener('click', function(){
       canvas.style.display = 'none';
@@ -39508,8 +39554,8 @@ function openFacialCadastroModalLegacy(alvo){
       msg.textContent = 'Alinhe o rosto e clique em Capturar';
       descAtual = null; blobAtual = null;
       foot.innerHTML =
-        '<button class="btn btn-ghost" id="fcmAbrir2">🔄 Reiniciar</button>'+
-        '<button class="btn btn-primary" id="fcmCapturar2">✨ Capturar Rosto</button>';
+        '<button class="btn btn-ghost" id="fcmAbrir2" aria-label="Reiniciar">'+icon('history')+'<span style="margin-left:4px">Reiniciar</span></button>'+
+        '<button class="btn btn-primary" id="fcmCapturar2" aria-label="Capturar Rosto">'+icon('face')+'<span style="margin-left:6px">Capturar Rosto</span></button>';
       // Rebind
       modal.querySelector('#fcmAbrir2').addEventListener('click', function(){ btnAbrir.click(); });
       var newCap = modal.querySelector('#fcmCapturar2');
@@ -39571,7 +39617,7 @@ function openFacialCadastroModalLegacy(alvo){
       close();
     } catch(e){
       console.error(e);
-      status.textContent = '❌ Erro: ' + (e.message||'desconhecido');
+      status.textContent = 'Erro: ' + (e.message||'desconhecido');
       modal.querySelector('#fcmSalvar').disabled = false;
       modal.querySelector('#fcmRefazer').disabled = false;
     }
@@ -39635,7 +39681,7 @@ function openFacialVerifModal(membro, cb){
   var titulo = 'Verificar Rosto · ' + (membro.name || '');
   modal.innerHTML = '<div class="modal fvm-modal">'+
     '<div class="fvm-head">'+
-      '<div><b>🎭 '+esc(titulo)+'</b><i>Olhe pra câmera e clique em Verificar</i></div>'+
+      '<div><b>'+icon('face')+'<span style="margin-left:6px">'+esc(titulo)+'</span></b><i>Olhe pra câmera e clique em Verificar</i></div>'+
       '<button class="fx-close" id="fvmClose" title="Fechar">×</button>'+
     '</div>'+
     '<div class="fvm-body">'+
@@ -39647,7 +39693,7 @@ function openFacialVerifModal(membro, cb){
       '<div class="fvm-info" id="fvmInfo">Mínimo: <b>'+FACIAL_CFG.SIMILARIDADE_MIN+'%</b> de similaridade</div>'+
     '</div>'+
     '<div class="fvm-foot" id="fvmFoot">'+
-      '<button class="btn btn-ghost" id="fvmAbrir">📷 Abrir câmera</button>'+
+      '<button class="btn btn-ghost" id="fvmAbrir" aria-label="Abrir câmera">'+icon('image')+'<span style="margin-left:4px">Abrir câmera</span></button>'+
       '<button class="btn btn-primary" id="fvmVerif" disabled>✓ Verificar & Bater</button>'+
     '</div>'+
   '</div>';
@@ -39686,11 +39732,11 @@ function openFacialVerifModal(membro, cb){
       return;
     }
     if (!camOk){ msg.textContent = 'Falha ao abrir câmera'; cam.classList.add('err'); btnAbrir.disabled = false; return; }
-    btnAbrir.textContent = '🔄 Reiniciar';
+    btnAbrir.textContent = 'Reiniciar';
     btnAbrir.disabled = false;
     // v200: anti-spoofing por piscada
     if (typeof FACIAL_CFG !== 'undefined' && FACIAL_CFG.ANTISPOOFING_PISCAR && typeof facialLoopPiscadas === 'function'){
-      msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+      msg.innerHTML = ''+icon('face')+' <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
       cam.classList.add('piscando');
       var piscOK = false;
       var loopRef = facialLoopPiscadas(video,
@@ -39698,22 +39744,22 @@ function openFacialVerifModal(membro, cb){
           // v203: n=-1 SEM ROSTO, n=-2 HINT piscar, n=-3 ROSTO VOLTOU
           if (n === -1){
             cam.classList.add('sem-rosto');
-            msg.innerHTML = '👤 <b>Não estou vendo seu rosto!</b> Centralize dentro do círculo tracejado';
+            msg.innerHTML = ''+icon('user-round')+' <b>Não estou vendo seu rosto!</b> Centralize dentro do círculo tracejado';
             return;
           }
           if (n === -3){
             cam.classList.remove('sem-rosto');
-            msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+            msg.innerHTML = ''+icon('face')+' <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
             return;
           }
           if (n === -2){
-            msg.innerHTML = '👁 <b>Feche os olhos por 1 segundo</b> e abra devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+            msg.innerHTML = ''+icon('face')+' <b>Feche os olhos por 1 segundo</b> e abra devagar — <span class="fvm-piscar-ct">0 / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
             return;
           }
           var ct = modal.querySelector('.fvm-piscar-ct');
           if (ct){ ct.textContent = n + ' / ' + FACIAL_CFG.PISCAR_QTD_MIN; ct.classList.add('bump'); setTimeout(function(){ ct.classList.remove('bump'); }, 300); }
           if (n === 1 && !modal.querySelector('.fvm-piscar-ct')){
-            msg.innerHTML = '👁 <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">'+n+' / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
+            msg.innerHTML = ''+icon('face')+' <b>Pisque '+FACIAL_CFG.PISCAR_QTD_MIN+' vezes</b> devagar — <span class="fvm-piscar-ct">'+n+' / '+FACIAL_CFG.PISCAR_QTD_MIN+'</span>';
           }
         },
         function(ok, motivo){
@@ -39729,10 +39775,10 @@ function openFacialVerifModal(membro, cb){
               msg.innerHTML = '⏱ <b>Tempo esgotado.</b> Reinicie e tente novamente.';
               if (typeof facialLogRegistrar==='function'){ var _i2 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i2,{result:'TIMEOUT',reason:'Piscar timeout — não detectou piscadas suficientes',liveness_passed:false,origin:'topbar'})); }
             } else if (motivo === 'no_face_at_all'){
-              msg.innerHTML = '📷 <b>Sua câmera não conseguiu ver seu rosto.</b><br>Ajuste a posição da câmera (aponte pro rosto) e clique Reiniciar.';
+              msg.innerHTML = ''+icon('image')+' <b>Sua câmera não conseguiu ver seu rosto.</b><br>Ajuste a posição da câmera (aponte pro rosto) e clique Reiniciar.';
               if (typeof facialLogRegistrar==='function'){ var _i2b = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i2b,{result:'NO_FACE',reason:'Rosto nunca detectado durante o liveness (câmera mal posicionada)',liveness_passed:false,origin:'topbar'})); }
             } else {
-              msg.innerHTML = '❌ Verificação de vivacidade falhou. Reinicie.';
+              msg.innerHTML = 'Verificação de vivacidade falhou. Reinicie.';
               if (typeof facialLogRegistrar==='function'){ var _i3 = (typeof facialLogAlvoInfo==='function')?facialLogAlvoInfo(membro):{}; facialLogRegistrar(Object.assign(_i3,{result:'LIVENESS_FAILED',reason:'Liveness (piscar) falhou: '+(motivo||'motivo desconhecido'),liveness_passed:false,origin:'topbar'})); }
             }
           }
@@ -39741,7 +39787,7 @@ function openFacialVerifModal(membro, cb){
       // Guardar referência pra cancelar em close
       modal._piscarLoop = loopRef;
     } else {
-      msg.innerHTML = '📸 <b>Centralize seu rosto no oval</b> e clique em <b>Verificar & Bater</b>';
+      msg.innerHTML = ''+icon('image')+' <b>Centralize seu rosto no oval</b> e clique em <b>Verificar & Bater</b>';
       btnVerif.disabled = false;
     }
   });
@@ -39759,7 +39805,7 @@ function openFacialVerifModal(membro, cb){
 
     // v204: coleta N amostras espaçadas pra evitar aprovação por sorte
     for (var i = 0; i < QTD; i++){
-      msg.innerHTML = '🔍 Analisando... <b>'+(i+1)+' / '+QTD+'</b>';
+      msg.innerHTML = ''+icon('search')+' Analisando... <b>'+(i+1)+' / '+QTD+'</b>';
       var det = await facialDetectar(video);
       if (!det){
         errosQualidade.push('sem rosto na amostra '+(i+1));
@@ -39794,7 +39840,7 @@ function openFacialVerifModal(membro, cb){
 
     // Nenhuma amostra válida
     if (amostras.length === 0){
-      msg.innerHTML = '❌ <b>Não consegui te ver.</b> Enquadre bem o rosto e tente de novo.';
+      msg.innerHTML = '<b>Não consegui te ver.</b> Enquadre bem o rosto e tente de novo.';
       cam.classList.add('err');
       btnVerif.disabled = false;
       if (typeof facialLogRegistrar==='function'){
@@ -39806,7 +39852,7 @@ function openFacialVerifModal(membro, cb){
 
     // Amostras insuficientes (menos que metade)
     if (amostras.length < Math.ceil(QTD/2)){
-      msg.innerHTML = '❌ <b>Detecção instável.</b> '+errosQualidade[0]+'. Tente novamente.';
+      msg.innerHTML = '<b>Detecção instável.</b> '+errosQualidade[0]+'. Tente novamente.';
       cam.classList.add('err');
       btnVerif.disabled = false;
       if (typeof facialLogRegistrar==='function'){
@@ -39828,7 +39874,7 @@ function openFacialVerifModal(membro, cb){
 
     // Regra rígida: MÉDIA >= SIMILARIDADE_MIN E cada amostra >= (SIMILARIDADE_MIN - TOL)
     if (media < FACIAL_CFG.SIMILARIDADE_MIN){
-      msg.innerHTML = '❌ Não é <b>'+membro.name+'</b> (média '+media.toFixed(1)+'% < '+FACIAL_CFG.SIMILARIDADE_MIN+'%)';
+      msg.innerHTML = 'Não é <b>'+membro.name+'</b> (média '+media.toFixed(1)+'% < '+FACIAL_CFG.SIMILARIDADE_MIN+'%)';
       cam.classList.add('err');
       btnVerif.disabled = false;
       if (typeof facialLogRegistrar==='function'){
@@ -39838,7 +39884,7 @@ function openFacialVerifModal(membro, cb){
       return;
     }
     if (min < minAceitavel){
-      msg.innerHTML = '❌ Detecção inconsistente (uma amostra em '+min.toFixed(1)+'% — mín aceitável '+minAceitavel+'%)';
+      msg.innerHTML = 'Detecção inconsistente (uma amostra em '+min.toFixed(1)+'% — mín aceitável '+minAceitavel+'%)';
       cam.classList.add('err');
       btnVerif.disabled = false;
       if (typeof facialLogRegistrar==='function'){
@@ -39862,7 +39908,7 @@ function openFacialVerifModal(membro, cb){
       close();
     } catch(e){
       console.error(e);
-      msg.textContent = '❌ Erro salvando foto';
+      msg.textContent = 'Erro salvando foto';
       btnVerif.disabled = false;
     }
   });
@@ -40071,10 +40117,10 @@ function topbarPontoWidgetHTML(){
   } else {
     estado = slot.key;
     label = slot.btn;
-    if (slot.key === 'entrada'){ cor = '#3B6FF7'; ico = '☀'; }
-    else if (slot.key === 'saida_almoco'){ cor = '#F59E0B'; ico = '🍽'; }
+    if (slot.key === 'entrada'){ cor = '#3B6FF7'; ico = ''; }
+    else if (slot.key === 'saida_almoco'){ cor = '#F59E0B'; ico = ''; }
     else if (slot.key === 'volta_almoco'){ cor = '#F59E0B'; ico = '↩'; }
-    else { cor = '#8B5CF6'; ico = '🌙'; }
+    else { cor = '#8B5CF6'; ico = ''; }
   }
   var pills = PONTO_SLOTS.map(function(s, i){
     var ok = ci && !!ci[s.key];
@@ -40117,8 +40163,8 @@ function topbarBalcaoWidgetHTML(){
     else pendentes++;
   });
   var cor, label, ico;
-  if (pendentes > 0){ cor = '#3B6FF7'; ico = '🏬'; label = pendentes+' pendente'+(pendentes>1?'s':''); }
-  else if (emServico > 0){ cor = '#F59E0B'; ico = '🏬'; label = emServico+' em serviço'; }
+  if (pendentes > 0){ cor = '#3B6FF7'; ico = ''; label = pendentes+' pendente'+(pendentes>1?'s':''); }
+  else if (emServico > 0){ cor = '#F59E0B'; ico = ''; label = emServico+' em serviço'; }
   else { cor = '#16A34A'; ico = '✓'; label = 'Todos batidos'; }
   var pills = mems.slice(0,4).map(function(m){
     var ci = balcaoCheckinMembro(m.id);
@@ -40158,7 +40204,7 @@ function topbarBalcaoPopoverAbrir(anchorBtn){
     }
     var fn = (m.name||'').split(' ')[0];
     // v182: indicador 🎭 se tem facial
-    var facTag = facialTemCadastro(m) ? '<span class="tbb-fac" title="Exige verificação facial">🎭</span>' : '';
+    var facTag = facialTemCadastro(m) ? '<span class="tbb-fac" title="Exige verificação facial" aria-label="Exige verificação facial">'+icon('face')+'</span>' : '';
     return '<div class="tbb-linha">'+
       '<span class="ar-av tbb-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name||''))+'</span>'+
       '<div class="tbb-mid">'+
@@ -40173,7 +40219,7 @@ function topbarBalcaoPopoverAbrir(anchorBtn){
   pop.id = 'tbpPop';
   pop.className = 'tbp-pop tbp-pop-balcao';
   pop.innerHTML =
-    '<div class="tbp-pop-h">🏬 Ponto da equipe · '+esc(lojaNome)+'</div>'+
+    '<div class="tbp-pop-h">'+icon('store')+'<span style="margin-left:4px">Ponto da equipe · '+esc(lojaNome)+'</span></div>'+
     '<div class="tbb-hint">Cada pessoa bate seu ponto separado. Clique no botão de quem tá batendo.</div>'+
     '<div class="tbb-lista">'+linhas+'</div>'+
     '<a class="tbp-pop-link" href="#" id="tbpVerEspelho">Ver espelho completo da loja →</a>';
@@ -40258,7 +40304,7 @@ function topbarPontoPopoverAbrir(anchorBtn){
   var escalaBox = '';
   if (meuShift){
     if (meuShift.folga){
-      escalaBox = '<div class="tbp-escala tbp-escala-folga">🌴 Hoje é sua folga</div>';
+      escalaBox = '<div class="tbp-escala tbp-escala-folga">Hoje é sua folga</div>';
     } else {
       var partes = [];
       if (meuShift.expected_entrada) partes.push(meuShift.expected_entrada.slice(0,5));
@@ -40266,7 +40312,7 @@ function topbarPontoPopoverAbrir(anchorBtn){
       if (meuShift.expected_volta_almoco) partes.push(meuShift.expected_volta_almoco.slice(0,5));
       if (meuShift.expected_saida) partes.push(meuShift.expected_saida.slice(0,5));
       if (partes.length){
-        escalaBox = '<div class="tbp-escala">📋 Escala hoje: <b>'+partes.join(' · ')+'</b></div>';
+        escalaBox = '<div class="tbp-escala">'+icon('clipboard-list')+'<span style="margin-left:4px">Escala hoje:</span> <b>'+partes.join(' · ')+'</b></div>';
       }
     }
   }
@@ -41704,7 +41750,7 @@ function loadAtividade(){
 function perfilDesempenhoHTML(){
   var mids=meusMemberIds();
   var avals=ST.avaliacoes.filter(function(a){ return a.tipo==='membro' && mids.indexOf(String(a.member_id))!==-1; }).sort(function(a,b){return (b.data_avaliacao||'').localeCompare(a.data_avaliacao||'');});
-  var avalHTML = avals.length ? avals.slice(0,8).map(function(a){ var nota=Number(a.nota_final)||0; var stars=''; for(var i=1;i<=5;i++) stars+= '<span style="color:'+(i<=Math.round(nota)?'#F59E0B':'var(--u-border2)')+'">★</span>'; return '<div class="me-aval"><div class="me-aval-h"><b>'+(a.periodo_label?esc(a.periodo_label):fmtDate(a.data_avaliacao))+'</b><span class="me-aval-nota">'+stars+' '+nota.toFixed(1)+'</span></div>'+(a.observacao?'<div class="me-aval-obs">'+esc(a.observacao)+'</div>':'')+'</div>'; }).join('') : '<div class="col-empty">Você ainda não tem avaliações.</div>';
+  var avalHTML = avals.length ? avals.slice(0,8).map(function(a){ var nota=Number(a.nota_final)||0; var stars=''; for(var i=1;i<=5;i++) stars+= '<span style="color:'+(i<=Math.round(nota)?'#F59E0B':'var(--u-border2)')+'" aria-hidden="true">'+icon('star-icon')+'</span>'; return '<div class="me-aval"><div class="me-aval-h"><b>'+(a.periodo_label?esc(a.periodo_label):fmtDate(a.data_avaliacao))+'</b><span class="me-aval-nota">'+stars+' '+nota.toFixed(1)+'</span></div>'+(a.observacao?'<div class="me-aval-obs">'+esc(a.observacao)+'</div>':'')+'</div>'; }).join('') : '<div class="col-empty">Você ainda não tem avaliações.</div>';
   var coms=[];
   (ST.comissoes||[]).forEach(function(c){ (c.rateio||[]).forEach(function(r){ if(mids.indexOf(String(r.member_id))!==-1) coms.push({ label:(c.periodo_label||fmtDate(c.periodo_fim||c.periodo_inicio)), valor:r.valor, loja:storeName(c.store_unit_id) }); }); });
   var comHTML = coms.length ? coms.slice(0,8).map(function(c){ return '<div class="me-com"><span class="me-com-l">'+esc(c.label||'Período')+(c.loja?' · '+esc(c.loja):'')+'</span><span class="me-com-v">'+fmtBRL(c.valor)+'</span></div>'; }).join('') : '<div class="col-empty">Suas comissões aparecerão aqui.</div>';
@@ -41717,7 +41763,7 @@ function perfilDesempenhoHTML(){
     if(latest.pontos_fortes) fb+='<div class="asum-block fortes"><h5>Pontos fortes</h5><p>'+esc(latest.pontos_fortes)+'</p></div>';
     if(latest.pontos_desenvolver) fb+='<div class="asum-block desenv"><h5>A desenvolver</h5><p>'+esc(latest.pontos_desenvolver)+'</p></div>';
     if(latest.plano_acao) fb+='<div class="asum-block plano"><h5>Plano de ação</h5><p>'+esc(latest.plano_acao)+'</p></div>';
-    if(latest.feedback_ia) fb+='<div class="asum-block fb-ia"><h5>🤖 Feedback automático</h5><div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(latest.feedback_ia):esc(latest.feedback_ia))+'</div></div>';
+    if(latest.feedback_ia) fb+='<div class="asum-block fb-ia"><h5>'+icon('sparkle')+'<span style="margin-left:6px">Feedback automático</span></h5><div class="fb-ia-body">'+(typeof feedbackIAFormatarHTML==='function'?feedbackIAFormatarHTML(latest.feedback_ia):esc(latest.feedback_ia))+'</div></div>';
     diagCard='<div class="profile-card"><h3 class="profile-sec-h">Meu diagnóstico · '+(latest.periodo_label?esc(latest.periodo_label):fmtDate(latest.data_avaliacao))+'</h3>'+
       '<div class="aval-summary"><div class="asum-score" style="border-color:'+ld.color+'"><span class="asum-num" style="color:'+ld.color+'">'+lnota.toFixed(1)+'</span><span class="asum-of">de 5</span></div><div class="asum-diag">'+diagBadge(lnota)+'<p>'+ld.rec+'</p></div></div>'+
       critBarsHTML(lArr)+fb+'</div>';
@@ -42186,21 +42232,21 @@ function buildCommands() {
   pages = pages.filter(function(pg){ return pageAllowed(pg.id, ST.session); });
   pages.forEach(function(pg){ if(pg.enabled) cmds.push({ cat:'Ir para', label:pg.label, icon:pg.icon, run:function(){ goToPage(pg.id); } }); });
   cmds.push({ cat:'Ir para', label:'Meu Perfil', icon:'users', run:function(){ ST.page='perfil'; navigate(ST.sector+'/perfil'); renderPage(); } });
-  cmds.push({ cat:'Ir para', label:'🌴 Férias', icon:'calendar', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); } });
-  cmds.push({ cat:'Ir para', label:'🏥 Atestados', icon:'calendar', run:function(){ ST.page='atestados'; navigate(ST.sector+'/atestados'); renderPage(); } });
-  cmds.push({ cat:'Ir para', label:'💸 Reembolsos', icon:'dollar', run:function(){ ST.page='reembolsos'; navigate(ST.sector+'/reembolsos'); renderPage(); } });
-  cmds.push({ cat:'Ir para', label:'⏰ Bater Ponto', icon:'clock', run:function(){ ST.page='ponto'; navigate(ST.sector+'/ponto'); renderPage(); } });
-  cmds.push({ cat:'Ir para', label:'🎭 Tentativas Faciais', icon:'shield', run:function(){ ST.page='facial-log'; navigate(ST.sector+'/facial-log'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'Férias', icon:'calendar', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'Atestados', icon:'calendar', run:function(){ ST.page='atestados'; navigate(ST.sector+'/atestados'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'Reembolsos', icon:'dollar', run:function(){ ST.page='reembolsos'; navigate(ST.sector+'/reembolsos'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'Bater Ponto', icon:'clock', run:function(){ ST.page='ponto'; navigate(ST.sector+'/ponto'); renderPage(); } });
+  cmds.push({ cat:'Ir para', label:'Tentativas Faciais', icon:'shield', run:function(){ ST.page='facial-log'; navigate(ST.sector+'/facial-log'); renderPage(); } });
   if (typeof agendaGestorElegivel === 'function' && agendaGestorElegivel()){
-    cmds.push({ cat:'Ações', label:'📅 Editar agenda semanal', icon:'calendar', run:function(){ if (typeof openAgendaGestorConfigModal==='function') openAgendaGestorConfigModal(); } });
+    cmds.push({ cat:'Ações', label:'Editar agenda semanal', icon:'calendar', run:function(){ if (typeof openAgendaGestorConfigModal==='function') openAgendaGestorConfigModal(); } });
   }
   if (typeof gestorPlanoElegivel === 'function' && gestorPlanoElegivel()){
-    cmds.push({ cat:'Ir para', label:'📋 Meu Plano de Ação', icon:'clipboard', run:function(){ ST.page='meu-plano'; navigate(ST.sector+'/meu-plano'); renderPage(); } });
+    cmds.push({ cat:'Ir para', label:'Meu Plano de Ação', icon:'clipboard', run:function(){ ST.page='meu-plano'; navigate(ST.sector+'/meu-plano'); renderPage(); } });
   }
   cmds.push({ cat:'Ações', label:'Solicitar reembolso', icon:'plus', run:function(){ if(typeof openReembSolicitarModal==='function') openReembSolicitarModal(); } });
   cmds.push({ cat:'Ações', label:'Enviar atestado médico', icon:'plus', run:function(){ if(typeof openAtestadoSolicitarModal==='function') openAtestadoSolicitarModal(); } });
   // v197: Ficha 360° do próprio user
-  cmds.push({ cat:'Ir para', label:'🔍 Minha ficha 360°', icon:'users', run:function(){ if(typeof openFicha360==='function' && ST.session && ST.session.user) openFicha360(ST.session.user, 'user'); } });
+  cmds.push({ cat:'Ir para', label:'Minha ficha 360°', icon:'users', run:function(){ if(typeof openFicha360==='function' && ST.session && ST.session.user) openFicha360(ST.session.user, 'user'); } });
   cmds.push({ cat:'Criar', label:'Solicitar férias', icon:'plus', run:function(){ ST.page='ferias'; navigate(ST.sector+'/ferias'); renderPage(); setTimeout(function(){if(typeof openFeriasSolicitarModal==='function') openFeriasSolicitarModal();}, 60); } });
   // ações de criação
   cmds.push({ cat:'Criar', label:'Nova tarefa', icon:'plus', run:function(){ openTaskModal(null); } });
@@ -42803,7 +42849,7 @@ function renderKioskPin(){
     '<div class="kiosk-dots">'+dots+'</div>'+
     errMsg + hint +
     '<div class="kiosk-pad">'+keyHTML+'</div>'+
-    '<button class="kiosk-facial-cta" data-kiosk-facial="1">🎭 Bater com Facial</button>'+
+    '<button class="kiosk-facial-cta" data-kiosk-facial="1" aria-label="Bater com facial">'+icon('face')+'<span style="margin-left:6px">Bater com Facial</span></button>'+
   '</div>';
 }
 
@@ -42974,7 +43020,7 @@ function validarPinKiosk(){
   }
   if (FACIAL_CFG.OBRIGATORIO){
     KIOSK_STATE.step = 'err';
-    KIOSK_STATE.msg = achado.name+' precisa cadastrar o rosto antes. Peça ao gestor: Equipe → '+achado.name+' → 🎭 Facial.';
+    KIOSK_STATE.msg = achado.name+' precisa cadastrar o rosto antes. Peça ao gestor: Equipe → '+achado.name+' → Facial.';
     KIOSK_STATE.pinBuffer = '';
     KIOSK_STATE.memberIdent = null;
     renderKioskUI();
@@ -43344,12 +43390,12 @@ function geoBadgeSlotHTML(memberId, ci, slotKey, loja){
   if (!geo || geo.lat==null) return '';
   var v = validarRaioLoja({ok:true, lat:geo.lat, lng:geo.lng}, loja);
   if (!v.ok || v.motivo === 'loja_sem_geo'){
-    return '<span class="pt-geo-pin" title="Registrado (loja sem localização configurada)">📍</span>';
+    return '<span class="pt-geo-pin" title="Registrado (loja sem localização configurada)" aria-label="Localização">'+icon('pin')+'</span>';
   }
   if (v.dentro){
-    return '<span class="pt-geo-pin ok" title="Registrado a '+fmtMetros(v.distancia)+' da loja (dentro do raio de '+v.raio+'m)">📍</span>';
+    return '<span class="pt-geo-pin ok" title="Registrado a '+fmtMetros(v.distancia)+' da loja (dentro do raio de '+v.raio+'m)" aria-label="Localização OK">'+icon('pin')+'</span>';
   }
-  return '<span class="pt-geo-pin off" title="Registrado a '+fmtMetros(v.distancia)+' da loja (fora do raio de '+v.raio+'m)">⚠</span>';
+  return '<span class="pt-geo-pin off" title="Registrado a '+fmtMetros(v.distancia)+' da loja (fora do raio de '+v.raio+'m)" aria-label="Fora do raio">'+icon('warning')+'</span>';
 }
 
 function init() {
