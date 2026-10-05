@@ -13714,6 +13714,51 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 
 /* ===== fim v213 ===== */
 
+
+/* ===== v214 · Sidebar reorganizada ===== */
+/* Separação visual sutil entre grupos — não é um divisor, é respiro */
+.nav .nav-group {
+  padding-top: var(--sp-5);
+  color: var(--u-text3);
+  opacity: .85;
+}
+.nav .nav-group:first-child { padding-top: 4px; }
+
+/* Grupo ADMINISTRAÇÃO ganha um indicador sutil pra separar visualmente da área cotidiana */
+.nav .nav-group:last-of-type[data-group-admin="true"],
+.nav .nav-group.nav-group-admin {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-4);
+  border-top: 1px dashed var(--u-line);
+}
+
+/* Hover mais contido — tira o translateX cafona */
+.nav-item:not(:disabled):hover {
+  background: var(--u-bg2);
+  color: var(--u-text);
+  transform: none;  /* v214: substitui translateX(2px) do v89 */
+}
+
+/* Active state reforçado */
+.nav-item.active {
+  background: var(--primary-50);
+  color: var(--primary-600);
+  font-weight: var(--fw-bold);
+}
+.nav-item.active svg { color: var(--primary-500); }
+
+/* Tap target >= 40px no mobile */
+@media (max-width: 860px) {
+  .nav-item {
+    min-height: 42px;
+    padding: var(--sp-3);
+  }
+  .nav .nav-group {
+    padding-top: var(--sp-4);
+  }
+}
+/* ===== fim v214 ===== */
+
 </style>
 </head>
 <body>
@@ -13737,7 +13782,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v213';
+var APP_BUILD = 'v214';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13751,7 +13796,7 @@ var SECTORS = {
 
 function p(id,label,ic,enabled,group,hidden){ return { id:id, label:label, icon:ic, enabled:!!enabled, group:group||'PRINCIPAL', hidden:!!hidden }; }
 // v74: navegação unificada — MESMO backbone em todos os setores, mesma ordem e mesmos grupos.
-var GROUP_ORDER = ['PRINCIPAL','OPERAÇÃO','GESTÃO','SISTEMA'];
+var GROUP_ORDER = ['MEU DIA','TRABALHO','CONTEÚDO','EQUIPE','RESULTADOS','PESSOAL','ADMINISTRAÇÃO']; /* v214: arquitetura por módulos */
 // Páginas de resultado (Metas/Relatório/Ranking/Orçamento) e Ponto ficam "hidden": seguem roteáveis (compat) mas
 // não aparecem no menu — abrem como ABAS dentro da Gestão / Equipe. Assim o menu fica enxuto e o padrão é único.
 var PAGE_PARENT   = { calendario:'tarefas', projetos:'tarefas', ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'inicio' };
@@ -14374,31 +14419,90 @@ if (typeof globalThis !== 'undefined'){
 }
 
 var PAGES = {
+  /* v214: arquitetura reorganizada por módulos — mesmo conjunto de rotas, novos grupos semânticos
+     Páginas pessoais (perfil/ferias/atestados/reembolsos/meu-plano) e admin (facial-log) agora aparecem no menu;
+     permissões aplicadas em pageAllowed. Submenus mantidos pra gestao/config via navSubmenu. */
   lojas: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('equipe','Equipe','users',true,'OPERAÇÃO'), p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
-    p('gestao','Gestão','target',true,'GESTÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA'),
-    p('ponto','Ponto','clock',true,'OPERAÇÃO',true), p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true)
+    p('inicio','Início','dashboard',true,'MEU DIA'),
+    p('tarefas','Tarefas','tasks',true,'MEU DIA'),
+    p('chat','Comunicação','chat',true,'MEU DIA'),
+    p('calendario','Calendário','cal',true,'MEU DIA',true),
+    p('projetos','Projetos','folder',true,'MEU DIA',true),
+    p('crm','CRM','users',true,'TRABALHO'),
+    p('estrategia','Estratégia','target',true,'TRABALHO'),
+    p('docs','Documentos','folder',true,'TRABALHO'),
+    p('equipe','Equipe','users',true,'EQUIPE'),
+    p('ponto','Ponto','clock',true,'EQUIPE',true),
+    p('gestao','Gestão','target',true,'RESULTADOS'),
+    p('metas','Metas','target',true,'RESULTADOS',true),
+    p('relatorio','Relatório','trend',true,'RESULTADOS',true),
+    p('perfil','Meu perfil','users',true,'PESSOAL'),
+    p('ferias','Férias','cal',true,'PESSOAL'),
+    p('atestados','Atestados','folder',true,'PESSOAL'),
+    p('reembolsos','Reembolsos','dollar',true,'PESSOAL'),
+    p('meu-plano','Meu plano','target',true,'PESSOAL'),
+    p('config','Cadastros','gear',true,'ADMINISTRAÇÃO'),
+    p('facial-log','Tentativas Faciais','search',true,'ADMINISTRAÇÃO')
   ],
   vendas: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('crm','CRM','users',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
-    p('gestao','Gestão','target',true,'GESTÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA'),
-    p('metas','Metas','target',true,'GESTÃO',true), p('ranking','Ranking','trend',true,'GESTÃO',true)
+    p('inicio','Início','dashboard',true,'MEU DIA'),
+    p('tarefas','Tarefas','tasks',true,'MEU DIA'),
+    p('chat','Comunicação','chat',true,'MEU DIA'),
+    p('calendario','Calendário','cal',true,'MEU DIA',true),
+    p('projetos','Projetos','folder',true,'MEU DIA',true),
+    p('crm','CRM','users',true,'TRABALHO'),
+    p('estrategia','Estratégia','target',true,'TRABALHO'),
+    p('docs','Documentos','folder',true,'TRABALHO'),
+    p('gestao','Gestão','target',true,'RESULTADOS'),
+    p('metas','Metas','target',true,'RESULTADOS',true),
+    p('ranking','Ranking','trend',true,'RESULTADOS',true),
+    p('perfil','Meu perfil','users',true,'PESSOAL'),
+    p('ferias','Férias','cal',true,'PESSOAL'),
+    p('atestados','Atestados','folder',true,'PESSOAL'),
+    p('reembolsos','Reembolsos','dollar',true,'PESSOAL'),
+    p('meu-plano','Meu plano','target',true,'PESSOAL'),
+    p('config','Cadastros','gear',true,'ADMINISTRAÇÃO'),
+    p('facial-log','Tentativas Faciais','search',true,'ADMINISTRAÇÃO')
   ],
   financeiro: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA')
+    p('inicio','Início','dashboard',true,'MEU DIA'),
+    p('tarefas','Tarefas','tasks',true,'MEU DIA'),
+    p('chat','Comunicação','chat',true,'MEU DIA'),
+    p('calendario','Calendário','cal',true,'MEU DIA',true),
+    p('projetos','Projetos','folder',true,'MEU DIA',true),
+    p('estrategia','Estratégia','target',true,'TRABALHO'),
+    p('docs','Documentos','folder',true,'TRABALHO'),
+    p('perfil','Meu perfil','users',true,'PESSOAL'),
+    p('ferias','Férias','cal',true,'PESSOAL'),
+    p('atestados','Atestados','folder',true,'PESSOAL'),
+    p('reembolsos','Reembolsos','dollar',true,'PESSOAL'),
+    p('meu-plano','Meu plano','target',true,'PESSOAL'),
+    p('config','Cadastros','gear',true,'ADMINISTRAÇÃO'),
+    p('facial-log','Tentativas Faciais','search',true,'ADMINISTRAÇÃO')
   ],
   marketing: [
-    p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
-    p('crm','CRM','users',true,'OPERAÇÃO'), p('campanhas','Campanhas','megaphone',true,'OPERAÇÃO'), p('conteudo','Conteúdo','image',true,'OPERAÇÃO'), p('biblioteca','Biblioteca','grid',true,'OPERAÇÃO'), p('estrategia','Estratégia','target',true,'OPERAÇÃO'), p('docs','Documentos','folder',true,'OPERAÇÃO'),
-    p('gestao','Gestão','target',true,'GESTÃO'),
-    p('chat','Comunicação','chat',true,'SISTEMA'), p('config','Cadastros','gear',true,'SISTEMA'),
-    p('metas','Metas','target',true,'GESTÃO',true), p('relatorio','Relatório','trend',true,'GESTÃO',true), p('orcamento','Orçamento','dollar',true,'GESTÃO',true)
+    p('inicio','Início','dashboard',true,'MEU DIA'),
+    p('tarefas','Tarefas','tasks',true,'MEU DIA'),
+    p('chat','Comunicação','chat',true,'MEU DIA'),
+    p('calendario','Calendário','cal',true,'MEU DIA',true),
+    p('projetos','Projetos','folder',true,'MEU DIA',true),
+    p('crm','CRM','users',true,'TRABALHO'),
+    p('estrategia','Estratégia','target',true,'TRABALHO'),
+    p('docs','Documentos','folder',true,'TRABALHO'),
+    p('campanhas','Campanhas','megaphone',true,'CONTEÚDO'),
+    p('conteudo','Conteúdo','image',true,'CONTEÚDO'),
+    p('biblioteca','Biblioteca','grid',true,'CONTEÚDO'),
+    p('gestao','Gestão','target',true,'RESULTADOS'),
+    p('metas','Metas','target',true,'RESULTADOS',true),
+    p('relatorio','Relatório','trend',true,'RESULTADOS',true),
+    p('orcamento','Orçamento','dollar',true,'RESULTADOS',true),
+    p('perfil','Meu perfil','users',true,'PESSOAL'),
+    p('ferias','Férias','cal',true,'PESSOAL'),
+    p('atestados','Atestados','folder',true,'PESSOAL'),
+    p('reembolsos','Reembolsos','dollar',true,'PESSOAL'),
+    p('meu-plano','Meu plano','target',true,'PESSOAL'),
+    p('config','Cadastros','gear',true,'ADMINISTRAÇÃO'),
+    p('facial-log','Tentativas Faciais','search',true,'ADMINISTRAÇÃO')
   ]
 };
 
@@ -14614,6 +14718,12 @@ function savePerms(id, map){ return sb.from('malba_users').update({ perms: map||
 // que páginas cada pessoa pode acessar
 function pageAllowed(pgId, s){
   s = s || ST.session;
+  // v214: páginas pessoais — qualquer usuário logado vê o seu próprio
+  if (pgId==='perfil' || pgId==='ferias' || pgId==='atestados' || pgId==='reembolsos') return true;
+  // v214: meu-plano continua restrito a gestor+
+  if (pgId==='meu-plano') return (typeof gestorPlanoElegivel==='function') && gestorPlanoElegivel();
+  // v214: facial-log continua restrito a admin+ (gestor/admin)
+  if (pgId==='facial-log') return (typeof isAdmin==='function') && isAdmin(s);
   if (pgId==='config') return can('equipe', s); // v103: Admin e Gestor (Gestor restrito ao próprio setor)
   if (pgId==='gestao')  return can('indicadores', s);   // v89: Supervisor acompanha indicadores
   if (pgId==='estrategia') return can('estrategia', s) || permsHas(pgId, s); // v91
@@ -15072,7 +15182,7 @@ function renderShell(innerHTML, title, shellOpts) {
   GROUP_ORDER.forEach(function(gname){
     var items=pages.filter(function(pg){ return (pg.group||'OPERAÇÃO')===gname; });
     if (items.length===0) return;
-    nav += '<div class="nav-group">'+gname+'</div>';
+    nav += '<div class="nav-group'+(gname==='ADMINISTRAÇÃO'?' nav-group-admin':'')+'">'+gname+'</div>';
     items.forEach(function(pg){
       var active = (pg.id===ST.page || PAGE_PARENT[ST.page]===pg.id)?' active':''; // v74: acende o pai quando numa aba filha
       var dis = pg.enabled?'':' disabled';
@@ -35147,6 +35257,19 @@ if (typeof globalThis !== 'undefined'){
   if (typeof FACIAL_CFG!=='undefined') globalThis.FACIAL_CFG = FACIAL_CFG;
   if (typeof NIVEIS!=='undefined') globalThis.NIVEIS = NIVEIS;
   if (typeof APP_BUILD!=='undefined') globalThis.APP_BUILD = APP_BUILD;
+  /* v214: expõe refs de navegação pra testes/ferramentas (nenhuma mudança de comportamento) */
+  if (typeof PAGES!=='undefined') globalThis.PAGES = PAGES;
+  if (typeof GROUP_ORDER!=='undefined') globalThis.GROUP_ORDER = GROUP_ORDER;
+  if (typeof pageAllowed==='function') globalThis.pageAllowed = pageAllowed;
+  if (typeof SECTORS!=='undefined') globalThis.SECTORS = SECTORS;
+  if (typeof PAGE_PARENT!=='undefined') globalThis.PAGE_PARENT = PAGE_PARENT;
+  if (typeof GESTAO_CHILDREN!=='undefined') globalThis.GESTAO_CHILDREN = GESTAO_CHILDREN;
+  if (typeof COLAB_PAGES!=='undefined') globalThis.COLAB_PAGES = COLAB_PAGES;
+  if (typeof nivelDe==='function') globalThis.nivelDe = nivelDe;
+  if (typeof canManage==='function') globalThis.canManage = canManage;
+  if (typeof isSuper==='function') globalThis.isSuper = isSuper;
+  if (typeof navigate==='function') globalThis.navigate = navigate;
+  if (typeof ST!=='undefined') globalThis.ST = ST;
   globalThis.openFicha360 = openFicha360;
   globalThis.ficha360EstatsPonto = ficha360EstatsPonto;
   globalThis.ficha360EstatsTarefas = ficha360EstatsTarefas;
