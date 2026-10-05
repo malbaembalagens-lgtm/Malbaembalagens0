@@ -13301,6 +13301,58 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 }
 /* ===== fim v209 ===== */
 
+
+/* ===== v211 · Breadcrumb refinamentos ===== */
+.page-x-breadcrumb {
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-width: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+.page-x-breadcrumb > * {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.page-x-breadcrumb .last {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+.page-x-breadcrumb button {
+  font: inherit;
+  line-height: inherit;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+}
+.page-x-breadcrumb button:focus-visible {
+  outline: 2px solid var(--primary-500, #3B6FF7);
+  outline-offset: 2px;
+}
+.page-x-breadcrumb .sep {
+  padding: 0 2px;
+  user-select: none;
+}
+.page-x-breadcrumb .bc-ellipsis {
+  padding: 0 2px;
+  cursor: help;
+  color: var(--u-text3);
+}
+@media (max-width: 640px) {
+  .page-x-breadcrumb {
+    font-size: 12px;
+    gap: 2px;
+    margin-bottom: var(--sp-1);
+  }
+  .page-x-breadcrumb button {
+    padding: 2px 0;
+  }
+}
+/* ===== fim v211 ===== */
+
 </style>
 </head>
 <body>
@@ -13324,7 +13376,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v210';
+var APP_BUILD = 'v211';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -13343,6 +13395,189 @@ var GROUP_ORDER = ['PRINCIPAL','OPERAÇÃO','GESTÃO','SISTEMA'];
 // não aparecem no menu — abrem como ABAS dentro da Gestão / Equipe. Assim o menu fica enxuto e o padrão é único.
 var PAGE_PARENT   = { calendario:'tarefas', projetos:'tarefas', ponto:'equipe', metas:'gestao', relatorio:'gestao', ranking:'gestao', orcamento:'gestao', comissoes:'gestao', avaliacoes:'gestao', solicitacoes:'gestao', atividade:'gestao', kpis:'inicio' };
 var GESTAO_CHILDREN = ['metas','relatorio','ranking','orcamento'];
+/* ============================================================
+   v211 · Breadcrumbs universais
+   ============================================================
+   Helper centralizado pra renderizar a cadeia "Início > Pai > Atual".
+   Reutiliza PAGE_PARENT (fonte única da hierarquia) e PAGES (labels
+   oficiais por setor). Não cria segunda árvore de navegação.
+   ============================================================ */
+
+/* Páginas piloto nesta fatia. Pra habilitar em mais páginas no futuro,
+   basta acrescentar aqui o id da rota — nada mais precisa mudar.
+   Lista intencionalmente pequena pra reduzir risco de regressão. */
+var BREADCRUMB_ENABLED_PAGES = ['tarefas','equipe','gestao','config','docs'];
+
+/* Labels das rotas "hidden" (não aparecem em PAGES[sector]) — complementar.
+   Páginas que estão em PAGES usam o label de lá (que varia por setor). */
+var EXTRA_PAGE_LABELS = {
+  perfil:       'Meu Perfil',
+  ferias:       'Férias',
+  atestados:    'Atestados',
+  reembolsos:   'Reembolsos',
+  'meu-plano':  'Meu Plano',
+  'facial-log': 'Tentativas Faciais',
+  ponto:        'Bater Ponto',
+  admtarefas:   'Admin de Tarefas',
+  kpis:         'KPIs',
+  comissoes:    'Comissões',
+  avaliacoes:   'Avaliações',
+  solicitacoes: 'Solicitações',
+  atividade:    'Atividade',
+  metas:        'Metas',
+  relatorio:    'Relatório',
+  ranking:      'Ranking',
+  orcamento:    'Orçamento',
+  calendario:   'Calendário',
+  projetos:     'Projetos',
+  inicio:       'Início'
+};
+
+/* Resolve o label de uma página considerando setor atual.
+   Ordem: PAGES[sector] > EXTRA_PAGE_LABELS > id capitalizado. */
+function pageLabelOf(pageId, sector){
+  if (!pageId) return '';
+  sector = sector || (ST && ST.sector) || 'lojas';
+  var arr = (typeof PAGES !== 'undefined' && PAGES[sector]) || [];
+  for (var i = 0; i < arr.length; i++){
+    if (arr[i].id === pageId) return arr[i].label;
+  }
+  if (EXTRA_PAGE_LABELS[pageId]) return EXTRA_PAGE_LABELS[pageId];
+  // fallback: capitaliza o id
+  return pageId.charAt(0).toUpperCase() + pageId.slice(1);
+}
+
+/* Sobe a cadeia via PAGE_PARENT até achar inicio (ou acabar).
+   Retorna array de {id, label} do topo (inicio) até a página atual. */
+function breadcrumbDeduceTrail(pageId, sector){
+  if (!pageId) return [];
+  var chain = [];
+  var cur = pageId;
+  var guard = 10;  // proteção contra ciclo
+  while (cur && guard-- > 0){
+    chain.unshift({ id: cur, label: pageLabelOf(cur, sector) });
+    if (cur === 'inicio') break;
+    var parent = (typeof PAGE_PARENT !== 'undefined') ? PAGE_PARENT[cur] : null;
+    cur = parent || null;
+  }
+  // Garantir que "Início" é sempre a raiz
+  if (!chain.length || chain[0].id !== 'inicio'){
+    chain.unshift({ id:'inicio', label:'Início' });
+  }
+  return chain;
+}
+
+/* Gera o HTML do breadcrumb. API:
+     breadcrumbHTML()                           → auto, usa ST.page
+     breadcrumbHTML({ pageId:'equipe' })        → força página base
+     breadcrumbHTML({ current:'João Silva' })   → acrescenta nível custom no fim (não clicável)
+     breadcrumbHTML({ trail:[{id,label}, ...] }) → override total (nada é deduzido)
+     breadcrumbHTML({ sector:'vendas' })        → override setor pra labels
+
+   Retorna string vazia pra página 'inicio' (não faz sentido breadcrumb na raiz).
+*/
+function breadcrumbHTML(opts){
+  opts = opts || {};
+  var pageId = opts.pageId || (ST && ST.page);
+  if (!pageId) return '';
+  // Raiz não tem breadcrumb
+  if (pageId === 'inicio' && !opts.trail && !opts.current) return '';
+
+  var sector = opts.sector || (ST && ST.sector) || 'lojas';
+  var trail;
+  if (opts.trail && opts.trail.length){
+    // Override total — mas garante Início como raiz se não tiver
+    trail = opts.trail.slice();
+    if (!trail.length || trail[0].id !== 'inicio'){
+      trail.unshift({ id:'inicio', label:'Início' });
+    }
+  } else {
+    trail = breadcrumbDeduceTrail(pageId, sector);
+  }
+
+  // Nível custom no fim (ex: nome de detalhe) — não clicável
+  if (opts.current){
+    trail = trail.concat([{ label: String(opts.current), current:true }]);
+  }
+
+  // Collapse de níveis do meio quando trail muito longo (> 4 itens)
+  // Mantém: primeiro + "…" + penúltimo + último
+  var MAX = 4;
+  var collapsed = false;
+  if (trail.length > MAX){
+    collapsed = true;
+    trail = [trail[0], { label:'…', ellipsis:true }].concat(trail.slice(-2));
+  }
+
+  var parts = trail.map(function(item, idx){
+    var isLast = (idx === trail.length - 1);
+    var sep = (idx > 0) ? '<span class="sep" aria-hidden="true">›</span>' : '';
+    if (item.ellipsis){
+      return sep + '<span class="bc-ellipsis" title="Caminho encurtado">…</span>';
+    }
+    if (isLast){
+      return sep + '<span class="last" aria-current="page">'+esc(item.label)+'</span>';
+    }
+    if (item.id){
+      // Clicável → vira botão que navega
+      return sep + '<button type="button" data-bc-page="'+esc(item.id)+'" title="Ir para '+esc(item.label)+'">'+esc(item.label)+'</button>';
+    }
+    // Sem id → texto estático (sem click)
+    return sep + '<span>'+esc(item.label)+'</span>';
+  });
+
+  return '<nav class="page-x-breadcrumb" aria-label="breadcrumb">'+parts.join('')+'</nav>';
+}
+
+/* Deve mostrar o breadcrumb na página atual?
+   - true pras páginas em BREADCRUMB_ENABLED_PAGES
+   - true pras páginas filhas (via PAGE_PARENT) de qualquer página habilitada
+     (ex: metas é filha de gestao → metas ganha breadcrumb automaticamente) */
+function breadcrumbShouldShow(pageId){
+  if (!pageId || pageId === 'inicio') return false;
+  if (BREADCRUMB_ENABLED_PAGES.indexOf(pageId) !== -1) return true;
+  // Checar se é filha de alguma habilitada
+  var cur = pageId;
+  var guard = 5;
+  while (guard-- > 0){
+    var parent = (typeof PAGE_PARENT !== 'undefined') ? PAGE_PARENT[cur] : null;
+    if (!parent) return false;
+    if (BREADCRUMB_ENABLED_PAGES.indexOf(parent) !== -1) return true;
+    cur = parent;
+  }
+  return false;
+}
+
+/* Liga os cliques nos botões do breadcrumb — chamado após render.
+   Delega: busca #content > .page-x-breadcrumb [data-bc-page]. */
+function bindBreadcrumb(){
+  var btns = document.querySelectorAll('.page-x-breadcrumb [data-bc-page]');
+  for (var i = 0; i < btns.length; i++){
+    btns[i].addEventListener('click', function(){
+      var pid = this.getAttribute('data-bc-page');
+      if (!pid) return;
+      if (typeof goToPage === 'function'){
+        goToPage(pid);
+      } else {
+        ST.page = pid;
+        if (typeof navigate === 'function') navigate(ST.sector + '/' + pid);
+        if (typeof renderPage === 'function') renderPage();
+      }
+    });
+  }
+}
+
+/* Expor pros testes e pra páginas poderem chamar diretamente */
+if (typeof globalThis !== 'undefined'){
+  globalThis.BREADCRUMB_ENABLED_PAGES = BREADCRUMB_ENABLED_PAGES;
+  globalThis.EXTRA_PAGE_LABELS = EXTRA_PAGE_LABELS;
+  globalThis.pageLabelOf = pageLabelOf;
+  globalThis.breadcrumbDeduceTrail = breadcrumbDeduceTrail;
+  globalThis.breadcrumbHTML = breadcrumbHTML;
+  globalThis.breadcrumbShouldShow = breadcrumbShouldShow;
+  globalThis.bindBreadcrumb = bindBreadcrumb;
+}
+
 var PAGES = {
   lojas: [
     p('inicio','Dashboard','dashboard',true,'PRINCIPAL'), p('tarefas','Trabalho','tasks',true,'PRINCIPAL'), p('calendario','Calendário','cal',true,'PRINCIPAL',true), p('projetos','Projetos','folder',true,'PRINCIPAL',true),
@@ -14031,7 +14266,7 @@ function navSubmenu(pageId){
     return '<button class="nav-sub-item'+(x.id===atual?' on':'')+'" data-subpage="'+pageId+'" data-subtab="'+x.id+'">'+esc(x.label)+'</button>';
   }).join('')+'</div>';
 }
-function renderShell(innerHTML, title) {
+function renderShell(innerHTML, title, shellOpts) {
   var s=SECTORS[ST.sector]||SECTORS.lojas;
   var u=ST.session.user;
   var roleLabel = roleNivelLabel(ST.session);
@@ -14074,10 +14309,24 @@ function renderShell(innerHTML, title) {
         '<button class="top-theme" id="themeToggle" title="'+(getTheme()==='dark'?'Modo claro':'Modo escuro')+'">'+icon(getTheme()==='dark'?'sun':'moon')+'</button>'+
         '<button class="btn btn-primary top-novo" id="topNovo">'+icon('plus')+'<span>Novo</span></button>'+
       '</header>'+
-      '<section class="content" id="content">'+innerHTML+'</section>'+
+      '<section class="content" id="content">'+((function(){
+          // v211: breadcrumb universal — opt-in por página via BREADCRUMB_ENABLED_PAGES
+          try {
+            if (typeof shellOpts !== 'undefined' && shellOpts && shellOpts.breadcrumb === false) return '';
+            if (typeof shellOpts !== 'undefined' && shellOpts && shellOpts.breadcrumb && typeof breadcrumbHTML==='function'){
+              return breadcrumbHTML(shellOpts.breadcrumb);
+            }
+            if (typeof breadcrumbShouldShow==='function' && breadcrumbShouldShow(ST.page) && typeof breadcrumbHTML==='function'){
+              return breadcrumbHTML();
+            }
+          } catch(e){ console.warn('[breadcrumb]', e); }
+          return '';
+        })())+innerHTML+'</section>'+
     '</main></div>'
   );
   document.getElementById('btnSair').addEventListener('click', logout);
+  // v211: liga cliques do breadcrumb
+  try { if (typeof bindBreadcrumb === 'function') bindBreadcrumb(); } catch(e){ console.warn('[bindBreadcrumb]', e); }
   if (typeof bindTopbarPonto === 'function') bindTopbarPonto();
   if (typeof bindTopbarNotif === 'function') bindTopbarNotif();
   var sideUser=document.getElementById('sideUser');
