@@ -14181,7 +14181,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v218';
+var APP_BUILD = 'v219';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -14323,6 +14323,10 @@ function breadcrumbHTML(opts){
     if (isLast){
       return sep + '<span class="last" aria-current="page">'+esc(item.label)+'</span>';
     }
+    if (item.cadNav){
+      // v219: Clicável → vira botão que muda ST.central.nav (sub-rota de Cadastros)
+      return sep + '<button type="button" data-cad-nav="'+esc(item.cadNav)+'" title="Ir para '+esc(item.label)+'">'+esc(item.label)+'</button>';
+    }
     if (item.id){
       // Clicável → vira botão que navega
       return sep + '<button type="button" data-bc-page="'+esc(item.id)+'" title="Ir para '+esc(item.label)+'">'+esc(item.label)+'</button>';
@@ -14368,6 +14372,25 @@ function bindBreadcrumb(){
         if (typeof navigate === 'function') navigate(ST.sector + '/' + pid);
         if (typeof renderPage === 'function') renderPage();
       }
+    });
+  }
+  // v219: suporte a data-cad-nav (sub-rota de Cadastros) no breadcrumb
+  var cadBtns = document.querySelectorAll('.page-x-breadcrumb [data-cad-nav]');
+  for (var j = 0; j < cadBtns.length; j++){
+    cadBtns[j].addEventListener('click', function(){
+      var nav = this.getAttribute('data-cad-nav');
+      if (!nav) return;
+      // garante que estamos na página config (Cadastros)
+      ST.page = 'config';
+      ST.central = ST.central || {};
+      ST.central.nav = nav;
+      // limpar ids específicos quando navega pra lista pai (não detalhe)
+      if (nav==='lojas') ST.central.lojaId = null;
+      if (nav==='colabs') ST.central.colabId = null;
+      if (nav==='equipes') ST.central.equipeId = null;
+      ST.central.q = '';
+      if (typeof navigate === 'function') navigate(ST.sector + '/config');
+      if (typeof renderPage === 'function') renderPage();
     });
   }
 }
@@ -14740,11 +14763,73 @@ function _topKbdLabel(){
 
 /* Renderiza o breadcrumb pra usar DENTRO do header.
    Reusa breadcrumbHTML() do v211 — não duplica. */
+/* v219: Gera o trail do breadcrumb para a sub-rota ativa de Cadastros.
+   Retorna null quando não é Cadastros ou não tem sub-rota — nesse caso
+   topBreadcrumbHTML cai no trail padrão deduzido. */
+function centralBreadcrumbTrail(){
+  if (!ST || ST.page !== 'config' || !ST.central) return null;
+  var c = ST.central;
+  var nav = c.nav || 'empresa';
+  // Trail base: Início > Cadastros
+  var trail = [
+    { id:'inicio', label:'Início' },
+    { cadNav:'empresa', label:'Cadastros' }
+  ];
+  // Mapa label por nav
+  var LB = {
+    empresa: 'Visão da empresa',
+    lojas: 'Lojas',
+    colabs: 'Colaboradores',
+    acessos: 'Acessos e Permissões',
+    cargos: 'Cargos',
+    departamentos: 'Departamentos',
+    perfis: 'Perfis de Permissão',
+    organograma: 'Organograma',
+    'rotinas-pop': 'Rotinas (POPs)',
+    equipes: 'Equipes'
+  };
+  // Nível 2: a seção/página (ex: Colaboradores) — vira último se não há detalhe
+  if (nav === 'empresa'){
+    // já tá como "Cadastros" (nav=empresa é a visão default); nada adicional
+    return trail;
+  }
+  if (nav === 'loja' && c.lojaId){
+    var l = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(c.lojaId); });
+    var lLb = l ? (l.name || ('Loja '+l.store_number)) : 'Loja';
+    trail.push({ cadNav:'lojas', label:'Lojas' });
+    trail.push({ label: lLb, current: true });
+    return trail;
+  }
+  if (nav === 'colab' && c.colabId){
+    var m = (ST.members||[]).find(function(x){ return String(x.id)===String(c.colabId); });
+    var mLb = m ? m.name : 'Colaborador';
+    trail.push({ cadNav:'colabs', label:'Colaboradores' });
+    trail.push({ label: mLb, current: true });
+    return trail;
+  }
+  if (nav === 'equipe' && c.equipeId){
+    var e = (ST.equipes||[]).find(function(x){ return String(x.id)===String(c.equipeId); });
+    var eLb = e ? e.nome : 'Equipe';
+    trail.push({ cadNav:'equipes', label:'Equipes' });
+    trail.push({ label: eLb, current: true });
+    return trail;
+  }
+  // Lista/página de 1 nível (colabs, lojas, cargos, equipes, acessos, etc)
+  var lb = LB[nav] || nav;
+  trail.push({ label: lb, current: true });
+  return trail;
+}
+
 function topBreadcrumbHTML(){
   if (typeof breadcrumbShouldShow !== 'function' || typeof breadcrumbHTML !== 'function') return '';
   if (!breadcrumbShouldShow(ST && ST.page)) return '';
-  // Envolve numa div com classe .top-breadcrumb pra estilização específica
-  return '<div class="top-breadcrumb-wrap">'+breadcrumbHTML()+'</div>';
+  // v219: para Cadastros, injeta trail da sub-rota
+  var opts = {};
+  if (ST && ST.page === 'config'){
+    var trail = (typeof centralBreadcrumbTrail === 'function') ? centralBreadcrumbTrail() : null;
+    if (trail && trail.length) opts.trail = trail;
+  }
+  return '<div class="top-breadcrumb-wrap">'+breadcrumbHTML(opts)+'</div>';
 }
 
 /* Botão compacto que abre o Command Palette existente.
@@ -42538,6 +42623,32 @@ function buildCommands() {
     if (ST.sector==='lojas') {
       cmds.push({ cat:'Criar', label:'Cadastrar funcionário', icon:'plus', run:function(){ openMemberModal(null); } });
       cmds.push({ cat:'Criar', label:'Lançar comissão', icon:'dollar', run:function(){ ST.page='gestao'; ST.gestaoTab='comissoes'; navigate(ST.sector+'/gestao'); renderPage(); setTimeout(openComissaoModal,60); } });
+    }
+  }
+  // v219: atalhos para sub-rotas de Cadastros (quando o usuário tem acesso)
+  if (typeof centralPodeAcessar === 'function' && centralPodeAcessar()){
+    function gotoCad(nav){
+      ST.page = 'config';
+      ST.central = ST.central || {};
+      ST.central.nav = nav;
+      ST.central.q = '';
+      if (nav==='lojas') ST.central.lojaId = null;
+      if (nav==='colabs') ST.central.colabId = null;
+      if (nav==='equipes') ST.central.equipeId = null;
+      navigate(ST.sector+'/config');
+      renderPage();
+    }
+    cmds.push({ cat:'Cadastros', label:'Visão da empresa', icon:'building-2', run:function(){ gotoCad('empresa'); } });
+    cmds.push({ cat:'Cadastros', label:'Lojas', icon:'store', run:function(){ gotoCad('lojas'); } });
+    cmds.push({ cat:'Cadastros', label:'Colaboradores', icon:'user-round', run:function(){ gotoCad('colabs'); } });
+    cmds.push({ cat:'Cadastros', label:'Cargos', icon:'badge-check', run:function(){ gotoCad('cargos'); } });
+    cmds.push({ cat:'Cadastros', label:'Equipes', icon:'users-round', run:function(){ gotoCad('equipes'); } });
+    cmds.push({ cat:'Cadastros', label:'Organograma', icon:'network', run:function(){ gotoCad('organograma'); } });
+    cmds.push({ cat:'Cadastros', label:'Acessos e Permissões', icon:'key-round', run:function(){ gotoCad('acessos'); } });
+    cmds.push({ cat:'Cadastros', label:'Rotinas (POPs)', icon:'clipboard-check', run:function(){ gotoCad('rotinas-pop'); } });
+    if (typeof isSuper === 'function' && isSuper(ST.session)){
+      cmds.push({ cat:'Cadastros', label:'Departamentos', icon:'building', run:function(){ gotoCad('departamentos'); } });
+      cmds.push({ cat:'Cadastros', label:'Perfis de Permissão', icon:'user-cog', run:function(){ gotoCad('perfis'); } });
     }
   }
   cmds.push({ cat:'Ajuda', label:'Atalhos de teclado', icon:'search', run:openShortcutsHelp });
