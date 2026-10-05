@@ -13864,6 +13864,250 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 /* ===== fim v215 ===== */
 
 
+/* ===== v218 · hierarquia visual na Visão Geral ===== */
+.brf-panel-v218 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: var(--sp-4) 0;
+}
+.brf-panel-v218 .brf-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.brf-panel-v218 .brf-head-l { display: flex; flex-direction: column; gap: 2px; }
+.brf-panel-v218 .brf-data {
+  font-size: 12px;
+  color: var(--u-text3);
+  display: inline-flex; align-items: center;
+  letter-spacing: .01em;
+}
+.brf-panel-v218 .brf-hi {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--u-text);
+  letter-spacing: -.01em;
+}
+
+/* NÍVEL 0 — status discreto quando não há alertas (sem card gigante) */
+.brf-status-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  background: #16A34A0A;
+  border: 1px solid #16A34A24;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #15803D;
+  width: fit-content;
+}
+.brf-status-quiet svg { width: 14px; height: 14px; color: #16A34A; }
+
+/* NÍVEL 1 — ATENÇÃO (strip horizontal condicional) */
+.brf-atencao-strip {
+  background: #FEF9F0;
+  border: 1px solid #F59E0B33;
+  border-left: 3px solid #F59E0B;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.brf-strip-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #92400E;
+  font-weight: 600;
+}
+.brf-strip-head svg { width: 14px; height: 14px; color: #F59E0B; }
+.brf-strip-label { line-height: 1; }
+.brf-strip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.brf-strip-item {
+  background: #ffffff;
+  border: 1px solid var(--u-border);
+  border-left: 3px solid var(--ac, #F59E0B);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--u-text);
+  transition: background .12s ease, border-color .12s ease;
+}
+.brf-strip-item:hover {
+  background: #FAFBFF;
+  border-color: var(--ac, #F59E0B);
+}
+
+/* NÍVEL 2 — HERO: resultado principal com peso dominante */
+.brf-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.brf-hero-item {
+  background: #ffffff;
+  border: 1px solid var(--u-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.brf-hero-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--u-text3);
+  font-weight: 600;
+}
+.brf-hero-label svg { width: 14px; height: 14px; color: var(--u-text3); }
+.brf-hero-label .brf-badge {
+  margin-left: auto;
+  background: var(--u-elev);
+  color: var(--u-text2);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+.brf-hero-value {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+}
+.brf-hero-item .brf-vendas-cmp {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--u-border2);
+}
+.brf-hero-item .brf-meta-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 32px;
+}
+.brf-hero-item .brf-meta-row b { font-size: 32px; }
+.brf-hero-item .brf-meta-de { font-size: 13px; color: var(--u-text3); font-weight: 400; }
+.brf-hero-item .brf-meta-pct { margin-left: auto; font-size: 15px; font-weight: 700; }
+
+/* NÍVEL 3 — SEÇÃO SECUNDÁRIA (menor peso) */
+.brf-sec {
+  background: transparent;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.brf-sec-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--u-text3);
+  font-weight: 600;
+}
+.brf-sec-head svg { width: 14px; height: 14px; color: var(--u-text3); }
+.brf-sec-label { line-height: 1; }
+.brf-sec-body {
+  background: #ffffff;
+  border: 1px solid var(--u-border);
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+.brf-panel-v218 .brf-comp-row {
+  border-bottom: 1px solid var(--u-border2);
+  padding: 10px 0;
+}
+
+/* NÍVEL 4 — AUXILIAR (details, collapsed por padrão) */
+.brf-aux {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+.brf-aux-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--u-text3);
+  font-weight: 600;
+  padding: 6px 0;
+  list-style: none;
+  user-select: none;
+  transition: color .12s ease;
+}
+.brf-aux-summary::-webkit-details-marker { display: none; }
+.brf-aux-summary::marker { display: none; content: ''; }
+.brf-aux-summary::before {
+  content: '\25B8';
+  font-size: 10px;
+  color: var(--u-text3);
+  transition: transform .15s ease;
+  display: inline-block;
+}
+.brf-aux[open] > .brf-aux-summary::before { transform: rotate(90deg); }
+.brf-aux-summary:hover { color: var(--u-text2); }
+.brf-aux-summary svg { width: 14px; height: 14px; }
+.brf-aux-label { line-height: 1; }
+.brf-aux-count { color: var(--u-text3); font-weight: 400; text-transform: none; letter-spacing: 0; margin-left: 2px; }
+.brf-aux-body {
+  margin-top: 6px;
+  background: #ffffff;
+  border: 1px solid var(--u-border);
+  border-radius: 10px;
+  padding: 4px 12px;
+}
+.brf-panel-v218 .brf-evt {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--u-border2);
+}
+.brf-panel-v218 .brf-evt:last-child { border-bottom: 0; }
+
+/* Mobile */
+@media (max-width: 900px){
+  .brf-hero { grid-template-columns: 1fr; }
+  .brf-strip-list { flex-direction: column; }
+  .brf-strip-item { width: 100%; }
+}
+@media (max-width: 600px){
+  .brf-panel-v218 .brf-hi { font-size: 16px; }
+  .brf-hero-value { font-size: 26px; }
+  .brf-hero-item .brf-meta-row { font-size: 24px; }
+  .brf-hero-item .brf-meta-row b { font-size: 24px; }
+  .brf-hero-item { padding: 14px 16px; }
+}
+
 /* ===== v216 · ajuste de containers de ícones (substituição de emoji) ===== */
 .brf-emoji { font-size: 16px; display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; }
 .brf-emoji svg { width:18px; height:18px; }
@@ -13922,7 +14166,7 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v217';
+var APP_BUILD = 'v218';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -32261,7 +32505,12 @@ function lojaAvalMedia(lojaId){
   return n? (soma/n):null;
 }
 function visaoGeralHTML(){
-  /* v175: BRIEFING DO DIA — "o que preciso decidir agora" */
+  /* v218: Visão Geral com HIERARQUIA — 4 níveis
+     NÍVEL 1 — Atenção (strip, condicional)
+     NÍVEL 2 — Resultado principal (hero: vendas + meta)
+     NÍVEL 3 — Operação/Acompanhamento (comparativo pessoas)
+     NÍVEL 4 — Detalhes/Contexto (eventos, collapsed por padrão)
+     v175: Cálculos originais preservados integralmente */
   var hj = new Date();
   var hjStr = today();
   var ontemStr = (function(){ var d=new Date(); d.setDate(d.getDate()-1); return d.toISOString().slice(0,10); })();
@@ -32278,7 +32527,7 @@ function visaoGeralHTML(){
   else saudacao = 'Boa noite';
   var meNome = ((ST.session&&ST.session.user&&ST.session.user.name)||'').split(' ')[0];
 
-  /* --- CARD 1: Vendas de HOJE com comparativos --- */
+  /* --- DADOS: Vendas (preservado) --- */
   function somaVendasNoDia(ds){
     var t = 0;
     (ST.salesEntries||[]).forEach(function(e){
@@ -32305,16 +32554,7 @@ function visaoGeralHTML(){
     return '→';
   }
 
-  var vendasCard = '<div class="brf-card brf-vendas">'+
-    '<div class="brf-card-h"><span class="brf-emoji">'+icon('dollar')+'</span><b>Vendas de hoje</b></div>'+
-    '<div class="brf-vendas-v">'+brlShort(vHj)+'</div>'+
-    '<div class="brf-vendas-cmp">'+
-      '<div class="brf-cmp-row"><span class="brf-cmp-lbl">vs ontem</span><span class="brf-cmp-val" style="color:'+corDelta(vHj,vOnt)+'">'+setaDelta(vHj,vOnt)+' '+pctDelta(vHj,vOnt)+'</span><span class="brf-cmp-ref">('+brlShort(vOnt)+')</span></div>'+
-      '<div class="brf-cmp-row"><span class="brf-cmp-lbl">vs semana passada</span><span class="brf-cmp-val" style="color:'+corDelta(vHj,vSem)+'">'+setaDelta(vHj,vSem)+' '+pctDelta(vHj,vSem)+'</span><span class="brf-cmp-ref">('+brlShort(vSem)+')</span></div>'+
-    '</div>'+
-  '</div>';
-
-  /* --- CARD 2: Meta do mês com progresso e projeção --- */
+  /* --- DADOS: Meta do mês (preservado) --- */
   var vendasMes = 0;
   (ST.salesEntries||[]).forEach(function(e){ if (_inMonth(e.sale_date)) vendasMes += Number(e.value)||0; });
   var metaMes = 0;
@@ -32330,21 +32570,8 @@ function visaoGeralHTML(){
   var diasRest = diasMes - diaHj;
   var metaCor = pctProj >= 100 ? '#16A34A' : (pctProj >= 80 ? '#F59E0B' : '#EF4444');
   var barPct = Math.min(100, pctMes);
-  var metaCard = metaMes > 0 ? '<div class="brf-card brf-meta">'+
-    '<div class="brf-card-h"><span class="brf-emoji">'+icon('target')+'</span><b>Meta do mês</b><span class="brf-badge">'+diasRest+'d restantes</span></div>'+
-    '<div class="brf-meta-row">'+
-      '<b>'+brlShort(vendasMes)+'</b>'+
-      '<span class="brf-meta-de">de '+brlShort(metaMes)+'</span>'+
-      '<span class="brf-meta-pct" style="color:'+metaCor+'">'+pctMes+'%</span>'+
-    '</div>'+
-    '<div class="brf-progress"><span style="width:'+barPct+'%;background:'+metaCor+'"></span></div>'+
-    '<div class="brf-meta-proj">'+
-      '<span>Ritmo atual projeta <b style="color:'+metaCor+'">'+brlShort(proj)+'</b> no fim do mês</span>'+
-      '<span class="brf-meta-proj-pct" style="color:'+metaCor+'">'+(pctProj>=100?'+':'')+(pctProj-100)+'% da meta</span>'+
-    '</div>'+
-  '</div>' : '';
 
-  /* --- CARD 3: Precisa da sua atenção (agregador de alertas) --- */
+  /* --- DADOS: Alertas (preservado) --- */
   var quebradas = (typeof kpiRotinasQuebradas==='function') ? kpiRotinasQuebradas() : [];
   var criticas = (typeof kpiTopCriticas==='function') ? kpiTopCriticas(10) : [];
   var pendReq = (typeof pendingRequests==='function') ? pendingRequests() : [];
@@ -32355,26 +32582,7 @@ function visaoGeralHTML(){
   if (quebradas.length > 0) alertItens.push({ic:'warning',qt:quebradas.length,tx:'rotina'+(quebradas.length>1?'s':'')+' quebrada'+(quebradas.length>1?'s':''),acao:'gestao/kpis',cor:'#F59E0B'});
   if (pendReq.length > 0) alertItens.push({ic:'clipboard-list',qt:pendReq.length,tx:'solicitaç'+(pendReq.length>1?'ões':'ão')+' aguardando',acao:'gestao/requests',cor:'#3B6FF7'});
 
-  var alertHTML;
-  if (alertItens.length === 0){
-    alertHTML = '<div class="brf-card brf-atencao brf-limpo">'+
-      '<div class="brf-card-h"><span class="brf-emoji">'+icon('check')+'</span><b>Tudo em ordem</b></div>'+
-      '<div class="brf-limpo-tx">Nenhum alerta agora. Aproveita e planeja o próximo passo.</div>'+
-    '</div>';
-  } else {
-    alertHTML = '<div class="brf-card brf-atencao">'+
-      '<div class="brf-card-h"><span class="brf-emoji">'+icon('warning')+'</span><b>Precisa da sua atenção</b></div>'+
-      '<div class="brf-alert-list">'+alertItens.map(function(a){
-        return '<button class="brf-alert-item" data-brfacao="'+esc(a.acao)+'">'+
-          '<span class="brf-alert-ic" style="color:'+a.cor+'">'+((typeof icon==='function')?icon(a.ic):'')+'</span>'+
-          '<span class="brf-alert-tx"><b style="color:'+a.cor+'">'+a.qt+'</b> '+a.tx+'</span>'+
-          '<span class="brf-alert-cta">Ver →</span>'+
-        '</button>';
-      }).join('')+'</div>'+
-    '</div>';
-  }
-
-  /* --- CARD 4: Comparativo semanal por colaborador --- */
+  /* --- DADOS: Comparativo 7 dias (preservado) --- */
   function tarefasFechadasEntre(uid, ini, fim){
     return (ST.tasks||[]).filter(function(t){
       if (t.is_rule) return false;
@@ -32398,6 +32606,66 @@ function visaoGeralHTML(){
     .filter(function(r){ return r.atual > 0 || r.ant > 0; });
   comparados.sort(function(a,b){ return Math.abs(b.delta) - Math.abs(a.delta); });
   var compTop = comparados.slice(0, 5);
+
+  /* --- DADOS: Últimos eventos (preservado) --- */
+  var logs = (ST.activityLog||[]).slice(0, 5);
+
+  /* ============================================================
+     MONTAGEM COM HIERARQUIA v218
+     ============================================================ */
+
+  /* HEADER — contexto (data + saudação) */
+  var head = '<header class="brf-head">'+
+    '<div class="brf-head-l">'+
+      '<div class="brf-data">'+icon('cal')+'<span style="margin-left:4px">'+esc(dataTx)+'</span></div>'+
+      '<div class="brf-hi">'+esc(saudacao)+', '+esc(meNome)+'.</div>'+
+    '</div>'+
+  '</header>';
+
+  /* NÍVEL 1 — ATENÇÃO (strip, condicional: só aparece se houver alertas) */
+  var atencaoHTML = '';
+  if (alertItens.length > 0){
+    atencaoHTML = '<section class="brf-atencao-strip brf-atencao" aria-label="Precisa da sua atenção">'+
+      '<div class="brf-strip-head">'+icon('warning')+'<span class="brf-strip-label">Precisa da sua atenção</span></div>'+
+      '<div class="brf-strip-list">'+alertItens.map(function(a){
+        return '<button class="brf-alert-item brf-strip-item" data-brfacao="'+esc(a.acao)+'" style="--ac:'+a.cor+'">'+
+          '<span class="brf-alert-ic" style="color:'+a.cor+'" aria-hidden="true">'+((typeof icon==='function')?icon(a.ic):'')+'</span>'+
+          '<span class="brf-alert-tx"><b style="color:'+a.cor+'">'+a.qt+'</b> '+a.tx+'</span>'+
+          '<span class="brf-alert-cta" aria-hidden="true">→</span>'+
+        '</button>';
+      }).join('')+'</div>'+
+    '</section>';
+  }
+
+  /* NÍVEL 2 — HERO: Resultados principais (vendas + meta) */
+  var vendasHero = '<div class="brf-hero-item brf-vendas">'+
+    '<div class="brf-hero-label">'+icon('dollar')+'<span style="margin-left:4px">Vendas de hoje</span></div>'+
+    '<div class="brf-hero-value brf-vendas-v">'+brlShort(vHj)+'</div>'+
+    '<div class="brf-vendas-cmp">'+
+      '<div class="brf-cmp-row"><span class="brf-cmp-lbl">vs ontem</span><span class="brf-cmp-val" style="color:'+corDelta(vHj,vOnt)+'">'+setaDelta(vHj,vOnt)+' '+pctDelta(vHj,vOnt)+'</span><span class="brf-cmp-ref">('+brlShort(vOnt)+')</span></div>'+
+      '<div class="brf-cmp-row"><span class="brf-cmp-lbl">vs semana passada</span><span class="brf-cmp-val" style="color:'+corDelta(vHj,vSem)+'">'+setaDelta(vHj,vSem)+' '+pctDelta(vHj,vSem)+'</span><span class="brf-cmp-ref">('+brlShort(vSem)+')</span></div>'+
+    '</div>'+
+  '</div>';
+
+  var metaHero = metaMes > 0 ? '<div class="brf-hero-item brf-meta">'+
+    '<div class="brf-hero-label">'+icon('target')+'<span style="margin-left:4px">Meta do mês</span><span class="brf-badge">'+diasRest+'d restantes</span></div>'+
+    '<div class="brf-hero-value brf-meta-row">'+
+      '<b>'+brlShort(vendasMes)+'</b>'+
+      '<span class="brf-meta-de">de '+brlShort(metaMes)+'</span>'+
+      '<span class="brf-meta-pct" style="color:'+metaCor+'">'+pctMes+'%</span>'+
+    '</div>'+
+    '<div class="brf-progress"><span style="width:'+barPct+'%;background:'+metaCor+'"></span></div>'+
+    '<div class="brf-meta-proj">'+
+      '<span>Ritmo atual projeta <b style="color:'+metaCor+'">'+brlShort(proj)+'</b> no fim do mês</span>'+
+      '<span class="brf-meta-proj-pct" style="color:'+metaCor+'">'+(pctProj>=100?'+':'')+(pctProj-100)+'% da meta</span>'+
+    '</div>'+
+  '</div>' : '';
+
+  var heroHTML = '<section class="brf-hero" aria-label="Resultados principais">'+
+    vendasHero + metaHero +
+  '</section>';
+
+  /* NÍVEL 3 — SECUNDÁRIO: Comparativo por pessoa */
   var compHTML = compTop.length ? compTop.map(function(r){
     var cor, seta, tx;
     if (r.ant === 0){
@@ -32416,13 +32684,12 @@ function visaoGeralHTML(){
     '</div>';
   }).join('') : '<div class="brf-vazio">Sem atividade suficiente pra comparar.</div>';
 
-  var compCard = '<div class="brf-card brf-comp">'+
-    '<div class="brf-card-h"><span class="brf-emoji">'+icon('file-bar-chart')+'</span><b>Últimos 7 dias vs 7 anteriores</b></div>'+
-    compHTML+
-  '</div>';
+  var compSection = '<section class="brf-sec brf-comp" aria-label="Comparativo da equipe">'+
+    '<div class="brf-sec-head">'+icon('file-bar-chart')+'<span class="brf-sec-label">Últimos 7 dias vs 7 anteriores</span></div>'+
+    '<div class="brf-sec-body">'+compHTML+'</div>'+
+  '</section>';
 
-  /* --- CARD 5: Últimos eventos --- */
-  var logs = (ST.activityLog||[]).slice(0, 5);
+  /* NÍVEL 4 — AUXILIAR: Eventos (details collapsed por padrão) */
   var eventosHTML = logs.length ? logs.map(function(l){
     var quando = l.created_at ? fmtHaQuanto(new Date(l.created_at)) : '';
     var quem = l.user_name || '';
@@ -32435,28 +32702,26 @@ function visaoGeralHTML(){
       '</div>'+
     '</div>';
   }).join('') : '<div class="brf-vazio">Sem eventos recentes.</div>';
-  var eventosCard = '<div class="brf-card brf-eventos">'+
-    '<div class="brf-card-h"><span class="brf-emoji">'+icon('history')+'</span><b>Últimos eventos</b></div>'+
-    eventosHTML+
-  '</div>';
+  var eventosSection = '<details class="brf-aux brf-eventos">'+
+    '<summary class="brf-aux-summary">'+icon('history')+'<span class="brf-aux-label">Últimos eventos</span>'+(logs.length?'<span class="brf-aux-count">('+logs.length+')</span>':'')+'</summary>'+
+    '<div class="brf-aux-body">'+eventosHTML+'</div>'+
+  '</details>';
 
-  /* --- HEADER --- */
-  var head = '<div class="brf-head">'+
-    '<div><div class="brf-data">'+icon('cal')+' '+esc(dataTx)+'</div><div class="brf-hi">'+esc(saudacao)+', '+esc(meNome)+'!</div></div>'+
-  '</div>';
+  /* STATUS QUIET — "nenhum alerta" vira texto discreto quando sem alertas */
+  var statusQuietHTML = (alertItens.length === 0) ?
+    '<div class="brf-status-quiet">'+icon('check')+'<span style="margin-left:4px">Nenhum alerta pendente. Tudo em ordem.</span></div>' : '';
 
-  /* --- MONTAGEM FINAL --- */
-  return '<div class="brf-panel">'+
+  /* MONTAGEM FINAL — ordem é hierarquia */
+  return '<div class="brf-panel brf-panel-v218">'+
     head+
-    '<div class="brf-grid">'+
-      vendasCard+
-      metaCard+
-      alertHTML+
-      compCard+
-      eventosCard+
-    '</div>'+
+    statusQuietHTML+
+    atencaoHTML+
+    heroHTML+
+    compSection+
+    eventosSection+
   '</div>';
 }
+
 function atividadeHTML() {
   var escopo = isTopAdmin(ST.session) ? 'Todas as ações registradas no sistema' : ('Ações do setor '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:''));
   return '<div class="cfg-sec-head"><span>Histórico de atividades</span><span style="font-size:12px;color:var(--u-text3)">'+escopo+'</span></div>'+
