@@ -13864,6 +13864,306 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 /* ===== fim v215 ===== */
 
 
+/* ===== v222 · hierarquia visual em KPIs de Tarefas ===== */
+.kpit-v222 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.kpit-v222 .kpit-head {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* STATUS QUIET (quando sem atenção) */
+.kpit-status-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  background: #16A34A0A;
+  border: 1px solid #16A34A24;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #15803D;
+  width: fit-content;
+}
+.kpit-status-quiet svg { width: 14px; height: 14px; color: #16A34A; }
+
+/* NÍVEL 2 — HERO: Taxa + Atrasadas (desempenho principal) */
+.kpit-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.kpit-hero-item {
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kpit-hero-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--u-text3);
+  font-weight: 600;
+}
+.kpit-hero-label svg { width: 14px; height: 14px; color: var(--u-text3); }
+.kpit-hero-value {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+.kpit-hero-sub {
+  font-size: 13px;
+  color: var(--u-text2);
+  padding-top: 6px;
+  border-top: 1px solid var(--u-border2);
+}
+.kpit-hero-sub b { font-weight: 700; }
+
+/* NÍVEL 3 — CONTEXTO (Concluídas + Ativas, peso menor) */
+.kpit-contexto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.kpit-ctx-item {
+  background: var(--u-card2);
+  border: 1px solid var(--u-border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.kpit-ctx-lbl {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--u-text3);
+  font-weight: 600;
+}
+.kpit-ctx-val {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+.kpit-ctx-sub {
+  font-size: 11px;
+  color: var(--u-text3);
+  font-style: normal;
+}
+
+/* v222 — dark mode overrides */
+html.dark .kpit-status-quiet {
+  background: rgba(22, 163, 74, 0.10);
+  border-color: rgba(22, 163, 74, 0.28);
+  color: #86EFAC;
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  .kpit-hero { grid-template-columns: 1fr; }
+  .kpit-contexto { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px){
+  .kpit-hero-value { font-size: 28px; }
+  .kpit-hero-item { padding: 14px 16px; }
+  .kpit-ctx-val { font-size: 18px; }
+  .kpit-v222 .kpit-head { gap: 8px; }
+}
+
+/* ===== v220 · hierarquia visual no Painel Gestor ===== */
+.pg-v220 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.pg-v220 .pg-titulo {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  flex-wrap: wrap;
+}
+
+/* STATUS QUIET (quando sem alertas) */
+.pg-status-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  background: #16A34A0A;
+  border: 1px solid #16A34A24;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #15803D;
+  width: fit-content;
+}
+.pg-status-quiet svg { width: 14px; height: 14px; color: #16A34A; }
+
+/* NÍVEL 1 — ATENÇÃO (strip horizontal condicional) */
+.pg-atencao-strip {
+  background: #FEF9F0;
+  border: 1px solid #F59E0B33;
+  border-left: 3px solid #F59E0B;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pg-strip-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #92400E;
+  font-weight: 600;
+}
+.pg-strip-head svg { width: 14px; height: 14px; color: #F59E0B; }
+.pg-strip-label { line-height: 1; }
+.pg-strip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pg-strip-item {
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-left: 3px solid var(--ac, #F59E0B);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--u-text);
+  transition: background .12s ease, border-color .12s ease;
+}
+button.pg-strip-item { cursor: pointer; text-align: left; }
+button.pg-strip-item:hover {
+  background: var(--u-card2);
+  border-color: var(--ac, #F59E0B);
+}
+.pg-strip-item .pg-alerta-ic svg { width: 16px; height: 16px; }
+.pg-strip-item .pg-alerta-cta {
+  margin-left: 6px;
+  color: var(--u-text3);
+  font-size: 13px;
+}
+
+/* NÍVEL 2 — HERO: resultado principal (Equipe + Tarefas) */
+.pg-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+.pg-hero-item {
+  background: var(--u-card);
+  border: 1px solid var(--u-border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pg-hero-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--u-text3);
+  font-weight: 600;
+}
+.pg-hero-label svg { width: 14px; height: 14px; color: var(--u-text3); }
+.pg-hero-value {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--u-text);
+  font-variant-numeric: tabular-nums;
+  flex-wrap: wrap;
+}
+.pg-hero-value b { font-size: 32px; font-weight: 700; }
+.pg-hero-de {
+  font-size: 13px;
+  color: var(--u-text3);
+  font-weight: 400;
+}
+.pg-hero-atr {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+}
+.pg-hero-sub {
+  font-size: 12px;
+  color: var(--u-text3);
+}
+.pg-v220 .pg-avs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding-top: 6px;
+  border-top: 1px solid var(--u-border2);
+}
+.pg-v220 .pg-card-link {
+  color: var(--u-accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+  background: transparent;
+  text-align: left;
+  width: fit-content;
+}
+.pg-v220 .pg-card-link:hover { text-decoration: underline; }
+
+/* v220 — dark mode overrides */
+html.dark .pg-atencao-strip {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+  border-left-color: #F59E0B;
+}
+html.dark .pg-strip-head { color: #FCD34D; }
+html.dark .pg-status-quiet {
+  background: rgba(22, 163, 74, 0.10);
+  border-color: rgba(22, 163, 74, 0.28);
+  color: #86EFAC;
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  .pg-hero { grid-template-columns: 1fr; }
+  .pg-strip-list { flex-direction: column; }
+  .pg-strip-item { width: 100%; }
+  .pg-hero-atr { margin-left: 0; width: 100%; }
+}
+@media (max-width: 600px){
+  .pg-hero-value { font-size: 26px; }
+  .pg-hero-value b { font-size: 26px; }
+  .pg-hero-item { padding: 14px 16px; }
+  .pg-v220 .pg-titulo { gap: 6px; }
+  .pg-v220 .pg-titulo-link { font-size: 11px; }
+}
+
 /* ===== v218 · hierarquia visual na Visão Geral ===== */
 .brf-panel-v218 {
   display: flex;
@@ -14181,7 +14481,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v219';
+var APP_BUILD = 'v222';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -27567,6 +27867,11 @@ function bindChecklistGestor(){
 
 function painelGestorHTML(){
   if (!painelGestorAtivo()) return '';
+  /* v220: Painel Gestor com HIERARQUIA — 4 níveis
+     NÍVEL 1 — Atenção (strip, condicional)
+     NÍVEL 2 — Resultado principal (hero: equipe + tarefas)
+     NÍVEL 3 — Acompanhamento (meu checklist)
+     v117+v138: Cálculos e handlers preservados integralmente */
   var u = ST.session.user;
   var nome = (u.name||u.email||'').split(' ')[0];
   var subs = subordinadosDiretos(u.id);
@@ -27574,70 +27879,88 @@ function painelGestorHTML(){
   var pre = equipePresenteHoje();
   var docsP = docsParadosDoTime();
 
-  // Card 1: Rotinas / tarefas de hoje
-  var hojeCard =
-    '<div class="pg-card">'+
-      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#3B6FF718;color:#3B6FF7">'+icon('clipboard-check')+'</span><h4>Hoje</h4></div>'+
-      '<div class="pg-card-nums">'+
-        '<div class="pg-num"><b>'+tsk.deHoje.length+'</b><span>tarefas para hoje</span></div>'+
-        '<div class="pg-num"><b style="color:'+(tsk.atrasadas.length?'#EF4444':'#16A34A')+'">'+tsk.atrasadas.length+'</b><span>atrasadas</span></div>'+
-      '</div>'+
-      (tsk.deHoje.length ? '<button class="pg-card-link" data-pg-ir="tarefas">Ver tarefas de hoje →</button>' : '')+
-    '</div>';
-
-  // Card 2: Equipe presente
-  var equipeCard =
-    '<div class="pg-card">'+
-      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#16A34A18;color:#16A34A">'+icon('users')+'</span><h4>Equipe</h4></div>'+
-      '<div class="pg-card-nums">'+
-        '<div class="pg-num"><b style="color:#16A34A">'+pre.presentes.length+'</b><span>presentes</span></div>'+
-        '<div class="pg-num"><b>'+subs.length+'</b><span>total</span></div>'+
-      '</div>'+
-      (pre.presentes.length ? '<div class="pg-avs">'+ pre.presentes.slice(0,6).map(function(p){
-        return '<span class="cad-eq-mini" style="background:'+esc(p.color||'#64748B')+'" title="'+esc(p.name||'')+'">'+esc(iniciais(p.name||''))+'</span>';
-      }).join('') + (pre.presentes.length>6 ? '<span class="cad-eq-mini extra">+'+(pre.presentes.length-6)+'</span>' : '') +'</div>' : '')+
-    '</div>';
-
-  // Card 3: Alertas
-  var alertas = [];
+  /* ---------- NÍVEL 1: ATENÇÃO (strip, condicional) ---------- */
+  var alertItens = [];
   if (tsk.atrasadas.length){
-    alertas.push({ ic:icon('warning'), txt: tsk.atrasadas.length+' tarefa'+(tsk.atrasadas.length===1?'':'s')+' atrasada'+(tsk.atrasadas.length===1?'':'s')+' no time', cor:'#EF4444', acao:'tarefas' });
+    alertItens.push({ ic:'fire', qt:tsk.atrasadas.length, tx:'tarefa'+(tsk.atrasadas.length===1?'':'s')+' atrasada'+(tsk.atrasadas.length===1?'':'s')+' no time', cor:'#EF4444', acao:'tarefas' });
   }
   if (docsP.length){
-    alertas.push({ ic:icon('file-text'), txt: docsP.length+' documento'+(docsP.length===1?'':'s')+' sem edição há 90+ dias', cor:'#F59E0B', acao:'docs' });
+    alertItens.push({ ic:'file-text', qt:docsP.length, tx:'documento'+(docsP.length===1?'':'s')+' sem edição 90+ dias', cor:'#F59E0B', acao:'docs' });
   }
   if (pre.ausentes.length && pre.presentes.length){
-    alertas.push({ ic:icon('warning'), txt: pre.ausentes.length+' pessoa'+(pre.ausentes.length===1?'':'s')+' sem check-in hoje', cor:'#F59E0B', acao:null });
+    alertItens.push({ ic:'warning', qt:pre.ausentes.length, tx:'pessoa'+(pre.ausentes.length===1?'':'s')+' sem check-in hoje', cor:'#F59E0B', acao:null });
   }
-  var alertasHTML;
-  if (!alertas.length){
-    alertasHTML = '<div class="pg-vazio">✓ Sem alertas hoje</div>';
-  } else {
-    alertasHTML = alertas.map(function(a){
-      return '<div class="pg-alerta" style="border-left-color:'+a.cor+'">'+
-        '<span class="pg-alerta-ic">'+a.ic+'</span>'+
-        '<span class="pg-alerta-txt">'+esc(a.txt)+'</span>'+
-        (a.acao ? '<button class="pg-alerta-btn" data-pg-ir="'+a.acao+'">Ver →</button>' : '')+
-      '</div>';
-    }).join('');
+
+  var atencaoHTML = '';
+  if (alertItens.length > 0){
+    atencaoHTML = '<section class="pg-atencao-strip pg-alertas" aria-label="Precisa da sua atenção">'+
+      '<div class="pg-strip-head">'+icon('warning')+'<span class="pg-strip-label">Precisa da sua atenção</span></div>'+
+      '<div class="pg-strip-list">'+alertItens.map(function(a){
+        var btnOrDiv = a.acao
+          ? '<button class="pg-alerta pg-strip-item" data-pg-ir="'+esc(a.acao)+'" style="--ac:'+a.cor+'">'
+          : '<div class="pg-alerta pg-strip-item" style="--ac:'+a.cor+'">';
+        var closeTag = a.acao ? '</button>' : '</div>';
+        return btnOrDiv+
+          '<span class="pg-alerta-ic" style="color:'+a.cor+'" aria-hidden="true">'+icon(a.ic)+'</span>'+
+          '<span class="pg-alerta-txt"><b style="color:'+a.cor+'">'+a.qt+'</b> '+esc(a.tx)+'</span>'+
+          (a.acao ? '<span class="pg-alerta-cta" aria-hidden="true">→</span>' : '')+
+          closeTag;
+      }).join('')+'</div>'+
+    '</section>';
   }
-  var alertasCard =
-    '<div class="pg-card">'+
-      '<div class="pg-card-h"><span class="pg-card-ic" style="background:#F59E0B18;color:#F59E0B">'+icon('bell')+'</span><h4>Alertas</h4></div>'+
-      '<div class="pg-alertas">'+alertasHTML+'</div>'+
-    '</div>';
 
-  var chkCard = checklistGestorCard(); // v138
+  /* ---------- STATUS QUIET (quando sem alertas) ---------- */
+  var statusQuietHTML = (alertItens.length === 0) ?
+    '<div class="pg-status-quiet">'+icon('check')+'<span style="margin-left:4px">Nenhum alerta hoje. Tudo em ordem.</span></div>' : '';
 
-  return '<div class="pg-wrap">'+
-    '<div class="pg-titulo">'+
-      '<h3>Painel do Gestor</h3>'+
-      '<span class="pg-sub">'+esc(nome)+' · '+subs.length+' pessoa'+(subs.length===1?'':'s')+' na sua equipe</span>'+
-      '<button class="pg-titulo-link" data-pg-org>Ver organograma completo →</button>'+
+  /* ---------- NÍVEL 2: HERO — Equipe + Tarefas ---------- */
+  var equipeAvs = pre.presentes.length
+    ? '<div class="pg-avs">'+pre.presentes.slice(0,6).map(function(p){
+        return '<span class="cad-eq-mini" style="background:'+esc(p.color||'#64748B')+'" title="'+esc(p.name||'')+'">'+esc(iniciais(p.name||''))+'</span>';
+      }).join('')+(pre.presentes.length>6 ? '<span class="cad-eq-mini extra">+'+(pre.presentes.length-6)+'</span>' : '')+'</div>'
+    : '';
+
+  var equipeHero = '<div class="pg-hero-item pg-equipe">'+
+    '<div class="pg-hero-label">'+icon('users')+'<span style="margin-left:4px">Equipe hoje</span></div>'+
+    '<div class="pg-hero-value">'+
+      '<b style="color:#16A34A">'+pre.presentes.length+'</b>'+
+      '<span class="pg-hero-de">de '+subs.length+'</span>'+
     '</div>'+
-    '<div class="pg-grid pg-grid-4">'+
-      hojeCard + equipeCard + alertasCard + chkCard +
+    '<div class="pg-hero-sub">'+(pre.presentes.length ? 'presente'+(pre.presentes.length===1?'':'s')+' agora' : 'ninguém com check-in ainda')+'</div>'+
+    equipeAvs+
+  '</div>';
+
+  var tarefasHero = '<div class="pg-hero-item pg-tarefas">'+
+    '<div class="pg-hero-label">'+icon('clipboard-check')+'<span style="margin-left:4px">Tarefas do time</span></div>'+
+    '<div class="pg-hero-value">'+
+      '<b>'+tsk.deHoje.length+'</b>'+
+      '<span class="pg-hero-de">pra hoje</span>'+
+      (tsk.atrasadas.length ? '<span class="pg-hero-atr" style="color:#EF4444">'+tsk.atrasadas.length+' atrasada'+(tsk.atrasadas.length===1?'':'s')+'</span>' : '')+
     '</div>'+
+    (tsk.deHoje.length ? '<button class="pg-card-link" data-pg-ir="tarefas">Ver tarefas de hoje →</button>' : '<div class="pg-hero-sub">tudo concluído</div>')+
+  '</div>';
+
+  var heroHTML = '<section class="pg-hero" aria-label="Resultado principal">'+
+    equipeHero + tarefasHero +
+  '</section>';
+
+  /* ---------- NÍVEL 3: ACOMPANHAMENTO (checklist do gestor) ---------- */
+  var chkCard = checklistGestorCard(); // v138 — preservado integral
+
+  /* ---------- HEADER ---------- */
+  var head = '<header class="pg-titulo">'+
+    '<h3>Painel do Gestor</h3>'+
+    '<span class="pg-sub">'+esc(nome)+' · '+subs.length+' pessoa'+(subs.length===1?'':'s')+' na sua equipe</span>'+
+    '<button class="pg-titulo-link" data-pg-org>Ver organograma completo →</button>'+
+  '</header>';
+
+  /* ---------- MONTAGEM FINAL ---------- */
+  return '<div class="pg-wrap pg-v220">'+
+    head+
+    statusQuietHTML+
+    atencaoHTML+
+    heroHTML+
+    chkCard+
   '</div>';
 }
 
@@ -29223,30 +29546,79 @@ function kpiTaxaCor(taxa){
 /* Painel principal */
 function kpiTarefasHTML(){
   if (!isAdmin(ST.session)) return emptyState({ icon:'gear', title:'Acesso restrito', text:'KPIs de Tarefas é exclusivo de administradores do setor.' });
+  /* v222: Hierarquia visual em KPIs de Tarefas — 4 níveis
+     NÍVEL 1 — Atenção (kpiRotinasQuebradasCardHTML + kpiTopCriticasCardHTML preservados + status quiet)
+     NÍVEL 2 — Desempenho (hero duplo: Taxa + Atrasadas)
+     NÍVEL 3 — Contexto (Concluídas + Ativas — menor peso)
+     NÍVEL 4 — Distribuições + Ranking (preservados integralmente)
+     Cálculos e bindings preservados: kpiGlobal, kpiRankingPessoas, data-kpiper, data-kpipessoa, kpitCsv */
   var g = kpiGlobal();
   var ranking = kpiRankingPessoas();
   var f = kpiTarefasFiltro();
 
+  /* ---------- HEADER + Toggle + CSV (preservados) ---------- */
   var toggle = '<div class="kpit-toggle">'+KPI_TAREFAS_PERIODOS.map(function(p){
     return '<button class="kpit-tg'+(f.periodo===p.key?' on':'')+'" data-kpiper="'+esc(p.key)+'">'+esc(p.label)+'</button>';
   }).join('')+'</div>';
 
   var csvBtn = '<button class="btn btn-ghost kpit-csv" id="kpitCsv">'+icon('folder')+'<span>Exportar CSV</span></button>';
 
-  var head = '<div class="kpit-head">'+
+  var head = '<header class="kpit-head">'+
     '<div><h2>KPIs de Tarefas</h2><div class="sub">Visão consolidada · '+esc(g.intv.label||'período')+'</div></div>'+
     toggle+csvBtn+
+  '</header>';
+
+  /* ---------- NÍVEL 1: ATENÇÃO (preservado + status quiet) ---------- */
+  // v172: alerta de rotinas quebradas no topo (só aparece se >0) — PRESERVADO
+  var alertaQuebradas = (typeof kpiRotinasQuebradasCardHTML==='function') ? kpiRotinasQuebradasCardHTML() : '';
+  // v174: TOP 5 críticas do sistema — PRESERVADO
+  var topCriticas = (typeof kpiTopCriticasCardHTML==='function') ? kpiTopCriticasCardHTML() : '';
+  // v222: status quiet se tudo zerado (sem quebradas + sem críticas + sem atrasadas)
+  var temAtencao = (alertaQuebradas || topCriticas || g.atrasadas > 0);
+  var statusQuietHTML = (!temAtencao) ?
+    '<div class="kpit-status-quiet">'+icon('check')+'<span style="margin-left:4px">Operação em dia. Nenhuma rotina quebrada, sem tarefas atrasadas.</span></div>' : '';
+
+  /* ---------- NÍVEL 2: HERO DUPLO (Taxa + Atrasadas) ---------- */
+  var taxaCor = kpiTaxaCor(g.taxa);
+  var pendentesPer = Math.max(0, g.totalPeriodo - g.concluidas);
+
+  var taxaHero = '<div class="kpit-hero-item kpit-taxa">'+
+    '<div class="kpit-hero-label">'+icon('trend')+'<span style="margin-left:4px">Taxa de conclusão</span></div>'+
+    '<div class="kpit-hero-value" style="color:'+taxaCor+'">'+g.taxa+'%</div>'+
+    '<div class="kpit-hero-sub">'+
+      '<b>'+g.concluidas+'</b> de '+g.totalPeriodo+' concluídas'+
+      (pendentesPer > 0 ? ' · '+pendentesPer+' pendentes' : '')+
+    '</div>'+
   '</div>';
 
-  // Cards resumo
-  var cards = '<div class="kpit-cards">'+
-    '<div class="crm-met-card"><span class="cmp-lbl">Ativas no sistema</span><b class="cmp-val">'+g.ativas+'</b><i class="cmp-sub">'+g.totalTarefas+' tarefas totais</i></div>'+
-    '<div class="crm-met-card"><span class="cmp-lbl">Concluídas</span><b class="cmp-val" style="color:#16A34A">'+g.concluidas+'</b><i class="cmp-sub">no período</i></div>'+
-    '<div class="crm-met-card"><span class="cmp-lbl">Atrasadas</span><b class="cmp-val" style="color:'+(g.atrasadas>0?'#EF4444':'var(--u-text)')+'">'+g.atrasadas+'</b><i class="cmp-sub">'+(g.atrasadas>0?'precisa atenção':'em dia')+'</i></div>'+
-    '<div class="crm-met-card"><span class="cmp-lbl">Taxa de conclusão</span><b class="cmp-val" style="color:'+kpiTaxaCor(g.taxa)+'">'+g.taxa+'%</b><i class="cmp-sub">'+g.concluidas+' / '+g.totalPeriodo+'</i></div>'+
+  var atrCor = (g.atrasadas > 0) ? '#EF4444' : '#16A34A';
+  var atrSub = (g.atrasadas > 0)
+    ? '<b style="color:#EF4444">precisa agir</b> — revise a lista abaixo'
+    : 'nenhuma pendência vencida';
+  var atrHero = '<div class="kpit-hero-item kpit-atr">'+
+    '<div class="kpit-hero-label">'+icon('warning')+'<span style="margin-left:4px">Atrasadas</span></div>'+
+    '<div class="kpit-hero-value" style="color:'+atrCor+'">'+g.atrasadas+'</div>'+
+    '<div class="kpit-hero-sub">'+atrSub+'</div>'+
   '</div>';
 
-  // Distribuição por status — barras horizontais
+  var heroHTML = '<section class="kpit-hero" aria-label="Desempenho principal">'+
+    taxaHero + atrHero +
+  '</section>';
+
+  /* ---------- NÍVEL 3: CONTEXTO (Concluídas + Ativas) ---------- */
+  var contextoHTML = '<section class="kpit-contexto" aria-label="Volume e contexto">'+
+    '<div class="kpit-ctx-item">'+
+      '<span class="kpit-ctx-lbl">Concluídas no período</span>'+
+      '<b class="kpit-ctx-val" style="color:#16A34A">'+g.concluidas+'</b>'+
+    '</div>'+
+    '<div class="kpit-ctx-item">'+
+      '<span class="kpit-ctx-lbl">Ativas no sistema</span>'+
+      '<b class="kpit-ctx-val">'+g.ativas+'</b>'+
+      '<i class="kpit-ctx-sub">'+g.totalTarefas+' tarefas totais</i>'+
+    '</div>'+
+  '</section>';
+
+  /* ---------- NÍVEL 4: Distribuição por status — PRESERVADA integralmente ---------- */
   var totalSt = g.porStatus.todo + g.porStatus.fazendo + g.porStatus.feito;
   function pctSt(n){ return totalSt>0 ? (n/totalSt*100).toFixed(1) : 0; }
   var distStatus = '<div class="kpit-dist">'+
@@ -29256,7 +29628,7 @@ function kpiTarefasHTML(){
     '<div class="kpit-bar-row"><span class="kpit-bl">Concluídas</span><div class="kpit-bar"><span style="width:'+pctSt(g.porStatus.feito)+'%;background:#16A34A"></span></div><b>'+g.porStatus.feito+'</b></div>'+
   '</div>';
 
-  // Distribuição por tipo de rotina
+  /* ---------- NÍVEL 4: Distribuição por tipo — PRESERVADA integralmente ---------- */
   var totalTp = g.porTipo.diaria + g.porTipo.semanal + g.porTipo.mensal;
   function pctTp(n){ return totalTp>0 ? (n/totalTp*100).toFixed(1) : 0; }
   var distTipo = '<div class="kpit-dist">'+
@@ -29267,7 +29639,7 @@ function kpiTarefasHTML(){
     '<div class="kpit-bar-row"><span class="kpit-bl">Únicas</span><div class="kpit-bar"><span style="width:'+((g.porTipo.unica/Math.max(1,g.totalTarefas))*100).toFixed(1)+'%;background:#F59E0B"></span></div><b>'+g.porTipo.unica+'</b></div>'+
   '</div>';
 
-  // Ranking por pessoa — tabela
+  /* ---------- NÍVEL 5: Ranking por pessoa — PRESERVADO integralmente ---------- */
   var linhasRk;
   if (!ranking.length){
     linhasRk = '<div class="dash-empty">Nenhum colaborador no setor.</div>';
@@ -29306,11 +29678,14 @@ function kpiTarefasHTML(){
     ranking_head+linhasRk+
   '</div>';
 
-  // v172: alerta de rotinas quebradas no topo (só aparece se >0)
-  var alertaQuebradas = (typeof kpiRotinasQuebradasCardHTML==='function') ? kpiRotinasQuebradasCardHTML() : '';
-  // v174: TOP 5 críticas do sistema
-  var topCriticas = (typeof kpiTopCriticasCardHTML==='function') ? kpiTopCriticasCardHTML() : '';
-  return '<div class="kpit-panel">'+head+alertaQuebradas+topCriticas+cards+
+  /* ---------- MONTAGEM FINAL ---------- */
+  return '<div class="kpit-panel kpit-v222">'+
+    head+
+    alertaQuebradas+
+    topCriticas+
+    statusQuietHTML+
+    heroHTML+
+    contextoHTML+
     '<div class="kpit-2col">'+distStatus+distTipo+'</div>'+
     rankingBloco+
   '</div>';
