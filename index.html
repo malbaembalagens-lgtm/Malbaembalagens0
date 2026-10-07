@@ -14481,7 +14481,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v223';
+var APP_BUILD = 'v224';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -30852,6 +30852,78 @@ var ACCESS_FUNCTIONS = [
   { key:'operador',       label:'Operador',        base_nivel:'colaborador', desc:'Operação diária da loja.',               status:'ativo' },
   { key:'financeiro',     label:'Financeiro',      base_nivel:'gestor',      desc:'Gestão financeira.',                     status:'ativo' },
   { key:'marketing',      label:'Marketing',       base_nivel:'gestor',      desc:'Campanhas e conteúdo.',                  status:'ativo' }
+];
+/* ===== ACCESS-003 (v224) · CATÁLOGO DE PERMISSÕES (módulo×ação, read-only) =====
+   Catálogo canônico de permissões no formato `modulo:acao`. É a futura fonte
+   única para Central de Usuários, editor de permissões e podeConceder().
+   ATENÇÃO: NÃO é enforcement. Ninguém consome isto ainda — can()/pageAllowed()
+   seguem inalterados. A autorização real virá de AUTH + PDP + RLS/RPC + escopo
+   + alçada (slices futuros). base_nivel NÃO deriva permissões daqui.
+   Granularidade de NEGÓCIO (não por botão). Ações: ver/criar/editar/excluir/
+   exportar/administrar — cada módulo usa só as que fazem sentido. */
+var ACCESS_ACTIONS = ['visualizar','criar','editar','excluir','exportar','administrar'];
+var ACCESS_MODULES = ['vendas','crm','metas','equipe','ponto','tarefas','projetos','estrategia','documentos','marketing','financeiro','relatorios','configuracoes','acessos'];
+var ACCESS_PERMISSION_CATALOG = [
+  // vendas
+  { key:'vendas:visualizar', module:'vendas', action:'visualizar', label:'Visualizar vendas', description:'Ver lançamentos e indicadores de vendas.', sensitive:false },
+  { key:'vendas:criar',      module:'vendas', action:'criar',      label:'Lançar vendas',      description:'Registrar novas vendas.', sensitive:false },
+  { key:'vendas:editar',     module:'vendas', action:'editar',     label:'Editar vendas',      description:'Alterar lançamentos de venda.', sensitive:false },
+  { key:'vendas:excluir',    module:'vendas', action:'excluir',    label:'Excluir vendas',     description:'Remover lançamentos de venda.', sensitive:true },
+  { key:'vendas:exportar',   module:'vendas', action:'exportar',   label:'Exportar vendas',    description:'Exportar dados de vendas.', sensitive:true },
+  // crm
+  { key:'crm:visualizar', module:'crm', action:'visualizar', label:'Visualizar CRM', description:'Ver clientes e histórico.', sensitive:false },
+  { key:'crm:criar',      module:'crm', action:'criar',      label:'Criar cliente',  description:'Cadastrar clientes no CRM.', sensitive:false },
+  { key:'crm:editar',     module:'crm', action:'editar',     label:'Editar cliente', description:'Alterar dados de clientes.', sensitive:false },
+  { key:'crm:excluir',    module:'crm', action:'excluir',    label:'Excluir cliente',description:'Remover clientes.', sensitive:true },
+  { key:'crm:exportar',   module:'crm', action:'exportar',   label:'Exportar CRM',   description:'Exportar base de clientes.', sensitive:true },
+  // metas
+  { key:'metas:visualizar',  module:'metas', action:'visualizar',  label:'Visualizar metas', description:'Ver metas e progresso.', sensitive:false },
+  { key:'metas:editar',      module:'metas', action:'editar',      label:'Editar metas',     description:'Definir/ajustar metas.', sensitive:false },
+  { key:'metas:administrar', module:'metas', action:'administrar', label:'Administrar metas',description:'Gerir metas da equipe/loja.', sensitive:false },
+  // equipe
+  { key:'equipe:visualizar',  module:'equipe', action:'visualizar',  label:'Visualizar equipe', description:'Ver colaboradores da loja.', sensitive:false },
+  { key:'equipe:editar',      module:'equipe', action:'editar',      label:'Editar equipe',     description:'Alterar dados de colaboradores.', sensitive:false },
+  { key:'equipe:administrar', module:'equipe', action:'administrar', label:'Administrar equipe',description:'Gerir a equipe da loja.', sensitive:true },
+  // ponto
+  { key:'ponto:visualizar', module:'ponto', action:'visualizar', label:'Visualizar ponto', description:'Ver registros de ponto.', sensitive:false },
+  { key:'ponto:editar',     module:'ponto', action:'editar',     label:'Corrigir ponto',   description:'Corrigir/justificar registros de ponto.', sensitive:true },
+  { key:'ponto:administrar',module:'ponto', action:'administrar', label:'Administrar ponto',description:'Aprovar ajustes e gerir reconhecimento facial.', sensitive:true },
+  // tarefas
+  { key:'tarefas:visualizar', module:'tarefas', action:'visualizar', label:'Visualizar tarefas', description:'Ver tarefas e rotinas.', sensitive:false },
+  { key:'tarefas:criar',      module:'tarefas', action:'criar',      label:'Criar tarefas',      description:'Criar tarefas e rotinas.', sensitive:false },
+  { key:'tarefas:editar',     module:'tarefas', action:'editar',     label:'Editar tarefas',     description:'Editar/redistribuir tarefas.', sensitive:false },
+  { key:'tarefas:excluir',    module:'tarefas', action:'excluir',    label:'Excluir tarefas',    description:'Remover tarefas.', sensitive:false },
+  // projetos
+  { key:'projetos:visualizar', module:'projetos', action:'visualizar', label:'Visualizar projetos', description:'Ver projetos e marcos.', sensitive:false },
+  { key:'projetos:criar',      module:'projetos', action:'criar',      label:'Criar projetos',      description:'Criar projetos.', sensitive:false },
+  { key:'projetos:editar',     module:'projetos', action:'editar',     label:'Editar projetos',     description:'Alterar projetos e marcos.', sensitive:false },
+  { key:'projetos:excluir',    module:'projetos', action:'excluir',    label:'Excluir projetos',    description:'Remover projetos.', sensitive:false },
+  // estrategia
+  { key:'estrategia:visualizar', module:'estrategia', action:'visualizar', label:'Visualizar estratégia', description:'Ver objetivos e ideias.', sensitive:false },
+  { key:'estrategia:editar',     module:'estrategia', action:'editar',     label:'Editar estratégia',     description:'Gerir objetivos e ideias.', sensitive:false },
+  // documentos
+  { key:'documentos:visualizar', module:'documentos', action:'visualizar', label:'Visualizar documentos', description:'Ver documentos, POPs e wiki.', sensitive:false },
+  { key:'documentos:criar',      module:'documentos', action:'criar',      label:'Criar documentos',      description:'Criar documentos.', sensitive:false },
+  { key:'documentos:editar',     module:'documentos', action:'editar',     label:'Editar documentos',     description:'Editar documentos.', sensitive:false },
+  { key:'documentos:excluir',    module:'documentos', action:'excluir',    label:'Excluir documentos',    description:'Arquivar/remover documentos.', sensitive:false },
+  // marketing
+  { key:'marketing:visualizar', module:'marketing', action:'visualizar', label:'Visualizar marketing', description:'Ver campanhas e conteúdo.', sensitive:false },
+  { key:'marketing:editar',     module:'marketing', action:'editar',     label:'Editar marketing',     description:'Gerir campanhas e conteúdo.', sensitive:false },
+  { key:'marketing:administrar',module:'marketing', action:'administrar', label:'Administrar marketing',description:'Gerir orçamento e metas de marketing.', sensitive:true },
+  // financeiro
+  { key:'financeiro:visualizar', module:'financeiro', action:'visualizar', label:'Visualizar financeiro', description:'Ver dados financeiros.', sensitive:true },
+  { key:'financeiro:editar',     module:'financeiro', action:'editar',     label:'Editar financeiro',     description:'Lançar/alterar dados financeiros.', sensitive:true },
+  { key:'financeiro:administrar',module:'financeiro', action:'administrar', label:'Administrar financeiro',description:'Aprovar reembolsos e gerir caixa/orçamento.', sensitive:true },
+  // relatorios
+  { key:'relatorios:visualizar', module:'relatorios', action:'visualizar', label:'Visualizar relatórios', description:'Ver relatórios e rankings.', sensitive:false },
+  { key:'relatorios:exportar',   module:'relatorios', action:'exportar',   label:'Exportar relatórios',   description:'Exportar relatórios.', sensitive:true },
+  // configuracoes
+  { key:'configuracoes:administrar', module:'configuracoes', action:'administrar', label:'Administrar configurações', description:'Alterar configurações do sistema.', sensitive:true },
+  // acessos (administração de usuários — concessão real virá de malba_admin_scope)
+  { key:'acessos:visualizar',  module:'acessos', action:'visualizar',  label:'Visualizar acessos', description:'Ver usuários, funções e permissões.', sensitive:true },
+  { key:'acessos:criar',       module:'acessos', action:'criar',       label:'Criar usuário',      description:'Criar usuários e conceder acesso.', sensitive:true },
+  { key:'acessos:editar',      module:'acessos', action:'editar',      label:'Editar usuário',     description:'Editar usuários, função e escopo.', sensitive:true },
+  { key:'acessos:administrar', module:'acessos', action:'administrar', label:'Administrar acessos', description:'Gerir funções, permissões e alçadas (limitado pela própria alçada).', sensitive:true }
 ];
 // nomes antigos continuam valendo (nada quebra pra quem já está cadastrado)
 var NIVEL_ALIAS = { user:'colaborador', store_manager:'supervisor', sector_admin:'gestor', admin_geral:'admin', super:'admin' };
