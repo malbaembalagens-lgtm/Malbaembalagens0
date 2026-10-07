@@ -14481,7 +14481,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v222';
+var APP_BUILD = 'v223';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -30838,6 +30838,21 @@ var NIVEIS = {
   admin:       { label:'Administrador Geral', color:'#8B5CF6', rank:5, desc:'Acesso total: estrutura, lojas, usuários e integrações.' }
 };
 var NIV_ORDER = ['viewer','colaborador','supervisor','gestor','admin'];
+/* ===== ACCESS-002 (v223) · camada de FUNÇÃO (metadados read-only) =====
+   Catálogo canônico das 7 Funções de acesso do Work OS. NÃO é a fonte de
+   verdade de permissões (isso é malba_perfis no banco + CAPS) — é só o
+   de-para estável Função→base_nivel para os próximos slices (Central de
+   Usuários). NÃO atribui nada a usuário, NÃO altera can()/nivelDe()/perms.
+   Cargo (malba_cargos) é dimensão separada e não aparece aqui. */
+var ACCESS_FUNCTIONS = [
+  { key:'administrador',  label:'Administrador',   base_nivel:'admin',       desc:'Controle global do sistema.',            status:'ativo' },
+  { key:'gestor_lojas',   label:'Gestor de Lojas', base_nivel:'gestor',      desc:'Administra lojas, equipes e metas.',     status:'ativo' },
+  { key:'supervisor',     label:'Supervisor',      base_nivel:'supervisor',  desc:'Acompanha execução e redistribui.',      status:'ativo' },
+  { key:'vendedor',       label:'Vendedor',        base_nivel:'colaborador', desc:'Executa vendas e atendimento.',          status:'ativo' },
+  { key:'operador',       label:'Operador',        base_nivel:'colaborador', desc:'Operação diária da loja.',               status:'ativo' },
+  { key:'financeiro',     label:'Financeiro',      base_nivel:'gestor',      desc:'Gestão financeira.',                     status:'ativo' },
+  { key:'marketing',      label:'Marketing',       base_nivel:'gestor',      desc:'Campanhas e conteúdo.',                  status:'ativo' }
+];
 // nomes antigos continuam valendo (nada quebra pra quem já está cadastrado)
 var NIVEL_ALIAS = { user:'colaborador', store_manager:'supervisor', sector_admin:'gestor', admin_geral:'admin', super:'admin' };
 // O QUE CADA NÍVEL PODE — a fonte única de verdade
