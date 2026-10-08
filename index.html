@@ -14481,7 +14481,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v225';
+var APP_BUILD = 'v226';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -26447,12 +26447,62 @@ function perfisCarregar(cb){
   });
 }
 
+/* ============================================================
+   ACCESS-004B — PDP COMPATIBILITY BRIDGE (v226)
+   Perfil CANÔNICO = tem permissões no formato 'modulo:acao' em
+   caps_adicionar. Nesse caso capsDoPerfil NÃO semeia CAPS[base_nivel]:
+   deriva as capacidades legadas (docs, equipe, gerir, ...) SOMENTE da
+   matriz explícita, garantindo least-privilege — Financeiro/Marketing
+   (base_nivel=gestor) não herdam 'gerir'/'equipe'/'redistribuir'/'rotinas'/
+   'sistema'. Perfil LEGADO (sem 'modulo:acao') mantém o comportamento
+   anterior, byte-a-byte. Garantia: caps efetivas <= o que a matriz concede;
+   nunca > matriz. Mapa derivado da matriz, NUNCA de base_nivel.
+   ============================================================ */
+function permEhCanonica(k){ return typeof k === 'string' && k.indexOf(':') !== -1; }
+function perfilUsaPermissoesCanonicas(perfil){
+  if (!perfil) return false;
+  var add = perfil.caps_adicionar;
+  if (!Array.isArray(add)) return false;
+  for (var i=0;i<add.length;i++){ if (permEhCanonica(add[i])) return true; }
+  return false;
+}
+/* Traduz permissões canônicas -> capacidades legadas usadas por can().
+   Cada regra deriva da matriz (ACCESS-004), nunca do base_nivel. */
+function capsLegadasDeCanonicas(perms){
+  perms = Array.isArray(perms) ? perms : [];
+  function tem(k){ return perms.indexOf(k) !== -1; }
+  function temAcao(acts){
+    for (var i=0;i<perms.length;i++){ if (acts.indexOf(String(perms[i]).split(':')[1]) !== -1) return true; }
+    return false;
+  }
+  var out = {};
+  if (tem('documentos:visualizar')) out.docs = 1;
+  if (temAcao(['criar','editar','excluir','administrar'])) out.executar = 1;
+  if (tem('estrategia:visualizar')) out.estrategia = 1;
+  if (tem('relatorios:visualizar')) out.indicadores = 1;
+  if (tem('equipe:visualizar')) out.redistribuir = 1;
+  if (tem('tarefas:excluir')) out.rotinas = 1;
+  if (tem('equipe:administrar')) { out.gerir = 1; out.equipe = 1; }
+  if (tem('configuracoes:administrar') || tem('acessos:administrar')) out.sistema = 1;
+  return out;
+}
+
 /* ---------- Compõe capacidades: base + adiciona - remove ---------- */
 function capsDoPerfil(perfil){
   if (!perfil) return null;
-  var base = CAPS[perfil.base_nivel] || {};
-  var out = Object.assign({}, base);
-  (perfil.caps_adicionar||[]).forEach(function(k){ out[k] = 1; });
+  var add = perfil.caps_adicionar || [];
+  var out;
+  if (perfilUsaPermissoesCanonicas(perfil)){
+    // Perfil CANÔNICO: não herda CAPS[base_nivel]. Deriva caps legadas da
+    // matriz e preserva as chaves 'modulo:acao' para o PDP canônico futuro.
+    out = capsLegadasDeCanonicas(add);
+    add.forEach(function(k){ out[k] = 1; });
+  } else {
+    // Perfil LEGADO: comportamento original (semeia base_nivel).
+    var base = CAPS[perfil.base_nivel] || {};
+    out = Object.assign({}, base);
+    add.forEach(function(k){ out[k] = 1; });
+  }
   (perfil.caps_remover||[]).forEach(function(k){ delete out[k]; });
   return out;
 }
