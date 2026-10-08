@@ -14481,7 +14481,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v224';
+var APP_BUILD = 'v225';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -30925,6 +30925,88 @@ var ACCESS_PERMISSION_CATALOG = [
   { key:'acessos:editar',      module:'acessos', action:'editar',      label:'Editar usuário',     description:'Editar usuários, função e escopo.', sensitive:true },
   { key:'acessos:administrar', module:'acessos', action:'administrar', label:'Administrar acessos', description:'Gerir funções, permissões e alçadas (limitado pela própria alçada).', sensitive:true }
 ];
+/* ===== ACCESS-004 (v225) · matriz FUNÇÃO→PERMISSÕES (read-only, INERTE) =====
+   Permissões (do ACCESS_PERMISSION_CATALOG) que cada Função concede, por
+   least-privilege. É a FONTE DE REFERÊNCIA do frontend para a futura Central
+   de Usuários / editor de permissões / podeConceder().
+   ATENÇÃO (decisão ACCESS-004): esta matriz NÃO é gravada em
+   malba_perfis.caps_adicionar neste slice, porque capsDoPerfil() hoje parte de
+   CAPS[base_nivel] e trata caps como chaves simples (ex.: 'gerir') — misturar
+   as chaves 'modulo:acao' ali faria a Função herdar as caps antigas do nível
+   ao ser atribuída, violando least-privilege. Enquanto o PDP novo não existir
+   (ACCESS-005+/AUTH), esta matriz é só referência: ninguém a consome, can()/
+   pageAllowed() seguem intactos. Ver ACCESS-004-FUNCTION-PERMISSIONS-v001.md. */
+var ACCESS_FUNCTION_PERMISSIONS = {
+  administrador: [
+    'vendas:visualizar','vendas:criar','vendas:editar','vendas:excluir','vendas:exportar',
+    'crm:visualizar','crm:criar','crm:editar','crm:excluir','crm:exportar',
+    'metas:visualizar','metas:editar','metas:administrar',
+    'equipe:visualizar','equipe:editar','equipe:administrar',
+    'ponto:visualizar','ponto:editar','ponto:administrar',
+    'tarefas:visualizar','tarefas:criar','tarefas:editar','tarefas:excluir',
+    'projetos:visualizar','projetos:criar','projetos:editar','projetos:excluir',
+    'estrategia:visualizar','estrategia:editar',
+    'documentos:visualizar','documentos:criar','documentos:editar','documentos:excluir',
+    'marketing:visualizar','marketing:editar','marketing:administrar',
+    'financeiro:visualizar','financeiro:editar','financeiro:administrar',
+    'relatorios:visualizar','relatorios:exportar',
+    'configuracoes:administrar',
+    'acessos:visualizar','acessos:criar','acessos:editar','acessos:administrar'
+  ],
+  gestor_lojas: [
+    'vendas:visualizar','vendas:criar','vendas:editar','vendas:exportar',
+    'crm:visualizar','crm:criar','crm:editar',
+    'metas:visualizar','metas:editar','metas:administrar',
+    'equipe:visualizar','equipe:editar','equipe:administrar',
+    'ponto:visualizar','ponto:editar','ponto:administrar',
+    'tarefas:visualizar','tarefas:criar','tarefas:editar','tarefas:excluir',
+    'projetos:visualizar','projetos:criar','projetos:editar',
+    'estrategia:visualizar','estrategia:editar',
+    'documentos:visualizar','documentos:criar','documentos:editar',
+    'relatorios:visualizar','relatorios:exportar',
+    'acessos:visualizar','acessos:criar','acessos:editar'
+  ],
+  supervisor: [
+    'vendas:visualizar','vendas:criar','vendas:editar',
+    'crm:visualizar','crm:criar','crm:editar',
+    'metas:visualizar',
+    'equipe:visualizar',
+    'ponto:visualizar','ponto:editar',
+    'tarefas:visualizar','tarefas:criar','tarefas:editar',
+    'projetos:visualizar','projetos:editar',
+    'estrategia:visualizar',
+    'documentos:visualizar','documentos:criar','documentos:editar',
+    'relatorios:visualizar'
+  ],
+  vendedor: [
+    'vendas:visualizar','vendas:criar',
+    'crm:visualizar','crm:criar','crm:editar',
+    'metas:visualizar',
+    'tarefas:visualizar','tarefas:editar',
+    'documentos:visualizar'
+  ],
+  operador: [
+    'vendas:visualizar',
+    'ponto:visualizar',
+    'tarefas:visualizar','tarefas:editar',
+    'documentos:visualizar'
+  ],
+  financeiro: [
+    'financeiro:visualizar','financeiro:editar','financeiro:administrar',
+    'vendas:visualizar','vendas:exportar',
+    'metas:visualizar',
+    'relatorios:visualizar','relatorios:exportar',
+    'documentos:visualizar'
+  ],
+  marketing: [
+    'marketing:visualizar','marketing:editar','marketing:administrar',
+    'crm:visualizar',
+    'estrategia:visualizar','estrategia:editar',
+    'metas:visualizar',
+    'documentos:visualizar','documentos:criar','documentos:editar',
+    'relatorios:visualizar'
+  ]
+};
 // nomes antigos continuam valendo (nada quebra pra quem já está cadastrado)
 var NIVEL_ALIAS = { user:'colaborador', store_manager:'supervisor', sector_admin:'gestor', admin_geral:'admin', super:'admin' };
 // O QUE CADA NÍVEL PODE — a fonte única de verdade
