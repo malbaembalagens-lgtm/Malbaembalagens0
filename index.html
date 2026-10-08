@@ -14481,7 +14481,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v226';
+var APP_BUILD = 'v227';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15561,7 +15561,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -15652,6 +15652,7 @@ function loadData() {
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { perfisCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v110
+    try { escopoCarregar(function(){ if (ST.page==='central'||ST.page==='cadastros') renderPage(); }); } catch(e){ console.error(e); } // ACCESS-006 (v227)
     try { rotinasCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v115
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
