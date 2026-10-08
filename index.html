@@ -14551,7 +14551,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v230';
+var APP_BUILD = 'v231';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15634,7 +15634,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'hoje', taskFilter:'hoje', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskFilter:'hoje', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -16130,7 +16130,7 @@ function renderShell(innerHTML, title, shellOpts) {
   });
   var navBtns=app.querySelectorAll('.nav-item:not([disabled])');
   for (var i=0;i<navBtns.length;i++) {
-    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='tarefas') ST.taskView='hoje'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
+    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='tarefas') ST.taskView='kanban'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
   }
   bindTopbar();
   var _burger=document.getElementById('topBurger');
@@ -18493,23 +18493,21 @@ function minhasTarefasHTML(){
 }
 
 function tarefasHTML() {
-  var view = ST.taskView || 'hoje';
+  var view = ST.taskView || 'kanban';
   var admin = isAdmin(ST.session);
-  var sub = admin
-    ? ((deptoComoModelo('lojas') && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc((SECTORS[ST.sector]||{label:ST.sector}).label))) // v106b
-    : 'Minhas tarefas';
+  var sub = 'Organize o trabalho e acompanhe o que precisa ser feito.';
   // v88: Calendário e Projetos viram VISÕES daqui — deixam de ser páginas do menu.
   // A permissão continua valendo: quem não tinha acesso à página não ganha a visão.
   var podeCal = pageAllowed('calendario', ST.session);
   var podeProj = pageAllowed('projetos', ST.session);
-  if (view==='calendario' && !podeCal) view='hoje';
-  if (view==='projetos' && !podeProj) view='hoje';
-  // v230: navegação principal = 3 áreas (Minhas tarefas / Projetos / Calendário).
-  // Quadro, Prioridades e Rotina do dia continuam existindo como visões internas
-  // (acessíveis por deep link), mas saem da navegação principal.
-  var mineOn = (view==='hoje' || view==='kanban' || view==='matriz' || view==='rotina');
+  if (view==='calendario' && !podeCal) view='kanban';
+  if (view==='projetos' && !podeProj) view='kanban';
+  // v231: navegação principal = 3 áreas (Kanban / Projetos / Calendário).
+  // Prioridades (matriz) e Rotina do dia continuam existindo como visões internas
+  // (acessíveis por deep link), mas saem da navegação principal. O Kanban é o centro.
+  var kanbanOn = (view==='kanban' || view==='matriz' || view==='rotina');
   var toggle = '<div class="view-toggle">'+
-    '<button class="vt-btn'+(mineOn?' on':'')+'" data-view="hoje">'+icon('tasks')+'Minhas tarefas</button>'+
+    '<button class="vt-btn'+(kanbanOn?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Kanban</button>'+
     (podeProj ? '<button class="vt-btn'+(view==='projetos'?' on':'')+'" data-view="projetos">'+icon('folder')+'Projetos</button>' : '')+
     (podeCal ? '<button class="vt-btn'+(view==='calendario'?' on':'')+'" data-view="calendario">'+icon('cal')+'Calendário</button>' : '')+
   '</div>';
