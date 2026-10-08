@@ -14458,6 +14458,61 @@ html.dark .brf-status-quiet {
 #frSave svg, #frNovaBtn svg, #ferNovoBtn svg, #ferDel svg, #agdSalvar svg, #gpResObsSave svg { width:14px; height:14px; }
 /* ===== fim v216 ===== */
 
+/* ===== ACCESS-006 (v227) — Central de Acessos (Usuários) ===== */
+.ac6-list{ display:flex; flex-direction:column; gap:8px; }
+.ac6-row{ display:flex; align-items:center; gap:12px; width:100%; text-align:left; background:var(--u-card,#fff); border:1px solid var(--u-border,#e6e8ee); border-radius:12px; padding:12px 14px; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+.ac6-row:hover{ border-color:var(--u-accent,#3B6FF7); box-shadow:0 2px 10px rgba(59,111,247,.08); }
+.ac6-av{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex:0 0 auto; }
+.ac6-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.ac6-main b{ font-size:14px; color:var(--u-text,#1a1d26); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ac6-main i{ font-style:normal; font-size:12px; color:var(--u-text2,#7a8095); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ac6-meta{ display:flex; align-items:center; gap:8px; flex:0 0 auto; }
+.ac6-chip{ font-size:11px; font-weight:600; padding:3px 9px; border-radius:999px; white-space:nowrap; }
+.ac6-chip.loja{ color:var(--u-text2,#7a8095); background:var(--u-bg2,#f2f4f8); }
+.ac6-chip.st-on{ color:#15803d; background:#15803d18; }
+.ac6-seta{ color:var(--u-text3,#aab); font-size:18px; flex:0 0 auto; }
+/* stepper */
+.ac6-modal{ max-width:560px; width:100%; }
+.ac6-steps{ display:flex; gap:4px; margin:2px 0 14px; }
+.ac6-step{ flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; font-size:10px; color:var(--u-text3,#aab); position:relative; }
+.ac6-step .dot{ width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; background:var(--u-bg2,#f2f4f8); color:var(--u-text2,#7a8095); border:2px solid transparent; }
+.ac6-step.on .dot{ background:var(--u-accent,#3B6FF7); color:#fff; }
+.ac6-step.done .dot{ background:#15803d; color:#fff; }
+.ac6-step.on .lb, .ac6-step.done .lb{ color:var(--u-text,#1a1d26); font-weight:600; }
+.ac6-body{ min-height:220px; }
+.ac6-sec-tit{ font-size:13px; font-weight:700; color:var(--u-text,#1a1d26); margin:0 0 4px; }
+.ac6-sec-sub{ font-size:12px; color:var(--u-text2,#7a8095); margin:0 0 12px; }
+.ac6-func{ display:flex; flex-direction:column; gap:8px; max-height:330px; overflow:auto; }
+.ac6-opt{ display:flex; align-items:flex-start; gap:10px; border:1px solid var(--u-border,#e6e8ee); border-radius:10px; padding:10px 12px; cursor:pointer; }
+.ac6-opt.sel{ border-color:var(--u-accent,#3B6FF7); background:var(--u-accent,#3B6FF7)0d; }
+.ac6-opt input{ margin-top:2px; }
+.ac6-opt-main b{ font-size:13px; display:block; color:var(--u-text,#1a1d26); }
+.ac6-opt-main span{ font-size:11.5px; color:var(--u-text2,#7a8095); }
+.ac6-lojas{ display:flex; flex-direction:column; gap:7px; max-height:300px; overflow:auto; }
+.ac6-lj{ display:flex; align-items:center; gap:10px; border:1px solid var(--u-border,#e6e8ee); border-radius:10px; padding:9px 12px; cursor:pointer; font-size:13px; color:var(--u-text,#1a1d26); }
+.ac6-lj.sel{ border-color:var(--u-accent,#3B6FF7); background:var(--u-accent,#3B6FF7)0d; }
+.ac6-lj.disabled{ opacity:.45; pointer-events:none; }
+.ac6-todas{ display:flex; align-items:center; gap:10px; border:1px dashed var(--u-accent,#3B6FF7); border-radius:10px; padding:10px 12px; cursor:pointer; font-size:13px; font-weight:600; color:var(--u-accent,#3B6FF7); margin-bottom:10px; }
+.ac6-perms{ display:flex; flex-direction:column; gap:12px; max-height:320px; overflow:auto; }
+.ac6-perm-mod b{ font-size:12px; text-transform:capitalize; color:var(--u-text,#1a1d26); }
+.ac6-perm-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:5px; }
+.ac6-tag{ font-size:11px; padding:3px 8px; border-radius:7px; background:var(--u-bg2,#f2f4f8); color:var(--u-text2,#7a8095); }
+.ac6-tag.sens{ background:#dc262618; color:#dc2626; }
+.ac6-rev{ display:flex; flex-direction:column; gap:10px; }
+.ac6-rev-row{ display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--u-border,#eef0f4); font-size:13px; }
+.ac6-rev-row b{ color:var(--u-text2,#7a8095); font-weight:600; }
+.ac6-rev-row span{ color:var(--u-text,#1a1d26); text-align:right; }
+.ac6-warn{ font-size:12px; color:#b45309; background:#f59e0b14; border:1px solid #f59e0b33; border-radius:8px; padding:8px 10px; margin-top:10px; }
+.ac6-foot{ display:flex; gap:8px; justify-content:space-between; margin-top:16px; }
+.ac6-foot .right{ display:flex; gap:8px; margin-left:auto; }
+/* ===== fim ACCESS-006 ===== */
+
+/* ===== ACCESS-007 (v228) — chip de contexto na Visão Geral ===== */
+.brf-ctx{ display:inline-flex; align-items:center; font-size:12px; font-weight:600; color:var(--u-text2,#7a8095); background:var(--u-bg2,#f2f4f8); border:1px solid var(--u-border,#e6e8ee); border-radius:999px; padding:5px 11px; white-space:nowrap; align-self:center; }
+.brf-ctx svg{ width:14px; height:14px; }
+@media (max-width:600px){ .brf-ctx{ font-size:11px; padding:4px 9px; } }
+/* ===== fim ACCESS-007 ===== */
+
 </style>
 </head>
 <body>
@@ -14481,7 +14536,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v227';
+var APP_BUILD = 'v229';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15442,6 +15497,9 @@ function saveSession(s) { try { sessionStorage.setItem(SESSION_KEY, JSON.stringi
 function clearSession() {
   try { sessionStorage.removeItem(SESSION_KEY); } catch(e){}
   ['malba_vl_session','malba_sector','malba_v8_2_session'].forEach(function(k){ try{ sessionStorage.removeItem(k); }catch(e){} });
+  // ACCESS-007: nunca herdar contexto de loja entre usuários
+  if (typeof access7ClearContext==='function') access7ClearContext();
+  ST.viewStore = null;
 }
 function iniciais(n){ return (n||'U').split(' ').map(function(w){return w.charAt(0);}).slice(0,2).join('').toUpperCase(); }
 
@@ -15561,7 +15619,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -15652,7 +15710,7 @@ function loadData() {
     try { departamentosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v105
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { perfisCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v110
-    try { escopoCarregar(function(){ if (ST.page==='central'||ST.page==='cadastros') renderPage(); }); } catch(e){ console.error(e); } // ACCESS-006 (v227)
+    try { escopoCarregar(function(){ if (typeof access7InitContext==='function') access7InitContext(); if (ST.page==='central'||ST.page==='cadastros'||ST.page==='gestao') renderPage(); }); } catch(e){ console.error(e); } // ACCESS-006 (v227) + ACCESS-007 (v228)
     try { rotinasCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v115
     try { equipesCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v109
     try { cargosCarregar(function(){ if (ST.page==='config') renderPage(); }); } catch(e){ console.error(e); } // v104
@@ -15994,9 +16052,20 @@ function renderShell(innerHTML, title, shellOpts) {
         ((typeof topBreadcrumbHTML==='function') ? topBreadcrumbHTML() : '')+
         '<div class="top-spacer"></div>'+
         (function(){
-          if (!(isSuper(ST.session) && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length)) return '';
-          var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(su){ return '<option value="'+esc(su.id)+'"'+(String(ST.viewStore)===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+su.store_number))+'</option>'; }).join('');
-          return '<select class="top-store top-store-compact" id="topStore" title="Loja em foco">'+op+'</select>';
+          // ACCESS-007: seletor de CONTEXTO (contexto != autorização). Só setor lojas,
+          // nunca em login de loja (ST.store), e só quando há escolha real. Lista
+          // SOMENTE lojas autorizadas; "Todas" só quando permitido pelo papel/escopo.
+          if (ST.sector!=='lojas' || ST.store) return '';
+          if (typeof access7AuthorizedStores!=='function') return '';
+          var auth = access7AuthorizedStores();
+          var canAll = (typeof access7CanUseAll==='function') && access7CanUseAll();
+          if (!auth.length) return '';
+          if (!canAll && auth.length<2) return ''; // sem escolha real -> sem seletor
+          var ctx = (typeof getStoreContext==='function') ? getStoreContext() : { mode:'all', storeId:null };
+          var selId = ctx.mode==='store' ? String(ctx.storeId) : '';
+          var op = (canAll ? ('<option value=""'+(selId===''?' selected':'')+'>Todas as lojas</option>') : '')+
+            auth.map(function(su){ return '<option value="'+esc(su.id)+'"'+(selId===String(su.id)?' selected':'')+'>'+esc(su.name||('Loja '+su.store_number))+'</option>'; }).join('');
+          return '<select class="top-store top-store-compact" id="topStore" title="Contexto de loja">'+op+'</select>';
         })()+
         ((typeof topbarPontoWidgetHTML==='function') ? '<div class="top-ponto-wrap">'+topbarPontoWidgetHTML()+'</div>' : '')+
         ((typeof cmdkTriggerHTML==='function') ? cmdkTriggerHTML() : '')+
@@ -16174,7 +16243,11 @@ function bindTopbar() {
   if (typeof bindTopbarV213 === 'function') bindTopbarV213();
   var kbd=document.getElementById('tsKbd'); if(kbd) kbd.addEventListener('click', openCommandPalette);  // compat: se #tsKbd ainda estiver em algum render legado
   var tt=document.getElementById('themeToggle'); if(tt) tt.addEventListener('click', toggleTheme);  // compat: se #themeToggle existir, mantém binding
-  var ts2=document.getElementById('topStore'); if(ts2) ts2.addEventListener('change', function(){ ST.viewStore=this.value||null; renderPage(); });
+  var ts2=document.getElementById('topStore'); if(ts2) ts2.addEventListener('change', function(){
+    if (typeof setStoreContext==='function'){ var v=this.value; setStoreContext(v?'store':'all', v||null); }
+    else { ST.viewStore=this.value||null; }
+    renderPage();
+  });
   var novo=document.getElementById('topNovo');
   if (novo) novo.addEventListener('click', novoContextual);
   var inp=document.getElementById('topSearch'), box=document.getElementById('topResults');
@@ -20309,6 +20382,23 @@ function fmtBRL(v) {
 
 // metas visíveis: loja vê as da própria loja (e as do setor inteiro); admin vê todas.
 function visibleGoals() {
+  // ACCESS-008 (v229): Metas respeita o Store Context do ACCESS-007 no setor lojas.
+  // Regra: meta com store_unit_id -> STORE_SCOPED (respeita getStoreFilter);
+  //        meta sem store_unit_id (null) -> GLOBAL/"meta do setor" (sempre visível — legado preservado).
+  // "Todas" = SOMENTE lojas autorizadas (getStoreFilter().storeIds), nunca o banco inteiro.
+  if (ST.sector==='lojas' && typeof getStoreFilter==='function'){
+    var f = getStoreFilter();
+    var ids = (f && f.storeIds) || [];
+    if (f && f.mode==='store' && ids.length){
+      var sidCtx = String(ids[0]);
+      return ST.goals.filter(function(g){ return !g.store_unit_id || String(g.store_unit_id)===sidCtx; });
+    }
+    if (f && f.mode==='all' && ids.length){
+      return ST.goals.filter(function(g){ return !g.store_unit_id || ids.indexOf(String(g.store_unit_id))!==-1; });
+    }
+    // ids vazio (sem escopo resolvível) -> cai no legado abaixo, sem filtrar artificialmente.
+  }
+  // Legado intacto (outros setores, login de loja via scopeStore, ou sem escopo).
   var sid = boardStore();
   if (sid) return ST.goals.filter(function(g){ return String(g.store_unit_id)===String(sid) || !g.store_unit_id; });
   return ST.goals;
@@ -20326,11 +20416,9 @@ function metasHTML() {
   });
   var sub = (deptoComoModelo('lojas') && ST.store && !admin) ? ('Metas de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Metas mensais'; // v106b
   var btn = admin ? '<button class="btn-new" id="btnNovaMeta">'+icon('plus')+'Nova meta</button>' : '';
+  // ACCESS-008: Metas reage ao contexto GLOBAL da sessão (seletor #topStore do ACCESS-007).
+  // O seletor de loja próprio da tela foi removido para não duplicar o controle de contexto.
   var storeFilter='';
-  if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
-    var so='<option value="">Todas as lojas</option>'+ST.storeUnits.map(function(s){return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
-    storeFilter='<select class="task-filter" id="metaStore" title="Ver loja">'+so+'</select>';
-  }
   // resumo do mês corrente (acompanhamento)
   var now2=new Date(), ym=now2.getFullYear(), mm2=now2.getMonth()+1;
   var curGs=gs.filter(function(g){ return g.month===mm2 && g.year===ym; });
@@ -21464,6 +21552,7 @@ function bindMetas() {
   var admin = isAdmin(ST.session);
   var nova = document.getElementById('btnNovaMeta');
   if (nova && admin) nova.addEventListener('click', function(){ openGoalModal(null); });
+  // ACCESS-008: #metaStore removido — Metas reage ao contexto global (#topStore). Bind defensivo mantido caso exista.
   var ms=document.getElementById('metaStore');
   if (ms) ms.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
   if (!admin) return;
@@ -25031,6 +25120,7 @@ function centralArvoreHTML(){
     item('organograma', icon('network'), 'Organograma', (ST.departamentos||[]).length, '', c.nav==='organograma');
 
   var sistemaHTML =
+    item('acessos-usuarios', icon('key-round'), 'Usuários', (ST.allUsers||[]).length, '', c.nav==='acessos-usuarios')+
     item('acessos', icon('key-round'), 'Acessos e Permissões', comAcesso, '', c.nav==='acessos')+
     (isSuper(ST.session) ? item('perfis', icon('user-cog'), 'Perfis de Permissão', (5 + ((ST.perfis||[]).length)), '', c.nav==='perfis') : '')+
     item('rotinas-pop', icon('clipboard-check'), 'Rotinas (POPs)', (ST.rotinas||[]).length, '', c.nav==='rotinas-pop');
@@ -25051,6 +25141,7 @@ function centralConteudoHTML(){
   if (c.nav==='loja' && c.lojaId)   return centralLojaHTML(c.lojaId);
   if (c.nav==='colabs')  return centralListaColabsHTML();
   if (c.nav==='lojas')   return centralListaLojasHTML();
+  if (c.nav==='acessos-usuarios') return access6UsuariosHTML();
   if (c.nav==='acessos') return centralAcessosHTML();
   if (c.nav==='cargos')  return centralCargosHTML();
   if (c.nav==='departamentos' && isSuper(ST.session)) return centralDepartamentosHTML();
@@ -25404,6 +25495,16 @@ function bindCentral(){
   if (novoUser) novoUser.addEventListener('click', function(){
     // v188: wizard modo user
     openOnboardingWizard({ tipo: 'user', sector: (ST.sector||'gestao') });
+  });
+  // ACCESS-006 (v227): Central de Acessos · Usuários
+  var ac6Novo = document.getElementById('ac6Novo');
+  if (ac6Novo) ac6Novo.addEventListener('click', function(){ openAccess6Wizard(null); });
+  document.querySelectorAll('[data-ac6-user]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var uid=this.getAttribute('data-ac6-user');
+      var u=(ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
+      if (u) openAccess6Wizard(u);
+    });
   });
   // ações da aba Acesso
   var criarAc = document.getElementById('cadCriarAcesso');
@@ -26449,6 +26550,180 @@ function perfisCarregar(cb){
 }
 
 /* ============================================================
+   ACCESS-006 (v227) — ESCOPO + CONTEXTO DE LOJA
+   Carrega malba_user_store_scope (M:N usuário×loja) de forma
+   RESILIENTE: se a tabela ainda não existir (ACCESS-005 não
+   aplicado), degrada para [] sem quebrar nada. É ESCOPO (onde a
+   pessoa atua), NÃO autorização/enforcement — ninguém bloqueia
+   por isto ainda. Convenção MALBA: ZERO linhas de escopo = "Todas
+   as lojas" (contexto lógico). NUNCA existe loja fictícia nem "all"
+   no banco — "todas" é a ausência de restrição.
+   ============================================================ */
+function escopoCarregar(cb){
+  if (!sb){ ST.userStoreScope = []; if (cb) cb(); return; }
+  sb.from('malba_user_store_scope').select('*').then(function(r){
+    if (r.error){
+      // tabela ausente (ACCESS-005 não aplicado) ou outro erro -> degrada
+      ST.userStoreScope = [];
+      ST._escopoIndisponivel = true;
+      var msg=(r.error.message||'').toLowerCase();
+      if (msg.indexOf('does not exist')===-1 && msg.indexOf('relation')===-1) console.warn('escopo:', r.error.message);
+    } else {
+      ST.userStoreScope = r.data || [];
+      ST._escopoIndisponivel = false;
+    }
+    if (cb) cb();
+  });
+}
+/* Escopo de um usuário (linhas). [] = Todas as lojas por convenção. */
+function escopoDoUsuario(uid){
+  return (ST.userStoreScope||[]).filter(function(r){ return String(r.user_id)===String(uid); });
+}
+function escopoLojaIdsDoUsuario(uid){
+  return escopoDoUsuario(uid).map(function(r){ return String(r.store_unit_id); });
+}
+/* Resumo textual do escopo para a listagem. */
+function escopoResumoDoUsuario(uid){
+  var ids = escopoLojaIdsDoUsuario(uid);
+  if (!ids.length) return 'Todas as lojas';
+  if (ids.length===1){ var l=(ST.storeUnits||[]).find(function(s){return String(s.id)===ids[0];}); return l?(l.name||('Loja '+l.store_number)):'1 loja'; }
+  return ids.length+' lojas';
+}
+
+/* ============================================================
+   ACCESS-007 (v228) — STORE CONTEXT (contexto != autorização)
+   Modelo lógico do contexto de loja:
+     Loja específica -> { mode:'store', storeId:'uuid' }
+     Todas          -> { mode:'all',   storeId:null }
+   "Todas" = TODAS as lojas DENTRO DO ESCOPO do usuário (nunca todas
+   as lojas do banco). O contexto é estado/UX; a autorização (quais
+   lojas o usuário pode ver) vem de malba_user_store_scope + papel.
+   PONTE: NÃO mexe em ST.store (login de loja). Espelha ST.viewStore
+   para o caminho de super já existente (scopeStore()). Persistência
+   é POR USUÁRIO (chave com o id), então nunca herda contexto de outro.
+   ============================================================ */
+function access7CtxKey(){
+  var uid = (ST.session && ST.session.user && ST.session.user.id) || 'anon';
+  return 'malba_ctx_'+uid;
+}
+/* Linhas de escopo do usuário atual (malba_user_store_scope). [] = sem escopo explícito. */
+function userStoreScopeRows(){
+  var uid = (ST.session && ST.session.user && ST.session.user.id);
+  if (!uid) return [];
+  return (ST.userStoreScope||[]).filter(function(r){ return String(r.user_id)===String(uid); });
+}
+/* Lojas que o usuário PODE ver (autorização). Regra coerente com o modelo atual:
+   - escopo explícito -> exatamente essas lojas (interseção com as que existem);
+   - sem escopo + Admin/Gestor (isAdmin) -> todas as lojas;
+   - sem escopo + login de loja (ST.store) -> só a própria;
+   - senão -> nenhuma (fallback para o legado em telas não-piloto). */
+function access7AuthorizedStores(){
+  var units = (ST.storeUnits||[]);
+  var rows = userStoreScopeRows();
+  if (rows.length){
+    var ids = {}; rows.forEach(function(r){ ids[String(r.store_unit_id)]=1; });
+    return units.filter(function(u){ return ids[String(u.id)]; });
+  }
+  if (typeof isAdmin==='function' && isAdmin(ST.session)) return units.slice();
+  if (ST.store) return units.filter(function(u){ return String(u.id)===String(ST.store.id); });
+  return [];
+}
+/* "Todas as lojas" só é oferecida quando faz sentido: Admin/Gestor, ou escopo
+   explícito com >1 loja (o usuário pode agregar as DELE). Não para qualquer um. */
+function access7CanUseAll(){
+  if (typeof isAdmin==='function' && isAdmin(ST.session)) return true;
+  return userStoreScopeRows().length > 1;
+}
+/* Lê o contexto atual, SEMPRE validado contra a autorização. */
+function getStoreContext(){
+  var auth = access7AuthorizedStores();
+  var authIds = auth.map(function(u){ return String(u.id); });
+  var ctx = ST.storeCtx;
+  if (!ctx){
+    try { var raw = localStorage.getItem(access7CtxKey()); if (raw) ctx = JSON.parse(raw); } catch(e){ ctx = null; }
+  }
+  if (ctx && ctx.mode==='store' && authIds.indexOf(String(ctx.storeId))!==-1){
+    ST.storeCtx = { mode:'store', storeId:String(ctx.storeId) };
+    return ST.storeCtx;
+  }
+  // default/fallback seguro: Todas (dentro do escopo). Se não pode Todas e tem 1 loja, foca nela.
+  if (!access7CanUseAll() && authIds.length===1){
+    ST.storeCtx = { mode:'store', storeId:authIds[0] };
+  } else {
+    ST.storeCtx = { mode:'all', storeId:null };
+  }
+  return ST.storeCtx;
+}
+/* Troca o contexto (valida contra autorização). mode:'all'|'store'. */
+function setStoreContext(mode, storeId){
+  var authIds = access7AuthorizedStores().map(function(u){ return String(u.id); });
+  var ctx;
+  if (mode==='store' && authIds.indexOf(String(storeId))!==-1){
+    ctx = { mode:'store', storeId:String(storeId) };
+  } else {
+    ctx = { mode:'all', storeId:null }; // qualquer coisa inválida -> Todas (seguro)
+  }
+  ST.storeCtx = ctx;
+  // PONTE com o caminho existente (scopeStore usa ST.viewStore p/ super). NÃO toca ST.store.
+  ST.viewStore = ctx.mode==='store' ? ctx.storeId : null;
+  try { localStorage.setItem(access7CtxKey(), JSON.stringify(ctx)); } catch(e){}
+  return ctx;
+}
+/* Resolve o filtro de dados a partir do contexto + autorização.
+   Retorna { mode, storeIds }: em 'store' -> [a loja]; em 'all' -> TODAS as autorizadas.
+   É o único ponto que os módulos consomem (evita if espalhado). */
+function getStoreFilter(){
+  var auth = access7AuthorizedStores().map(function(u){ return String(u.id); });
+  var ctx = getStoreContext();
+  if (ctx.mode==='store' && auth.indexOf(String(ctx.storeId))!==-1){
+    return { mode:'store', storeIds:[String(ctx.storeId)] };
+  }
+  return { mode:'all', storeIds:auth }; // Todas = interseção com o escopo autorizado
+}
+/* Um dado (por store_unit_id) está no escopo atual? null/sem loja = não força filtro. */
+function storeInContext(storeId){
+  if (storeId===null || storeId===undefined || storeId==='') return null; // sem relação -> decisão do chamador
+  var f = getStoreFilter();
+  if (f.mode==='store') return String(storeId)===String(f.storeIds[0]);
+  if (!f.storeIds.length) return true; // sem escopo definido -> não filtra (legado)
+  return f.storeIds.indexOf(String(storeId))!==-1;
+}
+/* Inicializa/revalida o contexto (chamar após carregar dados e ao trocar de usuário). */
+function access7InitContext(){ ST.storeCtx = null; getStoreContext(); }
+/* Limpa o contexto (logout) para nunca herdar entre usuários. */
+function access7ClearContext(){ ST.storeCtx = null; }
+/* Rótulo humano do contexto atual. */
+function storeContextLabel(){
+  var ctx = getStoreContext();
+  if (ctx.mode==='store'){ var s=(ST.storeUnits||[]).find(function(x){ return String(x.id)===String(ctx.storeId); }); return s?(s.name||('Loja '+s.store_number)):'Loja'; }
+  return 'Todas as lojas';
+}
+
+/* ------------------------------------------------------------
+   FUNÇÃO (ACCESS_FUNCTIONS) <-> PERFIL (malba_perfis), por label.
+   profile_id continua sendo o vínculo real (já gravado hoje pelo
+   openUserModal). A Função é a camada de leitura humana em cima.
+   ------------------------------------------------------------ */
+function access6PerfilDaFuncao(funcKey){
+  var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===funcKey; });
+  if (!f) return null;
+  return (ST.perfis||[]).find(function(p){ return String(p.label||'').trim().toLowerCase()===f.label.toLowerCase(); }) || null;
+}
+function access6FuncaoDoUsuario(u){
+  if (u && u.profile_id){
+    var p = (ST.perfis||[]).find(function(x){ return String(x.id)===String(u.profile_id); });
+    if (p){ var f = ACCESS_FUNCTIONS.find(function(x){ return x.label.toLowerCase()===String(p.label||'').trim().toLowerCase(); }); if (f) return f.key; }
+  }
+  var nv = nivelDe(u);
+  var byNv = ACCESS_FUNCTIONS.find(function(x){ return x.base_nivel===nv; });
+  return byNv ? byNv.key : null;
+}
+function access6FuncaoLabel(funcKey){
+  var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===funcKey; });
+  return f ? f.label : '—';
+}
+
+/* ============================================================
    ACCESS-004B — PDP COMPATIBILITY BRIDGE (v226)
    Perfil CANÔNICO = tem permissões no formato 'modulo:acao' em
    caps_adicionar. Nesse caso capsDoPerfil NÃO semeia CAPS[base_nivel]:
@@ -26528,6 +26803,328 @@ function perfilLabelDe(u){
   }
   var nv = nivelDe(u);
   return (NIVEIS[nv]||{label:nv}).label;
+}
+
+/* ============================================================
+   ACCESS-006 (v227) — CENTRAL DE ACESSOS · USUÁRIOS (MVP)
+   UI funcional: lista de usuários + fluxo de 5 passos
+   (Dados · Função · Lojas · Permissões · Revisão).
+   Consome: malba_users, malba_perfis (via ST.perfis), ACCESS_FUNCTIONS,
+   ACCESS_FUNCTION_PERMISSIONS, ACCESS_PERMISSION_CATALOG, malba_store_units,
+   malba_user_store_scope. NÃO mexe em Auth/JWT/RLS/enforcement. profile_id
+   é o vínculo real (como o openUserModal já faz). Escopo = malba_user_store_scope
+   (UNIQUE evita duplicidade); [] = Todas as lojas (contexto lógico, sem loja
+   fictícia nem "all" no banco). Fluxos legados permanecem intactos.
+   ============================================================ */
+function access6PodeVer(){ return isAdmin(ST.session); }        // Admin/Gestor veem
+function access6PodeEditar(){ return isAdmin(ST.session); }     // mesma regra do openUserModal (canEdit por setor)
+
+function access6UsuariosHTML(){
+  if (!access6PodeVer()){
+    return '<div class="cad-vazio">Sem permissão para ver acessos.</div>';
+  }
+  var users = (ST.allUsers||[]).slice();
+  if (centralGestorRestrito()) users = users.filter(function(u){ return String(u.sector||'')===String(ST.sector); });
+  users.sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  var podeCriar = access6PodeEditar();
+  var btn = podeCriar ? '<button class="btn-new" id="ac6Novo">'+icon('plus')+'Novo usuário</button>' : '';
+  var aviso = ST._escopoIndisponivel ? '<div class="ac6-warn">'+icon('warning')+' Escopo por loja indisponível: a tabela <b>malba_user_store_scope</b> ainda não existe no banco. Aplique a migration ACCESS-005 para habilitar o passo "Lojas". O restante do cadastro funciona normalmente.</div>' : '';
+  var linhas = users.length ? ('<div class="ac6-list">'+users.map(function(u){
+    var funcKey = access6FuncaoDoUsuario(u);
+    var funcLabel = funcKey ? access6FuncaoLabel(funcKey) : (typeof perfilLabelDe==='function'?perfilLabelDe(u):'—');
+    var nv = NIVEIS[nivelDe(u)] || NIVEIS.colaborador;
+    var escopo = escopoResumoDoUsuario(u.id);
+    var escTodas = escopo==='Todas as lojas';
+    return '<button class="ac6-row" data-ac6-user="'+esc(u.id)+'">'+
+      '<span class="ac6-av" style="background:'+(u.color||'#3B6FF7')+'22;color:'+(u.color||'#3B6FF7')+'">'+esc(iniciais(u.name))+'</span>'+
+      '<span class="ac6-main"><b>'+esc(u.name||'—')+'</b><i>'+esc(u.email||'')+'</i></span>'+
+      '<span class="ac6-meta">'+
+        '<span class="ac6-chip" style="color:'+nv.color+';background:'+nv.color+'18">'+esc(funcLabel)+'</span>'+
+        '<span class="ac6-chip '+(escTodas?'st-on':'loja')+'">'+icon('store')+' '+esc(escopo)+'</span>'+
+      '</span>'+
+      '<span class="ac6-seta">›</span>'+
+    '</button>';
+  }).join('')+'</div>') : '<div class="cad-vazio">Nenhum usuário cadastrado.</div>';
+  return '<div class="cad-titulo"><h3>'+icon('key-round')+'Usuários</h3><span class="cad-sub">'+users.length+' usuário(s) · Função, lojas e permissões</span>'+btn+'</div>'+
+    '<p class="cad-explica">Cada pessoa tem uma <b>Função</b> (o que pode fazer) e um <b>escopo de lojas</b> (onde atua). As permissões vêm da Função (menor privilégio).</p>'+
+    aviso+linhas;
+}
+
+/* ---------- Fluxo de 5 passos (drawer) ---------- */
+var AC6_STEPS = [
+  { n:1, key:'dados',  lb:'Dados' },
+  { n:2, key:'funcao', lb:'Função' },
+  { n:3, key:'lojas',  lb:'Lojas' },
+  { n:4, key:'perms',  lb:'Permissões' },
+  { n:5, key:'revisao',lb:'Revisão' }
+];
+function openAccess6Wizard(user){
+  if (!access6PodeEditar()){ if(typeof blockManage==='function') blockManage(); return; }
+  var isNew = !user;
+  var funcKey = isNew ? 'vendedor' : (access6FuncaoDoUsuario(user) || 'vendedor');
+  var escIds = isNew ? [] : escopoLojaIdsDoUsuario(user.id);
+  var s = {
+    user: user || null,
+    isNew: isNew,
+    step: 1,
+    nome: isNew ? '' : (user.name||''),
+    email: isNew ? '' : (user.email||''),
+    pass: '',
+    sector: isNew ? (ST.sector||'gestao') : (user.sector||ST.sector||'gestao'),
+    funcKey: funcKey,
+    escopoTodas: escIds.length===0,
+    lojaIds: escIds.slice()
+  };
+
+  var modal=document.createElement('div'); modal.className='modal-bg';
+  document.body.appendChild(modal);
+  function close(){ if(modal.parentNode) modal.parentNode.removeChild(modal); }
+  modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
+
+  function stepperHTML(){
+    return '<div class="ac6-steps">'+AC6_STEPS.map(function(st){
+      var cls = st.n===s.step ? 'on' : (st.n<s.step ? 'done' : '');
+      var mark = (st.n<s.step) ? icon('check-square') : String(st.n);
+      return '<div class="ac6-step '+cls+'"><span class="dot">'+mark+'</span><span class="lb">'+esc(st.lb)+'</span></div>';
+    }).join('')+'</div>';
+  }
+
+  function stepDados(){
+    var emailField = s.isNew
+      ? '<div class="modal-row"><label class="modal-label">E-mail *</label><input type="text" id="ac6Email" placeholder="voce@malba.com.br" value="'+esc(s.email)+'"></div>'
+      : '<div class="modal-row"><label class="modal-label">E-mail</label><input type="text" value="'+esc(s.email)+'" disabled style="opacity:.6"></div>';
+    var passField = '<div class="modal-row"><label class="modal-label">Senha '+(s.isNew?'*':'(em branco = manter)')+'</label><input type="text" id="ac6Pass" placeholder="'+(s.isNew?'senha de acesso':'•••••••• (inalterada)')+'" value="'+esc(s.pass)+'"></div>';
+    var sectorOpts = Object.keys(SECTORS).map(function(k){ return '<option value="'+k+'"'+(s.sector===k?' selected':'')+'>'+esc(SECTORS[k].label)+'</option>'; }).join('');
+    return '<div class="ac6-sec-tit">Dados da pessoa</div>'+
+      '<div class="ac6-sec-sub">Identificação e login. O status atual é '+ (s.isNew?'<b>Novo</b>':'<b>Ativo</b>') +'.</div>'+
+      '<div class="modal-row"><label class="modal-label">Nome *</label><input type="text" id="ac6Nome" placeholder="Nome completo" value="'+esc(s.nome)+'"></div>'+
+      emailField + passField +
+      '<div class="modal-row"><label class="modal-label">Setor</label><select id="ac6Sector">'+sectorOpts+'</select></div>';
+  }
+  function stepFuncao(){
+    var opts = ACCESS_FUNCTIONS.map(function(f){
+      var sel = s.funcKey===f.key;
+      var perfil = access6PerfilDaFuncao(f.key);
+      var semPerfil = perfil ? '' : ' <span class="ac6-tag sens">sem perfil no banco</span>';
+      return '<label class="ac6-opt'+(sel?' sel':'')+'">'+
+        '<input type="radio" name="ac6func" value="'+esc(f.key)+'"'+(sel?' checked':'')+'>'+
+        '<span class="ac6-opt-main"><b>'+esc(f.label)+semPerfil+'</b><span>'+esc(f.desc)+' · base: '+esc((NIVEIS[f.base_nivel]||{label:f.base_nivel}).label)+'</span></span>'+
+      '</label>';
+    }).join('');
+    return '<div class="ac6-sec-tit">Função</div>'+
+      '<div class="ac6-sec-sub">Define o que a pessoa pode fazer (menor privilégio). Grava em profile_id, como hoje.</div>'+
+      '<div class="ac6-func">'+opts+'</div>';
+  }
+  function stepLojas(){
+    if (ST._escopoIndisponivel){
+      return '<div class="ac6-sec-tit">Lojas (escopo)</div>'+
+        '<div class="ac6-warn">'+icon('warning')+' A tabela <b>malba_user_store_scope</b> não existe no banco (ACCESS-005 não aplicado). O escopo de lojas não será gravado. Aplique a migration para habilitar este passo. Por enquanto, o escopo fica como <b>Todas as lojas</b>.</div>';
+    }
+    var lojas = (ST.storeUnits||[]).slice().sort(function(a,b){ return (a.store_number||0)-(b.store_number||0); });
+    var todas = '<div class="ac6-todas" id="ac6Todas">'+icon(s.escopoTodas?'check-square':'store')+'<span>Todas as lojas (sem restrição de escopo)</span></div>';
+    var itens = lojas.map(function(l){
+      var sel = !s.escopoTodas && s.lojaIds.indexOf(String(l.id))!==-1;
+      var cls = 'ac6-lj'+(sel?' sel':'')+(s.escopoTodas?' disabled':'');
+      return '<label class="'+cls+'" data-ac6-loja="'+esc(l.id)+'">'+
+        '<input type="checkbox"'+(sel?' checked':'')+(s.escopoTodas?' disabled':'')+'>'+
+        '<span>'+esc(l.name||('Loja '+l.store_number))+(l.district?' · '+esc(l.district):'')+'</span>'+
+      '</label>';
+    }).join('');
+    return '<div class="ac6-sec-tit">Lojas (escopo)</div>'+
+      '<div class="ac6-sec-sub">Onde a pessoa atua. "Todas as lojas" = sem restrição (nenhuma linha no banco).</div>'+
+      todas+'<div class="ac6-lojas">'+itens+'</div>';
+  }
+  function stepPerms(){
+    var perms = (ACCESS_FUNCTION_PERMISSIONS[s.funcKey]||[]);
+    var porMod = {};
+    perms.forEach(function(k){ var m=k.split(':')[0]; (porMod[m]=porMod[m]||[]).push(k); });
+    var blocos = Object.keys(porMod).map(function(m){
+      var tags = porMod[m].map(function(k){
+        var cat = ACCESS_PERMISSION_CATALOG.find(function(c){ return c.key===k; });
+        var lb = cat ? cat.label : k.split(':')[1];
+        return '<span class="ac6-tag'+((cat&&cat.sensitive)?' sens':'')+'">'+esc(lb)+'</span>';
+      }).join('');
+      return '<div class="ac6-perm-mod"><b>'+esc(m)+'</b><div class="ac6-perm-tags">'+tags+'</div></div>';
+    }).join('');
+    return '<div class="ac6-sec-tit">Permissões da função</div>'+
+      '<div class="ac6-sec-sub">'+perms.length+' permissões concedidas por <b>'+esc(access6FuncaoLabel(s.funcKey))+'</b>. Somente leitura — a edição fina virá do editor de permissões (slice futuro).</div>'+
+      '<div class="ac6-perms">'+(blocos||'<div class="cad-vazio">Função sem permissões.</div>')+'</div>';
+  }
+  function stepRevisao(){
+    var perms = (ACCESS_FUNCTION_PERMISSIONS[s.funcKey]||[]);
+    var escTxt = s.escopoTodas ? 'Todas as lojas' : (s.lojaIds.length ? s.lojaIds.map(function(id){ var l=(ST.storeUnits||[]).find(function(x){return String(x.id)===String(id);}); return l?(l.name||('Loja '+l.store_number)):'?'; }).join(', ') : '— (nenhuma)');
+    var rows = [
+      ['Nome', s.nome||'—'],
+      ['E-mail', s.email||'—'],
+      ['Setor', (SECTORS[s.sector]||{label:s.sector}).label],
+      ['Função', access6FuncaoLabel(s.funcKey)],
+      ['Lojas', escTxt],
+      ['Permissões', perms.length+' (via função)']
+    ].map(function(p){ return '<div class="ac6-rev-row"><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></div>'; }).join('');
+    var perfil = access6PerfilDaFuncao(s.funcKey);
+    var avisoPerfil = perfil ? '' : '<div class="ac6-warn">'+icon('warning')+' Não há perfil "'+esc(access6FuncaoLabel(s.funcKey))+'" em malba_perfis. O usuário será salvo com o nível base da função; profile_id ficará vazio até o perfil existir.</div>';
+    var avisoEsc = (ST._escopoIndisponivel && !s.escopoTodas) ? '<div class="ac6-warn">'+icon('warning')+' O escopo de lojas não será gravado (tabela ausente).</div>' : '';
+    return '<div class="ac6-sec-tit">Revisão</div>'+
+      '<div class="ac6-sec-sub">Confira antes de salvar.</div>'+
+      '<div class="ac6-rev">'+rows+'</div>'+avisoPerfil+avisoEsc;
+  }
+
+  function bodyHTML(){
+    if (s.step===1) return stepDados();
+    if (s.step===2) return stepFuncao();
+    if (s.step===3) return stepLojas();
+    if (s.step===4) return stepPerms();
+    return stepRevisao();
+  }
+  function footHTML(){
+    var voltar = s.step>1 ? '<button class="btn btn-ghost" id="ac6Voltar">'+icon('arrow-left')+' Voltar</button>' : '<span></span>';
+    var direita = (s.step<5)
+      ? '<button class="btn btn-primary" id="ac6Avancar">Avançar '+icon('arrow-right')+'</button>'
+      : '<button class="btn btn-primary" id="ac6Salvar">'+icon('save')+' '+(s.isNew?'Criar usuário':'Salvar')+'</button>';
+    return '<div class="ac6-foot">'+voltar+'<div class="right">'+
+      '<button class="btn btn-ghost" id="ac6Cancelar">Cancelar</button>'+direita+'</div></div>';
+  }
+
+  function paint(){
+    modal.innerHTML = '<div class="modal ac6-modal">'+
+      '<div class="modal-title-input" style="cursor:default">'+(s.isNew?'Novo usuário':'Editar '+esc(s.user.name||'usuário'))+'</div>'+
+      stepperHTML()+
+      '<div class="ac6-body">'+bodyHTML()+'</div>'+
+      footHTML()+
+    '</div>';
+    bind();
+  }
+  function lerDados(){
+    var n=modal.querySelector('#ac6Nome'); if(n) s.nome=n.value;
+    var e=modal.querySelector('#ac6Email'); if(e) s.email=e.value;
+    var p=modal.querySelector('#ac6Pass'); if(p) s.pass=p.value;
+    var sec=modal.querySelector('#ac6Sector'); if(sec) s.sector=sec.value;
+  }
+  function validarAvanco(){
+    if (s.step===1){
+      lerDados();
+      if (!(s.nome||'').trim()){ toast('Informe o nome','error'); return false; }
+      if (s.isNew && !(s.email||'').trim()){ toast('Informe o e-mail','error'); return false; }
+      if (s.isNew && !(s.pass||'').trim()){ toast('Defina uma senha','error'); return false; }
+    }
+    if (s.step===2){
+      if (!s.funcKey){ toast('Escolha uma função','error'); return false; }
+    }
+    if (s.step===3){
+      if (!ST._escopoIndisponivel && !s.escopoTodas && s.lojaIds.length===0){ toast('Escolha ao menos uma loja ou marque "Todas"','error'); return false; }
+    }
+    return true;
+  }
+  function bind(){
+    modal.querySelector('#ac6Cancelar').addEventListener('click', close);
+    var vb=modal.querySelector('#ac6Voltar');
+    if (vb) vb.addEventListener('click', function(){ if(s.step>1){ s.step--; paint(); } });
+    var av=modal.querySelector('#ac6Avancar');
+    if (av) av.addEventListener('click', function(){ if(!validarAvanco()) return; s.step++; paint(); });
+    var sv=modal.querySelector('#ac6Salvar');
+    if (sv) sv.addEventListener('click', function(){ access6Salvar(s, modal, close); });
+    // passo 2: radios de função
+    modal.querySelectorAll('input[name="ac6func"]').forEach(function(r){
+      r.addEventListener('change', function(){ s.funcKey=this.value; paint(); });
+    });
+    // passo 3: todas + lojas
+    var todas=modal.querySelector('#ac6Todas');
+    if (todas) todas.addEventListener('click', function(){ s.escopoTodas=!s.escopoTodas; if(s.escopoTodas) s.lojaIds=[]; paint(); });
+    modal.querySelectorAll('[data-ac6-loja]').forEach(function(el){
+      el.addEventListener('click', function(ev){
+        if (s.escopoTodas) return;
+        ev.preventDefault();
+        var id=String(this.getAttribute('data-ac6-loja'));
+        var i=s.lojaIds.indexOf(id);
+        if (i===-1) s.lojaIds.push(id); else s.lojaIds.splice(i,1);
+        paint();
+      });
+    });
+  }
+  paint();
+  var nf=modal.querySelector('#ac6Nome'); if(nf) nf.focus();
+}
+
+/* ---------- Grava escopo (reconcilia malba_user_store_scope) ---------- */
+function access6SalvarEscopo(uid, desiredIds, done){
+  if (ST._escopoIndisponivel){ done && done(true, 'pulado'); return; } // tabela ausente: não bloqueia
+  desiredIds = (desiredIds||[]).map(String);
+  var atuais = escopoLojaIdsDoUsuario(uid);
+  var toAdd = desiredIds.filter(function(id){ return atuais.indexOf(id)===-1; });
+  var toDel = atuais.filter(function(id){ return desiredIds.indexOf(id)===-1; });
+  var ops = [];
+  if (toDel.length) ops.push(sb.from('malba_user_store_scope').delete().eq('user_id', uid).in('store_unit_id', toDel));
+  if (toAdd.length) ops.push(sb.from('malba_user_store_scope').insert(toAdd.map(function(id){ return { user_id: uid, store_unit_id: id }; })));
+  if (!ops.length){ done && done(true); return; }
+  Promise.all(ops).then(function(rs){
+    var bad=null; rs.forEach(function(r){ if(r&&r.error) bad=r.error; });
+    if (!bad){
+      ST.userStoreScope = (ST.userStoreScope||[]).filter(function(r){ return String(r.user_id)!==String(uid); });
+      desiredIds.forEach(function(id){ ST.userStoreScope.push({ user_id:uid, store_unit_id:id }); });
+      done && done(true);
+    } else {
+      console.error('[ac6 escopo]', bad);
+      done && done(false, bad.message||'erro');
+    }
+  });
+}
+
+/* ---------- Salva o usuário + função (profile_id) + escopo ---------- */
+function access6Salvar(s, modal, close){
+  if (s.step===1) lerDadosFallback(s, modal); // segurança
+  var nome=(s.nome||'').trim();
+  var email=(s.email||'').trim().toLowerCase();
+  var pass=(s.pass||'').trim();
+  if (!nome){ toast('Informe o nome','error'); return; }
+  if (s.isNew && (!email || !pass)){ toast('E-mail e senha são obrigatórios','error'); return; }
+  var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===s.funcKey; });
+  var base = f ? f.base_nivel : 'colaborador';
+  var perfil = access6PerfilDaFuncao(s.funcKey);
+  var rec = {
+    name: nome,
+    sector: s.sector || (s.user&&s.user.sector) || ST.sector || 'gestao',
+    access_level: base,
+    sector_role: (base==='admin'||base==='gestor') ? 'admin' : 'user',
+    role: (base==='admin') ? 'admin' : 'user',
+    profile_id: perfil ? perfil.id : null
+  };
+  if (s.isNew){ rec.email=email; rec.color=(s.user&&s.user.color)||'#3B6FF7'; rec.initials=iniciais(nome); }
+  if (pass) rec.password_hash = pass; // a tabela guarda a senha em password_hash (mesmo fluxo do openUserModal)
+  var btn = modal.querySelector('#ac6Salvar'); if(btn) setBusy(btn, true);
+  var desired = s.escopoTodas ? [] : (s.lojaIds||[]);
+
+  function finalizar(uid){
+    access6SalvarEscopo(uid, desired, function(ok, info){
+      if (!ok) toast('Usuário salvo, mas o escopo falhou: '+info,'error');
+      else if (info==='pulado' && !s.escopoTodas) toast('Usuário salvo. Escopo não gravado (tabela ausente — aplique ACCESS-005).','info');
+      if (close) close();
+      toast(s.isNew?'Usuário criado':'Usuário atualizado','success');
+      renderPage();
+    });
+  }
+
+  if (s.isNew){
+    sb.from('malba_users').insert(rec).select().single().then(function(r){
+      if (r.error || !r.data){ toast('Erro ao criar (e-mail já existe?)','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.textContent=''; btn.innerHTML=icon('save')+' Criar usuário'; } return; }
+      ST.allUsers.push(r.data);
+      if (typeof auditLog==='function') auditLog('Criou acesso (Central)', nome+' · '+(f?f.label:base));
+      finalizar(r.data.id);
+    });
+  } else {
+    sb.from('malba_users').update(rec).eq('id', s.user.id).then(function(r){
+      if (r.error){ toast('Erro ao salvar','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.innerHTML=icon('save')+' Salvar'; } return; }
+      for (var i=0;i<ST.allUsers.length;i++) if (String(ST.allUsers[i].id)===String(s.user.id)){ ST.allUsers[i]=Object.assign(ST.allUsers[i], rec); break; }
+      if (typeof auditLog==='function') auditLog('Editou acesso (Central)', nome+' · '+(f?f.label:base));
+      finalizar(s.user.id);
+    });
+  }
+}
+/* fallback defensivo: se por algum motivo os campos do passo 1 não foram lidos */
+function lerDadosFallback(s, modal){
+  var n=modal.querySelector('#ac6Nome'); if(n) s.nome=n.value;
+  var e=modal.querySelector('#ac6Email'); if(e) s.email=e.value;
+  var p=modal.querySelector('#ac6Pass'); if(p) s.pass=p.value;
+  var sec=modal.querySelector('#ac6Sector'); if(sec) s.sector=sec.value;
 }
 
 /* ============================================================
@@ -33222,10 +33819,18 @@ function visaoGeralHTML(){
   else saudacao = 'Boa noite';
   var meNome = ((ST.session&&ST.session.user&&ST.session.user.name)||'').split(' ')[0];
 
+  /* --- ACCESS-007: contexto de loja (STORE_SCOPED). Dado sem loja (null) é
+     mantido em "Todas" e descartado numa loja específica. Nunca inventa loja. --- */
+  var _ctxF = (typeof getStoreFilter==='function') ? getStoreFilter() : { mode:'all', storeIds:[] };
+  function _ctxKeep(storeId){
+    if (typeof storeInContext!=='function') return true;
+    return storeInContext(storeId) !== false; // null (sem loja) e true passam; false cai
+  }
   /* --- DADOS: Vendas (preservado) --- */
   function somaVendasNoDia(ds){
     var t = 0;
     (ST.salesEntries||[]).forEach(function(e){
+      if (!_ctxKeep(e.store_unit_id)) return;
       if (String(e.sale_date||'').slice(0,10) === ds) t += Number(e.value)||0;
     });
     return t;
@@ -33251,11 +33856,11 @@ function visaoGeralHTML(){
 
   /* --- DADOS: Meta do mês (preservado) --- */
   var vendasMes = 0;
-  (ST.salesEntries||[]).forEach(function(e){ if (_inMonth(e.sale_date)) vendasMes += Number(e.value)||0; });
+  (ST.salesEntries||[]).forEach(function(e){ if (_ctxKeep(e.store_unit_id) && _inMonth(e.sale_date)) vendasMes += Number(e.value)||0; });
   var metaMes = 0;
   var n = _ymNow();
   (ST.goals||[]).forEach(function(g){
-    if (Number(g.month)===n.m && Number(g.year)===n.y) metaMes += Number(g.goal_value)||0;
+    if (_ctxKeep(g.store_unit_id) && Number(g.month)===n.m && Number(g.year)===n.y) metaMes += Number(g.goal_value)||0;
   });
   var diaHj = hj.getDate();
   var diasMes = new Date(hj.getFullYear(), hj.getMonth()+1, 0).getDate();
@@ -33270,7 +33875,7 @@ function visaoGeralHTML(){
   var quebradas = (typeof kpiRotinasQuebradas==='function') ? kpiRotinasQuebradas() : [];
   var criticas = (typeof kpiTopCriticas==='function') ? kpiTopCriticas(10) : [];
   var pendReq = (typeof pendingRequests==='function') ? pendingRequests() : [];
-  var atrasadas = (ST.tasks||[]).filter(function(t){ return !t.is_rule && kpiTarefaAtrasada&&kpiTarefaAtrasada(t); });
+  var atrasadas = (ST.tasks||[]).filter(function(t){ return !t.is_rule && _ctxKeep(t.store_unit_id) && kpiTarefaAtrasada&&kpiTarefaAtrasada(t); });
 
   var alertItens = [];
   if (atrasadas.length > 0) alertItens.push({ic:'fire',qt:atrasadas.length,tx:'tarefa'+(atrasadas.length>1?'s':'')+' atrasada'+(atrasadas.length>1?'s':''),acao:'gestao/kpis',cor:'#EF4444'});
@@ -33310,11 +33915,22 @@ function visaoGeralHTML(){
      ============================================================ */
 
   /* HEADER — contexto (data + saudação) */
+  var _ctxChip = '';
+  (function(){
+    if (typeof storeContextLabel!=='function' || typeof access7AuthorizedStores!=='function') return;
+    var auth = access7AuthorizedStores();
+    var canAll = (typeof access7CanUseAll==='function') && access7CanUseAll();
+    if (!auth.length || (!canAll && auth.length<2)) return; // sem escolha -> sem chip
+    var lb = storeContextLabel();
+    if (_ctxF.mode==='all') lb += ' ('+_ctxF.storeIds.length+')';
+    _ctxChip = '<div class="brf-ctx" title="Contexto de loja (troque no topo)">'+icon('store')+'<span style="margin-left:5px">'+esc(lb)+'</span></div>';
+  })();
   var head = '<header class="brf-head">'+
     '<div class="brf-head-l">'+
       '<div class="brf-data">'+icon('cal')+'<span style="margin-left:4px">'+esc(dataTx)+'</span></div>'+
       '<div class="brf-hi">'+esc(saudacao)+', '+esc(meNome)+'.</div>'+
     '</div>'+
+    _ctxChip+
   '</header>';
 
   /* NÍVEL 1 — ATENÇÃO (strip, condicional: só aparece se houver alertas) */
