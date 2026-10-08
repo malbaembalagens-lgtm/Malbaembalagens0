@@ -14513,6 +14513,21 @@ html.dark .brf-status-quiet {
 @media (max-width:600px){ .brf-ctx{ font-size:11px; padding:4px 9px; } }
 /* ===== fim ACCESS-007 ===== */
 
+/* ===== v230 — Minhas tarefas (chips + seções) ===== */
+.mt-chips{ display:flex; gap:8px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:2px 0 10px; scrollbar-width:none; }
+.mt-chips::-webkit-scrollbar{ display:none; }
+.mt-chip{ flex:0 0 auto; font-size:13px; font-weight:600; color:var(--u-text2,#7a8095); background:var(--u-card,#fff); border:1px solid var(--u-border,#e6e8ee); border-radius:999px; padding:7px 14px; cursor:pointer; transition:all .12s; white-space:nowrap; }
+.mt-chip:hover{ border-color:var(--u-accent,#3B6FF7); color:var(--u-text,#1a1d26); }
+.mt-chip.on{ background:var(--u-accent,#3B6FF7); border-color:var(--u-accent,#3B6FF7); color:#fff; }
+.mt-list{ display:flex; flex-direction:column; gap:10px; }
+.mt-sec{ display:flex; flex-direction:column; gap:10px; }
+.mt-sec-h{ display:flex; align-items:center; gap:8px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--u-text3,#aab); margin:8px 0 2px; }
+.mt-sec-dot{ width:8px; height:8px; border-radius:50%; background:var(--u-text3,#aab); }
+.mt-sec-dot.late{ background:#EF4444; }
+.mt-sec-n{ font-size:11px; font-weight:700; color:var(--u-text2,#7a8095); background:var(--u-bg2,#f2f4f8); border-radius:999px; padding:1px 8px; margin-left:2px; }
+.mt-empty{ font-size:13px; color:var(--u-text3,#aab); padding:8px 2px; }
+/* ===== fim v230 ===== */
+
 </style>
 </head>
 <body>
@@ -14536,7 +14551,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v229';
+var APP_BUILD = 'v230';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15619,7 +15634,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'hoje', taskFilter:'hoje', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -16115,7 +16130,7 @@ function renderShell(innerHTML, title, shellOpts) {
   });
   var navBtns=app.querySelectorAll('.nav-item:not([disabled])');
   for (var i=0;i<navBtns.length;i++) {
-    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='tarefas') ST.taskView='kanban'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
+    navBtns[i].addEventListener('click', function(){ var pid=this.getAttribute('data-page'); if(pid==='equipe') ST.equipeTab='equipe'; if(pid==='tarefas') ST.taskView='hoje'; if(pid==='gestao') ST.gestaoTab=null; ST.page=pid; ST.openProject=null; navigate(ST.sector+'/'+pid); renderPage(); });
   }
   bindTopbar();
   var _burger=document.getElementById('topBurger');
@@ -18408,24 +18423,95 @@ function bindKPIs(){
 }
 
 /* ========== [10] TAREFAS ========== */
+/* ============================================================
+   v230 — MINHAS TAREFAS (visão padrão de Tarefas)
+   Responde "o que preciso fazer hoje?". É só um recorte/estado da
+   MESMA lista (ST.tasks via visibleTasks) — não é módulo novo, não
+   duplica dados, não cria rota por filtro. Reusa taskCardHTML e os
+   handlers de clique/conclusão já ligados por bindTarefas (ramo padrão).
+   Respeita o contexto de loja/responsável existente (boardStore/ST.taskStore).
+   ============================================================ */
+var MT_FILTERS = [
+  { k:'hoje',        lb:'Hoje' },
+  { k:'atrasadas',   lb:'Atrasadas' },
+  { k:'proximas',    lb:'Próximas' },
+  { k:'recorrentes', lb:'Recorrentes' },
+  { k:'todas',       lb:'Todas' },
+  { k:'concluidas',  lb:'Concluídas' }
+];
+function mtTaskToItem(t){
+  return { kind:'task', id:t.id, title:t.title, status:t.status||'todo',
+    due:(t.due_date||'').slice(0,10), assignee_id:t.assignee_id, priority:t.priority,
+    rec:t.recurrence, area:t.area,
+    source:(t.project_id?{type:'Projeto', name:projName(t.project_id), pid:t.project_id}:null),
+    sub:subProgress(t.subtasks), draggable:false };
+}
+function minhasTarefasHTML(){
+  var admin=isAdmin(ST.session);
+  var f = ST.taskFilter || 'hoje';
+  var hoje=today();
+  var base = visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined }).map(mtTaskToItem);
+  var chips = '<div class="mt-chips">'+MT_FILTERS.map(function(x){
+    return '<button type="button" class="mt-chip'+(f===x.k?' on':'')+'" data-mtfilter="'+x.k+'">'+esc(x.lb)+'</button>';
+  }).join('')+'</div>';
+  function byDue(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); }
+  function byDueDesc(a,b){ return (b.due||'').localeCompare(a.due||''); }
+  function sec(title, items, dotCls){
+    return '<div class="mt-sec"><div class="mt-sec-h"><span class="mt-sec-dot'+(dotCls?' '+dotCls:'')+'"></span>'+esc(title)+'<span class="mt-sec-n">'+items.length+'</span></div>'+items.map(taskCardHTML).join('')+'</div>';
+  }
+  var body='';
+  if (f==='hoje'){
+    var atras = base.filter(function(it){ return it.due && it.due<hoje && it.status!=='feito'; }).sort(byDue);
+    var hojeL = base.filter(function(it){ return it.status!=='feito' && (it.due===hoje || !it.due); }).sort(byDue);
+    if (!atras.length && !hojeL.length){
+      body = emptyState({ span:true, icon:'check', title:'Você está em dia', text:'Nenhuma tarefa atrasada ou para hoje.' });
+    } else {
+      if (atras.length) body += sec('Atrasadas', atras, 'late');
+      body += hojeL.length ? sec('Hoje', hojeL) : '<div class="mt-empty">Nada para hoje.</div>';
+    }
+  } else if (f==='atrasadas'){
+    var l1 = base.filter(function(it){ return it.due && it.due<hoje && it.status!=='feito'; }).sort(byDue);
+    body = l1.length ? l1.map(taskCardHTML).join('') : emptyState({ span:true, icon:'check', title:'Nenhuma tarefa atrasada', text:'Tudo em dia por aqui.' });
+  } else if (f==='proximas'){
+    var l2 = base.filter(function(it){ return it.due && it.due>hoje && it.status!=='feito'; }).sort(byDue);
+    body = l2.length ? l2.map(taskCardHTML).join('') : emptyState({ span:true, icon:'cal', title:'Nenhuma tarefa próxima', text:'Sem tarefas futuras agendadas.' });
+  } else if (f==='recorrentes'){
+    var seen={}, l3=[];
+    base.filter(function(it){ return it.rec && it.rec!=='none' && it.status!=='feito'; }).sort(byDue).forEach(function(it){
+      var t=taskById(it.id); var key=(t&&t.recur_group)?('g:'+t.recur_group):('a:'+String(it.title||'').toLowerCase().trim());
+      if (seen[key]) return; seen[key]=1; l3.push(it);
+    });
+    body = l3.length ? l3.map(taskCardHTML).join('') : emptyState({ span:true, icon:'clock', title:'Nenhuma tarefa recorrente', text:'Crie uma tarefa com repetição para vê-la aqui.' });
+  } else if (f==='concluidas'){
+    var l4 = base.filter(function(it){ return it.status==='feito'; }).sort(byDueDesc).slice(0,100);
+    body = l4.length ? l4.map(taskCardHTML).join('') : emptyState({ span:true, icon:'check', title:'Nada concluído ainda', text:'Tarefas concluídas aparecem aqui.' });
+  } else { // todas
+    var l5 = base.filter(function(it){ return it.status!=='feito'; }).sort(byDue);
+    body = l5.length ? l5.map(taskCardHTML).join('') : emptyState({ span:true, icon:'tasks', title:'Nenhuma tarefa', text:'Crie sua primeira tarefa pelo botão "Nova tarefa".' });
+  }
+  return chips + '<div class="mt-list">'+body+'</div>';
+}
+
 function tarefasHTML() {
-  var view = ST.taskView || 'kanban';
+  var view = ST.taskView || 'hoje';
   var admin = isAdmin(ST.session);
   var sub = admin
     ? ((deptoComoModelo('lojas') && ST.store) ? ('Operação de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : ('Setor '+esc((SECTORS[ST.sector]||{label:ST.sector}).label))) // v106b
     : 'Minhas tarefas';
-  var rotinaBtn = deptoTemRotinas(ST.sector) ? '<button class="vt-btn'+(view==='rotina'?' on':'')+'" data-view="rotina">'+icon('clock')+'Rotina do dia</button>' : ''; // v105
   // v88: Calendário e Projetos viram VISÕES daqui — deixam de ser páginas do menu.
   // A permissão continua valendo: quem não tinha acesso à página não ganha a visão.
   var podeCal = pageAllowed('calendario', ST.session);
   var podeProj = pageAllowed('projetos', ST.session);
-  if (view==='calendario' && !podeCal) view='kanban';
-  if (view==='projetos' && !podeProj) view='kanban';
-  var toggle = '<div class="view-toggle">'+rotinaBtn+
-    '<button class="vt-btn'+(view==='kanban'?' on':'')+'" data-view="kanban">'+icon('dashboard')+'Quadro</button>'+
-    '<button class="vt-btn'+(view==='matriz'?' on':'')+'" data-view="matriz">'+icon('target')+'Prioridades</button>'+
-    (podeCal ? '<button class="vt-btn'+(view==='calendario'?' on':'')+'" data-view="calendario">'+icon('cal')+'Calendário</button>' : '')+
+  if (view==='calendario' && !podeCal) view='hoje';
+  if (view==='projetos' && !podeProj) view='hoje';
+  // v230: navegação principal = 3 áreas (Minhas tarefas / Projetos / Calendário).
+  // Quadro, Prioridades e Rotina do dia continuam existindo como visões internas
+  // (acessíveis por deep link), mas saem da navegação principal.
+  var mineOn = (view==='hoje' || view==='kanban' || view==='matriz' || view==='rotina');
+  var toggle = '<div class="view-toggle">'+
+    '<button class="vt-btn'+(mineOn?' on':'')+'" data-view="hoje">'+icon('tasks')+'Minhas tarefas</button>'+
     (podeProj ? '<button class="vt-btn'+(view==='projetos'?' on':'')+'" data-view="projetos">'+icon('folder')+'Projetos</button>' : '')+
+    (podeCal ? '<button class="vt-btn'+(view==='calendario'?' on':'')+'" data-view="calendario">'+icon('cal')+'Calendário</button>' : '')+
   '</div>';
   var filter = '';
   if (admin) {
@@ -18457,8 +18543,15 @@ function tarefasHTML() {
     return '<div class="view-bar">'+toggle+'</div>' + (view==='calendario' ? calendarioHTML() : projetosHTML());
   }
   // v120: envolve o head com sticky-bar para o filtro não sumir no scroll
-  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Trabalho</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div></div>';
-  return head + muralHTML() + (view==='kanban' ? rotinaHojeCardHTML() : '') + (view==='rotina' ? rotinaHTML() : (view==='matriz' ? matrizHTML() : kanbanHTML()));
+  var titulo = (view==='hoje') ? 'Minhas tarefas' : 'Trabalho';
+  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>'+titulo+'</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div></div>';
+  // v230: 'hoje' (Minhas tarefas) é o padrão; visões legadas seguem renderizando se acessadas por deep link.
+  var body;
+  if (view==='kanban') body = rotinaHojeCardHTML() + kanbanHTML();
+  else if (view==='rotina') body = rotinaHTML();
+  else if (view==='matriz') body = matrizHTML();
+  else body = minhasTarefasHTML();
+  return head + muralHTML() + body;
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
 function taskSeriesKey(t){ if(t.recur_group) return 'g:'+t.recur_group; if((t.recurrence||'none')!=='none') return 'a:'+((t.title||'').toLowerCase().trim())+'|'+t.recurrence; return ''; }
@@ -18944,9 +19037,12 @@ function bindTarefas() {
       moveBoardItem(dragData.kind, dragData.id, ns);
     });
   }
-  // alternar Quadro / Prioridades
+  // alternar áreas (Minhas tarefas / Projetos / Calendário) — e visões legadas via deep link
   var vts=app.querySelectorAll('.vt-btn');
   for (var v=0;v<vts.length;v++) vts[v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); });
+  // v230: chips de recorte de "Minhas tarefas" (Hoje/Atrasadas/Próximas/Recorrentes/Todas/Concluídas)
+  var mtc=app.querySelectorAll('[data-mtfilter]');
+  for (var mi=0;mi<mtc.length;mi++) mtc[mi].addEventListener('click', function(){ ST.taskFilter=this.getAttribute('data-mtfilter'); renderPage(); });
   // clique nas tarefas da matriz
   var mzs=app.querySelectorAll('.mz-task');
   for (var z=0;z<mzs.length;z++) mzs[z].addEventListener('click', function(){
@@ -28936,7 +29032,7 @@ function setorPreSelecionadoNovoUser(){
 /* ---------- Valores válidos por página ---------- */
 /* Se o subestado da URL não estiver nesta lista, é ignorado. */
 var SUBROUTE_VALIDOS = {
-  tarefas: ['kanban', 'lista', 'matriz', 'calendario', 'projetos', 'rotina'],
+  tarefas: ['hoje', 'kanban', 'lista', 'matriz', 'calendario', 'projetos', 'rotina'],
   config:  ['empresa','lojas','colabs','cargos','equipes','departamentos','perfis','organograma','rotinas-pop','acessos']
 };
 
