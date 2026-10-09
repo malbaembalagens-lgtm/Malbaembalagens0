@@ -14574,6 +14574,27 @@ html.dark .brf-status-quiet {
 .ext-main i{ font-style:normal; font-size:11.5px; color:var(--u-text3,#aab); }
 /* ===== fim v233 ===== */
 
+/* ===== v234 — Calendário: visão Semana + toggle Mês|Semana ===== */
+.cal-viewtog{ display:inline-flex; background:var(--u-bg2,#f2f4f8); border:1px solid var(--u-border,#e6e8ee); border-radius:999px; padding:2px; gap:2px; }
+.cal-viewtog .cvt{ font-size:12.5px; font-weight:600; color:var(--u-text2,#7a8095); background:transparent; border:none; border-radius:999px; padding:5px 13px; cursor:pointer; }
+.cal-viewtog .cvt.on{ background:var(--u-accent,#3B6FF7); color:#fff; }
+.cal-week{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+.cal-wcell{ min-height:150px; display:flex; flex-direction:column; }
+.cal-whd{ display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+.cal-wdow{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--u-text3,#aab); }
+.cal-wcell .cal-d{ font-size:14px; font-weight:700; color:var(--u-text,#1a1d26); }
+.cal-wcell.today{ outline:2px solid var(--u-accent,#3B6FF7); outline-offset:0; border-radius:12px; }
+.cal-wcell.today .cal-d{ color:var(--u-accent,#3B6FF7); }
+.cal-wcell .cal-add{ margin-left:auto; }
+.cal-wcell .cal-chips{ display:flex; flex-direction:column; gap:5px; overflow:auto; }
+.cal-wk-empty{ font-size:11.5px; color:var(--u-text3,#aab); padding:2px; }
+@media (max-width:720px){
+  .cal-week{ grid-template-columns:1fr; gap:10px; }
+  .cal-wcell{ min-height:0; border:1px solid var(--u-border,#e6e8ee); border-radius:12px; padding:10px 12px; }
+  .cal-wcell.today{ outline:none; border-color:var(--u-accent,#3B6FF7); }
+}
+/* ===== fim v234 ===== */
+
 </style>
 </head>
 <body>
@@ -43836,8 +43857,51 @@ function prioridadeDoDiaHTML(){
   return '<div class="pd-wrap"><div class="pd-inner">'+head+'<div class="pd-body">'+mainHTML+secsHTML+'</div></div></div>';
 }
 
+/* ============================================================
+   v234 — CALENDÁRIO Etapa 2: visualização SEMANAL (Seg→Dom)
+   Reusa a MESMA fonte (calDayItems) e os MESMOS chips/binds (abrir dia,
+   abrir item, drag calMove, botão "+"). Não duplica, não inventa horário:
+   eventos COM hora ordenam cronologicamente; itens sem hora ficam como
+   "dia inteiro". Mês continua padrão. Prioridade de hoje segue referente a hoje.
+   ============================================================ */
+function _calWeekStart(ds){ var p=String(ds).split('-'); var d=new Date(+p[0],+p[1]-1,+p[2],12,0,0); var dow=(d.getDay()+6)%7; d.setDate(d.getDate()-dow); return d; }
+function _calWeekLabel(ws){
+  var we=new Date(ws.getFullYear(),ws.getMonth(),ws.getDate()+6,12,0,0);
+  if (ws.getMonth()===we.getMonth() && ws.getFullYear()===we.getFullYear()) return ws.getDate()+'–'+we.getDate()+' '+MES_ABR[ws.getMonth()]+' '+we.getFullYear();
+  if (ws.getFullYear()===we.getFullYear()) return ws.getDate()+' '+MES_ABR[ws.getMonth()]+' – '+we.getDate()+' '+MES_ABR[we.getMonth()]+' '+we.getFullYear();
+  return ws.getDate()+' '+MES_ABR[ws.getMonth()]+' '+ws.getFullYear()+' – '+we.getDate()+' '+MES_ABR[we.getMonth()]+' '+we.getFullYear();
+}
+function calSemanaGridHTML(hoje, admin){
+  var ws=_calWeekStart(ST.cal.wkRef||hoje);
+  var dows=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  var grid='<div class="cal-week">';
+  for (var i=0;i<7;i++){
+    var dd=new Date(ws.getFullYear(),ws.getMonth(),ws.getDate()+i,12,0,0);
+    var ds=dd.getFullYear()+'-'+pad(dd.getMonth()+1)+'-'+pad(dd.getDate());
+    var items=calDayItems(ds);
+    // COM horário (eventos com hora) em ordem cronológica; depois SEM horário (relevância).
+    var timed=items.filter(function(it){ return it.k==='event' && it.hora; }).sort(function(a,b){ return String(a.hora).localeCompare(String(b.hora)); });
+    var untimed=calSortItems(items.filter(function(it){ return !(it.k==='event' && it.hora); }), ds);
+    var ordered=timed.concat(untimed);
+    var chips='', cap=12;
+    ordered.slice(0,cap).forEach(function(it){ chips+=calChipHTML(it); });
+    if (ordered.length>cap) chips+='<span class="cal-more">+'+(ordered.length-cap)+' mais</span>';
+    if (!ordered.length) chips+='<span class="cal-wk-empty">Sem itens</span>';
+    var addBtn = admin ? '<button class="cal-add" data-add="'+ds+'" title="Nova tarefa neste dia">+</button>' : '';
+    grid+='<div class="cal-cell cal-wcell'+(ds===hoje?' today':'')+'" data-date="'+ds+'">'+
+      '<div class="cal-whd"><span class="cal-wdow">'+dows[i]+'</span><span class="cal-d">'+dd.getDate()+'</span>'+addBtn+'</div>'+
+      '<div class="cal-chips">'+chips+'</div>'+
+    '</div>';
+  }
+  grid+='</div>';
+  return grid;
+}
+
 function calendarioHTML() {
   if (ST.cal.y==null) { var n=new Date(); ST.cal.y=n.getFullYear(); ST.cal.m=n.getMonth(); }
+  if (!ST.cal.view) ST.cal.view='mes';                 // v234: padrão = Mês
+  if (!ST.cal.wkRef) ST.cal.wkRef=today();
+  var view=ST.cal.view;
   var y=ST.cal.y, m=ST.cal.m;
   var first=new Date(y,m,1).getDay();
   var dim=new Date(y,m+1,0).getDate();
@@ -43855,31 +43919,45 @@ function calendarioHTML() {
   }
   var sub = admin ? 'Clique num dia para ver tudo e adicionar tarefas ou eventos' : 'Clique num dia para ver seus itens · você também pode criar lembretes';
   var addEvtBtn = '<button class="btn-new cal-evt-btn" id="btnNovoEvento">'+icon('plus')+'Evento</button>';
+  var viewTog='<div class="cal-viewtog">'+
+    '<button type="button" class="cvt'+(view==='mes'?' on':'')+'" data-calview="mes">Mês</button>'+
+    '<button type="button" class="cvt'+(view==='semana'?' on':'')+'" data-calview="semana">Semana</button>'+
+  '</div>';
+  var navLabel = (view==='semana') ? _calWeekLabel(_calWeekStart(ST.cal.wkRef)) : (MESES[m]+' '+y);
   var top='<div class="cal-top"><div><h2>Calendário</h2><div class="sub">'+sub+'</div></div>'+
-    '<div class="cal-top-r">'+filter+addEvtBtn+'<div class="cal-nav-wrap"><button class="cal-nav" id="calPrev">‹</button><span class="cal-month">'+MESES[m]+' '+y+'</span><button class="cal-nav" id="calNext">›</button><button class="cal-today-btn" id="calToday">Hoje</button></div></div></div>';
+    '<div class="cal-top-r">'+filter+addEvtBtn+viewTog+'<div class="cal-nav-wrap"><button class="cal-nav" id="calPrev">‹</button><span class="cal-month">'+navLabel+'</span><button class="cal-nav" id="calNext">›</button><button class="cal-today-btn" id="calToday">Hoje</button></div></div></div>';
   var legend='<div class="cal-legend"><span class="cal-lg"><i style="background:#9aa1ad"></i>A fazer</span><span class="cal-lg"><i style="background:#3B6FF7"></i>Em andamento</span><span class="cal-lg"><i style="background:#16A34A"></i>Concluída</span><span class="cal-lg"><i style="background:#8B5CF6"></i>Campanha</span><span class="cal-lg"><i style="background:#0EA5E9"></i>Evento/Reunião</span></div>';
 
-  var grid='<div class="cal-grid">';
-  dow.forEach(function(d){ grid+='<div class="cal-dow">'+d+'</div>'; });
-  for (var b=0;b<first;b++) grid+='<div class="cal-cell empty"></div>';
-  for (var d=1;d<=dim;d++) {
-    var ds=y+'-'+pad(m+1)+'-'+pad(d);
-    var items=calSortItems(calDayItems(ds), ds); // v232: ordena por relevância antes do limite
-    var chips='';
-    items.slice(0,4).forEach(function(it){ chips+=calChipHTML(it); });
-    if (items.length>4) chips+='<span class="cal-more">+'+(items.length-4)+' mais</span>';
-    var addBtn = admin ? '<button class="cal-add" data-add="'+ds+'" title="Nova tarefa neste dia">+</button>' : '';
-    grid+='<div class="cal-cell'+(ds===hoje?' today':'')+'" data-date="'+ds+'"><div class="cal-cell-h"><span class="cal-d">'+d+'</span>'+addBtn+'</div><div class="cal-chips">'+chips+'</div></div>';
+  var grid;
+  if (view==='semana'){
+    grid = calSemanaGridHTML(hoje, admin);
+  } else {
+    grid='<div class="cal-grid">';
+    dow.forEach(function(d){ grid+='<div class="cal-dow">'+d+'</div>'; });
+    for (var b=0;b<first;b++) grid+='<div class="cal-cell empty"></div>';
+    for (var d=1;d<=dim;d++) {
+      var ds=y+'-'+pad(m+1)+'-'+pad(d);
+      var items=calSortItems(calDayItems(ds), ds); // v232: ordena por relevância antes do limite
+      var chips='';
+      items.slice(0,4).forEach(function(it){ chips+=calChipHTML(it); });
+      if (items.length>4) chips+='<span class="cal-more">+'+(items.length-4)+' mais</span>';
+      var addBtn = admin ? '<button class="cal-add" data-add="'+ds+'" title="Nova tarefa neste dia">+</button>' : '';
+      grid+='<div class="cal-cell'+(ds===hoje?' today':'')+'" data-date="'+ds+'"><div class="cal-cell-h"><span class="cal-d">'+d+'</span>'+addBtn+'</div><div class="cal-chips">'+chips+'</div></div>';
+    }
+    grid+='</div>';
   }
-  grid+='</div>';
-  return top+prioridadeDoDiaHTML()+legend+grid; // v232: "Prioridade de hoje" entre o cabeçalho e o mês
+  return top+prioridadeDoDiaHTML()+legend+grid; // "Prioridade de hoje" segue referente a HOJE
 }
 
 function bindCalendario() {
+  // v234: toggle Mês|Semana
+  var cvts=app.querySelectorAll('[data-calview]');
+  for (var cv=0;cv<cvts.length;cv++) cvts[cv].addEventListener('click', function(){ ST.cal.view=this.getAttribute('data-calview'); renderPage(); });
   var prev=document.getElementById('calPrev'), next=document.getElementById('calNext'), tdy=document.getElementById('calToday');
-  if (prev) prev.addEventListener('click', function(){ ST.cal.m--; if(ST.cal.m<0){ ST.cal.m=11; ST.cal.y--; } renderPage(); });
-  if (next) next.addEventListener('click', function(){ ST.cal.m++; if(ST.cal.m>11){ ST.cal.m=0; ST.cal.y++; } renderPage(); });
-  if (tdy) tdy.addEventListener('click', function(){ var n=new Date(); ST.cal.y=n.getFullYear(); ST.cal.m=n.getMonth(); renderPage(); });
+  // v234: prev/next/Hoje navegam por SEMANA quando a visão é semanal; por MÊS no mensal.
+  if (prev) prev.addEventListener('click', function(){ if(ST.cal.view==='semana'){ ST.cal.wkRef=addDays(ST.cal.wkRef||today(), -7); } else { ST.cal.m--; if(ST.cal.m<0){ ST.cal.m=11; ST.cal.y--; } } renderPage(); });
+  if (next) next.addEventListener('click', function(){ if(ST.cal.view==='semana'){ ST.cal.wkRef=addDays(ST.cal.wkRef||today(), 7); } else { ST.cal.m++; if(ST.cal.m>11){ ST.cal.m=0; ST.cal.y++; } } renderPage(); });
+  if (tdy) tdy.addEventListener('click', function(){ var n=new Date(); ST.cal.y=n.getFullYear(); ST.cal.m=n.getMonth(); ST.cal.wkRef=today(); renderPage(); });
   var af=document.getElementById('calAssignee');
   if (af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
   var admin=isAdmin(ST.session);
