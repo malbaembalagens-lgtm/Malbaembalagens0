@@ -14678,7 +14678,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v246';
+var APP_BUILD = 'v247';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -27359,6 +27359,22 @@ function access6FuncaoLabel(funcKey){
   var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===funcKey; });
   return f ? f.label : '—';
 }
+/* ===== E1 (v247) · ALÇADA DO ACCESS-006 =====
+   Um concedente só pode atribuir Funções cujo nível-base seja <= à própria
+   patente. É a MESMA regra de alçada que o openUserModal já aplica aos níveis
+   (grantorRank = roleRank). Usa a hierarquia efetiva existente (NIVEIS.rank +
+   roleRank + nivelDe) — nunca lê access_level direto. Vale na UI E no save. */
+function access6FuncaoRank(funcKey){
+  var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===funcKey; });
+  var base = f ? f.base_nivel : 'colaborador';
+  return (NIVEIS[base] || NIVEIS.colaborador).rank;
+}
+function access6PodeConcederFuncao(funcKey, s){
+  return access6FuncaoRank(funcKey) <= roleRank(s || ST.session);
+}
+function access6FuncoesPermitidas(s){
+  return ACCESS_FUNCTIONS.filter(function(f){ return access6PodeConcederFuncao(f.key, s); });
+}
 
 /* ============================================================
    ACCESS-004B — PDP COMPATIBILITY BRIDGE (v226)
@@ -27539,7 +27555,10 @@ function openAccess6Wizard(user){
       '<div class="modal-row"><label class="modal-label">Setor</label><select id="ac6Sector">'+sectorOpts+'</select></div>';
   }
   function stepFuncao(){
-    var opts = ACCESS_FUNCTIONS.map(function(f){
+    // E1: só lista funções dentro da alçada do concedente.
+    var permitidas = access6FuncoesPermitidas(ST.session);
+    var atualProibida = s.funcKey && !access6PodeConcederFuncao(s.funcKey, ST.session);
+    var opts = permitidas.map(function(f){
       var sel = s.funcKey===f.key;
       var perfil = access6PerfilDaFuncao(f.key);
       var semPerfil = perfil ? '' : ' <span class="ac6-tag sens">sem perfil no banco</span>';
@@ -27548,8 +27567,14 @@ function openAccess6Wizard(user){
         '<span class="ac6-opt-main"><b>'+esc(f.label)+semPerfil+'</b><span>'+esc(f.desc)+' · base: '+esc((NIVEIS[f.base_nivel]||{label:f.base_nivel}).label)+'</span></span>'+
       '</label>';
     }).join('');
+    // E1: se a função atual (ex.: ao editar) está acima da alçada, avisa e NÃO pré-seleciona — exige escolher uma permitida.
+    var aviso = atualProibida
+      ? '<div class="ac6-warn">'+icon('warning')+' A função atual <b>'+esc(access6FuncaoLabel(s.funcKey))+'</b> está acima da sua alçada ('+esc((NIVEIS[nivelDe(ST.session.user)]||NIVEIS.colaborador).label)+'). Você não pode mantê-la nem concedê-la — escolha uma função dentro do seu nível para salvar.</div>'
+      : '';
+    if (!opts) opts = '<div class="cad-vazio">Nenhuma função disponível na sua alçada.</div>';
     return '<div class="ac6-sec-tit">Função</div>'+
-      '<div class="ac6-sec-sub">Define o que a pessoa pode fazer (menor privilégio). Grava em profile_id, como hoje.</div>'+
+      '<div class="ac6-sec-sub">Define o que a pessoa pode fazer (menor privilégio). Grava em profile_id, como hoje. Você só concede funções até o seu próprio nível.</div>'+
+      aviso+
       '<div class="ac6-func">'+opts+'</div>';
   }
   function stepLojas(){
@@ -27646,6 +27671,8 @@ function openAccess6Wizard(user){
     }
     if (s.step===2){
       if (!s.funcKey){ toast('Escolha uma função','error'); return false; }
+      // E1: trava de alçada ao avançar.
+      if (!access6PodeConcederFuncao(s.funcKey, ST.session)){ toast('Você não tem alçada para conceder a função "'+access6FuncaoLabel(s.funcKey)+'". Escolha uma função dentro do seu nível.','error'); return false; }
     }
     if (s.step===3){
       if (!ST._escopoIndisponivel && !s.escopoTodas && s.lojaIds.length===0){ toast('Escolha ao menos uma loja ou marque "Todas"','error'); return false; }
@@ -27714,6 +27741,12 @@ function access6Salvar(s, modal, close){
   var pass=(s.pass||'').trim();
   if (!nome){ toast('Informe o nome','error'); return; }
   if (s.isNew && (!email || !pass)){ toast('E-mail e senha são obrigatórios','error'); return; }
+  // E1: trava de alçada no SALVAMENTO — reavalia independente da UI, então um
+  // valor manipulado ou enviado por caminho alternativo não contorna a alçada.
+  if (!access6PodeConcederFuncao(s.funcKey, ST.session)){
+    toast('Você não tem alçada para conceder a função "'+access6FuncaoLabel(s.funcKey)+'". Escolha uma função dentro do seu nível.','error');
+    return;
+  }
   var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===s.funcKey; });
   var base = f ? f.base_nivel : 'colaborador';
   var perfil = access6PerfilDaFuncao(s.funcKey);
