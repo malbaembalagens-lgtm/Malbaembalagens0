@@ -14610,6 +14610,15 @@ html.dark .brf-status-quiet {
 .prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
 .prod-leg p{ font-size:12.5px; color:var(--u-text2); margin:4px 0; line-height:1.5; }
 .prod-leg .prod-leg-sub{ color:var(--u-text3); font-size:11.5px; }
+/* v242 — Cumprimento de prazos (barra empilhada + legenda) */
+.prod-stack{ display:flex; height:14px; border-radius:7px; overflow:hidden; background:var(--u-bg2,#f2f4f8); margin:8px 0 12px; }
+.prod-seg{ height:100%; display:block; }
+.prod-leg-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:7px 16px; }
+.prod-leg-row{ display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--u-text2); }
+.prod-leg-row .prod-dot{ width:9px; height:9px; border-radius:3px; flex-shrink:0; }
+.prod-leg-row .prod-leg-l{ flex:1; min-width:0; }
+.prod-leg-row .prod-leg-n{ color:var(--u-text); font-weight:700; }
+.prod-leg-row .prod-leg-p{ color:var(--u-text3); font-size:11.5px; min-width:34px; text-align:right; }
 
 </style>
 </head>
@@ -14634,7 +14643,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v241';
+var APP_BUILD = 'v242';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -20786,9 +20795,11 @@ function execTarefasSecHTML(m, y){
    ============================================================ */
 function _prodLocalDateSP(iso){
   if(!iso) return '';
-  try{ var d=new Date(iso); if(isNaN(d.getTime())) return String(iso).slice(0,10);
-    return d.toLocaleDateString('en-CA', { timeZone:'America/Sao_Paulo' }); } // 'YYYY-MM-DD'
-  catch(e){ return String(iso).slice(0,10); }
+  try{ var d=new Date(iso);
+    if(!isNaN(d.getTime())) return d.toLocaleDateString('en-CA', { timeZone:'America/Sao_Paulo' }); // 'YYYY-MM-DD'
+    var s=String(iso).slice(0,10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : ''; // v242: completed_at inválido -> '' (não classifica no prazo/atraso)
+  } catch(e){ return ''; }
 }
 function prodMesRef(){ var d=new Date(); return { m: ST.prodM || (d.getMonth()+1), y: ST.prodY || d.getFullYear() }; }
 function prodSetMes(delta){ var r=prodMesRef(); var m=r.m+delta, y=r.y; while(m<1){m+=12;y--;} while(m>12){m-=12;y++;} var d=new Date(); if(y>d.getFullYear() || (y===d.getFullYear() && m>d.getMonth()+1)) return; ST.prodM=m; ST.prodY=y; renderPage(); }
@@ -20800,21 +20811,29 @@ function prodStats(m, y){
   // reusa o MESMO escopo do Kanban/Calendário (exclui is_rule; filtra loja/usuário/responsável)
   var tasks=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined });
   var concluidasPeriodo=0, abertas=0, andamento=0, vencidas=0, previstas=0, cumpridas=0, previstasSemData=0, semDataReal=0;
+  // v242 (F2-b): partição das PREVISTAS (due no mês) por cumprimento de prazo. Soma = previstas.
+  var pzAtraso=0, pzAbNoPrazo=0, pzAbAtraso=0;
   tasks.forEach(function(t){
     var st=t.status||'todo';
     var due=(t.due_date||'').slice(0,10);
-    var cd=_prodLocalDateSP(t.completed_at); // '' quando ausente
+    var cd=_prodLocalDateSP(t.completed_at); // '' quando ausente/ inválido
     if (cd && cd>=mStart && cd<=mEnd) concluidasPeriodo++;            // FLUXO: concluídas no mês por data real
     if (st==='todo') abertas++; else if (st==='fazendo') andamento++; // ESTOQUE agora
     if (st!=='feito' && due && due<hoje) vencidas++;                  // ESTOQUE agora
     if (due && due>=mStart && due<=mEnd){                             // PRAZO: previstas = due no mês
       previstas++;
-      if (st==='feito'){ if (cd){ if (cd<=due) cumpridas++; } else previstasSemData++; }
+      if (st==='feito'){
+        if (cd){ if (cd<=due) cumpridas++; else pzAtraso++; }         // no prazo / com atraso
+        else previstasSemData++;                                     // feito sem data real
+      } else {
+        if (due>=hoje) pzAbNoPrazo++; else pzAbAtraso++;             // em aberto no prazo / atrasada
+      }
     }
     if (st==='feito' && !cd) semDataReal++;                           // qualidade de dado (geral)
   });
-  var taxa = previstas>0 ? Math.round(cumpridas/previstas*100) : 0;
-  return { mStart:mStart, mEnd:mEnd, concluidasPeriodo:concluidasPeriodo, abertas:abertas, andamento:andamento, vencidas:vencidas, previstas:previstas, cumpridas:cumpridas, previstasSemData:previstasSemData, semDataReal:semDataReal, taxa:taxa };
+  var taxa = previstas>0 ? Math.round(cumpridas/previstas*100) : 0;   // fórmula F2-a INALTERADA
+  return { mStart:mStart, mEnd:mEnd, concluidasPeriodo:concluidasPeriodo, abertas:abertas, andamento:andamento, vencidas:vencidas, previstas:previstas, cumpridas:cumpridas, previstasSemData:previstasSemData, semDataReal:semDataReal, taxa:taxa,
+    pzNoPrazo:cumpridas, pzAtraso:pzAtraso, pzAbAtraso:pzAbAtraso, pzAbNoPrazo:pzAbNoPrazo, pzSemData:previstasSemData };
 }
 function produtividadeHTML(){
   var r=prodMesRef(); var m=r.m, y=r.y;
@@ -20849,7 +20868,23 @@ function produtividadeHTML(){
   if (s.semDataReal>0) al.push(s.semDataReal+' concluída(s) sem data real registrada no total (anteriores ao registro de conclusão).');
   var avisos = al.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('warning')+'<h3>Observações de dados</h3></div><ul class="prod-ul">'+al.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>') : '';
   var legenda='<div class="rep-card"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Como ler</h3></div><div class="prod-leg"><p><b>Fluxo</b> conta eventos do mês (concluídas por data real). <b>Foto atual</b> é o estoque de agora (a fazer, em andamento, vencidas) e não se refere ao mês. <b>Cumprimento do planejado</b> = previstas do mês (com prazo no mês) concluídas até o próprio prazo ÷ previstas do mês.</p><p class="prod-leg-sub">Uma tarefa concluída no prazo, mas num mês diferente do prazo, entra no cumprimento do mês do prazo — não nas "concluídas no período".</p></div></div>';
-  return head + secFluxo + secEstoque + avisos + legenda;
+  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + avisos + legenda;
+}
+// v242 (F2-b): cumprimento de prazos — partição das previstas do mês (barra empilhada + legenda).
+function prodPrazoSecHTML(s){
+  var tot=s.previstas;
+  var items=[
+    { n:s.pzNoPrazo,   label:'Concluídas no prazo',  color:'#16A34A' },
+    { n:s.pzAtraso,    label:'Concluídas com atraso', color:'#F59E0B' },
+    { n:s.pzAbAtraso,  label:'Em aberto atrasadas',   color:'#EF4444' },
+    { n:s.pzAbNoPrazo, label:'Em aberto no prazo',    color:'#3B6FF7' },
+    { n:s.pzSemData,   label:'Conclusão sem data registrada', color:'#9aa1ad' }
+  ];
+  var hd='<div class="rep-card-h">'+icon('clipboard-check')+'<h3>Cumprimento de prazos</h3><span class="ext-ref">'+tot+' prevista'+(tot===1?'':'s')+' no mês</span></div>';
+  if (tot===0) return '<div class="rep-card">'+hd+'<div class="dash-empty">Nenhuma tarefa com vencimento neste mês.</div></div>';
+  var bar=items.map(function(it){ var w=it.n/tot*100; return it.n>0?'<span class="prod-seg" style="width:'+w+'%;background:'+it.color+'" title="'+esc(it.label+': '+it.n)+'"></span>':''; }).join('');
+  var leg=items.map(function(it){ var pct=Math.round(it.n/tot*100); return '<div class="prod-leg-row"><span class="prod-dot" style="background:'+it.color+'"></span><span class="prod-leg-l">'+esc(it.label)+'</span><b class="prod-leg-n">'+it.n+'</b><span class="prod-leg-p">'+pct+'%</span></div>'; }).join('');
+  return '<div class="rep-card">'+hd+'<div class="prod-stack">'+bar+'</div><div class="prod-leg-grid">'+leg+'</div></div>';
 }
 function bindProdutividade(){
   var pv=document.getElementById('prodPrev'); if(pv) pv.addEventListener('click', function(){ prodSetMes(-1); });
