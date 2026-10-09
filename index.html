@@ -14639,6 +14639,18 @@ html.dark .brf-status-quiet {
 .prod-serie-taxa{ display:block; font-size:11px; font-weight:800; margin-top:3px; }
 .prod-serie-taxa.none{ color:var(--u-text3); font-weight:600; }
 .prod-serie .rep-tb-l.cur{ color:var(--u-accent,#3B6FF7); font-weight:800; }
+/* v245 — Detalhamento de tarefas (tabela + export) */
+.prod-det-controls{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:6px 0 4px; }
+.prod-det-controls .crm-search{ flex:1 1 180px; min-width:140px; margin-bottom:0; }
+.prod-det-controls .task-filter{ margin-bottom:0; }
+.prod-det-exp{ flex-shrink:0; }
+.prod-det-tablewrap{ overflow-x:auto; margin-top:8px; border:1px solid var(--u-border,#e6e8ee); border-radius:12px; }
+.prod-det-table{ width:100%; border-collapse:collapse; font-size:12.5px; white-space:nowrap; }
+.prod-det-table th{ text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--u-text3,#aab); padding:8px 10px; border-bottom:1px solid var(--u-border,#e6e8ee); background:var(--u-bg2,#f7f8fa); position:sticky; top:0; }
+.prod-det-table td{ padding:8px 10px; border-bottom:1px solid var(--u-border,#eef0f4); color:var(--u-text,#1a1d26); }
+.prod-det-table td:first-child{ white-space:normal; min-width:160px; font-weight:600; }
+.prod-det-table tbody tr:last-child td{ border-bottom:none; }
+.prod-det-table tbody tr:hover td{ background:var(--u-accent-soft,rgba(59,111,247,.06)); }
 
 </style>
 </head>
@@ -14663,7 +14675,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v244';
+var APP_BUILD = 'v245';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -20888,7 +20900,97 @@ function produtividadeHTML(){
   if (s.semDataReal>0) al.push(s.semDataReal+' concluída(s) sem data real registrada no total (anteriores ao registro de conclusão).');
   var avisos = al.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('warning')+'<h3>Observações de dados</h3></div><ul class="prod-ul">'+al.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>') : '';
   var legenda='<div class="rep-card"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Como ler</h3></div><div class="prod-leg"><p><b>Fluxo</b> conta eventos do mês (concluídas por data real). <b>Foto atual</b> é o estoque de agora (a fazer, em andamento, vencidas) e não se refere ao mês. <b>Cumprimento do planejado</b> = previstas do mês (com prazo no mês) concluídas até o próprio prazo ÷ previstas do mês.</p><p class="prod-leg-sub">Uma tarefa concluída no prazo, mas num mês diferente do prazo, entra no cumprimento do mês do prazo — não nas "concluídas no período".</p></div></div>';
-  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + prodColabSecHTML(m, y) + prodSerieSecHTML(m, y) + avisos + legenda;
+  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + prodColabSecHTML(m, y) + prodSerieSecHTML(m, y) + prodDetSecHTML(m, y) + avisos + legenda;
+}
+// v245 (F2-e): Detalhamento de tarefas (tabela filtrável + export CSV). Aditivo, só leitura.
+// Recorte coerente com o relatório: "Por vencimento" (due no mês) = base das previstas/prazos;
+// "Por conclusão" (completed_at no mês) = base do fluxo. Sem misturar contagens. Situação = regra F2-b.
+var _PROD_SIT = { noprazo:'Concluída no prazo', atraso:'Concluída com atraso', abnoprazo:'Em aberto no prazo', abatraso:'Em aberto atrasada', semdata:'Conclusão sem data registrada', semvenc:'Sem vencimento' };
+function _prodSituacao(t, hoje){
+  var st=t.status||'todo';
+  var due=(t.due_date||'').slice(0,10);
+  var cd=_prodLocalDateSP(t.completed_at);
+  if (!due) return 'semvenc';
+  if (st==='feito'){ if (cd) return (cd<=due)?'noprazo':'atraso'; return 'semdata'; }
+  return (due>=hoje)?'abnoprazo':'abatraso';
+}
+// CSV: neutraliza fórmula (=,+,-,@,TAB,CR no início) e escapa aspas/;/quebras. NÃO altera a tabela.
+function _prodCsvCell(v){
+  var s=(v==null)?'':String(v);
+  if (/^[=+\-@\t\r]/.test(s)) s="'"+s;
+  if (/[",\n;]/.test(s)) return '"'+s.replace(/"/g,'""')+'"';
+  return s;
+}
+function _prodLojaNome(id){ if(!id) return ''; var ls=ST.storeUnits||[]; for(var i=0;i<ls.length;i++) if(String(ls[i].id)===String(id)) return ls[i].name||('Loja '+(ls[i].store_number||'')); return ''; }
+function prodDetailRows(m, y){
+  var mm=(m<10?'0':'')+m, ld=new Date(y,m,0).getDate();
+  var mStart=y+'-'+mm+'-01', mEnd=y+'-'+mm+'-'+((ld<10?'0':'')+ld);
+  var hoje=today();
+  var admin=isAdmin(ST.session);
+  var mode=(ST.prodDetMode==='concl')?'concl':'venc';
+  var fStatus=ST.prodDetStatus||'', fSit=ST.prodDetSit||'', q=(ST.prodDetQ||'').trim().toLowerCase();
+  var tasks=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined }); // mesmo escopo; exclui is_rule
+  var rows=[];
+  tasks.forEach(function(t){
+    var due=(t.due_date||'').slice(0,10);
+    var cd=_prodLocalDateSP(t.completed_at);
+    if (mode==='venc'){ if (!(due && due>=mStart && due<=mEnd)) return; }   // recorte: vencimento no mês
+    else { if (!(cd && cd>=mStart && cd<=mEnd)) return; }                   // recorte: conclusão no mês
+    var sit=_prodSituacao(t, hoje);
+    var st=t.status||'todo';
+    if (fStatus && st!==fStatus) return;
+    if (fSit && sit!==fSit) return;
+    var titulo=t.title||'';
+    if (q && String(titulo).toLowerCase().indexOf(q)===-1) return;
+    var u=t.assignee_id?userByIdAll(t.assignee_id):null;
+    rows.push({ id:t.id, titulo:titulo,
+      responsavel: t.assignee_id ? (u ? (u.name||'Usuário') : 'Usuário') : 'Sem responsável',
+      loja: _prodLojaNome(t.store_unit_id), area: t.area||'',
+      venc: due, concl: cd, status: (STATUS[st]||STATUS.todo).label,
+      situacao: _PROD_SIT[sit], prioridade: t.priority?((PRIO[t.priority]||{}).label||''):'' });
+  });
+  if (mode==='concl') rows.sort(function(a,b){ return String(b.concl).localeCompare(String(a.concl)); });
+  else rows.sort(function(a,b){ return String(a.venc).localeCompare(String(b.venc)); });
+  return rows;
+}
+function prodDetSecHTML(m, y){
+  var rows=prodDetailRows(m, y);
+  var mode=(ST.prodDetMode==='concl')?'concl':'venc';
+  var showLoja=(ST.sector==='lojas');
+  var tog='<div class="cal-viewtog prod-det-tog">'+
+    '<button type="button" class="cvt'+(mode==='venc'?' on':'')+'" data-prodmode="venc">Por vencimento</button>'+
+    '<button type="button" class="cvt'+(mode==='concl'?' on':'')+'" data-prodmode="concl">Por conclusão</button>'+
+  '</div>';
+  var stSel='<select class="task-filter" id="prodDetStatus"><option value="">Status: todos</option>'+STATUS_ORDER.map(function(k){ return '<option value="'+k+'"'+(ST.prodDetStatus===k?' selected':'')+'>'+STATUS[k].label+'</option>'; }).join('')+'</select>';
+  var sitSel='<select class="task-filter" id="prodDetSit"><option value="">Prazo: todos</option>'+Object.keys(_PROD_SIT).map(function(k){ return '<option value="'+k+'"'+(ST.prodDetSit===k?' selected':'')+'>'+_PROD_SIT[k]+'</option>'; }).join('')+'</select>';
+  var search='<input class="crm-search prod-det-q" id="prodDetQ" type="text" placeholder="Buscar tarefa..." value="'+esc(ST.prodDetQ||'')+'">';
+  var exp='<button class="btn btn-ghost prod-det-exp" id="prodDetCsv">'+icon('download')+'Exportar CSV</button>';
+  var hd='<div class="rep-card-h">'+icon('clipboard-check')+'<h3>Detalhamento de tarefas</h3><span class="ext-ref" id="prodDetCount">'+rows.length+(rows.length===1?' tarefa':' tarefas')+'</span></div>';
+  var recorteTxt=(mode==='venc')?('Tarefas com <b>vencimento</b> em '+MES_ABR[m-1]+' '+y+'.'):('Tarefas <b>concluídas</b> (data real) em '+MES_ABR[m-1]+' '+y+'.');
+  var controls='<div class="prod-det-controls">'+tog+search+stSel+sitSel+exp+'</div><div class="prod-colab-note">'+recorteTxt+' Datas em horário de São Paulo. A exportação segue os filtros ativos.</div>';
+  var CAP=500;
+  var head='<thead><tr><th>Tarefa</th><th>Responsável</th>'+(showLoja?'<th>Loja</th>':'')+'<th>Área</th><th>Vencimento</th><th>Conclusão</th><th>Status</th><th>Prazo</th><th>Prioridade</th></tr></thead>';
+  var bodyRows=rows.slice(0,CAP).map(function(r){
+    return '<tr data-q="'+esc(String(r.titulo).toLowerCase())+'"><td>'+esc(r.titulo)+'</td><td>'+esc(r.responsavel)+'</td>'+(showLoja?'<td>'+esc(r.loja)+'</td>':'')+'<td>'+esc(r.area)+'</td><td>'+esc(r.venc)+'</td><td>'+esc(r.concl)+'</td><td>'+esc(r.status)+'</td><td>'+esc(r.situacao)+'</td><td>'+esc(r.prioridade)+'</td></tr>';
+  }).join('');
+  var over=rows.length>CAP?('<div class="prod-colab-note">Mostrando '+CAP+' de '+rows.length+' — refine os filtros. A exportação inclui todas as '+rows.length+'.</div>'):'';
+  var table=rows.length?('<div class="prod-det-tablewrap"><table class="prod-det-table">'+head+'<tbody>'+bodyRows+'</tbody></table></div>'+over):'<div class="dash-empty">Nenhuma tarefa para os filtros deste mês.</div>';
+  return '<div class="rep-card">'+hd+controls+table+'</div>';
+}
+function prodDetExport(){
+  var r=prodMesRef(); var m=r.m, y=r.y;
+  var rows=prodDetailRows(m, y);
+  if (!rows.length){ if(typeof toast==='function') toast('Nenhuma tarefa para exportar com os filtros atuais.','info'); return; }
+  var showLoja=(ST.sector==='lojas');
+  var header=['Tarefa','Responsável'].concat(showLoja?['Loja']:[]).concat(['Área','Vencimento','Conclusão','Status','Situação do prazo','Prioridade']);
+  var lines=[ header.map(_prodCsvCell).join(';') ];
+  rows.forEach(function(x){
+    var cells=[x.titulo, x.responsavel].concat(showLoja?[x.loja]:[]).concat([x.area, x.venc, x.concl, x.status, x.situacao, x.prioridade]);
+    lines.push(cells.map(_prodCsvCell).join(';'));
+  });
+  var mm=(m<10?'0':'')+m;
+  var fname='produtividade_'+y+'-'+mm+'_'+(ST.prodDetMode==='concl'?'conclusao':'vencimento')+'_exportado_'+today()+'.csv';
+  if (typeof downloadCSV==='function') downloadCSV(fname, lines.join('\r\n'));
 }
 // v244 (F2-d): EVOLUÇÃO MENSAL — série dos últimos 6 meses (inclui o mês selecionado).
 // Usa o MESMO conjunto escopado (visibleTasks; exclui is_rule; 1× por ocorrência).
@@ -21010,6 +21112,17 @@ function bindProdutividade(){
   var nx=document.getElementById('prodNext'); if(nx) nx.addEventListener('click', function(){ prodSetMes(1); });
   var af=document.getElementById('prodAssignee'); if(af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
   var sf=document.getElementById('prodStore'); if(sf) sf.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
+  // v245 (F2-e): Detalhamento — toggle de recorte, filtros, busca (filtro no DOM) e export CSV.
+  var pmd=app.querySelectorAll('[data-prodmode]'); for(var i=0;i<pmd.length;i++) pmd[i].addEventListener('click', function(){ ST.prodDetMode=this.getAttribute('data-prodmode'); renderPage(); });
+  var dst=document.getElementById('prodDetStatus'); if(dst) dst.addEventListener('change', function(){ ST.prodDetStatus=this.value; renderPage(); });
+  var dsi=document.getElementById('prodDetSit'); if(dsi) dsi.addEventListener('change', function(){ ST.prodDetSit=this.value; renderPage(); });
+  var dq=document.getElementById('prodDetQ'); if(dq) dq.addEventListener('input', function(){
+    ST.prodDetQ=this.value; var v=this.value.trim().toLowerCase();
+    var rs=app.querySelectorAll('.prod-det-table tbody tr'), vis=0;
+    for(var j=0;j<rs.length;j++){ var tq=rs[j].getAttribute('data-q')||''; var show=(!v||tq.indexOf(v)!==-1); rs[j].style.display=show?'':'none'; if(show) vis++; }
+    var c=document.getElementById('prodDetCount'); if(c) c.textContent=vis+(vis===1?' tarefa':' tarefas');
+  });
+  var dcsv=document.getElementById('prodDetCsv'); if(dcsv) dcsv.addEventListener('click', function(){ prodDetExport(); });
 }
 
 function relatorioHTML(){
