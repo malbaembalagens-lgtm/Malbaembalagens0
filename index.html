@@ -15443,6 +15443,14 @@ var COLAB_PAGES = ['inicio','tarefas','calendario','chat'];
 var STATUS = { todo:{label:'A fazer',color:'#9aa1ad'}, fazendo:{label:'Em andamento',color:'#3B6FF7'}, feito:{label:'Concluída',color:'#16A34A'} };
 var STATUS_ORDER = ['todo','fazendo','feito'];
 var PRIO = { alta:{label:'Alta',color:'#EF4444'}, media:{label:'Média',color:'#F59E0B'}, baixa:{label:'Baixa',color:'#9aa1ad'} };
+// v240 (Etapa E/Fase 2): completed_at — helper ÚNICO para o patch de conclusão.
+// Grava completed_at (ISO 8601) SÓ na transição p/ 'feito' (preserva a 1ª conclusão em reconclusões)
+// e limpa (null) ao reabrir. Retorna {} quando não há transição relevante. Não toca recorrência.
+function completionFields(novoStatus, statusAnterior){
+  if (novoStatus==='feito' && statusAnterior!=='feito') return { completed_at: new Date().toISOString() };
+  if (novoStatus!=='feito' && statusAnterior==='feito') return { completed_at: null };
+  return {};
+}
 
 /* ========== [2] SUPABASE ========== */
 var sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false } }) : null;
@@ -16835,13 +16843,17 @@ function tlConcluirTarefa(id){
   }
   if (!t) return;
   var prev = t.status;
+  var prevCompleted = t.completed_at;                 // v240
+  var cf = completionFields('feito', prev);           // v240
   t.status = 'feito';
   t.updated_at = new Date().toISOString();
+  if ('completed_at' in cf) t.completed_at = cf.completed_at; // v240
   renderPage();
   if (!sb) return;
-  sb.from('malba_vl_tasks').update({ status:'feito' }).eq('id', t.id).then(function(r){
+  sb.from('malba_vl_tasks').update(Object.assign({ status:'feito' }, cf)).eq('id', t.id).then(function(r){
     if (r.error){
       t.status = prev;
+      t.completed_at = prevCompleted;                 // v240
       renderPage();
       toast('Não consegui concluir: '+(r.error.message||'erro'),'error');
       return;
@@ -16859,12 +16871,16 @@ function tlReabrirTarefa(id){
   }
   if (!t) return;
   var prev = t.status;
+  var prevCompleted = t.completed_at;                 // v240
+  var cf = completionFields('todo', prev);            // v240 (limpa completed_at ao reabrir)
   t.status = 'todo';
+  if ('completed_at' in cf) t.completed_at = cf.completed_at; // v240
   renderPage();
   if (!sb) return;
-  sb.from('malba_vl_tasks').update({ status:'todo' }).eq('id', t.id).then(function(r){
+  sb.from('malba_vl_tasks').update(Object.assign({ status:'todo' }, cf)).eq('id', t.id).then(function(r){
     if (r.error){
       t.status = prev;
+      t.completed_at = prevCompleted;                 // v240
       renderPage();
       toast('Não consegui reabrir: '+(r.error.message||'erro'),'error');
       return;
@@ -18961,9 +18977,10 @@ function taskCardHTML(it) {
    (mesmo comportamento pro botão "Concluir hoje" e pro arrastar pra "Concluída") */
 function concluirRotinaHoje(t){
   if(!t) return;
-  var prev=t.status; t.status='feito'; renderPage();
-  sb.from('malba_vl_tasks').update({ status:'feito' }).eq('id', t.id).then(function(r){
-    if(r.error){ t.status=prev; console.error(r.error); toast('Não consegui concluir: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); return; }
+  var prev=t.status; var prevCompleted=t.completed_at; var cf=completionFields('feito', prev); // v240
+  t.status='feito'; if ('completed_at' in cf) t.completed_at=cf.completed_at; renderPage();
+  sb.from('malba_vl_tasks').update(Object.assign({ status:'feito' }, cf)).eq('id', t.id).then(function(r){
+    if(r.error){ t.status=prev; t.completed_at=prevCompleted; console.error(r.error); toast('Não consegui concluir: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); return; }
     logAtividade('task.completed', 'task', t.id, t.title); // v137
     // marcou como feita — agora cria a próxima ocorrência como nova tarefa
     if(!isRecurring(t)) { toast('Concluída!','success'); return; }
