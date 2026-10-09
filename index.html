@@ -14678,7 +14678,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v250';
+var APP_BUILD = 'v251';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -20446,9 +20446,23 @@ function openFichaColaborador(member){
     var acesso;
     if(u){
       var nvL=NIVEIS[nivelDe(u)]||NIVEIS.colaborador;
-      acesso='<div class="fi-acc has"><div class="fi-acc-top"><span class="fi-acc-ic ok">'+icon('users')+'</span><div class="fi-acc-tx"><b>'+esc(u.email||u.name)+'</b><i>'+esc(nvL.label)+' · acesso ativo</i></div></div>'+
+      // E2-b/C: estado do vínculo. userDoMembro resolve por user_id OU, em último caso, por nome.
+      var vincGravado = !!(m.user_id && String(u.id)===String(m.user_id));
+      var _nmL=(m.name||'').trim().toLowerCase();
+      var _candidatos = (ST.allUsers||[]).filter(function(x){ return (x.name||'').trim().toLowerCase()===_nmL && x.sector==='lojas'; });
+      var ambiguo = !vincGravado && _candidatos.length>1;
+      var lblFunc = (typeof perfilLabelDe==='function' ? perfilLabelDe(u) : nvL.label);
+      var vincLinha = vincGravado
+        ? '<i>'+esc(lblFunc)+' · acesso ativo · vínculo gravado</i>'
+        : '<i>'+esc(lblFunc)+' · acesso encontrado pelo nome</i>';
+      // Recuperação segura: 1 candidato -> gravar vínculo; vários -> não escolho automaticamente.
+      var recupera = vincGravado ? '' : (ambiguo
+        ? '<div class="ac6-warn">'+icon('warning')+' Há mais de um login com esse nome — abra o acesso para confirmar qual vincular. Não vinculo automaticamente.</div>'
+        : '<div class="ac6-warn">'+icon('warning')+' Login encontrado pelo nome, mas o vínculo não está gravado. <button class="fi-link" id="fiGravarVinculo">Gravar vínculo</button></div>');
+      acesso='<div class="fi-acc has"><div class="fi-acc-top"><span class="fi-acc-ic ok">'+icon('users')+'</span><div class="fi-acc-tx"><b>'+esc(u.email||u.name)+'</b>'+vincLinha+'</div></div>'+
+        recupera+
         (showReset?'<div class="fi-acc-reset"><input type="text" id="fiNewPass" placeholder="Nova senha (mín. 4)"><button class="btn btn-primary" id="fiDoReset">Salvar senha</button></div>':'')+
-        '<div class="fi-acc-actions"><button class="fi-link" id="fiReset">'+(showReset?'Cancelar':'Redefinir senha')+'</button><button class="fi-link danger" id="fiRemove">Remover acesso</button></div>'+
+        '<div class="fi-acc-actions">'+(ambiguo?'':'<button class="fi-link" id="fiEditAcesso">Editar acesso (função e lojas)</button>')+'<button class="fi-link" id="fiReset">'+(showReset?'Cancelar':'Redefinir senha')+'</button><button class="fi-link danger" id="fiRemove">Remover acesso</button></div>'+
       '</div>';
     } else {
       var grantorRank=roleRank(ST.session);
@@ -20560,7 +20574,16 @@ function openFichaColaborador(member){
       var ehAdminSetor=(lvl==='sector_admin'||lvl==='admin_geral'||lvl==='super'); var baseU={ name:m.name, sector:'lojas', access_level:lvl, sector_role:(ehAdminSetor?'admin':'user'), role:(lvl==='super'?'admin':'user'), email:email, color:m.color||'#3B6FF7', initials:iniciais(m.name) };
       function tryIns(field, retry){ var urec=Object.assign({},baseU); urec[field]=pass; sb.from('malba_users').insert(urec).select().single().then(function(ru){
         if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } setBusy(btn,false); btn.textContent='Criar acesso'; return; }
-        ST.allUsers.push(ru.data); linkTo(ru.data.id); savePerms(ru.data.id, fiPerms); auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
+        ST.allUsers.push(ru.data); savePerms(ru.data.id, fiPerms);
+        // E2-b/C: grava o vínculo com tratamento de falha parcial — usuário criado é PRESERVADO (sem delete).
+        sb.from('malba_store_members').update({ user_id: ru.data.id }).eq('id', m.id).then(function(rl){
+          if(rl.error){
+            try{ if(typeof auditLog==='function') auditLog('Acesso criado SEM vínculo', m.name+' · usuário '+ru.data.id+' · '+(rl.error.message||'erro')); }catch(e){}
+            toast('Acesso de '+m.name+' criado, mas NÃO consegui gravar o vínculo ('+(rl.error.message||'erro')+'). Não recrie — use "Gravar vínculo".','error'); draw(); return;
+          }
+          for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(m.id)) ST.members[k].user_id=ru.data.id;
+          if(typeof auditLog==='function') auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
+        });
       }); }
       tryIns('password_hash', false);
     });
@@ -20602,6 +20625,18 @@ function openFichaColaborador(member){
     var ed=modal.querySelector('#fiEdit'); if(ed) ed.addEventListener('click', function(){ close(); openMemberModal(m); });
     var mt=modal.querySelector('#fiMeta'); if(mt) mt.addEventListener('click', function(){ var u=userDoMembro(m); var g=metaMembroMes(m); close(); if(g) openGoalModal(g); else openGoalModal(null, { store_unit_id:m.store_unit_id, user_id:u?u.id:null }); });
     var av=modal.querySelector('#fiAval'); if(av) av.addEventListener('click', function(){ close(); openAvaliacaoModal(null, { tipo:'membro', store_unit_id:m.store_unit_id, member_id:m.id }); });
+    // E2-b/C: editor principal de acesso (função + lojas) = ACCESS-006, consistente com a Central.
+    var ea=modal.querySelector('#fiEditAcesso'); if(ea) ea.addEventListener('click', function(){ var usr=userDoMembro(m); if(!usr) return; close(); if(typeof openAccess6Wizard==='function') openAccess6Wizard(usr); });
+    // E2-b/C: recuperação segura do vínculo (login achado por nome, user_id não gravado).
+    var gv=modal.querySelector('#fiGravarVinculo'); if(gv) gv.addEventListener('click', function(){
+      var usr=userDoMembro(m); if(!usr) return; var btn=this; btn.disabled=true;
+      sb.from('malba_store_members').update({ user_id: usr.id }).eq('id', m.id).then(function(rl){
+        if(rl.error){ toast('Não consegui gravar o vínculo: '+(rl.error.message||'erro'),'error'); btn.disabled=false; return; }
+        for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(m.id)) ST.members[k].user_id=usr.id;
+        try{ if(typeof auditLog==='function') auditLog('Gravou vínculo de acesso', m.name); }catch(e){}
+        toast('Vínculo gravado','success'); draw();
+      });
+    });
     var rs=modal.querySelector('#fiReset'); if(rs) rs.addEventListener('click', function(){ showReset=!showReset; draw(); });
     var dr=modal.querySelector('#fiDoReset'); if(dr) dr.addEventListener('click', function(){ var btn=this; var u=userDoMembro(m); var p=(modal.querySelector('#fiNewPass').value||'').trim(); if(p.length<4){ toast('Senha muito curta (mín. 4)','error'); return; } setBusy(btn,true); resetSenha(u, p, function(ok){ if(ok){ showReset=false; toast('Senha redefinida','success'); draw(); } else { setBusy(btn,false); btn.textContent='Salvar senha'; } }); });
     var rm=modal.querySelector('#fiRemove'); if(rm) rm.addEventListener('click', function(){ var u=userDoMembro(m); if(!u) return; confirmDelete('Remover o acesso de '+m.name+'? A pessoa não poderá mais entrar (você pode recriar depois).', function(){ removerAcesso(u, function(){ toast('Acesso removido','success'); draw(); }); }); });
