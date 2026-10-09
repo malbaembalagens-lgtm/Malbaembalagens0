@@ -14678,7 +14678,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v247';
+var APP_BUILD = 'v248';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15677,6 +15677,13 @@ function isAdmin(s){ return can('equipe', s); }                  // Administrado
 function isTopAdmin(s){ return can('sistema', s); }              // estrutura, usuários, integrações
 function roleRank(s){ return (NIVEIS[nivelDe(s&&s.user)]||NIVEIS.colaborador).rank; }
 function roleNivelLabel(s){ return (NIVEIS[nivelDe(s&&s.user)]||NIVEIS.colaborador).label; }
+/* E2-a (v248) · ALÇADA POR NÍVEL — primitiva única de alçada do sistema.
+   Um concedente só concede níveis cujo rank seja <= à própria patente (roleRank).
+   É a MESMA regra que o openUserModal/openMemberModal já aplicam inline (grantorRank)
+   e que o ACCESS-006 (E1) reduz via base_nivel. Usa só a hierarquia NIVEIS existente —
+   NUNCA lê access_level direto. Compartilhada por onboarding + ACCESS-006. */
+function podeConcederNivel(nivelKey, s){ return (NIVEIS[nivelKey]||NIVEIS.colaborador).rank <= roleRank(s||ST.session); }
+function niveisConcedidos(s){ return NIV_ORDER.filter(function(k){ return podeConcederNivel(k, s); }); }
 function canManage(){ return can('gerir'); }                     // cria/edita/exclui registros do setor
 function blockManage(){ toast('Você não tem permissão para criar, editar ou excluir aqui.','error'); }
 // "Colaborador pessoal" = acesso individual (Colaborador ou Visualizador) que NÃO é login de loja.
@@ -27370,7 +27377,9 @@ function access6FuncaoRank(funcKey){
   return (NIVEIS[base] || NIVEIS.colaborador).rank;
 }
 function access6PodeConcederFuncao(funcKey, s){
-  return access6FuncaoRank(funcKey) <= roleRank(s || ST.session);
+  // E2-a: delega à primitiva única de alçada (base_nivel da função -> nível), mesma política do onboarding.
+  var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===funcKey; });
+  return podeConcederNivel(f ? f.base_nivel : 'colaborador', s);
 }
 function access6FuncoesPermitidas(s){
   return ACCESS_FUNCTIONS.filter(function(f){ return access6PodeConcederFuncao(f.key, s); });
@@ -41416,10 +41425,17 @@ function onbStep3(){
     {v:'gestor', l:'Gestor', d:'+ Gerencia setor inteiro'},
     {v:'admin', l:'Admin', d:'+ Configura o sistema todo (cuidado)'}
   ];
-  var opts = niveis.map(function(n){
+  // E2-a: só lista níveis dentro da alçada do operador (mesma primitiva do ACCESS-006).
+  var niveisPermitidos = niveis.filter(function(n){ return podeConcederNivel(n.v, ST.session); });
+  var atualProibido = s.accessLevel && !podeConcederNivel(s.accessLevel, ST.session);
+  var opts = niveisPermitidos.map(function(n){
     return '<option value="'+n.v+'"'+(n.v===s.accessLevel?' selected':'')+'>'+n.l+' — '+n.d+'</option>';
   }).join('');
-  return '<div class="onb-field">'+
+  var avisoAlcada = atualProibido
+    ? '<div class="onb-info"><div class="onb-info-icon" aria-hidden="true">'+icon('warning')+'</div><div><b>Nível acima da sua alçada</b><p>Você só concede acessos até o seu próprio nível. Escolha um nível permitido para continuar.</p></div></div>'
+    : '';
+  return avisoAlcada+
+    '<div class="onb-field">'+
       '<label>Nível de acesso *</label>'+
       '<select id="onbAcc">'+opts+'</select>'+
     '</div>'+
@@ -41628,6 +41644,13 @@ function onbCriarColaborador(){
       if (typeof renderPage==='function') renderPage();
     });
   } else {
+    // E2-a: trava de alçada ANTES de qualquer gravação no Supabase (independe da UI).
+    if (!podeConcederNivel(s.accessLevel, ST.session)){
+      s.busy = false;
+      s.err = 'Você não tem alçada para conceder o nível "'+((NIVEIS[s.accessLevel]||{label:s.accessLevel}).label)+'". Escolha um nível dentro do seu próprio nível de acesso.';
+      onbRender();
+      return;
+    }
     var urec = {
       name: s.name.trim(),
       email: s.email.trim().toLowerCase(),
