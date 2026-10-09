@@ -14678,7 +14678,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v249';
+var APP_BUILD = 'v250';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -25984,10 +25984,10 @@ function centralColabAcessoHTML(m, u){
     '<div class="cad-info-row"><span>Nível de acesso</span><b style="color:'+info.color+'">'+esc((typeof perfilLabelDe==='function' ? perfilLabelDe(u) : info.label))+'</b></div>'+
     '<div class="cad-explica">'+esc(info.desc)+'</div>'+
     (podeMexer ? '<div class="cad-acao-grid">'+
-      '<button class="btn btn-secondary" id="cadAcessoEditar">Alterar nível e permissões</button>'+
-      '<button class="btn btn-secondary" id="cadAcessoSenha">Redefinir senha</button>'+
-      '<button class="btn btn-ghost cad-btn-danger" id="cadAcessoRemover">Remover acesso</button>'+
-    '</div>' : '')+
+      '<button class="btn btn-primary" id="cadAcessoEditarAc6">Editar acesso (função e lojas)</button>'+
+      '<button class="btn btn-secondary" id="cadAcessoAvancado">Opções avançadas</button>'+
+    '</div>'+
+    '<div class="cad-explica">Função, nível e lojas ficam no editor principal. Permissões por página, chefe direto, redefinir senha, excluir, escala e facial ficam em <b>Opções avançadas</b>.</div>' : '')+
   '</div>';
 }
 
@@ -26110,7 +26110,9 @@ function bindCentral(){
     b.addEventListener('click', function(){
       var uid = this.getAttribute('data-cad-usuario');
       var u = (ST.allUsers||[]).find(function(x){ return String(x.id)===String(uid); });
-      if (u) openUserModal(u);
+      // E2-b/B: editor principal de acesso = ACCESS-006 (consistente com a lista "Usuários");
+      // opções avançadas ficam acessíveis pelo botão dentro do próprio editor.
+      if (u) openAccess6Wizard(u);
     });
   });
   // ações do detalhe
@@ -26165,8 +26167,16 @@ function bindCentral(){
     ST.central.nav = 'acessos'; renderPage();
     toast('Encontre o acesso na lista e edite para trocar o setor da pessoa','info');
   });
-  var acEd = document.getElementById('cadAcessoEditar');
+  // E2-b/B: editor principal de acesso = ACCESS-006 (função + lojas, com alçada).
+  var acEd = document.getElementById('cadAcessoEditarAc6');
   if (acEd) acEd.addEventListener('click', function(){
+    var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
+    var u = m ? centralUserDoColab(m) : null;
+    if (u) openAccess6Wizard(u);
+  });
+  // E2-b/B: opções avançadas = openUserModal (perms por página, chefe, senha, excluir, escala, facial).
+  var acAv = document.getElementById('cadAcessoAvancado');
+  if (acAv) acAv.addEventListener('click', function(){
     var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
     var u = m ? centralUserDoColab(m) : null;
     if (u) openUserModal(u);
@@ -27660,7 +27670,11 @@ function openAccess6Wizard(user, linkMember){
     var direita = (s.step<5)
       ? '<button class="btn btn-primary" id="ac6Avancar">Avançar '+icon('arrow-right')+'</button>'
       : '<button class="btn btn-primary" id="ac6Salvar">'+icon('save')+' '+(s.isNew?'Criar usuário':'Salvar')+'</button>';
-    return '<div class="ac6-foot">'+voltar+'<div class="right">'+
+    // E2-b/B: ao EDITAR, oferece "Opções avançadas" (openUserModal) — perms por página, chefe, senha, excluir, escala, facial.
+    var avancado = (!s.isNew && s.user && typeof openUserModal==='function')
+      ? '<button class="btn btn-ghost" id="ac6Avancado" title="Permissões por página, chefe direto, redefinir senha, excluir, escala e facial">Opções avançadas</button>'
+      : '';
+    return '<div class="ac6-foot">'+voltar+'<div class="right">'+avancado+
       '<button class="btn btn-ghost" id="ac6Cancelar">Cancelar</button>'+direita+'</div></div>';
   }
 
@@ -27704,6 +27718,9 @@ function openAccess6Wizard(user, linkMember){
     if (av) av.addEventListener('click', function(){ if(!validarAvanco()) return; s.step++; paint(); });
     var sv=modal.querySelector('#ac6Salvar');
     if (sv) sv.addEventListener('click', function(){ access6Salvar(s, modal, close); });
+    // E2-b/B: abre as opções avançadas (openUserModal) do usuário em edição, sem duplicar nada.
+    var adv=modal.querySelector('#ac6Avancado');
+    if (adv) adv.addEventListener('click', function(){ var usr=s.user; close(); if(typeof openUserModal==='function') openUserModal(usr); });
     // passo 2: radios de função
     modal.querySelectorAll('input[name="ac6func"]').forEach(function(r){
       r.addEventListener('change', function(){ s.funcKey=this.value; paint(); });
