@@ -14690,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v253';
+var APP_BUILD = 'v254';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -25963,12 +25963,14 @@ function centralListaColabsHTML(){
     var loja = (ST.storeUnits||[]).find(function(x){ return String(x.id)===String(m.store_unit_id); });
     var lojaLb = loja ? (loja.name || ('Loja '+loja.store_number)) : 'sem loja';
     var acesso = u ? '<span class="cad-eq-chip">'+icon('key-round')+esc((NIVEIS[nivelDe(u)]||NIVEIS.colaborador).label)+'</span>' : '<span class="cad-eq-chip cinza">sem acesso</span>';
+    var pontoChip = (m.participa_ponto !== true) ? '<span class="cad-eq-chip cinza">fora do ponto</span>' : '';
     var inat = m.is_active===false ? ' inativo' : '';
     return '<button class="cad-linha'+inat+'" data-cad-nav="colab" data-cad-colab="'+esc(m.id)+'">'+
       '<span class="cad-eq-av" style="background:'+esc(m.color||'#3B6FF7')+'">'+esc(iniciais(m.name))+'</span>'+
       '<span class="cad-linha-main"><b>'+esc(m.name)+'</b>'+
         '<span class="cad-linha-sub">'+esc(m.role||'sem cargo')+' · '+esc(lojaLb)+'</span>'+
       '</span>'+
+      pontoChip+
       acesso+
       '<span class="cad-linha-seta">›</span>'+
     '</button>';
@@ -25998,8 +26000,12 @@ function centralColabHTML(colabId){
       '<div class="cad-info-row"><span>Cargo</span><b>'+esc(m.role||'sem cargo')+'</b></div>'+
       '<div class="cad-info-row"><span>Loja</span><b>'+esc(lojaLb)+'</b></div>'+
       '<div class="cad-info-row"><span>Situação</span><b>'+(m.is_active===false?'Inativo':'Ativo')+'</b></div>'+
+      '<div class="cad-info-row"><span>Ponto</span><b style="color:'+(pontoParticipaMembro(m)?'#16A34A':'#9aa1ad')+'">'+(pontoParticipaMembro(m)?'Participa':'Dispensado')+'</b></div>'+
       (m.email ? '<div class="cad-info-row"><span>Contato</span><b>'+esc(m.email)+'</b></div>' : '')+
-      (isAdmin(ST.session) ? '<button class="btn btn-secondary cad-btn-editar" id="cadEditarColab">Editar dados</button>' : '')+
+      (isAdmin(ST.session) ? '<div class="cad-acao-grid">'+
+        '<button class="btn btn-secondary cad-btn-editar" id="cadEditarColab">Editar dados</button>'+
+        '<button class="btn btn-secondary" id="cadTogglePonto">'+(pontoParticipaMembro(m)?'Dispensar do ponto':'Habilitar no ponto')+'</button>'+
+      '</div>' : '')+
     '</div>';
   } else if (aba==='acesso'){
     conteudo = centralColabAcessoHTML(m, u);
@@ -26281,6 +26287,11 @@ function bindCentral(){
   if (editarColab) editarColab.addEventListener('click', function(){
     var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
     if (m) openMemberModal(m);
+  });
+  var togglePonto = document.getElementById('cadTogglePonto');   // PONTO-002/B
+  if (togglePonto) togglePonto.addEventListener('click', function(){
+    var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
+    if (m) pontoDefinirParticipacao(m.id, m.participa_ponto !== true);
   });
   var novaLoja = document.getElementById('cadNovaLoja');
   if (novaLoja) novaLoja.addEventListener('click', function(){ openStoreModal({}); });
@@ -39793,6 +39804,11 @@ function bindPontoPage(){
 function pontoRegistrarBatidaDaPagina(alvoInfo, facialData, cb){
   var u = ST.session && ST.session.user;
   if (!u){ if (cb) cb(false); return; }
+  // PONTO-002/B: gate de participação (resolve o membro do alvo)
+  var _alvoMembro = (alvoInfo && alvoInfo.tipo==='member')
+    ? alvoInfo.alvo
+    : pontoMembroPorUser((alvoInfo && alvoInfo.alvo && alvoInfo.alvo.id) || u.id);
+  if (pontoGateBloqueiaMembro(_alvoMembro)){ if (cb) cb(false); return; }
   var hoje = new Date().toISOString().slice(0,10);
   var agora = (function(){ var d = new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); })();
 
@@ -42429,9 +42445,49 @@ function openFacialVerifModal(membro, cb){
   });
 }
 
+/* ============================================================
+   PONTO-002/B · Participação no ponto (gate de registro)
+   Fail-safe: SÓ participa quem tem participa_ponto === true.
+   false / ausente / sem membro => dispensado (bloqueia a batida).
+   NÃO altera is_active, regras de jornada, sequência das 4 batidas
+   nem cálculo de horas. Gate é no cliente (ver limitação de RLS no
+   relatório PONTO-002/B — policies permissivas em malba_store_members).
+   ============================================================ */
+var PONTO_MSG_DISPENSADO = 'Este colaborador está dispensado do registro de ponto. Procure um responsável se precisar alterar essa condição.';
+function pontoParticipaMembro(m){ return !!(m && m.participa_ponto === true); }
+function pontoMembroPorUser(userId){
+  if (userId==null) return null;
+  var arr = ST.members||[];
+  for (var i=0;i<arr.length;i++){ if (String(arr[i].user_id||'')===String(userId)) return arr[i]; }
+  return null;
+}
+function pontoGateBloqueiaMembro(m){
+  if (pontoParticipaMembro(m)) return false;          // participa -> libera
+  if (typeof toast==='function') toast(PONTO_MSG_DISPENSADO,'error');
+  return true;                                         // dispensado/indeterminado -> bloqueia
+}
+function pontoGateBloqueiaUser(userId){ return pontoGateBloqueiaMembro(pontoMembroPorUser(userId)); }
+/* Habilitar/dispensar (admin). UPDATE parcial: só participa_ponto — não toca is_active. */
+function pontoDefinirParticipacao(memberId, participa, cb){
+  if (!isAdmin(ST.session)){ if (typeof toast==='function') toast('Sem permissão para alterar o ponto','error'); if (cb) cb(false); return; }
+  var m = (ST.members||[]).find(function(x){ return String(x.id)===String(memberId); });
+  if (!m){ if (cb) cb(false); return; }
+  var val = !!participa;
+  sb.from('malba_store_members').update({ participa_ponto: val }).eq('id', memberId).then(function(r){
+    if (r.error){ if (typeof toast==='function') toast('Erro ao salvar: '+(r.error.message||''),'error'); if (cb) cb(false); return; }
+    m.participa_ponto = val;
+    if (typeof auditLog==='function') auditLog(val?'Habilitou no ponto':'Dispensou do ponto', m.name);
+    try { if (typeof logAtividade==='function') logAtividade(val?'ponto.habilitado':'ponto.dispensado','colaborador', m.id, m.name); } catch(e){}
+    if (typeof toast==='function') toast(val?'Colaborador habilitado no ponto':'Colaborador dispensado do ponto','success');
+    if (typeof renderPage==='function') renderPage();
+    if (cb) cb(true);
+  });
+}
+
 function baterPontoDeMembro(memberId, cb){
   var membro = (ST.members||[]).filter(function(m){return String(m.id)===String(memberId);})[0];
   if (!membro){ if (typeof toast==='function') toast('Membro não encontrado','error'); return; }
+  if (pontoGateBloqueiaMembro(membro)) return;         // PONTO-002/B
   var ci = balcaoCheckinMembro(memberId);
   var slot = proximoSlotPonto(ci);
   if (!slot){
@@ -42515,6 +42571,7 @@ function baterPontoDeMembroSem(membro, slot, ci, cb, facialData){
 function topbarBaterPonto(cb){
   var me = ST.session && ST.session.user;
   if (!me){ if (typeof toast==='function') toast('Faça login para bater ponto','error'); return; }
+  if (pontoGateBloqueiaUser(me.id)) return;            // PONTO-002/B
   var ci = meuCheckinHoje();
   var slot = proximoSlotPonto(ci);
   if (!slot){
@@ -42956,6 +43013,7 @@ function fmtDuracao(min){
    Se o membro não tem checkin do dia, cria com entrada.
    Se já tem, avança pro próximo slot vazio. */
 function togglePontoMembro(member){
+  if (pontoGateBloqueiaMembro(member)) return;         // PONTO-002/B
   var ci = checkinHojeDoMembro(member);
   var nowIso = new Date().toISOString();
   var u = userDoMembro(member);
@@ -43012,6 +43070,7 @@ function togglePontoMembro(member){
    Comportamento novo: se sem tipo, avança automático. */
 function registrarCheckin(tipo){
   var u = ST.session.user;
+  if (pontoGateBloqueiaUser(u.id)) return;             // PONTO-002/B
   // v186/v187: facial obrigatório
   var uAtual = (ST.allUsers||ST.users||[]).filter(function(x){return String(x.id)===String(u.id);})[0] || u;
   if (typeof facialTemCadastro==='function' && facialTemCadastro(uAtual)){
@@ -45766,6 +45825,19 @@ function validarPinKiosk(){
   KIOSK_STATE.memberIdent = achado;
   KIOSK_STATE.ci = ci;
   KIOSK_STATE.busy = false;
+  // PONTO-002/B: dispensado do ponto não registra (fail-safe: só participa_ponto===true passa)
+  if (achado.participa_ponto !== true){
+    KIOSK_STATE.step = 'err';
+    KIOSK_STATE.msg = PONTO_MSG_DISPENSADO;
+    KIOSK_STATE.pinBuffer = '';
+    KIOSK_STATE.memberIdent = null;
+    KIOSK_STATE.ci = null;
+    renderKioskUI();
+    setTimeout(function(){
+      if (KIOSK_STATE.step === 'err'){ KIOSK_STATE.step = 'pin'; KIOSK_STATE.msg = ''; renderKioskUI(); }
+    }, 6000);
+    return;
+  }
   // v183/v187: se tem facial cadastrado força verificação; se não tem e for obrigatório, bloqueia com msg
   if (typeof facialTemCadastro==='function' && facialTemCadastro(achado)){
     iniciarKioskFacialModo('verificar');
@@ -45794,6 +45866,12 @@ function validarPinKiosk(){
 /* Gravar a próxima batida via kiosk */
 function registrarViaKiosk(){
   var m = KIOSK_STATE.memberIdent;
+  // PONTO-002/B: rede de segurança — dispensado nunca grava
+  if (!(m && m.participa_ponto === true)){
+    KIOSK_STATE.step = 'pin'; KIOSK_STATE.pinBuffer = ''; KIOSK_STATE.msg = '';
+    if (typeof renderKioskUI==='function') renderKioskUI();
+    return;
+  }
   var ci = KIOSK_STATE.ci;
   var prox = proximoSlotPonto(ci);
   if (!prox){ toast('Já batido','info'); return; }
