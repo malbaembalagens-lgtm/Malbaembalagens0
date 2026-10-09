@@ -14605,6 +14605,11 @@ html.dark .brf-status-quiet {
   .cal-wcell.today{ outline:none; border-color:var(--u-accent,#3B6FF7); }
 }
 /* ===== fim v234 ===== */
+/* v241 — Produtividade (reusa tokens; sem lib) */
+.prod-ul{ margin:0; padding:6px 0 2px 18px; }
+.prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
+.prod-leg p{ font-size:12.5px; color:var(--u-text2); margin:4px 0; line-height:1.5; }
+.prod-leg .prod-leg-sub{ color:var(--u-text3); font-size:11.5px; }
 
 </style>
 </head>
@@ -14629,7 +14634,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v239';
+var APP_BUILD = 'v241';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -19021,9 +19026,10 @@ function moveBoardItem(kind, id, ns) {
     // v90.2: arrastar rotina pra "Concluída" faz o mesmo que "Concluir hoje" —
     // cartão fica em Concluída E a próxima ocorrência aparece em "A fazer"
     if (ns==='feito' && isRecurring(t)) { concluirRotinaHoje(t); return; }
-    var prev=t.status; t.status=ns; renderPage();
-    sb.from('malba_vl_tasks').update({ status:ns }).eq('id', id).then(function(r){
-      if(r.error){ t.status=prev; console.error('mover tarefa:', r.error); toast('Não consegui mover: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); }
+    var prev=t.status; var prevCompleted=t.completed_at; var cf=completionFields(ns, prev); // v240
+    t.status=ns; if ('completed_at' in cf) t.completed_at=cf.completed_at; renderPage();
+    sb.from('malba_vl_tasks').update(Object.assign({ status:ns }, cf)).eq('id', id).then(function(r){
+      if(r.error){ t.status=prev; t.completed_at=prevCompleted; console.error('mover tarefa:', r.error); toast('Não consegui mover: '+(r.error.message||r.error.code||'erro'),'error'); renderPage(); }
     });
   } else if (kind==='milestone') {
     var m=msById(id); if (!m || m.status===ns) return;
@@ -19470,10 +19476,11 @@ function openTaskModal(task, preset) {
       // colaborador: salva o status e o checklist (pode marcar os próprios passos)
       setBusy(saveBtn,true);
       var roPayload={ status:stPick };
+      var roCf=completionFields(stPick, task?task.status:undefined); Object.assign(roPayload, roCf); // v240
       if (subList.length>0 || (task && task.subtasks && task.subtasks.length)) roPayload.subtasks=subList;
       sb.from('malba_vl_tasks').update(roPayload).eq('id', t.id).then(function(r){
         if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar status'; return; }
-        for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i].status=stPick; ST.tasks[i].subtasks=subList; break; }
+        for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i].status=stPick; if ('completed_at' in roCf) ST.tasks[i].completed_at=roCf.completed_at; ST.tasks[i].subtasks=subList; break; }
         close(); toast('Atualizado','success'); renderPage();
       });
       return;
@@ -19490,6 +19497,7 @@ function openTaskModal(task, preset) {
     if (subList.length>0 || (task && task.subtasks && task.subtasks.length)) payload.subtasks=subList;
     setBusy(saveBtn,true);
     if (isEdit) {
+      Object.assign(payload, completionFields(payload.status, task?task.status:undefined)); // v240
       sb.from('malba_vl_tasks').update(payload).eq('id', t.id).then(function(r){
         if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
         for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i]=Object.assign(ST.tasks[i],payload); break; }
@@ -19528,6 +19536,7 @@ function openTaskModal(task, preset) {
         }, function(e){ toast('Erro ao criar rotina','error'); console.error(e); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; });
         return;
       }
+      Object.assign(payload, completionFields(payload.status, undefined)); // v240: criar já "feito" registra conclusão
       sb.from('malba_vl_tasks').insert(payload).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return; }
         ST.tasks.unshift(r.data);
@@ -20751,7 +20760,13 @@ function execTarefasSecHTML(m, y){
   function freqLb(t){ var k=t.recurrence; return (k && REC[k] && k!=='none') ? REC[k].label : (t.recur_group?'Recorrente':'Única'); }
   function respLb(t){ var u=t.assignee_id?userById(t.assignee_id):null; return u?esc(u.name):'Sem responsável'; }
   function rowNao(x){ var t=x.t; return '<div class="ext-row"><span class="ext-st nao">Não realizada</span><div class="ext-main"><b>'+esc(t.title)+'</b><i>Prevista '+fmtDate(x.dv)+' · '+esc(freqLb(t))+' · '+respLb(t)+'</i></div></div>'; }
-  function rowOk(x){ var t=x.t; return '<div class="ext-row"><span class="ext-st ok">Concluída</span><div class="ext-main"><b>'+esc(t.title)+'</b><i>Prevista '+fmtDate(x.dv||x.dc)+' · Concluída '+fmtDate(x.dc)+' · '+esc(freqLb(t))+' · '+respLb(t)+'</i></div></div>'; }
+  function rowOk(x){ var t=x.t;
+    // v240: data REAL de conclusão (completed_at). Sem ela (registros antigos), deixa explícito
+    // que a data real é indisponível e NÃO afirma "no prazo". Só compara prazo quando há data real.
+    var temData=!!(t.completed_at && String(t.completed_at).slice(0,10));
+    var conclTxt = temData ? ('Concluída '+fmtDate(x.dc)) : 'Concluída (data real não registrada)';
+    var prazoTxt = (temData && x.dv) ? (x.dc<=x.dv ? ' · no prazo' : ' · fora do prazo (prevista '+fmtDate(x.dv)+')') : '';
+    return '<div class="ext-row"><span class="ext-st ok">Concluída</span><div class="ext-main"><b>'+esc(t.title)+'</b><i>Prevista '+fmtDate(x.dv||x.dc)+' · '+conclTxt+prazoTxt+' · '+esc(freqLb(t))+' · '+respLb(t)+'</i></div></div>'; }
   var body='';
   if (!naoReal.length && !concl.length){
     body = emptyState({ icon:'check', title:'Sem execução no período', text:'Tarefas concluídas e ocorrências não realizadas aparecem aqui.' });
@@ -20760,6 +20775,87 @@ function execTarefasSecHTML(m, y){
     if (concl.length)   body += '<div class="ext-grp">'+icon('check')+'<span>Concluídas</span><span class="ext-n">'+concl.length+'</span></div>'+concl.slice(0,80).map(rowOk).join('');
   }
   return '<div class="rep-card rep-exec"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Execução de tarefas</h3><span class="ext-ref">'+MES_ABR[m-1]+' '+y+'</span></div>'+body+'</div>';
+}
+
+/* ============================================================
+   v241 — Etapa F / Fase 2-a: RELATÓRIO DE PRODUTIVIDADE (núcleo)
+   Nova folha em Gestão → Resultados. SÓ leitura/derivação de malba_vl_tasks.
+   Escopo reutiliza visibleTasks()/boardStore()/isAdmin() (exclui is_rule, 1× por ocorrência).
+   Conclusão por completed_at (v240) convertido p/ data LOCAL de São Paulo. Sem banco/libs.
+   Separa FLUXO (eventos do mês) × ESTOQUE (foto de agora) × PRAZO (cumprimento do planejado).
+   ============================================================ */
+function _prodLocalDateSP(iso){
+  if(!iso) return '';
+  try{ var d=new Date(iso); if(isNaN(d.getTime())) return String(iso).slice(0,10);
+    return d.toLocaleDateString('en-CA', { timeZone:'America/Sao_Paulo' }); } // 'YYYY-MM-DD'
+  catch(e){ return String(iso).slice(0,10); }
+}
+function prodMesRef(){ var d=new Date(); return { m: ST.prodM || (d.getMonth()+1), y: ST.prodY || d.getFullYear() }; }
+function prodSetMes(delta){ var r=prodMesRef(); var m=r.m+delta, y=r.y; while(m<1){m+=12;y--;} while(m>12){m-=12;y++;} var d=new Date(); if(y>d.getFullYear() || (y===d.getFullYear() && m>d.getMonth()+1)) return; ST.prodM=m; ST.prodY=y; renderPage(); }
+function prodStats(m, y){
+  var mm=(m<10?'0':'')+m, ld=new Date(y,m,0).getDate();
+  var mStart=y+'-'+mm+'-01', mEnd=y+'-'+mm+'-'+((ld<10?'0':'')+ld);
+  var hoje=today();
+  var admin=isAdmin(ST.session);
+  // reusa o MESMO escopo do Kanban/Calendário (exclui is_rule; filtra loja/usuário/responsável)
+  var tasks=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined });
+  var concluidasPeriodo=0, abertas=0, andamento=0, vencidas=0, previstas=0, cumpridas=0, previstasSemData=0, semDataReal=0;
+  tasks.forEach(function(t){
+    var st=t.status||'todo';
+    var due=(t.due_date||'').slice(0,10);
+    var cd=_prodLocalDateSP(t.completed_at); // '' quando ausente
+    if (cd && cd>=mStart && cd<=mEnd) concluidasPeriodo++;            // FLUXO: concluídas no mês por data real
+    if (st==='todo') abertas++; else if (st==='fazendo') andamento++; // ESTOQUE agora
+    if (st!=='feito' && due && due<hoje) vencidas++;                  // ESTOQUE agora
+    if (due && due>=mStart && due<=mEnd){                             // PRAZO: previstas = due no mês
+      previstas++;
+      if (st==='feito'){ if (cd){ if (cd<=due) cumpridas++; } else previstasSemData++; }
+    }
+    if (st==='feito' && !cd) semDataReal++;                           // qualidade de dado (geral)
+  });
+  var taxa = previstas>0 ? Math.round(cumpridas/previstas*100) : 0;
+  return { mStart:mStart, mEnd:mEnd, concluidasPeriodo:concluidasPeriodo, abertas:abertas, andamento:andamento, vencidas:vencidas, previstas:previstas, cumpridas:cumpridas, previstasSemData:previstasSemData, semDataReal:semDataReal, taxa:taxa };
+}
+function produtividadeHTML(){
+  var r=prodMesRef(); var m=r.m, y=r.y;
+  var s=prodStats(m,y);
+  var admin=isAdmin(ST.session);
+  var filtro='';
+  if (admin){
+    var meId=String(ST.session.user.id);
+    var opts='<option value="'+esc(meId)+'"'+(String(ST.taskAssignee)===meId?' selected':'')+'>Minhas</option><option value=""'+(!ST.taskAssignee?' selected':'')+'>Todos</option>'+
+      ST.users.filter(function(u){return String(u.id)!==meId;}).map(function(u){return '<option value="'+esc(u.id)+'"'+(String(ST.taskAssignee)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>';}).join('');
+    filtro='<select class="task-filter" id="prodAssignee" title="Colaborador">'+opts+'</select>';
+  }
+  var lojaFiltro='';
+  if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0){
+    lojaFiltro='<select class="task-filter" id="prodStore" title="Loja"><option value="">Todas as lojas</option>'+ST.storeUnits.map(function(x){return '<option value="'+esc(x.id)+'"'+(String(ST.taskStore)===String(x.id)?' selected':'')+'>'+esc(x.name||('Loja '+x.store_number))+'</option>';}).join('')+'</select>';
+  }
+  var d0=new Date(); var canNext=!(y>d0.getFullYear() || (y===d0.getFullYear() && m>=d0.getMonth()+1));
+  var head='<div class="rep-head"><div><h2>Produtividade</h2><div class="sub">Tarefas · '+MESES[m-1]+' '+y+'</div></div>'+
+    '<div class="rep-tools">'+lojaFiltro+filtro+'<button class="rep-nav" id="prodPrev">‹</button><span class="rep-month">'+MESES[m-1]+' '+y+'</span><button class="rep-nav" id="prodNext"'+(canNext?'':' disabled')+'>›</button></div></div>';
+  function kpi(v,l,sub,c){ return '<div class="rep-kpi"><span class="rep-kpi-v" style="color:'+(c||'var(--u-text)')+'">'+v+'</span><span class="rep-kpi-l">'+esc(l)+'</span>'+(sub?'<span class="rep-kpi-s">'+esc(sub)+'</span>':'')+'</div>'; }
+  var secFluxo='<div class="cfg-sec-head"><span>No período ('+MES_ABR[m-1]+' '+y+')</span></div><div class="rep-kpis">'+
+    kpi(s.concluidasPeriodo,'Concluídas no período','por data real de conclusão','#16A34A')+
+    kpi(s.taxa+'%','Cumprimento do planejado', s.cumpridas+' de '+s.previstas+' previstas','#3B6FF7')+
+  '</div>';
+  var secEstoque='<div class="cfg-sec-head"><span>Agora (foto atual)</span></div><div class="rep-kpis">'+
+    kpi(s.abertas,'A fazer','agora','#9aa1ad')+
+    kpi(s.andamento,'Em andamento','agora','#3B6FF7')+
+    kpi(s.vencidas,'Vencidas','não concluídas','#EF4444')+
+  '</div>';
+  var al=[];
+  if (s.previstasSemData>0) al.push(s.previstasSemData+' prevista(s) deste mês concluída(s) sem data real — não contam como "no prazo".');
+  if (s.semDataReal>0) al.push(s.semDataReal+' concluída(s) sem data real registrada no total (anteriores ao registro de conclusão).');
+  var avisos = al.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('warning')+'<h3>Observações de dados</h3></div><ul class="prod-ul">'+al.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>') : '';
+  var legenda='<div class="rep-card"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Como ler</h3></div><div class="prod-leg"><p><b>Fluxo</b> conta eventos do mês (concluídas por data real). <b>Foto atual</b> é o estoque de agora (a fazer, em andamento, vencidas) e não se refere ao mês. <b>Cumprimento do planejado</b> = previstas do mês (com prazo no mês) concluídas até o próprio prazo ÷ previstas do mês.</p><p class="prod-leg-sub">Uma tarefa concluída no prazo, mas num mês diferente do prazo, entra no cumprimento do mês do prazo — não nas "concluídas no período".</p></div></div>';
+  return head + secFluxo + secEstoque + avisos + legenda;
+}
+function bindProdutividade(){
+  var pv=document.getElementById('prodPrev'); if(pv) pv.addEventListener('click', function(){ prodSetMes(-1); });
+  var nx=document.getElementById('prodNext'); if(nx) nx.addEventListener('click', function(){ prodSetMes(1); });
+  var af=document.getElementById('prodAssignee'); if(af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
+  var sf=document.getElementById('prodStore'); if(sf) sf.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
 }
 
 function relatorioHTML(){
@@ -30715,7 +30811,8 @@ function concluirTarefaAtrasada(tid, cb){
   var t = (ST.tasks||[]).filter(function(x){return String(x.id)===String(tid);})[0];
   if (!t){ if (typeof toast==='function') toast('Tarefa não encontrada','error'); return; }
   var agora = new Date().toISOString();
-  sb.from('malba_vl_tasks').update({ status:'feito', updated_at: agora }).eq('id', tid).then(function(r){
+  var cf = completionFields('feito', t.status); // v240
+  sb.from('malba_vl_tasks').update(Object.assign({ status:'feito', updated_at: agora }, cf)).eq('id', tid).then(function(r){
     if (r.error){
       if (typeof toast==='function') toast('Erro ao concluir tarefa','error');
       console.error(r.error);
@@ -30724,6 +30821,7 @@ function concluirTarefaAtrasada(tid, cb){
     // Atualiza local
     t.status = 'feito';
     t.updated_at = agora;
+    if ('completed_at' in cf) t.completed_at = cf.completed_at; // v240
     if (typeof toast==='function') toast('Tarefa concluída ✓','success');
     if (typeof auditLog==='function') auditLog('Concluiu tarefa atrasada', t.title||'');
     if (typeof cb==='function') cb();
@@ -33915,6 +34013,7 @@ function gestaoAreasForSector(){
   if (s==='lojas'){ r.push(leaf('metas','Metas','target')); r.push(leaf('relatorio','Relatório','trend')); r.push(leaf('comissoes','Comissões','dollar')); }
   else if (s==='marketing'){ r.push(leaf('metas','Metas','target')); r.push(leaf('relatorio','Relatório','trend')); r.push(leaf('orcamento','Orçamento','dollar')); }
   else if (s==='vendas'){ r.push(leaf('metas','Metas','target')); r.push(leaf('ranking','Ranking','trend')); }
+  if (r.length) r.push(leaf('produtividade','Produtividade','trend')); // v241 (Etapa F/F2-a)
   if (r.length) area('resultados','Resultados','trend', r);
   // Operação — admin only (rotinas, KPIs, ponto)
   if (isA){
@@ -34003,6 +34102,7 @@ function gestaoHTML() {
   else if (tab==='ponto') body=gestaoPontoHTML();
   else if (tab==='metas') body=metasHTML();
   else if (tab==='relatorio') body=(ST.sector==='lojas'?relatorioLojasHTML():relatorioHTML());
+  else if (tab==='produtividade') body=produtividadeHTML(); // v241
   else if (tab==='ranking') body=rankingHTML();
   else if (tab==='orcamento') body=orcamentoHTML();
   else if (tab==='avaliacoes') body=avaliacoesHTML();
@@ -34922,6 +35022,7 @@ function bindGestao() {
   else if (gt==='feriados'){ if(typeof bindFeriadosPage==='function') bindFeriadosPage(); }
   else if (gt==='metas'){ if(typeof bindMetas==='function') bindMetas(); }
   else if (gt==='relatorio'){ if(ST.sector==='lojas'){ if(typeof bindRelatorioLojas==='function') bindRelatorioLojas(); } else { if(typeof bindRelatorio==='function') bindRelatorio(); } }
+  else if (gt==='produtividade'){ if(typeof bindProdutividade==='function') bindProdutividade(); } // v241
   else if (gt==='orcamento'){ if(typeof bindOrcamento==='function') bindOrcamento(); }
   var nc=document.getElementById('btnNovaComissao'); if(nc) nc.addEventListener('click', openComissaoModal);
   var na=document.getElementById('btnNovaAvaliacao'); if(na) na.addEventListener('click', function(){ openAvaliacaoModal(); });
@@ -43738,7 +43839,7 @@ function calItemOpen(k, id){
   else if (k==='ms'){ var mm=msById(id); if(mm){ ST.openProject=mm.project_id; ST.page='projetos'; navigate(ST.sector+'/projetos'); renderPage(); } }
   else if (k==='camptask'){ var cc=campById(String(id).split('__')[0]); if(cc){ if(admin) openCampaignModal(cc); else toast('Tarefa de campanha','info'); } }
 }
-function toggleTaskDoneCal(id, cb){ var t=taskById(id); if(!t) return; var nd=(t.status==='feito')?'todo':'feito'; t.status=nd; sb.from('malba_vl_tasks').update({ status:nd }).eq('id',id).then(function(r){ if(r.error) toast('Erro ao atualizar','error'); }); if(cb) cb(); renderPage(); }
+function toggleTaskDoneCal(id, cb){ var t=taskById(id); if(!t) return; var prev=t.status; var nd=(prev==='feito')?'todo':'feito'; var cf=completionFields(nd, prev); /* v240 */ t.status=nd; if ('completed_at' in cf) t.completed_at=cf.completed_at; sb.from('malba_vl_tasks').update(Object.assign({ status:nd }, cf)).eq('id',id).then(function(r){ if(r.error) toast('Erro ao atualizar','error'); }); if(cb) cb(); renderPage(); }
 function openDiaModal(ds){
   var admin=isAdmin(ST.session); var podeTarefa = admin || canEdit();
   var modal=document.createElement('div'); modal.className='modal-bg';
