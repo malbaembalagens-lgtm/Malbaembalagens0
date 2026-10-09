@@ -14619,6 +14619,19 @@ html.dark .brf-status-quiet {
 .prod-leg-row .prod-leg-l{ flex:1; min-width:0; }
 .prod-leg-row .prod-leg-n{ color:var(--u-text); font-weight:700; }
 .prod-leg-row .prod-leg-p{ color:var(--u-text3); font-size:11.5px; min-width:34px; text-align:right; }
+/* v243 — Por colaborador */
+.prod-colab-note{ font-size:11.5px; color:var(--u-text3); margin:2px 0 10px; line-height:1.5; }
+.prod-colab-list{ display:flex; flex-direction:column; gap:12px; }
+.prod-colab-row{ display:flex; align-items:flex-start; gap:10px; }
+.prod-colab-av{ width:30px; height:30px; border-radius:9px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:11px; }
+.prod-colab-main{ flex:1; min-width:0; }
+.prod-colab-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.prod-colab-top b{ font-size:13.5px; color:var(--u-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.prod-colab-taxa{ font-size:12px; font-weight:800; color:var(--u-text); flex-shrink:0; }
+.prod-colab-taxa.none{ color:var(--u-text3); font-weight:600; font-size:11.5px; }
+.prod-colab-bar{ height:6px; border-radius:4px; background:var(--u-bg2,#f2f4f8); overflow:hidden; margin:5px 0; }
+.prod-colab-bar span{ display:block; height:100%; }
+.prod-colab-sub{ font-size:11.5px; color:var(--u-text2); }
 
 </style>
 </head>
@@ -14643,7 +14656,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v242';
+var APP_BUILD = 'v243';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -20868,7 +20881,60 @@ function produtividadeHTML(){
   if (s.semDataReal>0) al.push(s.semDataReal+' concluída(s) sem data real registrada no total (anteriores ao registro de conclusão).');
   var avisos = al.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('warning')+'<h3>Observações de dados</h3></div><ul class="prod-ul">'+al.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>') : '';
   var legenda='<div class="rep-card"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Como ler</h3></div><div class="prod-leg"><p><b>Fluxo</b> conta eventos do mês (concluídas por data real). <b>Foto atual</b> é o estoque de agora (a fazer, em andamento, vencidas) e não se refere ao mês. <b>Cumprimento do planejado</b> = previstas do mês (com prazo no mês) concluídas até o próprio prazo ÷ previstas do mês.</p><p class="prod-leg-sub">Uma tarefa concluída no prazo, mas num mês diferente do prazo, entra no cumprimento do mês do prazo — não nas "concluídas no período".</p></div></div>';
-  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + avisos + legenda;
+  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + prodColabSecHTML(m, y) + avisos + legenda;
+}
+// v243 (F2-c): produtividade POR COLABORADOR. Agrupa o MESMO conjunto já escopado por
+// visibleTasks (não amplia acesso; exclui is_rule; 1× por ocorrência) por assignee_id.
+// Reusa as classificações da F2-b; "" = Sem responsável. Soma por colaborador = prodStats.
+function prodByColab(m, y){
+  var mm=(m<10?'0':'')+m, ld=new Date(y,m,0).getDate();
+  var mStart=y+'-'+mm+'-01', mEnd=y+'-'+mm+'-'+((ld<10?'0':'')+ld);
+  var hoje=today();
+  var admin=isAdmin(ST.session);
+  var tasks=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined }); // mesmo escopo da tela
+  var map={};
+  tasks.forEach(function(t){
+    var key=t.assignee_id?String(t.assignee_id):'';
+    var g=map[key] || (map[key]={ id:key, concl:0, previstas:0, noPrazo:0, atraso:0, semData:0, pendAbertas:0, pendAtrasadas:0 });
+    var st=t.status||'todo';
+    var due=(t.due_date||'').slice(0,10);
+    var cd=_prodLocalDateSP(t.completed_at);
+    if (cd && cd>=mStart && cd<=mEnd) g.concl++;                       // fluxo
+    if (st!=='feito'){ g.pendAbertas++; if (due && due<hoje) g.pendAtrasadas++; } // estoque agora
+    if (due && due>=mStart && due<=mEnd){                             // prazo (previstas)
+      g.previstas++;
+      if (st==='feito'){ if (cd){ if (cd<=due) g.noPrazo++; else g.atraso++; } else g.semData++; }
+    }
+  });
+  var rows=Object.keys(map).map(function(k){ var g=map[k]; g.taxa = g.previstas>0 ? Math.round(g.noPrazo/g.previstas*100) : null; return g; });
+  rows.sort(function(a,b){
+    if (b.concl!==a.concl) return b.concl-a.concl;                    // concluídas desc
+    var ta=(a.taxa==null?-1:a.taxa), tb=(b.taxa==null?-1:b.taxa);
+    if (tb!==ta) return tb-ta;                                        // taxa desc (sem base por último)
+    return b.previstas-a.previstas;
+  });
+  return rows;
+}
+function prodColabSecHTML(m, y){
+  var rows=prodByColab(m, y);
+  var hd='<div class="rep-card-h">'+icon('users')+'<h3>Por colaborador</h3><span class="ext-ref">'+rows.length+(rows.length===1?' pessoa':' pessoas')+'</span></div>';
+  var nota='<div class="prod-colab-note">Dados objetivos dentro do seu escopo. Volume não é avaliação de desempenho; concluídas sem data real não entram no prazo.</div>';
+  if (!rows.length) return '<div class="rep-card">'+hd+'<div class="dash-empty">Nenhuma tarefa no escopo deste período.</div></div>';
+  var body=rows.map(function(g){
+    var u = g.id ? userByIdAll(g.id) : null;
+    var nome = g.id ? (u ? (u.name||'Usuário') : 'Usuário') : 'Sem responsável';
+    var cor = (g.id && u && u.color) ? u.color : '#9aa1ad';
+    var ini = g.id ? esc(u && u.initials ? u.initials : iniciais(nome)) : '—';
+    var taxaTxt = (g.taxa==null) ? '<span class="prod-colab-taxa none">sem base</span>' : '<span class="prod-colab-taxa">'+g.taxa+'%</span>';
+    var barCor = (g.taxa==null) ? 'var(--u-border2,#e6e8ee)' : (typeof kpiTaxaCor==='function' ? kpiTaxaCor(g.taxa) : (g.taxa>=80?'#16A34A':(g.taxa>=50?'#3B6FF7':(g.taxa>=25?'#F59E0B':'#EF4444'))));
+    var barW = (g.taxa==null) ? 0 : g.taxa;
+    var sub = 'Concluídas '+g.concl+' · No prazo '+g.noPrazo+' · Atraso '+g.atraso+(g.semData?(' · Sem data '+g.semData):'')+' · Pendentes '+g.pendAbertas+(g.pendAtrasadas?(' ('+g.pendAtrasadas+' atrasadas)'):'');
+    return '<div class="prod-colab-row"><span class="prod-colab-av" style="background:'+cor+'">'+ini+'</span>'+
+      '<div class="prod-colab-main"><div class="prod-colab-top"><b>'+esc(nome)+'</b>'+taxaTxt+'</div>'+
+      '<div class="prod-colab-bar"><span style="width:'+barW+'%;background:'+barCor+'"></span></div>'+
+      '<div class="prod-colab-sub">'+esc(sub)+'</div></div></div>';
+  }).join('');
+  return '<div class="rep-card">'+hd+nota+'<div class="prod-colab-list">'+body+'</div></div>';
 }
 // v242 (F2-b): cumprimento de prazos — partição das previstas do mês (barra empilhada + legenda).
 function prodPrazoSecHTML(s){
