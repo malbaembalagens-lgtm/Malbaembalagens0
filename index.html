@@ -14528,6 +14528,36 @@ html.dark .brf-status-quiet {
 .mt-empty{ font-size:13px; color:var(--u-text3,#aab); padding:8px 2px; }
 /* ===== fim v230 ===== */
 
+/* ===== v232 — Prioridade de hoje (Calendário) ===== */
+.pd-wrap{ margin:4px 0 14px; }
+.pd-inner{ background:var(--u-card,#fff); border:1px solid var(--u-border,#e6e8ee); border-radius:14px; padding:14px 16px; }
+.pd-head{ display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--u-text3,#aab); margin-bottom:10px; }
+.pd-head svg{ width:15px; height:15px; color:var(--u-accent,#3B6FF7); }
+.pd-body{ display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:12px; align-items:start; }
+.pd-main{ display:flex; flex-direction:column; gap:5px; text-align:left; width:100%; border:1px solid var(--u-border,#e6e8ee); border-left:3px solid var(--u-accent,#3B6FF7); border-radius:12px; padding:12px 14px; background:var(--u-bg2,#f6f8fc); cursor:pointer; transition:border-color .12s, box-shadow .12s; }
+.pd-main:hover{ box-shadow:0 2px 12px rgba(59,111,247,.10); }
+.pd-main.rank1{ border-left-color:#EF4444; }
+.pd-main.rank2{ border-left-color:#0EA5E9; }
+.pd-main.rank3{ border-left-color:#F59E0B; }
+.pd-main-top{ display:flex; align-items:center; gap:8px; }
+.pd-main-time{ font-size:12px; font-weight:700; color:var(--u-text2,#7a8095); }
+.pd-type{ font-size:10.5px; font-weight:600; color:var(--u-text2,#7a8095); background:var(--u-card,#fff); border:1px solid var(--u-border,#e6e8ee); border-radius:999px; padding:1px 8px; }
+.pd-main-title{ font-size:15px; color:var(--u-text,#1a1d26); line-height:1.25; }
+.pd-main-why{ font-size:12px; color:var(--u-text2,#7a8095); }
+.pd-secs{ display:flex; flex-direction:column; gap:6px; }
+.pd-sec{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; border:1px solid var(--u-border,#e6e8ee); border-radius:10px; padding:8px 11px; background:var(--u-card,#fff); cursor:pointer; }
+.pd-sec:hover{ border-color:var(--u-accent,#3B6FF7); }
+.pd-sec-dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; background:var(--u-text3,#aab); }
+.pd-sec-dot.rank1{ background:#EF4444; } .pd-sec-dot.rank2{ background:#0EA5E9; } .pd-sec-dot.rank3{ background:#F59E0B; }
+.pd-sec-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+.pd-sec-main b{ font-size:13px; color:var(--u-text,#1a1d26); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pd-sec-main i{ font-style:normal; font-size:11.5px; color:var(--u-text3,#aab); }
+.pd-sec-time{ font-size:11.5px; font-weight:600; color:var(--u-text2,#7a8095); flex:0 0 auto; white-space:nowrap; }
+.pd-empty{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--u-text3,#aab); padding:4px 2px; }
+.pd-empty svg{ width:16px; height:16px; color:#16A34A; }
+@media (max-width:720px){ .pd-body{ grid-template-columns:1fr; } }
+/* ===== fim v232 ===== */
+
 </style>
 </head>
 <body>
@@ -14551,7 +14581,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v231';
+var APP_BUILD = 'v232';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -18424,12 +18454,14 @@ function bindKPIs(){
 
 /* ========== [10] TAREFAS ========== */
 /* ============================================================
-   v230 — MINHAS TAREFAS (visão padrão de Tarefas)
-   Responde "o que preciso fazer hoje?". É só um recorte/estado da
-   MESMA lista (ST.tasks via visibleTasks) — não é módulo novo, não
-   duplica dados, não cria rota por filtro. Reusa taskCardHTML e os
-   handlers de clique/conclusão já ligados por bindTarefas (ramo padrão).
-   Respeita o contexto de loja/responsável existente (boardStore/ST.taskStore).
+   v231 — KANBAN + RECORTES (chips)
+   O Kanban é a experiência central. Os chips (Hoje/Atrasadas/Próximas/
+   Recorrentes/Todas/Concluídas) são RECORTES do MESMO Kanban (ST.taskFilter),
+   não páginas nem listas novas. "Hoje" (padrão) usa o quadro de atenção já
+   existente (boardItems + groupedTodoFocus, com Atrasadas no topo da coluna
+   "A fazer"). Os demais recortes distribuem a MESMA fonte (visibleTasks) nas
+   3 colunas de status. Reusa taskCardHTML e os handlers de bindTarefas.
+   Respeita contexto de loja/responsável existente (boardStore/ST.taskStore).
    ============================================================ */
 var MT_FILTERS = [
   { k:'hoje',        lb:'Hoje' },
@@ -18444,52 +18476,42 @@ function mtTaskToItem(t){
     due:(t.due_date||'').slice(0,10), assignee_id:t.assignee_id, priority:t.priority,
     rec:t.recurrence, area:t.area,
     source:(t.project_id?{type:'Projeto', name:projName(t.project_id), pid:t.project_id}:null),
-    sub:subProgress(t.subtasks), draggable:false };
+    sub:subProgress(t.subtasks), draggable:true };
 }
-function minhasTarefasHTML(){
-  var admin=isAdmin(ST.session);
+function kanbanChipsHTML(){
   var f = ST.taskFilter || 'hoje';
-  var hoje=today();
-  var base = visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined }).map(mtTaskToItem);
-  var chips = '<div class="mt-chips">'+MT_FILTERS.map(function(x){
+  return '<div class="mt-chips">'+MT_FILTERS.map(function(x){
     return '<button type="button" class="mt-chip'+(f===x.k?' on':'')+'" data-mtfilter="'+x.k+'">'+esc(x.lb)+'</button>';
   }).join('')+'</div>';
-  function byDue(a,b){ return (a.due||'9999').localeCompare(b.due||'9999'); }
-  function byDueDesc(a,b){ return (b.due||'').localeCompare(a.due||''); }
-  function sec(title, items, dotCls){
-    return '<div class="mt-sec"><div class="mt-sec-h"><span class="mt-sec-dot'+(dotCls?' '+dotCls:'')+'"></span>'+esc(title)+'<span class="mt-sec-n">'+items.length+'</span></div>'+items.map(taskCardHTML).join('')+'</div>';
-  }
-  var body='';
-  if (f==='hoje'){
-    var atras = base.filter(function(it){ return it.due && it.due<hoje && it.status!=='feito'; }).sort(byDue);
-    var hojeL = base.filter(function(it){ return it.status!=='feito' && (it.due===hoje || !it.due); }).sort(byDue);
-    if (!atras.length && !hojeL.length){
-      body = emptyState({ span:true, icon:'check', title:'Você está em dia', text:'Nenhuma tarefa atrasada ou para hoje.' });
-    } else {
-      if (atras.length) body += sec('Atrasadas', atras, 'late');
-      body += hojeL.length ? sec('Hoje', hojeL) : '<div class="mt-empty">Nada para hoje.</div>';
-    }
-  } else if (f==='atrasadas'){
-    var l1 = base.filter(function(it){ return it.due && it.due<hoje && it.status!=='feito'; }).sort(byDue);
-    body = l1.length ? l1.map(taskCardHTML).join('') : emptyState({ span:true, icon:'check', title:'Nenhuma tarefa atrasada', text:'Tudo em dia por aqui.' });
-  } else if (f==='proximas'){
-    var l2 = base.filter(function(it){ return it.due && it.due>hoje && it.status!=='feito'; }).sort(byDue);
-    body = l2.length ? l2.map(taskCardHTML).join('') : emptyState({ span:true, icon:'cal', title:'Nenhuma tarefa próxima', text:'Sem tarefas futuras agendadas.' });
-  } else if (f==='recorrentes'){
-    var seen={}, l3=[];
-    base.filter(function(it){ return it.rec && it.rec!=='none' && it.status!=='feito'; }).sort(byDue).forEach(function(it){
-      var t=taskById(it.id); var key=(t&&t.recur_group)?('g:'+t.recur_group):('a:'+String(it.title||'').toLowerCase().trim());
-      if (seen[key]) return; seen[key]=1; l3.push(it);
-    });
-    body = l3.length ? l3.map(taskCardHTML).join('') : emptyState({ span:true, icon:'clock', title:'Nenhuma tarefa recorrente', text:'Crie uma tarefa com repetição para vê-la aqui.' });
-  } else if (f==='concluidas'){
-    var l4 = base.filter(function(it){ return it.status==='feito'; }).sort(byDueDesc).slice(0,100);
-    body = l4.length ? l4.map(taskCardHTML).join('') : emptyState({ span:true, icon:'check', title:'Nada concluído ainda', text:'Tarefas concluídas aparecem aqui.' });
+}
+function kanbanHintFor(filter){
+  if (filter==='atrasadas')   return 'Tarefas vencidas e ainda não concluídas.';
+  if (filter==='proximas')    return 'Tarefas com data futura.';
+  if (filter==='recorrentes') return 'Tarefas recorrentes — uma por rotina.';
+  if (filter==='concluidas')  return 'Tarefas já concluídas.';
+  return 'Todas as suas tarefas em aberto.';
+}
+/* Pool de itens do Kanban para os recortes != "hoje" (a mesma fonte visibleTasks). */
+function kanbanItemsForFilter(filter){
+  var admin=isAdmin(ST.session);
+  var hoje=today();
+  var base=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined });
+  var list;
+  if (filter==='atrasadas'){
+    list=base.filter(function(t){ var d=(t.due_date||'').slice(0,10); return d && d<hoje && t.status!=='feito'; });
+  } else if (filter==='proximas'){
+    list=base.filter(function(t){ var d=(t.due_date||'').slice(0,10); return d && d>hoje && t.status!=='feito'; });
+  } else if (filter==='recorrentes'){
+    var seen={}; list=[];
+    base.filter(function(t){ return isRecurring(t) && t.status!=='feito'; })
+      .sort(function(a,b){ return String(a.due_date||'9999').localeCompare(String(b.due_date||'9999')); })
+      .forEach(function(t){ var key=t.recur_group?('g:'+t.recur_group):('a:'+String(t.title||'').toLowerCase().trim()); if(seen[key]) return; seen[key]=1; list.push(t); });
+  } else if (filter==='concluidas'){
+    list=base.filter(function(t){ return t.status==='feito'; }).slice(0,200);
   } else { // todas
-    var l5 = base.filter(function(it){ return it.status!=='feito'; }).sort(byDue);
-    body = l5.length ? l5.map(taskCardHTML).join('') : emptyState({ span:true, icon:'tasks', title:'Nenhuma tarefa', text:'Crie sua primeira tarefa pelo botão "Nova tarefa".' });
+    list=base.slice();
   }
-  return chips + '<div class="mt-list">'+body+'</div>';
+  return list.map(mtTaskToItem);
 }
 
 function tarefasHTML() {
@@ -18541,14 +18563,15 @@ function tarefasHTML() {
     return '<div class="view-bar">'+toggle+'</div>' + (view==='calendario' ? calendarioHTML() : projetosHTML());
   }
   // v120: envolve o head com sticky-bar para o filtro não sumir no scroll
-  var titulo = (view==='hoje') ? 'Minhas tarefas' : 'Trabalho';
-  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>'+titulo+'</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div></div>';
-  // v230: 'hoje' (Minhas tarefas) é o padrão; visões legadas seguem renderizando se acessadas por deep link.
+  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>'+
+    (view==='kanban' ? kanbanChipsHTML() : '')+
+  '</div>';
+  // v231: Kanban é o padrão; os chips são RECORTES do próprio Kanban (ST.taskFilter).
+  // Visões legadas (matriz/rotina) seguem renderizando se acessadas por deep link.
   var body;
-  if (view==='kanban') body = rotinaHojeCardHTML() + kanbanHTML();
+  if (view==='matriz') body = matrizHTML();
   else if (view==='rotina') body = rotinaHTML();
-  else if (view==='matriz') body = matrizHTML();
-  else body = minhasTarefasHTML();
+  else body = ((ST.taskFilter||'hoje')==='hoje' ? rotinaHojeCardHTML() : '') + kanbanHTML();
   return head + muralHTML() + body;
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
@@ -18602,6 +18625,21 @@ function boardItems() {
   return items;
 }
 function kanbanHTML() {
+  var filter = ST.taskFilter || 'hoje';
+  // v231: recortes != "hoje" distribuem a MESMA fonte nas 3 colunas de status.
+  if (filter!=='hoje'){
+    var pool = kanbanItemsForFilter(filter);
+    var cols2='';
+    STATUS_ORDER.forEach(function(key){
+      var st2=STATUS[key];
+      var inCol2=pool.filter(function(it){ return (it.status||'todo')===key; });
+      if (key==='feito') inCol2.sort(function(a,b){ return String(b.due||'').localeCompare(String(a.due||'')); });
+      else inCol2.sort(function(a,b){ return String(a.due||'9999').localeCompare(String(b.due||'9999')); });
+      var body2 = inCol2.length ? inCol2.map(taskCardHTML).join('') : '<div class="col-empty">Nenhuma tarefa</div>';
+      cols2 += '<div class="col" data-status="'+key+'"><div class="col-head"><span class="col-dot" style="background:'+st2.color+'"></span><span class="col-title">'+st2.label+'</span><span class="col-count">'+inCol2.length+'</span></div><div class="col-body">'+body2+'</div></div>';
+    });
+    return '<div class="board-hint">'+esc(kanbanHintFor(filter))+'</div><div class="board">'+cols2+'</div>';
+  }
   var items = boardItems(); var cols=''; var hoje=today();
   STATUS_ORDER.forEach(function(key){
     var st=STATUS[key];
@@ -43635,6 +43673,113 @@ function openDiaModal(ds){
   modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
   document.body.appendChild(modal); draw();
 }
+/* ============================================================
+   v232 — CALENDÁRIO Etapa 1: ordenação por relevância + "Prioridade de hoje"
+   Sem banco, sem nova fonte: reusa calDayItems/ST.tasks/ST.events/ST.milestones,
+   o mesmo escopo (loja/responsável/permissão) e abre pelo calItemOpen existente.
+   NÃO altera prioridade/status/prazo/responsável de nada; NÃO inventa horário.
+   ============================================================ */
+// Ordena os itens de UMA célula (mesmo dia) por relevância, de forma ESTÁVEL,
+// antes do limite visual (slice) existente. Mantém "+N mais" e a Visão do Dia.
+function calSortItems(items, ds){
+  var hoje=today();
+  function rank(it){
+    // (destaque persistente seria o 1º critério — não existe mecanismo real hoje, então pulado)
+    if (it.k==='event' && it.hora) return 1;                    // evento com horário
+    if (it.status && it.status!=='feito' && ds<hoje) return 2;  // atrasada não concluída
+    if (it.status==='feito') return 6;                          // concluída por último
+    if (it.k==='event') return 3;                               // evento sem horário
+    if (it.priority==='alta') return 4;
+    if (it.priority==='media') return 4.5;
+    return 5;                                                   // demais
+  }
+  return (items||[]).map(function(it,i){ return { it:it, i:i, r:rank(it) }; })
+    .sort(function(a,b){
+      if (a.r!==b.r) return a.r-b.r;
+      var ha=(a.it.hora||'99:99'), hb=(b.it.hora||'99:99'); if (ha!==hb) return ha<hb?-1:1;
+      return a.i-b.i; // estável pelo índice original
+    })
+    .map(function(x){ return x.it; });
+}
+
+// Itens candidatos a "Prioridade de HOJE" (sempre a data atual, mesmo navegando meses).
+// Regra determinística: 1) atrasada não concluída · 2) evento de hoje com hora ·
+// 3) tarefa de hoje prioridade alta · 4) demais que vencem hoje. Exclui concluídas.
+function _pdMk(k,id,title,rank,reason,extra){ var o={k:k,id:id,title:title,rank:rank,reason:reason}; if(extra){ for(var x in extra) o[x]=extra[x]; } return o; }
+function prioridadeDoDiaItems(){
+  var hoje=today();
+  var admin=isAdmin(ST.session), me=String(ST.session.user.id), sid=boardStore();
+  var who = admin ? (ST.taskAssignee?String(ST.taskAssignee):null) : me;
+  var projIds={}; (ST.projects||[]).forEach(function(p){ projIds[String(p.id)]=1; });
+  var pool=[];
+  (ST.tasks||[]).forEach(function(t){
+    if (t.is_rule) return;                                   // regra nunca é item executável
+    if (t.status==='feito') return;                          // nunca destaca concluída
+    if (sid && String(t.store_unit_id)!==String(sid)) return;
+    if (!admin){ if (String(t.assignee_id)!==me && String(t.created_by)!==me) return; }
+    else if (who && String(t.assignee_id||'')!==who) return;
+    var d=(t.due_date||'').slice(0,10); if(!d) return;
+    if (d<hoje) pool.push(_pdMk('task', t.id, t.title, 1, 'Está atrasado.', { due:d, type:t.task_type, priority:t.priority }));
+    else if (d===hoje){
+      if (t.priority==='alta') pool.push(_pdMk('task', t.id, t.title, 3, 'Tem prioridade alta e vence hoje.', { due:d, type:t.task_type, priority:t.priority }));
+      else pool.push(_pdMk('task', t.id, t.title, 4, 'Vence hoje.', { due:d, type:t.task_type, priority:t.priority }));
+    }
+  });
+  (ST.events||[]).forEach(function(ev){
+    if (ev.kind==='aviso') return;
+    if ((ev.date||'').slice(0,10)!==hoje) return;
+    if (String(ev.sector||'')!==String(ST.sector)) return;
+    if (ev.scope==='me' && String(ev.created_by)!==me) return;
+    if (ev.store_unit_id && sid && String(ev.store_unit_id)!==String(sid)) return;
+    if (ev.hora) pool.push(_pdMk('event', ev.id, ev.title, 2, 'Tem horário definido hoje.', { hora:ev.hora, type:ev.kind, color:ev.color }));
+    else pool.push(_pdMk('event', ev.id, ev.title, 4, 'É hoje.', { type:ev.kind, color:ev.color }));
+  });
+  (ST.milestones||[]).forEach(function(m){
+    if (!projIds[String(m.project_id)]) return;
+    if (sid && String(projStore(m.project_id))!==String(sid)) return;
+    if (who && String(m.assignee_id||'')!==who) return;
+    if ((m.status||'todo')==='feito') return;
+    var d=(m.date||'').slice(0,10); if(!d) return;
+    if (d<hoje) pool.push(_pdMk('ms', m.id, m.name, 1, 'Está atrasado.', { due:d, type:'projeto' }));
+    else if (d===hoje) pool.push(_pdMk('ms', m.id, m.name, 4, 'Vence hoje.', { due:d, type:'projeto' }));
+  });
+  pool.sort(function(a,b){
+    if (a.rank!==b.rank) return a.rank-b.rank;
+    var ha=a.hora||'99:99', hb=b.hora||'99:99'; if(ha!==hb) return ha<hb?-1:1;   // horário
+    var da=a.due||'9999', db=b.due||'9999'; if(da!==db) return da<db?-1:1;       // prazo
+    return String(a.title||'').localeCompare(String(b.title||''));               // título
+  });
+  return pool;
+}
+var _PD_TYPE_LB = { pessoal:'Pessoal', loja:'Loja', equipe:'Equipe', projeto:'Projeto', evento:'Evento', reuniao:'Reunião', lembrete:'Lembrete' };
+function _pdTimeLabel(it){
+  if (it.hora) return it.hora;
+  if (it.due && it.due < today()) return 'Atrasada · '+fmtDate(it.due);
+  return 'Hoje';
+}
+function prioridadeDoDiaHTML(){
+  var pool = prioridadeDoDiaItems();
+  var head = '<div class="pd-head">'+icon('target')+'<span>Prioridade de hoje</span></div>';
+  if (!pool.length){
+    return '<div class="pd-wrap"><div class="pd-inner">'+head+'<div class="pd-empty">'+icon('check')+'<span>Nenhum compromisso prioritário para hoje.</span></div></div></div>';
+  }
+  var main = pool[0], secs = pool.slice(1,4);
+  function typeChip(it){ var l=_PD_TYPE_LB[it.type]; return l?'<span class="pd-type">'+esc(l)+'</span>':''; }
+  var mainHTML = '<button class="pd-main rank'+main.rank+'" data-pd-open="'+esc(main.k)+'|'+esc(main.id)+'">'+
+      '<span class="pd-main-top"><span class="pd-main-time">'+esc(_pdTimeLabel(main))+'</span>'+typeChip(main)+'</span>'+
+      '<b class="pd-main-title">'+esc(main.title)+'</b>'+
+      '<span class="pd-main-why">'+esc(main.reason)+'</span>'+
+    '</button>';
+  var secsHTML = secs.length ? ('<div class="pd-secs">'+secs.map(function(it){
+    return '<button class="pd-sec" data-pd-open="'+esc(it.k)+'|'+esc(it.id)+'">'+
+      '<span class="pd-sec-dot rank'+it.rank+'"></span>'+
+      '<span class="pd-sec-main"><b>'+esc(it.title)+'</b><i>'+esc(it.reason)+'</i></span>'+
+      '<span class="pd-sec-time">'+esc(_pdTimeLabel(it))+'</span>'+
+    '</button>';
+  }).join('')+'</div>') : '';
+  return '<div class="pd-wrap"><div class="pd-inner">'+head+'<div class="pd-body">'+mainHTML+secsHTML+'</div></div></div>';
+}
+
 function calendarioHTML() {
   if (ST.cal.y==null) { var n=new Date(); ST.cal.y=n.getFullYear(); ST.cal.m=n.getMonth(); }
   var y=ST.cal.y, m=ST.cal.m;
@@ -43663,7 +43808,7 @@ function calendarioHTML() {
   for (var b=0;b<first;b++) grid+='<div class="cal-cell empty"></div>';
   for (var d=1;d<=dim;d++) {
     var ds=y+'-'+pad(m+1)+'-'+pad(d);
-    var items=calDayItems(ds);
+    var items=calSortItems(calDayItems(ds), ds); // v232: ordena por relevância antes do limite
     var chips='';
     items.slice(0,4).forEach(function(it){ chips+=calChipHTML(it); });
     if (items.length>4) chips+='<span class="cal-more">+'+(items.length-4)+' mais</span>';
@@ -43671,7 +43816,7 @@ function calendarioHTML() {
     grid+='<div class="cal-cell'+(ds===hoje?' today':'')+'" data-date="'+ds+'"><div class="cal-cell-h"><span class="cal-d">'+d+'</span>'+addBtn+'</div><div class="cal-chips">'+chips+'</div></div>';
   }
   grid+='</div>';
-  return top+legend+grid;
+  return top+prioridadeDoDiaHTML()+legend+grid; // v232: "Prioridade de hoje" entre o cabeçalho e o mês
 }
 
 function bindCalendario() {
@@ -43686,6 +43831,14 @@ function bindCalendario() {
   // botão "+ Evento" (todos podem; não-admin só cria pessoal)
   var evtBtn=document.getElementById('btnNovoEvento');
   if (evtBtn) evtBtn.addEventListener('click', function(){ openEventModal(null, null); });
+
+  // v232: "Prioridade de hoje" — abre o item original (reusa calItemOpen)
+  var pds=app.querySelectorAll('[data-pd-open]');
+  for (var p=0;p<pds.length;p++) pds[p].addEventListener('click', function(e){
+    e.stopPropagation();
+    var parts=String(this.getAttribute('data-pd-open')).split('|');
+    if (parts.length>=2) calItemOpen(parts[0], parts.slice(1).join('|'));
+  });
 
   // abrir item ao clicar no chip
   var chips=app.querySelectorAll('.cal-chip');
