@@ -2741,6 +2741,17 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .cad-aba { background:transparent; color:var(--u-text2); font-size:13px; font-weight:600; padding:9px 14px; border-radius:8px 8px 0 0; }
 .cad-aba:hover { color:var(--u-text); }
 .cad-aba.on { color:var(--u-accent); border-bottom:2px solid var(--u-accent); margin-bottom:-1px; }
+/* E2-c/B — Histórico do colaborador (timeline da auditoria) */
+.cch-list { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+.cch-item { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; background:var(--u-bg2); border-radius:9px; }
+.cch-cat { flex-shrink:0; display:inline-flex; width:22px; height:22px; align-items:center; justify-content:center; }
+.cch-body { min-width:0; flex:1; }
+.cch-top { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.cch-top b { font-size:13px; color:var(--u-text); overflow-wrap:anywhere; }
+.cch-meta { font-size:11.5px; color:var(--u-text3); margin-top:2px; }
+.cch-tag { font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:999px; white-space:nowrap; }
+.cch-tag.cch-ok { color:#16A34A; background:rgba(22,163,74,.12); }
+.cch-tag.cch-nome { color:#B45309; background:rgba(245,158,11,.14); }
 .cad-eq-lista { display:flex; flex-direction:column; gap:6px; }
 .cad-eq-item { display:flex; align-items:center; gap:10px; background:var(--u-card); border-radius:9px; padding:10px 14px; box-shadow:var(--u-shadow); text-align:left; min-width:0; }
 .cad-eq-item:hover { background:var(--u-accent-soft); }
@@ -14678,7 +14689,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v251';
+var APP_BUILD = 'v252';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -25989,7 +26000,7 @@ function centralColabHTML(colabId){
   } else if (aba==='vinculos'){
     conteudo = centralColabVinculosHTML(m, u);
   } else if (aba==='historico'){
-    conteudo = '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Histórico de alterações e ações desta pessoa aparecerá aqui em breve.</div></div>';
+    conteudo = centralColabHistoricoHTML(m);
   }
 
   return '<div class="cad-titulo"><button class="cad-voltar" data-cad-nav="colabs">← Colaboradores</button>'+
@@ -26041,6 +26052,62 @@ function centralColabVinculosHTML(m, u){
   }
   if (!u) return '<div class="cad-bloco"><h4>Vínculos</h4><div class="cad-vazio">Esta pessoa não tem acesso ao sistema — não há tarefas, projetos ou documentos vinculados.</div></div>';
   return '<div class="cad-2col">'+bloco('Tarefas', tarefas)+bloco('Projetos', projetos)+'</div>'+bloco('Documentos', docs);
+}
+
+/* ---------- E2-c/B: Histórico do colaborador (timeline da auditoria, somente leitura) ----------
+   Reusa ST.audit / AUDIT_STATE / auditCarregar / auditFmtData / auditCategoriaAcao / AUDIT_CAT_LABEL.
+   Duas categorias: "actor" (feito pela pessoa, por actor_id — confiável) e "nome" (correspondência por
+   nome no texto action — aproximada). Sem id-alvo estruturado na auditoria (ver diagnóstico E2-c/A). */
+function centralColabHistoricoEventos(m){
+  var rows = ST.audit || [];
+  var uu = (typeof userDoMembro==='function') ? userDoMembro(m) : null;
+  var uid = uu ? String(uu.id) : null;
+  var nm = (m.name||'').trim().toLowerCase();
+  var out = [];
+  for (var i=0;i<rows.length;i++){
+    var a = rows[i];
+    var porActor = uid && String(a.actor_id||'')===uid;         // confiável (feito pela pessoa)
+    var porNome  = nm && String(a.action||'').toLowerCase().indexOf(nm)!==-1; // aproximado
+    if (porActor) out.push({ row:a, via:'actor' });             // dedup: actor vence; não entra 2x
+    else if (porNome) out.push({ row:a, via:'nome' });
+    // sem correspondência -> não entra
+  }
+  out.sort(function(x,y){ return String(y.row.created_at||'').localeCompare(String(x.row.created_at||'')); });
+  return out;
+}
+function centralColabHistoricoHTML(m){
+  if (!isAdmin(ST.session)) return '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Sem permissão.</div></div>';
+  // Estados de carga (reusa AUDIT_STATE; erro sinalizado por ST._colabHistErr sem tocar auditCarregar)
+  if (!AUDIT_STATE.loaded){
+    if (ST._colabHistErr) return '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Não consegui carregar o histórico. <button class="fi-link" id="cadHistRetry">Tentar de novo</button></div></div>';
+    return '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Carregando histórico…</div></div>';
+  }
+  var eventos = centralColabHistoricoEventos(m);
+  // Ambiguidade: existe OUTRO usuário (≠ login desta pessoa) ou OUTRO membro com o mesmo nome?
+  var uu = (typeof userDoMembro==='function') ? userDoMembro(m) : null;
+  var meUid = uu ? String(uu.id) : null;
+  var nm = (m.name||'').trim().toLowerCase();
+  var outrosU = nm ? (ST.allUsers||[]).filter(function(x){ return (x.name||'').trim().toLowerCase()===nm && String(x.id)!==meUid; }).length : 0;
+  var outrosM = nm ? (ST.members||[]).filter(function(x){ return (x.name||'').trim().toLowerCase()===nm && String(x.id)!==String(m.id); }).length : 0;
+  var temPorNome = eventos.some(function(e){ return e.via==='nome'; });
+  var aviso = (temPorNome && (outrosU+outrosM)>0)
+    ? '<div class="ac6-warn">'+icon('warning')+' Há mais de uma pessoa com esse nome. Os itens marcados "por nome" podem incluir ações de outra pessoa.</div>'
+    : '';
+  if (!eventos.length) return '<div class="cad-bloco"><h4>Histórico</h4>'+aviso+'<div class="cad-vazio">Sem histórico registrado para esta pessoa.</div></div>';
+  var linhas = eventos.slice(0,50).map(function(e){
+    var a=e.row; var cat=auditCategoriaAcao(a.action); var meta=AUDIT_CAT_LABEL[cat]||AUDIT_CAT_LABEL.outro;
+    var tag = e.via==='actor'
+      ? '<span class="cch-tag cch-ok">Feito pela pessoa</span>'
+      : '<span class="cch-tag cch-nome">Correspondência por nome</span>';
+    return '<div class="cch-item">'+
+      '<span class="cch-cat" style="color:'+meta.cor+'" title="'+esc(meta.label)+'">'+((typeof icon==='function')?icon(meta.ic):'')+'</span>'+
+      '<div class="cch-body"><div class="cch-top"><b>'+esc(a.action||'')+'</b>'+tag+'</div>'+
+        '<div class="cch-meta">'+esc(auditFmtData(a.created_at))+' · por '+esc(a.actor_name||'—')+'</div></div>'+
+    '</div>';
+  }).join('');
+  return '<div class="cad-bloco"><h4>Histórico</h4>'+aviso+
+    '<div class="cad-sub">Até 50 eventos recentes da auditoria. <b>Feito pela pessoa</b> = ela foi quem executou a ação; <b>Correspondência por nome</b> = aproximada, pode não ser sobre ela.</div>'+
+    '<div class="cch-list">'+linhas+'</div></div>';
 }
 
 /* ---------- Acessos e Permissões (visão geral) ---------- */
@@ -26104,6 +26171,14 @@ function bindCentral(){
   if (ST.central && ST.central.nav==='rotinas-pop') bindCentralRotinas();
   if (ST.central && ST.central.nav==='equipes') bindCentralEquipes();
   if (ST.central && ST.central.nav==='equipe') bindCentralEquipeDetalhe();
+  // E2-c/B: aba Histórico do colaborador — carrega a auditoria uma vez (reusa ST.audit; sem consulta duplicada)
+  if (ST.central && ST.central.nav==='colab' && ST.central.colabAba==='historico'){
+    if (typeof AUDIT_STATE!=='undefined' && !AUDIT_STATE.loaded && !AUDIT_STATE.loading && !ST._colabHistErr && typeof auditCarregar==='function'){
+      auditCarregar(function(){ if(!AUDIT_STATE.loaded) ST._colabHistErr=true; if (typeof renderPage==='function') renderPage(); });
+    }
+    var histRetry=document.getElementById('cadHistRetry');
+    if (histRetry) histRetry.addEventListener('click', function(){ ST._colabHistErr=false; renderPage(); });
+  }
   var q = document.getElementById('cadQ');
   if (q){
     var t=null;
