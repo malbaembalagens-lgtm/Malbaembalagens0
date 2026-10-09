@@ -14558,6 +14558,22 @@ html.dark .brf-status-quiet {
 @media (max-width:720px){ .pd-body{ grid-template-columns:1fr; } }
 /* ===== fim v232 ===== */
 
+/* ===== v233 — Relatório: Execução de tarefas ===== */
+.rep-exec .ext-ref{ margin-left:auto; font-size:12px; font-weight:600; color:var(--u-text3,#aab); }
+.ext-grp{ display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--u-text3,#aab); margin:12px 0 6px; }
+.ext-grp svg{ width:14px; height:14px; }
+.ext-grp.ext-grp-nao{ color:#EF4444; }
+.ext-grp.ext-grp-nao svg{ color:#EF4444; }
+.ext-n{ font-size:11px; font-weight:700; color:var(--u-text2,#7a8095); background:var(--u-bg2,#f2f4f8); border-radius:999px; padding:1px 8px; }
+.ext-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--u-border,#eef0f4); }
+.ext-st{ font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap; flex:0 0 auto; }
+.ext-st.nao{ color:#EF4444; background:#EF444418; }
+.ext-st.ok{ color:#16A34A; background:#16A34A18; }
+.ext-main{ min-width:0; display:flex; flex-direction:column; }
+.ext-main b{ font-size:13px; color:var(--u-text,#1a1d26); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ext-main i{ font-style:normal; font-size:11.5px; color:var(--u-text3,#aab); }
+/* ===== fim v233 ===== */
+
 </style>
 </head>
 <body>
@@ -14581,7 +14597,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v232';
+var APP_BUILD = 'v233';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -18563,15 +18579,13 @@ function tarefasHTML() {
     return '<div class="view-bar">'+toggle+'</div>' + (view==='calendario' ? calendarioHTML() : projetosHTML());
   }
   // v120: envolve o head com sticky-bar para o filtro não sumir no scroll
-  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div>'+
-    (view==='kanban' ? kanbanChipsHTML() : '')+
-  '</div>';
-  // v231: Kanban é o padrão; os chips são RECORTES do próprio Kanban (ST.taskFilter).
+  // v233: chips de recorte removidos — Kanban é visão OPERACIONAL do dia (sem histórico).
+  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div></div>';
   // Visões legadas (matriz/rotina) seguem renderizando se acessadas por deep link.
   var body;
   if (view==='matriz') body = matrizHTML();
   else if (view==='rotina') body = rotinaHTML();
-  else body = ((ST.taskFilter||'hoje')==='hoje' ? rotinaHojeCardHTML() : '') + kanbanHTML();
+  else body = rotinaHojeCardHTML() + kanbanHTML();
   return head + muralHTML() + body;
 }
 // Junta TAREFAS + MARCOS de projeto + TAREFAS de campanha num só quadro
@@ -18625,22 +18639,14 @@ function boardItems() {
   return items;
 }
 function kanbanHTML() {
-  var filter = ST.taskFilter || 'hoje';
-  // v231: recortes != "hoje" distribuem a MESMA fonte nas 3 colunas de status.
-  if (filter!=='hoje'){
-    var pool = kanbanItemsForFilter(filter);
-    var cols2='';
-    STATUS_ORDER.forEach(function(key){
-      var st2=STATUS[key];
-      var inCol2=pool.filter(function(it){ return (it.status||'todo')===key; });
-      if (key==='feito') inCol2.sort(function(a,b){ return String(b.due||'').localeCompare(String(a.due||'')); });
-      else inCol2.sort(function(a,b){ return String(a.due||'9999').localeCompare(String(b.due||'9999')); });
-      var body2 = inCol2.length ? inCol2.map(taskCardHTML).join('') : '<div class="col-empty">Nenhuma tarefa</div>';
-      cols2 += '<div class="col" data-status="'+key+'"><div class="col-head"><span class="col-dot" style="background:'+st2.color+'"></span><span class="col-title">'+st2.label+'</span><span class="col-count">'+inCol2.length+'</span></div><div class="col-body">'+body2+'</div></div>';
-    });
-    return '<div class="board-hint">'+esc(kanbanHintFor(filter))+'</div><div class="board">'+cols2+'</div>';
-  }
-  var items = boardItems(); var cols=''; var hoje=today();
+  var hoje=today();
+  // v233: visão OPERACIONAL do dia. Ocorrências RECORRENTES vencidas NÃO ficam no
+  // Kanban (vão para o histórico/Relatório como "Não realizada"); tarefas ÚNICAS
+  // atrasadas permanecem (ainda são um prazo a executar). Nada é apagado nem alterado.
+  var items = boardItems().filter(function(it){
+    return !(it.rec && it.rec!=='none' && it.due && it.due<hoje);
+  });
+  var cols='';
   STATUS_ORDER.forEach(function(key){
     var st=STATUS[key];
     var inCol=items.filter(function(it){ return (it.status||'todo')===key; });
@@ -20657,6 +20663,56 @@ function openMktMetaModal(goal){
 /* ----- Relatório mensal de Marketing (resumo executivo, pronto para apresentar) ----- */
 function relMesRef(){ var d=new Date(); return { m: ST.relM || (d.getMonth()+1), y: ST.relY || d.getFullYear() }; }
 function relSetMes(delta){ var r=relMesRef(); var m=r.m+delta, y=r.y; while(m<1){m+=12;y--;} while(m>12){m-=12;y++;} var d=new Date(); if(y>d.getFullYear() || (y===d.getFullYear() && m>d.getMonth()+1)) return; ST.relM=m; ST.relY=y; renderPage(); }
+/* ============================================================
+   v233 — RELATÓRIO: "Execução de tarefas" (histórico derivado, ZERO banco)
+   Deriva das MESMAS linhas de malba_vl_tasks, sem alterar/apagar nada:
+   - Concluídas: status 'feito' com conclusão no mês (completed_at || due_date).
+   - Não realizadas: OCORRÊNCIA RECORRENTE (recurrence!=none ou recur_group) com
+     due_date no mês, VENCIDA (due<hoje) e ainda não concluída.
+   Preserva a data prevista original; não gera antes de vencer; não duplica.
+   Respeita escopo de loja/responsável/permissão (igual ao resto).
+   ============================================================ */
+function execTarefasSecHTML(m, y){
+  var mm=(m<10?'0':'')+m, ld=new Date(y,m,0).getDate();
+  var mStart=y+'-'+mm+'-01', mEnd=y+'-'+mm+'-'+((ld<10?'0':'')+ld);
+  var hoje=today();
+  var admin=isAdmin(ST.session), me=String(ST.session.user.id), sid=boardStore();
+  var who = admin ? (ST.taskAssignee?String(ST.taskAssignee):null) : me;
+  function scoped(t){
+    if (t.is_rule) return false;                               // regra nunca é execução
+    if (sid && String(t.store_unit_id)!==String(sid)) return false;
+    if (!admin){ if (String(t.assignee_id)!==me && String(t.created_by)!==me) return false; }
+    else if (who && String(t.assignee_id||'')!==who) return false;
+    return true;
+  }
+  var concl=[], naoReal=[];
+  (ST.tasks||[]).forEach(function(t){
+    if (!scoped(t)) return;
+    var dv=(t.due_date||'').slice(0,10);
+    if (t.status==='feito'){
+      var dc=((t.completed_at||'').slice(0,10)) || dv;
+      if (dc>=mStart && dc<=mEnd) concl.push({ t:t, dv:dv, dc:dc });
+    } else {
+      var isRec=(t.recurrence && t.recurrence!=='none') || t.recur_group;
+      if (isRec && dv && dv<hoje && dv>=mStart && dv<=mEnd) naoReal.push({ t:t, dv:dv });
+    }
+  });
+  concl.sort(function(a,b){ return String(b.dc).localeCompare(String(a.dc)); });
+  naoReal.sort(function(a,b){ return String(b.dv).localeCompare(String(a.dv)); });
+  function freqLb(t){ var k=t.recurrence; return (k && REC[k] && k!=='none') ? REC[k].label : (t.recur_group?'Recorrente':'Única'); }
+  function respLb(t){ var u=t.assignee_id?userById(t.assignee_id):null; return u?esc(u.name):'Sem responsável'; }
+  function rowNao(x){ var t=x.t; return '<div class="ext-row"><span class="ext-st nao">Não realizada</span><div class="ext-main"><b>'+esc(t.title)+'</b><i>Prevista '+fmtDate(x.dv)+' · '+esc(freqLb(t))+' · '+respLb(t)+'</i></div></div>'; }
+  function rowOk(x){ var t=x.t; return '<div class="ext-row"><span class="ext-st ok">Concluída</span><div class="ext-main"><b>'+esc(t.title)+'</b><i>Prevista '+fmtDate(x.dv||x.dc)+' · Concluída '+fmtDate(x.dc)+' · '+esc(freqLb(t))+' · '+respLb(t)+'</i></div></div>'; }
+  var body='';
+  if (!naoReal.length && !concl.length){
+    body = emptyState({ icon:'check', title:'Sem execução no período', text:'Tarefas concluídas e ocorrências não realizadas aparecem aqui.' });
+  } else {
+    if (naoReal.length) body += '<div class="ext-grp ext-grp-nao">'+icon('warning')+'<span>Não realizadas</span><span class="ext-n">'+naoReal.length+'</span></div>'+naoReal.map(rowNao).join('');
+    if (concl.length)   body += '<div class="ext-grp">'+icon('check')+'<span>Concluídas</span><span class="ext-n">'+concl.length+'</span></div>'+concl.slice(0,80).map(rowOk).join('');
+  }
+  return '<div class="rep-card rep-exec"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Execução de tarefas</h3><span class="ext-ref">'+MES_ABR[m-1]+' '+y+'</span></div>'+body+'</div>';
+}
+
 function relatorioHTML(){
   var r=relMesRef(); var m=r.m, y=r.y;
   var pm=(m===1?12:m-1), py=(m===1?y-1:y);
@@ -20702,7 +20758,7 @@ function relatorioHTML(){
   // produtividade
   var prodSec='<div class="rep-card"><div class="rep-card-h">'+icon('dashboard')+'<h3>Produtividade</h3></div><div class="rep-prod"><div class="rep-prod-i"><b>'+tasksFeito+'</b><span>tarefas concluídas</span></div><div class="rep-prod-i"><b>'+projAtivos+'</b><span>projetos ativos</span></div><div class="rep-prod-i"><b>'+camps.length+'</b><span>campanhas no mês</span></div></div></div>';
 
-  return head + printHead + kpis + siteSec + '<div class="rep-grid2">'+metasSec+campsSec+'</div>' + prodSec;
+  return head + printHead + kpis + siteSec + '<div class="rep-grid2">'+metasSec+campsSec+'</div>' + prodSec + execTarefasSecHTML(m, y);
 }
 function bindRelatorio(){
   var pv=document.getElementById('relPrev'); if(pv) pv.addEventListener('click', function(){ relSetMes(-1); });
@@ -21482,7 +21538,7 @@ function relatorioLojasHTML(){
   var focoNome = sid ? (storeName(sid)||'Loja') : 'Todas as lojas';
   var printHead='<div class="rep-print-head"><h1>Relatório de Lojas — '+esc(focoNome)+' — '+MESES[m-1]+' '+y+'</h1><p>MALBA Embalagens · gerado em '+fmtDate(today())+'</p></div>';
   var body = sid ? lojaReportSingle(sid, m, y) : lojaReportConsolidado(lojas, m, y);
-  return head + printHead + body;
+  return head + printHead + body + execTarefasSecHTML(m, y);
 }
 function kpiCard(v,l,s,c){ return '<div class="rep-kpi"><span class="rep-kpi-v" style="color:'+(c||'var(--u-text)')+'">'+v+'</span><span class="rep-kpi-l">'+esc(l)+'</span>'+(s?'<span class="rep-kpi-s">'+s+'</span>':'')+'</div>'; }
 function lojaReportSingle(sid, m, y){
