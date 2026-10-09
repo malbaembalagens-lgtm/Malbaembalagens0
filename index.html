@@ -14596,6 +14596,9 @@ html.dark .brf-status-quiet {
 .cal-week .cal-witem .cal-chip{ flex:1 1 0; min-width:0; width:auto; }
 .cal-week .cal-wav{ flex:0 0 auto; width:17px; height:17px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:8.5px; line-height:1; letter-spacing:.01em; }
 .cal-week .cal-late-tag{ flex:0 0 100%; align-self:flex-start; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--u-red,#EF4444); background:var(--u-red-soft,#FDEBEB); border-radius:4px; padding:1px 5px; line-height:1.4; }
+/* v239 (Etapa D): realce discreto das "Minhas" (tarefa do usuário atual) — só na semana */
+.cal-week .cal-mine .cal-chip{ box-shadow:inset 2.5px 0 0 var(--u-accent,#3B6FF7); }
+.cal-week .cal-mine .cal-wav{ box-shadow:0 0 0 1.5px var(--u-accent,#3B6FF7); }
 @media (max-width:720px){
   .cal-week{ grid-template-columns:1fr; gap:10px; }
   .cal-wcell{ min-height:0; border:1px solid var(--u-border,#e6e8ee); border-radius:12px; padding:10px 12px; }
@@ -14626,7 +14629,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v238';
+var APP_BUILD = 'v239';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -43882,6 +43885,10 @@ function _calWeekLabel(ws){
 function calSemanaGridHTML(hoje, admin){
   var ws=_calWeekStart(ST.cal.wkRef||hoje);
   var dows=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  // v239 (Etapa D): id ESTÁVEL do usuário autenticado (null-safe). "Minhas" = tarefa com
+  // assignee_id === meId; classificação é VISUAL (reordena/realça itens JÁ filtrados), nunca
+  // amplia acesso nem muda calDayItems. meId null => comportamento idêntico ao v238.
+  var meId = (ST.session && ST.session.user) ? String(ST.session.user.id) : null;
   var grid='<div class="cal-week">';
   for (var i=0;i<7;i++){
     var dd=new Date(ws.getFullYear(),ws.getMonth(),ws.getDate()+i,12,0,0);
@@ -43904,6 +43911,15 @@ function calSemanaGridHTML(hoje, admin){
     // Como calDayItems só inclui a tarefa no dia do seu due_date e exclui is_rule, isto cobre
     // ocorrências recorrentes vencidas e ignora regra-modelo, item sem data, eventos/marcos/campanhas.
     // Reusa calChipHTML SEM alterá-la: envolve apenas o chip atrasado + rótulo acessível.
+    // v239 (Etapa D): "Minhas" (tarefa atribuída ao usuário atual) primeiro, de forma ESTÁVEL,
+    // dentro do grupo "Dia inteiro" — SEM novos cabeçalhos e SEM reordenar "Com horário"
+    // (eventos cronológicos). Sem responsável/equipe mantêm a ordem de relevância atual.
+    function _isMine(it){ return it.k==='task' && meId && String(it.assignee_id||'')===meId; }
+    if (meId){
+      var mine=[], rest=[];
+      vAllDay.forEach(function(it){ (_isMine(it)?mine:rest).push(it); });
+      vAllDay = mine.concat(rest);
+    }
     function renderWItem(it){
       var chip=calChipHTML(it);
       var isTask=(it.k==='task');
@@ -43913,9 +43929,10 @@ function calSemanaGridHTML(hoje, admin){
       // Sem responsável OU usuário não encontrado => sem avatar (não inventa). Reusa iniciais().
       var u = (isTask && it.assignee_id) ? userByIdAll(it.assignee_id) : null;
       var av = u ? '<span class="cal-wav" style="background:'+(u.color||'#9aa1ad')+'" title="'+esc(u.name||'')+'" aria-label="Responsável: '+esc(u.name||'')+'">'+esc(u.initials || iniciais(u.name))+'</span>' : '';
-      if (!late && !av) return chip;                 // chip puro, inalterado
+      var mine = _isMine(it);                         // v239: realce discreto das "Minhas"
+      if (!late && !av && !mine) return chip;         // chip puro, inalterado
       var tag = late ? '<span class="cal-late-tag">Atrasada</span>' : '';
-      return '<div class="cal-witem'+(late?' cal-late':'')+'">'+chip+av+tag+'</div>';
+      return '<div class="cal-witem'+(late?' cal-late':'')+(mine?' cal-mine':'')+'">'+chip+av+tag+'</div>';
     }
     if (vTimed.length){ chips+='<div class="cal-wsec">Com horário</div>'; vTimed.forEach(function(it){ chips+=renderWItem(it); }); }
     if (vAllDay.length){ chips+='<div class="cal-wsec">Dia inteiro</div>'; vAllDay.forEach(function(it){ chips+=renderWItem(it); }); }
