@@ -2752,6 +2752,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .cch-tag { font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:999px; white-space:nowrap; }
 .cch-tag.cch-ok { color:#16A34A; background:rgba(22,163,74,.12); }
 .cch-tag.cch-nome { color:#B45309; background:rgba(245,158,11,.14); }
+.cch-tag.cch-id { color:#3B6FF7; background:rgba(59,111,247,.14); }
 .cad-eq-lista { display:flex; flex-direction:column; gap:6px; }
 .cad-eq-item { display:flex; align-items:center; gap:10px; background:var(--u-card); border-radius:9px; padding:10px 14px; box-shadow:var(--u-shadow); text-align:left; min-width:0; }
 .cad-eq-item:hover { background:var(--u-accent-soft); }
@@ -14689,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v252';
+var APP_BUILD = 'v253';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -20025,6 +20026,7 @@ function openMemberModal(member) {
           }
           if(ST.allUsers) ST.allUsers.push(ru.data);
           auditLog('Criou acesso', name+' · '+(NIVEIS[accLvl]?NIVEIS[accLvl].label:accLvl));
+          try{ if(typeof logAtividade==='function') logAtividade('acesso.criado','colaborador', memberId, name); }catch(e){} // E2-c/C: vínculo por ID
           vincularMembro(memberId, ru.data.id); savePerms(ru.data.id, accPerms);
           finalize('Funcionário '+(isNew?'adicionado':'atualizado')+' com acesso','success');
         });
@@ -20040,6 +20042,7 @@ function openMemberModal(member) {
           if(!jaTem && ST.allUsers) ST.allUsers.push(existing);
           vincularMembro(memberId, existing.id);
           auditLog('Vinculou acesso existente', name+' · '+accEmail);
+          try{ if(typeof logAtividade==='function') logAtividade('acesso.vinculado','colaborador', memberId, name); }catch(e){} // E2-c/C
           finalize('Esse e-mail já tinha acesso — vinculei o funcionário a essa conta.','success');
           return;
         }
@@ -20050,6 +20053,7 @@ function openMemberModal(member) {
       sb.from('malba_store_members').insert(rec).select().single().then(function(r){
         if (r.error || !r.data) { toast('Erro ao adicionar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Adicionar'; return; }
         ST.members.push(r.data); auditLog('Adicionou funcionário', name);
+        try{ if(typeof logAtividade==='function') logAtividade('colaborador.criado','colaborador', r.data.id, name); }catch(e){} // E2-c/C
         if (makeUser) criarConta(r.data.id); else finalize();
       });
     } else {
@@ -20567,11 +20571,11 @@ function openFichaColaborador(member){
   function draw(){ modal.innerHTML=fichaHTML(); bind(); }
   function resetSenha(u, p, cb){
     if(!u){ cb(false); return; }
-    function tryF(field, retry){ var payload={}; payload[field]=p; sb.from('malba_users').update(payload).eq('id',u.id).then(function(r){ if(r.error){ var msg=(r.error.message||'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryF(field==='password_hash'?'password':'password_hash', true); return; } toast('Erro ao redefinir senha','error'); cb(false); return; } auditLog('Redefiniu senha', m.name); cb(true); }); }
+    function tryF(field, retry){ var payload={}; payload[field]=p; sb.from('malba_users').update(payload).eq('id',u.id).then(function(r){ if(r.error){ var msg=(r.error.message||'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryF(field==='password_hash'?'password':'password_hash', true); return; } toast('Erro ao redefinir senha','error'); cb(false); return; } auditLog('Redefiniu senha', m.name); try{ if(typeof logAtividade==='function') logAtividade('acesso.senha_redefinida','colaborador', m.id, m.name); }catch(e){} cb(true); }); }
     tryF('password_hash', false);
   }
   function removerAcesso(u, cb){
-    sb.from('malba_users').delete().eq('id',u.id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.allUsers=(ST.allUsers||[]).filter(function(x){return String(x.id)!==String(u.id);}); if(m.user_id){ sb.from('malba_store_members').update({user_id:null}).eq('id',m.id).then(function(){}); for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(m.id)) ST.members[i].user_id=null; } auditLog('Removeu acesso', m.name); cb(); });
+    sb.from('malba_users').delete().eq('id',u.id).then(function(r){ if(r.error){ toast('Erro ao remover','error'); return; } ST.allUsers=(ST.allUsers||[]).filter(function(x){return String(x.id)!==String(u.id);}); if(m.user_id){ sb.from('malba_store_members').update({user_id:null}).eq('id',m.id).then(function(){}); for(var i=0;i<ST.members.length;i++) if(String(ST.members[i].id)===String(m.id)) ST.members[i].user_id=null; } auditLog('Removeu acesso', m.name); try{ if(typeof logAtividade==='function') logAtividade('acesso.removido','colaborador', m.id, m.name); }catch(e){} cb(); });
   }
   function criarAcessoFicha(){
     var email=(modal.querySelector('#fiEmail').value||'').trim().toLowerCase(); var pass=(modal.querySelector('#fiPass').value||'').trim(); var lvl=modal.querySelector('#fiLevel').value||'user';
@@ -20581,7 +20585,7 @@ function openFichaColaborador(member){
     var btn=modal.querySelector('#fiCreate'); btn.disabled=true; btn.textContent='Criando...';
     function linkTo(userId){ sb.from('malba_store_members').update({user_id:userId}).eq('id',m.id).then(function(){}); for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(m.id)) ST.members[k].user_id=userId; }
     sb.from('malba_users').select('id,name,email').ilike('email', email).limit(1).then(function(ex){
-      if(!ex.error && ex.data && ex.data.length){ var exu=ex.data[0]; var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(exu.id)) jaTem=true; if(!jaTem) ST.allUsers.push(exu); linkTo(exu.id); auditLog('Vinculou acesso existente', m.name); toast('Esse e-mail já tinha acesso — vinculei.','success'); draw(); return; }
+      if(!ex.error && ex.data && ex.data.length){ var exu=ex.data[0]; var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(exu.id)) jaTem=true; if(!jaTem) ST.allUsers.push(exu); linkTo(exu.id); auditLog('Vinculou acesso existente', m.name); try{ if(typeof logAtividade==='function') logAtividade('acesso.vinculado','colaborador', m.id, m.name); }catch(e){} toast('Esse e-mail já tinha acesso — vinculei.','success'); draw(); return; }
       var ehAdminSetor=(lvl==='sector_admin'||lvl==='admin_geral'||lvl==='super'); var baseU={ name:m.name, sector:'lojas', access_level:lvl, sector_role:(ehAdminSetor?'admin':'user'), role:(lvl==='super'?'admin':'user'), email:email, color:m.color||'#3B6FF7', initials:iniciais(m.name) };
       function tryIns(field, retry){ var urec=Object.assign({},baseU); urec[field]=pass; sb.from('malba_users').insert(urec).select().single().then(function(ru){
         if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } setBusy(btn,false); btn.textContent='Criar acesso'; return; }
@@ -20590,10 +20594,11 @@ function openFichaColaborador(member){
         sb.from('malba_store_members').update({ user_id: ru.data.id }).eq('id', m.id).then(function(rl){
           if(rl.error){
             try{ if(typeof auditLog==='function') auditLog('Acesso criado SEM vínculo', m.name+' · usuário '+ru.data.id+' · '+(rl.error.message||'erro')); }catch(e){}
+            try{ if(typeof logAtividade==='function') logAtividade('acesso.criado_sem_vinculo','colaborador', m.id, m.name); }catch(e){} // E2-c/C
             toast('Acesso de '+m.name+' criado, mas NÃO consegui gravar o vínculo ('+(rl.error.message||'erro')+'). Não recrie — use "Gravar vínculo".','error'); draw(); return;
           }
           for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(m.id)) ST.members[k].user_id=ru.data.id;
-          if(typeof auditLog==='function') auditLog('Criou acesso', m.name); toast('Acesso criado','success'); draw();
+          if(typeof auditLog==='function') auditLog('Criou acesso', m.name); try{ if(typeof logAtividade==='function') logAtividade('acesso.criado','colaborador', m.id, m.name); }catch(e){} toast('Acesso criado','success'); draw();
         });
       }); }
       tryIns('password_hash', false);
@@ -20645,6 +20650,7 @@ function openFichaColaborador(member){
         if(rl.error){ toast('Não consegui gravar o vínculo: '+(rl.error.message||'erro'),'error'); btn.disabled=false; return; }
         for(var k=0;k<ST.members.length;k++) if(String(ST.members[k].id)===String(m.id)) ST.members[k].user_id=usr.id;
         try{ if(typeof auditLog==='function') auditLog('Gravou vínculo de acesso', m.name); }catch(e){}
+        try{ if(typeof logAtividade==='function') logAtividade('acesso.vinculado','colaborador', m.id, m.name); }catch(e){} // E2-c/C
         toast('Vínculo gravado','success'); draw();
       });
     });
@@ -26054,36 +26060,65 @@ function centralColabVinculosHTML(m, u){
   return '<div class="cad-2col">'+bloco('Tarefas', tarefas)+bloco('Projetos', projetos)+'</div>'+bloco('Documentos', docs);
 }
 
-/* ---------- E2-c/B: Histórico do colaborador (timeline da auditoria, somente leitura) ----------
-   Reusa ST.audit / AUDIT_STATE / auditCarregar / auditFmtData / auditCategoriaAcao / AUDIT_CAT_LABEL.
-   Duas categorias: "actor" (feito pela pessoa, por actor_id — confiável) e "nome" (correspondência por
-   nome no texto action — aproximada). Sem id-alvo estruturado na auditoria (ver diagnóstico E2-c/A). */
+/* ---------- E2-c/B + E2-c/C: Histórico do colaborador (timeline, somente leitura) ----------
+   Fontes: malba_activity_log (ST.activityLog) com entity_id = id do colaborador -> REGISTRO POR ID
+   (confiável, eventos futuros); e malba_admin_audit (ST.audit): actor_id = feito pela pessoa; nome no
+   action = correspondência aproximada (eventos antigos). Dedup: um "nome" é suprimido se há um "id" do
+   mesmo executor em janela curta. Reusa helpers existentes; sem schema. Ver diagnóstico E2-c/A e E2-c/C. */
+var ACESSO_EV_LABEL = {
+  'colaborador.criado':'Cadastrou colaborador',
+  'acesso.criado':'Criou acesso',
+  'acesso.vinculado':'Vinculou acesso',
+  'acesso.criado_sem_vinculo':'Acesso criado sem vínculo',
+  'acesso.senha_redefinida':'Redefiniu senha',
+  'acesso.removido':'Removeu acesso',
+  'acesso.editado':'Editou acesso'
+};
 function centralColabHistoricoEventos(m){
-  var rows = ST.audit || [];
+  var mid = String(m.id);
+  var muid = String(m.user_id||'');                               // só vínculo GRAVADO conta p/ 'user'
   var uu = (typeof userDoMembro==='function') ? userDoMembro(m) : null;
   var uid = uu ? String(uu.id) : null;
   var nm = (m.name||'').trim().toLowerCase();
-  var out = [];
-  for (var i=0;i<rows.length;i++){
-    var a = rows[i];
-    var porActor = uid && String(a.actor_id||'')===uid;         // confiável (feito pela pessoa)
-    var porNome  = nm && String(a.action||'').toLowerCase().indexOf(nm)!==-1; // aproximado
-    if (porActor) out.push({ row:a, via:'actor' });             // dedup: actor vence; não entra 2x
-    else if (porNome) out.push({ row:a, via:'nome' });
-    // sem correspondência -> não entra
-  }
-  out.sort(function(x,y){ return String(y.row.created_at||'').localeCompare(String(x.row.created_at||'')); });
-  return out;
+
+  // (1) REGISTRO POR ID — malba_activity_log (entity_id = colaborador; ou user vinculado por id gravado)
+  var idEv = [];
+  (ST.activityLog||[]).forEach(function(a){
+    var et = String(a.entity_type||''); var eid = String(a.entity_id||'');
+    var hit = (et==='colaborador' && eid===mid) || (muid && et==='user' && eid===muid);
+    if (!hit) return;
+    idEv.push({ via:'id', label:(ACESSO_EV_LABEL[a.action]||a.action||'Evento'), actorName:a.actor_name||'', created_at:a.created_at, ts:new Date(a.created_at||0).getTime(), actor:String(a.actor_id||'') });
+  });
+
+  // (2) AUDITORIA — actor (confiável) + nome (aproximado), como na v252
+  var au = [];
+  (ST.audit||[]).forEach(function(a){
+    var porActor = uid && String(a.actor_id||'')===uid;
+    var porNome  = nm && String(a.action||'').toLowerCase().indexOf(nm)!==-1;
+    if (porActor) au.push({ via:'actor', label:(a.action||''), actorName:a.actor_name||'', created_at:a.created_at, ts:new Date(a.created_at||0).getTime(), actor:String(a.actor_id||'') });
+    else if (porNome) au.push({ via:'nome', label:(a.action||''), actorName:a.actor_name||'', created_at:a.created_at, ts:new Date(a.created_at||0).getTime(), actor:String(a.actor_id||'') });
+  });
+
+  // (3) Dedup entre sistemas: "nome" redundante quando há "id" do mesmo executor em até 10s
+  var JAN = 10000;
+  au = au.filter(function(e){
+    if (e.via!=='nome') return true;
+    return !idEv.some(function(x){ return x.actor===e.actor && Math.abs(x.ts-e.ts)<=JAN; });
+  });
+
+  var all = idEv.concat(au);
+  all.sort(function(x,y){ return (y.ts||0)-(x.ts||0); });
+  return all;
 }
 function centralColabHistoricoHTML(m){
   if (!isAdmin(ST.session)) return '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Sem permissão.</div></div>';
-  // Estados de carga (reusa AUDIT_STATE; erro sinalizado por ST._colabHistErr sem tocar auditCarregar)
+  // Estados de carga (gate pela auditoria; o activity_log é carga aditiva best-effort)
   if (!AUDIT_STATE.loaded){
     if (ST._colabHistErr) return '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Não consegui carregar o histórico. <button class="fi-link" id="cadHistRetry">Tentar de novo</button></div></div>';
     return '<div class="cad-bloco"><h4>Histórico</h4><div class="cad-vazio">Carregando histórico…</div></div>';
   }
   var eventos = centralColabHistoricoEventos(m);
-  // Ambiguidade: existe OUTRO usuário (≠ login desta pessoa) ou OUTRO membro com o mesmo nome?
+  // Ambiguidade: só afeta os itens "por nome" (aproximados). "Por ID" e "actor" são confiáveis.
   var uu = (typeof userDoMembro==='function') ? userDoMembro(m) : null;
   var meUid = uu ? String(uu.id) : null;
   var nm = (m.name||'').trim().toLowerCase();
@@ -26091,22 +26126,24 @@ function centralColabHistoricoHTML(m){
   var outrosM = nm ? (ST.members||[]).filter(function(x){ return (x.name||'').trim().toLowerCase()===nm && String(x.id)!==String(m.id); }).length : 0;
   var temPorNome = eventos.some(function(e){ return e.via==='nome'; });
   var aviso = (temPorNome && (outrosU+outrosM)>0)
-    ? '<div class="ac6-warn">'+icon('warning')+' Há mais de uma pessoa com esse nome. Os itens marcados "por nome" podem incluir ações de outra pessoa.</div>'
+    ? '<div class="ac6-warn">'+icon('warning')+' Há mais de uma pessoa com esse nome. Apenas os itens "por nome" (aproximados) podem incluir ações de outra pessoa.</div>'
     : '';
   if (!eventos.length) return '<div class="cad-bloco"><h4>Histórico</h4>'+aviso+'<div class="cad-vazio">Sem histórico registrado para esta pessoa.</div></div>';
   var linhas = eventos.slice(0,50).map(function(e){
-    var a=e.row; var cat=auditCategoriaAcao(a.action); var meta=AUDIT_CAT_LABEL[cat]||AUDIT_CAT_LABEL.outro;
-    var tag = e.via==='actor'
-      ? '<span class="cch-tag cch-ok">Feito pela pessoa</span>'
-      : '<span class="cch-tag cch-nome">Correspondência por nome</span>';
+    var cat=auditCategoriaAcao(e.label); var meta=AUDIT_CAT_LABEL[cat]||AUDIT_CAT_LABEL.outro;
+    var tag = e.via==='id'
+      ? '<span class="cch-tag cch-id">Registro por ID</span>'
+      : (e.via==='actor'
+        ? '<span class="cch-tag cch-ok">Feito pela pessoa</span>'
+        : '<span class="cch-tag cch-nome">Correspondência por nome</span>');
     return '<div class="cch-item">'+
       '<span class="cch-cat" style="color:'+meta.cor+'" title="'+esc(meta.label)+'">'+((typeof icon==='function')?icon(meta.ic):'')+'</span>'+
-      '<div class="cch-body"><div class="cch-top"><b>'+esc(a.action||'')+'</b>'+tag+'</div>'+
-        '<div class="cch-meta">'+esc(auditFmtData(a.created_at))+' · por '+esc(a.actor_name||'—')+'</div></div>'+
+      '<div class="cch-body"><div class="cch-top"><b>'+esc(e.label)+'</b>'+tag+'</div>'+
+        '<div class="cch-meta">'+esc(auditFmtData(e.created_at))+' · por '+esc(e.actorName||'—')+'</div></div>'+
     '</div>';
   }).join('');
   return '<div class="cad-bloco"><h4>Histórico</h4>'+aviso+
-    '<div class="cad-sub">Até 50 eventos recentes da auditoria. <b>Feito pela pessoa</b> = ela foi quem executou a ação; <b>Correspondência por nome</b> = aproximada, pode não ser sobre ela.</div>'+
+    '<div class="cad-sub">Até 50 eventos. <b>Registro por ID</b> = vínculo estruturado (confiável); <b>Feito pela pessoa</b> = ela executou a ação; <b>Correspondência por nome</b> = aproximada (eventos antigos).</div>'+
     '<div class="cch-list">'+linhas+'</div></div>';
 }
 
@@ -26175,6 +26212,11 @@ function bindCentral(){
   if (ST.central && ST.central.nav==='colab' && ST.central.colabAba==='historico'){
     if (typeof AUDIT_STATE!=='undefined' && !AUDIT_STATE.loaded && !AUDIT_STATE.loading && !ST._colabHistErr && typeof auditCarregar==='function'){
       auditCarregar(function(){ if(!AUDIT_STATE.loaded) ST._colabHistErr=true; if (typeof renderPage==='function') renderPage(); });
+    }
+    // E2-c/C: carga aditiva do activity_log (reusa o loader do feed; só uma vez; não bloqueia a timeline)
+    if (typeof carregarAtividades==='function' && !ST.activityLog && !ST._colabActLoaded){
+      ST._colabActLoaded=true;
+      carregarAtividades(function(){ if (typeof renderPage==='function') renderPage(); });
     }
     var histRetry=document.getElementById('cadHistRetry');
     if (histRetry) histRetry.addEventListener('click', function(){ ST._colabHistErr=false; renderPage(); });
@@ -27972,15 +28014,18 @@ function access6Salvar(s, modal, close){
           if (!ok){
             // Sucesso PARCIAL: usuário criado, vínculo falhou. NÃO apaga o usuário; preserva o id p/ recuperação.
             try { if (typeof auditLog==='function') auditLog('Acesso criado SEM vínculo', (s._linkNome||nome)+' · usuário '+r.data.id+' · '+(info||'erro')); } catch(e){}
+            try{ if(typeof logAtividade==='function') logAtividade('acesso.criado_sem_vinculo','colaborador', s.linkMemberId, s._linkNome||nome); }catch(e){} // E2-c/C
             if (close) close();
             toast('Acesso de "'+nome+'" criado, mas NÃO consegui vincular à pessoa ('+(info||'erro')+'). O usuário já existe — vincule manualmente pela ficha, sem recriar.','error');
             renderPage();
             return;
           }
           if (typeof auditLog==='function') auditLog('Vinculou acesso à pessoa', (s._linkNome||nome));
+          try{ if(typeof logAtividade==='function') logAtividade('acesso.criado','colaborador', s.linkMemberId, s._linkNome||nome); }catch(e){} // E2-c/C: criado+vinculado por ID
           finalizar(r.data.id);
         });
       } else {
+        try{ if(typeof logAtividade==='function') logAtividade('acesso.criado','user', r.data.id, nome); }catch(e){} // E2-c/C: acesso sem pessoa -> por id do usuário
         finalizar(r.data.id);
       }
     });
@@ -27989,6 +28034,7 @@ function access6Salvar(s, modal, close){
       if (r.error){ s._saving=false; toast('Erro ao salvar','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.innerHTML=icon('save')+' Salvar'; } return; }
       for (var i=0;i<ST.allUsers.length;i++) if (String(ST.allUsers[i].id)===String(s.user.id)){ ST.allUsers[i]=Object.assign(ST.allUsers[i], rec); break; }
       if (typeof auditLog==='function') auditLog('Editou acesso (Central)', nome+' · '+(f?f.label:base));
+      try{ if(typeof logAtividade==='function') logAtividade('acesso.editado','user', s.user.id, nome); }catch(e){} // E2-c/C
       finalizar(s.user.id);
     });
   }
