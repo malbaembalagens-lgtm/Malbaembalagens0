@@ -14591,10 +14591,11 @@ html.dark .brf-status-quiet {
 /* v236 (Etapa A): rótulos discretos "Com horário" / "Dia inteiro" — só na visão semanal */
 .cal-week .cal-wsec{ font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--u-text3,#aab); margin:5px 0 1px; padding-top:4px; border-top:1px solid var(--u-border,#e6e8ee); }
 .cal-week .cal-wsec:first-child{ margin-top:0; padding-top:0; border-top:none; }
-/* v237 (Etapa C): marcador textual "Atrasada" — só na visão semanal */
-.cal-week .cal-witem{ display:flex; flex-direction:column; align-items:flex-start; gap:2px; }
-.cal-week .cal-witem .cal-chip{ width:100%; }
-.cal-week .cal-late-tag{ align-self:flex-start; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--u-red,#EF4444); background:var(--u-red-soft,#FDEBEB); border-radius:4px; padding:1px 5px; line-height:1.4; }
+/* v237 (Etapa C): marcador "Atrasada" + v238 (Etapa B): avatar do responsável — só na visão semanal */
+.cal-week .cal-witem{ display:flex; flex-wrap:wrap; align-items:center; gap:3px 4px; }
+.cal-week .cal-witem .cal-chip{ flex:1 1 0; min-width:0; width:auto; }
+.cal-week .cal-wav{ flex:0 0 auto; width:17px; height:17px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:8.5px; line-height:1; letter-spacing:.01em; }
+.cal-week .cal-late-tag{ flex:0 0 100%; align-self:flex-start; font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--u-red,#EF4444); background:var(--u-red-soft,#FDEBEB); border-radius:4px; padding:1px 5px; line-height:1.4; }
 @media (max-width:720px){
   .cal-week{ grid-template-columns:1fr; gap:10px; }
   .cal-wcell{ min-height:0; border:1px solid var(--u-border,#e6e8ee); border-radius:12px; padding:10px 12px; }
@@ -14625,7 +14626,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v237';
+var APP_BUILD = 'v238';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -43905,10 +43906,16 @@ function calSemanaGridHTML(hoje, admin){
     // Reusa calChipHTML SEM alterá-la: envolve apenas o chip atrasado + rótulo acessível.
     function renderWItem(it){
       var chip=calChipHTML(it);
-      if (it.k==='task' && it.status!=='feito' && ds && ds<hoje){
-        return '<div class="cal-witem cal-late">'+chip+'<span class="cal-late-tag">Atrasada</span></div>';
-      }
-      return chip;
+      var isTask=(it.k==='task');
+      var late = isTask && it.status!=='feito' && ds && ds<hoje;
+      // v238 (Etapa B): identificação discreta do responsável — SÓ tarefa com assignee válido.
+      // Modelo real tem UM assignee_id por tarefa; resolve via userByIdAll (ST.allUsers).
+      // Sem responsável OU usuário não encontrado => sem avatar (não inventa). Reusa iniciais().
+      var u = (isTask && it.assignee_id) ? userByIdAll(it.assignee_id) : null;
+      var av = u ? '<span class="cal-wav" style="background:'+(u.color||'#9aa1ad')+'" title="'+esc(u.name||'')+'" aria-label="Responsável: '+esc(u.name||'')+'">'+esc(u.initials || iniciais(u.name))+'</span>' : '';
+      if (!late && !av) return chip;                 // chip puro, inalterado
+      var tag = late ? '<span class="cal-late-tag">Atrasada</span>' : '';
+      return '<div class="cal-witem'+(late?' cal-late':'')+'">'+chip+av+tag+'</div>';
     }
     if (vTimed.length){ chips+='<div class="cal-wsec">Com horário</div>'; vTimed.forEach(function(it){ chips+=renderWItem(it); }); }
     if (vAllDay.length){ chips+='<div class="cal-wsec">Dia inteiro</div>'; vAllDay.forEach(function(it){ chips+=renderWItem(it); }); }
