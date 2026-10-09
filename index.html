@@ -14632,6 +14632,13 @@ html.dark .brf-status-quiet {
 .prod-colab-bar{ height:6px; border-radius:4px; background:var(--u-bg2,#f2f4f8); overflow:hidden; margin:5px 0; }
 .prod-colab-bar span{ display:block; height:100%; }
 .prod-colab-sub{ font-size:11.5px; color:var(--u-text2); }
+/* v244 — Evolução mensal (reusa .rep-trend/.rep-tb) */
+.prod-serie{ gap:10px; flex-wrap:nowrap; }
+.prod-serie .rep-tb{ flex:1 1 0; min-width:0; }
+.prod-serie .rep-tb-track{ width:100%; max-width:34px; }
+.prod-serie-taxa{ display:block; font-size:11px; font-weight:800; margin-top:3px; }
+.prod-serie-taxa.none{ color:var(--u-text3); font-weight:600; }
+.prod-serie .rep-tb-l.cur{ color:var(--u-accent,#3B6FF7); font-weight:800; }
 
 </style>
 </head>
@@ -14656,7 +14663,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v243';
+var APP_BUILD = 'v244';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -20881,7 +20888,53 @@ function produtividadeHTML(){
   if (s.semDataReal>0) al.push(s.semDataReal+' concluída(s) sem data real registrada no total (anteriores ao registro de conclusão).');
   var avisos = al.length ? ('<div class="rep-card"><div class="rep-card-h">'+icon('warning')+'<h3>Observações de dados</h3></div><ul class="prod-ul">'+al.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div>') : '';
   var legenda='<div class="rep-card"><div class="rep-card-h">'+icon('clipboard-check')+'<h3>Como ler</h3></div><div class="prod-leg"><p><b>Fluxo</b> conta eventos do mês (concluídas por data real). <b>Foto atual</b> é o estoque de agora (a fazer, em andamento, vencidas) e não se refere ao mês. <b>Cumprimento do planejado</b> = previstas do mês (com prazo no mês) concluídas até o próprio prazo ÷ previstas do mês.</p><p class="prod-leg-sub">Uma tarefa concluída no prazo, mas num mês diferente do prazo, entra no cumprimento do mês do prazo — não nas "concluídas no período".</p></div></div>';
-  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + prodColabSecHTML(m, y) + avisos + legenda;
+  return head + secFluxo + secEstoque + prodPrazoSecHTML(s) + prodColabSecHTML(m, y) + prodSerieSecHTML(m, y) + avisos + legenda;
+}
+// v244 (F2-d): EVOLUÇÃO MENSAL — série dos últimos 6 meses (inclui o mês selecionado).
+// Usa o MESMO conjunto escopado (visibleTasks; exclui is_rule; 1× por ocorrência).
+// Conclusões agrupadas por mês de completed_at (data local SP); prazos por mês de due_date.
+// Reusa as classificações/denominador da F2-b; taxa null = "sem base". Sem consulta nova.
+function _ymAddMonths(y, m, delta){ var idx=(y*12+(m-1))+delta; return { y:Math.floor(idx/12), m:(idx%12)+1 }; }
+function prodSerie(m, y, n){
+  n=n||6;
+  var admin=isAdmin(ST.session);
+  var tasks=visibleTasks({ assignee: admin?(ST.taskAssignee||''):undefined });
+  var hoje=today();
+  var months=[], idxMap={};
+  for (var i=n-1;i>=0;i--){ var p=_ymAddMonths(y,m,-i); var mm=(p.m<10?'0':'')+p.m; var key=p.y+'-'+mm;
+    var o={ y:p.y, m:p.m, ym:key, concl:0, previstas:0, noPrazo:0, atraso:0, semData:0, abNoPrazo:0, abAtraso:0 };
+    months.push(o); idxMap[key]=o;
+  }
+  tasks.forEach(function(t){
+    var st=t.status||'todo';
+    var due=(t.due_date||'').slice(0,10);
+    var cd=_prodLocalDateSP(t.completed_at);
+    if (cd){ var ck=cd.slice(0,7); if (idxMap[ck]) idxMap[ck].concl++; }                 // fluxo (mês de conclusão)
+    if (due){ var b=idxMap[due.slice(0,7)]; if (b){                                       // prazo (mês de vencimento)
+      b.previstas++;
+      if (st==='feito'){ if (cd){ if (cd<=due) b.noPrazo++; else b.atraso++; } else b.semData++; }
+      else { if (due>=hoje) b.abNoPrazo++; else b.abAtraso++; }
+    }}
+  });
+  months.forEach(function(o){ o.taxa = o.previstas>0 ? Math.round(o.noPrazo/o.previstas*100) : null; });
+  return months;
+}
+function prodSerieSecHTML(m, y){
+  var serie=prodSerie(m, y, 6);
+  var maxC=1; serie.forEach(function(o){ if(o.concl>maxC) maxC=o.concl; });
+  var curYm=y+'-'+((m<10?'0':'')+m);
+  var cols=serie.map(function(o){
+    var hh=Math.max(6, Math.round(o.concl/maxC*100));
+    var cur=(o.ym===curYm);
+    var lbl=MES_ABR[o.m-1]+(o.y!==y?('/'+String(o.y).slice(2)):'');
+    var taxaTxt=(o.taxa==null)?'<span class="prod-serie-taxa none">—</span>':'<span class="prod-serie-taxa" style="color:'+(typeof kpiTaxaCor==='function'?kpiTaxaCor(o.taxa):'#3B6FF7')+'">'+o.taxa+'%</span>';
+    return '<div class="rep-tb"><span class="rep-tb-v">'+o.concl+'</span>'+
+      '<div class="rep-tb-track"><div class="rep-tb-bar" style="height:'+hh+'%;background:'+(cur?'var(--u-accent,#3B6FF7)':'var(--u-border2,#e6e8ee)')+'"></div></div>'+
+      '<span class="rep-tb-l'+(cur?' cur':'')+'">'+esc(lbl)+'</span>'+taxaTxt+'</div>';
+  }).join('');
+  var hd='<div class="rep-card-h">'+icon('trend')+'<h3>Evolução mensal</h3><span class="ext-ref">últimos 6 meses</span></div>';
+  var nota='<div class="prod-colab-note">Barras = conclusões por <b>data real</b> (fluxo). % = cumprimento de prazo por <b>mês de vencimento</b>. A taxa de um mês pode mudar enquanto tarefas em aberto são concluídas. "—" = sem tarefas previstas (sem base).</div>';
+  return '<div class="rep-card">'+hd+'<div class="rep-trend prod-serie">'+cols+'</div>'+nota+'</div>';
 }
 // v243 (F2-c): produtividade POR COLABORADOR. Agrupa o MESMO conjunto já escopado por
 // visibleTasks (não amplia acesso; exclui is_rule; 1× por ocorrência) por assignee_id.
