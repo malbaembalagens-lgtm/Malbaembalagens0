@@ -14678,7 +14678,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v248';
+var APP_BUILD = 'v249';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -26155,8 +26155,9 @@ function bindCentral(){
   if (criarAc) criarAc.addEventListener('click', function(){
     var m = (ST.members||[]).find(function(x){ return String(x.id)===String(ST.central.colabId); });
     if (!m) return;
-    // abre o modal de novo usuário já com nome e setor pré-preenchidos
-    openUserModal({ name:m.name, sector: ST.sector, color: m.color, _origem_member_id: m.id });
+    // E2-b/A: abre o ACCESS-006 pré-identificado com a pessoa (vincula user_id ao salvar);
+    // se já houver acesso, abre o existente em vez de criar outro.
+    abrirAcessoDaPessoa(m);
   });
   var vincAc = document.getElementById('cadVincularAcesso');
   if (vincAc) vincAc.addEventListener('click', function(){
@@ -27520,22 +27521,29 @@ var AC6_STEPS = [
   { n:4, key:'perms',  lb:'Permissões' },
   { n:5, key:'revisao',lb:'Revisão' }
 ];
-function openAccess6Wizard(user){
+function openAccess6Wizard(user, linkMember){
   if (!access6PodeEditar()){ if(typeof blockManage==='function') blockManage(); return; }
   var isNew = !user;
+  // E2-b/A: vínculo opcional a uma pessoa existente (malba_store_members) ao CRIAR acesso.
+  var link = (isNew && linkMember) ? linkMember : null;
   var funcKey = isNew ? 'vendedor' : (access6FuncaoDoUsuario(user) || 'vendedor');
   var escIds = isNew ? [] : escopoLojaIdsDoUsuario(user.id);
   var s = {
     user: user || null,
     isNew: isNew,
     step: 1,
-    nome: isNew ? '' : (user.name||''),
-    email: isNew ? '' : (user.email||''),
+    nome: isNew ? (link ? (link.name||'') : '') : (user.name||''),
+    email: isNew ? (link ? (link.email||'') : '') : (user.email||''),
     pass: '',
-    sector: isNew ? (ST.sector||'gestao') : (user.sector||ST.sector||'gestao'),
+    sector: isNew ? (link ? (link.sector||'lojas') : (ST.sector||'gestao')) : (user.sector||ST.sector||'gestao'),
     funcKey: funcKey,
     escopoTodas: escIds.length===0,
-    lojaIds: escIds.slice()
+    lojaIds: escIds.slice(),
+    // E2-b/A: identidade da pessoa a vincular (id real) + dados p/ o registro do usuário
+    linkMemberId: link ? link.id : null,
+    _linkNome: link ? (link.name||'') : '',
+    _linkColor: link ? (link.color||null) : null,
+    _saving: false
   };
 
   var modal=document.createElement('div'); modal.className='modal-bg';
@@ -27742,6 +27750,36 @@ function access6SalvarEscopo(uid, desiredIds, done){
   });
 }
 
+/* ---------- E2-b/A: abrir o editor de acesso a partir de uma PESSOA existente ----------
+   Evita duplicar: se a pessoa já tem usuário (userDoMembro), abre o existente p/ editar;
+   senão, abre o ACCESS-006 em criação, pré-vinculado à pessoa (grava user_id ao salvar). */
+function abrirAcessoDaPessoa(member){
+  if (!member){ return; }
+  if (typeof access6PodeEditar==='function' && !access6PodeEditar()){ if(typeof blockManage==='function') blockManage(); return; }
+  var u = (typeof userDoMembro==='function') ? userDoMembro(member) : null;
+  if (u){
+    if (typeof toast==='function') toast('Essa pessoa já tem acesso vinculado — abrindo para edição.','info');
+    openAccess6Wizard(u);
+    return;
+  }
+  openAccess6Wizard(null, member);
+}
+
+/* ---------- E2-b/A: grava o vínculo pessoa->usuário em malba_store_members.user_id ----------
+   Só é chamado APÓS o usuário ser criado com sucesso. Reusa o mesmo update de vincularMembro/linkTo.
+   Revalida que a pessoa continua sem vínculo antes de gravar. cb(ok, info). */
+function access6VincularPessoa(s, uid, cb){
+  if (!s || !s.linkMemberId){ cb && cb(true); return; }
+  var mem = (ST.members||[]).find(function(x){ return String(x.id)===String(s.linkMemberId); });
+  if (!mem){ cb && cb(false, 'pessoa não encontrada'); return; }
+  if (mem.user_id && String(mem.user_id)!==String(uid)){ cb && cb(false, 'pessoa já vinculada a outro acesso'); return; }
+  sb.from('malba_store_members').update({ user_id: uid }).eq('id', mem.id).then(function(r){
+    if (r.error){ cb && cb(false, r.error.message||'erro ao vincular'); return; }
+    for (var i=0;i<(ST.members||[]).length;i++){ if (String(ST.members[i].id)===String(mem.id)) ST.members[i].user_id=uid; }
+    cb && cb(true);
+  }, function(e){ cb && cb(false, (e&&e.message)||'erro ao vincular'); });
+}
+
 /* ---------- Salva o usuário + função (profile_id) + escopo ---------- */
 function access6Salvar(s, modal, close){
   if (s.step===1) lerDadosFallback(s, modal); // segurança
@@ -27756,6 +27794,19 @@ function access6Salvar(s, modal, close){
     toast('Você não tem alçada para conceder a função "'+access6FuncaoLabel(s.funcKey)+'". Escolha uma função dentro do seu nível.','error');
     return;
   }
+  // E2-b/A: anti-reentrada — evita que duplo clique no mesmo modal crie 2 usuários.
+  if (s._saving){ return; }
+  // E2-b/A: ao criar VINCULADO, re-checa que a pessoa continua SEM vínculo (evita 2º usuário).
+  if (s.isNew && s.linkMemberId){
+    var _memNow = (ST.members||[]).find(function(x){ return String(x.id)===String(s.linkMemberId); });
+    var _jaU = _memNow ? ((typeof userDoMembro==='function') ? userDoMembro(_memNow) : null) : null;
+    if (_jaU){
+      toast('Essa pessoa já tem um acesso vinculado. Abrindo o acesso existente.','info');
+      if (close) close();
+      openAccess6Wizard(_jaU);
+      return;
+    }
+  }
   var f = ACCESS_FUNCTIONS.find(function(x){ return x.key===s.funcKey; });
   var base = f ? f.base_nivel : 'colaborador';
   var perfil = access6PerfilDaFuncao(s.funcKey);
@@ -27767,9 +27818,10 @@ function access6Salvar(s, modal, close){
     role: (base==='admin') ? 'admin' : 'user',
     profile_id: perfil ? perfil.id : null
   };
-  if (s.isNew){ rec.email=email; rec.color=(s.user&&s.user.color)||'#3B6FF7'; rec.initials=iniciais(nome); }
+  if (s.isNew){ rec.email=email; rec.color=(s.user&&s.user.color)||s._linkColor||'#3B6FF7'; rec.initials=iniciais(nome); }
   if (pass) rec.password_hash = pass; // a tabela guarda a senha em password_hash (mesmo fluxo do openUserModal)
   var btn = modal.querySelector('#ac6Salvar'); if(btn) setBusy(btn, true);
+  s._saving = true; // E2-b/A: trava enquanto grava
   var desired = s.escopoTodas ? [] : (s.lojaIds||[]);
 
   function finalizar(uid){
@@ -27784,14 +27836,30 @@ function access6Salvar(s, modal, close){
 
   if (s.isNew){
     sb.from('malba_users').insert(rec).select().single().then(function(r){
-      if (r.error || !r.data){ toast('Erro ao criar (e-mail já existe?)','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.textContent=''; btn.innerHTML=icon('save')+' Criar usuário'; } return; }
+      if (r.error || !r.data){ s._saving=false; toast('Erro ao criar (e-mail já existe?)','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.textContent=''; btn.innerHTML=icon('save')+' Criar usuário'; } return; }
       ST.allUsers.push(r.data);
       if (typeof auditLog==='function') auditLog('Criou acesso (Central)', nome+' · '+(f?f.label:base));
-      finalizar(r.data.id);
+      // E2-b/A: vincula à pessoa (se houver). O vínculo só grava APÓS o usuário existir.
+      if (s.linkMemberId){
+        access6VincularPessoa(s, r.data.id, function(ok, info){
+          if (!ok){
+            // Sucesso PARCIAL: usuário criado, vínculo falhou. NÃO apaga o usuário; preserva o id p/ recuperação.
+            try { if (typeof auditLog==='function') auditLog('Acesso criado SEM vínculo', (s._linkNome||nome)+' · usuário '+r.data.id+' · '+(info||'erro')); } catch(e){}
+            if (close) close();
+            toast('Acesso de "'+nome+'" criado, mas NÃO consegui vincular à pessoa ('+(info||'erro')+'). O usuário já existe — vincule manualmente pela ficha, sem recriar.','error');
+            renderPage();
+            return;
+          }
+          if (typeof auditLog==='function') auditLog('Vinculou acesso à pessoa', (s._linkNome||nome));
+          finalizar(r.data.id);
+        });
+      } else {
+        finalizar(r.data.id);
+      }
     });
   } else {
     sb.from('malba_users').update(rec).eq('id', s.user.id).then(function(r){
-      if (r.error){ toast('Erro ao salvar','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.innerHTML=icon('save')+' Salvar'; } return; }
+      if (r.error){ s._saving=false; toast('Erro ao salvar','error'); console.error(r.error); if(btn){ setBusy(btn,false); btn.innerHTML=icon('save')+' Salvar'; } return; }
       for (var i=0;i<ST.allUsers.length;i++) if (String(ST.allUsers[i].id)===String(s.user.id)){ ST.allUsers[i]=Object.assign(ST.allUsers[i], rec); break; }
       if (typeof auditLog==='function') auditLog('Editou acesso (Central)', nome+' · '+(f?f.label:base));
       finalizar(s.user.id);
