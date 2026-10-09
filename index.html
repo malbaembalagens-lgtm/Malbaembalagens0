@@ -14588,6 +14588,9 @@ html.dark .brf-status-quiet {
 .cal-wcell .cal-add{ margin-left:auto; }
 .cal-wcell .cal-chips{ display:flex; flex-direction:column; gap:5px; overflow:auto; }
 .cal-wk-empty{ font-size:11.5px; color:var(--u-text3,#aab); padding:2px; }
+/* v236 (Etapa A): rótulos discretos "Com horário" / "Dia inteiro" — só na visão semanal */
+.cal-week .cal-wsec{ font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--u-text3,#aab); margin:5px 0 1px; padding-top:4px; border-top:1px solid var(--u-border,#e6e8ee); }
+.cal-week .cal-wsec:first-child{ margin-top:0; padding-top:0; border-top:none; }
 @media (max-width:720px){
   .cal-week{ grid-template-columns:1fr; gap:10px; }
   .cal-wcell{ min-height:0; border:1px solid var(--u-border,#e6e8ee); border-radius:12px; padding:10px 12px; }
@@ -14618,7 +14621,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v234';
+var APP_BUILD = 'v236';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -43884,7 +43887,15 @@ function calSemanaGridHTML(hoje, admin){
     var untimed=calSortItems(items.filter(function(it){ return !(it.k==='event' && it.hora); }), ds);
     var ordered=timed.concat(untimed);
     var chips='', cap=12;
-    ordered.slice(0,cap).forEach(function(it){ chips+=calChipHTML(it); });
+    // v236 (Etapa A): o teto e o "+N mais" seguem sobre a MESMA lista combinada (timed+untimed),
+    // preservando exatamente quais itens aparecem e a contagem. Só particiono os itens JÁ visíveis
+    // em dois grupos rotulados — "Com horário" (eventos com hora, cronológico) e "Dia inteiro"
+    // (demais, ordem de relevância preservada). Sem horário inventado, sem duplicar, sem 2ª contagem.
+    var visible=ordered.slice(0,cap);
+    var vTimed=visible.filter(function(it){ return it.k==='event' && it.hora; });
+    var vAllDay=visible.filter(function(it){ return !(it.k==='event' && it.hora); });
+    if (vTimed.length){ chips+='<div class="cal-wsec">Com horário</div>'; vTimed.forEach(function(it){ chips+=calChipHTML(it); }); }
+    if (vAllDay.length){ chips+='<div class="cal-wsec">Dia inteiro</div>'; vAllDay.forEach(function(it){ chips+=calChipHTML(it); }); }
     if (ordered.length>cap) chips+='<span class="cal-more">+'+(ordered.length-cap)+' mais</span>';
     if (!ordered.length) chips+='<span class="cal-wk-empty">Sem itens</span>';
     var addBtn = admin ? '<button class="cal-add" data-add="'+ds+'" title="Nova tarefa neste dia">+</button>' : '';
