@@ -14690,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v257';
+var APP_BUILD = 'v258';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -22678,7 +22678,7 @@ function estrIdeiasHTML(arquivadas){
   });
 
   // filtros de busca, status e categoria
-  var q = estrBusca().toLowerCase();
+  var q = estrBusca().trim().toLowerCase();
   if (q) lista = lista.filter(function(i){
     return (i.title||'').toLowerCase().indexOf(q)!==-1 ||
            (i.description||'').toLowerCase().indexOf(q)!==-1 ||
@@ -22910,7 +22910,7 @@ function loadObjetivos(sector){
 function estrObjetivosHTML(){
   var lista = (ST.objetivos||[]).slice();
   // busca reaproveita a mesma
-  var q = estrBusca().toLowerCase();
+  var q = estrBusca().trim().toLowerCase();
   if (q) lista = lista.filter(function(o){
     return (o.title||'').toLowerCase().indexOf(q)!==-1 ||
            (o.description||'').toLowerCase().indexOf(q)!==-1 ||
@@ -23128,7 +23128,7 @@ function ideiaObjetivosVinculados(ideiaId){
 function estrPlanejamentoHTML(){
   // só objetivos ativos com etapas OU sem etapas (aparecem pra você começar)
   var lista = (ST.objetivos||[]).filter(function(o){ return (o.status||'ativo')==='ativo'; });
-  var q = estrBusca().toLowerCase();
+  var q = estrBusca().trim().toLowerCase();
   if (q) lista = lista.filter(function(o){ return (o.title||'').toLowerCase().indexOf(q)!==-1; });
   lista.sort(function(a,b){ return (b.created_at||'').localeCompare(a.created_at||''); });
 
@@ -23259,7 +23259,7 @@ function openPlanejamentoModal(objetivo){
 function estrProjetosHTML(){
   // reaproveita ST.projects, mostra os que têm source_objetivo_id
   var lista = (ST.projects||[]).filter(function(p){ return p.source_objetivo_id; });
-  var q = estrBusca().toLowerCase();
+  var q = estrBusca().trim().toLowerCase();
   if (q) lista = lista.filter(function(p){ return (p.name||'').toLowerCase().indexOf(q)!==-1; });
   lista.sort(function(a,b){ return (b.created_at||b.start_date||'').localeCompare(a.created_at||a.start_date||''); });
 
@@ -23881,7 +23881,7 @@ var DOC_TEMPLATES = [
 function docsListHTML(){
   var tab = docTab();
   var lista = (ST.docs||[]).filter(function(d){ return docPertenceAba(d, tab); });
-  var q = docQ().toLowerCase();
+  var q = docQ().trim().toLowerCase();
   if (q) lista = lista.filter(function(d){
     // v98: casa por título, tag OU pelo conteúdo (resultado que veio do servidor)
     return (d.title||'').toLowerCase().indexOf(q)!==-1 ||
@@ -29916,7 +29916,7 @@ function sincronizarURL(){
 var _skipNextHashchange = false;
 
 function crmHTML() {
-  var q = crmBusca.toLowerCase();
+  var q = crmBusca.trim().toLowerCase();
   var sid = boardStore();
   var all = (ST.clients || []).filter(crmPertenceSetor);
   if (sid) all = all.filter(function(c){ return String(c.store_unit_id)===String(sid); });
@@ -31751,7 +31751,7 @@ function nomeArquivoClientes(meta){
 /* Aplica os filtros ativos e retorna a lista visível.
    Espelha a lógica de crmHTML pra garantir consistência. */
 function clientesFiltrados(){
-  var q = (typeof crmBusca==='string' ? crmBusca : '').toLowerCase();
+  var q = (typeof crmBusca==='string' ? crmBusca : '').trim().toLowerCase();
   var sid = (typeof boardStore==='function') ? boardStore() : null;
   var all = (ST.clients || []).filter(typeof crmPertenceSetor==='function' ? crmPertenceSetor : function(){return true;});
   if (sid) all = all.filter(function(c){ return String(c.store_unit_id)===String(sid); });
