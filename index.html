@@ -14690,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v255';
+var APP_BUILD = 'v256';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -19996,14 +19996,15 @@ function openMemberModal(member) {
       if (low.indexOf('row-level security')!==-1 || low.indexOf('violates row-level')!==-1 || (low.indexOf('policy')!==-1)) {
         friendly='O banco está <b>bloqueando a criação de usuários</b> (regra de permissão / RLS). Rode o arquivo <b>SQL-corrigir-criar-acesso.sql</b> no Supabase → SQL Editor e tente de novo.';
       } else if (low.indexOf('not-null')!==-1 || low.indexOf('null value')!==-1) {
-        friendly='Falta preencher uma coluna obrigatória na tabela de usuários (veja o detalhe do banco abaixo).';
+        friendly='Falta preencher uma coluna obrigatória na tabela de usuários.';
       } else if (low.indexOf('duplicate')!==-1 || low.indexOf('unique')!==-1) {
         friendly='Já existe um usuário com esse e-mail. Use outro e-mail.';
       } else if (low.indexOf('column')!==-1 && low.indexOf('does not exist')!==-1) {
         friendly='A tabela de usuários não tem uma coluna esperada. Rode o <b>SQL-corrigir-criar-acesso.sql</b> e tente de novo.';
       }
       var box=modal.querySelector('#accErr');
-      if(box){ box.style.display='block'; box.innerHTML='<b>Não consegui criar o acesso.</b><br>'+(friendly?(friendly+'<br>'):'')+'<span class="acc-err-raw">Detalhe do banco: '+esc(raw)+'</span>'; }
+      if(box){ box.style.display='block'; box.innerHTML='<b>Não foi possível criar o acesso.</b><br>'+(friendly?(friendly+'<br>'):'')+'<span class="acc-err-raw">Tente novamente ou procure o suporte.</span>'; }
+      try{ console.error('[criar acesso] falha', err && err.code); }catch(e){} // PONTO-003/F0-C: sem detalhe do banco no DOM
       var sv=modal.querySelector('#memberSave'); if(sv){ sv.disabled=false; sv.textContent=(isNew?'Adicionar':'Salvar'); }
       toast('Funcionário salvo, mas o acesso não. O motivo está na janela.','error');
     }
