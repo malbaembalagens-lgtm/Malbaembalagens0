@@ -14690,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v254';
+var APP_BUILD = 'v255';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15817,7 +15817,7 @@ function loadData() {
   return Promise.all([
     sb.from('malba_store_units').select('*').order('store_number'),
     fetchAllTasks(sector), // v69: paginado (antes cortava em 1000 e sumia recorrentes)
-    sb.from('malba_users').select('*'),
+    sb.from('malba_users').select('id,email,name,role,color,initials,areas,phone,position,bio,avatar,permissions,daily_goal,last_seen,created_at,sector,sector_role,access_level,perms,profile_id,manager_id,face_descriptor,face_foto_url,face_cadastrado_em,notif_wa_pref'), // PONTO-003/F0: carga em massa sem password_hash (login usa query própria por e-mail)
     sb.from('malba_store_members').select('*').order('created_at'),
     sb.from('malba_sales_goals').select('*'),
     sb.from('malba_crm_clients').select('*').order('updated_at', { ascending:false }),
@@ -20588,7 +20588,7 @@ function openFichaColaborador(member){
       if(!ex.error && ex.data && ex.data.length){ var exu=ex.data[0]; var jaTem=false; for(var i=0;i<(ST.allUsers||[]).length;i++) if(String(ST.allUsers[i].id)===String(exu.id)) jaTem=true; if(!jaTem) ST.allUsers.push(exu); linkTo(exu.id); auditLog('Vinculou acesso existente', m.name); try{ if(typeof logAtividade==='function') logAtividade('acesso.vinculado','colaborador', m.id, m.name); }catch(e){} toast('Esse e-mail já tinha acesso — vinculei.','success'); draw(); return; }
       var ehAdminSetor=(lvl==='sector_admin'||lvl==='admin_geral'||lvl==='super'); var baseU={ name:m.name, sector:'lojas', access_level:lvl, sector_role:(ehAdminSetor?'admin':'user'), role:(lvl==='super'?'admin':'user'), email:email, color:m.color||'#3B6FF7', initials:iniciais(m.name) };
       function tryIns(field, retry){ var urec=Object.assign({},baseU); urec[field]=pass; sb.from('malba_users').insert(urec).select().single().then(function(ru){
-        if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não consegui criar o acesso.</b><br><span class="acc-err-raw">'+esc(ru.error&&ru.error.message?ru.error.message:'erro')+'</span>'; } setBusy(btn,false); btn.textContent='Criar acesso'; return; }
+        if(ru.error||!ru.data){ var msg=(ru.error&&ru.error.message?ru.error.message:'').toLowerCase(); if(!retry && msg.indexOf('column')!==-1){ tryIns(field==='password_hash'?'password':'password_hash', true); return; } if(errBox){ errBox.style.display='block'; errBox.innerHTML='<b>Não foi possível criar o acesso.</b><br><span class="acc-err-raw">Tente novamente ou procure o suporte.</span>'; } try{ console.error('[criar acesso] falha', ru.error && ru.error.code); }catch(e){} setBusy(btn,false); btn.textContent='Criar acesso'; return; } // PONTO-003/F0: sem detalhe do banco no DOM
         ST.allUsers.push(ru.data); savePerms(ru.data.id, fiPerms);
         // E2-b/C: grava o vínculo com tratamento de falha parcial — usuário criado é PRESERVADO (sem delete).
         sb.from('malba_store_members').update({ user_id: ru.data.id }).eq('id', m.id).then(function(rl){
