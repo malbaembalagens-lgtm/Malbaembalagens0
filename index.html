@@ -14690,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v258';
+var APP_BUILD = 'v259';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15919,6 +15919,16 @@ function visibleTasks(opts) {
 }
 // escopo de loja do quadro/calendário: conta de loja vê só a sua; admin pode filtrar por loja
 function boardStore(){ var sid=scopeStore(); if(sid) return sid; return ST.taskStore ? String(ST.taskStore) : null; }
+/* FASE 2G: visibilidade de projeto por escopo de loja (reusa boardStore).
+   Global (sem store_unit_id) -> todos; sem contexto de loja -> vê tudo;
+   com contexto de loja -> só os da própria loja. NÃO altera permissões/pageAllowed. */
+function projetoVisivel(p){
+  if (!p) return false;
+  if (!p.store_unit_id) return true;                 // projeto global
+  var sid = (typeof boardStore==='function') ? boardStore() : null;
+  if (!sid) return true;                              // empresa/super sem restrição -> vê tudo
+  return String(p.store_unit_id) === String(sid);    // de loja -> só a própria loja
+}
 function taskById(id){ for(var i=0;i<ST.tasks.length;i++) if(String(ST.tasks[i].id)===String(id)) return ST.tasks[i]; return null; }
 function campById(id){ for(var i=0;i<ST.campaigns.length;i++) if(String(ST.campaigns[i].id)===String(id)) return ST.campaigns[i]; return null; }
 function projName(id){ for(var i=0;i<ST.projects.length;i++) if(String(ST.projects[i].id)===String(id)) return ST.projects[i].name||'Projeto'; return 'Projeto'; }
@@ -32137,7 +32147,7 @@ function projetosHTML() {
   // se um projeto está aberto, mostra o detalhe
   if (ST.openProject) return projetoDetalheHTML(ST.openProject);
 
-  var ps = ST.projects;
+  var ps = (ST.projects||[]).filter(projetoVisivel);   // FASE 2G: escopo de loja (global visível a todos)
   var cards = '';
   if (ps.length===0) {
     cards = emptyState({ span:true, icon:'folder', title:'Nenhum projeto ainda', text:'Projetos reúnem as tarefas e etapas de um objetivo maior.', cta:(canEdit()?'Criar projeto':'') });
@@ -32186,6 +32196,7 @@ function projetoDetalheHTML(pid) {
   var pr=null;
   for (var i=0;i<ST.projects.length;i++) if (String(ST.projects[i].id)===String(pid)) { pr=ST.projects[i]; break; }
   if (!pr) { ST.openProject=null; return projetosHTML(); }
+  if (!projetoVisivel(pr)) { ST.openProject=null; return projetosHTML(); } // FASE 2G: bloqueia abrir projeto fora do escopo por ID/deep link
   var cor = pr.color || '#3B6FF7';
   var pct = projProgress(pr.id);
   var ms = projectMilestones(pr.id);
