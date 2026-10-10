@@ -14690,7 +14690,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v256';
+var APP_BUILD = 'v257';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -38127,7 +38127,29 @@ function atestadoPendentes(){
 }
 
 /* Solicitar atestado — dias auto-calculados */
-function atestadoSolicitar(dados, cb){
+/* A2 (atestados): notificação de gestores reutilizável — chamada só APÓS o documento
+   ser anexado, para não notificar atestado sem documento. */
+function atestadoNotificarGestores(sector, actorName, dias, atestadoId){
+  if (typeof notifBroadcast !== 'function' || typeof notifGestoresDoSetor !== 'function') return;
+  try {
+    var alvos = notifGestoresDoSetor(sector);
+    notifBroadcast(alvos, { kind:'warning', title:'Novo atestado enviado',
+      body:(actorName||'Alguém')+' enviou atestado de '+dias+' dia'+(dias>1?'s':''),
+      link:'/atestados', priority:'high', ctx:{ atestado_id: atestadoId } });
+  } catch(e){}
+}
+/* A2: remove um atestado recém-criado que ficou SEM documento (falha no upload/vínculo).
+   DELETE na própria tabela (mesma policy do insert). O arquivo do Storage só é enviado
+   APÓS o registro existir — logo, insert falho nunca gera arquivo órfão. */
+function atestadoReverterIncompleto(criado){
+  if (!criado || !criado.id) return;
+  try {
+    sb.from('malba_atestados').delete().eq('id', criado.id).then(function(r){
+      if (!r.error){ ST.atestados = (ST.atestados||[]).filter(function(x){ return String(x.id)!==String(criado.id); }); }
+    });
+  } catch(e){}
+}
+function atestadoSolicitar(dados, cb, opts){
   var u = ST.session && ST.session.user;
   if (!u){ toast('Sem sessão','error'); if(cb) cb(false); return; }
   var dias = atestadoDiff(dados.data_inicio, dados.data_fim);
@@ -38153,23 +38175,15 @@ function atestadoSolicitar(dados, cb){
   // XOR user/member — se pediu pra si, garantir só um
   if (reg.user_id && reg.member_id){ reg.member_id = null; }
   sb.from('malba_atestados').insert(reg).select().then(function(r){
-    if (r.error){ toast('Erro: '+r.error.message,'error'); if(cb) cb(false); return; }
+    if (r.error){ toast('Não foi possível enviar o atestado. Tente novamente.','error'); try{ console.error('[atestado] insert', r.error && r.error.code); }catch(e){} if(cb) cb(false); return; }
     var criado = (r.data && r.data[0]) || null;
     if (criado){ ST.atestados = ST.atestados || []; ST.atestados.unshift(criado); }
-    if (typeof auditLog === 'function') auditLog('Enviou atestado ('+dias+'d)', u.name);
-    // Notificar gestores do setor
-    if (typeof notifBroadcast === 'function' && typeof notifGestoresDoSetor === 'function'){
-      var alvos = notifGestoresDoSetor(reg.actor_sector);
-      notifBroadcast(alvos, {
-        kind: 'warning',
-        title: 'Novo atestado enviado',
-        body: (reg.actor_name||'Alguém')+' enviou atestado de '+dias+' dia'+(dias>1?'s':''),
-        link: '/atestados',
-        priority: 'high',
-        ctx: { atestado_id: criado && criado.id }
-      });
+    if (typeof auditLog === 'function') auditLog('Enviou atestado ('+dias+'d)', u.name); // só dias + autor; sem CID/foto
+    // A2: por padrão notifica+toast; com opts.silent o chamador finaliza após anexar o documento
+    if (!(opts && opts.silent)){
+      atestadoNotificarGestores(reg.actor_sector, reg.actor_name, dias, criado && criado.id);
+      toast('Atestado enviado','success');
     }
-    toast('Atestado enviado','success');
     if (cb) cb(true, criado);
   });
 }
@@ -38332,8 +38346,9 @@ function openAtestadoSolicitarModal(){
   m.querySelector('#atIni').addEventListener('change', updatePreview);
   m.querySelector('#atFim').addEventListener('change', updatePreview);
 
-  m.querySelector('#atOk').addEventListener('click', async function(){
+  m.querySelector('#atOk').addEventListener('click', function(){
     var btn = this; btn.disabled = true; btn.textContent = 'Enviando…';
+    function reset(){ btn.disabled=false; btn.textContent='Enviar atestado'; }
     var ini = m.querySelector('#atIni').value;
     var fim = m.querySelector('#atFim').value;
     var cid = m.querySelector('#atCid').value.trim();
@@ -38342,25 +38357,26 @@ function openAtestadoSolicitarModal(){
     var mot = m.querySelector('#atMot').value.trim();
     var fileEl = m.querySelector('#atFoto');
     var file = fileEl.files && fileEl.files[0];
-    if (!ini || !fim){ toast('Preencha as datas','error'); btn.disabled=false; btn.textContent='Enviar atestado'; return; }
-    if (!file){ toast('Anexe a foto do atestado','error'); btn.disabled=false; btn.textContent='Enviar atestado'; return; }
+    if (!ini || !fim){ toast('Preencha as datas','error'); reset(); return; }
+    if (!file){ toast('Anexe a foto do atestado','error'); reset(); return; }
 
-    var fotoUrl = null;
-    try {
-      fotoUrl = await atestadoUploadFoto(file);
-      if (!fotoUrl){ btn.disabled=false; btn.textContent='Enviar atestado'; return; }
-    } catch(e){
-      toast('Erro upload','error'); btn.disabled=false; btn.textContent='Enviar atestado'; return;
-    }
-
+    // A2: grava o REGISTRO primeiro (sem foto). Só sobe o arquivo se o registro foi salvo
+    // -> em falha de persistência (ex.: permissão), nada é enviado ao Storage (sem órfão).
     atestadoSolicitar({
-      data_inicio: ini, data_fim: fim,
-      cid: cid, medico: med, crm: crm,
-      foto_url: fotoUrl, motivo: mot
-    }, function(ok){
-      if (ok){ close(); if (typeof renderPage==='function') renderPage(); }
-      else { btn.disabled=false; btn.textContent='Enviar atestado'; }
-    });
+      data_inicio: ini, data_fim: fim, cid: cid, medico: med, crm: crm, motivo: mot, foto_url: null
+    }, function(ok, criado){
+      if (!ok || !criado){ reset(); return; }  // erro já tratado de forma genérica; nenhum upload feito
+
+      atestadoUploadFoto(file).then(function(fotoUrl){
+        if (!fotoUrl){ atestadoReverterIncompleto(criado); toast('Não foi possível anexar o documento. Tente de novo.','error'); reset(); return; }
+        sb.from('malba_atestados').update({ foto_url: fotoUrl, updated_at: new Date().toISOString() }).eq('id', criado.id).then(function(r){
+          if (r.error){ try{ console.error('[atestado] vincular foto', r.error && r.error.code); }catch(e){} atestadoReverterIncompleto(criado); toast('Não foi possível anexar o documento. Tente de novo.','error'); reset(); return; }
+          criado.foto_url = fotoUrl; criado.updated_at = new Date().toISOString();
+          atestadoNotificarGestores(criado.actor_sector||'', criado.actor_name||'', criado.dias||0, criado.id);
+          close(); toast('Atestado enviado','success'); if (typeof renderPage==='function') renderPage();
+        });
+      }).catch(function(e){ try{ console.error('[atestado] upload falhou'); }catch(_){ } atestadoReverterIncompleto(criado); toast('Não foi possível enviar o documento. Tente de novo.','error'); reset(); });
+    }, { silent: true });  // finaliza (toast + notificação) só após o documento ser anexado
   });
 }
 
