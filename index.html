@@ -817,6 +817,36 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .task-filter:focus { outline: none; border-color: var(--primary-500); background-color: var(--u-card); box-shadow: var(--focus-ring); }
 html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A6B2C8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); }
 
+/* ===== FASE UI-001 · filtro consolidado (um único menu "Filtrar tarefas") ===== */
+.flt { position: relative; display: inline-flex; }
+.flt-btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 14px; border: 1px solid var(--u-border); border-radius: 11px; background-color: var(--u-card2); color: var(--u-text); font-size: var(--fs-md); font-weight: var(--fw-medium); cursor: pointer; transition: border-color var(--tr-fast), box-shadow var(--tr-fast), background-color var(--tr-fast); }
+.flt-btn:hover { border-color: var(--neutral-300); background-color: var(--u-card); }
+.flt.is-open .flt-btn, .flt-btn:focus-visible { outline: none; border-color: var(--primary-500); box-shadow: var(--focus-ring); background-color: var(--u-card); }
+.flt-btn .lc-ic { width: 16px; height: 16px; color: var(--u-text2); }
+.flt-btn-tx { white-space: nowrap; }
+.flt-caret { width: 14px; height: 14px; color: var(--u-text2); transition: transform var(--tr-fast); }
+.flt.is-open .flt-caret { transform: rotate(180deg); }
+.flt-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--primary-500); color: #fff; font-size: 11px; font-weight: var(--fw-semibold); line-height: 1; }
+.flt-menu { position: absolute; top: calc(100% + 6px); right: 0; z-index: 50; min-width: 234px; max-width: 288px; max-height: min(70vh, 440px); overflow-y: auto; padding: 8px; background: var(--u-card); border: 1px solid var(--u-border2); border-radius: 12px; box-shadow: var(--u-shadow-md); display: none; }
+.flt-menu.open { display: block; }
+.flt-group { padding: 2px 0 8px; }
+.flt-group + .flt-group { border-top: 1px solid var(--u-line); margin-top: 2px; padding-top: 8px; }
+.flt-group-h { font-size: 11px; font-weight: var(--fw-semibold); letter-spacing: .04em; text-transform: uppercase; color: var(--u-text3); padding: 2px 8px 6px; }
+.flt-opt { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; text-align: left; padding: 8px 10px; border: none; border-radius: 8px; background: transparent; color: var(--u-text); font-size: var(--fs-md); font-weight: var(--fw-medium); cursor: pointer; transition: background-color var(--tr-fast); }
+.flt-opt:hover { background: var(--u-bg2); }
+.flt-opt.on { background: var(--u-accent-soft); color: var(--primary-600); font-weight: var(--fw-semibold); }
+.flt-opt .lc-ic { width: 15px; height: 15px; flex-shrink: 0; }
+.flt-opt span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flt-foot { padding: 6px 0 0; border-top: 1px solid var(--u-line); margin-top: 2px; }
+.flt-clear { width: 100%; padding: 8px 10px; border: 1px solid var(--u-border); border-radius: 8px; background: transparent; color: var(--u-text2); font-size: var(--fs-sm); font-weight: var(--fw-semibold); cursor: pointer; transition: border-color var(--tr-fast), color var(--tr-fast); }
+.flt-clear:hover:not(:disabled) { border-color: var(--neutral-300); color: var(--u-text); }
+.flt-clear:disabled { opacity: .5; cursor: default; }
+@media (max-width: 640px) {
+  .flt, .flt-btn { width: 100%; }
+  .flt-btn { justify-content: space-between; }
+  .flt-menu { right: 0; left: 0; min-width: 0; max-width: none; }
+}
+
 /* ===== Equipe ===== */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 14px; }
 .member-card { display: flex; align-items: center; gap: 13px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--u-shadow); cursor: pointer; transition: transform .12s, box-shadow .12s; }
@@ -14692,7 +14722,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v260';
+var APP_BUILD = 'v261';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -15790,7 +15820,7 @@ function currentRoute() { var h=(location.hash||'').replace(/^#\/?/,''); return 
 function navigate(path) { location.hash = '#/' + String(path).replace(/^#?\/?/,''); }
 
 /* ========== [6] ESTADO + DADOS ========== */
-var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskFilter:'hoje', taskAssignee:'', taskStore:'', configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
+var ST = { session:null, sector:null, store:null, viewStore:null, page:'tarefas', taskView:'kanban', taskFilter:'hoje', taskAssignee:'', taskStore:'', fltOpen:false, configTab:'usuarios', gestaoTab:'visao', gestaoStore:'', kpiPeriod:'mes', kpiStore:null, cal:{ y:null, m:null }, storeUnits:[], userStoreScope:[], storeCtx:null, users:[], allUsers:[], tasks:[], members:[], goals:[], clients:[], projects:[], milestones:[], banners:[], events:[], campaigns:[], comissoes:[], avaliacoes:[], bling:[], blingFat:[], openProject:null, team:{ q:'', sit:'ativos', pend:'', loja:'' }, checkins:[], notes1on1:[], kudos:[], mktMetas:[], relM:null, relY:null, mktBudget:[], orcM:null, orcY:null, contentItems:[], contentView:'pipeline', conM:null, conY:null, creativos:[], bibKind:'todos', bibQ:'', checklistItems:[], checklistDone:[], caixas:[], lojaMetricas:[], lrM:null, lrY:null, lrStore:'', lojaProdutos:[], activityLog:[], gestorChecklist:[], shifts:[], justifs:[], loaded:false };
 // loja "em foco": conta vinculada a uma loja vê SÓ a dela (qualquer cargo);
 // admin central (sem loja vinculada) vê unificado ou filtra pelo seletor do topo.
 function scopeStore(){
@@ -18658,6 +18688,86 @@ function kanbanItemsForFilter(filter){
   return list.map(mtTaskToItem);
 }
 
+// FASE UI-001: filtro consolidado — UM único menu "Filtrar tarefas" para Tarefas/Kanban e Calendário.
+// Reaproveita EXATAMENTE o estado existente (ST.taskAssignee / ST.taskStore) e o mesmo efeito dos
+// selects antigos (setar o estado + renderPage). NÃO altera lógica de filtragem, permissões nem escopo.
+// Mostra só os grupos que já existiam naquela tela: Visualização (responsável) e, no Kanban, Loja.
+function fltTarefasMenuHTML(ctx){
+  var admin = isAdmin(ST.session);
+  if (!admin) return '';                       // não-admin não tem filtros -> nenhum controle visível
+  var meId = String(ST.session.user.id);
+  function optBtn(kind,val,label,cur){
+    var on=(String(cur)===String(val))?' on':'';
+    return '<button type="button" class="flt-opt'+on+'" role="menuitemradio" aria-checked="'+(on?'true':'false')+'" data-flt="'+kind+'" data-val="'+esc(String(val))+'"><span>'+esc(label)+'</span>'+(on?icon('check'):'')+'</button>';
+  }
+  // ---- Grupo Visualização (mesmas opções do antigo select de responsável) ----
+  var equipe = ST.users;
+  if (!isSuper(ST.session) && typeof subordinadosDiretos==='function'){
+    var subs = subordinadosDiretos(ST.session.user.id);
+    if (subs.length) equipe = subs;
+  }
+  var visOpts = optBtn('assignee', meId, 'Minhas tarefas', ST.taskAssignee)
+    + optBtn('assignee', '', 'Todos da equipe', ST.taskAssignee)
+    + equipe.filter(function(u){ return String(u.id)!==meId; }).map(function(u){ return optBtn('assignee', u.id, u.name, ST.taskAssignee); }).join('');
+  var groups = '<div class="flt-group"><div class="flt-group-h">Visualização</div>'+visOpts+'</div>';
+  var active = 0;
+  if (ST.taskAssignee) active++;               // "Todos da equipe" (vazio) = neutro, não conta
+  // ---- Grupo Loja (apenas Tarefas/Kanban, mesma condição do antigo select de loja) ----
+  var hasLoja = (ctx==='tarefas' && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0);
+  if (hasLoja){
+    var lojaOpts = optBtn('store','','Todas as lojas', ST.taskStore)
+      + ST.storeUnits.map(function(s){ return optBtn('store', s.id, (s.name||('Loja '+s.store_number)), ST.taskStore); }).join('');
+    groups += '<div class="flt-group"><div class="flt-group-h">Loja</div>'+lojaOpts+'</div>';
+    if (ST.taskStore) active++;
+  }
+  var badge = active>0 ? '<span class="flt-badge">'+active+'</span>' : '';
+  return '<div class="flt'+(ST.fltOpen?' is-open':'')+'" data-flt-root="1">'
+    + '<button type="button" class="flt-btn'+(active>0?' has':'')+'" id="fltBtn" aria-haspopup="true" aria-expanded="'+(ST.fltOpen?'true':'false')+'">'
+    +   icon('filter')+'<span class="flt-btn-tx">Filtrar tarefas</span>'+badge
+    +   '<svg class="flt-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>'
+    + '</button>'
+    + '<div class="flt-menu'+(ST.fltOpen?' open':'')+'" id="fltMenu" role="menu">'+groups
+    +   '<div class="flt-foot"><button type="button" class="flt-clear" id="fltClear"'+(active>0?'':' disabled')+'>Limpar filtros</button></div>'
+    + '</div></div>';
+}
+// Liga o menu consolidado (reusado em Tarefas/Kanban e Calendário). Mesmo efeito dos selects antigos.
+function bindFltMenu(){
+  var btn=document.getElementById('fltBtn');
+  if (btn) btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    ST.fltOpen = !ST.fltOpen;
+    var m=document.getElementById('fltMenu'); if(m) m.classList.toggle('open', ST.fltOpen);
+    var root=document.querySelector('.flt'); if(root) root.classList.toggle('is-open', ST.fltOpen);
+    btn.setAttribute('aria-expanded', ST.fltOpen?'true':'false');
+  });
+  var opts=document.querySelectorAll('.flt-opt');
+  for (var i=0;i<opts.length;i++) opts[i].addEventListener('click', function(e){
+    e.stopPropagation();
+    var kind=this.getAttribute('data-flt'), val=this.getAttribute('data-val');
+    if (kind==='assignee') ST.taskAssignee=val;          // mesmo efeito do antigo select de responsável
+    else if (kind==='store') ST.taskStore=val;           // mesmo efeito do antigo select de loja
+    ST.fltOpen=true;                                      // mantém o menu aberto após o re-render
+    renderPage();
+  });
+  var clr=document.getElementById('fltClear');
+  if (clr) clr.addEventListener('click', function(e){
+    e.stopPropagation();
+    ST.taskAssignee=''; ST.taskStore='';                 // volta ao estado amplo (Todos)
+    ST.fltOpen=true; renderPage();
+  });
+  // fechar ao clicar fora / Esc — listeners de documento ligados uma única vez
+  function fltFechar(){ ST.fltOpen=false; var m=document.getElementById('fltMenu'); if(m) m.classList.remove('open'); var r=document.querySelector('.flt.is-open'); if(r) r.classList.remove('is-open'); var b=document.getElementById('fltBtn'); if(b) b.setAttribute('aria-expanded','false'); }
+  if (!window.__fltDocBound){
+    window.__fltDocBound=true;
+    document.addEventListener('click', function(ev){
+      if (!ST.fltOpen) return;
+      var t=ev.target;
+      if (t && t.closest && t.closest('.flt')) return;   // clique dentro do filtro não fecha
+      fltFechar();
+    });
+    document.addEventListener('keydown', function(ev){ if (ev.key==='Escape' && ST.fltOpen) fltFechar(); });
+  }
+}
 function tarefasHTML() {
   var view = ST.taskView || 'kanban';
   var admin = isAdmin(ST.session);
@@ -18677,30 +18787,10 @@ function tarefasHTML() {
     (podeProj ? '<button class="vt-btn'+(view==='projetos'?' on':'')+'" data-view="projetos">'+icon('folder')+'Projetos</button>' : '')+
     (podeCal ? '<button class="vt-btn'+(view==='calendario'?' on':'')+'" data-view="calendario">'+icon('cal')+'Calendário</button>' : '')+
   '</div>';
-  var filter = '';
-  if (admin) {
-    var meId = String(ST.session.user.id);
-    var mineSel = (String(ST.taskAssignee)===meId) ? ' selected' : '';
-    // v116: se o usuário logado tem subordinados diretos, filtro mostra só a equipe dele.
-    // Se não tem, mantém comportamento antigo (todos do setor).
-    var equipe = ST.users;
-    if (!isSuper(ST.session) && typeof subordinadosDiretos==='function'){
-      var subs = subordinadosDiretos(ST.session.user.id);
-      if (subs.length) equipe = subs;
-    }
-    var others = equipe.filter(function(u){ return String(u.id)!==meId; }).map(function(u){
-      return '<option value="'+esc(u.id)+'"'+(String(ST.taskAssignee)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>';
-    }).join('');
-    var opts = '<option value="'+esc(meId)+'"'+mineSel+'>Minhas tarefas</option><option value="">Todos da equipe</option>' + others;
-    filter = '<select class="task-filter" id="taskAssignee" title="Ver tarefas de">'+opts+'</select>';
-  }
-  var storeFilter = '';
-  if (admin && ST.sector==='lojas' && !ST.store && (ST.storeUnits||[]).length>0) {
-    var sopts = '<option value="">Todas as lojas</option>' + ST.storeUnits.map(function(s){
-      return '<option value="'+esc(s.id)+'"'+(String(ST.taskStore)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';
-    }).join('');
-    storeFilter = '<select class="task-filter" id="taskStore" title="Ver loja">'+sopts+'</select>';
-  }
+  // FASE UI-001: os antigos selects de responsável (taskAssignee) e loja (taskStore) foram
+  // consolidados num único menu "Filtrar tarefas" (fltTarefasMenuHTML). Mesmas opções, mesmo
+  // efeito, mesmas condições de permissão/escopo — apenas um controle no lugar de vários.
+  var filtroMenu = fltTarefasMenuHTML('tarefas');
   var nova = admin ? '<button class="btn-new" id="btnNovaTarefa">'+icon('plus')+'Nova tarefa</button>' : '';
   if (view==='calendario' || view==='projetos') {
     // os filtros de tarefa não valem aqui; só a barra de visões, e a tela hospedada traz o próprio título
@@ -18708,7 +18798,7 @@ function tarefasHTML() {
   }
   // v120: envolve o head com sticky-bar para o filtro não sumir no scroll
   // v233: chips de recorte removidos — Kanban é visão OPERACIONAL do dia (sem histórico).
-  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+storeFilter+filter+toggle+nova+'</div></div></div>';
+  var head = '<div class="trab-sticky"><div class="tasks-head"><div><h2>Tarefas</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+filtroMenu+toggle+nova+'</div></div></div>';
   // Visões legadas (matriz/rotina) seguem renderizando se acessadas por deep link.
   var body;
   if (view==='matriz') body = matrizHTML();
@@ -19133,7 +19223,7 @@ function bindTarefas() {
     for(var _q=0;_q<_vt2.length;_q++) _vt2[_q].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); ST.openProject=null; if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); });
     return;
   }
-  if (_vw==='rotina') { bindRotina(); bindMural(); var _af=document.getElementById('taskStore'); if(_af) _af.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); }); var _vts=app.querySelectorAll('[data-view]'); for(var _v=0;_v<_vts.length;_v++) _vts[_v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); }); return; }
+  if (_vw==='rotina') { bindRotina(); bindMural(); bindFltMenu(); /* FASE UI-001: menu consolidado também na visão rotina */ var _vts=app.querySelectorAll('[data-view]'); for(var _v=0;_v<_vts.length;_v++) _vts[_v].addEventListener('click', function(){ ST.taskView=this.getAttribute('data-view'); if(typeof sincronizarURL==='function') sincronizarURL(); renderPage(); }); return; }
   var nova=document.getElementById('btnNovaTarefa');
   if (nova) nova.addEventListener('click', function(){ openTaskModal(null); });
   var verRot=document.getElementById('btnVerRotina');
@@ -19156,12 +19246,8 @@ function bindTarefas() {
       setTimeout(function(){ var q=document.getElementById('qaInput'); if(q) q.focus(); },30);
     });
   });
-  // filtro de responsável (admin)
-  var af=document.getElementById('taskAssignee');
-  if (af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
-  // filtro de loja (admin de setor de Lojas)
-  var sf=document.getElementById('taskStore');
-  if (sf) sf.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
+  // FASE UI-001: filtros de responsável + loja agora vivem no menu consolidado "Filtrar tarefas".
+  bindFltMenu();
   // botão "feito hoje" das recorrentes — reagenda para a próxima ocorrência
   var dones=app.querySelectorAll('[data-done]');
   for (var d=0;d<dones.length;d++) {
@@ -44768,14 +44854,9 @@ function calendarioHTML() {
   var admin=isAdmin(ST.session);
   var dow=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 
-  var filter='';
-  if (admin) {
-    var meIdC = String(ST.session.user.id);
-    var mineSelC = (String(ST.taskAssignee)===meIdC) ? ' selected' : '';
-    var othersC = ST.users.filter(function(u){ return String(u.id)!==meIdC; }).map(function(u){ return '<option value="'+esc(u.id)+'"'+(String(ST.taskAssignee)===String(u.id)?' selected':'')+'>'+esc(u.name)+'</option>'; }).join('');
-    var opts='<option value="'+esc(meIdC)+'"'+mineSelC+'>Minhas tarefas</option><option value="">Todos da equipe</option>'+othersC;
-    filter='<select class="task-filter" id="calAssignee" title="Ver tarefas de">'+opts+'</select>';
-  }
+  // FASE UI-001: o antigo select de responsável (calAssignee) virou o mesmo menu consolidado
+  // "Filtrar tarefas" usado no Kanban. Mesma opção (Visualização) e mesmo efeito (ST.taskAssignee).
+  var filter = fltTarefasMenuHTML('cal');
   var sub = admin ? 'Clique num dia para ver tudo e adicionar tarefas ou eventos' : 'Clique num dia para ver seus itens · você também pode criar lembretes';
   var addEvtBtn = '<button class="btn-new cal-evt-btn" id="btnNovoEvento">'+icon('plus')+'Evento</button>';
   var viewTog='<div class="cal-viewtog">'+
@@ -44817,8 +44898,8 @@ function bindCalendario() {
   if (prev) prev.addEventListener('click', function(){ if(ST.cal.view==='semana'){ ST.cal.wkRef=addDays(ST.cal.wkRef||today(), -7); } else { ST.cal.m--; if(ST.cal.m<0){ ST.cal.m=11; ST.cal.y--; } } renderPage(); });
   if (next) next.addEventListener('click', function(){ if(ST.cal.view==='semana'){ ST.cal.wkRef=addDays(ST.cal.wkRef||today(), 7); } else { ST.cal.m++; if(ST.cal.m>11){ ST.cal.m=0; ST.cal.y++; } } renderPage(); });
   if (tdy) tdy.addEventListener('click', function(){ var n=new Date(); ST.cal.y=n.getFullYear(); ST.cal.m=n.getMonth(); ST.cal.wkRef=today(); renderPage(); });
-  var af=document.getElementById('calAssignee');
-  if (af) af.addEventListener('change', function(){ ST.taskAssignee=this.value; renderPage(); });
+  // FASE UI-001: responsável agora vive no menu consolidado "Filtrar tarefas".
+  bindFltMenu();
   var admin=isAdmin(ST.session);
 
   // botão "+ Evento" (todos podem; não-admin só cria pessoal)
