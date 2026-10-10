@@ -812,9 +812,10 @@ button.kpi-srow:hover { background: var(--u-bg2); }
 html.dark .tc-src-proj { color: #FDBA74; }
 html.dark .tc-src-camp { color: #C4B5FD; }
 /* filtro de responsável */
-.task-filter { height: 38px; border: 1px solid var(--u-border2); border-radius: var(--rd-md); background: var(--u-card); color: var(--u-text); font-size: var(--fs-md); font-weight: var(--fw-semibold); padding: 0 var(--sp-3); cursor: pointer; transition: border-color var(--tr-fast), box-shadow var(--tr-fast); }
-.task-filter:hover { border-color: var(--neutral-300); }
-.task-filter:focus { outline: none; border-color: var(--primary-500); box-shadow: var(--focus-ring); }
+.task-filter { height: 42px; border: 1px solid var(--u-border); border-radius: 11px; background-color: var(--u-card2); color: var(--u-text); font-size: var(--fs-md); font-weight: var(--fw-medium); padding: 0 36px 0 14px; cursor: pointer; appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235A6884' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; background-size: 16px; transition: border-color var(--tr-fast), box-shadow var(--tr-fast), background-color var(--tr-fast); }
+.task-filter:hover { border-color: var(--neutral-300); background-color: var(--u-card); }
+.task-filter:focus { outline: none; border-color: var(--primary-500); background-color: var(--u-card); box-shadow: var(--focus-ring); }
+html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23A6B2C8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); }
 
 /* ===== Equipe ===== */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 14px; }
@@ -1014,7 +1015,8 @@ html.dark .tc-src-camp { color: #C4B5FD; }
 .goal-vals .gv span { font-size: 13px; font-weight: 700; }
 
 /* ===== CRM ===== */
-.crm-search { display: flex; align-items: center; gap: 10px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius-sm); padding: 11px 15px; margin-bottom: 16px; color: var(--u-text3); box-shadow: var(--u-shadow); }
+.crm-search { display: flex; align-items: center; gap: 10px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius-sm); padding: 11px 15px; margin-bottom: 16px; color: var(--u-text3); box-shadow: var(--u-shadow); transition: border-color var(--tr-fast), box-shadow var(--tr-fast); }
+.crm-search:focus-within { border-color: var(--primary-500); box-shadow: var(--focus-ring); }
 .crm-search svg { font-size: 17px; flex-shrink: 0; }
 .crm-search input { flex: 1; border: none; background: none; outline: none; font-size: 14px; color: var(--u-text); min-width: 0;}
 .crm-list { display: flex; flex-direction: column; gap: 8px; }
@@ -2010,7 +2012,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 .empty-page { text-align: center; padding: var(--sp-10) var(--sp-6); color: var(--u-text2); background: var(--u-card); border: 1px solid var(--u-line); border-radius: var(--rd-xl); margin-top: var(--sp-4); }
 
 /* ===== Visão de tarefas: toggle + Matriz de Eisenhower ===== */
-.tasks-head-r { display: flex; align-items: center; gap: 12px; }
+.tasks-head-r { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .view-toggle { display: flex; gap: 2px; background: var(--u-bg2); border-radius: var(--rd-md); padding: 3px; flex-wrap: wrap; border: 1px solid var(--u-line); }
 /* v88: barra de visões quando a tela hospedada traz o próprio cabeçalho (Calendário / Projetos) */
 .view-bar { margin-bottom: 14px; }
@@ -14690,7 +14692,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v259';
+var APP_BUILD = 'v260';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
