@@ -866,6 +866,16 @@ html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns=
   .doc-barra .doc-busca { flex: 1 1 100%; }
   .doc-barra .doc-vtog { margin-left: 0; }
 }
+/* FASE Docs-3 · breadcrumb de pasta + rótulo "Sem pasta" */
+.doc-bc { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; font-size: var(--fs-sm); }
+.doc-bc-item { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--u-text2); font-weight: var(--fw-semibold); cursor: pointer; transition: background-color var(--tr-fast), color var(--tr-fast); }
+.doc-bc-item:hover { background: var(--u-bg2); color: var(--u-text); }
+.doc-bc-item .lc-ic { width: 14px; height: 14px; }
+.doc-bc-sep { color: var(--u-text3); }
+.doc-bc-cur { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 8px; background: var(--u-accent-soft); color: var(--primary-600); font-weight: var(--fw-bold); }
+.doc-bc-cur .lc-ic { width: 14px; height: 14px; }
+.doc-bc-missing { background: var(--u-amber-soft); color: var(--u-amber); }
+.doc-sem-pasta { color: var(--u-text3); font-style: italic; }
 
 /* ===== Equipe ===== */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 14px; }
@@ -14762,7 +14772,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v263';
+var APP_BUILD = 'v264';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -24037,6 +24047,43 @@ function docsFolderTreeHTML(parentId, depth){
   }).join('')+'</div>';
 }
 
+/* ---------- FASE Docs-3: caminho (ancestrais) de uma pasta, com guarda de ciclo/ausência ---------- */
+function docFolderPath(folderId){
+  var path=[], seen={}, cur=folderId;
+  while (cur){
+    if (seen[cur]) break;                 // evita ciclo
+    seen[cur]=1;
+    var f=(ST.docFolders||[]).find(function(x){ return String(x.id)===String(cur); });
+    if (!f) break;                        // pasta inexistente/inacessível
+    path.unshift(f);                       // raiz → ... → atual
+    cur = f.parent_id || null;
+  }
+  return path;
+}
+/* rótulo "A / B / C" de uma pasta (para o seletor de mover) */
+function docFolderPathLabel(folderId){
+  var p=docFolderPath(folderId);
+  return p.length ? p.map(function(f){ return f.name; }).join(' / ') : '';
+}
+/* ---------- FASE Docs-3: breadcrumb da pasta atual (só quando há pasta selecionada) ---------- */
+function docBreadcrumbHTML(){
+  var tab=docTab();
+  if (tab.indexOf('folder:')!==0) return '';   // sem pasta selecionada → sem breadcrumb
+  var fid=tab.slice(7);
+  var path=docFolderPath(fid);
+  var crumbs='<button type="button" class="doc-bc-item" data-docbc="biblioteca">'+icon('folder-open')+'Biblioteca</button>';
+  if (!path.length){                            // pasta excluída/inacessível → não quebra a tela
+    crumbs += '<span class="doc-bc-sep">›</span><span class="doc-bc-cur doc-bc-missing">Pasta indisponível</span>';
+    return '<nav class="doc-bc">'+crumbs+'</nav>';
+  }
+  path.forEach(function(f,i){
+    crumbs += '<span class="doc-bc-sep">›</span>';
+    if (i===path.length-1) crumbs += '<span class="doc-bc-cur">'+icon('folder')+esc(f.name)+'</span>';
+    else crumbs += '<button type="button" class="doc-bc-item" data-docbc="folder:'+esc(f.id)+'">'+esc(f.name)+'</button>';
+  });
+  return '<nav class="doc-bc">'+crumbs+'</nav>';
+}
+
 /* ---------- Templates (Parte C usa isso pra criar doc estruturado) ---------- */
 var DOC_TEMPLATES = [
   { key:'branco', icon:'pin', label:'Em branco', doc_type:'geral', body: null },
@@ -24194,7 +24241,7 @@ function docsListHTML(){
   } else {
     body = docsTableHTML(lista);
   }
-  return docBarraHTML() + body;
+  return docBreadcrumbHTML() + docBarraHTML() + body;
 }
 
 function docsTableHTML(lista){
@@ -24204,7 +24251,7 @@ function docsTableHTML(lista){
     var quem = au ? au.name : '—';
     var fav = Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
     var pasta = d.folder_id ? (ST.docFolders||[]).find(function(f){ return String(f.id)===String(d.folder_id); }) : null;
-    var pastaLb = pasta ? esc(pasta.name) : '—';
+    var pastaLb = pasta ? esc(pasta.name) : '<span class="doc-sem-pasta">Sem pasta</span>'; // FASE Docs-3: deixa claro
     var vis = docShareLabel(d); // v97
     var upd = d.updated_at ? esc(tempoRelativo(d.updated_at)) : '—';
     var tipoIc = docTipoIcon(d.doc_type);
@@ -24786,6 +24833,10 @@ function bindDocs(){
   });
   var pastasH = document.querySelector('[data-side-pastas]');
   if (pastasH) pastasH.addEventListener('click', function(e){ if (e.target.closest('#btnNovaPasta')) return; ST.docSidePastas = (ST.docSidePastas===false) ? true : false; renderPage(); });
+  // FASE Docs-3: breadcrumb da pasta — cada nível navega; "Biblioteca" volta ao geral
+  document.querySelectorAll('[data-docbc]').forEach(function(b){
+    b.addEventListener('click', function(){ var v=this.getAttribute('data-docbc'); ST.docTab = (v==='biblioteca') ? 'todos' : v; ST.docSideMobileOpen=false; renderPage(); });
+  });
   // abas fixas (fecha a gaveta mobile ao escolher)
   document.querySelectorAll('[data-doc-tab]').forEach(function(b){
     b.addEventListener('click', function(){ ST.docTab = this.getAttribute('data-doc-tab'); ST.docSideMobileOpen=false; renderPage(); });
@@ -24866,8 +24917,11 @@ function docsAbrirMenuAcoes(anchor, id){
   // v97: cada ação exige um nível diferente
   var podeEd = docPodeEditar(d);
   var podeAd = docPodeAdmin(d);
-  var pastas = '<option value="">— sem pasta —</option>' + (ST.docFolders||[]).map(function(f){
-    return '<option value="'+esc(f.id)+'"'+(String(d.folder_id||'')===String(f.id)?' selected':'')+'>'+esc(f.name)+'</option>';
+  // FASE Docs-3: rótulos com caminho (A / B / C) para distinguir subpastas; ordenado pelo caminho
+  var pastasOrd = (ST.docFolders||[]).map(function(f){ return { id:f.id, lb:(docFolderPathLabel(f.id)||f.name) }; })
+    .sort(function(a,b){ return a.lb.localeCompare(b.lb); });
+  var pastas = '<option value="">— sem pasta —</option>' + pastasOrd.map(function(f){
+    return '<option value="'+esc(f.id)+'"'+(String(d.folder_id||'')===String(f.id)?' selected':'')+'>'+esc(f.lb)+'</option>';
   }).join('');
   var moverRow = podeEd
     ? '<div class="modal-row"><label class="modal-label">Mover para pasta</label><select id="acMover">'+pastas+'</select></div>'
