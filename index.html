@@ -827,7 +827,7 @@ html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns=
 .flt-caret { width: 14px; height: 14px; color: var(--u-text2); transition: transform var(--tr-fast); }
 .flt.is-open .flt-caret { transform: rotate(180deg); }
 .flt-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--primary-500); color: #fff; font-size: 11px; font-weight: var(--fw-semibold); line-height: 1; }
-.flt-menu { position: absolute; top: calc(100% + 6px); right: 0; z-index: 50; min-width: 234px; max-width: 288px; max-height: min(70vh, 440px); overflow-y: auto; padding: 8px; background: var(--u-card); border: 1px solid var(--u-border2); border-radius: 12px; box-shadow: var(--u-shadow-md); display: none; }
+.flt-menu { position: absolute; top: calc(100% + 6px); left: 0; z-index: 50; min-width: 234px; max-width: 288px; max-height: min(70vh, 440px); overflow-y: auto; padding: 8px; background: var(--u-card); border: 1px solid var(--u-border2); border-radius: 12px; box-shadow: var(--u-shadow-md); display: none; }
 .flt-menu.open { display: block; }
 .flt-group { padding: 2px 0 8px; }
 .flt-group + .flt-group { border-top: 1px solid var(--u-line); margin-top: 2px; padding-top: 8px; }
@@ -845,6 +845,25 @@ html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns=
   .flt, .flt-btn { width: 100%; }
   .flt-btn { justify-content: space-between; }
   .flt-menu { right: 0; left: 0; min-width: 0; max-width: none; }
+}
+/* ===== FASE Docs-1 · barra principal (popovers Novo/Filtros, ordenação, ⋮) ===== */
+.dpop { position: relative; display: inline-flex; }
+.dpop .btn-new .flt-caret { width: 13px; height: 13px; margin-left: 2px; transition: transform var(--tr-fast); }
+.dpop.is-open .flt-caret { transform: rotate(180deg); }
+.flt-menu.align-right { left: auto; right: 0; }
+.doc-barra { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.doc-barra .doc-busca { flex: 1 1 260px; min-width: 200px; cursor: text; }
+.doc-barra .doc-sort { flex: 0 0 auto; }
+.doc-barra .doc-vtog { flex: 0 0 auto; margin-left: auto; }
+.doc-row-menu { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--u-text2); cursor: pointer; transition: background-color var(--tr-fast), border-color var(--tr-fast); }
+.doc-row-menu:hover { background: var(--u-bg2); border-color: var(--u-border); color: var(--u-text); }
+.doc-row-menu svg { width: 16px; height: 16px; }
+.doc-td-act { width: 44px; text-align: right; }
+.doc-card .doc-row-menu { width: 26px; height: 26px; }
+@media (max-width: 640px) {
+  .dpop, .dpop .btn-new { width: 100%; justify-content: center; }
+  .doc-barra .doc-busca { flex: 1 1 100%; }
+  .doc-barra .doc-vtog { margin-left: 0; }
 }
 
 /* ===== Equipe ===== */
