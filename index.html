@@ -859,6 +859,7 @@ html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns=
 .doc-row-menu:hover { background: var(--u-bg2); border-color: var(--u-border); color: var(--u-text); }
 .doc-row-menu svg { width: 16px; height: 16px; }
 .doc-td-act { width: 44px; text-align: right; }
+.doc-card-actions { display: inline-flex; align-items: center; gap: 2px; }
 .doc-card .doc-row-menu { width: 26px; height: 26px; }
 @media (max-width: 640px) {
   .dpop, .dpop .btn-new { width: 100%; justify-content: center; }
@@ -2479,6 +2480,24 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
 
 /* Main */
 .docs-main { min-height: 500px; }
+/* FASE Docs-2 · sidebar reorganizada (seções recolhíveis + gaveta mobile) */
+.docs-side-top { padding-top: 2px; }
+.docs-side-top + .docs-side-group { border-top: 1px solid var(--u-border); margin-top: 6px; padding-top: 8px; }
+.docs-sec-h { cursor: pointer; user-select: none; }
+.docs-sec-h:hover { color: var(--u-text2); }
+.docs-sec-chev { font-size: 10px; color: var(--u-text3); }
+.docs-sec-body { display: flex; flex-direction: column; gap: 2px; }
+.docs-sub-h { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 7px var(--sp-3) 5px; font-size: 11px; font-weight: var(--fw-bold); color: var(--u-text2); cursor: pointer; user-select: none; }
+.docs-sub-h .lc-ic { width: 14px; height: 14px; }
+.docs-sub-h > span:first-child { display: inline-flex; align-items: center; gap: 6px; }
+.docs-sub-r { display: inline-flex; align-items: center; gap: 6px; }
+.docs-side-toggle { display: none; align-items: center; gap: 8px; width: 100%; justify-content: center; height: 42px; margin: 4px 0 10px; border: 1px solid var(--u-border); border-radius: 11px; background: var(--u-card2); color: var(--u-text); font-size: var(--fs-md); font-weight: var(--fw-semibold); cursor: pointer; }
+.docs-side-toggle .lc-ic { width: 16px; height: 16px; }
+@media (max-width: 900px) {
+  .docs-side-toggle { display: flex; }
+  .docs-wrap .docs-side { display: none; }
+  .docs-wrap.side-open .docs-side { display: block; margin-bottom: 14px; }
+}
 .doc-tpls { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(112px, 100%), 1fr)); gap: var(--sp-2); margin-bottom: var(--sp-5); }
 .doc-tpl { display: flex; flex-direction: column; align-items: center; gap: var(--sp-2); padding: var(--sp-3) var(--sp-2); background: var(--u-card); border-radius: var(--rd-lg); box-shadow: var(--shadow-xs); font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--u-text); cursor: pointer; transition: transform var(--tr-fast), box-shadow var(--tr-fast), border-color var(--tr-fast); border: 1px solid var(--u-line); min-height: 82px; text-align: center; }
 .doc-tpl:hover { transform: translateY(-2px); border-color: var(--primary-300); box-shadow: var(--shadow-sm); background: var(--primary-50); }
@@ -2724,6 +2743,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px
   .docs-wrap  { grid-template-columns: 230px minmax(0, 1fr); }
   .content    { padding: 20px; }
 }
+/* FASE Docs-2: no mobile a biblioteca vira coluna única (a sidebar é gaveta) — vence o 1440 por ordem */
+@media (max-width: 900px) { .docs-wrap { grid-template-columns: minmax(0, 1fr); } }
 
 /* Telas grandes: o conteúdo para de esticar e fica legível */
 @media (min-width: 1700px) {
@@ -14741,7 +14762,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v261';
+var APP_BUILD = 'v263';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -23888,6 +23909,12 @@ function docPertenceAba(d, tab){
   if (arqui) return false;
   if (tab==='meus')            return String(d.author_id||'')===eu;
   if (tab==='compartilhados')  return String(d.author_id||'')!==eu; // v97: já passou pelo docPodeVer
+  if (tab==='compartilhadospormim'){ // FASE Docs-2: eu criei E alcança outras pessoas/unidade/setor/convites
+    if (String(d.author_id||'')!==eu) return false;
+    var visCM=(d.visibility||'setor');
+    var temSharesCM = Array.isArray(d.shares) && d.shares.length>0;
+    return (visCM==='setor' || visCM==='unidade') || temSharesCM; // 'pessoas'/'privado' só com convites explícitos
+  }
   if (tab==='privados')        return (d.visibility||'setor')==='privado' && String(d.author_id||'')===eu;
   if (tab==='atas')            return (d.doc_type||'')==='ata';
   if (tab==='favoritos')       return Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1;
@@ -23905,12 +23932,15 @@ function docsHTML(){
   if (!(can('docs') || permsHas('docs'))){
     return emptyState({ icon:'folder', title:'Acesso restrito', text:'Módulo Documentos exige permissão.' });
   }
-  var novaBtn = docPodeCriar() ? '<button class="btn-new" id="btnNovoDoc">'+icon('plus')+'Novo documento</button>' : '';
+  var novaBtn = docNovoMenuHTML(); // FASE Docs-1: botão vira popover com os modelos
   var sub = 'Central de documentos · '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:'');
   var head = '<div class="tasks-head"><div><h2>Documentos</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+novaBtn+'</div></div>';
 
   var corpo = (docTab()==='dashboard') ? docsDashboardHTML() : docsListHTML(); // v100
-  return head + '<div class="docs-wrap">'+docsSideHTML()+'<div class="docs-main">'+corpo+'</div></div>';
+  // FASE Docs-2: no mobile a sidebar vira gaveta recolhível (toggle); no desktop fica sempre visível.
+  var sideToggle = '<button class="docs-side-toggle" id="docsSideToggle" aria-expanded="'+(ST.docSideMobileOpen?'true':'false')+'">'+icon('folder')+'<span>Navegação e pastas</span></button>';
+  var wrapCls = 'docs-wrap'+(ST.docSideMobileOpen?' side-open':'');
+  return head + sideToggle + '<div class="'+wrapCls+'">'+docsSideHTML()+'<div class="docs-main">'+corpo+'</div></div>';
 }
 
 /* ---------- Sidebar: abas fixas + pastas em árvore ---------- */
@@ -23935,27 +23965,51 @@ function docsSideHTML(){
   }
 
   var contVinc = docs.filter(function(d){ return !d.is_archived && docLinksDe(d).length>0; }).length; // v100
-  var g1 = '<div class="docs-side-group">'+
-    item('dashboard','Painel', '', icon('bar-chart-3'))+
-    item('todos','Todos os documentos', contTotal, icon('folder-open'))+
-    item('meus','Meus documentos', contMeus, icon('user-round'))+
-    item('compartilhados','Compartilhados comigo', contComp, icon('users'))+
-    item('privados','Privados', contPriv, icon('lock'))+
-    item('atas','Atas de reunião', contAtas, icon('notebook-pen'))+
-    item('vinculados','Vinculados', contVinc, icon('link'))+
-    item('arquivados','Arquivados', contArqu, icon('archive'))+
-  '</div>';
-  var g2 = '<div class="docs-side-group">'+
-    item('favoritos','Favoritos', contFav, icon('star-icon'))+
-    item('recentes','Recentes', contRec, icon('clock'))+
-  '</div>';
+  // FASE Docs-2: "Compartilhados por mim" — eu criei e alcança outras pessoas/unidade/setor/convites
+  var contComMim = cont(function(d){
+    if (String(d.author_id||'')!==eu) return false;
+    var vis=(d.visibility||'setor'); var temS=Array.isArray(d.shares)&&d.shares.length>0;
+    return (vis==='setor'||vis==='unidade') || temS;
+  });
 
-  // pastas — nested; renderiza a raiz e chama recursivo
-  var g3Head = '<div class="docs-side-group-h">'+icon('folder')+' Pastas'+(docPodeCriar()?' <button class="docs-side-add" id="btnNovaPasta" title="Nova pasta">+</button>':'')+'</div>';
-  var g3Body = docsFolderTreeHTML(null, 0);
-  var g3 = '<div class="docs-side-group folders">'+g3Head+g3Body+'</div>';
+  // FASE Docs-2: seções recolhíveis (padrão: abertas)
+  function secAberta(key){ return !(ST.docSideSec && ST.docSideSec[key]===false); }
+  function secao(key, titulo, corpo){
+    var ab = secAberta(key);
+    return '<div class="docs-side-group">'
+      + '<div class="docs-side-group-h docs-sec-h" data-side-sec="'+key+'"><span>'+esc(titulo)+'</span><span class="docs-sec-chev">'+(ab?'▾':'▸')+'</span></div>'
+      + (ab ? '<div class="docs-sec-body">'+corpo+'</div>' : '')
+      + '</div>';
+  }
 
-  return '<aside class="docs-side">'+g1+g2+g3+'</aside>';
+  // Painel (acesso ao dashboard preservado) — topo, fora das seções
+  var topo = '<div class="docs-side-group docs-side-top">'+item('dashboard','Painel', '', icon('bar-chart-3'))+'</div>';
+
+  // Biblioteca: Todos · Minhas pastas (árvore) · Meus
+  var pastasAberta = !(ST.docSidePastas===false);
+  var pastasHead = '<div class="docs-sub-h" data-side-pastas="1"><span>'+icon('folder')+' Minhas pastas</span>'
+    + '<span class="docs-sub-r">'+(docPodeCriar()?'<button class="docs-side-add" id="btnNovaPasta" title="Nova pasta">+</button>':'')+'<span class="docs-sec-chev">'+(pastasAberta?'▾':'▸')+'</span></span></div>';
+  var pastasBloco = pastasHead + (pastasAberta ? docsFolderTreeHTML(null, 0) : '');
+  var bibItens = item('todos','Todos os documentos', contTotal, icon('folder-open'))
+    + pastasBloco
+    + item('meus','Meus documentos', contMeus, icon('user-round'));
+
+  var compItens = item('compartilhados','Compartilhados comigo', contComp, icon('users'))
+    + item('compartilhadospormim','Compartilhados por mim', contComMim, icon('share2'));
+
+  var rapItens = item('favoritos','Favoritos', contFav, icon('star-icon'))
+    + item('recentes','Recentes', contRec, icon('clock'));
+
+  var orgItens = item('arquivados','Arquivados', contArqu, icon('archive'))
+    + item('vinculados','Vinculados', contVinc, icon('link'));
+
+  return '<aside class="docs-side">'
+    + topo
+    + secao('biblioteca','Biblioteca', bibItens)
+    + secao('compartilhamento','Compartilhamento', compItens)
+    + secao('rapido','Acesso rápido', rapItens)
+    + secao('organizacao','Organização', orgItens)
+    + '</aside>';
 }
 
 /* ---------- Árvore de pastas (recursiva, sem limite de profundidade) ---------- */
@@ -23994,6 +24048,106 @@ var DOC_TEMPLATES = [
   { key:'estrategia', icon:'compass', label:'Estratégia', doc_type:'estrategia', body: docTplEstrategia() }
 ];
 
+/* ---------- FASE Docs-1: estado da barra (popovers / filtros / ordenação) ---------- */
+function docFiltro(){ if(!ST.docFiltro) ST.docFiltro={tipo:'',autor:'',comp:'',pasta:''}; return ST.docFiltro; }
+function docSortMode(){ return ST.docSort || 'recentes'; }
+function docFiltrosAtivos(){ var f=docFiltro(); var n=0; if(f.tipo)n++; if(f.autor)n++; if(f.comp)n++; if(f.pasta)n++; return n; }
+var DOC_TIPO_LABEL = { geral:'Geral', ata:'Ata de reunião', pop:'POP', manual:'Manual', wiki:'Wiki', planejamento:'Planejamento', estrategia:'Estratégia' };
+function docTipoLabel(t){ return DOC_TIPO_LABEL[t] || (t ? (t.charAt(0).toUpperCase()+t.slice(1)) : 'Outro'); }
+var DOC_DOTS_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>';
+
+/* popover "Novo documento" com os modelos — NÃO cria nada ao abrir */
+function docNovoMenuHTML(){
+  if (!docPodeCriar()) return '';
+  var open = ST.docPop==='novo';
+  var opts = DOC_TEMPLATES.map(function(t){
+    return '<button type="button" class="flt-opt" data-tpl="'+esc(t.key)+'"><span>'+icon(t.icon)+' '+esc(t.label)+'</span></button>';
+  }).join('');
+  return '<div class="dpop'+(open?' is-open':'')+'" data-dpop="novo">'
+    + '<button type="button" class="btn-new" id="btnNovoDoc" aria-haspopup="true" aria-expanded="'+(open?'true':'false')+'">'+icon('plus')+'Novo documento<svg class="flt-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>'
+    + '<div class="flt-menu align-right'+(open?' open':'')+'" id="docNovoMenu" role="menu"><div class="flt-group"><div class="flt-group-h">Criar a partir de</div>'+opts+'</div></div>'
+    + '</div>';
+}
+
+/* corpo do popover de Filtros — tipos/autores reais presentes + compartilhamento + pasta */
+function docFiltrosMenuBodyHTML(){
+  var f = docFiltro();
+  var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  // base = só o que a pessoa pode ver e não arquivado (escopo real; nunca amplia acesso)
+  var base = (ST.docs||[]).filter(function(d){ return !d.is_archived && docPodeVer(d); });
+  function opt(kind,val,label,cur){ var on=(String(cur)===String(val))?' on':''; return '<button type="button" class="flt-opt'+on+'" data-dfiltro="'+kind+'" data-val="'+esc(String(val))+'"><span>'+esc(label)+'</span>'+(on?icon('check'):'')+'</button>'; }
+  // Tipo
+  var tipos={}; base.forEach(function(d){ tipos[d.doc_type||'geral']=true; });
+  var tipoOpts = opt('tipo','','Todos os tipos', f.tipo) + Object.keys(tipos).sort().map(function(t){ return opt('tipo', t, docTipoLabel(t), f.tipo); }).join('');
+  // Autor (por ID)
+  var am={}; base.forEach(function(d){ if(d.author_id) am[String(d.author_id)]=true; });
+  var autores = Object.keys(am).map(function(aid){ var u=userById(aid); return { id:aid, nome:(u?u.name:'—') }; }).sort(function(a,b){ return a.nome.localeCompare(b.nome); });
+  var autorOpts = opt('autor','','Todos os autores', f.autor) + autores.map(function(a){ return opt('autor', a.id, a.nome+(a.id===eu?' (eu)':''), f.autor); }).join('');
+  // Compartilhamento (condições reais)
+  var compOpts = opt('comp','','Todos', f.comp) + opt('comp','privados','Privados', f.comp) + opt('comp','comigo','Compartilhados comigo', f.comp) + opt('comp','amplos','Acesso amplo (setor/unidade)', f.comp);
+  // Pasta
+  var pastas = (ST.docFolders||[]).slice().sort(function(a,b){ return (a.name||'').localeCompare(b.name||''); });
+  var pastaOpts = opt('pasta','','Todas as pastas', f.pasta) + opt('pasta','__none__','Sem pasta', f.pasta) + pastas.map(function(p){ return opt('pasta', p.id, p.name, f.pasta); }).join('');
+  var grupos = '<div class="flt-group"><div class="flt-group-h">Tipo</div>'+tipoOpts+'</div>'
+    + '<div class="flt-group"><div class="flt-group-h">Autor</div>'+autorOpts+'</div>'
+    + '<div class="flt-group"><div class="flt-group-h">Compartilhamento</div>'+compOpts+'</div>'
+    + '<div class="flt-group"><div class="flt-group-h">Pasta</div>'+pastaOpts+'</div>';
+  var temAtivo = docFiltrosAtivos()>0 || !!docQ();
+  grupos += '<div class="flt-foot"><button type="button" class="flt-clear" id="docFiltrosLimpar"'+(temAtivo?'':' disabled')+'>Limpar filtros</button></div>';
+  return grupos;
+}
+
+/* barra compacta: busca + Filtros + ordenação + lista/grade */
+function docBarraHTML(){
+  var q = docQ();
+  var busca = '<input type="search" class="task-filter doc-busca" id="docQ" placeholder="Buscar por título, tags e conteúdo…" value="'+esc(q)+'">';
+  var nAtivos = docFiltrosAtivos();
+  var filtros = '<div class="dpop'+(ST.docPop==='filtros'?' is-open':'')+'" data-dpop="filtros">'
+    + '<button type="button" class="flt-btn" id="docFiltrosBtn" aria-haspopup="true" aria-expanded="'+(ST.docPop==='filtros'?'true':'false')+'">'+icon('filter')+'<span class="flt-btn-tx">Filtros</span>'+(nAtivos?'<span class="flt-badge">'+nAtivos+'</span>':'')+'<svg class="flt-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>'
+    + '<div class="flt-menu'+(ST.docPop==='filtros'?' open':'')+'" id="docFiltrosMenu" role="menu">'+docFiltrosMenuBodyHTML()+'</div>'
+    + '</div>';
+  var sm = docSortMode();
+  var ordena = '<select class="task-filter doc-sort" id="docSort" title="Ordenar">'
+    + '<option value="recentes"'+(sm==='recentes'?' selected':'')+'>Mais recentes</option>'
+    + '<option value="nome_az"'+(sm==='nome_az'?' selected':'')+'>Nome: A–Z</option>'
+    + '<option value="nome_za"'+(sm==='nome_za'?' selected':'')+'>Nome: Z–A</option>'
+    + '</select>';
+  var vt = docView();
+  var toggle = '<div class="view-toggle doc-vtog">'+
+    '<button class="vt-btn'+(vt==='lista'?' on':'')+'" data-doc-view="lista">'+icon('grid')+'Lista</button>'+
+    '<button class="vt-btn'+(vt==='grade'?' on':'')+'" data-doc-view="grade">'+icon('dashboard')+'Grade</button>'+
+  '</div>';
+  var bar = '<div class="doc-barra">'+busca+filtros+ordena+toggle+'</div>';
+  if (q){
+    if (ST.docBuscando) bar += '<div class="doc-busca-aviso">procurando dentro dos documentos…</div>';
+    else if (ST.docHits){
+      var nHits = Object.keys(ST.docHits).length;
+      bar += '<div class="doc-busca-aviso ok">'+(nHits ? (nHits+' documento'+(nHits>1?'s':'')+' com esse texto no conteúdo') : 'nenhum documento com esse texto no conteúdo')+'</div>';
+    }
+  }
+  return bar;
+}
+
+/* liga os popovers da barra (Novo/Filtros), ordenação e fechamento (fora/Esc, uma vez) */
+function bindDocPops(){
+  var nb=document.getElementById('btnNovoDoc');
+  if (nb) nb.addEventListener('click', function(e){ e.stopPropagation(); ST.docPop = (ST.docPop==='novo'?null:'novo'); renderPage(); });
+  var fb=document.getElementById('docFiltrosBtn');
+  if (fb) fb.addEventListener('click', function(e){ e.stopPropagation(); ST.docPop = (ST.docPop==='filtros'?null:'filtros'); renderPage(); });
+  document.querySelectorAll('[data-dfiltro]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.stopPropagation(); docFiltro()[this.getAttribute('data-dfiltro')] = this.getAttribute('data-val'); ST.docPop='filtros'; renderPage(); });
+  });
+  var lim=document.getElementById('docFiltrosLimpar');
+  if (lim) lim.addEventListener('click', function(e){ e.stopPropagation(); ST.docFiltro={tipo:'',autor:'',comp:'',pasta:''}; ST.docQ=''; ST.docHits=null; ST.docBuscando=false; ST.docPop='filtros'; renderPage(); });
+  var so=document.getElementById('docSort');
+  if (so) so.addEventListener('change', function(){ ST.docSort=this.value; renderPage(); });
+  if (!window.__docPopBound){
+    window.__docPopBound=true;
+    document.addEventListener('click', function(ev){ if(!ST.docPop) return; var t=ev.target; if(t&&t.closest&&t.closest('.dpop')) return; ST.docPop=null; renderPage(); });
+    document.addEventListener('keydown', function(ev){ if(ev.key==='Escape' && ST.docPop){ ST.docPop=null; renderPage(); } });
+  }
+}
+
 /* ---------- Lista principal ---------- */
 function docsListHTML(){
   var tab = docTab();
@@ -24005,43 +24159,42 @@ function docsListHTML(){
            ((d.tags||[]).join(' ').toLowerCase().indexOf(q)!==-1) ||
            (ST.docHits && ST.docHits[d.id]);
   });
-  // ordena por atualização recente
-  lista.sort(function(a,b){ return (b.updated_at||'').localeCompare(a.updated_at||''); });
+  // FASE Docs-1: filtros adicionais (tipo/autor/compartilhamento/pasta) — aplicados DEPOIS
+  // de docPertenceAba (que já garante docPodeVer + aba). Nunca ampliam acesso.
+  var f = docFiltro();
+  var euF = ST.session && ST.session.user ? String(ST.session.user.id) : '';
+  if (f.tipo)  lista = lista.filter(function(d){ return (d.doc_type||'geral')===f.tipo; });
+  if (f.autor) lista = lista.filter(function(d){ return String(d.author_id||'')===String(f.autor); });
+  if (f.comp)  lista = lista.filter(function(d){
+    var vis=(d.visibility||'setor');
+    if (f.comp==='privados') return vis==='privado' && String(d.author_id||'')===euF;
+    if (f.comp==='comigo')   return String(d.author_id||'')!==euF;
+    if (f.comp==='amplos')   return vis==='setor' || vis==='unidade';
+    return true;
+  });
+  if (f.pasta) lista = lista.filter(function(d){ return f.pasta==='__none__' ? !d.folder_id : String(d.folder_id||'')===String(f.pasta); });
 
-  // barra: templates + busca + toggle de visão
-  var templates = docPodeCriar() ? '<div class="doc-tpls">'+DOC_TEMPLATES.map(function(t){
-    return '<button class="doc-tpl" data-tpl="'+t.key+'"><span class="doc-tpl-ic">'+icon(t.icon)+'</span><span>'+esc(t.label)+'</span></button>';
-  }).join('')+'</div>' : '';
-  var busca = '<input type="search" class="task-filter" id="docQ" placeholder="Buscar no título, tags e dentro dos documentos..." value="'+esc(docQ())+'">';
-  var vt = docView();
-  var toggle = '<div class="view-toggle doc-vtog">'+
-    '<button class="vt-btn'+(vt==='lista'?' on':'')+'" data-doc-view="lista">'+icon('grid')+'Lista</button>'+
-    '<button class="vt-btn'+(vt==='grade'?' on':'')+'" data-doc-view="grade">'+icon('dashboard')+'Grade</button>'+
-  '</div>';
-  var filtros = '<div class="doc-filtros">'+busca+toggle+'</div>';
-  // v98: aviso do que a busca está fazendo
-  if (docQ()){
-    if (ST.docBuscando) filtros += '<div class="doc-busca-aviso">procurando dentro dos documentos…</div>';
-    else if (ST.docHits){
-      var nHits = Object.keys(ST.docHits).length;
-      filtros += '<div class="doc-busca-aviso ok">'+(nHits ? (nHits+' documento'+(nHits>1?'s':'')+' com esse texto no conteúdo') : 'nenhum documento com esse texto no conteúdo')+'</div>';
-    }
-  }
+  // Ordenação (só apresentação; não altera o banco). Títulos vazios vão para o fim.
+  var sm = docSortMode();
+  if (sm==='nome_az')      lista.sort(function(a,b){ var ta=((a.title||'').trim().toLowerCase())||'￿', tb=((b.title||'').trim().toLowerCase())||'￿'; return ta.localeCompare(tb); });
+  else if (sm==='nome_za') lista.sort(function(a,b){ var ta=(a.title||'').trim().toLowerCase(), tb=(b.title||'').trim().toLowerCase(); return tb.localeCompare(ta); });
+  else                     lista.sort(function(a,b){ return (b.updated_at||'').localeCompare(a.updated_at||''); });
 
+  var temFiltro = !!q || docFiltrosAtivos()>0;
   var body;
   if (lista.length===0){
     body = emptyState({
       icon:'folder',
-      title: q ? 'Nenhum documento com esse filtro' : 'Nenhum documento por aqui ainda',
-      text: docPodeCriar() ? 'Use um dos modelos acima ou clique em "Novo documento" para criar em branco.' : 'Os documentos vão aparecer aqui quando forem criados.',
+      title: temFiltro ? 'Nenhum documento com esse filtro' : 'Nenhum documento por aqui ainda',
+      text: temFiltro ? 'Ajuste a busca ou os filtros para ver mais resultados.' : (docPodeCriar() ? 'Clique em "Novo documento" para criar o primeiro.' : 'Os documentos vão aparecer aqui quando forem criados.'),
       span:true
     });
-  } else if (vt==='grade'){
+  } else if (docView()==='grade'){
     body = '<div class="doc-grade">'+lista.map(docCardHTML).join('')+'</div>';
   } else {
     body = docsTableHTML(lista);
   }
-  return templates + filtros + body;
+  return docBarraHTML() + body;
 }
 
 function docsTableHTML(lista){
@@ -24071,10 +24224,11 @@ function docsTableHTML(lista){
       '<td>'+esc(quem)+'</td>'+
       '<td>'+vis+'</td>'+
       '<td>'+upd+'</td>'+
+      '<td class="doc-td-act"><button class="doc-row-menu" data-doc-menu="'+esc(d.id)+'" title="Ações" aria-label="Ações do documento">'+DOC_DOTS_SVG+'</button></td>'+
     '</tr>';
   }).join('');
   return '<div class="doc-table-wrap"><table class="doc-table">'+
-    '<thead><tr><th></th><th>Nome</th><th>Pasta</th><th>Autor</th><th>Compartilhamento</th><th>Atualizado</th></tr></thead>'+
+    '<thead><tr><th></th><th>Nome</th><th>Pasta</th><th>Autor</th><th>Compartilhamento</th><th>Atualizado</th><th></th></tr></thead>'+
     '<tbody>'+rows+'</tbody>'+
   '</table></div>';
 }
@@ -24088,7 +24242,10 @@ function docCardHTML(d){
   return '<div class="doc-card" data-doc-id="'+esc(d.id)+'">'+
     '<div class="doc-card-top">'+
       '<span class="doc-tipo-ic">'+tipoIc+'</span>'+
-      '<button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+icon('star-icon')+'</button>'+
+      '<span class="doc-card-actions">'+
+        '<button class="doc-fav'+(fav?' on':'')+'" data-doc-fav="'+esc(d.id)+'" title="'+(fav?'Desfavoritar':'Favoritar')+'">'+icon('star-icon')+'</button>'+
+        '<button class="doc-row-menu" data-doc-menu="'+esc(d.id)+'" title="Ações" aria-label="Ações do documento">'+DOC_DOTS_SVG+'</button>'+
+      '</span>'+
     '</div>'+
     '<h4 class="doc-card-title">'+esc(d.title||'(sem título)')+'</h4>'+
     '<div class="doc-card-foot"><span>'+esc(au?au.name:'—')+'</span><span>'+esc(upd)+'</span></div>'+
@@ -24614,22 +24771,30 @@ function bindDocs(){
   }
 
   // lista principal
-  var novo = document.getElementById('btnNovoDoc');
-  if (novo) novo.addEventListener('click', function(){ docsCriar('branco', docTab().indexOf('folder:')===0 ? docTab().slice(7) : null); });
+  // FASE Docs-1: "Novo documento" é popover (bindDocPops); não cria mais ao clicar.
+  bindDocPops();
 
   var pasta = document.getElementById('btnNovaPasta');
   if (pasta) pasta.addEventListener('click', function(e){ e.stopPropagation(); docsNovaPasta(null); });
 
   if (docTab()==='dashboard') bindDocsDashboard(); // v100
-  // abas fixas
-  document.querySelectorAll('[data-doc-tab]').forEach(function(b){
-    b.addEventListener('click', function(){ ST.docTab = this.getAttribute('data-doc-tab'); renderPage(); });
+  // FASE Docs-2: gaveta mobile + seções recolhíveis
+  var sideTog = document.getElementById('docsSideToggle');
+  if (sideTog) sideTog.addEventListener('click', function(){ ST.docSideMobileOpen = !ST.docSideMobileOpen; renderPage(); });
+  document.querySelectorAll('[data-side-sec]').forEach(function(h){
+    h.addEventListener('click', function(){ var k=this.getAttribute('data-side-sec'); ST.docSideSec=ST.docSideSec||{}; ST.docSideSec[k] = !(ST.docSideSec[k]===false) ? false : true; renderPage(); });
   });
-  // pastas
+  var pastasH = document.querySelector('[data-side-pastas]');
+  if (pastasH) pastasH.addEventListener('click', function(e){ if (e.target.closest('#btnNovaPasta')) return; ST.docSidePastas = (ST.docSidePastas===false) ? true : false; renderPage(); });
+  // abas fixas (fecha a gaveta mobile ao escolher)
+  document.querySelectorAll('[data-doc-tab]').forEach(function(b){
+    b.addEventListener('click', function(){ ST.docTab = this.getAttribute('data-doc-tab'); ST.docSideMobileOpen=false; renderPage(); });
+  });
+  // pastas (fecha a gaveta mobile ao escolher)
   document.querySelectorAll('[data-folder-id]').forEach(function(b){
     b.addEventListener('click', function(e){
       if (e.target.closest('[data-folder-toggle]')) return;
-      ST.docTab = 'folder:'+this.getAttribute('data-folder-id'); renderPage();
+      ST.docTab = 'folder:'+this.getAttribute('data-folder-id'); ST.docSideMobileOpen=false; renderPage();
     });
   });
   document.querySelectorAll('[data-folder-toggle]').forEach(function(t){
@@ -24642,9 +24807,11 @@ function bindDocs(){
     });
   });
 
-  // templates
+  // templates (dentro do popover "Novo documento") — cria só na escolha explícita
   document.querySelectorAll('[data-tpl]').forEach(function(b){
-    b.addEventListener('click', function(){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      ST.docPop = null; // fecha o popover
       var folder = docTab().indexOf('folder:')===0 ? docTab().slice(7) : null;
       docsCriar(this.getAttribute('data-tpl'), folder);
     });
@@ -24674,10 +24841,16 @@ function bindDocs(){
     b.addEventListener('click', function(e){ e.stopPropagation(); docsFavToggle(this.getAttribute('data-doc-fav')); });
   });
 
+  // FASE Docs-1: menu de ações "⋮" por documento (lista e grade) — reusa docsAbrirMenuAcoes
+  document.querySelectorAll('[data-doc-menu]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.stopPropagation(); docsAbrirMenuAcoes(this, this.getAttribute('data-doc-menu')); });
+  });
+
   // clique numa linha/card → abre editor
   document.querySelectorAll('[data-doc-id]').forEach(function(el){
     el.addEventListener('click', function(e){
       if (e.target.closest('[data-doc-fav]')) return;
+      if (e.target.closest('[data-doc-menu]')) return; // FASE Docs-1: ⋮ não abre o editor
       var d = (ST.docs||[]).find(function(x){ return String(x.id)===String(el.getAttribute('data-doc-id')); });
       if (d) openDocEditor(d);
     });
@@ -24699,7 +24872,9 @@ function docsAbrirMenuAcoes(anchor, id){
   var moverRow = podeEd
     ? '<div class="modal-row"><label class="modal-label">Mover para pasta</label><select id="acMover">'+pastas+'</select></div>'
     : '<p class="modal-note">Você tem acesso de leitura neste documento. Peça ao autor para liberar edição.</p>';
-  var botoes = '<button class="doc-acao" data-acao="duplicar">'+icon('file-text')+'Duplicar</button>'+
+  var naLista = ST.docOpen!==id; // FASE Docs-1: "Abrir" só faz sentido fora do editor
+  var botoes = (naLista ? '<button class="doc-acao" data-acao="abrir">'+icon('folder-open')+'Abrir</button>' : '')+
+               '<button class="doc-acao" data-acao="duplicar">'+icon('file-text')+'Duplicar</button>'+
                '<button class="doc-acao" data-acao="historico">'+icon('history')+'Histórico</button>';
   if (podeEd) botoes += '<button class="doc-acao" data-acao="vinculos">'+icon('link')+'Vínculos</button>'; // v100
   if (d.doc_type==='ata') botoes += '<button class="doc-acao" data-acao="pendencias">'+icon('check')+'Pendências → tarefas</button>'; // v99
@@ -24727,7 +24902,8 @@ function docsAbrirMenuAcoes(anchor, id){
       b.addEventListener('click', function(){
         var acao = this.getAttribute('data-acao');
         document.querySelectorAll('.modal-bg').forEach(function(m){ m.remove(); });
-        if (acao==='duplicar') docsDuplicar(id);
+        if (acao==='abrir'){ var dd=(ST.docs||[]).find(function(x){ return String(x.id)===String(id); }); if(dd) openDocEditor(dd); }
+        else if (acao==='duplicar') docsDuplicar(id);
         else if (acao==='compartilhar') docsCompartilhar(id); // v97
         else if (acao==='historico') docsAbrirHistorico(id);   // v98
         else if (acao==='pendencias') docsPendenciasEmTarefas(id); // v99
