@@ -14992,6 +14992,33 @@ html.dark .brf-status-quiet {
   .cr-v1 .cr-ind-div{ display:none; }
 }
 /* ===== fim v278 ===== */
+/* ===== v279 (UI-005 Fase 4B.2) — "Próximas execuções" da Central de Rotinas (escopado em .cr-v1) ===== */
+.cr-v1 .cr-prox{ margin-bottom:16px; border:1px solid var(--u-border); border-radius:14px; background:var(--u-card); overflow:hidden; }
+.cr-v1 .cr-prox-head{ display:flex; align-items:center; flex-wrap:wrap; gap:4px 12px; padding:11px 14px; }
+.cr-v1 .cr-prox-tg{ display:inline-flex; align-items:center; gap:8px; background:none; border:0; padding:0; cursor:pointer; color:var(--u-text); font-family:inherit; }
+.cr-v1 .cr-prox-caret{ font-size:12px; color:var(--u-text3); line-height:1; }
+.cr-v1 .cr-prox-ttl{ font-family:var(--u-font-display); font-size:14px; font-weight:800; letter-spacing:.01em; }
+.cr-v1 .cr-prox-cnt{ min-width:20px; text-align:center; font-size:11.5px; font-weight:800; color:var(--u-accent); background:var(--u-accent-soft); border-radius:999px; padding:1px 7px; }
+.cr-v1 .cr-prox-tg:hover .cr-prox-ttl{ color:var(--u-accent); }
+.cr-v1 .cr-prox-win{ font-size:11px; color:var(--u-text3); font-weight:600; margin-left:auto; }
+.cr-v1 .cr-prox-lista{ border-top:1px solid var(--u-border); padding:6px 14px 10px; }
+.cr-v1 .cr-prox-dia{ padding:6px 0 2px; }
+.cr-v1 .cr-prox-dia-h{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--u-text3); margin:4px 0; }
+.cr-v1 .cr-prox-row{ display:flex; align-items:center; gap:9px; padding:6px 0; border-top:1px solid var(--u-border-soft, rgba(148,163,184,.14)); }
+.cr-v1 .cr-prox-dia .cr-prox-row:first-of-type{ border-top:0; }
+.cr-v1 .cr-prox-dot{ width:7px; height:7px; border-radius:50%; flex:none; background:var(--u-accent); }
+.cr-v1 .cr-prox-dot.u{ background:var(--u-amber); }
+.cr-v1 .cr-prox-t{ flex:1 1 auto; min-width:0; font-size:13px; font-weight:600; color:var(--u-text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cr-v1 .cr-prox-meta{ flex:none; display:inline-flex; align-items:center; gap:7px; }
+.cr-v1 .cr-prox-freq{ font-size:10.5px; font-weight:700; color:var(--u-text3); text-transform:uppercase; letter-spacing:.03em; }
+.cr-v1 .cr-prox-quem{ font-size:11.5px; font-weight:700; color:var(--u-text2, var(--u-text)); background:var(--u-bg, rgba(148,163,184,.12)); border:1px solid var(--u-border); border-radius:999px; padding:1px 9px; max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cr-v1 .cr-prox-vazio{ border-top:1px solid var(--u-border); padding:16px 14px; font-size:12.5px; color:var(--u-text3); font-weight:600; }
+.cr-v1 .cr-prox-mais{ font-size:11px; color:var(--u-text3); font-weight:600; padding:8px 0 2px; }
+@media (max-width:680px){
+  .cr-v1 .cr-prox-win{ flex:1 1 100%; margin-left:0; }
+  .cr-v1 .cr-prox-quem{ max-width:96px; }
+}
+/* ===== fim v279 ===== */
 /* v241 — Produtividade (reusa tokens; sem lib) */
 .prod-ul{ margin:0; padding:6px 0 2px 18px; }
 .prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
@@ -15065,7 +15092,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v278';
+var APP_BUILD = 'v279';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -34354,6 +34381,79 @@ function admIndicadores(regs){
   });
   return o;
 }
+// Fase 4B.2 (v279): "Próximas execuções" — SOMENTE LEITURA. Replica a lógica de materializarRecorrencias
+// (rec_paused pula; rec_until clampa o fim; parseSkips(rec_skips) remove datas), SEM inserir nada no banco e
+// SEM tocar a geração real de ocorrências. occDatesForRule NÃO aplica rec_until/rec_skips, por isso aplico aqui.
+// Não existe campo de horário nos registros, então nenhum horário é inventado. Escopo = regs (setor + loja).
+function admProxExecLista(regs, dias){
+  var hoje=today(), fim=addDays(hoje, dias), out=[];
+  (regs||[]).forEach(function(r){
+    if(r.is_rule){
+      if(r.rec_paused) return;                                   // rotina pausada não aparece
+      var end=fim;
+      if(r.rec_until && r.rec_until<end) end=r.rec_until;        // respeita data de término
+      if(end<hoje) return;
+      var skips=parseSkips(r.rec_skips), datas;
+      try { datas=occDatesForRule(r, hoje, end); } catch(e){ datas=[]; }
+      datas.forEach(function(ds){
+        if(ds<hoje || ds>fim) return;                            // janela exata (limites inclusivos)
+        if(skips.indexOf(ds)!==-1) return;                       // respeita dias pulados
+        out.push({ date:ds, title:r.title||'', assignee_id:r.assignee_id||null, store_unit_id:r.store_unit_id||null, freq:r.recurrence, unica:false });
+      });
+    } else {
+      // tarefa ÚNICA em aberto (regs já exclui 'feito' e arquivadas; admEhUnica garante !recur_group → sem duplicar ocorrências de regra)
+      var d=(r.due_date||'').slice(0,10);
+      if(!d || d<hoje || d>fim) return;
+      out.push({ date:d, title:r.title||'', assignee_id:r.assignee_id||null, store_unit_id:r.store_unit_id||null, freq:'unica', unica:true });
+    }
+  });
+  out.sort(function(a,b){ if(a.date!==b.date) return a.date<b.date?-1:1; return (a.title||'').localeCompare(b.title||'','pt-BR'); });
+  return out;
+}
+function admProxExecHTML(regs){
+  var n=admNav(), aberto=(n.proxAberto!==false);                 // padrão: aberto
+  var lista=admProxExecLista(regs, 7), total=lista.length;
+  var head='<div class="cr-prox-head">'+
+      '<button type="button" class="cr-prox-tg" id="crProxToggle" aria-expanded="'+(aberto?'true':'false')+'">'+
+        '<span class="cr-prox-caret" aria-hidden="true">'+(aberto?'▾':'▸')+'</span>'+
+        '<span class="cr-prox-ttl">Próximas execuções</span>'+
+        '<span class="cr-prox-cnt">'+total+'</span>'+
+      '</button>'+
+      '<span class="cr-prox-win">Hoje e próximos 7 dias · setor e contexto de loja atuais</span>'+
+    '</div>';
+  if(!aberto) return '<section class="cr-prox" aria-label="Próximas execuções">'+head+'</section>';
+  var corpo;
+  if(!total){
+    corpo='<div class="cr-prox-vazio">Nenhuma execução prevista para os próximos 7 dias.</div>';
+  } else {
+    var MAX=60, hoje=today(), amanha=addDays(hoje,1);
+    var DOW=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+    function diaLabel(ds){
+      if(ds===hoje) return 'Hoje';
+      if(ds===amanha) return 'Amanhã';
+      var d=_dParse(ds); return DOW[d.getDay()]+', '+pad(d.getDate())+'/'+pad(d.getMonth()+1);
+    }
+    var o='', cur='', shown=0, trunc=false;
+    for(var i=0;i<lista.length;i++){
+      if(shown>=MAX){ trunc=true; break; }
+      var it=lista[i];
+      if(it.date!==cur){ if(cur!=='') o+='</div>'; cur=it.date; o+='<div class="cr-prox-dia"><div class="cr-prox-dia-h">'+esc(diaLabel(it.date))+'</div>'; }
+      var quem = it.assignee_id ? (function(){ var u=userById(it.assignee_id); return u?esc((u.name||'').split(' ')[0]):''; })()
+               : (it.store_unit_id ? esc(storeName(it.store_unit_id)) : '');
+      var freqLb = it.unica?'Única':(it.freq==='diaria'?'Diária':(it.freq==='semanal'?'Semanal':(it.freq==='mensal'?'Mensal':'—')));
+      o+='<div class="cr-prox-row">'+
+        '<span class="cr-prox-dot '+(it.unica?'u':'r')+'" aria-hidden="true"></span>'+
+        '<span class="cr-prox-t">'+esc(it.title||'(sem título)')+'</span>'+
+        '<span class="cr-prox-meta"><span class="cr-prox-freq">'+freqLb+'</span>'+(quem?'<span class="cr-prox-quem">'+quem+'</span>':'')+'</span>'+
+      '</div>';
+      shown++;
+    }
+    if(cur!=='') o+='</div>';
+    if(trunc) o+='<div class="cr-prox-mais">Mostrando as primeiras '+MAX+' de '+total+' execuções nesta janela.</div>';
+    corpo='<div class="cr-prox-lista">'+o+'</div>';
+  }
+  return '<section class="cr-prox" aria-label="Próximas execuções">'+head+corpo+'</section>';
+}
 function admFiltraRegras(list){
   var n=admNav(), q=(n.qR||'').toLowerCase().trim();
   return list.filter(function(r){
@@ -34586,6 +34686,8 @@ function admTarefasHTML(){
       '<span class="cr-ind-scope">Total no setor e contexto de loja atuais — independe dos filtros</span>'+
     '</div>';
   }
+  // Fase 4B.2 (v279): "Próximas execuções" — só no Nível 1, logo abaixo dos indicadores; escopo = setor + loja.
+  var prox = (!atual) ? admProxExecHTML(regs) : '';
   // v168: escolhe entre pessoa/loja
   var corpo;
   if (atual){
@@ -34601,7 +34703,7 @@ function admTarefasHTML(){
   else if (n.modo === 'loja') sub = 'Escolha uma loja para ver e configurar as rotinas dela.';
   else sub = 'Escolha um colaborador para ver e configurar as rotinas dele.';
   return '<div class="cr-v1"><div class="tasks-head"><div><h2>Central de Rotinas</h2><div class="sub">'+sub+'</div></div></div>'+
-    trilha + modoToggle + faixa + filtros + corpo + '</div>';
+    trilha + modoToggle + faixa + prox + filtros + corpo + '</div>';
 }
 
 function bindAdmTarefas(){
@@ -34630,6 +34732,9 @@ function bindAdmTarefas(){
     if(sit){ n.sit=(n.sit===sit)?'':sit; } else if(freq){ n.freq=(n.freq===freq)?'':freq; }
     upd();
   });
+  // Fase 4B.2 (v279): recolher/expandir "Próximas execuções" (só estado de UI em ST.admNav.proxAberto).
+  var px=document.getElementById('crProxToggle');
+  if(px) px.addEventListener('click', function(){ n.proxAberto=(n.proxAberto===false); upd(); });
   var nv=document.getElementById('admNovaRotina');
   if(nv) nv.addEventListener('click', function(){ openTaskModal(null, admTarefasNovaRotinaPreset()); });
   // v168: botão do empty state faz o mesmo
