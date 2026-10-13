@@ -14973,6 +14973,25 @@ html.dark .brf-status-quiet {
   .tform-rotina .tform-foot .btn-del-wrap{ flex:1 1 100%; margin-right:0; order:3; }
 }
 /* ===== fim v277 ===== */
+
+/* ===== v278 (UI-005 Fase 4B.1) — Faixa de indicadores da Central de Rotinas (escopado em .cr-v1) ===== */
+.cr-v1 .cr-ind{ display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; margin-bottom:14px; }
+.cr-v1 .cr-ind-tile{ display:flex; flex-direction:column; align-items:flex-start; gap:1px; min-width:86px; padding:9px 13px; border-radius:12px; background:var(--u-card); border:1px solid var(--u-border); cursor:pointer; text-align:left; transition:border-color .12s, box-shadow .12s, background .12s; box-shadow:0 1px 2px rgba(15,23,42,.04); }
+.cr-v1 .cr-ind-tile:hover{ border-color:var(--u-accent); }
+.cr-v1 .cr-ind-tile .cri-n{ font-family:var(--u-font-display); font-size:20px; font-weight:800; line-height:1; color:var(--u-text); }
+.cr-v1 .cr-ind-tile .cri-l{ font-size:10.5px; font-weight:700; color:var(--u-text3); text-transform:uppercase; letter-spacing:.03em; }
+.cr-v1 .cr-ind-tile.ativas .cri-n{ color:var(--u-green); }
+.cr-v1 .cr-ind-tile.pausadas .cri-n{ color:var(--u-amber); }
+.cr-v1 .cr-ind-tile.on{ border-color:var(--u-accent); box-shadow:0 0 0 1px var(--u-accent); background:var(--u-accent-soft); }
+.cr-v1 .cr-ind-tile.ativas.on{ border-color:var(--u-green); box-shadow:0 0 0 1px var(--u-green); background:var(--u-green-soft); }
+.cr-v1 .cr-ind-tile.pausadas.on{ border-color:var(--u-amber); box-shadow:0 0 0 1px var(--u-amber); background:var(--u-amber-soft); }
+.cr-v1 .cr-ind-div{ width:1px; align-self:stretch; background:var(--u-border); margin:3px 2px; }
+.cr-v1 .cr-ind-scope{ flex:1 1 100%; font-size:11px; color:var(--u-text3); font-weight:600; margin-top:-1px; }
+@media (max-width:680px){
+  .cr-v1 .cr-ind-tile{ flex:1 1 calc(33.333% - 6px); min-width:0; }
+  .cr-v1 .cr-ind-div{ display:none; }
+}
+/* ===== fim v278 ===== */
 /* v241 — Produtividade (reusa tokens; sem lib) */
 .prod-ul{ margin:0; padding:6px 0 2px 18px; }
 .prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
@@ -15046,7 +15065,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v277';
+var APP_BUILD = 'v278';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -34322,6 +34341,19 @@ function admMapaContagens(regs){
   return m;
 }
 var ADM_ZERO={ d:0, s:0, m:0, u:0, pausadas:0, total:0 };
+// Fase 4B.1 (v278): agregado de indicadores em UMA varredura sobre regs (sem consulta nova).
+// ativas = is_rule && !rec_paused; pausadas = is_rule && rec_paused; d/s/m = TODAS as regras daquela
+// frequência (inclui pausadas); u = tarefas ÚNICAS em aberto (não-regra) — mesma semântica já usada.
+function admIndicadores(regs){
+  var o={ ativas:0, pausadas:0, d:0, s:0, m:0, u:0, regras:0 };
+  (regs||[]).forEach(function(r){
+    if(!r.is_rule){ o.u++; return; }
+    o.regras++;
+    if(r.rec_paused) o.pausadas++; else o.ativas++;
+    if(r.recurrence==='diaria') o.d++; else if(r.recurrence==='semanal') o.s++; else if(r.recurrence==='mensal') o.m++;
+  });
+  return o;
+}
 function admFiltraRegras(list){
   var n=admNav(), q=(n.qR||'').toLowerCase().trim();
   return list.filter(function(r){
@@ -34534,6 +34566,26 @@ function admTarefasHTML(){
     '<button class="btn btn-primary btn-sm" id="admNovaRotina">'+icon('plus')+'Nova rotina</button>'+
   '</div>';
 
+  // Fase 4B.1 (v278): faixa compacta de indicadores — só no Nível 1 (grade de pessoas/lojas).
+  // Escopo = TODAS as regras elegíveis de regs (setor + contexto de loja via boardStore), INDEPENDENTE
+  // dos filtros de frequência/situação ativos. Tiles clicáveis reaproveitam ST.admNav.freq/sit (sem 2º sistema).
+  var faixa = '';
+  if (!atual){
+    var ind = admIndicadores(regs);
+    function _indTile(cls, num, lb, attr, val, active){
+      return '<button type="button" class="cr-ind-tile '+cls+(active?' on':'')+'" '+attr+'="'+val+'" aria-pressed="'+(active?'true':'false')+'"><span class="cri-n">'+num+'</span><span class="cri-l">'+lb+'</span></button>';
+    }
+    faixa = '<div class="cr-ind" role="group" aria-label="Indicadores de rotinas">'+
+      _indTile('ativas',ind.ativas,'Ativas','data-ind-sit','ativa', n.sit==='ativa')+
+      _indTile('pausadas',ind.pausadas,'Pausadas','data-ind-sit','pausada', n.sit==='pausada')+
+      '<span class="cr-ind-div" aria-hidden="true"></span>'+
+      _indTile('freq',ind.d,'Diárias','data-ind-freq','diaria', n.freq==='diaria')+
+      _indTile('freq',ind.s,'Semanais','data-ind-freq','semanal', n.freq==='semanal')+
+      _indTile('freq',ind.m,'Mensais','data-ind-freq','mensal', n.freq==='mensal')+
+      _indTile('freq',ind.u,'Únicas','data-ind-freq','unica', n.freq==='unica')+
+      '<span class="cr-ind-scope">Total no setor e contexto de loja atuais — independe dos filtros</span>'+
+    '</div>';
+  }
   // v168: escolhe entre pessoa/loja
   var corpo;
   if (atual){
@@ -34549,7 +34601,7 @@ function admTarefasHTML(){
   else if (n.modo === 'loja') sub = 'Escolha uma loja para ver e configurar as rotinas dela.';
   else sub = 'Escolha um colaborador para ver e configurar as rotinas dele.';
   return '<div class="cr-v1"><div class="tasks-head"><div><h2>Central de Rotinas</h2><div class="sub">'+sub+'</div></div></div>'+
-    trilha + modoToggle + filtros + corpo + '</div>';
+    trilha + modoToggle + faixa + filtros + corpo + '</div>';
 }
 
 function bindAdmTarefas(){
@@ -34571,6 +34623,13 @@ function bindAdmTarefas(){
   busca('admQP','qP'); busca('admQR','qR');
   var sf=document.getElementById('admFreq'); if(sf) sf.addEventListener('change', function(){ n.freq=this.value; upd(); });
   var si=document.getElementById('admSit');  if(si) si.addEventListener('change', function(){ n.sit=this.value; upd(); });
+  // Fase 4B.1 (v278): tiles de indicadores — reaproveitam os MESMOS filtros (ST.admNav.freq/sit); clicar no ativo limpa.
+  var indTiles=app.querySelectorAll('.cr-ind [data-ind-sit], .cr-ind [data-ind-freq]');
+  for(var it=0;it<indTiles.length;it++) indTiles[it].addEventListener('click', function(){
+    var sit=this.getAttribute('data-ind-sit'), freq=this.getAttribute('data-ind-freq');
+    if(sit){ n.sit=(n.sit===sit)?'':sit; } else if(freq){ n.freq=(n.freq===freq)?'':freq; }
+    upd();
+  });
   var nv=document.getElementById('admNovaRotina');
   if(nv) nv.addEventListener('click', function(){ openTaskModal(null, admTarefasNovaRotinaPreset()); });
   // v168: botão do empty state faz o mesmo
