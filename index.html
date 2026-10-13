@@ -13289,21 +13289,9 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 
 
 /* ===== v208 · Agenda Semanal do Gestor ===== */
-.agd-card{margin-bottom:16px}
-.agd-hoje-row{display:flex;align-items:center;gap:14px;margin-bottom:12px}
-.agd-hoje-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;border:2px solid;flex-shrink:0}
-.agd-hoje-txt{flex:1;min-width:0}
-.agd-hoje-lbl{font-size:11px;color:var(--u-text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
-.agd-hoje-val{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;line-height:1.2}
-.agd-hoje-obs{font-size:12px;color:var(--u-text2);margin-top:4px;font-style:italic}
-.agd-btn-cfg{padding:6px 10px}
-.agd-semana{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding-top:12px;border-top:1px solid var(--u-border)}
-.agd-dia{text-align:center;padding:8px 4px;border-radius:8px;background:var(--u-bg-alt);border:1px solid var(--u-border);min-width:0;overflow:hidden}
-.agd-dia small{display:block;font-size:10px;color:var(--u-text3);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
-.agd-dia b{display:block;font-size:11px;color:var(--u-text1);margin-top:3px;font-family:'Sora',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.agd-dia.agd-vazia b{color:var(--u-text3);font-weight:400}
-.agd-dia.agd-hoy{background:rgba(59,111,247,0.08);border-color:var(--cor,#3B6FF7);border-width:2px}
-.agd-dia.agd-hoy b{color:var(--cor,#3B6FF7)}
+/* v268: bloco visual "Agenda da semana" (widget da home) removido da interface.
+   CSS do card (.agd-card / .agd-hoje-* / .agd-semana / .agd-dia) retirado por ficar sem uso.
+   O modal de configuração e os dados (malba_agenda_gestor) foram preservados. */
 #agendaGestorModal{z-index:9999 !important}
 .agd-modal{max-width:800px;width:95vw;background:var(--u-bg-card);border-radius:16px;padding:0;display:flex;flex-direction:column;max-height:90vh;position:relative;z-index:10000}
 .agd-head{padding:20px;border-bottom:1px solid var(--u-border);display:flex;justify-content:space-between;align-items:center}
@@ -13322,9 +13310,6 @@ html.dark .notif-pref-btn:hover { background: rgba(255,255,255,.08); }
 .agd-foot{padding:16px 20px;border-top:1px solid var(--u-border);display:flex;justify-content:flex-end;gap:10px;background:var(--u-bg-alt)}
 @media (max-width:720px){
   .agd-row{grid-template-columns:1fr;gap:4px;padding:12px 0}
-  .agd-semana{gap:3px}
-  .agd-dia{padding:6px 2px}
-  .agd-dia b{font-size:10px}
 }
 /* ===== fim v208 ===== */
 
@@ -14555,7 +14540,6 @@ html.dark .brf-status-quiet {
 .onb-done-icon svg { width:48px; height:48px; }
 .onb-info-icon svg { width:28px; height:28px; }
 .top-notif-ico svg { width:18px; height:18px; }
-.agd-hoje-ico svg { width:20px; height:20px; }
 .re-cat svg { width:14px; height:14px; vertical-align:-2px; }
 .aud-cat svg { width:14px; height:14px; vertical-align:-2px; }
 .fi-btn-facial svg { width:16px; height:16px; }
@@ -14796,7 +14780,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v267';
+var APP_BUILD = 'v269';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -16408,6 +16392,16 @@ function renderShell(innerHTML, title, shellOpts) {
   var _ovl=document.getElementById('sideOverlay');
   if(_burger&&_shell) _burger.addEventListener('click', function(){ _shell.classList.toggle('side-open'); });
   if(_ovl&&_shell) _ovl.addEventListener('click', function(){ _shell.classList.remove('side-open'); });
+  // MOBILE v268: fechar a gaveta com Escape (listener global, ligado uma única vez).
+  // Burger abre/fecha; overlay e navegação (re-render) já fecham; aqui completamos com o teclado.
+  if(!window._sideEscHook){
+    window._sideEscHook=true;
+    document.addEventListener('keydown', function(e){
+      if(e.key!=='Escape') return;
+      var sh=document.querySelector('.app-shell.side-open');
+      if(sh) sh.classList.remove('side-open');
+    });
+  }
 }
 
 /* ----- Topbar: Online, busca e Novo ----- */
@@ -16869,12 +16863,10 @@ function dashboardHTML() {
     dashStoreSel='<select class="task-filter" id="dashStore" title="Ver loja">'+dso+'</select>';
   }
   var pgHTML = (typeof painelGestorHTML === 'function') ? painelGestorHTML() : '';
-  // v208: widget Agenda Semanal do Gestor
-  var agdHTML = (typeof agendaGestorWidgetHoje === 'function') ? agendaGestorWidgetHoje() : '';
+  // v268: bloco "Agenda da semana" removido da home (sem utilidade na operação atual).
   return ''+
     pgHTML+
     hero+
-    agdHTML+
     muralHTML()+
     '<div class="dash-sec-h"><h3>Resumo de hoje</h3><span>'+esc(dataExtenso())+' · Setor '+esc(setorLabel)+'</span>'+(dashStoreSel?'<span class="dash-sec-spacer"></span>'+dashStoreSel:'')+'</div>'+
     '<div class="dash-cards">'+cards+'</div>'+
@@ -41011,52 +41003,6 @@ function agendaGestorElegivel(){
   return false;
 }
 
-/* Widget pra home — "Hoje você está em X" */
-function agendaGestorWidgetHoje(){
-  if (!agendaGestorElegivel()) return '';
-  var hoje = new Date();
-  var dow = hoje.getDay();
-  var info = agendaGestorInfo(dow);
-
-  var corpo;
-  if (info){
-    corpo = '<div class="agd-hoje-row">'+
-      '<div class="agd-hoje-ico" style="background:'+info.bg+';border-color:'+info.cor+'" aria-hidden="true">'+icon('store')+'</div>'+
-      '<div class="agd-hoje-txt">'+
-        '<div class="agd-hoje-lbl">Hoje você está em</div>'+
-        '<div class="agd-hoje-val" style="color:'+info.cor+'">'+esc(info.nome)+'</div>'+
-        (info.obs ? '<div class="agd-hoje-obs">'+esc(info.obs)+'</div>' : '')+
-      '</div>'+
-      '<button class="btn btn-ghost btn-sm agd-btn-cfg" onclick="openAgendaGestorConfigModal()" title="Editar agenda semanal" aria-label="Editar agenda semanal">'+icon('gear')+'</button>'+
-    '</div>'+
-    '<div class="agd-semana">'+
-      AGENDA_DIAS_CURTOS.map(function(d, i){
-        var inf = agendaGestorInfo(i);
-        var hoy = (i === dow);
-        var vazia = !inf;
-        return '<div class="agd-dia '+(hoy?'agd-hoy':'')+' '+(vazia?'agd-vazia':'')+'" '+
-          (inf ? 'style="--cor:'+inf.cor+'" title="'+esc(inf.nome)+'"' : 'title="Livre"')+
-          '><small>'+d+'</small>'+
-          (inf ? '<b>'+esc((inf.nome||'').split(' ')[0].slice(0,8))+'</b>' : '<b>—</b>')+
-        '</div>';
-      }).join('')+
-    '</div>';
-  } else {
-    corpo = '<div class="agd-hoje-row">'+
-      '<div class="agd-hoje-ico" style="background:rgba(107,114,128,0.1);border-color:#9CA3AF" aria-hidden="true">'+icon('cal')+'</div>'+
-      '<div class="agd-hoje-txt">'+
-        '<div class="agd-hoje-lbl">Agenda da semana</div>'+
-        '<div class="agd-hoje-val" style="color:var(--u-text2)">Nenhum dia configurado</div>'+
-      '</div>'+
-      '<button class="btn btn-primary btn-sm" onclick="openAgendaGestorConfigModal()">Configurar</button>'+
-    '</div>';
-  }
-
-  return '<div class="card agd-card">'+
-    '<div class="card-title" style="margin-bottom:10px">'+icon('cal')+'<span style="margin-left:6px">Agenda da semana</span></div>'+
-    corpo +
-  '</div>';
-}
 
 /* Modal de configuração — 7 linhas (um por dia), cada uma com select de loja + label + obs */
 function openAgendaGestorConfigModal(){
@@ -41191,7 +41137,6 @@ if (typeof globalThis !== 'undefined'){
   globalThis.agendaGestorSalvar = agendaGestorSalvar;
   globalThis.agendaGestorRemover = agendaGestorRemover;
   globalThis.agendaGestorElegivel = agendaGestorElegivel;
-  globalThis.agendaGestorWidgetHoje = agendaGestorWidgetHoje;
   globalThis.openAgendaGestorConfigModal = openAgendaGestorConfigModal;
 }
 
