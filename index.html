@@ -14785,7 +14785,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v265';
+var APP_BUILD = 'v266';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -23977,13 +23977,15 @@ function docsSideHTML(){
   var tab = docTab();
   var eu = ST.session && ST.session.user ? String(ST.session.user.id) : '';
   var docs = (ST.docs||[]);
-  function cont(fn){ return docs.filter(function(d){ return !d.is_archived && fn(d); }).length; }
-  var contTotal = docs.filter(function(d){ return !d.is_archived; }).length;
+  // FASE Docs-5: contadores respeitam docPodeVer (ST.docs traz o setor inteiro; a lista já filtra por
+  // docPertenceAba→docPodeVer — aqui alinhamos os badges para não contar o que o usuário não pode ver).
+  function cont(fn){ return docs.filter(function(d){ return !d.is_archived && docPodeVer(d) && fn(d); }).length; }
+  var contTotal = docs.filter(function(d){ return !d.is_archived && docPodeVer(d); }).length;
   var contMeus = cont(function(d){ return String(d.author_id||'')===eu; });
   var contComp = cont(function(d){ return String(d.author_id||'')!==eu && (d.visibility||'setor')!=='privado'; });
   var contPriv = cont(function(d){ return (d.visibility||'setor')==='privado' && String(d.author_id||'')===eu; });
   var contAtas = cont(function(d){ return (d.doc_type||'')==='ata'; });
-  var contArqu = docs.filter(function(d){ return d.is_archived; }).length;
+  var contArqu = docs.filter(function(d){ return d.is_archived && docPodeVer(d); }).length;
   var contFav = cont(function(d){ return Array.isArray(d.is_favorite_by) && d.is_favorite_by.indexOf(eu)!==-1; });
   var seteDias = new Date(Date.now()-7*24*3600*1000).toISOString();
   var contRec = cont(function(d){ return (d.updated_at||'')>=seteDias; });
@@ -23993,7 +23995,7 @@ function docsSideHTML(){
     return '<button class="docs-side-item'+on+'" data-doc-tab="'+id+'"><span>'+(icone||'')+esc(label)+'</span><span class="docs-count">'+count+'</span></button>';
   }
 
-  var contVinc = docs.filter(function(d){ return !d.is_archived && docLinksDe(d).length>0; }).length; // v100
+  var contVinc = cont(function(d){ return docLinksDe(d).length>0; }); // v100 (FASE Docs-5: via cont → respeita docPodeVer)
   // FASE Docs-2: "Compartilhados por mim" — eu criei e alcança outras pessoas/unidade/setor/convites
   var contComMim = cont(function(d){
     if (String(d.author_id||'')!==eu) return false;
