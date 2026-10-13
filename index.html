@@ -1158,6 +1158,17 @@ html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns=
 .btn-back:hover { color: var(--u-accent); }
 .proj-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 20px; background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); box-shadow: var(--u-shadow); margin-bottom: 18px; }
 .proj-detail-head h2 { font-family: var(--u-font-display); font-size: 20px; font-weight: 800; }
+/* MELHORIA: projetos concluídos — selo, chip e toggle */
+.proj-det-acts { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.proj-det-acts .btn { display: inline-flex; align-items: center; gap: 6px; }
+.proj-det-acts .btn svg { width: 15px; height: 15px; }
+.proj-done-badge { display: inline-flex; align-items: center; gap: 4px; vertical-align: middle; margin-left: 8px; padding: 2px 9px; border-radius: 999px; background: var(--u-green-soft); color: var(--u-green); font-size: 12px; font-weight: var(--fw-bold); }
+.proj-done-badge svg { width: 13px; height: 13px; }
+.proj-done-chip { display: inline-flex; align-items: center; gap: 3px; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: var(--u-green-soft); color: var(--u-green); font-size: 11px; font-weight: var(--fw-bold); vertical-align: middle; }
+.proj-done-chip svg { width: 12px; height: 12px; }
+.proj-card.is-done { opacity: .86; }
+.proj-card.is-done .proj-bar { filter: grayscale(.35); }
+.proj-vtog { flex: 0 0 auto; }
 .proj-detail-head p { color: var(--u-text2); font-size: 13px; margin-top: 4px; }
 
 .ms-sec { background: var(--u-card); border: 1px solid var(--u-border); border-radius: var(--radius); box-shadow: var(--u-shadow); padding: 8px; margin-bottom: 14px; }
@@ -14785,7 +14796,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v266';
+var APP_BUILD = 'v267';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -32553,14 +32564,30 @@ function projetosHTML() {
   // se um projeto está aberto, mostra o detalhe
   if (ST.openProject) return projetoDetalheHTML(ST.openProject);
 
-  var ps = (ST.projects||[]).filter(projetoVisivel);   // FASE 2G: escopo de loja (global visível a todos)
+  var todos = (ST.projects||[]).filter(projetoVisivel);   // FASE 2G: escopo de loja (global visível a todos)
+  // MELHORIA: projeto Concluído sai da lista de ATIVOS, mas continua salvo e acessível na aba Concluídos.
+  function concluido(p){ return (p.status||'andamento')==='concluido'; }
+  var ativos = todos.filter(function(p){ return !concluido(p); });
+  var concluidos = todos.filter(concluido);
+  var view = ST.projView==='concluidos' ? 'concluidos' : 'ativos';
+  var ps = view==='concluidos' ? concluidos : ativos;
+
+  var toggle = '<div class="view-toggle proj-vtog">'+
+    '<button class="vt-btn'+(view==='ativos'?' on':'')+'" data-proj-view="ativos">'+icon('folder')+'Ativos'+(ativos.length?' ('+ativos.length+')':'')+'</button>'+
+    '<button class="vt-btn'+(view==='concluidos'?' on':'')+'" data-proj-view="concluidos">'+icon('check')+'Concluídos'+(concluidos.length?' ('+concluidos.length+')':'')+'</button>'+
+  '</div>';
+
   var cards = '';
   if (ps.length===0) {
-    cards = emptyState({ span:true, icon:'folder', title:'Nenhum projeto ainda', text:'Projetos reúnem as tarefas e etapas de um objetivo maior.', cta:(canEdit()?'Criar projeto':'') });
+    cards = emptyState({ span:true, icon:(view==='concluidos'?'check':'folder'),
+      title:(view==='concluidos'?'Nenhum projeto concluído ainda':'Nenhum projeto ativo'),
+      text:(view==='concluidos'?'Projetos marcados como concluídos ficam guardados aqui, sem sumir.':'Projetos reúnem as tarefas e etapas de um objetivo maior.'),
+      cta:(view==='ativos'&&canEdit()?'Criar projeto':'') });
   } else {
     ps.forEach(function(pr){ cards += projectCardHTML(pr); });
   }
-  return '<div class="tasks-head"><div><h2>Projetos</h2><div class="sub">'+ps.length+' projeto(s)</div></div>'+(canEdit()?'<button class="btn-new" id="btnNovoProjeto">'+icon('plus')+'Novo projeto</button>':'')+'</div><div class="proj-grid">'+cards+'</div>';
+  var sub = view==='concluidos' ? (concluidos.length+' concluído(s)') : (ativos.length+' ativo(s)');
+  return '<div class="tasks-head"><div><h2>Projetos</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+toggle+(canEdit()?'<button class="btn-new" id="btnNovoProjeto">'+icon('plus')+'Novo projeto</button>':'')+'</div></div><div class="proj-grid">'+cards+'</div>';
 }
 
 function projectCardHTML(pr) {
@@ -32569,9 +32596,10 @@ function projectCardHTML(pr) {
   var ms = projectMilestones(pr.id);
   var membros = (pr.members||[]).map(function(uid){ var u=userById(uid); return u?'<span class="proj-av" style="background:'+(u.color||cor)+'" title="'+esc(u.name)+'">'+esc(iniciais(u.name))+'</span>':''; }).join('');
   var prazo = pr.end_date ? ('Prazo: '+fmtDate(pr.end_date)) : '';
-  return '<div class="proj-card" data-id="'+esc(pr.id)+'">'+
+  var doneChip = (pr.status||'andamento')==='concluido' ? '<span class="proj-done-chip">'+icon('check')+'Concluído</span>' : '';
+  return '<div class="proj-card'+(doneChip?' is-done':'')+'" data-id="'+esc(pr.id)+'">'+
     '<span class="proj-bar" style="background:'+cor+'"></span>'+
-    '<div class="proj-body"><b>'+esc(pr.name)+'</b>'+(pr.description?'<p>'+esc(pr.description)+'</p>':'')+
+    '<div class="proj-body"><b>'+esc(pr.name)+doneChip+'</b>'+(pr.description?'<p>'+esc(pr.description)+'</p>':'')+
     '<div class="proj-prog"><div class="proj-prog-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div><small>'+pct+'% · '+ms.length+' etapa(s)</small></div>'+
     '<div class="proj-foot"><div class="proj-avs">'+membros+'</div>'+(prazo?'<span class="proj-prazo">'+prazo+'</span>':'')+'</div>'+
     '</div></div>';
@@ -32581,6 +32609,9 @@ function bindProjetos() {
   if (ST.openProject) { bindProjetoDetalhe(); return; }
   var novo = document.getElementById('btnNovoProjeto');
   if (novo) novo.addEventListener('click', function(){ openProjectModal(null); });
+  // MELHORIA: alternância Ativos | Concluídos
+  var pv=app.querySelectorAll('[data-proj-view]');
+  for (var v=0;v<pv.length;v++) pv[v].addEventListener('click', function(){ ST.projView=this.getAttribute('data-proj-view'); renderPage(); });
   var cards = app.querySelectorAll('.proj-card');
   for (var i=0;i<cards.length;i++) {
     cards[i].addEventListener('click', function(){ ST.openProject = this.getAttribute('data-id'); renderPage(); });
@@ -32634,11 +32665,17 @@ function projetoDetalheHTML(pid) {
     });
   }
 
+  var prConcluido = (pr.status||'andamento')==='concluido';
+  var statusBadge = prConcluido ? ' <span class="proj-done-badge">'+icon('check')+'Concluído</span>' : '';
+  var acoes = canEdit() ? ('<div class="proj-det-acts">'+
+      '<button class="btn btn-ghost" id="projEdit">Editar projeto</button>'+
+      '<button class="btn '+(prConcluido?'btn-ghost':'btn-primary')+'" id="projConcluir">'+(prConcluido?icon('history')+'Reabrir projeto':icon('check')+'Concluir projeto')+'</button>'+
+    '</div>') : '';
   return ''+
     '<button class="btn-back" id="projBack">← Voltar aos projetos</button>'+
     '<div class="proj-detail-head" style="border-left:4px solid '+cor+'">'+
-      '<div><h2>'+esc(pr.name)+'</h2>'+(pr.description?'<p>'+esc(pr.description)+'</p>':'')+'</div>'+
-      (canEdit()?'<button class="btn btn-ghost" id="projEdit">Editar projeto</button>':'')+
+      '<div><h2>'+esc(pr.name)+statusBadge+'</h2>'+(pr.description?'<p>'+esc(pr.description)+'</p>':'')+'</div>'+
+      acoes+
     '</div>'+
     '<div class="proj-prog big"><div class="proj-prog-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div><small>'+pct+'% concluído · '+ms.length+' etapa(s)</small></div>'+
     '<div class="ms-sec"><div class="ms-sec-h">Etapas</div>'+rows+'</div>'+
@@ -32652,6 +32689,21 @@ function bindProjetoDetalhe() {
   if (edit) edit.addEventListener('click', function(){
     var pr=null; for (var i=0;i<ST.projects.length;i++) if (String(ST.projects[i].id)===String(ST.openProject)) { pr=ST.projects[i]; break; }
     if (pr) openProjectModal(pr);
+  });
+  // MELHORIA: concluir / reabrir projeto — grava só o status (coluna existente); NÃO toca etapas/tarefas
+  var concl=document.getElementById('projConcluir');
+  if (concl) concl.addEventListener('click', function(){
+    if (!canEdit()) { blockManage(); return; }
+    var pr=null; for (var i=0;i<ST.projects.length;i++) if (String(ST.projects[i].id)===String(ST.openProject)) { pr=ST.projects[i]; break; }
+    if (!pr) return;
+    var antes = pr.status;
+    var novo = (pr.status||'andamento')==='concluido' ? 'andamento' : 'concluido';
+    pr.status = novo; renderPage(); // otimista
+    sb.from('malba_vl_projects').update({ status:novo }).eq('id', pr.id).then(function(r){
+      if (r.error) { pr.status = antes; renderPage(); toast('Não consegui atualizar o status do projeto','error'); return; }
+      if (typeof auditLog==='function') auditLog(novo==='concluido'?'Concluiu projeto':'Reabriu projeto', pr.name);
+      toast(novo==='concluido'?'Projeto concluído':'Projeto reaberto','success');
+    });
   });
   // marcar etapa como feita/refazer (alterna feito <-> todo) — só admin
   if (canEdit()) {
