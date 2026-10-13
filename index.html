@@ -14737,6 +14737,77 @@ html.dark .brf-status-quiet {
   .cal-dow{ font-size:9.5px; }
 }
 /* ===== fim v271 ===== */
+
+/* ===== v272 (UI-002) — Redesign da página Equipe (escopado em .team-*/.member-card/.mc-*) ===== */
+/* Barra de controles */
+.team-bar{ gap:10px; align-items:center; }
+.team-search{ flex:1 1 260px; max-width:420px; }
+.team-seg button b{ margin-left:5px; font-size:11px; font-weight:800; }
+.team-seg button.on b{ color:var(--u-accent); }
+.team-seg button:not(.on) b{ color:var(--u-text3); }
+/* Botão + popover "Filtros" */
+.team-flt{ position:relative; }
+.team-flt-btn{ display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 14px; border-radius:10px; background:var(--u-bg2); border:1px solid var(--u-border); color:var(--u-text2); font-size:13px; font-weight:700; cursor:pointer; transition:.12s; }
+.team-flt-btn svg{ width:16px; height:16px; }
+.team-flt-btn:hover{ color:var(--u-accent); border-color:var(--u-accent); }
+.team-flt-btn.has-active{ color:var(--u-accent); border-color:var(--u-accent); background:var(--u-accent-soft); }
+.team-flt-badge{ width:7px; height:7px; border-radius:50%; background:var(--u-accent); }
+.team-flt-menu{ position:absolute; top:calc(100% + 6px); right:0; z-index:40; min-width:230px; background:var(--u-card); border:1px solid var(--u-border); border-radius:12px; box-shadow:var(--u-shadow-md); padding:12px; display:flex; flex-direction:column; gap:10px; }
+.team-flt-menu[hidden]{ display:none; }
+.team-flt-group{ display:flex; flex-direction:column; gap:6px; }
+.team-flt-lbl{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--u-text3); }
+.team-flt-menu select{ width:100%; height:38px; border-radius:9px; border:1px solid var(--u-border); background:var(--u-card); color:var(--u-text); padding:0 10px; font-size:13px; }
+.team-flt-foot{ display:flex; justify-content:flex-end; border-top:1px solid var(--u-border); padding-top:10px; }
+.team-flt-clear{ font-size:12.5px; font-weight:700; color:var(--u-text2); background:none; border:none; cursor:pointer; }
+.team-flt-clear:hover{ color:var(--u-accent); }
+/* Alternância grade/lista */
+.team-view{ display:inline-flex; background:var(--u-bg2); border:1px solid var(--u-border); border-radius:10px; padding:3px; gap:2px; }
+.team-view button{ width:34px; height:32px; display:inline-flex; align-items:center; justify-content:center; border:none; background:none; border-radius:8px; color:var(--u-text3); cursor:pointer; transition:.12s; }
+.team-view button svg{ width:16px; height:16px; }
+.team-view button.on{ background:var(--u-card); color:var(--u-accent); box-shadow:var(--u-shadow); }
+/* Faixa "Precisa de atenção" */
+.team-pend{ background:transparent; border:1px solid var(--u-border); padding:10px 12px; }
+.team-pchip{ padding:6px 11px; }
+.team-pchip svg{ width:14px; height:14px; color:var(--pc); }
+/* Grade: no máximo 3 colunas, responsiva */
+.team-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.team-grid.view-list{ grid-template-columns:1fr; gap:9px; }
+/* Card do colaborador */
+.member-card{ align-items:center; gap:14px; padding:15px 16px; border-radius:16px; box-shadow:0 1px 2px rgba(15,23,42,.05); }
+.member-card:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(15,23,42,.10); border-color:var(--u-border2); }
+.member-card.off{ opacity:.6; }
+.member-av{ width:48px; height:48px; border-radius:14px; font-size:16px; }
+.member-info{ flex:1 1 auto; gap:2px; }
+.member-card .mc-name{ font-size:14.5px; font-weight:800; color:var(--u-text); line-height:1.3; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.member-card .mc-role{ font-size:12.5px; color:var(--u-text2); font-weight:600; }
+.member-card .mc-loja{ display:inline-flex; align-items:center; gap:5px; font-size:11.5px; color:var(--u-text3); font-weight:600; margin-top:1px; }
+.member-card .mc-loja svg{ width:12px; height:12px; }
+.member-card .mc-status{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.member-card .mc-status > span{ display:inline-flex; align-items:center; gap:4px; font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; text-transform:none; letter-spacing:0; white-space:nowrap; }
+.member-card .mc-status svg{ width:12px; height:12px; }
+.member-card .mc-acc.on{ color:var(--u-green); background:var(--u-green-soft); }
+.member-card .mc-acc.off{ color:var(--u-text3); background:var(--u-bg2); }
+.member-card .mc-meta{ background:var(--u-accent-soft); }
+.member-card .mc-alert{ color:var(--u-red); background:var(--u-red-soft); }
+.member-card .mc-req{ color:var(--u-accent); background:var(--u-accent-soft); }
+.member-card .mc-inativo{ color:var(--u-text3); background:var(--u-bg2); }
+.member-card .mc-open{ flex-shrink:0; color:var(--u-text3); display:inline-flex; align-items:center; transition:color .12s, transform .12s; }
+.member-card .mc-open svg{ width:18px; height:18px; }
+.member-card:hover .mc-open{ color:var(--u-accent); transform:translateX(2px); }
+/* Lista: card mais compacto */
+.team-grid.view-list .member-card{ border-radius:12px; padding:11px 14px; }
+.team-grid.view-list .member-card:hover{ transform:none; }
+/* Responsivo */
+@media (max-width:900px){ .team-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:680px){
+  .team-grid{ grid-template-columns:1fr; }
+  .team-bar{ gap:8px; position:relative; }
+  .team-search{ flex:1 1 100%; max-width:none; order:-1; }
+  /* popover ancora na barra inteira (sem estourar a viewport, sem saltar o layout) */
+  .team-flt{ position:static; }
+  .team-flt-menu{ left:0; right:0; min-width:0; }
+}
+/* ===== fim v272 ===== */
 /* v241 — Produtividade (reusa tokens; sem lib) */
 .prod-ul{ margin:0; padding:6px 0 2px 18px; }
 .prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
@@ -14810,7 +14881,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v271';
+var APP_BUILD = 'v272';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -19954,7 +20025,7 @@ function visibleMembers() {
 function equipeHTML() {
   var admin = isAdmin(ST.session);
   var all = visibleMembers();
-  var t = ST.team || (ST.team = { q:'', sit:'ativos', pend:'', loja:'' });
+  var t = ST.team || (ST.team = { q:'', sit:'ativos', pend:'', loja:'', view:'grade' });
   var q = (t.q||'').trim().toLowerCase();
   var list = all.filter(function(m){
     if (t.sit==='ativos' && m.is_active===false) return false;
@@ -19974,18 +20045,36 @@ function equipeHTML() {
   if (admin) {
     var pAcc=0,pMeta=0,pSol=0,pAtr=0;
     ativos.forEach(function(m){ if(!userDoMembro(m)) pAcc++; if(!metaMembroMes(m)) pMeta++; if(reqsDoMembro(m).some(function(r){return (r.status||'pendente')==='pendente';})) pSol++; if(tarefasMembroStats(m).atrasadas>0) pAtr++; });
-    function pchip(key,label,count,color){ if(!count) return ''; return '<button class="team-pchip'+(t.pend===key?' on':'')+'" data-pend="'+key+'" style="--pc:'+color+'"><span class="tpc-dot"></span>'+label+' <b>'+count+'</b></button>'; }
-    var chips = pchip('acesso','Sem acesso',pAcc,'#EF4444')+pchip('meta','Sem meta',pMeta,'#F59E0B')+pchip('solic','Solicitações',pSol,'#3B6FF7')+pchip('atraso','Com atraso',pAtr,'#8B5CF6');
+    function pchip(key,label,count,color,ic){ if(!count) return ''; return '<button class="team-pchip'+(t.pend===key?' on':'')+'" data-pend="'+key+'" style="--pc:'+color+'">'+icon(ic)+label+' <b>'+count+'</b></button>'; }
+    var chips = pchip('acesso','Sem acesso',pAcc,'#EF4444','key-round')+pchip('meta','Sem meta',pMeta,'#F59E0B','target')+pchip('solic','Solicitações',pSol,'#3B6FF7','bell')+pchip('atraso','Com atraso',pAtr,'#8B5CF6','clock');
     if (chips) pend = '<div class="team-pend"><span class="team-pend-l">Precisa de atenção</span>'+chips+(t.pend?'<button class="team-pchip clear" data-pend="">limpar</button>':'')+'</div>';
   }
-  // barra: busca + situação + loja
+  // barra: busca + situação + filtros (loja) + alternância grade/lista  — UI-002 (v272)
+  var view = (t.view==='lista')?'lista':'grade';
+  var scoped = all.filter(function(m){ return !t.loja || String(m.store_unit_id)===String(t.loja); });
+  var nAtivos = scoped.filter(function(m){ return m.is_active!==false; }).length;
   var searchBox='<div class="team-search">'+icon('search')+'<input id="teamQ" placeholder="Buscar por nome..." value="'+esc(t.q||'')+'"></div>';
-  var sitSeg='<div class="team-seg"><button class="'+(t.sit==='ativos'?'on':'')+'" data-sit="ativos">Ativos</button><button class="'+(t.sit==='todos'?'on':'')+'" data-sit="todos">Todos</button></div>';
-  var lojaSel='';
-  if (admin && !ST.store && (ST.storeUnits||[]).length>1) { var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(s){return '<option value="'+esc(s.id)+'"'+(String(t.loja)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join(''); lojaSel='<select class="task-filter" id="teamLoja">'+op+'</select>'; }
+  var sitSeg='<div class="team-seg"><button class="'+(t.sit==='ativos'?'on':'')+'" data-sit="ativos">Ativos <b>'+nAtivos+'</b></button><button class="'+(t.sit==='todos'?'on':'')+'" data-sit="todos">Todos <b>'+scoped.length+'</b></button></div>';
+  // "Filtros" (popover) — só aparece quando há o filtro de loja disponível (admin, várias lojas). Reusa o <select id="teamLoja"> e seu handler.
+  var fltBox='';
+  if (admin && !ST.store && (ST.storeUnits||[]).length>1) {
+    var op='<option value="">Todas as lojas</option>'+(ST.storeUnits||[]).map(function(s){return '<option value="'+esc(s.id)+'"'+(String(t.loja)===String(s.id)?' selected':'')+'>'+esc(s.name||('Loja '+s.store_number))+'</option>';}).join('');
+    var fltOn = !!t.loja;
+    fltBox='<div class="team-flt" id="teamFlt">'+
+      '<button type="button" class="team-flt-btn'+(fltOn?' has-active':'')+'" id="teamFltBtn" aria-haspopup="true" aria-expanded="false">'+icon('filter')+'Filtros'+(fltOn?'<span class="team-flt-badge" aria-label="filtro ativo"></span>':'')+'</button>'+
+      '<div class="team-flt-menu" id="teamFltMenu" hidden>'+
+        '<div class="team-flt-group"><label class="team-flt-lbl" for="teamLoja">Loja</label><select class="task-filter" id="teamLoja">'+op+'</select></div>'+
+        '<div class="team-flt-foot"><button type="button" class="team-flt-clear" id="teamFltClear">Limpar filtros</button></div>'+
+      '</div>'+
+    '</div>';
+  }
+  var viewTog='<div class="team-view" role="group" aria-label="Visualização">'+
+    '<button type="button" class="'+(view==='grade'?'on':'')+'" data-view="grade" title="Grade" aria-label="Grade" aria-pressed="'+(view==='grade')+'">'+icon('grid-2x2')+'</button>'+
+    '<button type="button" class="'+(view==='lista'?'on':'')+'" data-view="lista" title="Lista" aria-label="Lista" aria-pressed="'+(view==='lista')+'">'+icon('clipboard-list')+'</button>'+
+  '</div>';
   var btn = admin ? '<button class="btn-new" id="btnNovoMembro">'+icon('plus')+'Novo funcionário</button>' : '';
   var cards = list.length ? list.map(function(m){ return memberCardHTML(m, admin); }).join('') : '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon('users')+'</div><h3>Nada por aqui</h3><p>Ajuste a busca ou os filtros acima.</p></div>';
-  var sub = (deptoComoModelo('lojas') && ST.store) ? ('Equipe de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Equipe do setor'; // v106b
+  var sub = 'Gerencie sua equipe, cargos, filiais e acessos'; // UI-002 (v272): subtítulo fixo; contagens vão nas abas
   // v74: Ponto vira aba da Equipe (some do menu, mesma navegação do hub Gestão)
   var showPonto = deptoTemEquipe(ST.sector); // v106
   var etab = showPonto ? (ST.equipeTab||'equipe') : 'equipe';
@@ -19993,9 +20082,9 @@ function equipeHTML() {
   if (etab==='ponto') {
     return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">Presença e ponto do dia</div></div></div>'+tabBar+pontoHTML();
   }
-  return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">'+sub+' · '+ativos.length+' ativo(s)</div></div>'+btn+'</div>'+tabBar+
-    '<div class="team-bar">'+searchBox+sitSeg+lojaSel+'</div>'+ pend +
-    '<div class="team-grid">'+cards+'</div>';
+  return '<div class="tasks-head"><div><h2>Equipe</h2><div class="sub">'+sub+'</div></div>'+btn+'</div>'+tabBar+
+    '<div class="team-bar">'+searchBox+sitSeg+fltBox+viewTog+'</div>'+ pend +
+    '<div class="team-grid'+(view==='lista'?' view-list':'')+'">'+cards+'</div>';
 }
 
 function storeName(id) {
@@ -20010,16 +20099,24 @@ function memberCardHTML(m, showStore) {
   var ts = tarefasMembroStats(m);
   var temSolic = reqsDoMembro(m).some(function(r){ return (r.status||'pendente')==='pendente'; });
   var alerta = (ts.atrasadas>0) || temSolic;
+  var lojaTxt = (showStore && m.store_unit_id) ? storeName(m.store_unit_id) : '';
   var status = '<div class="mc-status">'+
-    '<span class="mc-acc '+(hasAcc?'on':'off')+'">'+icon('users')+(hasAcc?'com acesso':'sem acesso')+'</span>'+
+    '<span class="mc-acc '+(hasAcc?'on':'off')+'">'+icon(hasAcc?'badge-check':'key-round')+(hasAcc?'Com acesso':'Sem acesso')+'</span>'+
     (metaVal>0?'<span class="mc-meta" style="color:'+(pct>=100?'#16A34A':'var(--u-accent)')+'">meta '+pct+'%</span>':'')+
     (ts.atrasadas>0?'<span class="mc-alert">'+ts.atrasadas+' atras.</span>':'')+
     (temSolic?'<span class="mc-req">pedido</span>':'')+
+    (inativo?'<span class="mc-inativo">inativo</span>':'')+
   '</div>';
-  var subline = esc(m.role||'Sem função')+(showStore&&m.store_unit_id?(' · '+esc(storeName(m.store_unit_id))):'')+(inativo?' · inativo':'');
   return '<div class="member-card'+(inativo?' off':'')+(alerta?' has-alert':'')+'" data-id="'+esc(m.id)+'" data-name="'+esc((m.name||'').toLowerCase())+'">'+
     '<span class="member-av" style="background:'+(m.color||'#3B6FF7')+'">'+esc(ini)+'</span>'+
-    '<div class="member-info"><b>'+esc(m.name)+'</b><i>'+subline+'</i>'+status+'</div></div>';
+    '<div class="member-info">'+
+      '<div class="mc-name">'+esc(m.name)+'</div>'+
+      '<span class="mc-role">'+esc(m.role||'Sem função')+'</span>'+
+      (lojaTxt?'<span class="mc-loja">'+icon('store')+esc(lojaTxt)+'</span>':'')+
+      status+
+    '</div>'+
+    '<span class="mc-open" aria-hidden="true">'+icon('arrow-right')+'</span>'+
+  '</div>';
 }
 
 function bindEquipe() {
@@ -20038,6 +20135,20 @@ function bindEquipe() {
   if (pl) pl.addEventListener('change', function(){ ST.team.loja=this.value; renderPage(); });
   var pch = app.querySelectorAll('[data-pend]');
   for (var p=0;p<pch.length;p++) pch[p].addEventListener('click', function(){ var k=this.getAttribute('data-pend'); ST.team.pend=(ST.team.pend===k)?'':k; renderPage(); });
+  // UI-002 (v272): alternância grade/lista (todos podem) — só muda a visualização, não os dados
+  var vbtns = app.querySelectorAll('.team-view [data-view]');
+  for (var v=0;v<vbtns.length;v++) vbtns[v].addEventListener('click', function(){ ST.team.view=(this.getAttribute('data-view')==='lista')?'lista':'grade'; renderPage(); });
+  // UI-002 (v272): botão "Filtros" abre/fecha o popover (dentro da viewport, sem saltar o layout)
+  var fbtn = document.getElementById('teamFltBtn');
+  if (fbtn) fbtn.addEventListener('click', function(e){ e.stopPropagation(); var mn=document.getElementById('teamFltMenu'); if(!mn) return; var willOpen=mn.hidden; mn.hidden=!willOpen; this.setAttribute('aria-expanded', willOpen?'true':'false'); });
+  var fclr = document.getElementById('teamFltClear');
+  if (fclr) fclr.addEventListener('click', function(){ ST.team.q=''; ST.team.sit='ativos'; ST.team.loja=''; ST.team.pend=''; renderPage(); });
+  // listener global (uma vez): fecha o popover ao clicar fora ou pressionar Escape, sem interferir nos modais
+  if (!window.__teamFltBound) {
+    window.__teamFltBound = true;
+    document.addEventListener('click', function(ev){ var mn=document.getElementById('teamFltMenu'); if(!mn||mn.hidden) return; if(ev.target.closest&&ev.target.closest('#teamFlt')) return; mn.hidden=true; var b=document.getElementById('teamFltBtn'); if(b) b.setAttribute('aria-expanded','false'); });
+    document.addEventListener('keydown', function(ev){ if(ev.key!=='Escape') return; var mn=document.getElementById('teamFltMenu'); if(mn && !mn.hidden){ mn.hidden=true; var b=document.getElementById('teamFltBtn'); if(b){ b.setAttribute('aria-expanded','false'); b.focus(); } } });
+  }
   if (!admin) return;
   var cards = app.querySelectorAll('.member-card');
   for (var i=0;i<cards.length;i++) {
