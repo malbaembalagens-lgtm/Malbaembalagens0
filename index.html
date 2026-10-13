@@ -14631,33 +14631,6 @@ html.dark .brf-status-quiet {
 /* ===== fim v230 ===== */
 
 /* ===== v232 — Prioridade de hoje (Calendário) ===== */
-.pd-wrap{ margin:4px 0 14px; }
-.pd-inner{ background:var(--u-card,#fff); border:1px solid var(--u-border,#e6e8ee); border-radius:14px; padding:14px 16px; }
-.pd-head{ display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--u-text3,#aab); margin-bottom:10px; }
-.pd-head svg{ width:15px; height:15px; color:var(--u-accent,#3B6FF7); }
-.pd-body{ display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:12px; align-items:start; }
-.pd-main{ display:flex; flex-direction:column; gap:5px; text-align:left; width:100%; border:1px solid var(--u-border,#e6e8ee); border-left:3px solid var(--u-accent,#3B6FF7); border-radius:12px; padding:12px 14px; background:var(--u-bg2,#f6f8fc); cursor:pointer; transition:border-color .12s, box-shadow .12s; }
-.pd-main:hover{ box-shadow:0 2px 12px rgba(59,111,247,.10); }
-.pd-main.rank1{ border-left-color:#EF4444; }
-.pd-main.rank2{ border-left-color:#0EA5E9; }
-.pd-main.rank3{ border-left-color:#F59E0B; }
-.pd-main-top{ display:flex; align-items:center; gap:8px; }
-.pd-main-time{ font-size:12px; font-weight:700; color:var(--u-text2,#7a8095); }
-.pd-type{ font-size:10.5px; font-weight:600; color:var(--u-text2,#7a8095); background:var(--u-card,#fff); border:1px solid var(--u-border,#e6e8ee); border-radius:999px; padding:1px 8px; }
-.pd-main-title{ font-size:15px; color:var(--u-text,#1a1d26); line-height:1.25; }
-.pd-main-why{ font-size:12px; color:var(--u-text2,#7a8095); }
-.pd-secs{ display:flex; flex-direction:column; gap:6px; }
-.pd-sec{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; border:1px solid var(--u-border,#e6e8ee); border-radius:10px; padding:8px 11px; background:var(--u-card,#fff); cursor:pointer; }
-.pd-sec:hover{ border-color:var(--u-accent,#3B6FF7); }
-.pd-sec-dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; background:var(--u-text3,#aab); }
-.pd-sec-dot.rank1{ background:#EF4444; } .pd-sec-dot.rank2{ background:#0EA5E9; } .pd-sec-dot.rank3{ background:#F59E0B; }
-.pd-sec-main{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
-.pd-sec-main b{ font-size:13px; color:var(--u-text,#1a1d26); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.pd-sec-main i{ font-style:normal; font-size:11.5px; color:var(--u-text3,#aab); }
-.pd-sec-time{ font-size:11.5px; font-weight:600; color:var(--u-text2,#7a8095); flex:0 0 auto; white-space:nowrap; }
-.pd-empty{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--u-text3,#aab); padding:4px 2px; }
-.pd-empty svg{ width:16px; height:16px; color:#16A34A; }
-@media (max-width:720px){ .pd-body{ grid-template-columns:1fr; } }
 /* ===== fim v232 ===== */
 
 /* ===== v233 — Relatório: Execução de tarefas ===== */
@@ -14780,7 +14753,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v269';
+var APP_BUILD = 'v270';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -44999,83 +44972,6 @@ function calSortItems(items, ds){
     .map(function(x){ return x.it; });
 }
 
-// Itens candidatos a "Prioridade de HOJE" (sempre a data atual, mesmo navegando meses).
-// Regra determinística: 1) atrasada não concluída · 2) evento de hoje com hora ·
-// 3) tarefa de hoje prioridade alta · 4) demais que vencem hoje. Exclui concluídas.
-function _pdMk(k,id,title,rank,reason,extra){ var o={k:k,id:id,title:title,rank:rank,reason:reason}; if(extra){ for(var x in extra) o[x]=extra[x]; } return o; }
-function prioridadeDoDiaItems(){
-  var hoje=today();
-  var admin=isAdmin(ST.session), me=String(ST.session.user.id), sid=boardStore();
-  var who = admin ? (ST.taskAssignee?String(ST.taskAssignee):null) : me;
-  var projIds={}; (ST.projects||[]).forEach(function(p){ projIds[String(p.id)]=1; });
-  var pool=[];
-  (ST.tasks||[]).forEach(function(t){
-    if (t.is_rule) return;                                   // regra nunca é item executável
-    if (t.status==='feito') return;                          // nunca destaca concluída
-    if (sid && String(t.store_unit_id)!==String(sid)) return;
-    if (!admin){ if (String(t.assignee_id)!==me && String(t.created_by)!==me) return; }
-    else if (who && String(t.assignee_id||'')!==who) return;
-    var d=(t.due_date||'').slice(0,10); if(!d) return;
-    if (d<hoje) pool.push(_pdMk('task', t.id, t.title, 1, 'Está atrasado.', { due:d, type:t.task_type, priority:t.priority }));
-    else if (d===hoje){
-      if (t.priority==='alta') pool.push(_pdMk('task', t.id, t.title, 3, 'Tem prioridade alta e vence hoje.', { due:d, type:t.task_type, priority:t.priority }));
-      else pool.push(_pdMk('task', t.id, t.title, 4, 'Vence hoje.', { due:d, type:t.task_type, priority:t.priority }));
-    }
-  });
-  (ST.events||[]).forEach(function(ev){
-    if (ev.kind==='aviso') return;
-    if ((ev.date||'').slice(0,10)!==hoje) return;
-    if (String(ev.sector||'')!==String(ST.sector)) return;
-    if (ev.scope==='me' && String(ev.created_by)!==me) return;
-    if (ev.store_unit_id && sid && String(ev.store_unit_id)!==String(sid)) return;
-    if (ev.hora) pool.push(_pdMk('event', ev.id, ev.title, 2, 'Tem horário definido hoje.', { hora:ev.hora, type:ev.kind, color:ev.color }));
-    else pool.push(_pdMk('event', ev.id, ev.title, 4, 'É hoje.', { type:ev.kind, color:ev.color }));
-  });
-  (ST.milestones||[]).forEach(function(m){
-    if (!projIds[String(m.project_id)]) return;
-    if (sid && String(projStore(m.project_id))!==String(sid)) return;
-    if (who && String(m.assignee_id||'')!==who) return;
-    if ((m.status||'todo')==='feito') return;
-    var d=(m.date||'').slice(0,10); if(!d) return;
-    if (d<hoje) pool.push(_pdMk('ms', m.id, m.name, 1, 'Está atrasado.', { due:d, type:'projeto' }));
-    else if (d===hoje) pool.push(_pdMk('ms', m.id, m.name, 4, 'Vence hoje.', { due:d, type:'projeto' }));
-  });
-  pool.sort(function(a,b){
-    if (a.rank!==b.rank) return a.rank-b.rank;
-    var ha=a.hora||'99:99', hb=b.hora||'99:99'; if(ha!==hb) return ha<hb?-1:1;   // horário
-    var da=a.due||'9999', db=b.due||'9999'; if(da!==db) return da<db?-1:1;       // prazo
-    return String(a.title||'').localeCompare(String(b.title||''));               // título
-  });
-  return pool;
-}
-var _PD_TYPE_LB = { pessoal:'Pessoal', loja:'Loja', equipe:'Equipe', projeto:'Projeto', evento:'Evento', reuniao:'Reunião', lembrete:'Lembrete' };
-function _pdTimeLabel(it){
-  if (it.hora) return it.hora;
-  if (it.due && it.due < today()) return 'Atrasada · '+fmtDate(it.due);
-  return 'Hoje';
-}
-function prioridadeDoDiaHTML(){
-  var pool = prioridadeDoDiaItems();
-  var head = '<div class="pd-head">'+icon('target')+'<span>Prioridade de hoje</span></div>';
-  if (!pool.length){
-    return '<div class="pd-wrap"><div class="pd-inner">'+head+'<div class="pd-empty">'+icon('check')+'<span>Nenhum compromisso prioritário para hoje.</span></div></div></div>';
-  }
-  var main = pool[0], secs = pool.slice(1,4);
-  function typeChip(it){ var l=_PD_TYPE_LB[it.type]; return l?'<span class="pd-type">'+esc(l)+'</span>':''; }
-  var mainHTML = '<button class="pd-main rank'+main.rank+'" data-pd-open="'+esc(main.k)+'|'+esc(main.id)+'">'+
-      '<span class="pd-main-top"><span class="pd-main-time">'+esc(_pdTimeLabel(main))+'</span>'+typeChip(main)+'</span>'+
-      '<b class="pd-main-title">'+esc(main.title)+'</b>'+
-      '<span class="pd-main-why">'+esc(main.reason)+'</span>'+
-    '</button>';
-  var secsHTML = secs.length ? ('<div class="pd-secs">'+secs.map(function(it){
-    return '<button class="pd-sec" data-pd-open="'+esc(it.k)+'|'+esc(it.id)+'">'+
-      '<span class="pd-sec-dot rank'+it.rank+'"></span>'+
-      '<span class="pd-sec-main"><b>'+esc(it.title)+'</b><i>'+esc(it.reason)+'</i></span>'+
-      '<span class="pd-sec-time">'+esc(_pdTimeLabel(it))+'</span>'+
-    '</button>';
-  }).join('')+'</div>') : '';
-  return '<div class="pd-wrap"><div class="pd-inner">'+head+'<div class="pd-body">'+mainHTML+secsHTML+'</div></div></div>';
-}
 
 /* ============================================================
    v234 — CALENDÁRIO Etapa 2: visualização SEMANAL (Seg→Dom)
@@ -45201,7 +45097,7 @@ function calendarioHTML() {
     }
     grid+='</div>';
   }
-  return top+prioridadeDoDiaHTML()+legend+grid; // "Prioridade de hoje" segue referente a HOJE
+  return top+legend+grid; // v270: painel "Prioridade de hoje" removido do Calendário
 }
 
 function bindCalendario() {
@@ -45221,13 +45117,7 @@ function bindCalendario() {
   var evtBtn=document.getElementById('btnNovoEvento');
   if (evtBtn) evtBtn.addEventListener('click', function(){ openEventModal(null, null); });
 
-  // v232: "Prioridade de hoje" — abre o item original (reusa calItemOpen)
-  var pds=app.querySelectorAll('[data-pd-open]');
-  for (var p=0;p<pds.length;p++) pds[p].addEventListener('click', function(e){
-    e.stopPropagation();
-    var parts=String(this.getAttribute('data-pd-open')).split('|');
-    if (parts.length>=2) calItemOpen(parts[0], parts.slice(1).join('|'));
-  });
+  // v270: painel "Prioridade de hoje" removido — bind [data-pd-open] não é mais necessário.
 
   // abrir item ao clicar no chip
   var chips=app.querySelectorAll('.cal-chip');
