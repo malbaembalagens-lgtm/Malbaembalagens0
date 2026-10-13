@@ -14910,6 +14910,69 @@ html.dark .brf-status-quiet {
   .cr-v1 .adm-bar2 .btn-sm{ margin-left:0; width:100%; justify-content:center; }
 }
 /* ===== fim v275 ===== */
+
+/* ===== v276 (UI-005 Fase 2) — Central de Rotinas, tela interna (escopado em .cr-v2) ===== */
+.cr-v2{ display:flex; flex-direction:column; gap:14px; }
+/* Categorias como cards definidos */
+.cr-v2 .adm-group{ margin-bottom:0; background:var(--u-card); border:1px solid var(--u-border); border-radius:14px; padding:4px 14px 12px; box-shadow:0 1px 2px rgba(15,23,42,.04); }
+.cr-v2 .adm-group.vazio{ opacity:1; background:transparent; border-style:dashed; }
+.cr-v2 .adm-group.vazio .adm-group-h{ border-bottom-color:transparent; color:var(--u-text3); padding-bottom:9px; }
+.cr-v2 .adm-group-h{ gap:10px; padding:11px 0 9px; }
+.cr-v2 .agh-lb{ font-size:13.5px; font-weight:800; }
+.cr-v2 .agh-lb svg{ width:16px; height:16px; color:var(--u-accent); }
+.cr-v2 .adm-group.vazio .agh-lb svg{ color:var(--u-text3); }
+.cr-v2 .agh-c{ background:var(--u-accent-soft); color:var(--u-accent); font-weight:800; }
+.cr-v2 .adm-group.vazio .agh-c{ background:var(--u-bg2); color:var(--u-text3); }
+.cr-v2 .agh-ar svg{ width:16px; height:16px; }
+.cr-v2 .agh-sel{ font-weight:700; }
+.cr-v2 .adm-list{ gap:8px; padding-top:11px; }
+/* Linhas de rotina como cards limpos */
+.cr-v2 .adm-row.rg-row{ border-radius:12px; padding:11px 13px; gap:12px; box-shadow:0 1px 2px rgba(15,23,42,.03); }
+.cr-v2 .adm-row.rg-row:hover{ border-color:var(--u-accent); box-shadow:0 4px 14px rgba(15,23,42,.07); }
+.cr-v2 .rg-row .ar-prio{ width:4px; border-radius:4px; }
+.cr-v2 .rg-nome b{ font-size:13.5px; font-weight:700; }
+.cr-v2 .rg-nome i{ font-size:11.5px; color:var(--u-text3); }
+.cr-v2 .rg-c{ min-width:72px; }
+.cr-v2 .rg-c i{ font-size:9.5px; letter-spacing:.04em; }
+.cr-v2 .rg-c b{ font-size:12.5px; color:var(--u-text2); }
+.cr-v2 .rg-st{ font-size:10.5px; padding:4px 10px; }
+/* Ações sempre localizáveis: sutis no desktop, nítidas no hover; totalmente visíveis no toque */
+.cr-v2 .rg-acoes{ opacity:.55; gap:4px; }
+.cr-v2 .adm-rw:hover .rg-acoes, .cr-v2 .rg-acoes:focus-within{ opacity:1; }
+.cr-v2 .act-btn.icon-only{ background:var(--u-bg2); }
+/* Empty state refinado */
+.cr-v2 .adm-empty-rot{ background:var(--u-card); border:1px solid var(--u-border); border-radius:16px; }
+/* Responsivo */
+@media (hover:none){ .cr-v2 .rg-acoes{ opacity:1; } }
+@media (max-width:860px){
+  .cr-v2 .adm-row.rg-row{ flex-wrap:wrap; row-gap:9px; }
+  .cr-v2 .rg-nome{ flex:1 1 auto; min-width:140px; }
+  .cr-v2 .rg-c{ flex:0 0 auto; }
+  .cr-v2 .rg-acoes{ opacity:1; margin-left:auto; }
+}
+@media (max-width:430px){
+  .cr-v2 .adm-group{ padding:3px 11px 10px; }
+  .cr-v2 .rg-c{ flex:1 1 44%; min-width:0; }
+  .cr-v2 .rg-nome{ flex:1 1 100%; }
+}
+/* ===== fim v276 ===== */
+
+/* ===== v277 (UI-005 Fase 3) — UX do formulário de rotina (escopado em .tform-rotina) ===== */
+/* Sub-títulos de seção (Frequência e programação / Organização) */
+.tform-rotina .tform-sec-h{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--u-text3); margin:14px 0 2px; padding-top:12px; border-top:1px solid var(--u-line); }
+.tform-rotina .tform-advanced > .tform-sec-h:first-child{ margin-top:2px; padding-top:0; border-top:none; }
+/* Marca de campo obrigatório no título */
+.tform-rotina .tform-hero{ flex-wrap:wrap; align-items:center; gap:8px; }
+.tform-rotina .tform-req{ display:inline-flex; align-items:center; font-size:9.5px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--u-accent); background:var(--u-accent-soft); border-radius:6px; padding:2px 7px; flex-shrink:0; }
+/* Ação principal mais evidente */
+.tform-rotina .tform-foot .btn-primary{ min-width:148px; font-weight:800; }
+/* Rodapé acessível e sem overflow no mobile */
+@media (max-width:560px){
+  .tform-rotina .tform-foot{ position:sticky; bottom:0; z-index:2; background:var(--u-card); margin:0 -2px; padding:12px 2px calc(4px + env(safe-area-inset-bottom)); border-top:1px solid var(--u-line); gap:8px; flex-wrap:wrap; }
+  .tform-rotina .tform-foot .btn{ flex:1 1 auto; }
+  .tform-rotina .tform-foot .btn-del-wrap{ flex:1 1 100%; margin-right:0; order:3; }
+}
+/* ===== fim v277 ===== */
 /* v241 — Produtividade (reusa tokens; sem lib) */
 .prod-ul{ margin:0; padding:6px 0 2px 18px; }
 .prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
@@ -14983,7 +15046,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v275';
+var APP_BUILD = 'v277';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -19678,6 +19741,10 @@ function openTaskModal(task, preset) {
   var recManageRow = occRule ? ('<div class="rec-manage"><span class="rec-manage-l">↻ Faz parte de uma rotina'+(occRule.rec_paused?' · pausada':'')+'</span><div class="rec-manage-btns"><button type="button" class="btn btn-ghost rec-mini" id="recEdit">Editar rotina</button><button type="button" class="btn btn-ghost rec-mini" id="recSkip">Pular este dia</button></div></div>') : '';
   var ro = isEdit && !canMng; // usuário comum editando tarefa existente: só status (mas pode marcar checklist)
   var dis = ro?' disabled':'';
+  // Fase 3 (v277): contexto de ROTINA (criação pela Central de Rotinas: preset.recurrence; ou edição de regra: task.is_rule).
+  // Escopa a UX só ao fluxo de rotina — não afeta o modal de tarefa genérico (Kanban/Tarefas/etc.).
+  var isRotinaCtx = (!!preset.recurrence && preset.recurrence!=='none') || (isEdit && !!(task && task.is_rule));
+  var saveLabel = ro ? 'Salvar status' : (isEdit ? (isRotinaCtx?'Salvar rotina':'Salvar') : (isRotinaCtx?'Criar rotina':'Criar tarefa'));
   var subList = (task && Array.isArray(task.subtasks)) ? task.subtasks.map(function(s){ return { id:s.id||uid(), text:s.text||'', done:!!s.done }; }) : [];
   var stPills=STATUS_ORDER.map(function(k){ return '<button type="button" class="pill st-pill'+(t.status===k?' on':'')+'" data-st="'+k+'" style="color:'+STATUS[k].color+'"><span class="pdot" style="background:'+STATUS[k].color+'"></span>'+STATUS[k].label+'</button>'; }).join('');
   // v79: tipo da tarefa (Normal / POP) — alimenta o filtro da Central de Tarefas
@@ -19699,10 +19766,11 @@ function openTaskModal(task, preset) {
 
   var modal=document.createElement('div'); modal.className='modal-bg';
   modal.innerHTML =
-    '<div class="modal tform '+((isEdit||ro)?'tform-modo-avancado':'tform-modo-simples')+'" id="taskModal">'+
+    '<div class="modal tform '+((isEdit||ro||isRotinaCtx)?'tform-modo-avancado':'tform-modo-simples')+(isRotinaCtx?' tform-rotina':'')+'" id="taskModal">'+
       // Título — hero do modal
       '<div class="tform-hero">'+
-        '<input class="tform-title" id="tTitle" placeholder="Nome desta tarefa" value="'+esc(t.title)+'"'+dis+'>'+
+        '<input class="tform-title" id="tTitle" placeholder="'+(isRotinaCtx?'Nome da rotina':'Nome desta tarefa')+'" value="'+esc(t.title)+'"'+dis+'>'+
+        ((isRotinaCtx && !ro)?'<span class="tform-req" title="Campo obrigatório">Obrigatório</span>':'')+
       '</div>'+
       (ro?'<div class="tform-hint">'+icon('lock')+'<span>Você pode alterar o status desta tarefa. A edição completa é só para administradores.</span></div>':'')+
 
@@ -19740,6 +19808,7 @@ function openTaskModal(task, preset) {
         '</div>'+
 
         // Categoria + Repetição
+        (isRotinaCtx?'<div class="tform-sec-h">Frequência e programação</div>':'')+
         '<div class="tform-2col">'+
           '<div class="tform-field"><label class="tform-label">Categoria</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tKind">'+kindPills+'</div></div>'+
           '<div class="tform-field"><label class="tform-label">Repetição</label><div class="pills tform-pills'+(ro?' pills-ro':'')+'" id="tRec">'+recPills+'</div></div>'+
@@ -19748,6 +19817,7 @@ function openTaskModal(task, preset) {
         recManageRow+
 
         // Área + Projeto
+        (isRotinaCtx?'<div class="tform-sec-h">Organização</div>':'')+
         '<div class="tform-2col">'+
           '<div class="tform-field"><label class="tform-label">Área / etiqueta</label><input class="tform-input" type="text" id="tArea" placeholder="ex: Estoque" value="'+esc(t.area||'')+'"'+dis+'></div>'+
           '<div class="tform-field"><label class="tform-label">Projeto <span class="tform-opt">(opcional)</span></label><select class="tform-input" id="tProj"'+dis+'>'+projOpts+'</select></div>'+
@@ -19769,7 +19839,7 @@ function openTaskModal(task, preset) {
       '</div>'+
 
       // Rodapé
-      '<div class="modal-foot tform-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+(isEdit?(ro?'Salvar status':'Salvar'):'Criar tarefa')+'</button></div>'+
+      '<div class="modal-foot tform-foot">'+delBtn+'<button class="btn btn-ghost" id="taskCancel">Cancelar</button><button class="btn btn-primary" id="taskSave">'+saveLabel+'</button></div>'+
     '</div>';
   document.body.appendChild(modal);
 
@@ -19909,14 +19979,14 @@ function openTaskModal(task, preset) {
       var roCf=completionFields(stPick, task?task.status:undefined); Object.assign(roPayload, roCf); // v240
       if (subList.length>0 || (task && task.subtasks && task.subtasks.length)) roPayload.subtasks=subList;
       sb.from('malba_vl_tasks').update(roPayload).eq('id', t.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar status'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent=saveLabel; return; }
         for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i].status=stPick; if ('completed_at' in roCf) ST.tasks[i].completed_at=roCf.completed_at; ST.tasks[i].subtasks=subList; break; }
         close(); toast('Atualizado','success'); renderPage();
       });
       return;
     }
     var title=(modal.querySelector('#tTitle').value||'').trim();
-    if (!title) { toast('Informe o título da tarefa','error'); return; }
+    if (!title) { toast(isRotinaCtx?'Informe o nome da rotina':'Informe o título da tarefa','error'); if(isRotinaCtx){ var _tt=modal.querySelector('#tTitle'); if(_tt){ try{ _tt.focus(); _tt.scrollIntoView({block:'center',behavior:'smooth'}); }catch(e){} } } return; }
     var payload={ title:title, description:(modal.querySelector('#tDesc').value||'').trim(), priority:prPick, status:stPick, due_date:modal.querySelector('#tDate').value||today(), recurrence:recPick, area:(modal.querySelector('#tArea').value||'').trim(), task_kind:kdPick, task_type:ttPick, assignee_id:modal.querySelector('#tAssignee').value||null, equipe_id:(modal.querySelector('#tEquipe')?(modal.querySelector('#tEquipe').value||null):null), project_id:(modal.querySelector('#tProj')?(modal.querySelector('#tProj').value||null):null), sector:ST.sector, created_by:ST.session.user.id, store_unit_id:(modal.querySelector('#tLoja')?(modal.querySelector('#tLoja').value||null):(ST.store?ST.store.id:scopeStore())) };
     // v118: normalizar e validar tipo
     if (typeof normalizarTarefaAoTipo==='function') payload = normalizarTarefaAoTipo(payload);
@@ -19929,7 +19999,7 @@ function openTaskModal(task, preset) {
     if (isEdit) {
       Object.assign(payload, completionFields(payload.status, task?task.status:undefined)); // v240
       sb.from('malba_vl_tasks').update(payload).eq('id', t.id).then(function(r){
-        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Salvar'; return; }
+        if (r.error) { toast('Erro ao salvar','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent=saveLabel; return; }
         for (var i=0;i<ST.tasks.length;i++) if (ST.tasks[i].id===t.id) { ST.tasks[i]=Object.assign(ST.tasks[i],payload); break; }
         auditLog('Editou tarefa', title); close(); toast('Tarefa atualizada','success'); renderPage();
       });
@@ -19953,22 +20023,22 @@ function openTaskModal(task, preset) {
               var datas=gerarDatasRec(payload.due_date, recPick, { until:until2, diasUteis:recDiasUteis, weekdays:recWeekdays });
               if (datas.length>1){
                 var rows=datas.map(function(ds){ var p=Object.assign({}, payload); p.due_date=ds; p.recur_group=grupo; return p; });
-                insertRecorrencia(rows, function(ok, n){ if(!ok){ setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return; } auditLog('Criou tarefas recorrentes (compat)', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); toast('Dica: rode o SQL da Parte 2 p/ o modo automático','info'); renderPage(); });
+                insertRecorrencia(rows, function(ok, n){ if(!ok){ setBusy(saveBtn,false); saveBtn.textContent=saveLabel; return; } auditLog('Criou tarefas recorrentes (compat)', title+' ('+n+')'); close(); toast(n+' tarefas criadas ✓','success'); toast('Dica: rode o SQL da Parte 2 p/ o modo automático','info'); renderPage(); });
                 return;
               }
             }
-            toast('Erro ao criar rotina','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return;
+            toast('Erro ao criar rotina','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent=saveLabel; return;
           }
           if (r.data) ST.tasks.unshift(r.data); // a regra em si (fica invisível nas telas)
           materializarRecorrencias().then(function(){
             auditLog('Criou rotina recorrente', title); close(); toast('Rotina criada — aparece todo dia ✓','success'); renderPage();
           });
-        }, function(e){ toast('Erro ao criar rotina','error'); console.error(e); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; });
+        }, function(e){ toast('Erro ao criar rotina','error'); console.error(e); setBusy(saveBtn,false); saveBtn.textContent=saveLabel; });
         return;
       }
       Object.assign(payload, completionFields(payload.status, undefined)); // v240: criar já "feito" registra conclusão
       sb.from('malba_vl_tasks').insert(payload).select().single().then(function(r){
-        if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent='Criar tarefa'; return; }
+        if (r.error || !r.data) { toast('Erro ao criar tarefa','error'); console.error(r.error); setBusy(saveBtn,false); saveBtn.textContent=saveLabel; return; }
         ST.tasks.unshift(r.data);
         auditLog('Criou tarefa', title); close(); toast('Tarefa criada','success'); renderPage();
       });
@@ -34407,22 +34477,24 @@ function admNivelCategoriasHTML(regs){
       ? (function(){ for (var i=0;i<(ST.storeUnits||[]).length;i++) if (String(ST.storeUnits[i].id)===String(lid)) return ST.storeUnits[i].name; return 'esta loja'; })()
       : (pid==='_sem' ? 'os sem responsável' : (function(){ var u=userById(pid); return u?u.name:'este colaborador'; })());
     var contexto = lid ? 'esta loja' : (pid==='_sem' ? 'colaboradores sem responsável' : qNome.split(' ')[0]);
-    return '<div class="adm-empty-rot">'+
+    return '<div class="cr-v2"><div class="adm-empty-rot">'+
       '<div class="aer-ic">'+icon('cal')+'</div>'+
       '<h4>Nenhuma rotina cadastrada'+(lid?' pra '+esc(qNome):'')+'</h4>'+
       '<p>Clique em <b>+ Nova rotina</b> pra cadastrar a primeira rotina de '+esc(contexto)+'.<br><i>Rotinas são tarefas que se repetem — diárias, semanais ou mensais.</i></p>'+
       '<button class="btn btn-primary" id="admEmptyNova">'+icon('plus')+'Nova rotina</button>'+
-    '</div>';
+    '</div></div>';
   }
   var R={ diaria:[], semanal:[], mensal:[], unica:[] };
   minhas.forEach(function(r){ if(!r.is_rule) R.unica.push(r); else if(R[r.recurrence]) R[r.recurrence].push(r); });
   var ord=function(a,b){ return String(a.title||'').localeCompare(String(b.title||'')); };
   R.diaria.sort(ord); R.semanal.sort(ord); R.mensal.sort(ord);
   R.unica.sort(function(a,b){ return (a.due_date||'zz').localeCompare(b.due_date||'zz'); });
-  return admGrupoHTML('g-d','Tarefas Diárias', R.diaria)+
+  return '<div class="cr-v2">'+
+         admGrupoHTML('g-d','Tarefas Diárias', R.diaria)+
          admGrupoHTML('g-s','Tarefas Semanais', R.semanal)+
          admGrupoHTML('g-m','Tarefas Mensais', R.mensal)+
-         admGrupoHTML('g-u','Tarefas Únicas', R.unica);
+         admGrupoHTML('g-u','Tarefas Únicas', R.unica)+
+         '</div>';
 }
 
 /* ---------- a tela ---------- */
