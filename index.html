@@ -876,6 +876,19 @@ html.dark .task-filter { background-image: url("data:image/svg+xml,%3Csvg xmlns=
 .doc-bc-cur .lc-ic { width: 14px; height: 14px; }
 .doc-bc-missing { background: var(--u-amber-soft); color: var(--u-amber); }
 .doc-sem-pasta { color: var(--u-text3); font-style: italic; }
+/* FASE Docs-4 · estados (carregando/erro/vazio) + responsividade da tabela */
+.doc-estado { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-height: 320px; color: var(--u-text2); background: var(--u-card); border: 1px solid var(--u-line); border-radius: var(--rd-xl); margin-top: var(--sp-4); }
+.doc-estado p { margin: 0; font-size: var(--fs-md); }
+.empty-page.doc-erro .ep-ico { background: var(--u-amber-soft); color: var(--u-amber); box-shadow: none; }
+.doc-empty-acoes { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
+.doc-empty-btn { display: inline-flex; align-items: center; gap: 7px; }
+.doc-empty-btn svg { width: 16px; height: 16px; }
+@media (max-width: 640px) {
+  .doc-table { min-width: 0; }
+  .doc-table th:nth-child(3), .doc-table td:nth-child(3),
+  .doc-table th:nth-child(4), .doc-table td:nth-child(4),
+  .doc-table th:nth-child(5), .doc-table td:nth-child(5) { display: none; }
+}
 
 /* ===== Equipe ===== */
 .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 14px; }
@@ -14772,7 +14785,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v264';
+var APP_BUILD = 'v265';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -23877,7 +23890,9 @@ function bindEstrAtividadeNoModal(tipo, id, rerender){
 
 /* ---------- Load: puxa pastas e documentos do setor ---------- */
 function loadDocs(sector){
-  if(!sb){ ST.docFolders=[]; ST.docs=[]; return; }
+  // FASE Docs-4: estados de carregamento/erro (ST.docsLoading / ST.docsError / ST.docsLoaded)
+  if(!sb){ ST.docFolders=[]; ST.docs=[]; ST.docsLoading=false; ST.docsError=true; return; }
+  ST.docsLoading=true; ST.docsError=false;
   try {
     sb.from('malba_doc_folders').select('*').eq('sector', sector).then(function(r){
       if(r.error){ console.warn('Docs: rode o SQL Fase 1. Detalhe:', r.error.message); ST.docFolders=[]; return; }
@@ -23895,11 +23910,11 @@ function loadDocs(sector){
       if (ST.page==='docs' && !ST.docOpen) renderPage(); // não re-renderiza com o editor aberto
     }, function(){});
     sb.from('malba_docs').select('id, sector, title, doc_type, folder_id, author_id, visibility, default_perm, shares, unit_id, links, is_archived, is_favorite_by, tags, updated_at, created_at').eq('sector', sector).then(function(r){
-      if(r.error){ ST.docs=[]; return; }
-      ST.docs = r.data || [];
+      if(r.error){ ST.docs=[]; ST.docsLoading=false; ST.docsError=true; if (ST.page==='docs' && !ST.docOpen) renderPage(); return; }
+      ST.docs = r.data || []; ST.docsLoading=false; ST.docsLoaded=true; ST.docsError=false;
       if (ST.page==='docs' && !ST.docOpen) renderPage(); // não re-renderiza com o editor aberto
-    }, function(){ ST.docs=[]; });
-  } catch(e){ ST.docFolders=[]; ST.docs=[]; }
+    }, function(){ ST.docs=[]; ST.docsLoading=false; ST.docsError=true; if (ST.page==='docs' && !ST.docOpen) renderPage(); });
+  } catch(e){ ST.docFolders=[]; ST.docs=[]; ST.docsLoading=false; ST.docsError=true; }
 }
 
 /* ---------- Estado local ---------- */
@@ -23945,6 +23960,10 @@ function docsHTML(){
   var novaBtn = docNovoMenuHTML(); // FASE Docs-1: botão vira popover com os modelos
   var sub = 'Central de documentos · '+(SECTORS[ST.sector]?SECTORS[ST.sector].label:'');
   var head = '<div class="tasks-head"><div><h2>Documentos</h2><div class="sub">'+esc(sub)+'</div></div><div class="tasks-head-r">'+novaBtn+'</div></div>';
+
+  // FASE Docs-4: estados globais — erro e carregamento inicial (antes de montar a biblioteca)
+  if (ST.docsError) return head + docEstadoErroHTML();
+  if (ST.docsLoading && !ST.docsLoaded) return head + docEstadoCarregandoHTML();
 
   var corpo = (docTab()==='dashboard') ? docsDashboardHTML() : docsListHTML(); // v100
   // FASE Docs-2: no mobile a sidebar vira gaveta recolhível (toggle); no desktop fica sempre visível.
@@ -24065,6 +24084,47 @@ function docFolderPathLabel(folderId){
   var p=docFolderPath(folderId);
   return p.length ? p.map(function(f){ return f.name; }).join(' / ') : '';
 }
+/* ---------- FASE Docs-4: estados de carregamento / erro / vazio ---------- */
+function docEstadoCarregandoHTML(){
+  return '<div class="doc-estado"><div class="spinner" aria-hidden="true"></div><p>Carregando documentos…</p></div>';
+}
+function docEstadoErroHTML(){
+  return '<div class="empty-page doc-erro"><div class="ep-ico">'+icon('warn')+'</div>'
+    + '<h3>Não foi possível carregar os documentos</h3>'
+    + '<p>Verifique sua conexão e tente novamente.</p>'
+    + '<button type="button" class="btn btn-primary doc-empty-btn" id="docRetry">'+icon('history')+'Tentar novamente</button></div>';
+}
+/* estado vazio contextual (biblioteca / pasta / busca / filtros / favoritos / recentes / arquivados …) */
+function docListaVaziaHTML(){
+  var tab=docTab();
+  var q=docQ().trim();
+  var temFiltro = docFiltrosAtivos()>0;
+  var podeCriar = docPodeCriar();
+  var folderCtx = tab.indexOf('folder:')===0;
+  var ico='folder', titulo, texto='', acoes='';
+  function btnCriar(lbl){ return podeCriar ? '<button type="button" class="btn btn-primary doc-empty-btn" data-doc-empty="criar">'+icon('plus')+esc(lbl||'Novo documento')+'</button>' : ''; }
+  function btnLimpar(lbl){ return '<button type="button" class="btn btn-ghost doc-empty-btn" data-doc-empty="limpar">'+esc(lbl||'Limpar filtros')+'</button>'; }
+  function btnBiblioteca(){ return '<button type="button" class="btn btn-ghost doc-empty-btn" data-doc-empty="biblioteca">'+icon('folder-open')+'Voltar à Biblioteca</button>'; }
+
+  if (q && temFiltro){ ico='search'; titulo='Nada encontrado'; texto='Nenhum documento combina com a busca e os filtros atuais.'; acoes=btnLimpar('Limpar busca e filtros'); }
+  else if (q){ ico='search'; titulo='Nada encontrado para "'+q+'"'; texto='Tente outro termo — a busca cobre título, tags e o conteúdo dos documentos.'; acoes=btnLimpar('Limpar busca'); }
+  else if (temFiltro){ ico='filter'; titulo='Nenhum documento com esses filtros'; texto='Ajuste ou remova os filtros para ver mais resultados.'; acoes=btnLimpar('Limpar filtros'); }
+  else if (tab==='arquivados'){ ico='archive'; titulo='Nenhum documento arquivado'; texto='Documentos arquivados ficam guardados aqui, sem aparecer nas listas ativas.'; }
+  else if (tab==='favoritos'){ ico='star-icon'; titulo='Sem favoritos ainda'; texto='Toque na estrela de um documento para encontrá-lo rápido por aqui.'; }
+  else if (tab==='recentes'){ ico='clock'; titulo='Nada recente'; texto='Documentos atualizados nos últimos 7 dias aparecem aqui.'; }
+  else if (tab==='compartilhados'){ ico='users'; titulo='Nada compartilhado com você'; texto='Quando alguém compartilhar um documento com você, ele aparece aqui.'; }
+  else if (tab==='compartilhadospormim'){ ico='share2'; titulo='Você ainda não compartilhou documentos'; texto='Documentos que você criou e compartilhou aparecem aqui.'; acoes=btnCriar(); }
+  else if (tab==='vinculados'){ ico='link'; titulo='Nenhum documento vinculado'; texto='Vincule documentos a tarefas, objetivos ou projetos para encontrá-los aqui.'; }
+  else if (folderCtx){ ico='folder'; titulo='Pasta vazia'; texto='Crie um documento aqui ou mova um existente pelo menu de ações (⋮).'; acoes=btnCriar('Criar nesta pasta')+btnBiblioteca(); }
+  else if (tab==='meus'){ ico='user-round'; titulo='Você ainda não criou documentos'; texto='Comece pelo botão "Novo documento".'; acoes=btnCriar(); }
+  else { ico='folder'; titulo='Biblioteca vazia'; texto=podeCriar?'Crie o primeiro documento para começar a organizar a central.':'Os documentos vão aparecer aqui quando forem criados.'; acoes=btnCriar('Criar primeiro documento'); }
+
+  return '<div class="empty-page" style="grid-column:1/-1"><div class="ep-ico">'+icon(ico)+'</div><h3>'+esc(titulo)+'</h3>'
+    + (texto?'<p>'+esc(texto)+'</p>':'')
+    + (acoes?'<div class="doc-empty-acoes">'+acoes+'</div>':'')
+    + '</div>';
+}
+
 /* ---------- FASE Docs-3: breadcrumb da pasta atual (só quando há pasta selecionada) ---------- */
 function docBreadcrumbHTML(){
   var tab=docTab();
@@ -24227,15 +24287,9 @@ function docsListHTML(){
   else if (sm==='nome_za') lista.sort(function(a,b){ var ta=(a.title||'').trim().toLowerCase(), tb=(b.title||'').trim().toLowerCase(); return tb.localeCompare(ta); });
   else                     lista.sort(function(a,b){ return (b.updated_at||'').localeCompare(a.updated_at||''); });
 
-  var temFiltro = !!q || docFiltrosAtivos()>0;
   var body;
   if (lista.length===0){
-    body = emptyState({
-      icon:'folder',
-      title: temFiltro ? 'Nenhum documento com esse filtro' : 'Nenhum documento por aqui ainda',
-      text: temFiltro ? 'Ajuste a busca ou os filtros para ver mais resultados.' : (docPodeCriar() ? 'Clique em "Novo documento" para criar o primeiro.' : 'Os documentos vão aparecer aqui quando forem criados.'),
-      span:true
-    });
+    body = docListaVaziaHTML(); // FASE Docs-4: estado vazio contextual
   } else if (docView()==='grade'){
     body = '<div class="doc-grade">'+lista.map(docCardHTML).join('')+'</div>';
   } else {
@@ -24820,6 +24874,19 @@ function bindDocs(){
   // lista principal
   // FASE Docs-1: "Novo documento" é popover (bindDocPops); não cria mais ao clicar.
   bindDocPops();
+
+  // FASE Docs-4: tentar novamente (erro) + ações contextuais do estado vazio
+  var retry = document.getElementById('docRetry');
+  if (retry) retry.addEventListener('click', function(){ loadDocs(ST.sector); renderPage(); });
+  document.querySelectorAll('[data-doc-empty]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.stopPropagation();
+      var a=this.getAttribute('data-doc-empty');
+      if (a==='criar'){ var folder = docTab().indexOf('folder:')===0 ? docTab().slice(7) : null; docsCriar('branco', folder); }
+      else if (a==='limpar'){ ST.docFiltro={tipo:'',autor:'',comp:'',pasta:''}; ST.docQ=''; ST.docHits=null; ST.docBuscando=false; renderPage(); }
+      else if (a==='biblioteca'){ ST.docTab='todos'; renderPage(); }
+    });
+  });
 
   var pasta = document.getElementById('btnNovaPasta');
   if (pasta) pasta.addEventListener('click', function(e){ e.stopPropagation(); docsNovaPasta(null); });
