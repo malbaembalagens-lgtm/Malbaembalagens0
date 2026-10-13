@@ -14808,6 +14808,58 @@ html.dark .brf-status-quiet {
   .team-flt-menu{ left:0; right:0; min-width:0; }
 }
 /* ===== fim v272 ===== */
+
+/* ===== v273 (UI-003) — Redesign da página Metas (escopado em .metas-*/.goal-card.metas-v3) ===== */
+/* Resumo executivo (4 KPIs + barra) */
+.metas-resumo{ padding:14px 16px; margin-bottom:14px; }
+.mr-grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px 18px; margin-bottom:12px; }
+.mr-kpi{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+.mr-kpi small{ font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--u-text3); }
+.mr-kpi b{ font-family:var(--u-font-display); font-size:19px; font-weight:800; color:var(--u-text); line-height:1.1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.metas-resumo .mr-bar{ height:10px; }
+/* Barra de controles (Ordenar) */
+.metas-bar{ display:flex; align-items:center; justify-content:flex-end; margin-bottom:14px; }
+.metas-ord{ position:relative; }
+.metas-ord-btn{ display:inline-flex; align-items:center; gap:7px; height:38px; padding:0 14px; border-radius:10px; background:var(--u-bg2); border:1px solid var(--u-border); color:var(--u-text2); font-size:13px; font-weight:700; cursor:pointer; transition:.12s; }
+.metas-ord-btn svg{ width:16px; height:16px; }
+.metas-ord-btn:hover{ color:var(--u-accent); border-color:var(--u-accent); }
+.metas-ord-btn.has-active{ color:var(--u-accent); border-color:var(--u-accent); background:var(--u-accent-soft); }
+.metas-ord-badge{ width:7px; height:7px; border-radius:50%; background:var(--u-accent); }
+.metas-ord-menu{ position:absolute; top:calc(100% + 6px); right:0; z-index:40; min-width:210px; background:var(--u-card); border:1px solid var(--u-border); border-radius:12px; box-shadow:var(--u-shadow-md); padding:6px; display:flex; flex-direction:column; gap:2px; }
+.metas-ord-menu[hidden]{ display:none; }
+.metas-ord-opt{ text-align:left; background:none; border:none; cursor:pointer; font-size:13px; font-weight:600; color:var(--u-text2); padding:9px 11px; border-radius:8px; }
+.metas-ord-opt:hover{ background:var(--u-bg2); color:var(--u-text); }
+.metas-ord-opt.on{ color:var(--u-accent); background:var(--u-accent-soft); font-weight:700; }
+.metas-ord-foot{ border-top:1px solid var(--u-border); margin-top:4px; padding-top:4px; }
+.metas-ord-clear{ width:100%; text-align:left; background:none; border:none; cursor:pointer; font-size:12.5px; font-weight:700; color:var(--u-text2); padding:8px 11px; border-radius:8px; }
+.metas-ord-clear:hover{ color:var(--u-accent); background:var(--u-bg2); }
+/* Grade responsiva: 4 / 3 / 2 / 1 */
+.goals-grid.metas-grid{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; }
+@media (max-width:1399px){ .goals-grid.metas-grid{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (max-width:1099px){ .goals-grid.metas-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:680px){ .goals-grid.metas-grid{ grid-template-columns:1fr; } }
+/* Card premium (horizontal) */
+.goal-card.metas-v3{ text-align:left; padding:16px; border-radius:16px; box-shadow:0 1px 2px rgba(15,23,42,.05); display:flex; flex-direction:column; gap:10px; }
+.goal-card.metas-v3:hover{ transform:translateY(-2px); box-shadow:0 10px 26px rgba(15,23,42,.10); border-color:var(--u-border2); }
+.metas-v3 .mv-head{ display:flex; flex-direction:column; gap:1px; min-width:0; }
+.metas-v3 .mv-period{ font-family:var(--u-font-display); font-size:14.5px; font-weight:800; color:var(--u-text); }
+.metas-v3 .mv-alvo{ font-size:11.5px; color:var(--u-text3); font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.metas-v3 .mv-pct{ font-family:var(--u-font-display); font-size:30px; font-weight:800; line-height:1; letter-spacing:-.01em; }
+.metas-v3 .mv-bar{ height:8px; background:var(--u-bg2); border-radius:20px; overflow:hidden; }
+.metas-v3 .mv-bar span{ display:block; height:100%; border-radius:20px; }
+.metas-v3 .mv-vals{ display:flex; gap:10px; }
+.metas-v3 .mv-v{ flex:1; background:var(--u-bg2); border-radius:10px; padding:9px 10px; min-width:0; }
+.metas-v3 .mv-v small{ display:block; font-size:10px; color:var(--u-text3); font-weight:700; text-transform:uppercase; letter-spacing:.04em; margin-bottom:2px; }
+.metas-v3 .mv-v span{ display:block; font-size:14px; font-weight:800; color:var(--u-text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.metas-v3 .goal-reg{ font-size:11.5px; color:var(--u-text3); margin-top:-2px; }
+/* Responsivo (mobile) */
+@media (max-width:680px){
+  .mr-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .metas-bar{ justify-content:flex-start; position:relative; }
+  .metas-ord{ position:static; }
+  .metas-ord-menu{ left:0; right:0; min-width:0; }
+}
+/* ===== fim v273 ===== */
 /* v241 — Produtividade (reusa tokens; sem lib) */
 .prod-ul{ margin:0; padding:6px 0 2px 18px; }
 .prod-ul li{ font-size:12.5px; color:var(--u-text2); margin:3px 0; }
@@ -14881,7 +14933,7 @@ html.dark .brf-status-quiet {
    ============================================================ */
 
 /* ========== [1] CONFIG ========== */
-var APP_BUILD = 'v272';
+var APP_BUILD = 'v273';
 var SUPABASE_URL = 'https://tqnbpffqgnvjlxsigwpb.supabase.co';
 function blingAuthUrl(clientId, storeId){ return 'https://www.bling.com.br/Api/v3/oauth/authorize?response_type=code&client_id='+encodeURIComponent(clientId)+'&state='+encodeURIComponent(storeId); }
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxbmJwZmZxZ252amx4c2lnd3BiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNDY5NzksImV4cCI6MjA5NTYyMjk3OX0.FdjY8d39ncdYyNaFidO3-FAyXXgm_zIvU0GS5Gdon90';
@@ -21015,22 +21067,46 @@ function visibleGoals() {
 function metasHTML() {
   if (deptoComoModelo('marketing')) return mktMetasHTML();
   var admin = isAdmin(ST.session);
+  // UI-003 (v273): ordenação apenas VISUAL — reordena a MESMA lista já visível (sem mudar escopo/cálculo).
+  function _gpct(g){ var mt=Number(g.goal_value)||0; return mt>0?Math.min(100,Math.round(realizadoMeta(g)/mt*100)):0; }
+  var sortMode = ST.metasSort || 'recente';
   var gs = visibleGoals().slice().sort(function(a,b){
     if (b.year!==a.year) return b.year-a.year;
     return b.month-a.month;
   });
-  var sub = (deptoComoModelo('lojas') && ST.store && !admin) ? ('Metas de '+esc(ST.store.name||('Loja '+ST.store.store_number))) : 'Metas mensais'; // v106b
+  if (sortMode==='maior') gs.sort(function(a,b){ return _gpct(b)-_gpct(a); });        // estável: mantém recência no empate
+  else if (sortMode==='menor') gs.sort(function(a,b){ return _gpct(a)-_gpct(b); });
+  var sub = 'Acompanhe o desempenho e a evolução das metas'; // UI-003 (v273): subtítulo padronizado
   var btn = admin ? '<button class="btn-new" id="btnNovaMeta">'+icon('plus')+'Nova meta</button>' : '';
   // ACCESS-008: Metas reage ao contexto GLOBAL da sessão (seletor #topStore do ACCESS-007).
   // O seletor de loja próprio da tela foi removido para não duplicar o controle de contexto.
-  var storeFilter='';
-  // resumo do mês corrente (acompanhamento)
+  // resumo do mês corrente (acompanhamento) — mesmos valores/cálculos de antes (tReal/tMeta/tPct inalterados)
   var now2=new Date(), ym=now2.getFullYear(), mm2=now2.getMonth()+1;
   var curGs=gs.filter(function(g){ return g.month===mm2 && g.year===ym; });
   var tMeta=curGs.reduce(function(s,g){ return s+(Number(g.goal_value)||0); },0);
   var tReal=curGs.reduce(function(s,g){ return s+realizadoMeta(g); },0);
   var tPct=tMeta>0?Math.min(100,Math.round(tReal/tMeta*100)):0;
-  var resumo = curGs.length ? ('<div class="metas-resumo"><div class="mr-top"><span>Acompanhamento de '+MESES[mm2-1]+'</span><b>'+tPct+'% da meta</b></div><div class="mr-bar"><span style="width:'+tPct+'%"></span></div><div class="mr-sub">'+fmtBRL(tReal)+' de '+fmtBRL(tMeta)+'</div></div>') : '';
+  var corR = tPct>=100?'#16A34A':(tPct>=60?'#3B6FF7':(tPct>=30?'#F59E0B':'#EF4444')); // mesmos limiares dos cards
+  var resumo = curGs.length ? ('<div class="metas-resumo">'+
+    '<div class="mr-grid">'+
+      '<div class="mr-kpi"><small>Realizado no mês</small><b>'+fmtBRL(tReal)+'</b></div>'+
+      '<div class="mr-kpi"><small>Meta total</small><b>'+fmtBRL(tMeta)+'</b></div>'+
+      '<div class="mr-kpi"><small>Atingimento</small><b class="mr-pct" style="color:'+corR+'">'+tPct+'%</b></div>'+
+      '<div class="mr-kpi"><small>Período</small><b>'+MESES[mm2-1]+' '+ym+'</b></div>'+
+    '</div>'+
+    '<div class="mr-bar"><span style="width:'+tPct+'%;background:'+corR+'"></span></div>'+
+  '</div>') : '';
+
+  // barra de controles — único controle funcional aplicável a esta página: ORDENAÇÃO (não há filtros de dados próprios aqui)
+  var sortOn = sortMode!=='recente';
+  var ordBar = gs.length ? ('<div class="metas-bar"><div class="metas-ord" id="metasOrd">'+
+      '<button type="button" class="metas-ord-btn'+(sortOn?' has-active':'')+'" id="metasOrdBtn" aria-haspopup="true" aria-expanded="false">'+icon('sort')+'Ordenar'+(sortOn?'<span class="metas-ord-badge" aria-label="ordenação ativa"></span>':'')+'</button>'+
+      '<div class="metas-ord-menu" id="metasOrdMenu" hidden>'+
+        '<button type="button" class="metas-ord-opt'+(sortMode==='recente'?' on':'')+'" data-ord="recente">Período recente</button>'+
+        '<button type="button" class="metas-ord-opt'+(sortMode==='maior'?' on':'')+'" data-ord="maior">Maior atingimento</button>'+
+        '<button type="button" class="metas-ord-opt'+(sortMode==='menor'?' on':'')+'" data-ord="menor">Menor atingimento</button>'+
+        (sortOn?'<div class="metas-ord-foot"><button type="button" class="metas-ord-clear" id="metasOrdClear">Restaurar ordem</button></div>':'')+
+      '</div></div></div>') : '';
 
   var cards = '';
   if (gs.length === 0) {
@@ -21039,7 +21115,7 @@ function metasHTML() {
   } else {
     gs.forEach(function(g){ cards += goalCardHTML(g); });
   }
-  return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+storeFilter+btn+'</div></div>'+resumo+'<div class="goals-grid">'+cards+'</div>';
+  return '<div class="tasks-head"><div><h2>Metas</h2><div class="sub">'+sub+'</div></div><div class="tasks-head-r">'+btn+'</div></div>'+resumo+ordBar+'<div class="goals-grid metas-grid">'+cards+'</div>';
 }
 
 /* ----- metas de marketing (indicadores próprios: faturamento do site, leads, seguidores, alcance) ----- */
@@ -22541,10 +22617,14 @@ function goalCardHTML(g) {
   var ring = '<svg class="goal-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="'+R+'" fill="none" stroke="var(--u-bg2)" stroke-width="9"/><circle cx="50" cy="50" r="'+R+'" fill="none" stroke="'+cor+'" stroke-width="9" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 50 50)"/><text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="22" font-weight="800" fill="var(--u-text)" font-family="Sora">'+pct+'%</text></svg>';
   var regNote='';
   if (g.user_id) { var vreg=vendasUserMes(g.user_id); if (vreg>0) regNote='<div class="goal-reg">Vendedor registrou: <b>'+fmtBRL(vreg)+'</b> este mês</div>'; }
-  return '<div class="goal-card" data-id="'+esc(g.id)+'">'+
-    '<div class="goal-head"><div><b>'+esc(MESES[(g.month||1)-1])+' '+esc(g.year||'')+'</b><i>'+alvo+'</i></div></div>'+
-    ring+
-    '<div class="goal-vals"><div class="gv"><small>Realizado</small><span style="color:'+cor+'">'+fmtBRL(real)+'</span></div><div class="gv"><small>Meta</small><span>'+fmtBRL(meta)+'</span></div></div>'+
+  // UI-003 (v273): card premium (layout horizontal) — escopado em .metas-v3; dados/ações/cores preservados.
+  // (ring permanece disponível p/ outros usos; aqui usamos barra horizontal p/ facilitar comparação)
+  void ring;
+  return '<div class="goal-card metas-v3" data-id="'+esc(g.id)+'">'+
+    '<div class="mv-head"><span class="mv-period">'+esc(MESES[(g.month||1)-1])+' '+esc(g.year||'')+'</span><span class="mv-alvo">'+alvo+'</span></div>'+
+    '<div class="mv-pct" style="color:'+cor+'">'+pct+'%</div>'+
+    '<div class="mv-bar"><span style="width:'+pct+'%;background:'+cor+'"></span></div>'+
+    '<div class="mv-vals"><div class="mv-v"><small>Realizado</small><span style="color:'+cor+'">'+fmtBRL(real)+'</span></div><div class="mv-v"><small>Meta</small><span>'+fmtBRL(meta)+'</span></div></div>'+
     regNote+
   '</div>';
 }
@@ -22557,6 +22637,18 @@ function bindMetas() {
   // ACCESS-008: #metaStore removido — Metas reage ao contexto global (#topStore). Bind defensivo mantido caso exista.
   var ms=document.getElementById('metaStore');
   if (ms) ms.addEventListener('change', function(){ ST.taskStore=this.value; renderPage(); });
+  // UI-003 (v273): popover "Ordenar" (visual) — todos podem ordenar; reordena a lista já visível
+  var ob=document.getElementById('metasOrdBtn');
+  if (ob) ob.addEventListener('click', function(e){ e.stopPropagation(); var mn=document.getElementById('metasOrdMenu'); if(!mn) return; var willOpen=mn.hidden; mn.hidden=!willOpen; this.setAttribute('aria-expanded', willOpen?'true':'false'); });
+  var oopts=app.querySelectorAll('.metas-ord-opt[data-ord]');
+  for (var o=0;o<oopts.length;o++) oopts[o].addEventListener('click', function(){ ST.metasSort=this.getAttribute('data-ord'); renderPage(); });
+  var oclr=document.getElementById('metasOrdClear');
+  if (oclr) oclr.addEventListener('click', function(){ ST.metasSort='recente'; renderPage(); });
+  if (!window.__metasOrdBound) {
+    window.__metasOrdBound = true;
+    document.addEventListener('click', function(ev){ var mn=document.getElementById('metasOrdMenu'); if(!mn||mn.hidden) return; if(ev.target.closest&&ev.target.closest('#metasOrd')) return; mn.hidden=true; var b=document.getElementById('metasOrdBtn'); if(b) b.setAttribute('aria-expanded','false'); });
+    document.addEventListener('keydown', function(ev){ if(ev.key!=='Escape') return; var mn=document.getElementById('metasOrdMenu'); if(mn && !mn.hidden){ mn.hidden=true; var b=document.getElementById('metasOrdBtn'); if(b){ b.setAttribute('aria-expanded','false'); b.focus(); } } });
+  }
   if (!admin) return;
   var cards = app.querySelectorAll('.goal-card');
   for (var i=0;i<cards.length;i++) {
